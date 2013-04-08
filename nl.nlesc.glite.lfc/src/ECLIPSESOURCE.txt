@@ -1,0 +1,21 @@
+===============================================================================
+
+===============================================================================
+
+ Initial development of the original code was made for the
+ g-Eclipse project founded by European Union
+ project number: FP6-IST-034327  http://www.geclipse.eu/
+
+ Contributors:
+  -  Mateusz Pabis (PSNC) - initial API and implementation
+ 
+ Refactoring and updating, including a lot of bug fixing and adding more
+ LFC Features, have been done by: 
+ - Piter T. de Boer.
+ - Spiros Koulouzis. 
+
+See http://www.vl-e.nl
+See http://www.vl-e.nl/vbrowser 
+
+
+

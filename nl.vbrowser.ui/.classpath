@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="testsrc"/>
+	<classpathentry kind="src" path="icons"/>
+	<classpathentry kind="lib" path="lib/icoreader/ICOReader-1.04.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.ptk.ui"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.ptk.util"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

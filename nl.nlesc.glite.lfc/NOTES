@@ -1,0 +1,48 @@
+###
+# Project : VLET
+# Module  : VLET (GLITE) LFC
+#
+# Developers notes for the Pure Java LFC Implementation as used by VLET. 
+#
+# Based upon code from G-Eclipse. Refactored to standalone API. 
+# Added more LFC features and fixed bugs. 
+# Also improved error handling and error text.
+# 
+# Constributors: 
+#  - Mateusz Pabis (PSNC) - initial API and implementation
+#  - Piter T. de Boer - Refactored to standalone API + bugfixing
+#  - Spiros Koulouzis - Debugging and improvements
+#
+
+Version 0.1: 
+ - First refactored code from g-Eclipse
+   Added Link methods and fixed link detection.             
+
+Version 0.2: 
+ - Fixed bug in READDIR. Not all entries were read. 
+   Added EOD handling to check for more data when reading a directory. 
+ - downgraded cog-jglobus from 1.6 to 1.5 to prevent "Signing Policy" Errors. 
+
+Versio 0.3/0.4: 
+ - Added symbolic link handling methods 
+ - changed listreplicas to getreplicas
+ - added own CnsMessage class
+
+Version 0.5:
+ - Added set/getComment methods for meta data and annotation purposes.   
+ - ignore exceptions from CloseDir. 
+
+Version 1.0.0: 
+- Updated logging and error messages. 
+- API is mature enough for 1.0 Release ! 
+
+Version 1.0.1: 
+- Move to sourceforge and updated comments. 
+
+See ReleaseNotes for more features/bugs fixes. 
+
+Cheers, 
+
+Piter T. de Boer 
+
+
