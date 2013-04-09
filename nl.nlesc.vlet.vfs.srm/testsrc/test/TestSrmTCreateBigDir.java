@@ -43,7 +43,7 @@ public class TestSrmTCreateBigDir
 		try
 		{
 			VletConfig.init();
-			VRS.getRegistry().addVRSDriverClass(SRMFSFactory.class);
+			VRS.getRegistry().registerVRSDriverClass(SRMFSFactory.class);
 			
 		    VRSContext context=new VRSContext(); 
 		    VFSClient vfs=new VFSClient(context);
