@@ -93,6 +93,9 @@ public class URLUTF8Encoder
      */
     public static String encode(String s)
     {
+        if (s==null)
+            return null; 
+        
         StringBuffer sbuf = new StringBuffer();
         int len = s.length();
         for (int i = 0; i < len; i++)

@@ -57,7 +57,8 @@ public class OctopusDir extends VDir
 	@Override
 	public VFSNode[] list() throws VlException 
 	{
-	    return this.getFS().listNodesAttrs(octoPath); 
+	    //return this.getFS().listNodes(octoPath); 
+        return this.getFS().listNodesAndAttrs(octoPath); 
 	}
 	
 	public OctopusFS getFileSystem()

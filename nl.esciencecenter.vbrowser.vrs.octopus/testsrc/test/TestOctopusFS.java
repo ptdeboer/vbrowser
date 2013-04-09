@@ -35,7 +35,7 @@ public class TestOctopusFS
         System.out.printf(">>> Dir:"+dir); 
         for (int i=0;i<nodes.length;i++)
         {
-            System.out.printf(" - node[#%i] =%s\n",i,nodes[i]);
+            System.out.printf(" - node[#%d] =%s\n",i,nodes[i]);
         }
         
     }

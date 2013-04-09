@@ -22,12 +22,9 @@
 // source: 
 package test;
 
-import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
-import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.vfs.VDir;
 import nl.uva.vlet.vfs.VFSClient;
 import nl.uva.vlet.vfs.VFSNode;
-import nl.uva.vlet.vrs.VRS;
 
 public class TestOctopusVBrowser
 {
@@ -37,7 +34,7 @@ public class TestOctopusVBrowser
 	    testGetDir(); 
 	    
 	    // The VBrowser classes must be in the classpath to be able to start this. 
-        //nl.uva.vlet.gui.startVBrowser.main(args);
+        nl.uva.vlet.gui.startVBrowser.main(args);
     }
 
     private static void testGetDir() throws Exception
@@ -51,7 +48,7 @@ public class TestOctopusVBrowser
         System.out.printf(">>> Dir:"+dir); 
         for (int i=0;i<nodes.length;i++)
         {
-            System.out.printf(" - node[#%i] =%s\n",i,nodes[i]);
+            System.out.printf(" - node[#%d] =%s\n",i,nodes[i]);
         }
 
         

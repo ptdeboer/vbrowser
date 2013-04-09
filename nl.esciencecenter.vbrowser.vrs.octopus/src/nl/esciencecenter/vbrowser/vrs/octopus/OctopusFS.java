@@ -158,8 +158,9 @@ public class OctopusFS extends FileSystemNode
 	    System.out.println("NEW path     :"+path.toUri()); 
 	    System.out.println("NEW abs path :"+path.toAbsolutePath());
 	    
+	    
 	    // check ? 
-        if (optFileattrs.isDirectory())
+        if ((optFileattrs!=null) && optFileattrs.isDirectory())
         {
             return new OctopusDir(this,optFileattrs,path);
         }
@@ -250,7 +251,7 @@ public class OctopusFS extends FileSystemNode
         
         try
         {
-            paths = this.octoClient.list(octoPath);
+            paths = this.octoClient.listDir(octoPath);
             if ((paths==null) || (paths.size()==0))
                     return null; 
                 
@@ -271,7 +272,7 @@ public class OctopusFS extends FileSystemNode
         
     }
 
-    public VFSNode[] listNodesAttrs(Path octoPath) throws VlException
+    public VFSNode[] listNodesAndAttrs(Path octoPath) throws VlException
     {
         List<PathAttributes> paths=null; 
         
