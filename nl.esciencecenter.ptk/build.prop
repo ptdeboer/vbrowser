@@ -8,14 +8,14 @@
 #   
 
 comp.name=nl.nlesc.ptk
-comp.package.prefix=nl.nlesc.ptk
-comp.package.dir=nl/nlesc/ptk
+comp.package.prefix=nl.esciencecenter.ptk
+comp.package.dir=nl/esciencecenter/ptk
 comp.version=0.1
-comp.mainclass=nl.nlesc.ptk.bootstrap.Bootstrapper
+comp.mainclass=nl.esciencecenter.ptk.bootstrap.Bootstrapper
 #bootstrapper:
 
-bootstrap.package.dir=nl/nlesc/ptk/bootstrap
-bootstrap.mainclass=nl.nlesc.ptk.bootstrap.Bootstrapper
+bootstrap.package.dir=nl/esciencecenter/ptk/bootstrap
+bootstrap.mainclass=nl.esciencecenter.ptk.bootstrap.Bootstrapper
 
 # local project ! 
 project.root=.

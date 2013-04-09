@@ -37,7 +37,10 @@
          </ant>
         
     </target> 
-    
+
+    <target name="doModules" depends="project-init,vlet-core,vlet-vbrowser">
+    </target> 
+ 
     <target name="vlet-auxlibs" depends="project-init">
 
 	 <antcall target="build-component">
@@ -50,34 +53,52 @@
 
     <target name="vlet-core" depends="project-init,vlet-auxlibs">
 
+        <antcall target="build-component">
+            <param name="name" value="nl.esciencecenter.ptk"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+        
 	 <antcall target="build-component">
             <param name="name" value="nl.nlesc.vlet.vrs.core"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
 
+	 <antcall target="build-component">
+            <param name="name" value="nl.nlesc.vlet.vrs.infors"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+    </target>	
+
+ 	<target name="vlet-vbrowser" depends="vlet-core">
+
+        <antcall target="build-component">
+            <param name="name" value="nl.esciencecenter.ptk.ui"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+        <antcall target="build-component">
+            <param name="name" value="nl.esciencecenter.vbrowser.vb2.ui"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+        <antcall target="build-component">
+            <param name="name" value="nl.nlesc.vlet.gui.utils"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+        
+        <antcall target="build-component">
+            <param name="name" value="nl.nlesc.vlet.gui.vbrowser"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
     </target>
- 
-    <target name="doModules" depends="project-init,vlet-auxlibs,vlet-core">
 
-        <antcall target="build-component">
-            <param name="name" value="nl.nlesc.ptk.util"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
-        </antcall>
-        
-        <antcall target="build-component">
-            <param name="name" value="nl.nlesc.ptk.ui"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
-        </antcall>
-        
-        <antcall target="build-component">
-            <param name="name" value="nl.nlesc.xnat.client"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
-        </antcall>
-
-    </target> 
-    
     </project>

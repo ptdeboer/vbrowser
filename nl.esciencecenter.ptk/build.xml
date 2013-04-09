@@ -103,9 +103,9 @@
 				
 		<javac srcdir="${comp.src}/${bootstrap.package.dir}" destdir="${comp.build.bootstrap}"
 				compiler="${javac.compiler}"
-	           	source="1.5" 
+	           	source="1.6" 
 	           	debug="${javac.debug}"
-		       	target="1.5" />
+		       	target="1.6" />
 	</target> 
 		
 	<target name="jar" depends="build">
@@ -232,37 +232,25 @@
 		<copy todir="${project.lib}">
 			<fileset dir="${comp.dist}/lib" />
 		</copy>
-		<!--
-	    <copy file="${comp.dist}/lib/vbrowser.jar" todir="${project.dist}/bin" />
-	    <!- - executable jar file, both in lib and bin ? - -> 
-	    <copy file="${comp.dist}/lib/vbrowser.jar" todir="${project.dist}/bin" />
-	    <copy file="${comp.dist}/lib/bootstrapper.jar" todir="${project.dist}/bin" />
-	    <copy file="${comp.dist}/lib/vlterm.jar" todir="${project.dist}/bin" />
-	   	-->		
+	
 		<!-- etc -->
 	
+		<mkdir dir="${project.auxlib}/jmimemagic"/>
+		<copy todir="${project.auxlib}/hmimemagic" >
+		     <fileset dir="lib/jmimemagic" />
+		</copy>
+		
 		<!--
 		<copy todir="${project.dist}/">
 			<fileset dir="${comp.dist}/root" />
 		</copy>
 		  -->
+		
 		<!--
 			<mkdir dir="${project.dist}/etc" />
 			<copy todir="${project.dist}/etc">
 				<fileset dir="${comp.dist}/etc">
 				</fileset>
-			</copy>
-	
-			<mkdir dir="${project.dist}/bin" />
-			<copy todir="${project.dist}/bin">
-				 <fileset dir="${comp.dist}/bin">
-		             <patternset id="binaries.fileset.id"/>
-	             </fileset>
-			</copy>
-			
-			<mkdir dir="${project.dist}/doc" />
-			<copy todir="${project.dist}/doc">
-					<fileset dir="${comp.dist}/doc" />
 			</copy>
 		--> 
 		
