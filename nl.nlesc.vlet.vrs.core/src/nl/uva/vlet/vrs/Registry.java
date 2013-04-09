@@ -207,7 +207,7 @@ final public class Registry
             logger.infoPrintf("Initializing default core vdrivers=%s\n",str);
 
             // Internal vdrivers: Note the 'vdriver' package !
-            addVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vdriver.vrs.infors.InfoRSFactory");
+            addVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vrs.infors.InfoRSFactory");
             addVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vdriver.vfs.localfs.LocalFSFactory");
             // Core Implementations: might not work from applet/grid service context !
             addVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vfs.gftp.GftpFSFactory");

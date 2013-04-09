@@ -266,13 +266,13 @@
 
 		</copy>
 		
-		<copy todir="${component.dist}/doc" verbose="true" >
+		<!-- <copy todir="${component.dist}/doc" verbose="true" >
 			<fileset dir="doc/">
-				<!-- include name="README"/ -->
+				< ! - -  include name="README"/ - - > 
 			</fileset>
 
 			<filterset refid="vletfilters"/>
-		</copy>
+		</copy> -->
 		
 		<copy todir="${component.dist}/bin" verbose="true" >
 			<fileset dir="bin/"/>
