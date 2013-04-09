@@ -62,7 +62,7 @@ public class OctopusFSFactory extends VFSFactory
 		return fs; 
 	}
 	
-	public OctopusFS createNewFileSystem(VRSContext context,ServerInfo info, VRL location)
+	public OctopusFS createNewFileSystem(VRSContext context,ServerInfo info, VRL location) throws VlException
 	{
 		// Create new FileSystem instance. 
 		// Use VRSContext for user context dependend specific settings. 

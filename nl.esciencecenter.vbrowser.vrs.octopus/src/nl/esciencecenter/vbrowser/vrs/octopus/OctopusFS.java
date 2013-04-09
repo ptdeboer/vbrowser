@@ -40,9 +40,9 @@ public class OctopusFS extends FileSystemNode
 	// Instance
 	// ========================================================================
 	
-	private OctopusClient octoClient;
+	protected OctopusClient octoClient;
 
-    public OctopusFS(VRSContext context, ServerInfo info,VRL location) 
+    public OctopusFS(VRSContext context, ServerInfo info,VRL location) throws VlException 
 	{
 		super(context, info);
 		octoClient=OctopusClient.createFor(context,info,location); 
