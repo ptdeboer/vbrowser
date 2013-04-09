@@ -1,6 +1,6 @@
 ###
 # File      : build.prop
-# Component : 
+# Component : vbrowser.vb2
 # 
 # Info: 
 #
@@ -11,7 +11,7 @@
 # Do not add spaces to the end of the values ! 
 # Component defaults (not that component.root is set in the main build file)
 component.groupid=nl.uva.vlet
-component.name=vlet-gui.vbrowser
+component.name=vbrowser-vb2.ui 
 component.dist=${component.root}/dist
 component.build=${component.root}/build
 component.src=${component.root}/src
@@ -26,9 +26,4 @@ component.vendor=www.vl-e.nl
 # Note: for the env.<ENVIRONMENT VARIABLE> construct to work 
 # the property 'environment' needs to be set (in the main build file) to 'env'
 # as follows:  <property environment="env"/>
-
-# To use VLET_INSTALL as project.root uncomment the following: 
-#project.root=${env.VLET_INSTALL} 
-#Installed project libraries: 
-#project.lib=${project.root}/lib
 
