@@ -207,22 +207,22 @@ final public class Registry
             logger.infoPrintf("Initializing default core vdrivers=%s\n",str);
 
             // Internal vdrivers: Note the 'vdriver' package !
-            addVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vrs.infors.InfoRSFactory");
-            addVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vdriver.vfs.localfs.LocalFSFactory");
+            registerVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vrs.infors.InfoRSFactory");
+            registerVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vdriver.vfs.localfs.LocalFSFactory");
             // Core Implementations: might not work from applet/grid service context !
-            addVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vfs.gftp.GftpFSFactory");
-            addVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vfs.jcraft.ssh.SftpFSFactory");
+            registerVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vfs.gftp.GftpFSFactory");
+            registerVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vfs.jcraft.ssh.SftpFSFactory");
             // Internal VFS classes: 
-            addVRSDriverClassNoError(currentLoader,HTTPFactory.class.getCanonicalName()); 
-            addVRSDriverClassNoError(currentLoader,HTTPSFactory.class.getCanonicalName());
+            registerVRSDriverClassNoError(currentLoader,HTTPFactory.class.getCanonicalName()); 
+            registerVRSDriverClassNoError(currentLoader,HTTPSFactory.class.getCanonicalName());
         
             // Duymmy factory which initializes Globus Grid bindings!
             // All Globus dependencies are in a plugin themselves.
             // addVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vrs.globusrs.GlobusRSFactory");
            
             // Other VFS/VRS implementations from lib/vdrivers:
-            addVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vfs.srm.SRMFSFactory");
-            addVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vfs.lfc.LFCFSFactory");
+            registerVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vfs.srm.SRMFSFactory");
+            registerVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vfs.lfc.LFCFSFactory");
             
             // Disabled:
             //addVRSDriverClassNoError(currentLoader,"nl.uva.vlet.vfs.srbfs.SrbFSFactory");
@@ -248,7 +248,7 @@ final public class Registry
             {
                 logger.infoPrintf("Loading extra VDriver:%s\n",name);
                 // method does also error handling:
-                addVRSDriverClassNoError(currentLoader,name); 
+                registerVRSDriverClassNoError(currentLoader,name); 
             }
         }
         
@@ -305,7 +305,7 @@ final public class Registry
 
             try
             {
-                this.addVRSDriverClass(info.classLoader,info.className);
+                this.registerVRSDriverClass(info.classLoader,info.className);
             }
             catch (Exception e)
             {
@@ -339,6 +339,34 @@ final public class Registry
             registeredSchemes.put(schemes[i],list); // reput 
         }
     }
+    
+    /** Unregister VRSFactory */ 
+    private synchronized void unregisterSchemeNames(VRSFactory vrs)
+    {
+        String schemes[] = vrs.getSchemeNames();
+        
+        if (schemes==null)
+            return; 
+        
+        for (int i = 0; i < schemes.length; i++)
+        {
+            logger.infoPrintf("*UN*Registering scheme: %s -> %s (%s)\n",schemes[i],vrs.getClass(),vrs.getName());
+            ArrayList<SchemeFactoryElement> list = registeredSchemes.get(schemes[i]);
+           
+            if (list==null)
+                continue; // no scheme here. 
+            
+            // reverse list delete: 
+            for (int j=list.size()-1;j>=0;j--)
+            {
+                SchemeFactoryElement el = list.get(j);
+                if (el.getImplementation().getClass()==vrs.getClass())
+                {
+                    list.remove(el); 
+                }
+            }
+        }
+    }
 
     /** Explicit Initialize VDriver class if not yet registered. */ 
     public void initVDriver(Class<? extends VRSFactory > factoryClass) throws Exception
@@ -349,14 +377,14 @@ final public class Registry
             if (this.registeredServices.containsKey(factoryClass.getCanonicalName())) 
                 return; 
             else
-                this.addVRSDriverClass(factoryClass); 
+                this.registerVRSDriverClass(factoryClass); 
         }
     }
     
     /** 
      * Register new VRSFactory (VDriver) class to this Registry 
      */ 
-    public synchronized boolean addVRSDriverClass(Class<? extends VRSFactory> factoryClass) throws Exception
+    public synchronized boolean registerVRSDriverClass(Class<? extends VRSFactory> factoryClass) throws Exception
     {
         // === Construct the service object === //
         Object o=factoryClass.newInstance();
@@ -393,13 +421,52 @@ final public class Registry
     }
 
     /** 
+     * Register new VRSFactory (VDriver) class to this Registry 
+     */ 
+    public synchronized boolean unregisterVRSDriverClass(Class<? extends VRSFactory> factoryClass) throws Exception
+    {
+        // === Construct the service object === //
+        Object o=factoryClass.newInstance();
+        
+        //String className=cls.getCanonicalName(); 
+        
+        synchronized(this.registeredServices)
+        {
+            // if (o instanceof VFSFactory)
+
+            if (o instanceof VRSFactory)
+            {
+                VRSFactory rs = (VRSFactory) o;
+                
+                registeredServices.remove(rs.getClass().getCanonicalName()); 
+                unregisterSchemeNames(rs);
+                
+                rs.clear(); 
+            }
+            else
+            {
+                String msg="Error implementations other then VRSFactory not yet supported:"+o; 
+                logger.errorPrintf("%s\n",msg); 
+                throw new VlException("VRSException",msg); 
+            }
+        }
+        
+        // update scheme cache:
+
+        this.updateDefaultSchemes();
+
+        logger.infoPrintf("Added VRSFactory class:%s\n", factoryClass.getName());
+        return true; 
+    }
+    
+    /** 
      * Register new VRSFActory (VDriver) class to this Registry. Uses specified classLoader
      * to load the 'classname' and registers that VRSFactory. 
      * Is used by the plugin loader. 
      * <p>
      * <b>is synchronized</b>: Method modifies the static Registry !
      */ 
-    public synchronized boolean addVRSDriverClass(ClassLoader classLoader,String classname) throws Exception
+    public synchronized boolean registerVRSDriverClass(ClassLoader classLoader,String classname) throws Exception
     {
         // Do no use systemclassloader, this thread might have extra URLs 
         // added to the classPath !
@@ -413,7 +480,7 @@ final public class Registry
         logger.debugPrintf("Registering class:+%s\n",cls.getName());
 
         
-        return this.addVRSDriverClass((Class<? extends VRSFactory>)cls); 
+        return this.registerVRSDriverClass((Class<? extends VRSFactory>)cls); 
     }
 
     /**
@@ -423,13 +490,13 @@ final public class Registry
      * <b>is synchronized</b>: Method modifies the static Registry !
      * @return returns false if registrations failed, but will continue!   
      */
-    private synchronized boolean addVRSDriverClassNoError(ClassLoader classLoader, String classname)
+    private synchronized boolean registerVRSDriverClassNoError(ClassLoader classLoader, String classname)
     {
         // Experimental VFS plugin Class Loader 
 
         try
         {
-            return addVRSDriverClass(classLoader,classname); 
+            return registerVRSDriverClass(classLoader,classname); 
         }
         // Check'd and encountered them all I have:
         catch (NoClassDefFoundError e)

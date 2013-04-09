@@ -92,7 +92,7 @@ public class AboutRSFactory extends VRSFactory
     {
         try
         {
-            VRS.getRegistry().addVRSDriverClass(AboutRSFactory.class);
+            VRS.getRegistry().registerVRSDriverClass(AboutRSFactory.class);
         }
         catch (Exception e)
         {

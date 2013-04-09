@@ -35,7 +35,7 @@ public class TestSkelFSBrowser
 		try
 		{
 		    VletConfig.init();
-			VRS.getRegistry().addVRSDriverClass(SkelFSFactory.class);
+			VRS.getRegistry().registerVRSDriverClass(SkelFSFactory.class);
 		}
 		catch (Exception e)
 		{

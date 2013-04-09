@@ -51,7 +51,7 @@ public class LoboBrowser extends ViewerPlugin
     {
         try
         {
-            VRS.getRegistry().addVRSDriverClass(nl.uva.vlet.gui.lobo.resfs.ResFS.class);
+            VRS.getRegistry().registerVRSDriverClass(nl.uva.vlet.gui.lobo.resfs.ResFS.class);
         }
         catch (Exception e)
         {
