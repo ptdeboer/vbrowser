@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.actions.ActionContext;
 import nl.uva.vlet.actions.ActionMenuConstants;
 import nl.uva.vlet.actions.ActionMenuMapping;

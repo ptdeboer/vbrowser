@@ -31,10 +31,10 @@ import java.util.Set;
 import java.util.logging.Level;
 
 
-import nl.nlesc.ptk.exceptions.VRISyntaxException;
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.vrl.VRL;

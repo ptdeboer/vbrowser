@@ -53,8 +53,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
-import nl.nlesc.ptk.net.VRI;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.net.VRI;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.GlobalUtil;
 import nl.uva.vlet.gui.UIGlobal;

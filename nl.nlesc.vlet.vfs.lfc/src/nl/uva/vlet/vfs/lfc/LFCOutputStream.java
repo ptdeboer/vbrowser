@@ -26,8 +26,8 @@ package nl.uva.vlet.vfs.lfc;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.ResourceNotFoundException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.glite.lfc.LFCException;

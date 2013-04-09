@@ -22,7 +22,7 @@ package nl.uva.vlet.vrs.io;
 
 import java.io.IOException;
 
-import nl.nlesc.ptk.io.RandomReadable;
+import nl.esciencecenter.ptk.io.RandomReadable;
 import nl.uva.vlet.exception.VlException;
 
 /**

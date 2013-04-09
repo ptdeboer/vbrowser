@@ -38,7 +38,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeSet;
 import nl.uva.vlet.gui.GuiSettings;

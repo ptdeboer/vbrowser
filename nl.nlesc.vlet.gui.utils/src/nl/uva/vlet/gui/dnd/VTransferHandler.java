@@ -34,7 +34,7 @@ import java.awt.event.InputEvent;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.gui.MasterBrowser;
 import nl.uva.vlet.gui.UIGlobal;

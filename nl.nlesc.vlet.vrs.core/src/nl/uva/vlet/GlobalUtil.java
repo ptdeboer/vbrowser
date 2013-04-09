@@ -30,8 +30,8 @@ import java.net.URL;
 import java.util.Properties;
 
 
-import nl.nlesc.ptk.io.StreamUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.ResourceReadAccessDeniedException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlIOException;

@@ -28,12 +28,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import nl.nlesc.ptk.data.BooleanHolder;
-import nl.nlesc.ptk.data.StringHolder;
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.io.StreamUtil;
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.data.BooleanHolder;
+import nl.esciencecenter.ptk.data.StringHolder;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.exception.ResourceLinkIsBorkenException;

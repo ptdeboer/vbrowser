@@ -36,12 +36,12 @@ import java.io.OutputStream;
 
 
 
-import nl.nlesc.ptk.crypt.Secret;
-import nl.nlesc.ptk.data.SecretHolder;
-import nl.nlesc.ptk.data.StringHolder;
-import nl.nlesc.ptk.io.StreamUtil;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.crypt.Secret;
+import nl.esciencecenter.ptk.data.SecretHolder;
+import nl.esciencecenter.ptk.data.StringHolder;
+import nl.esciencecenter.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeType;
 import nl.uva.vlet.exception.ResourceAlreadyExistsException;

@@ -33,7 +33,7 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
 
 /** Combined TableModel and TableColumn Listener */ 
 

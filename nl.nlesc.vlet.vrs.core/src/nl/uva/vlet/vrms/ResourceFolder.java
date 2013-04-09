@@ -33,9 +33,9 @@ import java.io.OutputStream;
 import org.w3c.dom.DOMException;
 
 
-import nl.nlesc.ptk.presentation.IPresentable;
-import nl.nlesc.ptk.presentation.Presentation;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.presentation.IPresentable;
+import nl.esciencecenter.ptk.presentation.Presentation;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.data.VAttributeSet;

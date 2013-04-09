@@ -22,7 +22,7 @@ package nl.uva.vlet.vfs;
 
 import java.util.List;
 
-import nl.nlesc.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.uva.vlet.exception.VlException;
 
 

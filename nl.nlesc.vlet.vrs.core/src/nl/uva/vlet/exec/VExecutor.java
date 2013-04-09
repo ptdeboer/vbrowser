@@ -20,7 +20,7 @@
 
 package nl.uva.vlet.exec;
 
-import nl.nlesc.ptk.data.StringHolder;
+import nl.esciencecenter.ptk.data.StringHolder;
 import nl.uva.vlet.exception.VlException;
 
 /**

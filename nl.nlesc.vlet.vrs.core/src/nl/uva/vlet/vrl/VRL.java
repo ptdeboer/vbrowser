@@ -24,11 +24,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import nl.nlesc.ptk.exceptions.VRISyntaxException;
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.net.VRI;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.net.VRI;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeSet;
 import nl.uva.vlet.exception.VRLSyntaxException;

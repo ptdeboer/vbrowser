@@ -25,12 +25,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-import nl.nlesc.ptk.exceptions.VRISyntaxException;
-import nl.nlesc.ptk.io.RandomReadable;
-import nl.nlesc.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.io.RandomReadable;
+import nl.esciencecenter.ptk.io.StreamUtil;
 import nl.uva.vlet.exception.NotImplementedException;
 import nl.uva.vlet.exception.ResourceToBigException;
-import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlIOException;
 import nl.uva.vlet.vrl.VRL;

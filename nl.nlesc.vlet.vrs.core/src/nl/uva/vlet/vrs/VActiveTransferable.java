@@ -20,8 +20,8 @@
 
 package nl.uva.vlet.vrs;
 
-import nl.nlesc.ptk.data.StringHolder;
-import nl.nlesc.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.data.StringHolder;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.uva.vlet.exception.VlException;
 
 import nl.uva.vlet.vfs.VFileActiveTransferable;

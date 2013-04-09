@@ -36,9 +36,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.grid.voms.VO;
 import nl.uva.vlet.gui.GuiSettings;

@@ -25,10 +25,10 @@ package nl.uva.vlet.gui.proxymodel;
 
 import java.util.ArrayList;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskSource;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskSource;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.UILogger;
 import nl.uva.vlet.gui.proxyvrs.ProxyNode;

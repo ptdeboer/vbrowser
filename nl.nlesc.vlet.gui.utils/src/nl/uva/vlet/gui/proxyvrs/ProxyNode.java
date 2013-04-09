@@ -27,8 +27,9 @@ import java.util.List;
 
 import javax.swing.Icon;
 
-import nl.nlesc.ptk.presentation.Presentation;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.presentation.Presentation;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.data.VAttributeSet;
@@ -41,7 +42,6 @@ import nl.uva.vlet.vrs.ResourceEventListener;
 import nl.uva.vlet.vrs.VDeletable;
 import nl.uva.vlet.vrs.VRS;
 import nl.uva.vlet.vrs.VRenamable;
-import nl.vbrowser.ui.presentation.UIPresentation;
 
 /**
  * A ProxyNode is a the GUI side representation of a VNode or Resource Node.

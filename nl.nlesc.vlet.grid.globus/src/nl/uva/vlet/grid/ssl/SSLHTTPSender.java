@@ -33,7 +33,7 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.net.ssl.SSLContextManager;
 
 import org.apache.axis.MessageContext;

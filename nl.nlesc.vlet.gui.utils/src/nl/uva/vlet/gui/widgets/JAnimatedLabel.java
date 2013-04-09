@@ -26,8 +26,8 @@ package nl.uva.vlet.gui.widgets;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
-import nl.nlesc.ptk.ui.icons.AnimatedIcon;
-import nl.nlesc.ptk.ui.icons.IconAnimator;
+import nl.esciencecenter.ptk.ui.icons.AnimatedIcon;
+import nl.esciencecenter.ptk.ui.icons.IconAnimator;
 
 
 /**

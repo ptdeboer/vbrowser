@@ -23,8 +23,8 @@
 
 package nl.uva.vlet.vdriver.vrs.infors.grid;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.presentation.Presentation;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.uva.vlet.exception.NotImplementedException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vrl.VRL;

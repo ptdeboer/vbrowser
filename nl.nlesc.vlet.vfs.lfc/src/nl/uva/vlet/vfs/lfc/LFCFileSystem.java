@@ -25,10 +25,10 @@ package nl.uva.vlet.vfs.lfc;
 
 import java.util.List;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.NotImplementedException;
 import nl.uva.vlet.exception.ResourceCreationFailedException;

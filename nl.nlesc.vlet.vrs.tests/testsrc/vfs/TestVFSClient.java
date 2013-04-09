@@ -23,7 +23,7 @@ package vfs;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.VDir;
 import nl.uva.vlet.vfs.VFSClient;

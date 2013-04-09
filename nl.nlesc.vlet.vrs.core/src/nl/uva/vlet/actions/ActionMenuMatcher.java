@@ -22,9 +22,9 @@ package nl.uva.vlet.actions;
 
 import java.util.Vector;
 
-import nl.nlesc.ptk.data.IndexedHashtable;
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.data.IndexedHashtable;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.vrl.VRL;
 
 /**

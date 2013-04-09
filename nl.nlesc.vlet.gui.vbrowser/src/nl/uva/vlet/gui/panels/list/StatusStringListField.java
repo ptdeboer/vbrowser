@@ -30,8 +30,8 @@ import java.util.Vector;
 
 import javax.swing.JList;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.StringUtil;
 
 
 /** Selectable Host List with optional status */ 

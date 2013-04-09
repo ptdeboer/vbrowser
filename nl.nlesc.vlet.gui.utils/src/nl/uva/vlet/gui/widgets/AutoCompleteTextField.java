@@ -34,8 +34,8 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.gui.UIGlobal;
 

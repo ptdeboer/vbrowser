@@ -30,12 +30,12 @@ import java.util.Map;
 import java.util.Vector;
 
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.ui.SimpelUI;
-import nl.nlesc.ptk.ui.UI;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.ui.SimpelUI;
+import nl.esciencecenter.ptk.ui.UI;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.actions.ActionMenuMapping;
 import nl.uva.vlet.exception.VlException;

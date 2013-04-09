@@ -31,10 +31,10 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Vector;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.ResourceLoader;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.ResourceLoader;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 
 import nl.uva.vlet.exception.VlAuthenticationException;

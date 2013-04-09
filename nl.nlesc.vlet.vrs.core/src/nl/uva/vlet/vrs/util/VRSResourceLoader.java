@@ -27,7 +27,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
-import nl.nlesc.ptk.util.ResourceLoader;
+import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.uva.vlet.exception.NotImplementedException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlIOException;

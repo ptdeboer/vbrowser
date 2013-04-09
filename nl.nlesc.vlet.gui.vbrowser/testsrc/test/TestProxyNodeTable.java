@@ -31,7 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
 import nl.uva.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.uva.vlet.gui.proxymodel.ProxyNodeTableModel;
 import nl.uva.vlet.gui.proxyvrs.ProxyNode;

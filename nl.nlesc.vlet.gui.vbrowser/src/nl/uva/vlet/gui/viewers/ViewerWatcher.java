@@ -23,9 +23,9 @@
 
 package nl.uva.vlet.gui.viewers;
 
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.TaskWatcher;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.TaskWatcher;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.gui.UILogger;
 
 

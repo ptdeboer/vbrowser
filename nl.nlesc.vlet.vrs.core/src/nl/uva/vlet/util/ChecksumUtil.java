@@ -27,8 +27,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.zip.Adler32;
 import java.util.zip.CheckedInputStream;
 
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 public class ChecksumUtil
 {

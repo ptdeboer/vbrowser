@@ -23,7 +23,7 @@
 
 package nl.uva.vlet.vfs.lfc;
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.glite.lfc.internal.FileDesc;

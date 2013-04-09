@@ -20,7 +20,7 @@
 
 package nl.uva.vlet.vfs;
 
-import nl.nlesc.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vrl.VRL;
 

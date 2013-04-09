@@ -27,10 +27,10 @@ import static nl.uva.vlet.data.VAttributeConstants.ATTR_ICON;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_LOCATION;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_NAME;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeSet;

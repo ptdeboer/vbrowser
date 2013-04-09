@@ -23,7 +23,7 @@ package nl.uva.vlet.vdriver.vfs.localfs;
 import java.io.File;
 import java.util.Properties;
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.vfs.VFS;
 
 /**

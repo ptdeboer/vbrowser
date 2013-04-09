@@ -26,8 +26,8 @@ package nl.uva.vlet.gui.viewers.grid.replicaviewer;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.data.VAttributeSet;
 import nl.uva.vlet.exception.VlException;

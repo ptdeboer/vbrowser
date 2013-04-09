@@ -24,7 +24,7 @@
 package test;
 
 
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.panels.acldialog.ACLPanel;

@@ -1,6 +1,6 @@
 package nl.uva.vlet.gui.panels.monitoring;
 
-import nl.nlesc.ptk.presentation.Presentation;
+import nl.esciencecenter.ptk.presentation.Presentation;
 
 public class StatsUtil
 {

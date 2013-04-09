@@ -24,9 +24,9 @@
 package nl.uva.vlet.gui.viewers.grid.jobmonitor;
 
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeSet;
 import nl.uva.vlet.exception.VlException;

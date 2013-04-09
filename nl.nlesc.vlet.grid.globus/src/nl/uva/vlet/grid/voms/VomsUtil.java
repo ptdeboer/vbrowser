@@ -39,9 +39,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.ResourceLoader;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.ResourceLoader;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 
 import nl.uva.vlet.exception.ResourceNotFoundException;

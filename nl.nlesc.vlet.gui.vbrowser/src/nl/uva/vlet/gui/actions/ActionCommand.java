@@ -26,7 +26,7 @@ package nl.uva.vlet.gui.actions;
 import java.util.Hashtable;
 import java.util.Map;
 
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
 import nl.uva.vlet.gui.UIGlobal;
 import nl.uva.vlet.gui.UILogger;
 import nl.uva.vlet.gui.data.ResourceRef;

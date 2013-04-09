@@ -38,8 +38,10 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentable;
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.MasterBrowser;
@@ -56,8 +58,6 @@ import nl.uva.vlet.gui.view.VContainer;
 import nl.uva.vlet.gui.view.ViewFilter;
 import nl.uva.vlet.gui.view.ViewModel;
 import nl.uva.vlet.vrl.VRL;
-import nl.vbrowser.ui.presentation.UIPresentable;
-import nl.vbrowser.ui.presentation.UIPresentation;
 
 /**
  * The Table View Panel.

@@ -30,10 +30,10 @@ import gov.lbl.srm.v22.stubs.TRetentionPolicyInfo;
 import java.io.IOException;
 import java.io.InputStream;
 
-import nl.nlesc.ptk.data.StringHolder;
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.data.StringHolder;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.exception.VlException;

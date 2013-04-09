@@ -30,7 +30,7 @@ import java.security.cert.X509Certificate;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.actions.ActionContext;
 import nl.uva.vlet.actions.ActionMenuMapping;
 import nl.uva.vlet.exception.VlException;

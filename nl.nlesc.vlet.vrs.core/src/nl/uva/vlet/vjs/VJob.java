@@ -20,8 +20,8 @@
 
 package nl.uva.vlet.vjs;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.exception.VlException;

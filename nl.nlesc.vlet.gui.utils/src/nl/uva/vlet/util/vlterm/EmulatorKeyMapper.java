@@ -28,7 +28,7 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.gui.UILogger;
 
 

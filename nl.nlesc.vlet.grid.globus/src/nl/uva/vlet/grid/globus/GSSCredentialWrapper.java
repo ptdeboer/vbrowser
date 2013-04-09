@@ -26,7 +26,7 @@ package nl.uva.vlet.grid.globus;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.util.grid.GridProxy;
 import nl.uva.vlet.util.grid.VGridCredential;

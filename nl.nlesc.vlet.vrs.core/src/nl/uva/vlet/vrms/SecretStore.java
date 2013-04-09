@@ -23,7 +23,7 @@ package nl.uva.vlet.vrms;
 import java.util.Hashtable;
 import java.util.Map;
 
-import nl.nlesc.ptk.crypt.Secret;
+import nl.esciencecenter.ptk.crypt.Secret;
 
 /**
  * 

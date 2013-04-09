@@ -25,11 +25,11 @@ package nl.uva.vlet.vdriver.vrs.infors.grid;
 
 import java.util.ArrayList;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.presentation.Presentation;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.presentation.Presentation;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.VletConfig;
 
 import nl.uva.vlet.data.VAttribute;

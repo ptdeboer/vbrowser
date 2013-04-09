@@ -31,12 +31,12 @@ import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskSource;
-import nl.nlesc.ptk.ui.UI;
-import nl.nlesc.ptk.ui.icons.IconProvider;
-import nl.nlesc.ptk.util.MimeTypes;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskSource;
+import nl.esciencecenter.ptk.ui.UI;
+import nl.esciencecenter.ptk.ui.icons.IconProvider;
+import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlInternalError;

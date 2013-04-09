@@ -26,7 +26,7 @@ package nl.uva.vlet.gui.dnd;
 import java.awt.Component;
 import java.awt.Point;
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.gui.data.ResourceRef;
 import nl.uva.vlet.gui.view.VComponent;
 

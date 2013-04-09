@@ -1,0 +1,21 @@
+###
+# File      : build.prop
+# Component : ptk.ui
+# 
+# Info: 
+#
+#   build properties. Holds ALL customizable properties 
+#   
+
+#module specific settings: 
+
+comp.name=nl.nlesc.ptk.ui
+comp.package.prefix=nl.nlesc.ptk.ui
+comp.package.dir=nl/nlesc/ptk/ui
+comp.version=0.1
+#comp.mainclass=nl.nlesc.ptk.bootstrap.Bootstrapper
+
+#  
+#project.root=.
+#project.lib=lib
+

@@ -22,7 +22,7 @@ package nl.uva.vlet.exec;
 
 import java.util.Vector;
 
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vrl.VRL;

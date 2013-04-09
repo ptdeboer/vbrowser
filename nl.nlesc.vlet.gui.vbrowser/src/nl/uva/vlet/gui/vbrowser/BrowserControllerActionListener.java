@@ -26,8 +26,8 @@ package nl.uva.vlet.gui.vbrowser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.gui.actions.ActionCommand;
 import nl.uva.vlet.gui.actions.ActionCommandType;
 import nl.uva.vlet.gui.widgets.NavigationBar;

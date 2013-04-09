@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.gui.util.charpane.ICharacterTerminal;
 import nl.uva.vlet.gui.util.charpane.StyleChar;
 import nl.uva.vlet.util.vlterm.VT10xEmulatorDefs.Token;

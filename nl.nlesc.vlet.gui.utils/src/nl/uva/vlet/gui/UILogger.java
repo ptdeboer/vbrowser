@@ -2,7 +2,7 @@ package nl.uva.vlet.gui;
 
 import java.util.logging.Level;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 public class UILogger
 {

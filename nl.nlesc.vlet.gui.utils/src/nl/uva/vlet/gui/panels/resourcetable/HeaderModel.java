@@ -25,7 +25,7 @@ package nl.uva.vlet.gui.panels.resourcetable;
 
 import javax.swing.AbstractListModel;
 
-import nl.nlesc.ptk.data.StringList;
+import nl.esciencecenter.ptk.data.StringList;
 
 
 /**

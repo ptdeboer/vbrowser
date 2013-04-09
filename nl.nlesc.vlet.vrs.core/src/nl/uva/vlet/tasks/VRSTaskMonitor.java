@@ -20,9 +20,9 @@
 
 package nl.uva.vlet.tasks;
 
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.task.MonitorAdaptor;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.task.MonitorAdaptor;
 
 /**
  * Default VRS TaskMonitor Adaptor. 

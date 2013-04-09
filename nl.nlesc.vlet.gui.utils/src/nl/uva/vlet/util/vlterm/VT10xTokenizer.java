@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.util.vlterm.VT10xEmulatorDefs.Token;
 
 import static nl.uva.vlet.util.vlterm.VT10xEmulatorDefs.*;

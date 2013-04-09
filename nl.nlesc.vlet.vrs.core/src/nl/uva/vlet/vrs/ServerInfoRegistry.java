@@ -30,10 +30,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.ResourceLoader;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.ResourceLoader;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.GlobalUtil;
 
 import nl.uva.vlet.data.VAttributeSet;

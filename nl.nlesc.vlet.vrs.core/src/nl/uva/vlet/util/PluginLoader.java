@@ -50,9 +50,9 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.Vector;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.GlobalUtil;
 
 import nl.uva.vlet.exception.VRLSyntaxException;
@@ -67,7 +67,7 @@ import nl.uva.vlet.vrl.VRL;
  */
 public class PluginLoader
 {
-    private static  nl.nlesc.ptk.util.logging.ClassLogger logger=null; 
+    private static  nl.esciencecenter.ptk.util.logging.ClassLogger logger=null; 
     
     static
     {

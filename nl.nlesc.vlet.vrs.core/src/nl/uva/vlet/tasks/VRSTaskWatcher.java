@@ -20,10 +20,10 @@
 
 package nl.uva.vlet.tasks;
 
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.task.TaskWatcher;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.task.TaskWatcher;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
  * Task watcher for threaded VRS tasks 

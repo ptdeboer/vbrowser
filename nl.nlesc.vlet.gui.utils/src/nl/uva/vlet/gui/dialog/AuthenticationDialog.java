@@ -42,8 +42,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
-import nl.nlesc.ptk.crypt.Secret;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.crypt.Secret;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.gui.GuiSettings;
 import nl.uva.vlet.gui.UIGlobal;

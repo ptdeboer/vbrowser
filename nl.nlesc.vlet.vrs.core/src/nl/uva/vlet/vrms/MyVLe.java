@@ -27,11 +27,11 @@ import static nl.uva.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
 import java.io.File;
 import java.util.Vector;
 
-import nl.nlesc.ptk.data.BooleanHolder;
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.data.BooleanHolder;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 
 import nl.uva.vlet.data.VAttribute;

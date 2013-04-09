@@ -23,7 +23,7 @@
 
 package nl.uva.vlet.gui.panels.fields;
 
-import nl.nlesc.ptk.data.StringList;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeType;
 

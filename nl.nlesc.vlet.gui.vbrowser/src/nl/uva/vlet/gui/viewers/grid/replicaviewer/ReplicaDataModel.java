@@ -37,9 +37,9 @@ import static nl.uva.vlet.data.VAttributeConstants.ATTR_STORAGE_ELEMENT;
 
 import java.util.Vector;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeSet;
 import nl.uva.vlet.exception.VRLSyntaxException;

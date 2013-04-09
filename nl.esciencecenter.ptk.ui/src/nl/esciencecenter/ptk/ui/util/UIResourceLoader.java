@@ -1,0 +1,207 @@
+/*
+ * (C) 2012 Netherlands eScience Center/Biomarker Boosting consortium. 
+ * 
+ * This code is under development. 
+ *  
+ */ 
+// source: 
+
+package nl.esciencecenter.ptk.ui.util;
+
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Vector;
+
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+import javax.swing.ImageIcon;
+
+import nl.esciencecenter.ptk.util.ResourceLoader;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
+
+
+/**
+ * ResourceLoader for UI specific resources. 
+ */
+public class UIResourceLoader extends ResourceLoader
+{
+    private static UIResourceLoader instance;
+
+    private static ClassLogger logger;
+    
+    // =================================================================
+    // Static methods 
+    // ================================================================= 
+    
+    static
+    {
+        logger = ClassLogger.getLogger(UIResourceLoader.class);
+        //logger.setLevelToDebug();
+    }
+	
+	public static UIResourceLoader getDefault()
+	{
+		if (instance==null)
+			instance=new UIResourceLoader(null);
+		
+		return instance; 
+	}
+
+	// helper method 
+    public static boolean isIco(String urlStr)
+    {
+        return urlStr.toLowerCase().endsWith(".ico"); 
+    }
+
+    // =================================================================
+    // Object methods 
+    // =================================================================
+
+    public UIResourceLoader()
+    {
+    }
+    
+    public UIResourceLoader(URL urls[]) 
+    {
+        super(urls); 
+    }
+
+    /**
+     * Returns image as icon. Does not cache result. 
+     * Use IconProvider to create icons.  
+     * @throws IOException 
+     * @throws MalformedURLException 
+     */
+    public ImageIcon getIcon(URL url) throws MalformedURLException, IOException
+    {
+        return new ImageIcon(getImage(url)); 
+    }
+    
+    /**
+     * Returns image as icon. Does not cache result. 
+     * Use IconProvider to create icons.  
+     * @throws IOException 
+     * @throws MalformedURLException 
+     */
+    public ImageIcon getIcon(String iconUrl) throws IOException
+    {
+        return new ImageIcon(getImage(iconUrl));  
+    }
+    
+    /** 
+     * Load (a)synchronously an image specified by URI.
+     *  
+ 	 * @throws IOException 
+     */
+    public Image getImage(URI location) throws IOException
+    {
+        return getImage(location.toURL()); 
+    }
+
+    /**
+     * Find image and return it. 
+     * Resolves URL string to absolute URL.
+     * @throws IOException if url is invalid 
+     */
+    public Image getImage(String url) throws IOException
+    {
+        URL resolvedURL=this.resolveUrl(null,url);
+        
+        if (resolvedURL==null)
+            throw new IOException("Couldn't resolve url:"+url); 
+        
+        return this.getImage(resolvedURL);  
+    }
+
+    /**
+     * Find image and return it. 
+     * @throws IOException if url is invalid 
+     */
+    public Image getImage(URL url) throws IOException
+    {
+        if (url==null)
+            return null; 
+        
+        // .ico support ! 
+      if (isIco(url.toString())) 
+      {
+          logger.debugPrintf("getImage(): loading .ico image:%s\n",url);
+          return getIcoImage(url); 
+      }
+      
+      try
+      {
+            Image image;
+            image = ImageIO.read(url);
+            return image;
+      }
+      catch (IOException e)
+      {
+            throw new IOException("Failed to read image:"+url,e); 
+      } 
+    } 
+    
+    // ========================================================================
+    // Image/Icon methods
+    // ========================================================================
+   
+	/** Read PROPRIATIARY: .ico file and return Icon Image */ 
+    public BufferedImage getIcoImage(URL iconurl) throws IOException
+    {
+        try
+        {
+            InputStream inps=getInputStream(iconurl);  
+            ImageInputStream in = ImageIO.createImageInputStream(inps);
+
+            nl.ikarus.nxt.priv.imageio.icoreader.obj.ICOFile f;
+            f = new  nl.ikarus.nxt.priv.imageio.icoreader.obj.ICOFile(in);
+
+            // iterate over bitmaps: 
+            Iterator<?> it = f.getEntryIterator();
+
+            Vector<BufferedImage> bitmaps=new Vector<BufferedImage>();
+            
+            BufferedImage biggestImage=null; 
+            int biggestSize=0; 
+            
+            while(it.hasNext()) 
+            {
+                nl.ikarus.nxt.priv.imageio.icoreader.obj.IconEntry ie = (nl.ikarus.nxt.priv.imageio.icoreader.obj.IconEntry) it.next();
+
+                try
+                {
+                    BufferedImage img = ie.getBitmap().getImage();
+                    bitmaps.add(img); 
+                    int size= img.getWidth()*img.getHeight(); 
+                    if (size>biggestSize)
+                    {
+                        biggestSize=size; 
+                        biggestImage=img; 
+                    }
+                            //System.err.println(" - width="+img.getWidth());  
+                    //System.err.println(" - height="+img.getHeight());  
+
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            return  biggestImage;  
+            
+        }
+        catch (IOException e)
+        {
+            throw new IOException("Read error:"+iconurl,e); 
+        }
+    }
+   
+
+}

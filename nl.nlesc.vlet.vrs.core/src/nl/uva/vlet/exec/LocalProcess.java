@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 
-import nl.nlesc.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ActionTask;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlIOException;
 

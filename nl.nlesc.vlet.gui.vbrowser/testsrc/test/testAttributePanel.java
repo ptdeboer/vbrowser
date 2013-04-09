@@ -25,7 +25,7 @@ package test;
 
 import javax.swing.JFrame;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.data.VAttributeSet;
 import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.gui.panels.attribute.AttributePanel;

@@ -28,9 +28,9 @@ import gov.lbl.srm.v22.stubs.TMetaDataPathDetail;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import nl.nlesc.ptk.data.IntegerHolder;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.data.IntegerHolder;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.uva.vlet.exception.VlException;
 
 import nl.uva.vlet.tasks.VRSTaskMonitor;

@@ -50,10 +50,10 @@ import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
 
 
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.util.MimeTypes;
-import nl.nlesc.ptk.util.ResourceLoader;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.util.MimeTypes;
+import nl.esciencecenter.ptk.util.ResourceLoader;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.actions.ActionContext;
 import nl.uva.vlet.actions.ActionMenuMapping;

@@ -34,13 +34,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.BevelBorder;
 
-import nl.nlesc.ptk.presentation.Presentation;
+import nl.esciencecenter.ptk.presentation.Presentation;
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.uva.vlet.gui.viewers.ViewerPlugin;
 import nl.uva.vlet.gui.widgets.NavigationBar;
 import nl.uva.vlet.vrl.VRL;
-import nl.vbrowser.ui.presentation.UIPresentation;
 
 /** 
  * Simple Job Status viewer. 

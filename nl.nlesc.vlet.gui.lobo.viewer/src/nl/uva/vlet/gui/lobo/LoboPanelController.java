@@ -2,7 +2,7 @@ package nl.uva.vlet.gui.lobo;
 
 import java.net.URL;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.dialog.ExceptionForm;
 import nl.uva.vlet.vrl.VRL;

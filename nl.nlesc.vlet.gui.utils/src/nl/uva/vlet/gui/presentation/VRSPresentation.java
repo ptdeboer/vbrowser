@@ -46,10 +46,10 @@ import static nl.uva.vlet.data.VAttributeConstants.ATTR_SOURCE_URL;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_STATUS;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
 
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 import nl.uva.vlet.vfs.VFS;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.VRS;
-import nl.vbrowser.ui.presentation.UIPresentation;
 
 /** 
  * Factory class for UIPresentation of VRS Nodes. 

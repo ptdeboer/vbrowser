@@ -27,7 +27,7 @@ import static nl.uva.vlet.data.VAttributeConstants.ATTR_ACCESS_TIME;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_GID;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_UID;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.exception.VlException;

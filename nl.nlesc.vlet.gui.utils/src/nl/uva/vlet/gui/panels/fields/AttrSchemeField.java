@@ -26,7 +26,7 @@ package nl.uva.vlet.gui.panels.fields;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 
-import nl.nlesc.ptk.data.StringList;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.uva.vlet.gui.UIGlobal;
 import nl.uva.vlet.vrs.VRS;
 

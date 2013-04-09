@@ -28,8 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.Messages;
 import nl.uva.vlet.gui.viewers.ViewerInfo;

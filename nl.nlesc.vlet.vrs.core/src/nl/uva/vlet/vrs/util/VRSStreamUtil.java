@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.nlesc.ptk.io.RingBufferStreamTransferer;
-import nl.nlesc.ptk.io.StreamUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.io.RingBufferStreamTransferer;
+import nl.esciencecenter.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.NotImplementedException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlIOException;

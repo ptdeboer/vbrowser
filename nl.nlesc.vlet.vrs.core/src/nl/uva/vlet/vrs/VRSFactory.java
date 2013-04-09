@@ -22,9 +22,9 @@ package nl.uva.vlet.vrs;
 
 import java.util.Vector;
 
-import nl.nlesc.ptk.exceptions.VRISyntaxException;
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.actions.ActionContext;
 import nl.uva.vlet.actions.ActionMenuMapping;

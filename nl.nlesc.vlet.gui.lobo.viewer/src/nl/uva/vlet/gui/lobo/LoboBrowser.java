@@ -27,7 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.net.MalformedURLException;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.actions.ActionContext;
 import nl.uva.vlet.exception.VRLSyntaxException;

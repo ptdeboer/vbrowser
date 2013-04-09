@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 
-import nl.nlesc.ptk.data.StringList;
+import nl.esciencecenter.ptk.data.StringList;
 
 public class StatusStringListModel extends DefaultComboBoxModel
 {

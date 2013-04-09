@@ -23,7 +23,7 @@
 
 package nl.uva.vlet.vdriver.vrs.infors.net;
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.vdriver.vrs.infors.grid.InfoNode;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.VRSContext;

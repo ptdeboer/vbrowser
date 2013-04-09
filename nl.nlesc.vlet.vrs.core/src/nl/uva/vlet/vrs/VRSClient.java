@@ -25,8 +25,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import nl.nlesc.ptk.exceptions.VRISyntaxException;
-import nl.nlesc.ptk.util.ResourceLoader;
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.exception.VlIOException;

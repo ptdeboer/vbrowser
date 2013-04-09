@@ -30,7 +30,7 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.gui.UILogger;
 

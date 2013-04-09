@@ -39,14 +39,14 @@ import java.util.List;
 import java.util.Random;
 
 
-import nl.nlesc.ptk.data.IntegerHolder;
-import nl.nlesc.ptk.data.StringHolder;
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.data.IntegerHolder;
+import nl.esciencecenter.ptk.data.StringHolder;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.util.StringUtil;
 
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.util.StringUtil;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.ResourceAlreadyExistsException;
 import nl.uva.vlet.exception.ResourceCreationFailedException;

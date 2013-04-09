@@ -29,7 +29,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.uva.vlet.gui.panels.resourcetable.TablePopupMenu;

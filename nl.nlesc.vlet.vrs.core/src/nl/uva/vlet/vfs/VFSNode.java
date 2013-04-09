@@ -51,8 +51,8 @@ import java.io.IOException;
 import java.util.Vector;
 
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.presentation.Presentation;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.exception.NotImplementedException;

@@ -27,8 +27,8 @@ import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
 
-import nl.nlesc.ptk.util.QSort;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.QSort;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.gui.UILogger;
 import nl.uva.vlet.gui.proxyvrs.ProxyNode;

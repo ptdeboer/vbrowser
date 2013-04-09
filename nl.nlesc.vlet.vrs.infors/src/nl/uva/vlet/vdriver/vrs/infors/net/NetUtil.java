@@ -31,7 +31,7 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
-import nl.nlesc.ptk.data.StringList;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.uva.vlet.net.ssl.SslUtil;
 
 public class NetUtil

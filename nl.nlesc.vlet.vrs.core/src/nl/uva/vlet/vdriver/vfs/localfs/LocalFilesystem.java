@@ -27,8 +27,8 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.ResourceAlreadyExistsException;
 import nl.uva.vlet.exception.ResourceCreationFailedException;
 import nl.uva.vlet.exception.ResourceNotFoundException;

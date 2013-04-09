@@ -36,11 +36,11 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskSource;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskSource;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 import nl.uva.vlet.actions.ActionContext;
 

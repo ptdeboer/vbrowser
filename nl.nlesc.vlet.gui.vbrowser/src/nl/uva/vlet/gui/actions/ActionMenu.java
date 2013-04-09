@@ -31,8 +31,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.uva.vlet.actions.ActionContext;
 import nl.uva.vlet.actions.ActionMenuMapping;
 import nl.uva.vlet.actions.ActionMenuMatcher;

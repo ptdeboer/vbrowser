@@ -31,7 +31,7 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
 import nl.uva.vlet.gui.MasterBrowser;
 import nl.uva.vlet.gui.UILogger;
 import nl.uva.vlet.gui.data.ResourceRef;

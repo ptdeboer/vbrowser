@@ -27,9 +27,9 @@ import java.util.Random;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-import nl.nlesc.ptk.data.IntegerHolder;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.data.IntegerHolder;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.ResourceTypeNotSupportedException;

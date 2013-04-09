@@ -36,9 +36,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.ui.image.ImagePane;
-import nl.nlesc.ptk.ui.image.ImagePane.ImageWaiter;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.ui.image.ImagePane;
+import nl.esciencecenter.ptk.ui.image.ImagePane.ImageWaiter;
 import nl.uva.vlet.actions.ActionContext;
 import nl.uva.vlet.actions.ActionMenuMapping;
 import nl.uva.vlet.exception.ResourceException;

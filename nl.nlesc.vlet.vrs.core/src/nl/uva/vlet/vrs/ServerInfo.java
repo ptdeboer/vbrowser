@@ -29,9 +29,9 @@ import static nl.uva.vlet.data.VAttributeConstants.ATTR_USERNAME;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_VO_NAME;
 import static nl.uva.vlet.data.VAttributeConstants.AUTH_SCHEME;
 
-import nl.nlesc.ptk.crypt.Secret;
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.crypt.Secret;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;

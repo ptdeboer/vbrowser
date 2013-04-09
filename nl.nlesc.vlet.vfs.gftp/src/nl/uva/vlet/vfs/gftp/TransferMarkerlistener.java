@@ -25,7 +25,7 @@ package nl.uva.vlet.vfs.gftp;
 
 import java.util.Vector;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 import org.globus.ftp.GridFTPRestartMarker;
 import org.globus.ftp.Marker;

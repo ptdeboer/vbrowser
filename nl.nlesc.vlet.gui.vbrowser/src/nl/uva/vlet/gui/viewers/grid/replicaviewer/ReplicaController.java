@@ -33,12 +33,12 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.ui.panels.monitoring.TaskMonitorDialog;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.ui.panels.monitoring.TaskMonitorDialog;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.actions.ActionContext;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.data.VAttributeSet;

@@ -27,8 +27,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Hashtable;
 
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.vrs.VRS;
 

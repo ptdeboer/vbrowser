@@ -42,7 +42,7 @@ import java.io.UnsupportedEncodingException;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.gui.font.FontInfo;
 
 

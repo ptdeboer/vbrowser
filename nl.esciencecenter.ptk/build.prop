@@ -1,0 +1,23 @@
+###
+# File      : build.prop
+# Component : 
+# 
+# Info: 
+#
+#   build properties. Holds ALL customizable properties 
+#   
+
+comp.name=nl.nlesc.ptk
+comp.package.prefix=nl.nlesc.ptk
+comp.package.dir=nl/nlesc/ptk
+comp.version=0.1
+comp.mainclass=nl.nlesc.ptk.bootstrap.Bootstrapper
+#bootstrapper:
+
+bootstrap.package.dir=nl/nlesc/ptk/bootstrap
+bootstrap.mainclass=nl.nlesc.ptk.bootstrap.Bootstrapper
+
+# local project ! 
+project.root=.
+project.lib=lib
+

@@ -1,6 +1,6 @@
 package nl.uva.vlet.vfs.srm;
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.vrl.VRL;
 
 public class DirQuery

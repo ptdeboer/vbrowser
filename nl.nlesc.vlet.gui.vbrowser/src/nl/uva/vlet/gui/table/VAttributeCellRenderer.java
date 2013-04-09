@@ -33,13 +33,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentable;
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.data.VAttributeType;
 import nl.uva.vlet.gui.Messages;
 import nl.uva.vlet.gui.icons.LabelIcon;
-import nl.vbrowser.ui.presentation.UIPresentable;
-import nl.vbrowser.ui.presentation.UIPresentation;
 
 public class VAttributeCellRenderer implements TableCellRenderer
 {

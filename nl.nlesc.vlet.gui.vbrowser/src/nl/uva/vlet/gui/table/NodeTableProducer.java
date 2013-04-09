@@ -25,9 +25,10 @@ package nl.uva.vlet.gui.table;
 
 import java.util.Vector;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
@@ -44,7 +45,6 @@ import nl.uva.vlet.gui.view.ViewNode;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.EventType;
 import nl.uva.vlet.vrs.ResourceEvent;
-import nl.vbrowser.ui.presentation.UIPresentation;
 
 /**
  * Produces table data. Todo:Use tablemodel and update model instead of creation

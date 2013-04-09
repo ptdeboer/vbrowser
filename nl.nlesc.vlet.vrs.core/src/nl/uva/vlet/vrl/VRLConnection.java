@@ -27,7 +27,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownServiceException;
 
-import nl.nlesc.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.VDir;

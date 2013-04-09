@@ -23,7 +23,7 @@
 
 package nl.uva.vlet.gui;
 
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
 import nl.uva.vlet.VletConfig;
 
 /**

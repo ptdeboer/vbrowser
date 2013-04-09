@@ -27,7 +27,7 @@ import static nl.uva.vlet.data.VAttributeConstants.ATTR_SYMBOLICLINKTARGET;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_UID;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
 
-import nl.nlesc.ptk.data.StringList;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.VFS;
 import nl.uva.vlet.vfs.VFSFactory;

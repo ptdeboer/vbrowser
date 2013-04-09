@@ -4,8 +4,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 
-import nl.nlesc.ptk.crypt.Secret;
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.crypt.Secret;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.exception.VlException;

@@ -20,9 +20,9 @@
 
 package nl.uva.vlet.vrs.util;
 
-import nl.nlesc.ptk.util.Comparer;
-import nl.nlesc.ptk.util.QSort;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.Comparer;
+import nl.esciencecenter.ptk.util.QSort;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.data.VAttribute;
 
 import nl.uva.vlet.vrs.VNode;

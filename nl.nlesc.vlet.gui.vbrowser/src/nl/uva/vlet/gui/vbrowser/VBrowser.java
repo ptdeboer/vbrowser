@@ -54,8 +54,8 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.gui.GuiPropertyName;
 import nl.uva.vlet.gui.GuiSettings;

@@ -22,10 +22,10 @@ package nl.uva.vlet.vrs;
 
 import java.util.Vector;
 
-import nl.nlesc.ptk.presentation.Presentation;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskSource;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.presentation.Presentation;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskSource;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
  * Multi threaded VRS ResourceEvent notifier.

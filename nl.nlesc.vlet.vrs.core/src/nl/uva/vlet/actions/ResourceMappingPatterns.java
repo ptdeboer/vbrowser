@@ -31,8 +31,8 @@ import static nl.uva.vlet.actions.ActionMenuConstants.SELECTION_TYPE_DRAG_AND_DR
 
 import java.util.regex.Pattern;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.vrl.VRL;
 
 /**

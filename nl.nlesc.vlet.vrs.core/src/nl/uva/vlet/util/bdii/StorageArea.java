@@ -22,7 +22,7 @@ package nl.uva.vlet.util.bdii;
 
 import java.util.ArrayList;
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.util.bdii.ServiceInfo.ServiceInfoType;
 import nl.uva.vlet.vrl.VRL;

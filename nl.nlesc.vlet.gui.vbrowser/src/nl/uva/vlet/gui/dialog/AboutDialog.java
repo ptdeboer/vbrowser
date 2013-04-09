@@ -41,8 +41,8 @@ import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
-import nl.nlesc.ptk.data.BooleanHolder;
-import nl.nlesc.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.data.BooleanHolder;
+import nl.esciencecenter.ptk.task.ActionTask;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.HyperLinkListener;
 import nl.uva.vlet.gui.Messages;

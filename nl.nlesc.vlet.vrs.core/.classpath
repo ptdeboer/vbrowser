@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nl.nlesc.ptk.util"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nl.esciencecenter.ptk"/>
 	<classpathentry kind="src" path="icons"/>
 	<classpathentry kind="src" path="etc"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

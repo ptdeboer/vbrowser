@@ -20,10 +20,10 @@
 
 package nl.uva.vlet.vfs;
 
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.task.TransferMonitor;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.task.TransferMonitor;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.vrl.VRL;
 

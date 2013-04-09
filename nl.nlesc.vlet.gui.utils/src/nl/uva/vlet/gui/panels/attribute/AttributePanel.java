@@ -42,7 +42,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeSet;
 import nl.uva.vlet.data.VAttributeType;

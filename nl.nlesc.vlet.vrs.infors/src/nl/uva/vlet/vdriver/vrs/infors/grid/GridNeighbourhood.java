@@ -23,9 +23,9 @@
 
 package nl.uva.vlet.vdriver.vrs.infors.grid;
 
-import nl.nlesc.ptk.data.BooleanHolder;
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.data.BooleanHolder;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.VlException;

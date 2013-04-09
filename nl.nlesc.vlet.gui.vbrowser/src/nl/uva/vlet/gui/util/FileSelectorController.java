@@ -25,9 +25,9 @@ package nl.uva.vlet.gui.util;
 
 import javax.swing.JPopupMenu;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskSource;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.MasterBrowser;
 import nl.uva.vlet.gui.UIGlobal;

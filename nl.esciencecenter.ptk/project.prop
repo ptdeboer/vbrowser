@@ -1,0 +1,30 @@
+##
+# Default project settings for standalone build 
+
+
+##
+# Project Build Enviroment 
+# default project structure: 
+project.dist=${project.root}/dist
+# var is used during build to write logs to 
+project.var=${project.dist}/var
+# configure files/etc:
+project.conf=${project.var}/conf
+project.lib=${project.dist}/lib
+project.etc=${project.dist}/etc
+project.bin=${project.dist}/bin
+project.doc=${project.dist}/doc
+
+##
+#
+project.vendor=nlesc.nl
+
+###
+# Java Compiler options : Explicitly use java 1.6 
+javac.debug=true
+javac.target=1.6
+javac.source=1.6
+javac.compiler=javac1.6
+
+
+

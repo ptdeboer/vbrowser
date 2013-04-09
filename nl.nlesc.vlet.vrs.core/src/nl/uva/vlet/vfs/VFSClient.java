@@ -23,7 +23,7 @@ package nl.uva.vlet.vfs;
 import java.io.Serializable;
 import java.util.regex.Pattern;
 
-import nl.nlesc.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.ResourceCreationFailedException;
 import nl.uva.vlet.exception.ResourceTypeNotSupportedException;

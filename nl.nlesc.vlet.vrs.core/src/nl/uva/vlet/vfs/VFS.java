@@ -20,9 +20,9 @@
 
 package nl.uva.vlet.vfs;
 
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.nlesc.ptk.data.BooleanHolder;
+import nl.esciencecenter.ptk.data.BooleanHolder;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.VlException;

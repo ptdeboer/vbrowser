@@ -44,10 +44,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 
-import nl.nlesc.ptk.util.MimeTypes;
-import nl.nlesc.ptk.util.ResourceLoader;
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.util.MimeTypes;
+import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeSet;
 import nl.uva.vlet.exception.VRLSyntaxException;

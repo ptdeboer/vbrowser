@@ -27,7 +27,7 @@ import java.util.Vector;
 
 import javax.swing.SwingUtilities;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.gui.UILogger;
 import nl.uva.vlet.vrs.ResourceEvent;
 import nl.uva.vlet.vrs.ResourceEventListener;

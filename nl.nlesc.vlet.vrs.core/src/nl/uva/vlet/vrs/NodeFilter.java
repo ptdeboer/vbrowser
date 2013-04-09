@@ -26,7 +26,7 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import nl.nlesc.ptk.util.Wildcard2Regex;
+import nl.esciencecenter.ptk.util.Wildcard2Regex;
 import nl.uva.vlet.vfs.VFSNode;
 
 /** 

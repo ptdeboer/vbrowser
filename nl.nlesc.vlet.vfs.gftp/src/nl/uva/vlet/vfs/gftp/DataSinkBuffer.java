@@ -25,7 +25,7 @@ package nl.uva.vlet.vfs.gftp;
 
 import java.io.IOException;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 import org.globus.ftp.Buffer;
 import org.globus.ftp.DataSink;

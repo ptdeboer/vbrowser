@@ -33,7 +33,7 @@ import java.util.Properties;
 
 import javax.swing.JComponent;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.GuiSettings;

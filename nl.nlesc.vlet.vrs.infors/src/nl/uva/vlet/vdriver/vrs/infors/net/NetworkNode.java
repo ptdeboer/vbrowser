@@ -28,8 +28,8 @@ import static nl.uva.vlet.vdriver.vrs.infors.InfoConstants.NETWORK_INFO;
 
 import java.net.UnknownHostException;
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.NotImplementedException;

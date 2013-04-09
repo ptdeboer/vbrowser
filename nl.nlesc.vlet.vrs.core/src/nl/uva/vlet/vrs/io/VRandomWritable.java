@@ -22,7 +22,7 @@ package nl.uva.vlet.vrs.io;
 
 import java.io.IOException;
 
-import nl.nlesc.ptk.io.RandomWritable;
+import nl.esciencecenter.ptk.io.RandomWritable;
 
 /** 
  * Random Writable interface for atomic writes().   

@@ -3,8 +3,8 @@ package nl.uva.vlet.gui.vbrowser;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.BrowserFactory;
 import nl.uva.vlet.gui.GuiSettings;

@@ -4,8 +4,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="icons"/>
 	<classpathentry kind="src" path="testsrc"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.ptk.ui"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.ptk.util"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk.ui"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.gui.utils"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vrs.infors"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vrs.core"/>
@@ -16,6 +16,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vfs.jcraft.ssh"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vfs.lfc"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vfs.srm"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nl.vbrowser.ui"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vbrowser.vb2.ui"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

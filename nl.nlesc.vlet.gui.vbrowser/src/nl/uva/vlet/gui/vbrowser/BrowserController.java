@@ -40,12 +40,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import nl.nlesc.ptk.data.BooleanHolder;
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.ui.panels.monitoring.TaskMonitorDialog;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.data.BooleanHolder;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.ui.panels.monitoring.TaskMonitorDialog;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.actions.ActionContext;

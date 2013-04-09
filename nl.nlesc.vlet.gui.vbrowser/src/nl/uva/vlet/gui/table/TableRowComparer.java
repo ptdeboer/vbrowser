@@ -23,7 +23,7 @@
 
 package nl.uva.vlet.gui.table;
 
-import nl.nlesc.ptk.util.Comparer;
+import nl.esciencecenter.ptk.util.Comparer;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.gui.table.VRSTableModel.RowObject;
 

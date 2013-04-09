@@ -23,9 +23,9 @@
 
 package nl.uva.vlet.gui.table;
 
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 import nl.uva.vlet.gui.proxyvrs.ProxyNode;
 import nl.uva.vlet.gui.view.ViewNode;
-import nl.vbrowser.ui.presentation.UIPresentation;
 
 
 /**

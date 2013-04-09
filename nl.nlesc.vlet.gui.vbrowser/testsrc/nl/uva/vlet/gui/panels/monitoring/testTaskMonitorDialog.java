@@ -23,9 +23,9 @@
 
 package nl.uva.vlet.gui.panels.monitoring;
 
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.ui.panels.monitoring.TaskMonitorDialog;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.ui.panels.monitoring.TaskMonitorDialog;
 import nl.uva.vlet.tasks.VRSTaskMonitor;
 
 

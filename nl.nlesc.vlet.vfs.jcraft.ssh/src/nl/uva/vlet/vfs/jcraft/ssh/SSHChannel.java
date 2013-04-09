@@ -6,11 +6,11 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import nl.nlesc.ptk.crypt.Secret;
-import nl.nlesc.ptk.data.SecretHolder;
-import nl.nlesc.ptk.data.StringHolder;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.crypt.Secret;
+import nl.esciencecenter.ptk.data.SecretHolder;
+import nl.esciencecenter.ptk.data.StringHolder;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vrs.VRSContext;
 import nl.uva.vlet.vrs.io.VShellChannel;

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="testsrc"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vbrowser.vb2.ui"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk.ui"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vfs.gftp"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vfs.jcraft.ssh"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vfs.lfc"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vfs.srm"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vrs.core"/>
+	<classpathentry kind="src" path="/nl.nlesc.vlet.gui.utils"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

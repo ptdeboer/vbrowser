@@ -33,8 +33,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 
 
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.grid.voms.VOMSAttributeCertificate;
 import nl.uva.vlet.grid.voms.VomsUtil;

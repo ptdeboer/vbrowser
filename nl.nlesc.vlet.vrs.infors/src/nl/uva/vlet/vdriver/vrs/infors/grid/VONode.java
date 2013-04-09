@@ -23,7 +23,7 @@
 
 package nl.uva.vlet.vdriver.vrs.infors.grid;
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vdriver.vrs.infors.CompositeServiceInfoNode;

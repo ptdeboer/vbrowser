@@ -26,7 +26,7 @@ package nl.uva.vlet.gui.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
 import nl.uva.vlet.gui.vbrowser.BrowserController;
 import nl.uva.vlet.gui.view.VComponent;
 

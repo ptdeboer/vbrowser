@@ -26,8 +26,8 @@ import java.net.URISyntaxException;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrl.VRLUtil;

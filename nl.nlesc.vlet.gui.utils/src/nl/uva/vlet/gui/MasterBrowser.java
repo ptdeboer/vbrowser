@@ -25,7 +25,7 @@ package nl.uva.vlet.gui;
 
 import javax.swing.JPopupMenu;
 
-import nl.nlesc.ptk.task.ITaskSource;
+import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.dnd.DropAction;
 import nl.uva.vlet.gui.view.VComponent;

@@ -29,9 +29,11 @@ import java.util.Vector;
 
 import javax.swing.Icon;
 
-import nl.nlesc.ptk.ui.icons.IconProvider;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.ui.icons.IconProvider;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentable;
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
@@ -67,8 +69,6 @@ import nl.uva.vlet.vrs.VEditable;
 import nl.uva.vlet.vrs.VNode;
 import nl.uva.vlet.vrs.VRenamable;
 import nl.uva.vlet.vrs.util.VRSSort;
-import nl.vbrowser.ui.presentation.UIPresentable;
-import nl.vbrowser.ui.presentation.UIPresentation;
 
 
 /**

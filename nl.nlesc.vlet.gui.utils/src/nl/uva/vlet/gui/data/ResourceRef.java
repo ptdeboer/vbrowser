@@ -25,7 +25,7 @@ package nl.uva.vlet.gui.data;
 
 import java.io.Serializable;
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.vrl.VRL;
 
 /**

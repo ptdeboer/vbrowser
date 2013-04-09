@@ -29,10 +29,11 @@ import static nl.uva.vlet.data.VAttributeConstants.ATTR_JOBID;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_JOB_STATUS_INFORMATION;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_LOCATION;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_STATUS;
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeSet;
 import nl.uva.vlet.exception.VRLSyntaxException;
@@ -40,7 +41,6 @@ import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.UILogger;
 import nl.uva.vlet.gui.panels.resourcetable.ResourceTableModel;
 import nl.uva.vlet.vrl.VRL;
-import nl.vbrowser.ui.presentation.UIPresentation;
 
 public class JobStatusDataModel extends ResourceTableModel
 {

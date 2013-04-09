@@ -36,7 +36,7 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.JViewport;
 
-import nl.nlesc.ptk.global.Global;
+import nl.esciencecenter.ptk.Global;
 import nl.uva.vlet.gui.GuiSettings;
 
 public class ImageController implements ComponentListener

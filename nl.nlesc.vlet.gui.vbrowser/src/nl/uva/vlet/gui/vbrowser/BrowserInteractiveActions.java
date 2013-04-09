@@ -26,13 +26,13 @@ package nl.uva.vlet.gui.vbrowser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import nl.nlesc.ptk.data.BooleanHolder;
-import nl.nlesc.ptk.data.StringHolder;
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.task.ActionTask;
-import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.nlesc.ptk.ui.panels.monitoring.TaskMonitorDialog;
-import nl.nlesc.ptk.ui.panels.monitoring.TransferMonitorDialog;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.data.BooleanHolder;
+import nl.esciencecenter.ptk.data.StringHolder;
+import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.ui.panels.monitoring.TaskMonitorDialog;
+import nl.esciencecenter.ptk.ui.panels.monitoring.TransferMonitorDialog;
 
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeSet;

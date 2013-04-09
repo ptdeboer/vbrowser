@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import nl.nlesc.ptk.data.StringList;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.uva.vlet.vdriver.vrs.infors.net.testers.GFTPTester;
 import nl.uva.vlet.vdriver.vrs.infors.net.testers.HTTPSTester;
 import nl.uva.vlet.vdriver.vrs.infors.net.testers.HTTPTester;

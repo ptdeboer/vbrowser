@@ -40,8 +40,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.UnsupportedEncodingException;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.gui.UILogger;
 import nl.uva.vlet.gui.dnd.VTransferData;
 import nl.uva.vlet.vrl.VRL;

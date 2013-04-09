@@ -23,7 +23,7 @@
 
 package nl.nlesc.vlet.vfs.skelfs;
 
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.VFSFactory;

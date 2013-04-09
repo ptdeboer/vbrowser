@@ -23,7 +23,7 @@ package nl.uva.vlet.net.ssl;
 
 import javax.net.ssl.X509KeyManager;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 
 import java.net.Socket;

@@ -32,11 +32,11 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
-import nl.nlesc.ptk.data.Duplicatable;
-import nl.nlesc.ptk.data.IndexedHashtable;
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.util.StringUtil;
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.data.Duplicatable;
+import nl.esciencecenter.ptk.data.IndexedHashtable;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.data.xml.XMLData;
 import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.exception.VlIOException;

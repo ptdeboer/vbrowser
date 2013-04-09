@@ -39,12 +39,12 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.presentation.Presentation;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.presentation.Presentation;
+import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.gui.UILogger;
-import nl.vbrowser.ui.presentation.UIPresentation;
 
 /** 
  * Generic Resource Table. 

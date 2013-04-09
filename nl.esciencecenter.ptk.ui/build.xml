@@ -1,0 +1,155 @@
+<project name="nl.nlesc.ptk.ui" default="dist" basedir=".">
+	<description>
+        Project        : PTK
+        Component      : ptk.ui
+		
+		See build.prop for configuration options. 
+		
+    </description>
+
+	<!--
+      1) Read global project properties (if specified) from: project.prop
+         - for this to work project.root variable must be set to project root 
+      2) Set environment properties prefix to 'env.' 
+      3) Set comp.root to the location if this comp 
+      4) Read local comps properties from: build.prop 
+    -->
+	<!--	<property name="project.root" value="../mbuild"/> --> 
+	<!-- standalone component: --> 
+	<property name="project.root" value="."/>  
+
+	<property file="${project.root}/project.prop"/>
+	<property environment="env"/>
+	<property name="comp.root" location="." />
+	<property file="build.prop"/>
+	    
+	<!-- Default component structure. Can also be specifed in build.prop.--> 
+    <property name="comp.src" value="src"/> 			
+	<property name="comp.build" value="build"/>
+	<property name="comp.build.classdir" value="${comp.build}/classes/"/>
+	<property name="comp.dist" value="dist"/>
+	<property name="comp.lib" value="lib"/>
+	
+	<!-- Target: init -->
+
+	<target name="init">
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${comp.build}"/>
+		<mkdir dir="${comp.build.classdir}"/>
+		<mkdir dir="${comp.dist}"/>
+		<mkdir dir="${comp.dist}/lib"/>
+	</target>
+
+	<target name="config" >
+	</target>
+
+	<target name="generate" >
+	</target>
+
+	<path id="comp.classpath">
+		<!-- include project libraries-->
+		<fileset dir="${project.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+			
+		<fileset dir="${comp.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+		<!-- add local paths settings -->
+		<pathelement location="${comp.build.classdir}" />
+
+	</path>
+
+	<!--
+        Target = Compilation 
+    -->
+
+	<target name="build" depends="init" description="compile the source ">
+		<!-- Compile the java code from into ${build} -->
+		<!--
+	    <javac srcdir="${comp.src}/bootstrap" destdir="${comp.build}" 
+	                compiler="javac1.5">
+	    			<classpath refid="comp.classpath" />
+	    		</javac>
+	    		-->
+	        
+	    <javac srcdir="${comp.src}" destdir="${comp.build.classdir}"
+	       	   compiler="${javac.compiler}"
+               debug="${javac.debug}"
+	    	   source="${javac.source}" 
+	    	   target="${javac.target}">
+	           <classpath refid="comp.classpath" />
+	    </javac>
+		
+	</target>
+		
+	<target name="jar" depends="build">
+		<!-- defaults --> 
+		<property name="comp.version" value="dev"/> 
+		<property name="project.version" value="dev"/> 
+		<property name="project.vendor" value="${user.name}"/>
+		
+		<!-- Create application JAR file -->
+		<jar jarfile="${comp.dist}/lib/${comp.name}-${comp.version}.jar"
+            basedir="${comp.build.classdir}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+		    	<attribute name="Main-Class" value="${comp.mainclass}" />
+		    	<section name="common">
+		    		<attribute name="Specification-Title"   value="${comp.name}" />
+		    		<attribute name="Specification-Version" value="${project.version}" />
+		    		<attribute name="Specification-Vendor"  value="${project.vendor}" />
+		    		<attribute name="Implementation-Title"  value="${comp.name}" />
+		    		<attribute name="Implementation-Version" value="${comp.version} ${TODAY}" />
+		    		<attribute name="Implementation-Vendor"  value="${project.vendor}" />
+		    	</section>
+   				<!-- <attribute name="Class-Path" value="bootstrap.jar" /> --> 
+  			</manifest>
+		</jar>
+	</target>
+	
+	<target name="dist" depends="build,jar" >
+
+		<filterset id="compfilters">
+			<!-- nifty:  ant filterset (keyword subtitution) while copying files ! -->
+			<filter token="COMP_VERSION" value="${comp.version}"/>
+			<filter token="DATE" value="${comp.tstamp}"/>
+		</filterset>
+
+	
+	</target>
+        
+ 	<!--
+     *    Target: dist-install
+     *    Info:
+     *     install auxiliary (3rd party) libraries into {project.lib}  dir 
+     *        
+    -->
+
+	<target name="dist-install" depends="dist" description="install libraries">
+		<fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
+              unless="project.env.ok"/>
+		<mkdir dir="${project.doc}" />
+
+		<!-- toplevel directory structure -->
+		<mkdir dir="${project.lib}" />
+		<copy todir="${project.lib}">
+			<fileset dir="${comp.dist}/lib" />
+		</copy>
+		
+		<!-- external libs -->
+		<mkdir dir="${project.extlib}" />
+		<copy todir="${project.lib}/external/">
+			<fileset dir="${comp.lib}" />
+		</copy>
+		
+	</target>
+
+	<target name="clean" description="clean">
+		<delete dir="${comp.dist}"/>
+		<delete dir="${comp.build}"/>
+	</target>
+
+</project>
+
+

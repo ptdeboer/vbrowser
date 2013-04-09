@@ -20,7 +20,7 @@
 
 package nl.uva.vlet.vrs;
 
-import nl.nlesc.ptk.data.IntegerHolder;
+import nl.esciencecenter.ptk.data.IntegerHolder;
 import nl.uva.vlet.data.VAttribute;
 
 import nl.uva.vlet.error.ParameterError;

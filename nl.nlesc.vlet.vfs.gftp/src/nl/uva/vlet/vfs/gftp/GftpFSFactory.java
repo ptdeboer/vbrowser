@@ -32,7 +32,7 @@ import static nl.uva.vlet.VletConfig.ATTR_PASSIVE_MODE;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_PORT;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_UNIQUE;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeSet;

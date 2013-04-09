@@ -20,7 +20,7 @@
 
 package nl.uva.vlet.vrs.ui;
 
-import nl.nlesc.ptk.data.StringHolder;
+import nl.esciencecenter.ptk.data.StringHolder;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.vrl.VRL;
 

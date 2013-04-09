@@ -26,11 +26,11 @@ import java.net.URL;
 import java.util.Date;
 import java.util.Vector;
 
-import nl.nlesc.ptk.data.Duplicatable;
-import nl.nlesc.ptk.data.StringList;
-import nl.nlesc.ptk.exceptions.VRISyntaxException;
-import nl.nlesc.ptk.presentation.Presentation;
-import nl.nlesc.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.data.Duplicatable;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.presentation.Presentation;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.exception.VRLSyntaxException;
 
 import nl.uva.vlet.vrl.VRL;

@@ -30,8 +30,8 @@ import java.awt.dnd.DropTarget;
 import java.util.Collection;
 import java.util.Vector;
 
-import nl.nlesc.ptk.global.Global;
-import nl.nlesc.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.task.ActionTask;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.exception.VlException;

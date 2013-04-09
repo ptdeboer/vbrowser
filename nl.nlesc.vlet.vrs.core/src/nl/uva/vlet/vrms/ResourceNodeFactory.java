@@ -20,7 +20,7 @@
 
 package nl.uva.vlet.vrms;
 
-import nl.nlesc.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.data.VAttributeSet;
 import nl.uva.vlet.data.xml.XMLData;
 import nl.uva.vlet.data.xml.XMLtoNodeFactory;

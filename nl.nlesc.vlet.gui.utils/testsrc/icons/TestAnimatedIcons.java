@@ -34,10 +34,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-import nl.nlesc.ptk.ui.icons.AnimatedIcon;
-import nl.nlesc.ptk.ui.icons.IconAnimator;
-import nl.nlesc.ptk.ui.image.ImageSequence;
-import nl.nlesc.ptk.ui.image.ImageUtil;
+import nl.esciencecenter.ptk.ui.icons.AnimatedIcon;
+import nl.esciencecenter.ptk.ui.icons.IconAnimator;
+import nl.esciencecenter.ptk.ui.image.ImageSequence;
+import nl.esciencecenter.ptk.ui.image.ImageUtil;
 
 
 public class TestAnimatedIcons

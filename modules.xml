@@ -1,0 +1,83 @@
+<project name="vbrowser-modules" default="doModules" basedir=".">
+    
+    <import file="build.xml"/>
+    
+    <target name="check-component"> 
+        
+        <property name="sourcepath" value="${project.sourcedir}/${name}" /> 
+        <available property="comp.exists" file="${sourcepath}/build.xml"/> 
+        
+        <!-- print header --> 
+        <echo message="============================================="/> 
+        <echo message="=== Build Component: ${name}: ${target}"/> 
+        <echo message="============================================="/> 
+        <echo message=" project root         = ${project.root}"/> 
+        <echo message=" project dist         = ${project.dist}"/> 
+        <echo message=" project sourceroot   = ${project.sourcedir}"/> 
+        <echo message=" component sourcepath = ${sourcepath}"/> 
+            
+    </target> 
+        
+    <!-- 
+        Build Component
+            name   : Component Name 
+            target : Target component (directory) 
+      -->
+    <target name="build-component" depends="check-component"> 
+
+        <fail unless="comp.exists" 
+         message="*** Component: ${name} at ${sourcepath} is missing or scm checkout went wrong (missing build.xml file ?)" />
+        
+        <!-- default target: can be overriden by previous target--> 
+        <property name="target" value="dist-install"/> 
+        
+        <ant antfile="build.xml" 
+            dir="${sourcepath}" 
+            target="${target}">
+         </ant>
+        
+    </target> 
+    
+    <target name="vlet-auxlibs" depends="project-init">
+
+	 <antcall target="build-component">
+            <param name="name" value="cog.jglobus-1.4"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+    </target> 
+
+    <target name="vlet-core" depends="project-init,vlet-auxlibs">
+
+	 <antcall target="build-component">
+            <param name="name" value="nl.nlesc.vlet.vrs.core"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+    </target>
+ 
+    <target name="doModules" depends="project-init,vlet-auxlibs,vlet-core">
+
+        <antcall target="build-component">
+            <param name="name" value="nl.nlesc.ptk.util"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+        
+        <antcall target="build-component">
+            <param name="name" value="nl.nlesc.ptk.ui"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+        
+        <antcall target="build-component">
+            <param name="name" value="nl.nlesc.xnat.client"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+    </target> 
+    
+    </project>
