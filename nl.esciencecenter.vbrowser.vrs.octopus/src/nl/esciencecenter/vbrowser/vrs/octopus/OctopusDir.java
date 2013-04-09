@@ -18,6 +18,8 @@
 
 package nl.esciencecenter.vbrowser.vrs.octopus;
 
+import nl.esciencecenter.octopus.files.FileAttributes;
+import nl.esciencecenter.octopus.files.Path;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.VDir;
 import nl.uva.vlet.vfs.VFSNode;
@@ -29,15 +31,16 @@ import nl.uva.vlet.vrl.VRL;
 public class OctopusDir extends VDir
 {
 
-	public OctopusDir(OctopusFS skelfs, VRL vrl)
+	private FileAttributes fileAttrs;
+    private Path octoPath;
+
+    public OctopusDir(OctopusFS skelfs, FileAttributes attrs, Path path)
 	{
-		super(skelfs, vrl);
+		super(skelfs, skelfs.createVRL(path));
+		this.fileAttrs=attrs;
+		this.octoPath=path;
 	}
 	
-	public OctopusDir(OctopusFS skelfs, String path)  throws VlException
-	{
-		this(skelfs, skelfs.resolvePathVRL(path));  	
-	}
 	
 	@Override
 	public boolean create(boolean force) throws VlException
@@ -54,19 +57,7 @@ public class OctopusDir extends VDir
 	@Override
 	public VFSNode[] list() throws VlException 
 	{
-		// >>>
-		// This method creates a dummy list of nodes! 
-		// >>>
-		
-		VFSNode nodes[]=new VFSNode[3];
-		
-		String[] paths = this.getVRL().getPathElements(); 
-		
-		nodes[0]=new OctopusDir(this.getFileSystem(),this.resolvePathVRL("SK-Dir#"+paths.length)); 
-		nodes[1]=new OctopusFile(this.getFileSystem(),this.resolvePathVRL("SK-file1")); 
-        nodes[2]=new OctopusFile(this.getFileSystem(),this.resolvePathVRL("SK-file2")); 
-		    	
-        return nodes; 
+	    return this.getFS().listNodesAttrs(octoPath); 
 	}
 	
 	public OctopusFS getFileSystem()

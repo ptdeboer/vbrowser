@@ -24,25 +24,38 @@ package test;
 
 import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
 import nl.uva.vlet.VletConfig;
+import nl.uva.vlet.vfs.VDir;
+import nl.uva.vlet.vfs.VFSClient;
+import nl.uva.vlet.vfs.VFSNode;
 import nl.uva.vlet.vrs.VRS;
 
 public class TestOctopusVBrowser
 {
-	public static void main(String args[])
-	{
-		try
-		{
-		    VletConfig.init();
-			VRS.getRegistry().addVRSDriverClass(OctopusFSFactory.class);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		// The VBrowser classes must be in the classpath to be able to start this. 
-		nl.uva.vlet.gui.startVBrowser.main(args);
-	}
+	
+	public static void main(String args[]) throws Exception
+    {
+	    testGetDir(); 
+	    
+	    // The VBrowser classes must be in the classpath to be able to start this. 
+        //nl.uva.vlet.gui.startVBrowser.main(args);
+    }
+
+    private static void testGetDir() throws Exception
+    {
+        VFSClient vfs=TestOctopusFS.initVFS(); 
+        
+        VDir dir = vfs.getDir("file:/home/ptdeboer/test"); 
+        
+        VFSNode[] nodes = dir.list(); 
+        
+        System.out.printf(">>> Dir:"+dir); 
+        for (int i=0;i<nodes.length;i++)
+        {
+            System.out.printf(" - node[#%i] =%s\n",i,nodes[i]);
+        }
+
+        
+    }
 
 
 }

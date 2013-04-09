@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import nl.esciencecenter.octopus.files.FileAttributes;
+import nl.esciencecenter.octopus.files.Path;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.VFSTransfer;
 import nl.uva.vlet.vfs.VFile;
@@ -32,17 +34,12 @@ import nl.uva.vlet.vrl.VRL;
  */
 public class OctopusFile extends VFile
 {
-	public OctopusFile(OctopusFS fs, VRL vrl)
-	{
-		super(fs, vrl);
-	}
+    public OctopusFile(OctopusFS octopusFS, FileAttributes attrs, Path path)
+    {
+       super(octopusFS,octopusFS.createVRL(path));
+    }
 
-	public OctopusFile(OctopusFS skelfs, String path) throws VlException
-	{
-		this(skelfs, skelfs.resolvePathVRL(path));  	
-	}
-	
-	public boolean create(boolean ignoreExisting) throws VlException
+    public boolean create(boolean ignoreExisting) throws VlException
 	{
 		return getFS().createFile(getPath(),ignoreExisting);  
 	}
