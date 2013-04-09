@@ -723,30 +723,10 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     // ========================================================================
     // VFS Transfer Interface
     // ========================================================================
+    
     final protected VRSTransferManager getTransferManager()
     {
         return vrsContext.getTransferManager(); 
-    }
-    /** 
-     * Asynchronous transfer method to iniate a copy or a move. 
-     * Returns VFSTransfer info object so the transfer can be monitored. 
-     * All background copy or move methods are started by this method. 
-     */
-    final public VFSTransfer asyncCopyMoveTo(final VFileSystem targetFS,final VRL targetVRL, final boolean isMove) throws VlException
-    {
-        return this.getTransferManager().asyncCopyMoveTo(null, this,targetFS,targetVRL,isMove,null); 
-    }
-    
-    /**
-     * Generic method to either perform a copy or a move. 
-     * All other copyTo and moveTo methods call this method. 
-     *
-     * @param parenDir target parent directory. New file or directory will be create in this directory
-     * @param optNewName optional new name. If null this.getBasename() will be used  
-     */
-    final public VFSNode doCopyMoveTo(VDir parentDir, String optNewName, boolean isMove) throws VlException
-    {
-       return this.getTransferManager().doCopyMove(this,parentDir,optNewName,isMove); 
     }
     
     public boolean renameTo(String newNameOrPath) throws VlException
@@ -769,7 +749,9 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
        return (this.rename(newNameOrPath,fullpath)!=null); 
     }
 
-    /** If this VFSNode is a VDir, return as VDir, else return null */ 
+    /**
+     * If this VFSNode is a VDir, return as VDir, else return null.
+     */ 
     public VDir toDir()
     {
         if (isDir())
@@ -777,33 +759,21 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         return null; 
     }
     
-    /** If this VFSNode is a VFile, return as VFile, else return null */ 
+    /** 
+     * If this VFSNode is a VFile, return as VFile, else return null 
+     */ 
     public VFile toFile()
     {
         if (isFile())
             return (VFile)this;
         return null; 
     }
-
-      // Default VFS Presentation ... 
-//    public Presentation getPresentation()
-//    {
-//        return null; 
-//    }
     
     // ========================================================================
     // Abstract Interface Methods 
     // ========================================================================
 
     abstract public VRL rename(String newNameOrPath,boolean nameIsPath) throws VlException; 
-
-    public abstract VFSNode copyTo(VDir dest) throws VlException;
-
-    public abstract VFSNode copyTo(VDir dest, String newName) throws VlException;
-
-    public abstract VFSNode moveTo(VDir dest) throws VlException;
-
-    public abstract VFSNode moveTo(VDir dest, String newName) throws VlException; 
 
     /**
      * Create this Resource. 
@@ -869,6 +839,14 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      */
     public abstract boolean isWritable() throws VlException;
 
+    // === Copy/Move Interface === 
 
+    public abstract VFSNode copyTo(VDir dest) throws VlException;
+
+    public abstract VFSNode copyTo(VDir dest, String newName) throws VlException;
+
+    public abstract VFSNode moveTo(VDir dest) throws VlException;
+
+    public abstract VFSNode moveTo(VDir dest, String newName) throws VlException; 
 
 }

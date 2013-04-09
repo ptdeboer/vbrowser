@@ -45,7 +45,7 @@ import javax.swing.UIManager;
 
 import nl.nlesc.ptk.global.Global;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.GlobalUtil;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.font.FontInfo;
@@ -276,7 +276,7 @@ public class GuiSettings
 
     public static VRL getGuiSettingsLocation()
     {
-        VRL confLoc = GlobalConfig.getUserConfigDir();
+        VRL confLoc = VletConfig.getUserConfigDir();
         return confLoc.appendPath(GUISETTINGS_FILE_NAME);
     }
 
@@ -653,13 +653,13 @@ public class GuiSettings
 
     public static VRL getUserIconsDir()
     {
-        VRL vrl = GlobalConfig.getUserConfigDir().appendPath("icons");
+        VRL vrl = VletConfig.getUserConfigDir().appendPath("icons");
         return vrl;
     }
 
     public static VRL getInstallationIconsDir()
     {
-        VRL vrl = GlobalConfig.getInstallationLibDir().appendPath("icons");
+        VRL vrl = VletConfig.getInstallationLibDir().appendPath("icons");
         return vrl;
     }
 

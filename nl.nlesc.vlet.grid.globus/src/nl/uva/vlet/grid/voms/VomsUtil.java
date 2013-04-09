@@ -42,7 +42,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import nl.nlesc.ptk.data.StringList;
 import nl.nlesc.ptk.util.ResourceLoader;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 
 import nl.uva.vlet.exception.ResourceNotFoundException;
 import nl.uva.vlet.exception.VlAuthenticationException;
@@ -348,7 +348,7 @@ public class VomsUtil
 
 		int index = 0;
 		
-		String[] newArgs = GlobalConfig.parseArguments(args); 
+		String[] newArgs = VletConfig.parseArguments(args); 
 		
 		for (int i = 0; i < newArgs.length; i++)
 		{
@@ -424,7 +424,7 @@ public class VomsUtil
 		GridProxy prox=null; 
 		
 		//Make sure new Grid Proxy setting are NOT saved ! 
-		GlobalConfig.setUsePersistantUserConfiguration(false); 
+		VletConfig.setUsePersistantUserConfiguration(false); 
 		
 		
 		if (proxyFile==null)
@@ -739,8 +739,8 @@ public class VomsUtil
                 {
                     "/etc/grid-security/vomsdir/voms.xml",  // system wide
                     "vomsdir/voms.xml",                     // Relative! installation 
-                    GlobalConfig.getUserHomeLocation().append(".globus/vomsdir/voms.xml").getPath(), // $HOME/.globus
-                    GlobalConfig.getUserHomeLocation().append(".vletrc/vomsdir/voms.xml").getPath(), // vletrc 
+                    VletConfig.getUserHomeLocation().append(".globus/vomsdir/voms.xml").getPath(), // $HOME/.globus
+                    VletConfig.getUserHomeLocation().append(".vletrc/vomsdir/voms.xml").getPath(), // vletrc 
                     null// null = default location.  
                 };
         }

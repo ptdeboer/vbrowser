@@ -1,6 +1,6 @@
 package test;
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.util.grid.GridProxy;
 import nl.uva.vlet.vfs.VFSClient;
 import nl.uva.vlet.vfs.VFile;
@@ -18,7 +18,7 @@ public class TestSRMSetProxy
        
        try
        {
-           GlobalConfig.setUsePersistantUserConfiguration(false); 
+           VletConfig.setUsePersistantUserConfiguration(false); 
            
            VRS.getRegistry().initVDriver(SRMFSFactory.class);
            

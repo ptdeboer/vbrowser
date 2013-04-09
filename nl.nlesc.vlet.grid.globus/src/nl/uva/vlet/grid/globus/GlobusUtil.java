@@ -32,7 +32,7 @@ import org.globus.gsi.bc.BouncyCastleOpenSSLKey;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.ietf.jgss.GSSCredential;
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlAuthenticationException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlUnknownCAException;
@@ -87,7 +87,7 @@ public class GlobusUtil
             {
                 if ((msgstr!=null) && (msgstr.contains("unknown ca")))
                     return new VlUnknownCAException(message+"\nReason=Unknown CA.\n"
-                            +"Update your system certificates or copy the CA root certificate(s) to '"+GlobalConfig.getUserConfigDir()+"/certificates'."
+                            +"Update your system certificates or copy the CA root certificate(s) to '"+VletConfig.getUserConfigDir()+"/certificates'."
                             ,originalCause); 
             }
                 

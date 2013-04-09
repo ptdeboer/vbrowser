@@ -48,7 +48,7 @@ import javax.swing.border.BevelBorder;
 
 import nl.nlesc.ptk.global.Global;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlIOException;
 import nl.uva.vlet.gui.GuiSettings;
@@ -513,7 +513,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 
 	private VRL getConfigFile()
 	{
-		return GlobalConfig.getUserConfigDir().appendPath(
+		return VletConfig.getUserConfigDir().appendPath(
 				"textviewer.props");
 	}
 
@@ -553,7 +553,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 	{
 		try
 		{
-			VRL file=new VRL(GlobalConfig.getInstallBaseDir().appendPath("py/examples/vfsclient.py"));
+			VRL file=new VRL(VletConfig.getInstallBaseDir().appendPath("py/examples/vfsclient.py"));
 			viewStandAlone(file);
 		}
 		catch (Exception e)

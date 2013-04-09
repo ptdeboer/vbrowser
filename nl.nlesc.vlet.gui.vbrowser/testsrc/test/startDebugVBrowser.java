@@ -25,7 +25,7 @@ package test;
 
 import nl.nlesc.ptk.global.Global;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.UIGlobal;
 import nl.uva.vlet.gui.UILogger;
@@ -50,7 +50,7 @@ public class startDebugVBrowser
   {
       try
       {
-        args=GlobalConfig.parseArguments(args); 
+        args=VletConfig.parseArguments(args); 
         
         ClassLogger.getRootLogger().setLevelToDebug();
 

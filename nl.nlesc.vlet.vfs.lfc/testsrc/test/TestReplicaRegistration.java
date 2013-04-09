@@ -23,7 +23,7 @@
 
 package test;
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.VFSClient;
 import nl.uva.vlet.vfs.VFile;
@@ -37,7 +37,7 @@ public class TestReplicaRegistration
     {
         try
         {
-            GlobalConfig.init();
+            VletConfig.init();
 //            VRS.getRegistry().addVRSDriverClass(LFCFSFactory.class);
 //            VRS.getRegistry().addVRSDriverClass(SRMFSFactory.class);
         }

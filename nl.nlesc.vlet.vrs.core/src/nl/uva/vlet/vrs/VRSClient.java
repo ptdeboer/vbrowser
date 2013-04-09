@@ -33,6 +33,7 @@ import nl.uva.vlet.exception.VlIOException;
 
 import nl.uva.vlet.util.bdii.BdiiService;
 import nl.uva.vlet.util.bdii.ServiceInfo;
+import nl.uva.vlet.vfs.VRSTransferManager;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.io.VStreamReadable;
 import nl.uva.vlet.vrs.io.VStreamWritable;
@@ -113,6 +114,11 @@ public class VRSClient
 		return this.vrsContext;
 	}
 
+	
+	final public VRSTransferManager getTransferManager()
+	{
+        return this.vrsContext.getTransferManager(); 
+    }
 	/**
 	 * Sets new Resource Context associated with this client. Note that this
 	 * context only aplies for NEW created VNodes. Other created resources

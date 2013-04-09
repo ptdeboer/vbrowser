@@ -30,14 +30,13 @@ import java.util.regex.Pattern;
 import nl.nlesc.ptk.data.IntegerHolder;
 import nl.nlesc.ptk.task.ActionTask;
 import nl.nlesc.ptk.task.ITaskMonitor;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.ResourceTypeNotSupportedException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlIOException;
 
 import nl.uva.vlet.tasks.VRSTaskMonitor;
-import nl.uva.vlet.util.VRSSort;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.NodeFilter;
 import nl.uva.vlet.vrs.ResourceEvent;
@@ -48,6 +47,7 @@ import nl.uva.vlet.vrs.VNode;
 import nl.uva.vlet.vrs.VRenamable;
 import nl.uva.vlet.vrs.io.VStreamReadable;
 import nl.uva.vlet.vrs.io.VStreamWritable;
+import nl.uva.vlet.vrs.util.VRSSort;
 
 
 /**
@@ -132,12 +132,6 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
 //    }
 
     @Override
-    public VRL getHelp()
-    {
-        return  GlobalConfig.getHelpUrl("VDir"); 
-    }
-    
-    @Override
     public String getResourceType()
     {
         return VFS.DIR_TYPE;
@@ -198,20 +192,12 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      */ 
     public VFile putAnyNode(VNode sourceNode, String optNewName, boolean isMove) throws VlException
     {
-        return vrsContext.getTransferManager().putAnyNode(this,sourceNode,optNewName,isMove); 
+        return getTransferManager().putAnyNode(this,sourceNode,optNewName,isMove); 
     }
 
     public VFSNode addNode(VFSNode node,String optNewName,boolean isMove) throws VlException
     {
-        if (node instanceof VFile) 
-            return ((VFile)node).doCopyMoveTo(this,optNewName,isMove);
-        else if (node instanceof VDir)
-            return ((VDir)node).doCopyMoveTo(this,optNewName,isMove);
-        else
-        {
-            // should be eithger VDir or VFile
-            throw new ResourceTypeNotSupportedException("Type of VFS Resource not supported:"+node);
-        }
+        return getTransferManager().doCopyMove(node,this,optNewName,isMove);
     }
     
     /** 
@@ -392,44 +378,45 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     	return dir; 
     }
      
-    /**
-     * Put file (copy) to this directory. 
-     * Same as sourceFile.copyTo(this,optNewName);  
-     * @throws VlException 
-     */
-    public final VFile putFile(VFile sourceFile) throws VlException
-    {
-        return (VFile)sourceFile.doCopyMoveTo(this,null ,false); 
-    }
-    
-    /**
-     * Put file (copy) to this directory. 
-     * Same as sourceFile.copyTo(this,optNewName);  
-     * @throws VlException 
-     */
-    public final VFile putFile(VFile sourceFile,String optNewName) throws VlException
-    {
-        return (VFile)sourceFile.doCopyMoveTo(this,optNewName,false); 
-    }
-    
-    /**
-     * Put directory (copy) to this directory. 
-     * Same as sourceDir.copyTo(this,optNewName);  
-     * @throws VlException 
-     */
-    public final VDir putDir(VDir sourceDir) throws VlException
-    {
-        return (VDir)sourceDir.doCopyMoveTo(this,null ,false); 
-    }
-    /**
-     * Put directory (copy) to this directory. 
-     * Same as sourceDir.copyTo(this,optNewName);  
-     * @throws VlException 
-     */
-    public final VDir putDir(VDir sourceDir,String optNewName) throws VlException
-    {
-        return (VDir)sourceDir.doCopyMoveTo(this,optNewName ,false); 
-    }
+//    /**
+//     * Put file (copy) to this directory. 
+//     * Same as sourceFile.copyTo(this,optNewName);  
+//     * @throws VlException 
+//     */
+//    public final VFile putFile(VFile sourceFile) throws VlException
+//    {
+//        return (VFile)sourceFile.doCopyMoveTo(this,null ,false); 
+//    }
+//    
+//    /**
+//     * Put file (copy) to this directory. 
+//     * Same as sourceFile.copyTo(this,optNewName);  
+//     * @throws VlException 
+//     */
+//    public final VFile putFile(VFile sourceFile,String optNewName) throws VlException
+//    {
+//        return (VFile)sourceFile.doCopyMoveTo(this,optNewName,false); 
+//    }
+//    
+//    /**
+//     * Put directory (copy) to this directory. 
+//     * Same as sourceDir.copyTo(this,optNewName);  
+//     * @throws VlException 
+//     */
+//    public final VDir putDir(VDir sourceDir) throws VlException
+//    {
+//        return (VDir)sourceDir.doCopyMoveTo(this,null ,false); 
+//    }
+//
+//    /**
+//     * Put directory (copy) to this directory. 
+//     * Same as sourceDir.copyTo(this,optNewName);  
+//     * @throws VlException 
+//     */
+//    public final VDir putDir(VDir sourceDir,String optNewName) throws VlException
+//    {
+//        return (VDir)sourceDir.doCopyMoveTo(this,optNewName ,false); 
+//    }
     
     /**
      * Copy to specified parent directory location.  
@@ -437,7 +424,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      */
     public final VDir copyTo(VDir parentDir) throws VlException
     {
-        return (VDir)doCopyMoveTo(parentDir,null ,false); 
+        return (VDir)getTransferManager().doCopyMove(this,parentDir,null,false); 
     }
     
     /**
@@ -448,31 +435,30 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      *        of source directory will be used.   
      * @throws VlException 
      */
-    public final VDir copyTo(VDir dest,String newName) throws VlException
+    public final VDir copyTo(VDir parentDir,String newName) throws VlException
     {
-        return (VDir)doCopyMoveTo(dest, newName,false); 
+        return (VDir)getTransferManager().doCopyMove(this,parentDir,newName,false); 
     }
     
     /**
      * Move to specified parent directory.
      * @see #moveTo(VDir, String); 
      */
-    public final VDir moveTo(VDir destinationDir) throws VlException
+    public final VDir moveTo(VDir parentDir) throws VlException
     {
-        return (VDir)doCopyMoveTo(destinationDir,null,true);
+        return (VDir)getTransferManager().doCopyMove(this,parentDir,null,true); 
     }
     
     /**
      * Move to specified VDir location.
-     * @param destinationDir new parent directory. New Directory 
-     *        will be creaates as subdirectory of this parent. 
-     * @param optNewName optional newname. If null basename 
+     * @param parentDir - new parent directory. New Directory 
+     *        will be created as sub-directory of this parent. 
+     * @param optNewName - optional newname. If null basename 
      *        of source directory will be used.   
-     * @throws VlException 
      */
-    public final VDir moveTo(VDir destinationDir,String optNewName) throws VlException
+    public final VDir moveTo(VDir parentDir,String optNewName) throws VlException
     {
-        return (VDir)doCopyMoveTo(destinationDir,optNewName,true);
+        return (VDir)getTransferManager().doCopyMove(this,parentDir,null,true); 
     }
     
     /**

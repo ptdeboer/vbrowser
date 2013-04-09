@@ -43,7 +43,7 @@ import javax.naming.directory.SearchResult;
 import nl.nlesc.ptk.data.StringList;
 import nl.nlesc.ptk.util.StringUtil;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 
 import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.exception.VlException;
@@ -256,7 +256,7 @@ public class BDIIQuery
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         env.put(Context.PROVIDER_URL, "" + this.bdiiUri);
 
-        String timeoutstr = GlobalConfig.getProperty(GlobalConfig.TCP_CONNECTION_TIMEOUT);
+        String timeoutstr = VletConfig.getProperty(VletConfig.TCP_CONNECTION_TIMEOUT);
 
         if (timeoutstr != null)
         {

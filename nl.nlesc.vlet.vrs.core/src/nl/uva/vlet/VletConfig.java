@@ -41,7 +41,7 @@ import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.VRS;
 
 /** 
- * The GlobalConfig class holds (static) global configuration settings. 
+ * The Global VletConfig class holds (static) global configuration settings. 
  * The configuration settings are checked in following order:<br>
  * <ul>
  * <li> 1) The installation settings from VLET_INSTALL/etc/vletrc.prop
@@ -68,7 +68,7 @@ import nl.uva.vlet.vrs.VRS;
  *  
  * @author P.T. de Boer
  */
-public class GlobalConfig
+public class VletConfig
 {
     /** Java property name for architecture, for example: "i386" or "i586". */ 
     public static final String JAVA_OS_ARCH = "os.arch";
@@ -292,7 +292,7 @@ public class GlobalConfig
     static
     {
         // this should be the ONLY dependency from GlobalConfig ! 
-        logger=ClassLogger.getLogger(GlobalConfig.class); 
+        logger=ClassLogger.getLogger(VletConfig.class); 
     }
     
     public static void init()
@@ -439,16 +439,16 @@ public class GlobalConfig
     /**<b>Pre Global Init</b>: Set whether there is a UI  */ 
     public static void setHasUI(boolean val)
     {
-        GlobalConfig.hasUI=val;  
+        VletConfig.hasUI=val;  
     }
     
     /**
      * <b>Pre Global init</b>: Set whether user interaction is allowed. 
-     * @see GlobalConfig#PROP_ALLOW_USER_INTERACTION 
+     * @see VletConfig#PROP_ALLOW_USER_INTERACTION 
      */  
     public static void setAllowUserInteraction(boolean val)
     {
-        GlobalConfig.setSystemProperty(GlobalConfig.PROP_ALLOW_USER_INTERACTION,""+val); 
+        VletConfig.setSystemProperty(VletConfig.PROP_ALLOW_USER_INTERACTION,""+val); 
     }
 
     /**
@@ -456,11 +456,11 @@ public class GlobalConfig
      *    This controls whether user settings will be read from: ~/.vletrc/vletrc.prop. 
      *    Also wether user settings will be saved when specifyed.
      *    Set to false in a server environment ! 
-     * @see GlobalConfig#PROP_PERSISTANT_USER_CONFIGURATION 
+     * @see VletConfig#PROP_PERSISTANT_USER_CONFIGURATION 
      */  
     public static void setUsePersistantUserConfiguration(boolean val)
     {
-        GlobalConfig.setSystemProperty(GlobalConfig.PROP_PERSISTANT_USER_CONFIGURATION,""+val);
+        VletConfig.setSystemProperty(VletConfig.PROP_PERSISTANT_USER_CONFIGURATION,""+val);
     }
     
     /**
@@ -481,7 +481,7 @@ public class GlobalConfig
     public static void setInitURLStreamFactory(boolean val)
     { 
         // System property= current 'runtime' properties. 
-        setSystemProperty(GlobalConfig.PROP_VLET_SET_VRS_URL_FACTORY, ""+val);
+        setSystemProperty(VletConfig.PROP_VLET_SET_VRS_URL_FACTORY, ""+val);
     }
     
     /**
@@ -497,7 +497,7 @@ public class GlobalConfig
         // Preferably disable inside service, but could be allowed. 
         boolean defaultValue=(isService()==false); 
         
-        return getBoolProperty(GlobalConfig.PROP_VLET_SET_VRS_URL_FACTORY,defaultValue); 
+        return getBoolProperty(VletConfig.PROP_VLET_SET_VRS_URL_FACTORY,defaultValue); 
     }
     
     // ======================================================================
@@ -522,7 +522,7 @@ public class GlobalConfig
      */ 
     public static boolean getGlobalAllowUserInteraction()
     {
-        String boolstr=GlobalConfig.getProperty(GlobalConfig.PROP_ALLOW_USER_INTERACTION); 
+        String boolstr=VletConfig.getProperty(VletConfig.PROP_ALLOW_USER_INTERACTION); 
     
         if (boolstr==null)
             return true;
@@ -582,7 +582,7 @@ public class GlobalConfig
         
         if (isApplet==false)
         {
-            URL url = GlobalConfig.class.getProtectionDomain().getCodeSource()
+            URL url = VletConfig.class.getProtectionDomain().getCodeSource()
                 .getLocation();
             try
             {
@@ -610,7 +610,7 @@ public class GlobalConfig
         
         // To avoid chicken'n Egg problems: MUST be specified
         // by bootstrapper as System property ! 
-        String sysconfdir=GlobalConfig.getSystemProperty(PROP_VLET_SYSCONFDIR);
+        String sysconfdir=VletConfig.getSystemProperty(PROP_VLET_SYSCONFDIR);
         
         if (sysconfdir!=null)
             return new VRL("file",null,sysconfdir); // scheme,host,path
@@ -641,7 +641,7 @@ public class GlobalConfig
     /** Whether an UI has registered itself, for example the VBrowser. */ 
     public static boolean getHasUI()
     {
-        return GlobalConfig.hasUI;   
+        return VletConfig.hasUI;   
     }
 
     /** 
@@ -658,10 +658,10 @@ public class GlobalConfig
         try
         {
             // 1st: -Dvlet.install= 
-            path=GlobalConfig.getSystemProperty(GlobalConfig.ENV_VLET_INSTALL); 
+            path=VletConfig.getSystemProperty(VletConfig.ENV_VLET_INSTALL); 
 
             if (path==null) 
-                path = GlobalConfig.getSystemEnv("VLET_INSTALL");
+                path = VletConfig.getSystemEnv("VLET_INSTALL");
 
             if (path != null)
                 vrl = new VRL("file:///"+path);
@@ -714,7 +714,7 @@ public class GlobalConfig
     /** Returns path of ~/.vletrc/vletrc.prop */ 
     public static VRL getUserPropertiesLocation()
     {
-        return new VRL(getUserConfigDir().appendPath(GlobalConfig.VLETRC_PROP_FILENAME));
+        return new VRL(getUserConfigDir().appendPath(VletConfig.VLETRC_PROP_FILENAME));
     }
      
     /** Returns path of $HOME or alternative user home location if in applet mode. */ 
@@ -738,7 +738,7 @@ public class GlobalConfig
     public static VRL getUserConfigDir()
     {
         VRL homeLoc = getUserHomeLocation();
-        return homeLoc.appendPath(GlobalConfig.USER_VLETRC_DIRNAME);
+        return homeLoc.appendPath(VletConfig.USER_VLETRC_DIRNAME);
     }
     
     /** Returns path of ~/.vletrc/certificates */ 
@@ -766,7 +766,7 @@ public class GlobalConfig
 
         if (althome==null)
             // Return URI compatible path, but sanitise the location ! 
-            return VRL.uripath(GlobalConfig.getSystemProperty("user.home"),true,java.io.File.separatorChar);
+            return VRL.uripath(VletConfig.getSystemProperty("user.home"),true,java.io.File.separatorChar);
 
         // absolute path 
         if (althome.startsWith("/"))
@@ -790,11 +790,11 @@ public class GlobalConfig
         catch (Exception e) 
         {
             logger.logException(ClassLogger.ERROR,e,"Couldn't get UserHome!!!\n");  
-            return VRL.uripath(GlobalConfig.getSystemProperty(GlobalConfig.JAVA_USER_HOME));
+            return VRL.uripath(VletConfig.getSystemProperty(VletConfig.JAVA_USER_HOME));
         }
 
         // MUST OVERRIDE $HOME (cross fingers)
-        System.setProperty(GlobalConfig.JAVA_USER_HOME,homeVrl.getPath());  
+        System.setProperty(VletConfig.JAVA_USER_HOME,homeVrl.getPath());  
 
         return homeVrl.getPath();
     }
@@ -833,7 +833,7 @@ public class GlobalConfig
         if (vletrcProperties==null)
         {
             // try installation directory etc/vletrc.prop 
-            VRL vletrcLoc = getInstallationConfigDir().appendPath(GlobalConfig.VLETRC_PROP_FILENAME);
+            VRL vletrcLoc = getInstallationConfigDir().appendPath(VletConfig.VLETRC_PROP_FILENAME);
             
             try 
             {
@@ -857,7 +857,7 @@ public class GlobalConfig
     {
         try
         {
-            return new VRL("file:///"+VRL.uripath(getSystemProperty(GlobalConfig.JAVA_TMPDIR),true,java.io.File.separatorChar));
+            return new VRL("file:///"+VRL.uripath(getSystemProperty(VletConfig.JAVA_TMPDIR),true,java.io.File.separatorChar));
         }
         catch (Exception e)
         {
@@ -874,13 +874,13 @@ public class GlobalConfig
     public static String getUserProperty(String name)
     {
         // block single user configurations! 
-        if (GlobalConfig.getUsePersistantUserConfiguration()==false)
+        if (VletConfig.getUsePersistantUserConfiguration()==false)
             return null; 
         
         // reload! 
         try
         {
-            VRL loc=GlobalConfig.getUserPropertiesLocation(); 
+            VRL loc=VletConfig.getUserPropertiesLocation(); 
             Properties props = GlobalUtil.staticLoadProperties(loc); 
             return (String) props.get(name);
         }
@@ -894,7 +894,7 @@ public class GlobalConfig
     /** Returns location of VLET_INSTALL/lib */ 
     public static VRL getInstallationLibDir()
     {
-        String libdir=getInstallationProperty(GlobalConfig.PROP_VLET_LIBDIR);
+        String libdir=getInstallationProperty(VletConfig.PROP_VLET_LIBDIR);
 
         if (libdir!=null)
             return new VRL("file",null,libdir); // scheme,host,path
@@ -909,7 +909,7 @@ public class GlobalConfig
      */ 
     public static VRL getInstallationDocDir()
     {
-        String docdir=getInstallationProperty(GlobalConfig.PROP_VLET_DOCDIR);
+        String docdir=getInstallationProperty(VletConfig.PROP_VLET_DOCDIR);
 
         if (StringUtil.isWhiteSpace(docdir)==false)
             return new VRL("file",null,docdir); // scheme,host,path
@@ -962,7 +962,7 @@ public class GlobalConfig
         boolean defVal=(isService()==false);  
 
         // persistant user configuration can only be a System Property ! 
-        String val = GlobalConfig.getSystemProperty(GlobalConfig.PROP_PERSISTANT_USER_CONFIGURATION);
+        String val = VletConfig.getSystemProperty(VletConfig.PROP_PERSISTANT_USER_CONFIGURATION);
         if (StringUtil.isEmpty(val))
             return defVal; 
         
@@ -1008,18 +1008,18 @@ public class GlobalConfig
         String val = null;
 
         // I) first check System defined property (at startup with -D) 
-        val = GlobalConfig.getSystemProperty(name);
+        val = VletConfig.getSystemProperty(name);
         if ((val != null) && (val.compareTo("")!=0)) 
             return val;
 
         // II: check user stored property ~/.vletrc/vletrc.prop
-        val = GlobalConfig.getUserProperty(name);
+        val = VletConfig.getUserProperty(name);
         if ((val != null) && (val.compareTo("")!=0)) 
             return val;
 
         // III: check installation property $VLET_INSTALL/etc/vletrc.prop
         // (or vletrc.prop specified on classpath)
-        val = GlobalConfig.getInstallationProperty(name);
+        val = VletConfig.getInstallationProperty(name);
         if ((val != null) && (val.compareTo("")!=0)) 
             return val;
 
@@ -1027,7 +1027,7 @@ public class GlobalConfig
         // Note: typically environment variable names (UPPER CASE) do not clash
         // with property setting names (Mixed Case and 'dotted').  
 
-        val = GlobalConfig.getSystemEnv(name);
+        val = VletConfig.getSystemEnv(name);
         if ((val != null) && (val.compareTo("")!=0)) 
             return val; 
 
@@ -1045,7 +1045,7 @@ public class GlobalConfig
     public static void setIncomingFirewallPortRange(int start, int end)
     {
         String rangestr=start+","+end; 
-        GlobalConfig.setSystemProperty(GlobalConfig.PROP_INCOMING_FIREWALL_PORT_RANGE,rangestr);
+        VletConfig.setSystemProperty(VletConfig.PROP_INCOMING_FIREWALL_PORT_RANGE,rangestr);
     }
     
     public static VRL[] getCACertificateLocations()
@@ -1064,7 +1064,7 @@ public class GlobalConfig
     public static VRL[] getCACertificateLocations(boolean includingDefaults)
     {
         // Custom CA certificate directories:
-        String pathStr=GlobalConfig.getProperty(GlobalConfig.PROP_GRID_CA_CERTIFICATE_LOCATIONS);
+        String pathStr=VletConfig.getProperty(VletConfig.PROP_GRID_CA_CERTIFICATE_LOCATIONS);
         String caPaths[]=null; 
         
         if (StringUtil.isWhiteSpace(pathStr)==false)
@@ -1081,9 +1081,9 @@ public class GlobalConfig
         
         if (includingDefaults)
         {
-            vrls.add(GlobalConfig.getSystemCertificatesDir()); 
-            vrls.add(GlobalConfig.getInstallationCertificatesDir()); 
-            vrls.add(GlobalConfig.getUserCertificatesDir());
+            vrls.add(VletConfig.getSystemCertificatesDir()); 
+            vrls.add(VletConfig.getInstallationCertificatesDir()); 
+            vrls.add(VletConfig.getUserCertificatesDir());
         }
         
         // append as last: 
@@ -1107,7 +1107,7 @@ public class GlobalConfig
     public static void setCACertificateLocations(String caCertificateLocations)
     {
         // Custom CA certificate directories:
-        GlobalConfig.setSystemProperty(GlobalConfig.PROP_GRID_CA_CERTIFICATE_LOCATIONS,caCertificateLocations);
+        VletConfig.setSystemProperty(VletConfig.PROP_GRID_CA_CERTIFICATE_LOCATIONS,caCertificateLocations);
     }        
 
     /**
@@ -1117,7 +1117,7 @@ public class GlobalConfig
     public static Level getVletDebugLevel()
     {
         // environment variable to enable logging at startup (pre init debugging!)
-        String valstr=System.getenv(GlobalConfig.ENV_VLET_DEBUG);
+        String valstr=System.getenv(VletConfig.ENV_VLET_DEBUG);
         
         if (valstr!=null)
         {
@@ -1144,11 +1144,11 @@ public class GlobalConfig
     public static String getFirewallPortRangeString()
     {
         // first check my settings: 
-        String valstr = getProperty(GlobalConfig.PROP_INCOMING_FIREWALL_PORT_RANGE);
+        String valstr = getProperty(VletConfig.PROP_INCOMING_FIREWALL_PORT_RANGE);
 
         // if FIREWALL_PORT_RANGE not set: use my GLOBUS_PORT_RANGE
         if (StringUtil.isEmpty(valstr))
-            valstr = getProperty(GlobalConfig.ENV_GLOBUS_TCP_PORT_RANGE);
+            valstr = getProperty(VletConfig.ENV_GLOBUS_TCP_PORT_RANGE);
 
         if (StringUtil.isEmpty(valstr))
             return null; 
@@ -1163,7 +1163,7 @@ public class GlobalConfig
 
         if( (range==null) || (range.length!=2))
         {
-            logger.errorPrintf("Parse error for %s='%s'\n",GlobalConfig.ENV_GLOBUS_TCP_PORT_RANGE,valstr); 
+            logger.errorPrintf("Parse error for %s='%s'\n",VletConfig.ENV_GLOBUS_TCP_PORT_RANGE,valstr); 
             return null; 
         }
 
@@ -1198,7 +1198,7 @@ public class GlobalConfig
 
     public static VRL getInstallationPluginDir()
     {
-        return GlobalConfig.getInstallationLibDir().appendPath(GlobalConfig.PLUGIN_SUBDIR);
+        return VletConfig.getInstallationLibDir().appendPath(VletConfig.PLUGIN_SUBDIR);
     }
 
     public static String getVletVersion()
@@ -1226,7 +1226,7 @@ public class GlobalConfig
       ArrayList<File> rootsV = new ArrayList<File>();
 
       // update system property
-      boolean skipFloppy = GlobalConfig.getBoolProperty(GlobalConfig.PROP_SKIP_FLOPPY_SCAN, true);
+      boolean skipFloppy = VletConfig.getBoolProperty(VletConfig.PROP_SKIP_FLOPPY_SCAN, true);
 
       // Create the A: drive whether it is mounted or not
       if (skipFloppy == false)
@@ -1263,7 +1263,7 @@ public class GlobalConfig
 
     public static VRL getUserPluginDir()
     {
-        return GlobalConfig.getUserConfigDir().appendPath(GlobalConfig.PLUGIN_SUBDIR);
+        return VletConfig.getUserConfigDir().appendPath(VletConfig.PLUGIN_SUBDIR);
     }
 
   

@@ -200,24 +200,12 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
         throw new NotImplementedException("Delete not implemented for Resource:"+this); 
     }
     
-    @Override
-    public VRL getHelp()
-    {
-        // return root help url
-        return null; // Global.getHelpUrl(getType());
-    }
-
     public VNode addNode(VNode node, String newName, boolean isMove)
             throws VlException
     {
         throw new NotImplementedException("Not Implemented. Can not add node:"+node); 
     }
 
-    /*public VNode[] getNodes() throws VlException
-    {
-    	return getNodes(0,-1,new IntegerHolder()); 
-    }*/
-    
     /**
      * Returns subSet of VNode array starting from offset upto offset+maxNodes. 
      * Total length of returned array might be smaller or equal to maxNodes; 
@@ -236,8 +224,7 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
     	VNode allNodes[]=getNodes(); 
     	return nodesSubSet(allNodes,offset,maxNodes,totalNumNodes); 
     }
-    
-    
+        
     /**
      * Returns subSet of VNode[] array starting from offset to offset+maxNodes. 
      * Total length of returned array is smaller or equal to maxNodes; 

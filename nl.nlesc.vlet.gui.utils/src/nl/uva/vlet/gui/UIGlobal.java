@@ -37,7 +37,7 @@ import nl.nlesc.ptk.task.ITaskSource;
 import nl.nlesc.ptk.ui.UI;
 import nl.nlesc.ptk.ui.icons.IconProvider;
 import nl.nlesc.ptk.util.MimeTypes;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlInternalError;
 import nl.uva.vlet.gui.dialog.ExceptionForm;
@@ -46,7 +46,6 @@ import nl.uva.vlet.gui.proxyvrs.ProxyVRSClient;
 import nl.uva.vlet.net.ssl.CertificateStore;
 
 import nl.uva.vlet.tasks.VRSTaskWatcher;
-import nl.uva.vlet.util.VRSResourceLoader;
 import nl.uva.vlet.util.grid.GridProxy;
 import nl.uva.vlet.vfs.VFSClient;
 import nl.uva.vlet.vrl.VRL;
@@ -55,6 +54,7 @@ import nl.uva.vlet.vrs.Registry;
 import nl.uva.vlet.vrs.ResourceEvent;
 import nl.uva.vlet.vrs.VRS;
 import nl.uva.vlet.vrs.VRSContext;
+import nl.uva.vlet.vrs.util.VRSResourceLoader;
 
 
 /** 
@@ -94,7 +94,7 @@ public class UIGlobal
 	
 	public static String[] init(String args[])
 	{
-		args=GlobalConfig.parseArguments(args);
+		args=VletConfig.parseArguments(args);
 		init(); 
 		
 		return args; 
@@ -288,7 +288,7 @@ public class UIGlobal
 
     public static String getJGridStartLocation()
     {
-        return GlobalConfig.getProperty("vlet.jgridstart.location");  
+        return VletConfig.getProperty("vlet.jgridstart.location");  
     }
 
     public static MimeTypes getMimeTypes()

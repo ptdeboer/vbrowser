@@ -26,7 +26,7 @@ package nl.uva.vlet.vdriver.vrs.infors.grid;
 import nl.nlesc.ptk.data.BooleanHolder;
 import nl.nlesc.ptk.data.StringList;
 import nl.nlesc.ptk.util.StringUtil;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vdriver.vrs.infors.CompositeServiceInfoNode;
@@ -97,8 +97,8 @@ public class GridNeighbourhood extends CompositeServiceInfoNode
 	public String[] getAttributeNames()
     {
         StringList list = new StringList(); 
-        list.add(GlobalConfig.PROP_BDII_HOSTNAME);
-        list.add(GlobalConfig.PROP_BDII_PORT);
+        list.add(VletConfig.PROP_BDII_HOSTNAME);
+        list.add(VletConfig.PROP_BDII_PORT);
         return list.toArray();
     }
 
@@ -108,13 +108,13 @@ public class GridNeighbourhood extends CompositeServiceInfoNode
         
         VAttribute attr=null; 
         
-        if (name.equals(GlobalConfig.PROP_BDII_HOSTNAME))
+        if (name.equals(VletConfig.PROP_BDII_HOSTNAME))
         {
             // As of vlet 1.4 return comma seperated host:port list! 
             attr=new VAttribute(name, cmgr.getBdiiHostInfo());
             attr.setEditable(true); 
         }
-        else if (name.equals(GlobalConfig.PROP_BDII_PORT))
+        else if (name.equals(VletConfig.PROP_BDII_PORT))
         {
             attr=new VAttribute(name, cmgr.getBdiiServiceURI().getPort());
             attr.setEditable(true);
@@ -135,12 +135,12 @@ public class GridNeighbourhood extends CompositeServiceInfoNode
         BooleanHolder mustRefresh=new BooleanHolder(false);  
         boolean result=false; 
         
-        if (name.equals(GlobalConfig.PROP_BDII_HOSTNAME))
+        if (name.equals(VletConfig.PROP_BDII_HOSTNAME))
         {
             cmgr.setAttribute(attr, mustRefresh);
             result=true; 
         }
-        else if (name.equals(GlobalConfig.PROP_BDII_PORT))
+        else if (name.equals(VletConfig.PROP_BDII_PORT))
         {
             cmgr.setAttribute(attr, mustRefresh);
             result=true; 

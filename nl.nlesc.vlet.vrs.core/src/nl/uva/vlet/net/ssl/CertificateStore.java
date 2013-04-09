@@ -45,7 +45,7 @@ import javax.net.ssl.X509TrustManager;
 import nl.nlesc.ptk.data.StringList;
 import nl.nlesc.ptk.util.StringUtil;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.GlobalUtil;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlInternalError;
@@ -71,7 +71,7 @@ public class CertificateStore
     private static CertificateStore instance=null; 
     
 	/** ssl.cacerts.policy */ 
-	public static final String SSL_CACERT_POLICY_PROP=GlobalConfig.PROP_SSL_CACERT_POLICY;
+	public static final String SSL_CACERT_POLICY_PROP=VletConfig.PROP_SSL_CACERT_POLICY;
 	
 	public static final String OPT_INTERACTIVE="interactive";
 	
@@ -156,7 +156,7 @@ public class CertificateStore
    /** Returns ~/.vletrc/cacerts location */  
    public static String getDefaultUserCACertsLocation()
    {
-       return GlobalConfig.getUserConfigDir().appendPath("cacerts").getPath(); 
+       return VletConfig.getUserConfigDir().appendPath("cacerts").getPath(); 
    }
 
    /** Initialize empty keystore */ 
@@ -379,7 +379,7 @@ public class CertificateStore
             char[] passphrase = passphrasestr.toCharArray();
 		
             String usercacertsPath=keyStoreLoc;
-            String syscacertsPath=GlobalConfig.getInstallationConfigDir().appendPath("cacerts").getPath(); 
+            String syscacertsPath=VletConfig.getInstallationConfigDir().appendPath("cacerts").getPath(); 
 		
     		// check user copy of cacerts
     		if (GlobalUtil.existsFile(keyStoreLoc,true)==false) 
@@ -393,7 +393,7 @@ public class CertificateStore
         			    {
         			        logger.infoPrintf("Using cacerts file from instalation path:%s\n",syscacertsPath);
         			        // make sure .vletrc exists: 
-        			        GlobalUtil.mkdir(GlobalConfig.getUserConfigDir().getPath()); 
+        			        GlobalUtil.mkdir(VletConfig.getUserConfigDir().getPath()); 
         			        GlobalUtil.copyFile(syscacertsPath,usercacertsPath); 
         			        logger.infoPrintf("Copying installation cacerts file to:%s\n",usercacertsPath);
         			    }
@@ -500,7 +500,7 @@ public class CertificateStore
     /** Add extra certificates from VLET_INSTALL/etc/certificates and ~/.vletrc/certificates */ 
     protected void loadCustomCertificates()
     {
-        VRL vrls[]=GlobalConfig.getCACertificateLocations(); 
+        VRL vrls[]=VletConfig.getCACertificateLocations(); 
         
         for (VRL vrl:vrls)
         {

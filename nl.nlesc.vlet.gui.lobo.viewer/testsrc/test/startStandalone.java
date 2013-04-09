@@ -1,7 +1,7 @@
 package test;
 
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.lobo.LoboBrowser;
 import nl.uva.vlet.vrl.VRL;
@@ -11,7 +11,7 @@ public class startStandalone
 
     public static void main(String args[])
     {
-        GlobalConfig.init(); 
+        VletConfig.init(); 
         
         try
         {

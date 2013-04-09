@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import nl.nlesc.ptk.util.StringUtil;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 
 
 import com.jcraft.jsch.JSch;
@@ -330,7 +330,7 @@ public class JCraftClient
     
     public String getUserHomePath()
     {
-        return GlobalConfig.getUserHomeLocation().getPath();
+        return VletConfig.getUserHomeLocation().getPath();
     }
 
     public boolean setKnownHostsFile(String knownHostsFile) throws JSchException

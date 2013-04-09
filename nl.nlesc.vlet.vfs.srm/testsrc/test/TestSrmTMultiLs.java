@@ -26,7 +26,7 @@ package test;
 import java.util.Vector;
 
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.lbl.srm.SRMClientV2;
 import nl.uva.vlet.vfs.VFSClient;
 import nl.uva.vlet.vfs.VFSNode;
@@ -50,7 +50,7 @@ public class TestSrmTMultiLs
         
 		try
 		{
-			GlobalConfig.init();
+			VletConfig.init();
 			VRS.getRegistry().addVRSDriverClass(SRMFSFactory.class);
 			
 		    VRSContext context=new VRSContext(); 

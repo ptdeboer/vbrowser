@@ -25,7 +25,7 @@ package test;
 
 import java.util.Vector;
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.VFSClient;
 import nl.uva.vlet.vfs.VFSNode;

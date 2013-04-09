@@ -59,12 +59,12 @@ import nl.uva.vlet.gui.UIGlobal;
 import nl.uva.vlet.gui.UILogger;
 import nl.uva.vlet.gui.dialog.ExceptionForm;
 import nl.uva.vlet.gui.util.imageutil.ImageCapturer;
-import nl.uva.vlet.util.VRSResourceLoader;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.ResourceEvent;
 import nl.uva.vlet.vrs.VNode;
 import nl.uva.vlet.vrs.io.VStreamReadable;
 import nl.uva.vlet.vrs.io.VStreamWritable;
+import nl.uva.vlet.vrs.util.VRSResourceLoader;
 
 //import vls.gui.ActionTask;
 //import vls.gui.BrowserController;

@@ -25,7 +25,7 @@ import java.util.Vector;
 import nl.nlesc.ptk.exceptions.VRISyntaxException;
 import nl.nlesc.ptk.task.ITaskMonitor;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.actions.ActionContext;
 import nl.uva.vlet.actions.ActionMenuMapping;
 import nl.uva.vlet.exception.NotImplementedException;
@@ -149,7 +149,7 @@ public abstract class VRSFactory
         if (this instanceof VFSFactory)
             vrsInfo="VFS"; 
         
-        return vrsInfo+" Plugin:"+getName()+" ("+GlobalConfig.getVletVersion()+")";  
+        return vrsInfo+" Plugin:"+getName()+" ("+VletConfig.getVletVersion()+")";  
     }
     
     public String getAbout()

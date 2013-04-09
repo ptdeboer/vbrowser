@@ -44,7 +44,7 @@ import javax.swing.border.BevelBorder;
 
 import nl.nlesc.ptk.crypt.Secret;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.gui.GuiSettings;
 import nl.uva.vlet.gui.UIGlobal;
 import nl.uva.vlet.gui.UILogger;
@@ -203,7 +203,7 @@ public class AuthenticationDialog extends javax.swing.JDialog implements ActionL
         
         if (user==null) 
         {
-            user=GlobalConfig.getUserName();  
+            user=VletConfig.getUserName();  
             authInfo.setUsername(user);
         }
         
@@ -363,7 +363,7 @@ public class AuthenticationDialog extends javax.swing.JDialog implements ActionL
         
         dialog.setModal(true);
         
-        if (GlobalConfig.isApplet()==false)
+        if (VletConfig.isApplet()==false)
         	dialog.setAlwaysOnTop(true);
 
         // if modal is enabled, this method blocks until window is closed !

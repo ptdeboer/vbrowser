@@ -24,7 +24,7 @@
 package test;
 
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.panels.attribute.AttributeEditorForm;
@@ -37,7 +37,7 @@ public class testAttributeEditor
 {
     public static void main(String args[])
     {
-        GlobalConfig.getRootLogger().setLevelToDebug(); 
+        VletConfig.getRootLogger().setLevelToDebug(); 
         
         int len=20; 
         

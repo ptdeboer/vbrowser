@@ -24,7 +24,7 @@
 package nl.uva.vlet.gui;
 
 import nl.nlesc.ptk.global.Global;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 
 /**
  *  Class to hold the String Messages used in the VBrowser.
@@ -74,7 +74,7 @@ public class Messages
     public static String aboutText=
          "<html><body><a name=top>"
         +"<center><h1> About the VL-e Toolkit </h1>"
-        +"("+GlobalConfig.getVletVersion()+")<br>"
+        +"("+VletConfig.getVletVersion()+")<br>"
         +"</center>"
         +"<p>"
         +"<center>The VBrowser is part of the VL-e Toolkit.<br>" 

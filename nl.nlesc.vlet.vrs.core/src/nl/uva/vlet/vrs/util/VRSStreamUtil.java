@@ -18,7 +18,7 @@
  */ 
 // source: 
 
-package nl.uva.vlet.util;
+package nl.uva.vlet.vrs.util;
 
 import java.io.IOException;
 import java.io.InputStream;

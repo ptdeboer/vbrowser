@@ -28,12 +28,12 @@ import static nl.uva.vlet.data.VAttributeConstants.ATTR_ALLOW_3RD_PARTY;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_GROUP;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_HOSTNAME;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_OWNER;
-import static nl.uva.vlet.GlobalConfig.ATTR_PASSIVE_MODE;
+import static nl.uva.vlet.VletConfig.ATTR_PASSIVE_MODE;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_PORT;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_UNIQUE;
 
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeSet;
 import nl.uva.vlet.exception.VlException;
@@ -149,7 +149,7 @@ public class GftpFSFactory extends VFSFactory
     
     public String getVersion()
     {
-         return "GridFTP VFS Plugin version: "+ GlobalConfig.getVletVersion();   
+         return "GridFTP VFS Plugin version: "+ VletConfig.getVletVersion();   
     }
         
     public String getAbout()

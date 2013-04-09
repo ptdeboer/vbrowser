@@ -38,7 +38,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.GuiSettings;
 import nl.uva.vlet.gui.UIGlobal;
@@ -89,7 +89,7 @@ public class ExceptionForm extends javax.swing.JDialog implements ActionListener
 		
         GuiSettings.setToOptimalWindowSize(inst);
         
-        if (GlobalConfig.isApplet()==false)
+        if (VletConfig.isApplet()==false)
         	inst.setAlwaysOnTop(true);
         
         inst.setModal(modal); // will halt after 'setVisible()'

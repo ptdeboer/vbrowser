@@ -54,7 +54,7 @@ import nl.nlesc.ptk.task.ActionTask;
 import nl.nlesc.ptk.util.MimeTypes;
 import nl.nlesc.ptk.util.ResourceLoader;
 import nl.nlesc.ptk.util.StringUtil;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.actions.ActionContext;
 import nl.uva.vlet.actions.ActionMenuMapping;
 import nl.uva.vlet.exception.ResourceException;
@@ -67,10 +67,10 @@ import nl.uva.vlet.gui.font.FontInfo;
 import nl.uva.vlet.gui.font.FontToolBar;
 import nl.uva.vlet.gui.font.FontToolbarListener;
 
-import nl.uva.vlet.util.VRSResourceLoader;
 import nl.uva.vlet.vfs.VReplicatable;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.VNode;
+import nl.uva.vlet.vrs.util.VRSResourceLoader;
 
 /**
  * Embedded textviewer for the VBrowser. 
@@ -795,13 +795,13 @@ public class TextViewer extends InternalViewer implements ActionListener,
     /** Returns ~/.vletrc/textviewer.prop */
     protected VRL getConfigFile()
     {
-        return GlobalConfig.getUserConfigDir().appendPath(viewerSettingsFile); 
+        return VletConfig.getUserConfigDir().appendPath(viewerSettingsFile); 
     }
     
     /** Returns ~/.vletrc/.textviewerrc/ */ 
     protected VRL getConfigDir()
     {
-        return GlobalConfig.getUserConfigDir().appendPath(viewerSettingsConfdir); 
+        return VletConfig.getUserConfigDir().appendPath(viewerSettingsConfdir); 
     }
 
 	protected void loadSettings()

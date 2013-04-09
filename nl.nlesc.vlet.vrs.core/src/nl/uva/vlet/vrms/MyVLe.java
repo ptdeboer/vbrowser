@@ -32,7 +32,7 @@ import nl.nlesc.ptk.data.StringList;
 import nl.nlesc.ptk.global.Global;
 import nl.nlesc.ptk.util.StringUtil;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.NotImplementedException;
@@ -107,7 +107,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
     /** Extra windows attributes */
 
     public static String windowsAttributeNames[] =
-        { GlobalConfig.PROP_SKIP_FLOPPY_SCAN };
+        { VletConfig.PROP_SKIP_FLOPPY_SCAN };
 
     // ========================================================================
     // instance Stuff
@@ -189,7 +189,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
     @Override
     public String getName()
     {
-        String val = GlobalConfig.getProperty("myvle.name");
+        String val = VletConfig.getProperty("myvle.name");
 
         if (val == null)
             val = "My Vle";
@@ -202,23 +202,23 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         return MYVLE_TYPE;
     }
 
-    @Override
-    public VRL getHelp()
-    {
-        return null; // Global.getHelpUrl(MYVLE_TYPE);
-    }
-
-    private String attrNames[] =
-    { ATTR_NAME, ATTR_RESOURCE_TYPE, "[User]", GlobalConfig.PROP_USER_CONFIGURED_VOS, "[FireWall Settings]",
-            GlobalConfig.PROP_INCOMING_FIREWALL_PORT_RANGE, GlobalConfig.PROP_PASSIVE_MODE, "[BDII Service]",
-            GlobalConfig.PROP_BDII_HOSTNAME, GlobalConfig.PROP_BDII_PORT, "[Installation]",
-            GlobalConfig.PROP_VLET_VERSION, GlobalConfig.PROP_VLET_INSTALL, GlobalConfig.PROP_VLET_SYSCONFDIR,
-            GlobalConfig.PROP_VLET_LIBDIR,
-
-    // Global.JAVA_OS_ARCH,
-    // Global.JAVA_OS_NAME,
-    // Global.JAVA_OS_VERSION,
-    };
+    private String attrNames[] = { 
+            ATTR_NAME, 
+            ATTR_RESOURCE_TYPE, 
+            "[User]", 
+            VletConfig.PROP_USER_CONFIGURED_VOS, 
+            "[FireWall Settings]",
+            VletConfig.PROP_INCOMING_FIREWALL_PORT_RANGE, 
+            VletConfig.PROP_PASSIVE_MODE, 
+            "[BDII Service]",
+            VletConfig.PROP_BDII_HOSTNAME, 
+            VletConfig.PROP_BDII_PORT, 
+            "[Installation]",
+            VletConfig.PROP_VLET_VERSION, 
+            VletConfig.PROP_VLET_INSTALL, 
+            VletConfig.PROP_VLET_SYSCONFDIR,
+            VletConfig.PROP_VLET_LIBDIR,
+        };
 
     //
     // if this boolean is set, a reset is pending !
@@ -325,7 +325,6 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
 
     public long getNrOfNodes() throws VlException
     {
-
         return rootNodes.size();
     }
 
@@ -388,7 +387,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         }
 
         // add stored nodes: autoinitialize if no environment
-        if (GlobalConfig.isApplet())
+        if (VletConfig.isApplet())
         {
             readChilds(false);
         }
@@ -638,7 +637,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         {
 
             // alt get drives to avoid annoying pop-up
-            roots = GlobalConfig.getWindowsDrives();
+            roots = VletConfig.getWindowsDrives();
         }
         else
         {

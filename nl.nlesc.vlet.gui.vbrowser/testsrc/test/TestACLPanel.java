@@ -25,7 +25,7 @@ package test;
 
 
 import nl.nlesc.ptk.global.Global;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.panels.acldialog.ACLPanel;
 import nl.uva.vlet.gui.proxynode.impl.direct.ProxyVNodeFactory;
@@ -36,7 +36,7 @@ public class TestACLPanel
 
     public static void main(String args[])
     {
-        GlobalConfig.getRootLogger().setLevelToDebug(); 
+        VletConfig.getRootLogger().setLevelToDebug(); 
         testFor("file:/home/"+Global.getGlobalUserName());
         //testFor("srb://piter.de.boer.vlenl@srb.grid.sara.nl/VLENL/home/piter.de.boer.vlenl");
         // testFor("sftp://ptdeboer@elab.science.uva.nl/home/ptdeboer"); 

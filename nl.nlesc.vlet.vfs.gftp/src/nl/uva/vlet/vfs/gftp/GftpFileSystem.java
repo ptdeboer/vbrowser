@@ -29,7 +29,7 @@ import static nl.uva.vlet.data.VAttributeConstants.ATTR_GROUP;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_LENGTH;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_MODIFICATION_TIME;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_OWNER;
-import static nl.uva.vlet.GlobalConfig.ATTR_PASSIVE_MODE;
+import static nl.uva.vlet.VletConfig.ATTR_PASSIVE_MODE;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_UNIQUE;
 
@@ -50,7 +50,7 @@ import java.util.Vector;
 import nl.nlesc.ptk.task.ActionTask;
 import nl.nlesc.ptk.task.ITaskMonitor;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeType;
 import nl.uva.vlet.exception.ResourceAlreadyExistsException;
@@ -165,7 +165,7 @@ public class GftpFileSystem extends FileSystemNode
     // Hashtable<String, GftpServer>();
 
     public static String[] attributeNames =
-        { GlobalConfig.ATTR_PASSIVE_MODE };
+        { VletConfig.ATTR_PASSIVE_MODE };
 
     /** Simple Data Source which produces 0 bytes ! */
     public static class NilSource implements DataSource
@@ -316,8 +316,8 @@ public class GftpFileSystem extends FileSystemNode
         //
         // update firewall portrange for Globus:
         //
-        GlobalConfig.setSystemProperty("org.globus.tcp.port.range", 
-                GlobalConfig.getFirewallPortRangeString());
+        VletConfig.setSystemProperty("org.globus.tcp.port.range", 
+                VletConfig.getFirewallPortRangeString());
 
         // currently proxy must be created...
 

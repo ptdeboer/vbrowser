@@ -26,7 +26,7 @@ import java.io.OutputStream;
 
 import nl.nlesc.ptk.global.Global;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.vrs.io.VShellChannel;
 
 /**
@@ -96,12 +96,12 @@ public class BASHChannel implements VShellChannel
             {
                 cmds = new String[1];
                 // linux executable .lxe :-)
-                cmds[0] = GlobalConfig.getInstallBaseDir().getPath()+"/bin/ptty.lxe"; 
+                cmds[0] = VletConfig.getInstallBaseDir().getPath()+"/bin/ptty.lxe"; 
             }
             else if (Global.isWindows())
             {
                 cmds = new String[1];
-                cmds[0] = GlobalConfig.getInstallBaseDir().getPath()+"/bin/ptty.exe"; 
+                cmds[0] = VletConfig.getInstallBaseDir().getPath()+"/bin/ptty.exe"; 
             }
             else
             {

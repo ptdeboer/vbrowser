@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.regex.Pattern;
 
 import nl.nlesc.ptk.exceptions.VRISyntaxException;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.ResourceCreationFailedException;
 import nl.uva.vlet.exception.ResourceTypeNotSupportedException;
 import nl.uva.vlet.exception.VRLSyntaxException;
@@ -95,14 +95,14 @@ public final class VFSClient extends VRSClient implements Serializable
     private void init()
     {
         // current default tempdir 
-        tempDirLocation=GlobalConfig.getDefaultTempDir();
+        tempDirLocation=VletConfig.getDefaultTempDir();
     }
     
     /** Create VFS Client object using the specified VRS Context. */
     public VFSClient(VRSContext context)
     {
         super(context); 
-        this.tempDirLocation=GlobalConfig.getDefaultTempDir(); 
+        this.tempDirLocation=VletConfig.getDefaultTempDir(); 
     }
     
     /** Returns VFSNode pointing to the specified location */ 
@@ -263,17 +263,16 @@ public final class VFSClient extends VRSClient implements Serializable
      * @return new VFile node if move succeeded.    
      * @throws VlException
      */
-    public  VFile move(VFile file, VDir dest) throws VlException
+    public  VFile move(VFile sourceFile, VDir destDir) throws VlException
     {
-        return file.moveTo(dest); 
+        return (VFile)this.getTransferManager().doCopyMove(sourceFile,destDir,null,true); 
     }
     
     /** Move VFile to target file. */ 
     public VFile move(VFile sourceFile,VFile targetFile) throws VlException 
     {
-        return sourceFile.moveTo(targetFile); 
+        return (VFile)this.getTransferManager().doCopyMove(sourceFile,targetFile,true);  
     }
-
     
     /** 
      * Copy VFile to remote (VDir) destination.
@@ -286,7 +285,7 @@ public final class VFSClient extends VRSClient implements Serializable
     
     public  VFile copy(VFile vfile, VDir parentDir) throws VlException
     {
-        return vfile.copyTo(parentDir); 
+        return (VFile)this.getTransferManager().doCopyMove(vfile,parentDir,null,false); 
     }
     
     public void copy(VFile file, VFile targetFile) throws VlException
@@ -302,7 +301,7 @@ public final class VFSClient extends VRSClient implements Serializable
      */ 
     public  VDir copy(VDir dir, VDir parentDir) throws VlException
     {
-        return dir.copyTo(parentDir); 
+        return (VDir)this.getTransferManager().doCopyMove(dir,parentDir,null,false); 
     }
     
     /** 
@@ -314,8 +313,7 @@ public final class VFSClient extends VRSClient implements Serializable
     {
         // create new director as sub directory of parentDirectory: 
         VRL targetVRL=parentDir.resolvePathVRL(dir.getBasename()); 
-        return dir.asyncCopyMoveTo(parentDir.getFileSystem(),targetVRL,false);
-         
+        return getTransferManager().asyncCopyMoveTo(null, dir,parentDir.getFileSystem(),targetVRL,false,null);
     }
 
     /**
@@ -327,7 +325,7 @@ public final class VFSClient extends VRSClient implements Serializable
     {
         // create new file in parent directory 
         VRL targetVRL=parentDir.resolvePathVRL(file.getBasename()); 
-        return file.asyncCopyMoveTo(parentDir.getFileSystem(),targetVRL,false);
+        return getTransferManager().asyncCopyMoveTo(null, file,parentDir.getFileSystem(),targetVRL,false,null);
     }
     
     /** 
@@ -340,7 +338,7 @@ public final class VFSClient extends VRSClient implements Serializable
     {
         // create new file in parent directory 
         VRL targetVRL=parentDir.resolvePathVRL(dir.getBasename()); 
-        return dir.asyncCopyMoveTo(parentDir.getFileSystem(),targetVRL,true);
+        return getTransferManager().asyncCopyMoveTo(null, dir,parentDir.getFileSystem(),targetVRL,true,null);
     }
 
     /**
@@ -351,7 +349,7 @@ public final class VFSClient extends VRSClient implements Serializable
     {
         // create new file in parent directory 
         VRL targetVRL=parentDir.resolvePathVRL(file.getBasename()); 
-        return file.asyncCopyMoveTo(parentDir.getFileSystem(),targetVRL,true);
+        return getTransferManager().asyncCopyMoveTo(null, file,parentDir.getFileSystem(),targetVRL,true,null);
     }
    
     /**
@@ -366,7 +364,7 @@ public final class VFSClient extends VRSClient implements Serializable
      */
     public  VDir move(VDir sourceDir, VDir destDir) throws VlException
     {
-        return sourceDir.moveTo(destDir);
+        return (VDir)this.getTransferManager().doCopyMove(sourceDir,destDir,null,true); 
     }
     
     /**

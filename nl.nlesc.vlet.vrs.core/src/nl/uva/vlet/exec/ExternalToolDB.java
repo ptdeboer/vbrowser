@@ -23,7 +23,7 @@ package nl.uva.vlet.exec;
 import java.util.Vector;
 
 import nl.nlesc.ptk.global.Global;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vrl.VRL;
 
@@ -80,14 +80,14 @@ public class ExternalToolDB
             
         if (cmd.equals(JAVAWS))
         {
-            String javahome=GlobalConfig.getProperty("java.home");
+            String javahome=VletConfig.getProperty("java.home");
             cmdpath=javahome+"/bin/javaws";
             if (Global.isWindows())
                 cmdpath+=".exe"; 
         }
         else if (cmd.equals(JAVA))
         {
-            String javahome=GlobalConfig.getProperty("java.home");
+            String javahome=VletConfig.getProperty("java.home");
             cmdpath=javahome+"/bin/java";
             if (Global.isWindows())
                 cmdpath+=".exe"; 

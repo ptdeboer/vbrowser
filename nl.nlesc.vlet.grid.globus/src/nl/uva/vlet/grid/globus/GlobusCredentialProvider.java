@@ -35,7 +35,7 @@ import nl.nlesc.ptk.data.StringList;
 import nl.nlesc.ptk.util.ResourceLoader;
 import nl.nlesc.ptk.util.StringUtil;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 
 import nl.uva.vlet.exception.VlAuthenticationException;
 import nl.uva.vlet.exception.VlInternalError;
@@ -79,11 +79,11 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         
         CoGProperties props = CoGProperties.getDefault();
         
-        String val=props.getProperty(GlobalConfig.COG_ENFORCE_SIGNING_POLICY);
+        String val=props.getProperty(VletConfig.COG_ENFORCE_SIGNING_POLICY);
         
         if ((val==null) || (val.equals("")))
         {
-            props.setProperty(GlobalConfig.COG_ENFORCE_SIGNING_POLICY,"false");
+            props.setProperty(VletConfig.COG_ENFORCE_SIGNING_POLICY,"false");
         }
 
         GridProxy.registerProvider(GridProxy.GLOBUS_CREDENTIAL_TYPE,getDefault());
@@ -559,7 +559,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
             try
             {
                 // Do We Need: PKCS11 ???
-                Class<?> iClass = Class.forName(GlobalConfig.PKCS11_MODEL);
+                Class<?> iClass = Class.forName(VletConfig.PKCS11_MODEL);
                 staticModel = (GridProxyModel) iClass.newInstance();
             }
             catch (Exception e)

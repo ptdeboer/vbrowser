@@ -42,9 +42,9 @@ import nl.uva.vlet.gui.dialog.ExceptionForm;
 import nl.uva.vlet.gui.viewers.ViewContext;
 import nl.uva.vlet.gui.viewers.ViewerEvent;
 import nl.uva.vlet.gui.widgets.NavigationBar;
-import nl.uva.vlet.util.VRSResourceLoader;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.VRSClient;
+import nl.uva.vlet.vrs.util.VRSResourceLoader;
 
 public class JobMonitorController implements ActionListener
 {

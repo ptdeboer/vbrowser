@@ -49,7 +49,7 @@ import javax.swing.JToolBar;
 
 
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.actions.ActionContext;
 import nl.uva.vlet.actions.ActionMenuMapping;
 import nl.uva.vlet.exception.VlException;
@@ -260,7 +260,7 @@ public class JPedalPDFViewer extends ViewerPlugin implements HyperLinkListener,
 
 	public String getVersion()
     {
-        return GlobalConfig.getVletVersion()+" Internal ViewerPlugin";  
+        return VletConfig.getVletVersion()+" Internal ViewerPlugin";  
     }
     
     public String getAbout()
@@ -531,7 +531,7 @@ public class JPedalPDFViewer extends ViewerPlugin implements HyperLinkListener,
 	 */
 	public static void main(String args[])
 	{
-	    GlobalConfig.getRootLogger().setLevelToDebug();
+	    VletConfig.getRootLogger().setLevelToDebug();
 
 		try
 		{

@@ -47,7 +47,7 @@ import nl.nlesc.ptk.task.ITaskMonitor;
 import nl.nlesc.ptk.ui.panels.monitoring.TaskMonitorDialog;
 import nl.nlesc.ptk.util.logging.ClassLogger;
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.actions.ActionContext;
 
 import nl.uva.vlet.data.VAttribute;
@@ -521,7 +521,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 					break;
 				}
 				case HELP:
-					VRL vrl=GlobalConfig.getInstallationDocDir().appendPath("help/index.html");
+					VRL vrl=VletConfig.getInstallationDocDir().appendPath("help/index.html");
 					performOpenLocation(vrl);
 					break;
                 case LOCATIONBAR_EDITED: 

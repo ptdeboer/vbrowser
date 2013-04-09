@@ -18,7 +18,7 @@
  */ 
 // source: 
 
-package nl.uva.vlet.util;
+package nl.uva.vlet.vrs.util;
 
 import nl.nlesc.ptk.util.Comparer;
 import nl.nlesc.ptk.util.QSort;

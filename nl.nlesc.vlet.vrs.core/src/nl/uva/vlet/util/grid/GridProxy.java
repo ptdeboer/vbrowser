@@ -36,7 +36,7 @@ import nl.nlesc.ptk.data.StringList;
 import nl.nlesc.ptk.util.ResourceLoader;
 import nl.nlesc.ptk.util.StringUtil;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.GlobalUtil;
 
 import nl.uva.vlet.data.VAttribute;
@@ -267,8 +267,8 @@ public class GridProxy
         // ===
         // Proxy life time 
         // ===
-        val=confMan.getProperty(GlobalConfig.PROP_GRID_PROXY_LIFETIME);
-        logger.debugPrintf("using %s='%s'\n",GlobalConfig.PROP_GRID_PROXY_LIFETIME,val);
+        val=confMan.getProperty(VletConfig.PROP_GRID_PROXY_LIFETIME);
+        logger.debugPrintf("using %s='%s'\n",VletConfig.PROP_GRID_PROXY_LIFETIME,val);
         
         if ((val!=null) && (val.length()>0))
         {   
@@ -280,15 +280,15 @@ public class GridProxy
             catch (Throwable t)
             {
                 logger.logException(ClassLogger.ERROR,t,"Invalid integer value for '%s'='%s'\n",
-                        GlobalConfig.PROP_GRID_PROXY_LIFETIME,val); 
+                        VletConfig.PROP_GRID_PROXY_LIFETIME,val); 
             }
         }
 
         // ===
         // enable voms
         // ===
-        val=confMan.getProperty(GlobalConfig.PROP_GRID_PROXY_ENABLE_VOMS);
-        logger.debugPrintf("using %s='%s'\n",GlobalConfig.PROP_GRID_PROXY_ENABLE_VOMS,val);
+        val=confMan.getProperty(VletConfig.PROP_GRID_PROXY_ENABLE_VOMS);
+        logger.debugPrintf("using %s='%s'\n",VletConfig.PROP_GRID_PROXY_ENABLE_VOMS,val);
         
         if ((val!=null) && (val.length()>0))
         {   
@@ -298,16 +298,16 @@ public class GridProxy
         // ===
         // voms name+role
         // ===
-        val=confMan.getProperty(GlobalConfig.PROP_GRID_PROXY_VO_NAME);
-        logger.debugPrintf("using %s='%s'\n",GlobalConfig.PROP_GRID_PROXY_VO_NAME,val);
+        val=confMan.getProperty(VletConfig.PROP_GRID_PROXY_VO_NAME);
+        logger.debugPrintf("using %s='%s'\n",VletConfig.PROP_GRID_PROXY_VO_NAME,val);
         
         if ((val!=null) && (val.length()>0))
         {   
             provider.setDefaultVOName(val); 
         }
         
-        val=confMan.getProperty(GlobalConfig.PROP_GRID_PROXY_VO_ROLE);
-        logger.debugPrintf("using %s='%s'\n",GlobalConfig.PROP_GRID_PROXY_VO_ROLE,val);
+        val=confMan.getProperty(VletConfig.PROP_GRID_PROXY_VO_ROLE);
+        logger.debugPrintf("using %s='%s'\n",VletConfig.PROP_GRID_PROXY_VO_ROLE,val);
 
         if ((val!=null) && (val.length()>0))
         {   
@@ -320,8 +320,8 @@ public class GridProxy
         
         // I) Check VRContext "grid.proxy.location=..." 
         // get optional relative Grid Proxy Location 
-        val=confMan.getProperty(GlobalConfig.PROP_GRID_PROXY_LOCATION);
-        logger.debugPrintf("using %s='%s'\n",GlobalConfig.PROP_GRID_PROXY_LOCATION,val);
+        val=confMan.getProperty(VletConfig.PROP_GRID_PROXY_LOCATION);
+        logger.debugPrintf("using %s='%s'\n",VletConfig.PROP_GRID_PROXY_LOCATION,val);
 
         String proxyFilename=null; 
         
@@ -342,9 +342,9 @@ public class GridProxy
         // II) Check X509_USER_PROXY environment: UI RUntime !! 
         if (StringUtil.isEmpty(proxyFilename))
         {
-            proxyFilename=vrsContext.getStringProperty(GlobalConfig.ENV_X509_USER_PROXY);
+            proxyFilename=vrsContext.getStringProperty(VletConfig.ENV_X509_USER_PROXY);
             if (StringUtil.notEmpty(proxyFilename))
-                logger.infoPrintf("Using proxy filename from environment:%s=%s\n",GlobalConfig.ENV_X509_USER_PROXY,proxyFilename); 
+                logger.infoPrintf("Using proxy filename from environment:%s=%s\n",VletConfig.ENV_X509_USER_PROXY,proxyFilename); 
         }
 
         // Update provider to use default file name: 
@@ -361,7 +361,7 @@ public class GridProxy
         // check location of user certificates ($HOME./globus/) 
         // ===
         
-        val=vrsContext.getStringProperty(GlobalConfig.PROP_GRID_CERTIFICATE_LOCATION);
+        val=vrsContext.getStringProperty(VletConfig.PROP_GRID_CERTIFICATE_LOCATION);
         String userCertDir=null; 
         
         if (StringUtil.isEmpty(val)==false) 
@@ -372,7 +372,7 @@ public class GridProxy
         // fetch default from model 
         if (StringUtil.isEmpty(userCertDir)==false) 
         {
-            if (GlobalConfig.isApplet()==false)
+            if (VletConfig.isApplet()==false)
             {
                 // will update provider: 
                 this.setUserCertificateDirectory(userCertDir); 
@@ -588,7 +588,7 @@ public class GridProxy
     
     public boolean getUsePersistantUserSettings()
     {
-        return GlobalConfig.getUsePersistantUserConfiguration();
+        return VletConfig.getUsePersistantUserConfiguration();
     }
     
     /**
@@ -697,7 +697,7 @@ public class GridProxy
      */
     public synchronized void loadCertificates()
     {
-        VRL vrls[]=GlobalConfig.getCACertificateLocations();
+        VRL vrls[]=VletConfig.getCACertificateLocations();
         
         StringList caCertsPaths=new StringList();
         
@@ -735,7 +735,7 @@ public class GridProxy
     
     protected synchronized boolean loadProxy(String proxypath) throws VlException
     {
-        if (GlobalConfig.isApplet() == true)
+        if (VletConfig.isApplet() == true)
         {
             return false; 
         }
@@ -794,7 +794,7 @@ public class GridProxy
      */
     public boolean saveProxy() throws VlException
     {
-        if (GlobalConfig.isApplet())
+        if (VletConfig.isApplet())
             return false;
         // Use explicit proxy path or, if not specified, use default path from provider
         String path=credential.getCredentialFilename(); 
@@ -1117,12 +1117,12 @@ public class GridProxy
         VGridCredentialProvider provider = this.getProvider(); 
         
         // save Provider Defaults to VLET configuration ! 
-        vrsContext.setUserProperty(GlobalConfig.PROP_GRID_PROXY_LOCATION,provider.getDefaultProxyFilename());  
-        vrsContext.setUserProperty(GlobalConfig.PROP_GRID_CERTIFICATE_LOCATION,this.getUserCertificateDirectory());
-        vrsContext.setUserProperty(GlobalConfig.PROP_GRID_PROXY_LIFETIME,""+provider.getDefaultLifetime());
-        vrsContext.setUserProperty(GlobalConfig.PROP_GRID_PROXY_ENABLE_VOMS,""+provider.getEnableVoms());
-        vrsContext.setUserProperty(GlobalConfig.PROP_GRID_PROXY_VO_NAME,provider.getDefaultVOName());
-        vrsContext.setUserProperty(GlobalConfig.PROP_GRID_PROXY_VO_ROLE,provider.getDefaultVORole());
+        vrsContext.setUserProperty(VletConfig.PROP_GRID_PROXY_LOCATION,provider.getDefaultProxyFilename());  
+        vrsContext.setUserProperty(VletConfig.PROP_GRID_CERTIFICATE_LOCATION,this.getUserCertificateDirectory());
+        vrsContext.setUserProperty(VletConfig.PROP_GRID_PROXY_LIFETIME,""+provider.getDefaultLifetime());
+        vrsContext.setUserProperty(VletConfig.PROP_GRID_PROXY_ENABLE_VOMS,""+provider.getEnableVoms());
+        vrsContext.setUserProperty(VletConfig.PROP_GRID_PROXY_VO_NAME,provider.getDefaultVOName());
+        vrsContext.setUserProperty(VletConfig.PROP_GRID_PROXY_VO_ROLE,provider.getDefaultVORole());
    }
 
     /**

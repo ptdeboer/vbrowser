@@ -6,7 +6,7 @@ import java.util.logging.Level;
 
 import nl.nlesc.ptk.crypt.Secret;
 import nl.nlesc.ptk.global.Global;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VRLSyntaxException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.VFS;
@@ -34,22 +34,22 @@ public class TestNoInteraction
 	{
 	
 		   try {
-	            GlobalConfig.setBaseLocation(new URL("http://dummy/url"));
+	            VletConfig.setBaseLocation(new URL("http://dummy/url"));
 	        } catch (MalformedURLException ex)
 	        {
 	        	System.err.print("Exception"+ex); 
 	        	
 	        }
 	        // runtime configuration
-	        GlobalConfig.setHasUI(false);
-	        GlobalConfig.setIsApplet(true);
-	        GlobalConfig.setPassiveMode(true);
-	        GlobalConfig.setIsService(true);
-	        GlobalConfig.setInitURLStreamFactory(false);        
-	        GlobalConfig.setAllowUserInteraction(false);
+	        VletConfig.setHasUI(false);
+	        VletConfig.setIsApplet(true);
+	        VletConfig.setPassiveMode(true);
+	        VletConfig.setIsService(true);
+	        VletConfig.setInitURLStreamFactory(false);        
+	        VletConfig.setAllowUserInteraction(false);
 	        
 	        // user configuration 
-	        GlobalConfig.setUsePersistantUserConfiguration(false);
+	        VletConfig.setUsePersistantUserConfiguration(false);
 	        //  GlobalConfig.setUserHomeLocation(new URL("file:///tmp/myservice"));
 
 	        Global.init();

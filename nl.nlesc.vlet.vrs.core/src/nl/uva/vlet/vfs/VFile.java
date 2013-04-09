@@ -80,11 +80,6 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
         return VFS.FILE_TYPE;
     }
 
-    @Override
-    public VRL getHelp()
-    {
-        return null; // Global.getHelpUrl("VFile"); 
-    }
 
     /**
      * Returns true.
@@ -161,22 +156,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
 
         return buffer;
     }
-
-    /** Reads first <code>len</cod> bytes into byte array */
-    public byte[] getContents(long offset, int len) throws VlException
-    {
-        byte bytes[] = new byte[len];
-
-        int ret = read(offset, bytes,0,len); 
-
-        // since a specific amount a bytes is requested, return only that
-        // amount if it can be read
-
-        if (ret != len)
-            throw new VlIOException("Couldn't read requested number of bytes");
-
-        return bytes;
-    }
+ 
 
     /**
      * Read contents and return as single String. This method will fail if the
@@ -219,44 +199,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     {
         return getContentsAsString(getCharSet());
     }
-
-    /** 
-     * @see #copyToFile(VRL) 
-     */
-    final public VFile copyTo(VRL destinationVrl) throws VlException
-    {
-        return copyToFile(destinationVrl);
-    }
-
-    /**
-     * Copy this file to new destination location. 
-     * The destinationVrl specifies the full path of the new File. 
-     * @param destinationVrl
-     * @return new VFile
-     * @throws VlException
-     */
-
-    final public VFile copyToFile(VRL destinationVrl) throws VlException
-    {
-        return (VFile)this.getTransferManager().doCopyMove(this,destinationVrl,false); 
-    }
-
-    /** 
-     * Copy this file to new remote directory. 
-     * The destinationVrl is the parent directory of the destination file.
-     * The new Path of the resulting VFile will be destinationVrl+'/'+this.getBasename() 
-     * @param directoryVRL
-     * @return new VFile 
-     * @throws VlException
-     */
-    final public VFile copyToDir(VRL directoryVRL) throws VlException
-    {
-        VRL destVRL;
-        destVRL = directoryVRL.appendPathToVRL(getBasename());
-        
-        return (VFile)this.getTransferManager().doCopyMove(this,destVRL,false);
-    }        
-
+    
     /**
      * Copy this file to the remote directory. Method will overwrite existing destination file.  
      * @throws VlException
@@ -285,7 +228,6 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     {
         return (VFile)this.getTransferManager().doCopyMove(this,targetFile,true);  
     }
-
     
     /**
      * Copy to remote directory. Method will overwrite existing destination file.  
@@ -454,7 +396,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
      *             if interface does not support remote read access.
      */
     public int read(long offset, byte buffer[],int bufferOffset,int nrOfBytes)
-    throws VlException
+                throws VlException
     {
         boolean forceUseStreamRead=false; //true; // default value  
 
@@ -486,24 +428,6 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
             throw new nl.uva.vlet.exception.ResourceTypeMismatchException(
             "File type does not support (remote) read access");
         }
-    }
-
-    /** 
-     * @see #read(long,byte[],int,int)
-     */
-    public int read(byte buffer[],int bufferOffset,int nrOfBytes)
-    throws VlException
-    {
-        return read(0,buffer,bufferOffset,nrOfBytes); 
-    }
-
-    /** 
-     * @see #read(long,byte[],int,int)
-     */
-    public int read(byte buffer[],int nrOfBytes)
-            throws VlException
-    {
-        return read(0,buffer,0,nrOfBytes); 
     }
 
     /**
@@ -588,7 +512,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
      */ 
 
     protected void downloadTo(VFSTransfer transfer,VFile targetLocalFile)
-    throws VlException
+            throws VlException
     {
         // copy contents into local file:
         vrsContext.getTransferManager().doStreamCopy(transfer,this,targetLocalFile);  

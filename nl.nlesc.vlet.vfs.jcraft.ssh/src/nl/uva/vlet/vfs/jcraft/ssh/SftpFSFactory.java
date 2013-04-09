@@ -28,7 +28,7 @@ import static nl.uva.vlet.data.VAttributeConstants.ATTR_GID;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_UID;
 import static nl.uva.vlet.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlInternalError;
@@ -102,7 +102,7 @@ public class SftpFSFactory extends VFSFactory
 
     	String user=info.getUsername(); 
         
-        String defaultUser=GlobalConfig.getUserName();
+        String defaultUser=VletConfig.getUserName();
       	// sftp MUST have username: set current to default ! 
         if ((user==null) || (user.compareTo("")==0)) 
         {

@@ -23,7 +23,7 @@
 
 package tests;
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.viewers.VHTMLViewer;
 import nl.uva.vlet.vrl.VRL;
@@ -33,7 +33,7 @@ public class testHTMLViewer
 
     public static void main(String[] args)
     {
-        GlobalConfig.getRootLogger().setLevelToDebug(); 
+        VletConfig.getRootLogger().setLevelToDebug(); 
         
         try
         {

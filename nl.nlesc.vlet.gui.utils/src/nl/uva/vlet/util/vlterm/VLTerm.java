@@ -55,7 +55,7 @@ import javax.swing.SwingUtilities;
 
 import nl.nlesc.ptk.net.VRI;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.GlobalUtil;
 import nl.uva.vlet.gui.UIGlobal;
 import nl.uva.vlet.gui.UILogger;
@@ -268,7 +268,7 @@ public class VLTerm extends JFrame implements  Runnable
     public VLTerm()
     {
     	// defaults: 
-        this.user = GlobalConfig.getUserName();
+        this.user = VletConfig.getUserName();
 
         loadConfigSettings(); 
         
@@ -1393,7 +1393,7 @@ public class VLTerm extends JFrame implements  Runnable
 	{
 		try 
 		{
-		    VRI loc=GlobalConfig.getUserConfigDir().appendPath("/vlterm.prop"); 
+		    VRI loc=VletConfig.getUserConfigDir().appendPath("/vlterm.prop"); 
 			return GlobalUtil.loadPropertiesFromURL(loc.toURL());
 		}
 		catch (Exception e) 
@@ -1422,7 +1422,7 @@ public class VLTerm extends JFrame implements  Runnable
 		
 		try 
 		{
-		    VRI loc=GlobalConfig.getUserConfigDir().appendPath("/vlterm.prop"); 
+		    VRI loc=VletConfig.getUserConfigDir().appendPath("/vlterm.prop"); 
 			UIGlobal.getResourceLoader().saveProperties(loc.toURI(),persistantProperties,"VLTerm Configuration"); 
 		}
 		catch (Exception e) 

@@ -40,7 +40,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.dialog.CaCertDialog;
 import nl.uva.vlet.dialog.WarningDialog;
 import nl.uva.vlet.exception.VlException;

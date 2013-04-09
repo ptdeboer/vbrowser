@@ -23,7 +23,7 @@
 
 package nl.uva.vlet.gui.viewers;
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 
 abstract public class InternalViewer extends ViewerPlugin
 {
@@ -31,7 +31,7 @@ abstract public class InternalViewer extends ViewerPlugin
 
     public String getVersion()
     {
-        return GlobalConfig.getVletVersion()+" Internal ViewerPlugin";  
+        return VletConfig.getVletVersion()+" Internal ViewerPlugin";  
     }
     
     public String getAbout()

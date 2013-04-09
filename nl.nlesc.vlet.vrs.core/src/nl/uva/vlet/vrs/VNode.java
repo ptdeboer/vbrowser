@@ -201,13 +201,6 @@ public abstract class VNode //implements IVNode
 		return _nodeVRL.toURL();
     }
     
-    
-    /** Get unique VNode id. Currently used for debugging */ 
-    public long getNodeID()
-    {
-        return vnodeid; 
-    }
-    
     /** 
      * Returns the short name of the resource.<br> 
      * The default is the basename of the resource or the last part
@@ -511,18 +504,6 @@ public abstract class VNode //implements IVNode
     {
         return null; 
     }
-    
-    
-   
-    /**
-     * Returns simple text file or complete HTML page. Method should point to
-     * installed documentation.
-     * Default is to return help about this type. 
-     */
-    public VRL getHelp()
-    {
-        return null; // Global.getHelpUrl(this.getResourceType()); 
-    }
 
     //public abstract String getResourceType(); // type (File) or class
 
@@ -649,9 +630,8 @@ public abstract class VNode //implements IVNode
 	/** 
 	 * Synchronized cached attributes and/or refresh (optional) cached attributes
 	 * from remote resource. 
-	 * This is an import method in the case that an resource caches resource attributes, like
+	 * This is an import method in the case that a resource caches resource attributes, like
 	 * file attributes. 
-	 * @since VLET 1.2 
 	 * @return - false : not applicable/not implemented for this resource.<br>
 	 *         - true : synchronize/refresh is implemented and was successful.  
 	 * @throws VlException when resource synchronisation wasn't successful   

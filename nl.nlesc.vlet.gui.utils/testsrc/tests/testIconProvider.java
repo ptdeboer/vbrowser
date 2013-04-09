@@ -27,7 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import nl.nlesc.ptk.ui.icons.IconProvider;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.gui.UIGlobal;
 
 
@@ -36,7 +36,7 @@ public class testIconProvider
 	public static void main(String args[]) throws MalformedURLException
 	{
 		//use icons path from mbuild! 
-		GlobalConfig.setBaseLocation(new URL("file:///home/ptdeboer/workspace/mbuild/dist/dummy.html")); 
+		VletConfig.setBaseLocation(new URL("file:///home/ptdeboer/workspace/mbuild/dist/dummy.html")); 
 		
 		IconProvider provider = UIGlobal.getIconProvider(); 
 	

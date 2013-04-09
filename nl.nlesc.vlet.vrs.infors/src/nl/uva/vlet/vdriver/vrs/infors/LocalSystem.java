@@ -30,7 +30,7 @@ import nl.nlesc.ptk.data.StringList;
 import nl.nlesc.ptk.global.Global;
 import nl.nlesc.ptk.util.StringUtil;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
@@ -56,7 +56,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         }
         catch (VlException e)
         {
-            GlobalConfig.getRootLogger().logException(ClassLogger.ERROR,e,"LocalSystem:Failed to initialize childs:"); 
+            VletConfig.getRootLogger().logException(ClassLogger.ERROR,e,"LocalSystem:Failed to initialize childs:"); 
         } 
 		
 		//	serverInstances=new ServerInstanceGroup(vrsContext); 
@@ -139,7 +139,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
      // start with userHome:
         addPathNode(vrsContext.getUserHomeLocation(),"home","default/home_folder.png");
         // debugging:
-        if (GlobalConfig.getRootLogger().isLevelDebug());
+        if (VletConfig.getRootLogger().isLevelDebug());
             addPathNode(vrsContext.getConfigManager().getUserConfigDir(),"config","config-folder-48.png");
         addFilesystemRoots(); 
     }
@@ -168,7 +168,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         if (Global.isWindows()==true)
         {
             // alt get drives to avoid annoying pop-up
-            roots=GlobalConfig.getWindowsDrives();
+            roots=VletConfig.getWindowsDrives();
         }
         else 
         {
@@ -219,7 +219,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         list.add(InfoConstants.ATTR_JAVAHOME);
         
         if (Global.isWindows())
-            list.add(GlobalConfig.PROP_SKIP_FLOPPY_SCAN);
+            list.add(VletConfig.PROP_SKIP_FLOPPY_SCAN);
         
         return list.toArray(); 
     }
@@ -245,7 +245,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         {
         	attr=new VAttribute(name,Global.getJavaHome()); 
         }
-        else if (name.equals(GlobalConfig.PROP_SKIP_FLOPPY_SCAN))
+        else if (name.equals(VletConfig.PROP_SKIP_FLOPPY_SCAN))
         {
         	attr=cmgr.getAttribute(name);
         	attr.setEditable(true); 
@@ -272,7 +272,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
 		boolean result=false;
 		BooleanHolder refreshH=new BooleanHolder(false); 
 		
-		if (name.equals(GlobalConfig.PROP_SKIP_FLOPPY_SCAN))
+		if (name.equals(VletConfig.PROP_SKIP_FLOPPY_SCAN))
         {
 			// check Configuration attributes: 
 			result=manager.setAttribute(attr,refreshH);
@@ -293,7 +293,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
 		}
 		catch (VlException e) 
 		{
-			GlobalConfig.getRootLogger().logException(ClassLogger.ERROR,this,e,"refresh(): got exception\n"); 
+			VletConfig.getRootLogger().logException(ClassLogger.ERROR,this,e,"refresh(): got exception\n"); 
 		} 
 		this.fireRefresh(); 
 	}

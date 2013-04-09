@@ -18,7 +18,7 @@
  */ 
 // source: 
 
-package nl.uva.vlet.util;
+package nl.uva.vlet.vrs.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +48,7 @@ public class VRSResourceLoader extends ResourceLoader
         this.vrsClient=new VRSClient(context);
     }
     
-    public  String getText(URI uri) throws IOException
+    public String getText(URI uri) throws IOException
     {
         try
         {
@@ -119,10 +119,6 @@ public class VRSResourceLoader extends ResourceLoader
             throw new VlIOException(e);
         }
     }
-
-  
-    
-    
-  
+ 
     
 }

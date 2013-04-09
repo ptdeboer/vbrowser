@@ -34,7 +34,7 @@ import nl.nlesc.ptk.util.StringUtil;
 import nl.nlesc.ptk.util.logging.ClassLogger;
 
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.exception.ResourceAlreadyExistsException;
@@ -44,7 +44,6 @@ import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlIOException;
 import nl.uva.vlet.exception.VlInterruptedException;
 import nl.uva.vlet.tasks.VRSTaskWatcher;
-import nl.uva.vlet.util.VRSStreamUtil;
 import nl.uva.vlet.vdriver.vrs.http.HTTPNode;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrl.VRLUtil;
@@ -59,6 +58,7 @@ import nl.uva.vlet.vrs.io.VSize;
 import nl.uva.vlet.vrs.io.VStreamReadable;
 import nl.uva.vlet.vrs.ui.ICopyInteractor;
 import nl.uva.vlet.vrs.ui.ICopyInteractor.InteractiveAction;
+import nl.uva.vlet.vrs.util.VRSStreamUtil;
 
 
 /**
@@ -297,7 +297,7 @@ public final class VRSTransferManager
 		    //transfer.endTask(); // setDone();
 
 		    if (logger.hasEffectiveLevel(ClassLogger.DEBUG))
-		        transfer.printReport(GlobalConfig.getRootLogger());  
+		        transfer.printReport(VletConfig.getRootLogger());  
 
 		    // ===================================================================
 		    // ResourceEvent => update resources ! 
@@ -321,7 +321,7 @@ public final class VRSTransferManager
 		        //transfer.endTask(); //transfer.setDone();    
 		        
 		        if (logger.hasEffectiveLevel(ClassLogger.DEBUG))
-	                transfer.printReport(GlobalConfig.getRootLogger());  
+	                transfer.printReport(VletConfig.getRootLogger());  
 
 		        throw ((Exception)tr); 
 		    }
@@ -333,7 +333,7 @@ public final class VRSTransferManager
 		        transfer.endTask(taskStr); //transfer.setDone();
 		        
 		        if (logger.hasEffectiveLevel(ClassLogger.DEBUG))
-                    transfer.printReport(GlobalConfig.getRootLogger());  
+                    transfer.printReport(VletConfig.getRootLogger());  
 
 		        throw ex;
 		    }
@@ -932,7 +932,7 @@ public final class VRSTransferManager
 	/**
 	 *  Default VFile stream copy uses VNode to VNode stream Copy.
 	 *  
-	 *  @see nl.uva.vlet.VRSStreamUtil.StreamUtil#streamCopy(VFSTransfer, VNode, VNode, int)
+	 *  @see nl.uva.vlet.vrs.util.VRSStreamUtil.StreamUtil#streamCopy(VFSTransfer, VNode, VNode, int)
 	 */ 
 	protected void doStreamCopy(VFSTransfer transfer,
 			VNode sourceNode, 

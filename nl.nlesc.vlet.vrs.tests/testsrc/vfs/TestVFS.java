@@ -57,7 +57,6 @@ import nl.uva.vlet.exception.ResourceWriteAccessDeniedException;
 
 import nl.uva.vlet.tasks.VRSTaskMonitor;
 import nl.uva.vlet.util.ChecksumUtil;
-import nl.uva.vlet.util.VRSStreamUtil;
 import nl.uva.vlet.util.bdii.BdiiService;
 import nl.uva.vlet.util.bdii.StorageArea;
 import nl.uva.vlet.vdriver.vfs.localfs.LFile;
@@ -82,6 +81,7 @@ import nl.uva.vlet.vrs.io.VRandomReadable;
 import nl.uva.vlet.vrs.io.VRandomReader;
 import nl.uva.vlet.vrs.io.VResizable;
 import nl.uva.vlet.vrs.io.VZeroSizable;
+import nl.uva.vlet.vrs.util.VRSStreamUtil;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -1700,10 +1700,14 @@ public class TestVFS extends VTestCase
         remoteFile.setContents(TEST_CONTENTS);
 
         if (isMove)
+        {
             localFile = remoteFile.moveTo(localTempDir);
+        }
         else
+        {
             localFile = remoteFile.copyTo(localTempDir);
-
+        }
+        
         Assert.assertNotNull("new remote File is NULL", localFile);
 
         String str = localFile.getContentsAsString();

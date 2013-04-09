@@ -43,7 +43,6 @@ import nl.uva.vlet.exception.VlInternalError;
 import nl.uva.vlet.glite.lfc.internal.FileDesc;
 import nl.uva.vlet.glite.lfc.internal.ReplicaDesc;
 import nl.uva.vlet.tasks.VRSTaskMonitor;
-import nl.uva.vlet.util.VRSStreamUtil;
 import nl.uva.vlet.vfs.VChecksum;
 import nl.uva.vlet.vfs.VFS;
 import nl.uva.vlet.vfs.VFSTransfer;
@@ -58,6 +57,7 @@ import nl.uva.vlet.vfs.VUnixFileMode;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.VCommentable;
 import nl.uva.vlet.vrs.VRS;
+import nl.uva.vlet.vrs.util.VRSStreamUtil;
 
 
 public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttributes,

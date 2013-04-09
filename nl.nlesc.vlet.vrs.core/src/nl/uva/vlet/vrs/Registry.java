@@ -36,7 +36,7 @@ import nl.nlesc.ptk.ui.SimpelUI;
 import nl.nlesc.ptk.ui.UI;
 import nl.nlesc.ptk.util.StringUtil;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.actions.ActionMenuMapping;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlInternalError;
@@ -201,7 +201,7 @@ final public class Registry
         ClassLoader currentLoader=Thread.currentThread().getContextClassLoader();
 
         // Initialize default VDriver classes 
-        String str=Global.getStringProperty(GlobalConfig.PROP_INIT_DEFAULT_VDRIVERS);
+        String str=Global.getStringProperty(VletConfig.PROP_INIT_DEFAULT_VDRIVERS);
         if ((str==null) || StringUtil.isTrueString(str))
         {
             logger.infoPrintf("Initializing default core vdrivers=%s\n",str);
@@ -232,12 +232,12 @@ final public class Registry
         }
         
         // check for additional driver
-        str=Global.getStringProperty(GlobalConfig.PROP_VDRIVERS);
-        logger.infoPrintf("Extra vdrivers %s=%s",GlobalConfig.PROP_VDRIVERS,str);
+        str=Global.getStringProperty(VletConfig.PROP_VDRIVERS);
+        logger.infoPrintf("Extra vdrivers %s=%s",VletConfig.PROP_VDRIVERS,str);
 
         if ((str==null) || (str.compareTo("")==0))
         {
-            logger.debugPrintf("No extra VDrivers from:%s\n",GlobalConfig.PROP_VDRIVERS);
+            logger.debugPrintf("No extra VDrivers from:%s\n",VletConfig.PROP_VDRIVERS);
         }
         else
         {
@@ -288,7 +288,7 @@ final public class Registry
     /** Read local plugin directory (Java File!) and register them */  
     private void addLocalVRSPlugins()
     {
-        VRL plugDir=GlobalConfig.getInstallationPluginDir();
+        VRL plugDir=VletConfig.getInstallationPluginDir();
         logger.debugPrintf(">>> Load plugins from:%s\n",plugDir); 
 
         PluginLoader pluginLoader=PluginLoader.getDefault(); 

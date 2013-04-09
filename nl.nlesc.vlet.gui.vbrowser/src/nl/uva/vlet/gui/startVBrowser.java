@@ -24,7 +24,7 @@
 package nl.uva.vlet.gui;
 
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.dialog.ExceptionForm;
 import nl.uva.vlet.gui.vbrowser.BrowserController;
@@ -47,7 +47,7 @@ public class startVBrowser
   {
       try
       {
-          GlobalConfig.parseArguments(args); 
+          VletConfig.parseArguments(args); 
 
           // does platform init!
           VBrowserInit.initPlatform();

@@ -35,7 +35,7 @@ import nl.nlesc.ptk.data.BooleanHolder;
 import nl.nlesc.ptk.global.Global;
 import nl.nlesc.ptk.util.StringUtil;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.GlobalUtil;
 import nl.uva.vlet.MessageStrings;
 import nl.uva.vlet.data.VAttribute;
@@ -50,7 +50,7 @@ import nl.uva.vlet.vrs.VRSContext;
  * It checks global settings against VRSContext settings and provides
  * more automagical configuration. 
  * The idea is to use the ConfigManager post VRSContext() initialization. <br>
- * For pre VRSContext and global settings, see: {@link nl.uva.vlet.GlobalConfig}. 
+ * For pre VRSContext and global settings, see: {@link nl.uva.vlet.VletConfig}. 
  * <p> 
  * @author Piter T. de Boer 
  */
@@ -148,8 +148,8 @@ public class ConfigManager
     
     private void initWebProxy()
     {
-        String proxyHost=Global.getStringProperty(GlobalConfig.HTTP_PROXY_HOST); 
-        String proxyPort=Global.getStringProperty(GlobalConfig.HTTP_PROXY_PORT);
+        String proxyHost=Global.getStringProperty(VletConfig.HTTP_PROXY_HOST); 
+        String proxyPort=Global.getStringProperty(VletConfig.HTTP_PROXY_PORT);
         
         // String proxyEnabled=Global.getProperty(GlobalConfig.HTTP_PROXY_ENABLED);
         //        
@@ -198,39 +198,39 @@ public class ConfigManager
         if (refresh==null)
             refresh=new BooleanHolder(); 
         
-        if (name.compareTo(GlobalConfig.PROP_INCOMING_FIREWALL_PORT_RANGE)==0)
+        if (name.compareTo(VletConfig.PROP_INCOMING_FIREWALL_PORT_RANGE)==0)
         {
             refresh.value=true; 
             return setIncomingFireWallPortRange(strval); 
         }
-        else if (name.compareTo(GlobalConfig.PROP_SKIP_FLOPPY_SCAN)==0)
+        else if (name.compareTo(VletConfig.PROP_SKIP_FLOPPY_SCAN)==0)
         {
-            vrsContext.setUserProperty(GlobalConfig.PROP_SKIP_FLOPPY_SCAN,attr.getStringValue());
+            vrsContext.setUserProperty(VletConfig.PROP_SKIP_FLOPPY_SCAN,attr.getStringValue());
             refresh.value=true; 
             return true; 
         }
-        else if (name.compareTo(GlobalConfig.PROP_PASSIVE_MODE)==0)
+        else if (name.compareTo(VletConfig.PROP_PASSIVE_MODE)==0)
         {
             refresh.value=true;  
-            vrsContext.setUserProperty(GlobalConfig.PROP_PASSIVE_MODE,attr.getStringValue()); 
+            vrsContext.setUserProperty(VletConfig.PROP_PASSIVE_MODE,attr.getStringValue()); 
             return true; 
         }
-        else if (name.compareTo(GlobalConfig.PROP_BDII_HOSTNAME)==0)
+        else if (name.compareTo(VletConfig.PROP_BDII_HOSTNAME)==0)
         {
             refresh.value=true;  
-            vrsContext.setUserProperty(GlobalConfig.PROP_BDII_HOSTNAME,attr.getStringValue()); 
+            vrsContext.setUserProperty(VletConfig.PROP_BDII_HOSTNAME,attr.getStringValue()); 
             return true; 
         }
-        else if (name.compareTo(GlobalConfig.PROP_BDII_PORT)==0)
+        else if (name.compareTo(VletConfig.PROP_BDII_PORT)==0)
         {
             refresh.value=true;  
-            vrsContext.setUserProperty(GlobalConfig.PROP_BDII_PORT,attr.getStringValue()); 
+            vrsContext.setUserProperty(VletConfig.PROP_BDII_PORT,attr.getStringValue()); 
             return true; 
         }
-        else if (name.compareTo(GlobalConfig.PROP_USER_CONFIGURED_VOS)==0)
+        else if (name.compareTo(VletConfig.PROP_USER_CONFIGURED_VOS)==0)
         {
             refresh.value=true;  
-            vrsContext.setUserProperty(GlobalConfig.PROP_USER_CONFIGURED_VOS,attr.getStringValue()); 
+            vrsContext.setUserProperty(VletConfig.PROP_USER_CONFIGURED_VOS,attr.getStringValue()); 
             return true; 
         }
         
@@ -241,51 +241,51 @@ public class ConfigManager
     {
         VAttribute attr=null; 
         
-        if (name.compareTo(GlobalConfig.PROP_VLET_VERSION)==0)
-            return new VAttribute(name,GlobalConfig.getVletVersion());
-        else if (name.compareTo(GlobalConfig.PROP_VLET_INSTALL)==0)
-            return new VAttribute(name,GlobalConfig.getInstallBaseDir().getPath());
-        else if (name.compareTo(GlobalConfig.PROP_VLET_LIBDIR)==0)
-            return new VAttribute(name,GlobalConfig.getInstallationLibDir().getPath());
-        else if (name.compareTo(GlobalConfig.PROP_VLET_SYSCONFDIR)==0)
-            return new VAttribute(name,GlobalConfig.getInstallationConfigDir().getPath());
-        else if (name.compareTo(GlobalConfig.PROP_SKIP_FLOPPY_SCAN)==0)
+        if (name.compareTo(VletConfig.PROP_VLET_VERSION)==0)
+            return new VAttribute(name,VletConfig.getVletVersion());
+        else if (name.compareTo(VletConfig.PROP_VLET_INSTALL)==0)
+            return new VAttribute(name,VletConfig.getInstallBaseDir().getPath());
+        else if (name.compareTo(VletConfig.PROP_VLET_LIBDIR)==0)
+            return new VAttribute(name,VletConfig.getInstallationLibDir().getPath());
+        else if (name.compareTo(VletConfig.PROP_VLET_SYSCONFDIR)==0)
+            return new VAttribute(name,VletConfig.getInstallationConfigDir().getPath());
+        else if (name.compareTo(VletConfig.PROP_SKIP_FLOPPY_SCAN)==0)
         {
-            attr=new VAttribute(name,GlobalConfig.getBoolProperty(GlobalConfig.PROP_SKIP_FLOPPY_SCAN,true));
+            attr=new VAttribute(name,VletConfig.getBoolProperty(VletConfig.PROP_SKIP_FLOPPY_SCAN,true));
             attr.setEditable(true);
             attr.setHelpText(MessageStrings.TXT_SKIP_FLOPPY_SCAN_WINDOWS);
             return attr; 
         }
-        else if (name.compareTo(GlobalConfig.PROP_INCOMING_FIREWALL_PORT_RANGE)==0)
+        else if (name.compareTo(VletConfig.PROP_INCOMING_FIREWALL_PORT_RANGE)==0)
         {
-            attr = new VAttribute(name,GlobalConfig.getFirewallPortRangeString());
+            attr = new VAttribute(name,VletConfig.getFirewallPortRangeString());
             attr.setEditable(true);
             attr.setHelpText(MessageStrings.TXT_ALLOWED_INCOMING_PORTRANGE); 
             return attr; 
         }
-        else if (name.compareTo(GlobalConfig.PROP_PASSIVE_MODE)==0)
+        else if (name.compareTo(VletConfig.PROP_PASSIVE_MODE)==0)
         {
-            attr = new VAttribute(name,GlobalConfig.getPassiveMode());
+            attr = new VAttribute(name,VletConfig.getPassiveMode());
             attr.setEditable(true);
             attr.setHelpText(MessageStrings.TXT_GLOBAL_PASSIVE_MODE); 
 
             return attr; 
         }
-        else if (StringUtil.equals(name,GlobalConfig.PROP_BDII_HOSTNAME))
+        else if (StringUtil.equals(name,VletConfig.PROP_BDII_HOSTNAME))
         {
             attr=new VAttribute(name,this.getBdiiHostInfo()); 
             attr.setEditable(true);
             return attr; 
         }
-        else if (StringUtil.equals(name,GlobalConfig.PROP_BDII_PORT))
+        else if (StringUtil.equals(name,VletConfig.PROP_BDII_PORT))
         {
             attr=new VAttribute(name,this.getBdiiPort()); 
             attr.setEditable(true);
             return attr; 
         }
-        else if (StringUtil.equals(name,GlobalConfig.PROP_USER_CONFIGURED_VOS))
+        else if (StringUtil.equals(name,VletConfig.PROP_USER_CONFIGURED_VOS))
         {
-            attr=new VAttribute(name,vrsContext.getStringProperty(GlobalConfig.PROP_USER_CONFIGURED_VOS));
+            attr=new VAttribute(name,vrsContext.getStringProperty(VletConfig.PROP_USER_CONFIGURED_VOS));
             attr.setEditable(true);
             return attr; 
         }
@@ -361,7 +361,7 @@ public class ConfigManager
         int defaultPort=2170;
         
         // First fetch default values from installation vletrc.prop (can be NULL!) 
-        bdiiInfostr = GlobalConfig.getInstallationProperty(GlobalConfig.PROP_BDII_HOSTNAME,bdiiInfostr);
+        bdiiInfostr = VletConfig.getInstallationProperty(VletConfig.PROP_BDII_HOSTNAME,bdiiInfostr);
        
         // ================================================================================
         // Allow for LFC_GFAL_INFOSYS environment variable! 
@@ -369,22 +369,22 @@ public class ConfigManager
         // The environment variable overrides installation defaults, but can be overriden
         // by user configuration.!
         // =================================================================================
-        String envstr=vrsContext.getSystemEnv(GlobalConfig.ENV_LCG_GFAL_INFOSYS);
+        String envstr=vrsContext.getSystemEnv(VletConfig.ENV_LCG_GFAL_INFOSYS);
         if (envstr!=null)
         {
-            logger.infoPrintf("Using BDII information from environment variable %s=%s\n",GlobalConfig.ENV_LCG_GFAL_INFOSYS,envstr);
+            logger.infoPrintf("Using BDII information from environment variable %s=%s\n",VletConfig.ENV_LCG_GFAL_INFOSYS,envstr);
             // insert before defaults ! 
             bdiiInfostr=envstr;
         }
         
         // Now check user configuration  
-        bdiiInfostr = GlobalConfig.getUserProperty(GlobalConfig.PROP_BDII_HOSTNAME,bdiiInfostr);
+        bdiiInfostr = VletConfig.getUserProperty(VletConfig.PROP_BDII_HOSTNAME,bdiiInfostr);
         
         // Now check System configuration  
-        bdiiInfostr = GlobalConfig.getSystemProperty(GlobalConfig.PROP_BDII_HOSTNAME,bdiiInfostr);
+        bdiiInfostr = VletConfig.getSystemProperty(VletConfig.PROP_BDII_HOSTNAME,bdiiInfostr);
 
         // Context overides system and user:    
-        Object val = vrsContext.getProperty(GlobalConfig.PROP_BDII_HOSTNAME,false);
+        Object val = vrsContext.getProperty(VletConfig.PROP_BDII_HOSTNAME,false);
         if (val!=null)
             bdiiInfostr=val.toString();
         
@@ -448,7 +448,7 @@ public class ConfigManager
      */ 
     public VRL getUserHomeLocation()
     {
-        return GlobalConfig.getUserHomeLocation(); 
+        return VletConfig.getUserHomeLocation(); 
     }
     
     /**
@@ -458,7 +458,7 @@ public class ConfigManager
     public VRL getUserConfigDir()
     {
         VRL homeLoc = getUserHomeLocation();
-        return homeLoc.appendPath(GlobalConfig.USER_VLETRC_DIRNAME);
+        return homeLoc.appendPath(VletConfig.USER_VLETRC_DIRNAME);
     }
     
     public boolean getUsePersistantUserConfiguration() 
@@ -467,7 +467,7 @@ public class ConfigManager
         // Although it can be overriden...
         boolean defVal=(isServiceEnvironment()==false);  
         
-        return vrsContext.getBoolProperty(GlobalConfig.PROP_PERSISTANT_USER_CONFIGURATION,defVal);
+        return vrsContext.getBoolProperty(VletConfig.PROP_PERSISTANT_USER_CONFIGURATION,defVal);
     }
     
     public VRL getServerRegistryLocation()
@@ -483,7 +483,7 @@ public class ConfigManager
      */
     public void setHasUI(boolean val)
     {
-        GlobalConfig.setHasUI(val); 
+        VletConfig.setHasUI(val); 
     }
 
     /**
@@ -494,7 +494,7 @@ public class ConfigManager
     public boolean setPersistantUserConfiguration(boolean val)
     {
         boolean prev=this.getUsePersistantUserConfiguration(); 
-        vrsContext.setProperty(GlobalConfig.PROP_PERSISTANT_USER_CONFIGURATION,val);
+        vrsContext.setProperty(VletConfig.PROP_PERSISTANT_USER_CONFIGURATION,val);
         return prev; 
     }
     
@@ -548,13 +548,13 @@ public class ConfigManager
 
     public boolean setIncomingFireWallPortRange(String rangestr)
     {
-        int range[]=GlobalConfig.portRange(rangestr,null);
+        int range[]=VletConfig.portRange(rangestr,null);
 
         if ((range==null) || (range.length<2))
             // unset
             rangestr=""; 
 
-        setUserProperty(GlobalConfig.PROP_INCOMING_FIREWALL_PORT_RANGE,rangestr);
+        setUserProperty(VletConfig.PROP_INCOMING_FIREWALL_PORT_RANGE,rangestr);
 
         return true; 
     }
@@ -562,14 +562,14 @@ public class ConfigManager
     /** Returns path to the User Properties: $HOME/.vletc/vletrc.prop */
     public VRL getUserPropertiesLocation()
     {
-        return GlobalConfig.getUserPropertiesLocation(); 
+        return VletConfig.getUserPropertiesLocation(); 
     }
     
     /** Returns location of ~/.vletrc/myvle */ 
     public VRL getMyVLeLocation()
     {
         VRL homeLoc = vrsContext.getUserHomeLocation(); 
-        return homeLoc.appendPath(GlobalConfig.USER_VLETRC_DIRNAME+VRL.SEP_CHAR_STR+MyVLe.MYVLE_SUBDIR_NAME);
+        return homeLoc.appendPath(VletConfig.USER_VLETRC_DIRNAME+VRL.SEP_CHAR_STR+MyVLe.MYVLE_SUBDIR_NAME);
     }
 
     public String getProperty(String name)
@@ -577,10 +577,10 @@ public class ConfigManager
         return this.vrsContext.getStringProperty(name);
     }
 
-    /** @see nl.uva.vlet.GlobalConfig#isService() */ 
+    /** @see nl.uva.vlet.VletConfig#isService() */ 
     public boolean isServiceEnvironment()
     {
-        return GlobalConfig.isService(); 
+        return VletConfig.isService(); 
     }
 
     /** Loads default ServerInfo Registry. */
@@ -597,7 +597,7 @@ public class ConfigManager
      */  
     public int getSocketTimeOut()
     {
-        String value=getProperty(GlobalConfig.TCP_CONNECTION_TIMEOUT);
+        String value=getProperty(VletConfig.TCP_CONNECTION_TIMEOUT);
         try
         {
             if (value!=null)
@@ -619,7 +619,7 @@ public class ConfigManager
      */ 
     public int getServerRequestTimeOut()
     {
-        String value=getProperty(GlobalConfig.SERVER_REQUEST_TIMEOUT);
+        String value=getProperty(VletConfig.SERVER_REQUEST_TIMEOUT);
         try
         {
             if (value!=null)
@@ -685,22 +685,22 @@ public class ConfigManager
    
     public int getHTTPProxyPort()
     {
-        return vrsContext.getIntProperty(GlobalConfig.HTTP_PROXY_PORT,80); 
+        return vrsContext.getIntProperty(VletConfig.HTTP_PROXY_PORT,80); 
     }
 
     public String getHTTPProxyHost()
     {
-        return vrsContext.getStringProperty(GlobalConfig.HTTP_PROXY_HOST);
+        return vrsContext.getStringProperty(VletConfig.HTTP_PROXY_HOST);
     }
     
     public int getHTTPSProxyPort()
     {
-        return vrsContext.getIntProperty(GlobalConfig.HTTPS_PROXY_PORT,80); 
+        return vrsContext.getIntProperty(VletConfig.HTTPS_PROXY_PORT,80); 
     }
 
     public String getHTTPSProxyHost()
     {
-        return vrsContext.getStringProperty(GlobalConfig.HTTPS_PROXY_HOST);
+        return vrsContext.getStringProperty(VletConfig.HTTPS_PROXY_HOST);
     }
 
     /** Whether to use SSH tunnel(s) for specified destination */ 
@@ -747,14 +747,14 @@ public class ConfigManager
      * Return whether user interaction is allowed. 
      * This method check global settings and context depended settings. 
      * VRSContext settings override Global Settings.  
-     * @see nl.uva.vlet.GlobalConfig#PROP_ALLOW_USER_INTERACTION PROP_ALLOW_USER_INTERACTION
+     * @see nl.uva.vlet.VletConfig#PROP_ALLOW_USER_INTERACTION PROP_ALLOW_USER_INTERACTION
      */   
 	public boolean getAllowUserInteraction()
 	{
 		// get Explicit Global Settings: 
-		boolean val=GlobalConfig.getBoolProperty(GlobalConfig.PROP_ALLOW_USER_INTERACTION,true);
+		boolean val=VletConfig.getBoolProperty(VletConfig.PROP_ALLOW_USER_INTERACTION,true);
 		// use as default for Context settings: 
-		return this.vrsContext.getBoolProperty(GlobalConfig.PROP_ALLOW_USER_INTERACTION,val); 
+		return this.vrsContext.getBoolProperty(VletConfig.PROP_ALLOW_USER_INTERACTION,val); 
 	}
  
 	/**
@@ -763,7 +763,7 @@ public class ConfigManager
 	 */  
 	public void setGlobalAllowUserInteraction(boolean val)
 	{
-		GlobalConfig.setSystemProperty(GlobalConfig.PROP_ALLOW_USER_INTERACTION,""+val); 
+		VletConfig.setSystemProperty(VletConfig.PROP_ALLOW_USER_INTERACTION,""+val); 
 	}
 	
 	/** 
@@ -772,7 +772,7 @@ public class ConfigManager
 	 */ 
 	public void setAllowUserInteraction(boolean val)
 	{
-		this.vrsContext.setProperty(GlobalConfig.PROP_ALLOW_USER_INTERACTION,""+val); 
+		this.vrsContext.setProperty(VletConfig.PROP_ALLOW_USER_INTERACTION,""+val); 
 	}
 
 	/** Returns CertificateStore from (defaul) location ~/.vletrc/cacerts */ 

@@ -56,7 +56,7 @@ import javax.swing.text.DefaultEditorKit;
 
 import nl.nlesc.ptk.global.Global;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.gui.GuiPropertyName;
 import nl.uva.vlet.gui.GuiSettings;
 import nl.uva.vlet.gui.Messages;
@@ -1069,7 +1069,7 @@ public class VBrowser extends javax.swing.JFrame
                         {
                             public void actionPerformed(ActionEvent evt)
                             {
-                                GlobalConfig.getRootLogger().setLevelToError();
+                                VletConfig.getRootLogger().setLevelToError();
                             }
                         });
                     }
@@ -1080,7 +1080,7 @@ public class VBrowser extends javax.swing.JFrame
                         {
                             public void actionPerformed(ActionEvent evt)
                             {
-                                GlobalConfig.getRootLogger().setLevelToWarn();
+                                VletConfig.getRootLogger().setLevelToWarn();
                             }
                         });
                     }
@@ -1091,7 +1091,7 @@ public class VBrowser extends javax.swing.JFrame
                         {
                             public void actionPerformed(ActionEvent evt)
                             {
-                                GlobalConfig.getRootLogger().setLevelToInfo();
+                                VletConfig.getRootLogger().setLevelToInfo();
                             }
                         });
                     }
@@ -1102,7 +1102,7 @@ public class VBrowser extends javax.swing.JFrame
                         {
                             public void actionPerformed(ActionEvent evt)
                             {
-                                GlobalConfig.getRootLogger().setLevelToDebug();
+                                VletConfig.getRootLogger().setLevelToDebug();
                             }
                         });
                     }

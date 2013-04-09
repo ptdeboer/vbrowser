@@ -194,12 +194,6 @@ public class HTTPNode extends VNode implements VStreamAccessable
         return VRS.HTTP_SCHEME; 
     }
 
-    @Override
-    public VRL getHelp()
-    {
-        return null; //return Global.getHelpUrl("http"); 
-    }
-
     public InputStream getInputStream() throws IOException
     {
         return this.connection.getInputStream();

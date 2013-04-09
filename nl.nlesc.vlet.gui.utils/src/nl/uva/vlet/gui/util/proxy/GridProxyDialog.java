@@ -39,7 +39,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.gui.GuiSettings;
 import nl.uva.vlet.gui.UIGlobal;
 import nl.uva.vlet.vrs.VRSContext;
@@ -611,7 +611,7 @@ public class GridProxyDialog extends javax.swing.JDialog
     {
         GridProxyDialog dialog=new GridProxyDialog(message);
         
-        if (GlobalConfig.isApplet()==false)
+        if (VletConfig.isApplet()==false)
         	dialog.setAlwaysOnTop(true);
         
         dialog.setModal(true);
@@ -626,7 +626,7 @@ public class GridProxyDialog extends javax.swing.JDialog
     {
         GridProxyDialog dialog=new GridProxyDialog(context,message);
         
-        if (GlobalConfig.isApplet()==false)
+        if (VletConfig.isApplet()==false)
         	dialog.setAlwaysOnTop(true);
         
         dialog.setModal(true);

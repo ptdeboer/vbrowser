@@ -34,7 +34,7 @@ import java.util.Properties;
 import javax.swing.JComponent;
 
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.GuiSettings;
 import nl.uva.vlet.gui.UIGlobal;
@@ -529,7 +529,7 @@ public class FontInfo
 
     private static VRL getUserFontSettingsLocation()
     {
-        VRL loc=GlobalConfig.getUserConfigDir(); 
+        VRL loc=VletConfig.getUserConfigDir(); 
         
         loc=loc.appendPath("fonts");
         return loc;
@@ -537,7 +537,7 @@ public class FontInfo
     
     private static VRL getSystemFontSettingsLocation()
     {
-        VRL loc=GlobalConfig.getInstallationConfigDir(); 
+        VRL loc=VletConfig.getInstallationConfigDir(); 
         
         loc=loc.appendPath("fonts");
         return loc;

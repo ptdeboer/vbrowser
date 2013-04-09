@@ -32,7 +32,7 @@ import nl.nlesc.ptk.data.IndexedHashtable;
 import nl.nlesc.ptk.ui.UI;
 import nl.nlesc.ptk.util.StringUtil;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.error.InitializationError;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.tasks.VRSTaskWatcher;
@@ -423,7 +423,7 @@ public class VRSContext implements Serializable
         Object val=this.properties.get(name);
 
         if ((val==null) && (checkGlobal)) 
-            return GlobalConfig.getProperty(name);
+            return VletConfig.getProperty(name);
 
         return val; 
     }
@@ -678,7 +678,7 @@ public class VRSContext implements Serializable
 
     public String getLocalUserHome()
     {
-        return GlobalConfig.getUserHome();
+        return VletConfig.getUserHome();
     }
 
 
@@ -733,7 +733,7 @@ public class VRSContext implements Serializable
         if (this.currentWorkingDir!=null) 
             return currentWorkingDir;      
         // return global 
-        return GlobalConfig.getStartupWorkingDir(); 
+        return VletConfig.getStartupWorkingDir(); 
     }
 
     /**
@@ -954,7 +954,7 @@ public class VRSContext implements Serializable
     public String getSystemEnv(String envVar)
     {
         // no context overrided Environment Variables: 
-        return GlobalConfig.getSystemEnv(envVar); 
+        return VletConfig.getSystemEnv(envVar); 
     }
     
 

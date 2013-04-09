@@ -36,7 +36,7 @@ import javax.swing.text.PlainDocument;
 
 import nl.nlesc.ptk.data.StringList;
 import nl.nlesc.ptk.util.StringUtil;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.gui.UIGlobal;
 
 
@@ -81,7 +81,7 @@ public class AutoCompleteTextField extends JComboBox
     private void init()
     {
         history.addUnique("myvle:/");
-        history.addUnique("file:"+GlobalConfig.getUserHome());
+        history.addUnique("file:"+VletConfig.getUserHome());
         history.addUnique("file:/"); 
         
         history.sort(true);

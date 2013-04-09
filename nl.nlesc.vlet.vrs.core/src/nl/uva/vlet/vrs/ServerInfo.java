@@ -32,7 +32,7 @@ import static nl.uva.vlet.data.VAttributeConstants.AUTH_SCHEME;
 import nl.nlesc.ptk.crypt.Secret;
 import nl.nlesc.ptk.data.StringList;
 import nl.nlesc.ptk.util.StringUtil;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
 import nl.uva.vlet.data.VAttributeSet;
@@ -922,12 +922,12 @@ public class ServerInfo
 
     public boolean getUsePassiveMode(boolean defVal)
     {
-        return getBoolProperty(GlobalConfig.ATTR_PASSIVE_MODE, defVal);
+        return getBoolProperty(VletConfig.ATTR_PASSIVE_MODE, defVal);
     }
 
     public void setUsePassiveMode(boolean val)
     {
-        setAttribute(new VAttribute(GlobalConfig.ATTR_PASSIVE_MODE,val),true); 
+        setAttribute(new VAttribute(VletConfig.ATTR_PASSIVE_MODE,val),true); 
     }
     
     public void setAuthScheme(String authStr)
@@ -1078,11 +1078,11 @@ public class ServerInfo
         	attr.setEditable(false); 
         }
         
-        if (attr.hasName(GlobalConfig.ATTR_PASSIVE_MODE))
+        if (attr.hasName(VletConfig.ATTR_PASSIVE_MODE))
         {
             // Global set PASSIVE_MODE overrides server settings! 
 
-            if (GlobalConfig.getPassiveMode() == true)
+            if (VletConfig.getPassiveMode() == true)
             {
                 if (attr.isEditable())
                     attr.setValue(true);

@@ -50,7 +50,6 @@ import nl.uva.vlet.gui.presentation.VRSPresentation;
 import nl.uva.vlet.gui.proxyvrs.ProxyNode;
 import nl.uva.vlet.gui.view.ViewFilter;
 
-import nl.uva.vlet.util.VRSSort;
 import nl.uva.vlet.vfs.VACL;
 import nl.uva.vlet.vfs.VDir;
 import nl.uva.vlet.vfs.VFSClient;
@@ -67,6 +66,7 @@ import nl.uva.vlet.vrs.VDeletable;
 import nl.uva.vlet.vrs.VEditable;
 import nl.uva.vlet.vrs.VNode;
 import nl.uva.vlet.vrs.VRenamable;
+import nl.uva.vlet.vrs.util.VRSSort;
 import nl.vbrowser.ui.presentation.UIPresentable;
 import nl.vbrowser.ui.presentation.UIPresentation;
 

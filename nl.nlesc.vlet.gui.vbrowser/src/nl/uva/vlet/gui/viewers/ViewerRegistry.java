@@ -29,7 +29,7 @@ import java.util.Vector;
 import nl.nlesc.ptk.data.IndexedHashtable;
 import nl.nlesc.ptk.global.Global;
 import nl.nlesc.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.actions.ActionMenuMapping;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.gui.UIGlobal;
@@ -274,17 +274,17 @@ public class ViewerRegistry
         for (String className : defaultViewers)
             registerViewer(Thread.currentThread().getContextClassLoader(), className);
 
-        VRL extraviewers = GlobalConfig.getInstallationPluginDir();
+        VRL extraviewers = VletConfig.getInstallationPluginDir();
 
         loadViewerPlugins(extraviewers);
 
-        VRL userviewers = GlobalConfig.getUserPluginDir();
+        VRL userviewers = VletConfig.getUserPluginDir();
         loadViewerPlugins(userviewers);
     }
 
     private void loadPreferredViewers()
     {
-        VRL vrl = GlobalConfig.getUserConfigDir().appendPath(VIEWERSETTINGS_FILE);
+        VRL vrl = VletConfig.getUserConfigDir().appendPath(VIEWERSETTINGS_FILE);
 
         try
         {

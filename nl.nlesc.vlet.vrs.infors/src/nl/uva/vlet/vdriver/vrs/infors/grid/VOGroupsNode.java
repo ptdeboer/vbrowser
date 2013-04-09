@@ -30,7 +30,7 @@ import nl.nlesc.ptk.presentation.Presentation;
 import nl.nlesc.ptk.task.ActionTask;
 import nl.nlesc.ptk.task.ITaskMonitor;
 import nl.nlesc.ptk.util.StringUtil;
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.data.VAttributeConstants;
@@ -148,7 +148,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
     public synchronized StringList getConfiguredVOs()
     {
         // check context:
-        String voStr = this.vrsContext.getStringProperty(GlobalConfig.PROP_USER_CONFIGURED_VOS);
+        String voStr = this.vrsContext.getStringProperty(VletConfig.PROP_USER_CONFIGURED_VOS);
         StringList voList = new StringList();
 
         if (voStr != null)
@@ -166,7 +166,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
             boolean added = voList.add(currentVO, true);
             // update VO
             if (added)
-                this.vrsContext.setUserProperty(GlobalConfig.PROP_USER_CONFIGURED_VOS, voList.toString(","));
+                this.vrsContext.setUserProperty(VletConfig.PROP_USER_CONFIGURED_VOS, voList.toString(","));
         }
 
         return voList;
@@ -174,7 +174,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
 
     protected synchronized void setConfiguredVOs(StringList vos)
     {
-        this.vrsContext.setUserProperty(GlobalConfig.PROP_USER_CONFIGURED_VOS, vos.toString(","));
+        this.vrsContext.setUserProperty(VletConfig.PROP_USER_CONFIGURED_VOS, vos.toString(","));
     }
 
     protected synchronized VONode addVO(String vo)
@@ -188,7 +188,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
             return voGroup;
 
         // check context:
-        String voStr = this.vrsContext.getStringProperty(GlobalConfig.PROP_USER_CONFIGURED_VOS);
+        String voStr = this.vrsContext.getStringProperty(VletConfig.PROP_USER_CONFIGURED_VOS);
         StringList voList = new StringList();
 
         if (voStr != null)
@@ -202,7 +202,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         boolean added = voList.add(vo, true);
         // update VO
         if (added)
-            this.vrsContext.setUserProperty(GlobalConfig.PROP_USER_CONFIGURED_VOS, voList.toString(","));
+            this.vrsContext.setUserProperty(VletConfig.PROP_USER_CONFIGURED_VOS, voList.toString(","));
         
         try
         {
@@ -477,7 +477,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
 
     private void infoPrintf(String msg, Object... args)
     {
-        GlobalConfig.getRootLogger().infoPrintf(this+msg, args);
+        VletConfig.getRootLogger().infoPrintf(this+msg, args);
     }
 
     @Override

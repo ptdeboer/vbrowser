@@ -29,7 +29,7 @@ import java.util.Set;
 
 import org.globus.gsi.GlobusCredential;
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.grid.globus.GlobusUtil;
 import nl.uva.vlet.grid.voms.VO;
 import nl.uva.vlet.grid.voms.VomsProxyCredential;
@@ -47,7 +47,7 @@ public class VomsTest
            // GlobalConfig.init();
 
             GridProxy prox = GridProxy.getDefault();
-            GlobalConfig.getRootLogger().setLevelToDebug();
+            VletConfig.getRootLogger().setLevelToDebug();
 
             if (prox.isValid() == false)
             {
@@ -143,12 +143,12 @@ public class VomsTest
 
     private static void Error(String str)
     {
-        GlobalConfig.getRootLogger().errorPrintf("VomsTest:%s\n", str);
+        VletConfig.getRootLogger().errorPrintf("VomsTest:%s\n", str);
     }
 
     private static void Message(String str)
     {
-        GlobalConfig.getRootLogger().infoPrintf("VomsTest:%s\n", str);
+        VletConfig.getRootLogger().infoPrintf("VomsTest:%s\n", str);
     }
     
 }

@@ -24,7 +24,7 @@
 package nl.uva.vlet.vdriver.vrs.infors.net;
 
 
-import nl.uva.vlet.GlobalConfig;
+import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vdriver.vrs.infors.CompositeServiceInfoNode;
 import nl.uva.vlet.vdriver.vrs.infors.InfoConstants;
@@ -154,6 +154,6 @@ public class HostInfoNode extends CompositeServiceInfoNode<VNode>
 
     private void error(String msg)
     {
-       GlobalConfig.getRootLogger().errorPrintf(this+":%s\n",msg);
+       VletConfig.getRootLogger().errorPrintf(this+":%s\n",msg);
     }
 }
