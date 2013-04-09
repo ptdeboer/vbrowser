@@ -16,39 +16,39 @@
  * See: http://www.vl-e.nl/ 
  * See: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- * $Id: HTTPTester.java,v 1.1 2013/02/05 11:57:00 piter Exp $  
+ * $Id: GFTPTester.java,v 1.1 2013/02/05 11:57:00 piter Exp $  
  * $Date: 2013/02/05 11:57:00 $
  */ 
 // source: 
 
-package nl.uva.vlet.vdriver.vrs.infors.net.testers;
+package nl.uva.vlet.vrs.infors.net.testers;
 
-import nl.uva.vlet.vdriver.vrs.infors.net.ProtocolTester;
+import nl.uva.vlet.vrs.infors.net.ProtocolTester;
 
 /**
- * HTTP tester. 
+ * GFTP tester. 
  */
-public class HTTPTester extends ProtocolTester
+public class GFTPTester extends ProtocolTester
 {
-    protected HTTPTester(String name, boolean isSSL)
+    protected GFTPTester(String name, boolean isSSL)
     {
         super(name,isSSL); 
     }
 
-    public HTTPTester()
+    public GFTPTester()
     {
-        super("HTTPTester",false); 
+        super("GFTPTester",false); // initial socket is NOT SSL! 
     }
 
     public String getScheme()
     {
-        return "http"; 
+        return "gftp"; 
     }
     
     
     protected byte[] getReponseChallenge()
     {
-        return "GET / HTTP/1.0\n\n\n".getBytes();  
+        return "HELO GFTP\n".getBytes();  
     }
     
     // Check HTTP/HTML response: any is ok. 
@@ -58,11 +58,14 @@ public class HTTPTester extends ProtocolTester
         {
             String string=new String(bytes); 
         
-            if (string.contains("html") || string.contains("HTML"))
+            if ( (string.contains("GridFTP")) || (string.contains("gridftp")) )
                 return true;
             
-            if (string.contains("text/html")) 
+            // response to "HELO" command :-) 
+            if (string.contains("Must perform GSSAPI"))
                 return true; 
+            if (string.contains("gridftp"))
+                return true;
         
             return false;
         }

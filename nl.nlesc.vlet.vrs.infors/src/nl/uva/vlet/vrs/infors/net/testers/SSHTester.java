@@ -21,9 +21,9 @@
  */ 
 // source: 
 
-package nl.uva.vlet.vdriver.vrs.infors.net.testers;
+package nl.uva.vlet.vrs.infors.net.testers;
 
-import nl.uva.vlet.vdriver.vrs.infors.net.ProtocolTester;
+import nl.uva.vlet.vrs.infors.net.ProtocolTester;
 
 /**
  * SSH tester. 

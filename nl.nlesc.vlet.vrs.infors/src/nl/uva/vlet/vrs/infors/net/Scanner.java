@@ -21,7 +21,7 @@
  */ 
 // source: 
 
-package nl.uva.vlet.vdriver.vrs.infors.net;
+package nl.uva.vlet.vrs.infors.net;
 
 import java.io.IOException;
 import java.io.InputStream;

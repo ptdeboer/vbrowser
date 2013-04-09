@@ -21,7 +21,7 @@
  */ 
 // source: 
 
-package nl.uva.vlet.vdriver.vrs.infors.grid;
+package nl.uva.vlet.vrs.infors.grid;
 
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringList;
@@ -29,14 +29,14 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.vdriver.vrs.infors.CompositeServiceInfoNode;
-import nl.uva.vlet.vdriver.vrs.infors.InfoConstants;
-import nl.uva.vlet.vdriver.vrs.infors.net.NetworkNode;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrms.ConfigManager;
 import nl.uva.vlet.vrs.VEditable;
 import nl.uva.vlet.vrs.VNode;
 import nl.uva.vlet.vrs.VRSContext;
+import nl.uva.vlet.vrs.infors.CompositeServiceInfoNode;
+import nl.uva.vlet.vrs.infors.InfoConstants;
+import nl.uva.vlet.vrs.infors.net.NetworkNode;
 
 public class GridNeighbourhood extends CompositeServiceInfoNode 
     implements VEditable // editable methods already defined in super class hierarchy  

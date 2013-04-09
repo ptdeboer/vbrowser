@@ -21,12 +21,12 @@
  */ 
 // source: 
 
-package nl.uva.vlet.vdriver.vrs.infors.net;
+package nl.uva.vlet.vrs.infors.net;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.uva.vlet.vdriver.vrs.infors.grid.InfoNode;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.VRSContext;
+import nl.uva.vlet.vrs.infors.grid.InfoNode;
 
 public class ServiceInfoNode extends InfoNode
 {

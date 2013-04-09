@@ -21,7 +21,7 @@
  */ 
 // source: 
 
-package nl.uva.vlet.vdriver.vrs.infors.grid;
+package nl.uva.vlet.vrs.infors.grid;
 
 import java.util.ArrayList;
 
@@ -43,13 +43,13 @@ import nl.uva.vlet.tasks.VRSTaskMonitor;
 import nl.uva.vlet.util.bdii.BdiiService;
 import nl.uva.vlet.util.bdii.ServiceInfo;
 import nl.uva.vlet.util.bdii.StorageArea;
-import nl.uva.vlet.vdriver.vrs.infors.CompositeServiceInfoNode;
-import nl.uva.vlet.vdriver.vrs.infors.InfoConstants;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrms.ResourceFolder;
 import nl.uva.vlet.vrs.VNode;
 import nl.uva.vlet.vrs.VRS;
 import nl.uva.vlet.vrs.VRSContext;
+import nl.uva.vlet.vrs.infors.CompositeServiceInfoNode;
+import nl.uva.vlet.vrs.infors.InfoConstants;
 
 public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
 {

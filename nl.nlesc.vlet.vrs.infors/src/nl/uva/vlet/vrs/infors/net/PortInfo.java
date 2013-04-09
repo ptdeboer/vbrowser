@@ -21,7 +21,7 @@
  */ 
 // source: 
 
-package nl.uva.vlet.vdriver.vrs.infors.net;
+package nl.uva.vlet.vrs.infors.net;
 
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
@@ -31,10 +31,10 @@ import java.util.Map;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.uva.vlet.vdriver.vrs.infors.net.testers.GFTPTester;
-import nl.uva.vlet.vdriver.vrs.infors.net.testers.HTTPSTester;
-import nl.uva.vlet.vdriver.vrs.infors.net.testers.HTTPTester;
-import nl.uva.vlet.vdriver.vrs.infors.net.testers.SSHTester;
+import nl.uva.vlet.vrs.infors.net.testers.GFTPTester;
+import nl.uva.vlet.vrs.infors.net.testers.HTTPSTester;
+import nl.uva.vlet.vrs.infors.net.testers.HTTPTester;
+import nl.uva.vlet.vrs.infors.net.testers.SSHTester;
 
 public class PortInfo
 {

@@ -21,7 +21,7 @@
  */ 
 // source: 
 
-package nl.uva.vlet.vdriver.vrs.infors;
+package nl.uva.vlet.vrs.infors;
 
 import nl.uva.vlet.vrs.VRS;
 

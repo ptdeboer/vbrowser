@@ -16,36 +16,23 @@
  * See: http://www.vl-e.nl/ 
  * See: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- * $Id: ConnectionStatus.java,v 1.1 2013/02/05 11:57:00 piter Exp $  
+ * $Id: HTTPSTester.java,v 1.1 2013/02/05 11:57:00 piter Exp $  
  * $Date: 2013/02/05 11:57:00 $
  */ 
 // source: 
 
-package nl.uva.vlet.vdriver.vrs.infors.net;
+package nl.uva.vlet.vrs.infors.net.testers;
 
-public enum ConnectionStatus
+public class HTTPSTester extends HTTPTester
 {
-    UNKNOWN("Unknown"),
-    CONNECTING("Connecting"),
-    CONNECTED("Connected"),
-    REFUSED("Refused"),
-    ROUTE_BLOCKED("No Route or Route Blocked"), // ICMP NO ROUTE TO HOST !
-    TIMED_OUT("Timed Out");
-    
-    private String statusMessage;  
-    
-    private ConnectionStatus(String message)
+    public HTTPSTester()
     {
-       this.statusMessage=message; 
+        super("HTTPSTester",true);
     }
     
-    public String getMessage()
+    public String getScheme()
     {
-        return statusMessage; 
+        return "https"; 
     }
-    
-    public String toString()
-    {
-        return super.toString()+"("+statusMessage+")"; 
-    }
+
 }

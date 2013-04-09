@@ -21,15 +21,15 @@
  */ 
 // source: 
 
-package nl.uva.vlet.vdriver.vrs.infors.net;
+package nl.uva.vlet.vrs.infors.net;
 
 
 import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.vdriver.vrs.infors.CompositeServiceInfoNode;
-import nl.uva.vlet.vdriver.vrs.infors.InfoConstants;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.VNode;
+import nl.uva.vlet.vrs.infors.CompositeServiceInfoNode;
+import nl.uva.vlet.vrs.infors.InfoConstants;
 
 
 public class HostInfoNode extends CompositeServiceInfoNode<VNode>

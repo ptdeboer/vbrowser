@@ -21,10 +21,10 @@
  */
 // source: 
 
-package nl.uva.vlet.vdriver.vrs.infors.net;
+package nl.uva.vlet.vrs.infors.net;
 
-import static nl.uva.vlet.vdriver.vrs.infors.InfoConstants.ATTR_NETWORK_ADRESS;
-import static nl.uva.vlet.vdriver.vrs.infors.InfoConstants.NETWORK_INFO;
+import static nl.uva.vlet.vrs.infors.InfoConstants.ATTR_NETWORK_ADRESS;
+import static nl.uva.vlet.vrs.infors.InfoConstants.NETWORK_INFO;
 
 import java.net.UnknownHostException;
 
@@ -34,12 +34,12 @@ import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.NotImplementedException;
 import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.vdriver.vrs.infors.CompositeServiceInfoNode;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.LinkNode;
 import nl.uva.vlet.vrs.VEditable;
 import nl.uva.vlet.vrs.VNode;
 import nl.uva.vlet.vrs.VRSContext;
+import nl.uva.vlet.vrs.infors.CompositeServiceInfoNode;
 
 public class NetworkNode extends CompositeServiceInfoNode implements VEditable
 {
