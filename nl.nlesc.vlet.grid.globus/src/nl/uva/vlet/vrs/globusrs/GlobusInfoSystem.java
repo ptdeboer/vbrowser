@@ -2,11 +2,11 @@ package nl.uva.vlet.vrs.globusrs;
 
 import nl.uva.vlet.exception.VlException;
 
-import nl.uva.vlet.vdriver.vrs.infors.CompositeServiceInfoNode;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.VNode;
 import nl.uva.vlet.vrs.VRSContext;
 import nl.uva.vlet.vrs.VResourceSystem;
+import nl.uva.vlet.vrs.infors.CompositeServiceInfoNode;
 
 public class GlobusInfoSystem extends CompositeServiceInfoNode<VNode> implements VResourceSystem
 {
