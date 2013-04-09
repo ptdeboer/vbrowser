@@ -1,0 +1,8 @@
+### NOTES ###
+
+Example VFS Skeleton Implementation. 
+
+Contains minimal skeleton filesystem implementation. 
+Extend SkelDir,SkelFile and SkelFS for actual filesystem implementation. 
+
+
