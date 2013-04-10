@@ -690,6 +690,14 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
         return pathOrReference; 
     }
     
+    /**
+     * Returns path with explicit "/" at the end. 
+     * This is mandatory for some Globus implementations */ 
+    public String getDirPath()
+    {
+        return this.getPath()+"/";
+    }
+    
     public String getHostname() 
     {
         return hostname; 
@@ -848,6 +856,15 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
     {
         return this.query; 
     }
+    
+    public String[] getQueryParts()
+    {
+        if (getQuery()==null) 
+            return null; 
+        
+        return this.getQuery().split(ATTRIBUTE_SEPERATOR);
+    }
+   
 
     public String getUserinfo()
     {
