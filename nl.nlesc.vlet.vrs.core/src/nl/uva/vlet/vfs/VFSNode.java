@@ -193,7 +193,6 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         return create(true); 
     }
     
-
     /** Returns root directory of this directory/file system */ 
     public VDir getRoot() throws VlException
     {
@@ -221,14 +220,12 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         throw new nl.uva.vlet.exception.ResourceTypeMismatchException("Path is not a File path:"+loc); 
     }
 
-
     /**
      * Optional method for filesystems who support hidden files. 
      * Note that the implementation of hidden files on filesystems
      * might differ!
      * Default implemententation is to return true for 'dot' files. 
      */
-
     public boolean isHidden()
     {
         if (getBasename().startsWith("."))
@@ -490,13 +487,11 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         throw new nl.uva.vlet.exception.ResourceTypeMismatchException("Parent of VFSNode is not of VDir type:"+this);
     }
 
-
     /**
      * Returns array whith one parent. 
      * 
      * @throws VlException
      */
-
     public VNode[] getParents() throws VlException
     {
         VNode parents[] = new VNode[1];
@@ -603,12 +598,9 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         return isWritable(); 
     }
 
-    
-
     // ========================
     // ACL interface : Under Construction  
     // =========================
-
     public void setACL(VAttribute[][] acl) throws VlException
     {
         if (this instanceof VUnixFileMode)
