@@ -71,44 +71,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     private static String[] childTypes={VFS.FILE_TYPE,VFS.DIR_TYPE};
     
    
-    /** 
-     * Default Recursive delete: lists children 
-     * and perform delete() on child list. 
-     * This method does NOT delete the parent node itself !  
-     * @throws VlException 
-     */
-    protected boolean defaultRecursiveDeleteChildren(ITaskMonitor  monitor,VDir dir) throws VlException
-    {
-    	int len=0; 
-        VFSNode nodes[]=dir.list(); 
-        if (nodes!=null)
-        	len=nodes.length; 
-
-    	if (monitor==null)
-    		monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting contents of:"+dir,len);
-
-    	monitor.logPrintf("Deleting contents of:%s\n",dir.getPath()); 
-        for (int i=0;(nodes!=null) && (i<nodes.length);i++)
-        {
-            if (nodes[i] instanceof VCompositeDeletable)
-            {
-                ((VCompositeDeletable)nodes[i]).delete(true);
-            }
-            else
-            {
-            	monitor.startSubTask("deleting:"+nodes[i].getBasename(),1); 
-            	monitor.logPrintf(" - deleting:%s\n",nodes[i]); 
-                nodes[i].delete();
-            	monitor.endSubTask("deleting:"+nodes[i].getBasename()); 
-            }
-            
-            // new asynchronous update to the VBrowser: 
-            dir.getVRSContext().fireEvent(ResourceEvent.createDeletedEvent(nodes[i].getVRL()));  
-                    
-        }
-        
-        return true; // if no exception occured, the result=true
-    }
+    
     
     public static VFSNode[] sortVNodes(VFSNode[] nodes,boolean typeFirst,boolean ignoreCase)
     {

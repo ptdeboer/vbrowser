@@ -628,7 +628,7 @@ public abstract class VNode //implements IVNode
 	}
 	
 	/** 
-	 * Synchronized cached attributes and/or refresh (optional) cached attributes
+	 * Synchronize cached attributes and/or refresh cached attributes
 	 * from remote resource. 
 	 * This is an import method in the case that a resource caches resource attributes, like
 	 * file attributes. 

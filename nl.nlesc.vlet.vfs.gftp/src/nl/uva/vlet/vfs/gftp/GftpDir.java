@@ -199,7 +199,7 @@ public class GftpDir extends VDir
 
         // Delete children first:
         if (recurse == true)
-            defaultRecursiveDeleteChildren(monitor, this);
+            this.getVRSContext().getTransferManager().recursiveDeleteDirContents(monitor,this, true); 
 
         return server.delete(true, this.getPath());
     }

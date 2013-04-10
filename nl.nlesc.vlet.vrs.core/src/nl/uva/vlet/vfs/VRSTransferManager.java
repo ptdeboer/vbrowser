@@ -51,6 +51,7 @@ import nl.uva.vlet.vrms.VLogicalResource;
 import nl.uva.vlet.vrs.ResourceEvent;
 import nl.uva.vlet.vrs.VActiveTransferable;
 import nl.uva.vlet.vrs.VComposite;
+import nl.uva.vlet.vrs.VCompositeDeletable;
 import nl.uva.vlet.vrs.VDeletable;
 import nl.uva.vlet.vrs.VNode;
 import nl.uva.vlet.vrs.VRSContext;
@@ -1537,6 +1538,53 @@ public final class VRSTransferManager
         vrsContext.getRegistry().fireEvent(event);
     }
 
+    /** 
+     * Deletes contents of directory, does not delete directory itself. 
+     * @param dir - directory to be deleted 
+     * @param force - try to delete as much as possible. 
+     * @throws VlException 
+     */
+    public void recursiveDeleteDirContents(ITaskMonitor  monitor,VDir dir,boolean force) throws VlException
+    {
+        defaultRecursiveDeleteDirContents(monitor,dir,force); 
+    }
 
+    /** 
+     * Default Recursive delete: lists children and performs delete() on child list. 
+     * This method does NOT delete the parent node itself !  
+     * @throws VlException 
+     */
+    protected boolean defaultRecursiveDeleteDirContents(ITaskMonitor  monitor,VDir dir, boolean force) throws VlException
+    {
+        int len=0; 
+        VFSNode nodes[]=dir.list(); 
+        if (nodes!=null)
+            len=nodes.length; 
 
+        if (monitor==null)
+            monitor =vrsContext.getTaskWatcher().getCurrentThreadTaskMonitor("Deleting contents of:"+dir,len);
+
+        monitor.logPrintf("Deleting contents of:%s\n",dir.getPath()); 
+        for (int i=0;(nodes!=null) && (i<nodes.length);i++)
+        {
+            if (nodes[i] instanceof VDir)
+            {
+                // go into recursion
+                defaultRecursiveDeleteDirContents(monitor,(VDir)nodes[i],force); 
+            }
+            else
+            {
+                monitor.startSubTask("deleting:"+nodes[i].getBasename(),1); 
+                monitor.logPrintf(" - deleting:%s\n",nodes[i]); 
+                nodes[i].delete();
+                monitor.endSubTask("deleting:"+nodes[i].getBasename()); 
+            }
+            
+            // new asynchronous update to the VBrowser: 
+            dir.getVRSContext().fireEvent(ResourceEvent.createDeletedEvent(nodes[i].getVRL()));  
+                    
+        }
+        
+        return true; // if no exception occurred, the result=true
+    }
 }

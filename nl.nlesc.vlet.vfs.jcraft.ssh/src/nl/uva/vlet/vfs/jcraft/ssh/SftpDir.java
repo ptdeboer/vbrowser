@@ -122,20 +122,18 @@ public class SftpDir extends VDir implements VUnixFileAttributes
     public boolean delete(boolean recurse) throws VlException
     {
     	ITaskMonitor  monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting (SFTP) directory:"+this.getPath(),1); 
-        
-        boolean ret=true;
-        
-        if (recurse==true)
-        {
-           ret=defaultRecursiveDeleteChildren(monitor,this);
-        }
-        
-        if (ret==true) 
+
+        boolean result = true;
+
+        // delete children first.
+        if (recurse == true)
+            this.getVRSContext().getTransferManager().recursiveDeleteDirContents(monitor,this, true); 
+
+        if (result==true) 
             return server.delete(getPath(),true);
         else
             return false; 
     }
-    
     
     public VRL rename(String newName, boolean nameIsPath) throws VlException
     {

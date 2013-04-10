@@ -261,23 +261,15 @@ public class LDir extends nl.uva.vlet.vfs.VDir implements VUnixFileAttributes
         boolean result = true;
 
         // delete children first.
-
         if (recurse == true)
-            result = defaultRecursiveDeleteChildren(monitor, this);
+            this.getVRSContext().getTransferManager().recursiveDeleteDirContents(monitor,this, true); 
 
         // delete myself
-
         result = result && _file.delete();
-
-        /*
-         * Delete succeeded, notify Resource Manager
-         */
 
         if (result)
         {
-            /*
-             * sendNotification(new VRSEvent(this,VRSEvent.NODE_DELETED));
-             */
+             //* sendNotification(new VRSEvent(this,VRSEvent.NODE_DELETED));
         }
         else
         {
