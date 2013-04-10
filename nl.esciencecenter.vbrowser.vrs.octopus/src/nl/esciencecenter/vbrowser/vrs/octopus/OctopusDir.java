@@ -161,6 +161,8 @@ public class OctopusDir extends VDir
 		try
         {
             this.getOctoClient().rmdir(octoPath);
+            // clear attributes to indicate non existing dir! 
+            this.fileAttrs=null; 
             return true; 
         }
         catch (OctopusException e)

@@ -166,7 +166,10 @@ public class OctopusFile extends VFile
 	{
 		try
         {
-            return this.getOctoClient().deleteFile(octoPath,true);
+            boolean result = this.getOctoClient().deleteFile(octoPath,true);
+            // clear attributes to indicate non existinf file! 
+            this.fileAttrs=null; 
+            return result; 
         }
         catch (OctopusException e)
         {
