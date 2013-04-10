@@ -55,14 +55,11 @@
              <include name="**/*.jar" />
          </fileset> 
         	
-    	<!--
         <fileset dir="${vdriver.lib}">
              <include name="**/*.jar" />
          </fileset> 
-          -->
     	
         <!-- add local paths settings --> 
-                
         <pathelement location="${vdriver.build}" />
         <pathelement location="${vdriver.src}" />
             
@@ -173,11 +170,9 @@
     	     </copy>
     	  -->
     	
-		<!--    	
     	<copy todir="${project.lib}/auxlib/jcraft">
-		 	 <fileset dir="${vdriver.root}/lib" /> 
+		 	 <fileset dir="${vdriver.root}/lib/jsch/" /> 
 		</copy> 
-    	--> 
     	
     	<!-- 
 			Register plugin! do this by creation a plugin directory 

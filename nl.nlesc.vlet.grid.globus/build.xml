@@ -43,22 +43,21 @@
     <target name="source-dist"/>
     
 	<path id="component.classpath">
-		<!-- include project libraries--> 
+		<!-- include project libraries --> 
 		<fileset dir="${project.lib}">
 			<include name="**/*.jar" />
 		</fileset> 
 	
-		 <!-- add globus+glite jars --> 
-	    <!-- <fileset dir="lib">
-	       <include name="**/*.jar" />
-		</fileset> -->
+	    <!-- add globus+glite jars --> 
+	    <fileset dir="lib">
+	         <include name="**/*.jar" />
+	    </fileset>
 		
-		<!-- add local paths settings --> 
-		<pathelement location="${component.build}" />
-		<pathelement location="${component.src}" />
+        <!-- add local paths settings --> 
+	    <pathelement location="${component.build}" />
+	    <pathelement location="${component.src}" />
 			
 	</path>
-				
 			
 	<!--
 		Target = Compilation 
@@ -102,8 +101,7 @@
 	
 	<target name="dist" depends="build,jar,jar-sdk" >
 	</target> 
-	
-    
+	  
                 
 	<!--
 	*	Target: dist-install
@@ -111,7 +109,6 @@
 	*	 install auxiliary (3rd party) libraries into {project.lib}  dir 
 	*		
     -->
-	
 	<target name="dist-install" depends="dist" description="install libraries">
 		<fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok"/> 		
 		<mkdir dir="${project.doc}" />

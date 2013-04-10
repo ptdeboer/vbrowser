@@ -70,10 +70,55 @@
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
-
     </target>	
 
- 	<target name="vlet-vbrowser" depends="vlet-core">
+	<target name="vlet-vfs-adaptors" depends="vlet-core">
+
+		<antcall target="build-component">
+	    	<param name="name" value="nl.nlesc.vlet.vfs.jcraft.ssh"/>
+	        <param name="version" value=""/>
+	        <param name="scm.path" value=""/>
+	    </antcall>
+	     
+		 <antcall target="build-component">
+	         <param name="name" value="nl.nlesc.vlet.grid.globus"/>
+	         <param name="version" value=""/>
+	         <param name="scm.path" value=""/>
+        </antcall>
+
+		<antcall target="build-component">
+	         <param name="name" value="nl.nlesc.vlet.vfs.gftp"/>
+	         <param name="version" value=""/>
+	         <param name="scm.path" value=""/>
+    	</antcall>
+
+		<antcall target="build-component">
+	         <param name="name" value="nl.nlesc.vlet.glite.srm"/>
+	         <param name="version" value=""/>
+	         <param name="scm.path" value=""/>
+    	</antcall>
+
+		<antcall target="build-component">
+	         <param name="name" value="nl.nlesc.vlet.vfs.srm"/>
+	         <param name="version" value=""/>
+	         <param name="scm.path" value=""/>
+    	</antcall>
+
+		<antcall target="build-component">
+	        <param name="name" value="nl.nlesc.vlet.glite.lfc"/>
+	        <param name="version" value=""/>
+	        <param name="scm.path" value=""/>
+	  	</antcall>
+
+		<antcall target="build-component">
+	         <param name="name" value="nl.nlesc.vlet.vfs.lfc"/>
+	         <param name="version" value=""/>
+	         <param name="scm.path" value=""/>
+	   	</antcall>
+		
+	</target>	
+	
+ 	<target name="vlet-vbrowser" depends="vlet-core,vlet-vfs-adaptors">
 
         <antcall target="build-component">
             <param name="name" value="nl.esciencecenter.ptk.ui"/>
