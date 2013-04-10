@@ -175,6 +175,37 @@ public class OctopusClient
         return set;
     }        
 
+    public int getUnixFileMode(Set<PosixFilePermission> set)
+    {
+        int mode=0; 
+
+        // [d]rwx------
+        if (set.contains(PosixFilePermission.OWNER_READ))
+            mode |= 0400; 
+        if (set.contains(PosixFilePermission.OWNER_WRITE))
+            mode |= 0200; 
+        if (set.contains(PosixFilePermission.OWNER_EXECUTE))
+            mode |= 0100; 
+        
+        // [d]---rwx---
+        if (set.contains(PosixFilePermission.GROUP_READ))
+            mode |= 0040; 
+        if (set.contains(PosixFilePermission.GROUP_WRITE))
+            mode |= 0020; 
+        if (set.contains(PosixFilePermission.GROUP_EXECUTE))
+            mode |= 0010; 
+
+        // [d]------rwx
+        if (set.contains(PosixFilePermission.OTHERS_READ))
+            mode |= 0004; 
+        if (set.contains(PosixFilePermission.OTHERS_WRITE))
+            mode |= 0002; 
+        if (set.contains(PosixFilePermission.OTHERS_EXECUTE))
+            mode |= 0001; 
+        
+        return mode; 
+    }
+    
     public Set<PosixFilePermission> getDefaultFilePermissions()
     {
         return createPermissions(0644); // octal
@@ -243,5 +274,7 @@ public class OctopusClient
             return false;
         return true; 
     }
+
+    
     
 }

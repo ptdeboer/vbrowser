@@ -135,7 +135,13 @@ public class OctopusDir extends VDir
 	{
 	    return getFS().getModificationTime(getAttrs(false),System.currentTimeMillis());
 	}
-
+	
+	@Override
+	public String getPermissionsString() throws VlException
+	{
+	    return getFS().createPermissionsString(getAttrs(false),true); 
+    }
+	   
 	@Override
 	public boolean isReadable() throws VlException 
 	{

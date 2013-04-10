@@ -21,16 +21,19 @@ package nl.esciencecenter.vbrowser.vrs.octopus;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Set;
 
 import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
 import nl.esciencecenter.octopus.exceptions.OctopusException;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.Path;
 import nl.esciencecenter.octopus.files.PathAttributes;
+import nl.esciencecenter.octopus.files.PosixFilePermission;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.FileSystemNode;
+import nl.uva.vlet.vfs.VFS;
 import nl.uva.vlet.vfs.VFSNode;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.ServerInfo;
@@ -327,6 +330,23 @@ public class OctopusFS extends FileSystemNode
             throw new VlException(e.getMessage(),e); 
         } 
     }
-   
+
+    public String createPermissionsString(FileAttributes attrs, boolean isDir) throws VlException
+    {
+        Set<PosixFilePermission> set;
+        try
+        {
+            set = attrs.permissions();
+            int mode=octoClient.getUnixFileMode(set); 
+            return VFS.modeToString(mode, isDir); 
+        }
+        catch (AttributeNotSupportedException e)
+        {
+            throw new VlException(e.getMessage(),e); 
+        }
+        
+
+    }
+
    
 }

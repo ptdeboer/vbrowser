@@ -21,15 +21,19 @@ package nl.esciencecenter.vbrowser.vrs.octopus;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Set;
 
 import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
 import nl.esciencecenter.octopus.exceptions.OctopusException;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.Path;
+import nl.esciencecenter.octopus.files.PosixFilePermission;
 import nl.uva.vlet.exception.ResourceAlreadyExistsException;
 import nl.uva.vlet.exception.VlException;
+import nl.uva.vlet.vfs.VFS;
 import nl.uva.vlet.vfs.VFSTransfer;
 import nl.uva.vlet.vfs.VFile;
+import nl.uva.vlet.vfs.VUnixFileMode;
 import nl.uva.vlet.vrl.VRL;
 
 /** 
@@ -206,6 +210,11 @@ public class OctopusFile extends VFile
         }
 	}
 
+	public String getPermissionsString() throws VlException
+    {
+	    return getFS().createPermissionsString(getAttrs(false),false); 
+    }
+        
 	// === 
 	// Protected implementation 
 	// === 
