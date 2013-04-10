@@ -49,9 +49,9 @@ import nl.uva.vlet.vrl.VRL;
 
 
 /**
- * Test SRB case
+ * Test Local case
  * 
- * TestSuite uses testVFS class to tests SRB implementation.
+ * TestSuite uses testVFS class to tests Local implementation.
  * 
  * @author P.T. de Boer
  */

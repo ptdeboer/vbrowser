@@ -63,15 +63,5 @@ public class TestVFS_OctopusLocalFS extends TestVFS
         return TestSettings.getTestLocation(TestSettings.VFS_LOCALFS_LOCATION); 
     }
 
-// Use Junit 4 annotation.
-//    public static Test suite()
-//    {
-//        return new TestSuite(testLocalFS.class);
-//    }
-//
-//    public static void main(String args[])
-//    {
-//        junit.textui.TestRunner.run(suite());
-//    }
 
 }

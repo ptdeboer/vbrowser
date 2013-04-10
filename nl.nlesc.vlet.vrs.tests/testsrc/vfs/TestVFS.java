@@ -85,6 +85,7 @@ import nl.uva.vlet.vrs.io.VResizable;
 import nl.uva.vlet.vrs.io.VZeroSizable;
 import nl.uva.vlet.vrs.util.VRSStreamUtil;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -144,8 +145,7 @@ public class TestVFS extends VTestCase
     /**
      * Override this method if the local test dir has to have a different
      * location
-     */
-    
+     */ 
     public VRL getLocalTempDirVRL()
     {
         return localTempDirVrl;
@@ -188,20 +188,6 @@ public class TestVFS extends VTestCase
                 if (getVFS().existsDir(getRemoteLocation()))
                 {
                     setRemoteTestDir(getVFS().getDir(getRemoteLocation()));
-                    // remoteTestDir.delete(true);
-                    // clean tests dir
-
-                    // if
-                    // (StringUtil.compare(remoteTestDir.getPath(),getRemoteLocation().getPath())!=0)
-                    // {
-                    // throw new
-                    // Error("Initialization error. Remote Test Directory is wrong:"+remoteTestDir);
-                    // }
-
-                    /*
-                     * VFSNode nodes[]=remoteTestDir.getChilds(); if
-                     * (nodes!=null) for (VFSNode node:nodes) node.delete();
-                     */
                     verbose(3, "setUp(): Using remoteDir:" + getRemoteTestDir());
 
                 }
@@ -211,11 +197,8 @@ public class TestVFS extends VTestCase
                     try
                     {
                         verbose(1, "creating new remote test location:" + getRemoteLocation());
-
                         setRemoteTestDir(getVFS().mkdirs(getRemoteLocation()));
-
                         verbose(1, "New created remote test directory=" + getRemoteTestDir());
-
                     }
                     catch (Exception e)
                     {
@@ -225,7 +208,6 @@ public class TestVFS extends VTestCase
 
                     verbose(1, "created new remote test location:" + getRemoteTestDir());
                 }
-
             }
 
             if (localTempDir == null)
@@ -248,13 +230,10 @@ public class TestVFS extends VTestCase
         }
     }
 
-    /**
-     * Tears down the tests fixture. (Called after every tests case method, so
-     * no real cleanup can be done here)
-     */
+    @After
     protected void tearDown()
     {
-
+        // 
     }
     
     /** Whether to test strange characters, like spaces, in paths */

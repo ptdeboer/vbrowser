@@ -80,7 +80,7 @@ public class VTestCase
     // Instance
     // ===
 
-    private VFSClient vfs = new VFSClient();
+    protected VFSClient vfs = new VFSClient();
 
     public VFSClient getVFS()
     {

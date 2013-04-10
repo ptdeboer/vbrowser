@@ -23,8 +23,9 @@ package vrl;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
+
 
 import nl.esciencecenter.ptk.Global;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -37,27 +38,11 @@ import nl.uva.vlet.vrs.VRS;
  * Test VRLs
  * @author P.T. de Boer
  */
-public class TestVRL extends TestCase
+public class TestVRL 
 {
-    // VAttribute attribute=null;
-
-    /**
-     * Sets up the tests fixture. (Called before every tests case method.)
-     */
-    protected void setUp()
-    {
-        // VAttribute=new VAttribute((String)null,(String)null,(String)null);
-    }
-
-    /**
-     * Tears down the tests fixture. (Called after every tests case method.)
-     */
-    protected void tearDown()
-    {
-
-    }
 
     // some check to ensure URI<->VRL consistancy !
+    @Test
     public void testURICompatibility() throws Exception
     {
         // scheme/host/path/fragment
@@ -73,9 +58,9 @@ public class TestVRL extends TestCase
 
         if (vrl.toURI().compareTo(uri) != 0)
             Assert.assertEquals("VRL not similar to URI", vrl.toString(), uri.toString());
-
     }
-
+    
+    @Test
     public void testConstructors() throws Exception
     {
         // SRB Example
@@ -136,13 +121,15 @@ public class TestVRL extends TestCase
             Assert.assertEquals("Zero port number is not ignored.", "file:/etc", local.toString());
     }
     
+    @Test
     public void testSpacesPaths()
     {
         String path="Spaced Path"; 
         VRL vrl =new VRL("file",null,0,path); 
         Assert.assertEquals("Path should be decoded!",path,vrl.getPath()); 
     }
-
+    
+    @Test
     public void testGetParent() throws Exception
     {
         VRL local = new VRL("file", null, "/etc");
@@ -154,12 +141,14 @@ public class TestVRL extends TestCase
 
         Assert.assertEquals("Method isRootPath of root should return true.", true, parent.isRootPath());
     }
-
+    
+    @Test
     public void testNewLocationFromLocalTildeExpansion() throws Exception
     {
         VRL loc = new VRL("file:/~");
     }
-
+    
+    @Test
     public void testMyVLe() throws Exception
     {
         VRL loc = new VRL("myvle:");
@@ -175,7 +164,8 @@ public class TestVRL extends TestCase
         loc = new VRL("myvle:///");
         Assert.assertEquals("MyVLe location must have MyVLE scheme type", VRS.MYVLE_SCHEME, loc.getScheme());
     }
-
+    
+    @Test
     public void testNewLocationFromNullString() throws Exception
     {
         VRL loc = new VRL(null, null, (String) null);
@@ -190,7 +180,8 @@ public class TestVRL extends TestCase
 
         Assert.assertEquals("NULL location, should have empty path", "", loc.getPath());
     }
-
+    
+    @Test
     public void testRelative() throws Exception
     {
         VRL relvrl = new VRL("../relative directory");
@@ -227,9 +218,9 @@ public class TestVRL extends TestCase
         relvrl = parent.resolve("#index");
         Assert.assertEquals("resolved VRL turned out wrong", "gftp://hostname/parentpath/base.html#index", relvrl
                 .toString());
-
     }
     
+    @Test
     public void testDosRelative() throws Exception, URISyntaxException
     {
         //
@@ -284,7 +275,8 @@ public class TestVRL extends TestCase
         // Assert.assertEquals("resolved VRL turned out wrong","file://hostname/parentpath/base.html?query#index",loc.toString());
 
     }
-
+    
+    @Test
     public void testLocalHosts()
     {
         VRL localVrl = new VRL("file", null, null);
@@ -318,6 +310,7 @@ public class TestVRL extends TestCase
      * 
      * @throws Exception
      */
+    @Test
     public void testLocationAddPath() throws Exception
     {
         VRL loc = new VRL("myvle:");
@@ -353,7 +346,6 @@ public class TestVRL extends TestCase
         loc = new VRL("myvle:///parent");
         newLoc = loc.appendPath("/testpath/");
         Assert.assertEquals("extra slashes III: path is not expected path", "/parent/testpath", newLoc.getPath());
-
     }
 
     /**
@@ -361,6 +353,7 @@ public class TestVRL extends TestCase
      * 
      * @throws Exception
      */
+    @Test
     public void testWinDosLocations() throws Exception
     {
         // make relative paths absolute
@@ -384,9 +377,9 @@ public class TestVRL extends TestCase
         loc = VRL.createDosVRL("file:///a:");
         newLoc = loc.appendPath("\\testpath");
         Assert.assertEquals("added path didn't result in expected path", "/a:/testpath", newLoc.getPath());
-
     }
-
+    
+    @Test
     public void testEncoding() throws Exception
     {
         // Test encoded String to decoded path:
@@ -413,7 +406,8 @@ public class TestVRL extends TestCase
         String uristr = vrl.toURI().toString();
         Assert.assertEquals("URI string encoded path.", "sftp://dummyhost:6666/Spaced%20Relative%20Path", uristr);
     }
-
+    
+    @Test
     public void testPathEncoding() throws Exception, URISyntaxException
     {
         // Special character to test.
@@ -434,7 +428,8 @@ public class TestVRL extends TestCase
             {
                 // Make sure VRL and URI use same encoding:
                 URI uri = new URI("aap", "noot", "/" + c, null);
-                VRL vrl = new VRL("aap", "noot", "/" + c, null);
+                // note different constructor args: 
+                VRL vrl = new VRL("aap", null, "noot", "/" + c);
 
                 // if c is in "#?&" then it will be recognised as query of
                 // fragment seperator
@@ -447,11 +442,8 @@ public class TestVRL extends TestCase
                 VRL vrl3 = new VRL("aap://noot/" + VRL.encode("" + c));
 
                 Assert.assertEquals("encoded URI does not match VRL", uri.toString(), vrl.toURIString());
-
                 Assert.assertEquals("Decoded VRL path does not match. ", "/" + c, vrl.getPath());
-
                 Assert.assertEquals("Decoded URI path does not match. ", "/" + c, uri.getPath());
-
                 Assert.assertEquals("VRL constructors do not match.", vrl.toString(), vrl2.toString());
                 Assert.assertEquals("VRL constructors do not match.", vrl.toString(), vrl3.toString());
 
@@ -461,11 +453,10 @@ public class TestVRL extends TestCase
                 e.printStackTrace();
                 throw e;
             }
-
         }
-
     }
-
+    
+    @Test
     public void testRelativePaths() throws VRLSyntaxException
     {
         // base url;
@@ -488,9 +479,9 @@ public class TestVRL extends TestCase
         newvrl = vrl.resolvePathToVRL("etc");
         // must be "file:///etc"
         Assert.assertEquals("new absolute VRL does not match", newvrl.toString(), "file:/home/etc");
-
     }
-
+    
+    @Test
     public void testURIReferences() throws VRLSyntaxException
     {
         String guidStr = "guid:aapnootmies";
@@ -508,7 +499,6 @@ public class TestVRL extends TestCase
         guidStr = "guid:1234567890-ABCDEFGHIJKLMNOPQRSTUVWXYZ-_-abcdefghijklmnopqrstuvwxyz";
         guiVRL = new VRL(guidStr);
         Assert.assertEquals("GUID VRL does not match original string", guidStr, guiVRL.toString());
-
     }
 
     /**
@@ -516,6 +506,7 @@ public class TestVRL extends TestCase
      * 
      * @throws VRLSyntaxException
      */
+    @Test
     public void testQueryEncoding() throws VRLSyntaxException
     {
         String qstr = "LFN=hoipiepeloi";
@@ -532,6 +523,7 @@ public class TestVRL extends TestCase
     }
 
     /** Test Duplicate Path VRLs */
+    @Test
     public void testDuplicatePath() throws VRLSyntaxException
     {
         //
@@ -562,6 +554,7 @@ public class TestVRL extends TestCase
     }
 
     /** Test Duplicate Reference VRLs */
+    @Test
     public void testDuplicateReference() throws VRLSyntaxException
     {
         //
@@ -592,7 +585,8 @@ public class TestVRL extends TestCase
         Assert.assertTrue("equals() method Failure !", ref1.equals(dupl));
 
     }
-
+    
+    @Test
     public void testDefaultPorts() throws VRLSyntaxException
     {
         VRL vrl1 = new VRL("sftp://elab/path1");
@@ -607,7 +601,8 @@ public class TestVRL extends TestCase
         Assert.assertTrue("VRL with missing HTTP port must match against default port (I)", VRLUtil.hasSameServer(vrl1,vrl2));
         Assert.assertTrue("VRL with missing HTTP port must match against default port (II)", VRLUtil.hasSameServer(vrl2,vrl1));
     }
-        
+    
+    @Test
     public void testDefaultGridPorts() throws VRLSyntaxException
     {
             
@@ -625,6 +620,7 @@ public class TestVRL extends TestCase
 
     }
     
+    @Test
     public void testEquals() throws VRLSyntaxException
     {
        	// Test whether port<0 equals port ==0!  
@@ -646,6 +642,7 @@ public class TestVRL extends TestCase
         Assert.assertEquals("Port numbers less then 0 should match against any itself",vrl1,vrl2); 
     }
     
+    @Test
     public void testLocalhostEqualsNULLHost() throws VRLSyntaxException
     {
     	// check triple vs single slash. 
@@ -658,6 +655,7 @@ public class TestVRL extends TestCase
 //        Assert.assertEquals("localhost must match NULL hostname:",vrl1,vrl2);
     }
     
+    @Test
     public void testUserinfo()  throws VRLSyntaxException
     {
         VRL vrl=new VRL("file://user@server/path");
