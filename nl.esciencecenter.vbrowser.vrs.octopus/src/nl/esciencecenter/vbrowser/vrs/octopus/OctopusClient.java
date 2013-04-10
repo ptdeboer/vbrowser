@@ -21,6 +21,7 @@ import nl.esciencecenter.octopus.files.Files;
 import nl.esciencecenter.octopus.files.Path;
 import nl.esciencecenter.octopus.files.PathAttributes;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.ServerInfo;
@@ -61,11 +62,15 @@ public class OctopusClient
     
     protected void updateProperties(VRSContext context, ServerInfo info)
     {
-        
-    }   
+        ; // 
+    }
     
+    public URI createURI(Path path)
+    {
+        return path.toUri(); 
+    }
 
-    public Path newPath(URI uri) throws OctopusException
+    public Path createPath(URI uri) throws OctopusException
     {
         Path path = engine.files().newPath(octoProperties, uri); 
         return path; 
@@ -214,6 +219,29 @@ public class OctopusClient
         //DeleteOption options;
         engine.files().delete(octoPath) ;; // (octoPath,options);  
         
+    }
+
+    public Path rename(Path oldPath, Path newPath) throws VlException, OctopusException
+    {
+        // Move must here be a rename on the same filesystem!
+
+        if (checkSameFilesystem(oldPath,newPath)==false)
+            throw new VlException("Cannot rename file when new file is on other file system:"+oldPath+"=>"+newPath); 
+        Path actualPath=engine.files().move(oldPath, newPath);
+        return actualPath;
+    }
+
+    private boolean checkSameFilesystem(Path oldPath, Path newPath)
+    {
+        if (StringUtil.compare(oldPath.getAdaptorName(),newPath.getAdaptorName())!=0) 
+            return false;
+        
+        if (StringUtil.compare(oldPath.toUri().getHost(),newPath.toUri().getHost())!=0) 
+            return false;
+
+        if (oldPath.toUri().getPort()!=newPath.toUri().getPort())
+            return false;
+        return true; 
     }
     
 }

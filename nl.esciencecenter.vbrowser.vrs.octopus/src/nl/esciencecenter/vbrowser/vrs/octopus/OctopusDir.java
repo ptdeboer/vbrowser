@@ -22,6 +22,7 @@ import nl.esciencecenter.octopus.exceptions.OctopusException;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.Path;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.uva.vlet.exception.ResourceAlreadyExistsException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.VDir;
 import nl.uva.vlet.vfs.VFSNode;
@@ -70,6 +71,22 @@ public class OctopusDir extends VDir
 	{
 		try
         {
+		    if (this.fileAttrs!=null)
+		    {
+		        if (this.fileAttrs.isDirectory()==false)
+                    throw new ResourceAlreadyExistsException("Can't create directory, file with same name already exists!"); 
+
+		        // existing dir
+		        if (force==false)
+		        {
+		            throw new ResourceAlreadyExistsException("Directory already exists"); 
+		        }
+		        else
+		        {
+		            return true; // already existing dir. 
+		        }
+		    }
+		    
             this.getOctoClient().mkdir(octoPath,force);
         }
         catch (OctopusException e)
@@ -145,7 +162,9 @@ public class OctopusDir extends VDir
 	public VRL rename(String newName, boolean renameFullPath)
 			throws VlException
 	{
-		throw new VlException("Not implemented");
+	    VRL vrl=getFS().rename(octoPath,true,newName,renameFullPath);
+        this.fileAttrs=null; // clear cached attributes!
+        return vrl; 
 	}
 
 	public boolean delete(boolean recurse) throws VlException
@@ -153,7 +172,7 @@ public class OctopusDir extends VDir
 	    if (recurse)
 	    {
 	        // my recursive delete 
-	        ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting Octopuse Directory:" + this.getPath(), 1);
+	        ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting Octopus Directory:" + this.getPath(), 1);
 	        getTransferManager().recursiveDeleteDirContents(monitor, this,true); 
 	    }
 	    

@@ -1558,19 +1558,29 @@ public final class VRSTransferManager
     {
         int len=0; 
         VFSNode nodes[]=dir.list(); 
-        if (nodes!=null)
-            len=nodes.length; 
+
+        if ((nodes==null) || (nodes.length<=0)) 
+            return true; 
+
+        len=nodes.length; 
 
         if (monitor==null)
             monitor =vrsContext.getTaskWatcher().getCurrentThreadTaskMonitor("Deleting contents of:"+dir,len);
 
         monitor.logPrintf("Deleting contents of:%s\n",dir.getPath()); 
-        for (int i=0;(nodes!=null) && (i<nodes.length);i++)
+        
+        for (int i=0;i<len;i++)
         {
+            if (nodes[i]==null)
+                continue; // be robust. 
+            
             if (nodes[i] instanceof VDir)
             {
+                VDir subDir=(VDir)nodes[i];
                 // go into recursion
-                defaultRecursiveDeleteDirContents(monitor,(VDir)nodes[i],force); 
+                defaultRecursiveDeleteDirContents(monitor,subDir,force); 
+                // delete dir itself: 
+                subDir.delete();
             }
             else
             {
@@ -1582,7 +1592,6 @@ public final class VRSTransferManager
             
             // new asynchronous update to the VBrowser: 
             dir.getVRSContext().fireEvent(ResourceEvent.createDeletedEvent(nodes[i].getVRL()));  
-                    
         }
         
         return true; // if no exception occurred, the result=true

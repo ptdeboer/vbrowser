@@ -159,7 +159,9 @@ public class OctopusFile extends VFile
 	public VRL rename(String newName, boolean renameFullPath)
 		throws VlException
 	{
-	    throw new VlException("Not Implemented:rename"); 
+	    VRL vrl=getFS().rename(octoPath,false,newName,renameFullPath);
+	    this.fileAttrs=null; // clear cached attributes!
+	    return vrl; 
 	}
 
 	public boolean delete() throws VlException
