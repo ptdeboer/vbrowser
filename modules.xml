@@ -72,28 +72,38 @@
         </antcall>
     </target>	
 
-	<target name="vlet-vfs-adaptors" depends="vlet-core">
+	<target name="vlet-vfs-globus" depends="vlet-core">
 
 		<antcall target="build-component">
-	    	<param name="name" value="nl.nlesc.vlet.vfs.jcraft.ssh"/>
-	        <param name="version" value=""/>
+			<param name="name" value="org.apache.axis-1.4"/>
+    	    <param name="version" value=""/>
 	        <param name="scm.path" value=""/>
 	    </antcall>
-	     
+		     
 		 <antcall target="build-component">
 	         <param name="name" value="nl.nlesc.vlet.grid.globus"/>
 	         <param name="version" value=""/>
 	         <param name="scm.path" value=""/>
         </antcall>
-
+		
 		<antcall target="build-component">
 	         <param name="name" value="nl.nlesc.vlet.vfs.gftp"/>
 	         <param name="version" value=""/>
 	         <param name="scm.path" value=""/>
     	</antcall>
 
+	</target>
+		
+	<target name="vlet-vfs-lfc-srm" depends="vlet-vfs-globus">
+
 		<antcall target="build-component">
-	         <param name="name" value="nl.nlesc.vlet.glite.srm"/>
+	    	<param name="name" value="nl.nlesc.vlet.vfs.jcraft.ssh"/>
+	        <param name="version" value=""/>
+	        <param name="scm.path" value=""/>
+	    </antcall>
+	   
+		<antcall target="build-component">
+	         <param name="name" value="nl.nlesc.glite.srm"/>
 	         <param name="version" value=""/>
 	         <param name="scm.path" value=""/>
     	</antcall>
@@ -105,7 +115,7 @@
     	</antcall>
 
 		<antcall target="build-component">
-	        <param name="name" value="nl.nlesc.vlet.glite.lfc"/>
+	        <param name="name" value="nl.nlesc.glite.lfc"/>
 	        <param name="version" value=""/>
 	        <param name="scm.path" value=""/>
 	  	</antcall>
@@ -117,6 +127,8 @@
 	   	</antcall>
 		
 	</target>	
+	
+	<target name="vlet-vfs-adaptors" depends="vlet-vfs-globus,vlet-vfs-lfc-srm"/>
 	
  	<target name="vlet-vbrowser" depends="vlet-core,vlet-vfs-adaptors">
 
