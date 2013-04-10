@@ -168,39 +168,7 @@ public abstract class VNode //implements IVNode
     {
         return _nodeVRL; 
     }
-    
-    /** 
-     * Returns URI (java.net.URI) of this object. 
-     * This method is the same as getVRL().toURI();  
-     * <p>
-     * @throws URISyntaxException 
-     * @see VRL 
-     * @see java.net.URI
-     */ 
-    final public URI getURI() throws URISyntaxException 
-    {
-    	if (_nodeVRL==null)
-    		return null;
-    	
-        return _nodeVRL.toURI(); 
-    }
-    
-    /** 
-     * Returns URL (java.net.URL) of this object. 
-     * This method is the same as getVRL().toURL();  
-     * <p>
-     * @throws MalformedURLException 
-     * @see VRL 
-     * @see java.net.URI
-     */ 
-    final public URL getURL() throws MalformedURLException 
-    {
-    	if (_nodeVRL==null)
-    		return null;
-    	
-		return _nodeVRL.toURL();
-    }
-    
+   
     /** 
      * Returns the short name of the resource.<br> 
      * The default is the basename of the resource or the last part
@@ -380,8 +348,6 @@ public abstract class VNode //implements IVNode
             return new VAttribute(name, getLocation());
         else if (name.compareTo(ATTR_MIMETYPE) == 0)
             return new VAttribute(name, getMimeType());
-        else if (name.compareTo(ATTR_CHARSET) == 0)
-            return new VAttribute(name, getCharSet());
         
         return null; 
     }

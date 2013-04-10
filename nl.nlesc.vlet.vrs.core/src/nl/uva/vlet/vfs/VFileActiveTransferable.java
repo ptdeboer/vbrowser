@@ -26,7 +26,6 @@ import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.VActiveTransferable;
 
-
 /**
  * The ActiveTransferables contain methods to indicate that
  * this resource can be the active party when doing Resource Transfers 

@@ -171,7 +171,7 @@ public class HTTPConnection
 
     private java.net.URL getUrl() throws MalformedURLException
     {   
-        return this.httpNode.getURL(); 
+        return this.httpNode.getVRL().toURL(); 
     }
 
     public InputStream getInputStream() throws IOException

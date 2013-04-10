@@ -28,18 +28,12 @@ import java.util.Vector;
 import java.util.regex.Pattern;
 
 import nl.esciencecenter.ptk.data.IntegerHolder;
-import nl.esciencecenter.ptk.task.ActionTask;
-import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.uva.vlet.VletConfig;
 import nl.uva.vlet.data.VAttribute;
 import nl.uva.vlet.exception.ResourceTypeNotSupportedException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.exception.VlIOException;
-
-import nl.uva.vlet.tasks.VRSTaskMonitor;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.NodeFilter;
-import nl.uva.vlet.vrs.ResourceEvent;
 import nl.uva.vlet.vrs.VComposite;
 import nl.uva.vlet.vrs.VCompositeDeletable;
 import nl.uva.vlet.vrs.VCompositeNode;
@@ -61,17 +55,14 @@ import nl.uva.vlet.vrs.util.VRSSort;
 public abstract class VDir extends VFSNode implements VComposite,VRenamable,
       VCompositeDeletable
 {
-    private static Random dirRandomizer=new Random();
+    protected static Random dirRandomizer=new Random();
     
     static
     {
         dirRandomizer.setSeed(System.currentTimeMillis());
     }
         
-    private static String[] childTypes={VFS.FILE_TYPE,VFS.DIR_TYPE};
-    
-   
-    
+    protected static String[] childTypes={VFS.FILE_TYPE,VFS.DIR_TYPE};
     
     public static VFSNode[] sortVNodes(VFSNode[] nodes,boolean typeFirst,boolean ignoreCase)
     {
@@ -80,7 +71,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     }
     
     //  ==========================================================================
-    //  VNode interface 
+    //  Instance
     //  ==========================================================================
      
     public VDir(VFileSystem vfsSystem, VRL vrl)
@@ -88,18 +79,15 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
         super(vfsSystem, vrl);
     }
     
-//    /** @deprecated Will switch to VFSNode(VFileSystem,...) ! */
-//    public VDir(VRSContext context, VRL vrl) 
-//    {
-//        super(context,vrl); 
-//    }
-
     @Override
     public String getResourceType()
     {
         return VFS.DIR_TYPE;
     }
     
+    /**
+     * By default directories do not have a mimetype and this method will return null. 
+     */
     @Override
     public String getMimeType()
     {
@@ -236,11 +224,26 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
         return status; 
     }
  
+    public boolean hasNode(String name) throws VlException
+    {
+        // todo: more efficient method 
+        if (this.existsFile(resolvePath(name))==true)
+            return true; 
+        if (this.existsDir(resolvePath(name))==true)
+            return true; 
+
+        return false; 
+    }
+    
+    public VFSNode getNode(String path) throws VlException
+    {
+        return this.vfsSystem.openLocation(resolvePathVRL(path)); 
+    }
+    
 //  ==========================================================================
 //  VFSNode interface 
 //  ==========================================================================
-    
-    
+        
     /** return true if the VFSNode is a (V)File */
     public boolean isFile()
     {
@@ -341,46 +344,6 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     	return dir; 
     }
      
-//    /**
-//     * Put file (copy) to this directory. 
-//     * Same as sourceFile.copyTo(this,optNewName);  
-//     * @throws VlException 
-//     */
-//    public final VFile putFile(VFile sourceFile) throws VlException
-//    {
-//        return (VFile)sourceFile.doCopyMoveTo(this,null ,false); 
-//    }
-//    
-//    /**
-//     * Put file (copy) to this directory. 
-//     * Same as sourceFile.copyTo(this,optNewName);  
-//     * @throws VlException 
-//     */
-//    public final VFile putFile(VFile sourceFile,String optNewName) throws VlException
-//    {
-//        return (VFile)sourceFile.doCopyMoveTo(this,optNewName,false); 
-//    }
-//    
-//    /**
-//     * Put directory (copy) to this directory. 
-//     * Same as sourceDir.copyTo(this,optNewName);  
-//     * @throws VlException 
-//     */
-//    public final VDir putDir(VDir sourceDir) throws VlException
-//    {
-//        return (VDir)sourceDir.doCopyMoveTo(this,null ,false); 
-//    }
-//
-//    /**
-//     * Put directory (copy) to this directory. 
-//     * Same as sourceDir.copyTo(this,optNewName);  
-//     * @throws VlException 
-//     */
-//    public final VDir putDir(VDir sourceDir,String optNewName) throws VlException
-//    {
-//        return (VDir)sourceDir.doCopyMoveTo(this,optNewName ,false); 
-//    }
-    
     /**
      * Copy to specified parent directory location.  
      * @throws VlException 
@@ -456,25 +419,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     {
         return this.vfsSystem.openFile(resolvePathVRL(filename)); 
     }
-    
-    
-    public boolean hasNode(String name) throws VlException
-    {
-        // todo: more efficient method 
-        if (this.existsFile(resolvePath(name))==true)
-            return true; 
-        if (this.existsDir(resolvePath(name))==true)
-            return true; 
-
-        return false; 
-    }
-    
-    public VFSNode getNode(String path) throws VlException
-    {
-        return this.vfsSystem.openLocation(resolvePathVRL(path)); 
-    }
-    
-    
+            
     /**
      * Return attribute matrix for given nodes. 
      * The matrix should be in the form: VAttribute[node][attrname].<br>
@@ -552,8 +497,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
         _nodes=filtered.toArray(_nodes); 
         return _nodes; 
     }
-    
- 
+     
     /** 
      * The length() attribute for directories is system depended and really 
      * not usuable in a Virtual environment. 
@@ -744,7 +688,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
             }
             
             //
-            // Backup Mechanisme: Old way: first call createFile(), then getOutputStream. 
+            // Backup Mechanism: Old way: first call createFile(), then getOutputStream. 
             //
             
             VFile newFile=this.createFile(fileName,force);

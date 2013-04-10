@@ -21,25 +21,11 @@
 package nl.uva.vlet.vfs;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
-import nl.esciencecenter.ptk.io.RandomReadable;
-import nl.esciencecenter.ptk.io.StreamUtil;
-import nl.uva.vlet.exception.NotImplementedException;
-import nl.uva.vlet.exception.ResourceToBigException;
 import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.exception.VlIOException;
 import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.VRS;
-import nl.uva.vlet.vrs.io.VRandomAccessable;
-import nl.uva.vlet.vrs.io.VRandomReadable;
 import nl.uva.vlet.vrs.io.VSize;
 import nl.uva.vlet.vrs.io.VStreamAccessable;
-import nl.uva.vlet.vrs.io.VStreamReadable;
-import nl.uva.vlet.vrs.io.VStreamWritable;
-
 
 /**
  * The Virtual File Interface. An abstract representation of a File.
@@ -56,17 +42,7 @@ import nl.uva.vlet.vrs.io.VStreamWritable;
  */
 public abstract class VFile extends VFSNode implements VSize,VStreamAccessable //, VRandomAccessable
 {
-  
-    // ========================================================================
-    // Instance Stuff 
-    // ========================================================================
-       
-//    /** @deprecated Will switch to VFSNode(VFileSystem,...) ! */
-//    public VFile(VRSContext context,VRL vrl)
-//    {
-//        super(context,vrl);
-//    }
-
+    
     public VFile(VFileSystem vfs,VRL vrl)
     {
         super(vfs,vrl);
@@ -77,7 +53,6 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     {
         return VFS.FILE_TYPE;
     }
-
 
     /**
      * Returns true.
@@ -96,107 +71,6 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     {
         return false;
     };
-
-    // *** File Read Methods ***
-
-    /**
-     * Read the whole contents and return in byte array. Current implementation
-     * is to let readBytes to return an array this might have to change to some
-     * ByteBuffer placeholder class.
-     * 
-     * @throws VlException
-     */
-    public byte[] getContents() throws VlException
-    {
-        long len;
-        try
-        {
-            len = getLength();
-        }
-        catch (IOException e)
-        {
-            throw new VlIOException (e); 
-        }
-        // 2 GB files cannot be read into memory !
-
-        // zero size optimization ! 
-
-        if (len==0) 
-        {
-            return new byte[0]; // empty buffer ! 
-        }
-
-        if (len > ((long) VRS.MAX_CONTENTS_READ_SIZE))
-            throw (new ResourceToBigException(
-                    "Cannot read complete contents of a file greater then:"
-                    + VRS.MAX_CONTENTS_READ_SIZE));
-
-        int intLen = (int) len;
-        return getContents(intLen);
-
-    }
-
-    /** Reads first <code>len</cod> bytes into byte array */
-    public byte[] getContents(int len) throws VlException
-    {
-        byte buffer[] = new byte[len];
-
-        // Warning: reading more then max int bytes
-        // is impossible, but a file can be greater then that !
-        // TODO: Check for out-of-memory etc ...
-
-        int ret = read(0, buffer,0,len); 
-
-        if (ret != len)
-            throw new VlIOException(
-                    "Couldn't read requested number of bytes (read,requested)="
-                    + ret + "," + len);
-
-        return buffer;
-    }
- 
-
-    /**
-     * Read contents and return as single String. This method will fail if the
-     * VFile doesn't implement the VStreamReadable interface !
-     * 
-     * @throws VlException
-     */
-    public String getContentsAsString(String charSet) throws VlException
-    {
-        byte contents[] = getContents();
-
-        String str;
-
-        try
-        {
-            if (charSet==null)
-                str = new String(contents); // use default charSet
-            else
-                str = new String(contents, charSet);
-        }
-        catch (UnsupportedEncodingException e)
-        {
-//            Global.errorPrintf(this,"Exception:%s\n",e);
-//            Global.debugPrintStacktrace(e); 
-
-            throw (new VlException("charSet enconding:'"+charSet+"' not supported", e));
-        }
-
-        return str;
-    }
-
-    /**
-     * Return contents as String. Used default Character set (utf-8)
-     * to decode the contents. 
-     * 
-     * @return Contents as String. 
-     * @throws VlException
-     */
-    public String getContentsAsString() throws VlException
-    {
-        return getContentsAsString(getCharSet());
-    }
     
     /**
      * Copy this file to the remote directory. Method will overwrite existing destination file.  
@@ -258,231 +132,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
         return (VFile)this.getTransferManager().doCopyMove(this,parentDir,newName,true); 
         //return (VFile)doCopyMoveTo(parentDir, newName,true);
     }
-
-
-    /**
-     * Write buffer to (remote) File. An offset can be specified into the file 
-     * as well into the buffer. 
-     * <p> 
-     * Use isRandomAccessable() first to determine whether this file can be
-     * randomly written to. <br>
-     * <br>
-     * 
-     * @see VRandomAccessable
-     */
-
-    public void write(long offset, byte buffer[], int bufferOffset, int nrOfBytes) throws VlException
-    {
-
-        // writing as a single stream usually is faster:
-        if (offset==0) 
-        {
-            this.streamWrite(buffer,bufferOffset,nrOfBytes); 
-        }
-        else if (this instanceof VRandomAccessable)
-        {
-            try
-            {
-                ((VRandomAccessable) this).writeBytes(offset, buffer, bufferOffset,
-                        nrOfBytes);
-            }
-            catch (IOException e)
-            {
-               throw new VlIOException(e); 
-            }
-        }
-        else
-        {
-            throw new NotImplementedException(
-                    "This resource is not Random Accessable (interface VRandomAccessable not implemented):"
-                    + this);
-        }
-    }
-
-    /** Write complete buffer to beginning of file */ 
-    public void write(byte buffer[], int bufferOffset,int nrOfBytes) throws VlException
-    {
-        write(0,buffer,bufferOffset,nrOfBytes);
-    }
-
-    /** Write specified number of bytes from buffer to the beginning of the file. */ 
-    public void write(byte buffer[],int nrOfBytes) throws VlException
-    {
-        write(0,buffer,0,nrOfBytes);
-    }
-
-    /**
-     * Uses OutputStream to write to method i.s.o. RandomAccesFile methods. 
-     * For some implementations this is faster. 
-     * No offset is supported. 
-     */
-    public void streamWrite(byte[] buffer,int bufferOffset,int nrOfBytes) throws VlException
-    {
-        if (this instanceof VStreamWritable)
-        {
-            try
-            {
-
-                VStreamWritable wfile = (VStreamWritable) (this);
-                OutputStream ostr = wfile.getOutputStream(); // do not append
-
-                ostr.write(buffer, bufferOffset, nrOfBytes);
-                try
-                {
-                    ostr.flush(); 
-                    ostr.close(); // Close between actions !
-                }
-                catch (IOException e)
-                {
-                    ; // 
-                }
-            }
-            catch (IOException e)
-            {
-                throw new VlIOException("Failed to write to file:" + this, e);
-            }
-        }
-        else
-        {
-            throw new NotImplementedException("File type does not support (remote) write access");
-        }
-    }
-
-
-    /**
-     * Set contents using specified String and encoding.
-     * 
-     * @param contents :
-     *            new Contents
-     * @param encoding :
-     *            charset to use
-     * @throws VlException if contents can not be set somehow
-     */
-    public void setContents(String contents, String encoding)
-    throws VlException
-    {
-        byte[] bytes;
-
-        try
-        {
-            bytes = contents.getBytes(encoding);
-            setContents(bytes);
-            return;
-        }
-        catch (UnsupportedEncodingException e)
-        {
-//            Global.errorPrintf(this,"***Error: Exception:%s\n",e);
-//            e.printStackTrace();
-
-            throw (new VlException("Encoding not supported:" + encoding, e));
-        }
-
-    }
-
-    /**
-     * Read from a (remote) VFile.<br>
-     * Method tries to use the RandomAccessable interface 
-     * or the  InputStream from VStreamReasable to read from.
-     * Both can be used, but which method is more efficient depends
-     * on the implementation and the usage. 
-     * @param offset  - offset into file
-     * @param nrOfBytes - nr of bytes to read
-     * @param bufferOffset -  offset into buffer 
-     * @param buffer - byte buffer to read in
-     * @return number of read bytes 
-     * @throws VlException
-     *             if interface does not support remote read access.
-     */
-    public int read(long offset, byte buffer[],int bufferOffset,int nrOfBytes)
-                throws VlException
-    {
-        boolean forceUseStreamRead=false; //true; // default value  
-
-//        // when reading the first bytes, streamread is faster 
-//        if (offset==0) 
-//            forceUseStreamRead=true; 
-
-        // Try Random Accessable Interface ! 
-        if ((this instanceof VRandomReadable) && (forceUseStreamRead==false))
-        {
-            // use Sync Read ! 
-            try
-            {
-                return StreamUtil.syncReadBytes((RandomReadable)this,offset,buffer,bufferOffset,nrOfBytes);
-            }
-            catch (IOException e)
-            {
-                throw new VlIOException(e);
-            }
-        }
-        // else try StreamReadable interface 
-        else if (this instanceof VStreamReadable)
-        {
-            //sync stream Read ! 
-            return streamRead(offset,buffer,bufferOffset,nrOfBytes);
-        }
-        else
-        {
-            throw new nl.uva.vlet.exception.ResourceTypeMismatchException(
-            "File type does not support (remote) read access");
-        }
-    }
-
-    /**
-     * Use InputStream to read bytes, not the RandomAcces method readBytes. 
-     * For some implemenations this is faster. 
-     * It creates a new Input Stream, skip [offset] nr of bytes and then 
-     * tries to read nrOfBytes. 
-     */
-    public int streamRead(long offset, byte[] buffer, int bufferOffset, int nrOfBytes) throws VlException
-    {
-        // implementation moved to generic StreamUtil: 
-        try
-        {
-            VStreamReadable rfile = (VStreamReadable) (this);
-            InputStream istr = rfile.getInputStream();
-
-            if (istr==null)
-                return -1; 
-            
-            return StreamUtil.syncReadBytes(istr,offset,buffer,bufferOffset,nrOfBytes);
-        }
-        catch (IOException e)
-        {
-            throw new VlIOException(e);
-        } 
-
-    }
-
-    /**
-     * Replace or create File contents with data from the bytes array. The new
-     * file length will match the byte array lenth thus optionally truncating or
-     * extend an existing file.
-     */
-    public void setContents(byte bytes[]) throws VlException
-    {
-        this.streamWrite(bytes,0,bytes.length); 
-
-        return;
-    }
-
-    /**
-     * Set contents using specified String. Note that the default encoding
-     * format is 'UTF-8'.
-     * 
-     * @param contents :
-     *            new Contents String
-     * @throws VlException
-     * @see #setContents(String contents, String encoding) to specify the coding
-     */
-
-    public void setContents(String contents) throws VlException
-    {
-        setContents(contents, getCharSet());
-        return;
-    }
-
-   
+  
     /** 
      * Default method to upload a file from a local location. 
      * Override this method if the implementation can provide a optimized
@@ -520,16 +170,10 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     // Extra VFile Abstract Interface Methods 
     // ========================================================================
 
-    // ===
-    // explicit inheritance definitions from VFSNode ! 
-    // === 
+    // Explicit inheritance definitions from VFSNode.  
     abstract public boolean exists() throws VlException; 
 
-    /** 
-     * Returns size (length) of files. Directories may return storage size
-     * needed to store the directory entries. 
-     * @return size of file or directory. Returns -1 if size is unknown.   
-     */
+    // Explicit inheritance definitions from VFSNode.  
     public abstract long getLength() throws IOException;
 
 

@@ -184,14 +184,7 @@ public final class VRL extends VRI // implements Comparable<VRL>
         super(scheme,userInfo,hostname,port,path,query,fragment); 
     }
 
-    public String[] getQueryParts()
-    {
-        if (getQuery()==null) 
-            return null; 
-        
-        return this.getQuery().split(ATTRIBUTE_SEPERATOR);
-    }
-   
+    // VRS interface: 
 
     public VAttributeSet getQueryAttributes()
     {
@@ -218,19 +211,7 @@ public final class VRL extends VRI // implements Comparable<VRL>
        }
        return aset; 
     }
-
-    
-
-    public boolean hasQuery()
-    {
-       return (StringUtil.isEmpty(super.getQuery())==false); 
-    }
-
-    public boolean hasFragment()
-    {
-        return (StringUtil.isEmpty(super.getQuery())==false); 
-    }
-
+      
     public VRL getParent()
     {
         return new VRL(super.getParent());
@@ -251,13 +232,12 @@ public final class VRL extends VRI // implements Comparable<VRL>
         return new VRL(super.appendPath(path)); 
     }
 
-    /**
-     * Returns path with explicit "/" at the end. 
-     * This is mandatory for some Globus implementations */ 
-    public String getDirPath()
+    public VRL replacedPath(String path)
     {
-        return this.getPath()+"/";
+        return new VRL(super.replacePath(path)); 
     }
+    
+    
 
     public boolean isVLink()
     {
