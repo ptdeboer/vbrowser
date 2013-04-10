@@ -60,6 +60,8 @@ import nl.uva.vlet.util.ChecksumUtil;
 import nl.uva.vlet.util.bdii.BdiiService;
 import nl.uva.vlet.util.bdii.StorageArea;
 import nl.uva.vlet.vdriver.vfs.localfs.LFile;
+import nl.uva.vlet.vfs.FileReader;
+import nl.uva.vlet.vfs.FileWriter;
 import nl.uva.vlet.vfs.VChecksum;
 import nl.uva.vlet.vfs.VDir;
 import nl.uva.vlet.vfs.VFSClient;
@@ -1266,12 +1268,12 @@ public class TestVFS extends VTestCase
         VFileSystem fs = getRemoteTestDir().getFileSystem();
         VFile newFile = fs.newFile(getRemoteTestDir().resolvePathVRL("testFile7"));
 
-        newFile.setContents(TEST_CONTENTS);
+        new FileWriter(newFile).setContents(TEST_CONTENTS);
 
         long newLen = newFile.getLength();
         Assert.assertFalse("After setting contents, size may NOT be zero", newLen == 0);
 
-        String str = newFile.getContentsAsString();
+        String str = new FileReader(newFile).getContentsAsString();
         Assert.assertEquals("Contents of file (small string) not the same:" + str, str, TEST_CONTENTS);
 
         newFile.delete();
@@ -1294,8 +1296,8 @@ public class TestVFS extends VTestCase
 
         String bigString = new String(chars);
 
-        newFile.setContents(bigString);
-        str = newFile.getContentsAsString();
+        new FileWriter(newFile).setContents(bigString);
+        str = new FileReader(newFile).getContentsAsString();
 
         if (str.compareTo(bigString) != 0)
         {
@@ -1314,12 +1316,12 @@ public class TestVFS extends VTestCase
 
         // create existing file first:
         VFile newFile = getRemoteTestDir().createFile("testFile7b");
-        newFile.setContents(TEST_CONTENTS);
+        new FileWriter(newFile).setContents(TEST_CONTENTS);
 
         long newLen = newFile.getLength();
         Assert.assertFalse("After setting contents, size may NOT be zero", newLen == 0);
 
-        String str = newFile.getContentsAsString();
+        String str = new FileReader(newFile).getContentsAsString();
         Assert.assertEquals("Contents of file (small string) not the same:" + str, str, TEST_CONTENTS);
 
         newFile.delete();
@@ -1342,8 +1344,8 @@ public class TestVFS extends VTestCase
 
         String bigString = new String(chars);
 
-        newFile.setContents(bigString);
-        str = newFile.getContentsAsString();
+        new FileWriter(newFile).setContents(bigString);
+        str = new FileReader(newFile).getContentsAsString();
 
         if (str.compareTo(bigString) != 0)
         {
@@ -1362,7 +1364,7 @@ public class TestVFS extends VTestCase
         VFile remoteFile = null;
 
         localFile = localTempDir.createFile("testLocalFile");
-        localFile.setContents(TEST_CONTENTS);
+        new FileWriter(localFile).setContents(TEST_CONTENTS);
 
         if (isMove)
             remoteFile = localFile.moveTo(getRemoteTestDir());
@@ -1371,7 +1373,7 @@ public class TestVFS extends VTestCase
 
         Assert.assertNotNull("new remote File is NULL", remoteFile);
 
-        String str = remoteFile.getContentsAsString();
+        String str = new FileReader(remoteFile).getContentsAsString();
         Assert.assertEquals("Contents of remote file not the same:" + str, str, TEST_CONTENTS);
 
         // file should be moved: local file may not exist.
@@ -1403,7 +1405,7 @@ public class TestVFS extends VTestCase
             byte buffer[] = new byte[len];
             generator.nextBytes(buffer);
             verbose(1, "streamWriting to localfile:" + localFile);
-            localFile.streamWrite(buffer, 0, buffer.length);
+            new FileWriter(localFile).streamWrite(buffer, 0, buffer.length);
 
             // move to remote (and do same basic asserts).
             long start_time = System.currentTimeMillis();
@@ -1433,7 +1435,7 @@ public class TestVFS extends VTestCase
 
             // check contents:
 
-            byte newcontents[] = newLocalFile.getContents();
+            byte newcontents[] = new FileReader(newLocalFile).getContents();
             int newlen = newcontents.length;
             // check size:
             Assert.assertEquals("size of new contents does not match.", len, newlen);
@@ -1473,7 +1475,7 @@ public class TestVFS extends VTestCase
             byte buffer[] = new byte[len];
             generator.nextBytes(buffer);
             verbose(1, "Creating local file");
-            localFile.streamWrite(buffer, 0, buffer.length);
+            new FileWriter(localFile).streamWrite(buffer, 0, buffer.length);
 
             // move to remote (and do same basic asserts).
             verbose(1, "Moving file to:" + getRemoteTestDir());
@@ -1560,7 +1562,7 @@ public class TestVFS extends VTestCase
 
             // use streamWrite for now:
             verbose(1, "streadWriting to:" + remoteFile);
-            remoteFile.streamWrite(buffer, 0, buffer.length);
+            new FileWriter(remoteFile).streamWrite(buffer, 0, buffer.length);
             long total_read_millis = System.currentTimeMillis() - read_start_time;
             double speed = (len / 1024.0) / (total_read_millis / 1000.0);
             verbose(1, "write speed=" + ((int) (speed * 1000)) / 1000.0 + "KB/s");
@@ -1572,7 +1574,7 @@ public class TestVFS extends VTestCase
             Assert.assertFalse("remote file reports it still exists, after it has moved", remoteFile.exists());
 
             // get contents of localfile:
-            byte newcontents[] = localFile.getContents();
+            byte newcontents[] = new FileReader(localFile).getContents();
             int newlen = newcontents.length;
 
             // check size:
@@ -1611,7 +1613,7 @@ public class TestVFS extends VTestCase
         generator.nextBytes(buffer);
         // use streamWrite for now:
         verbose(1, "streadWriting to:" + remoteFile);
-        remoteFile.streamWrite(buffer, 0, buffer.length);
+        new FileWriter(remoteFile).streamWrite(buffer, 0, buffer.length);
         Assert.assertEquals("Initial remote file size NOT correct", remoteFile.getLength(), len);
 
         // reduce size!
@@ -1619,7 +1621,7 @@ public class TestVFS extends VTestCase
         buffer = new byte[len];
         generator.nextBytes(buffer);
 
-        remoteFile.streamWrite(buffer, 0, buffer.length);
+        new FileWriter(remoteFile).streamWrite(buffer, 0, buffer.length);
 
         verbose(1, "remoteFile.getLength()=" + remoteFile.getLength() + " len=" + len);
 
@@ -1659,7 +1661,7 @@ public class TestVFS extends VTestCase
             // use streamWrite for now:
             verbose(1, "streamWriting #" + testSize + " bytes to:" + remoteFile);
 
-            remoteFile.streamWrite(buffer, 0, testSize);
+            new FileWriter(remoteFile).streamWrite(buffer, 0, testSize);
 
             Assert.assertEquals("LFC File size NOT correct", remoteFile.getLength(), testSize);
 
@@ -1697,7 +1699,7 @@ public class TestVFS extends VTestCase
         VFile remoteFile = null;
 
         remoteFile = getRemoteTestDir().createFile("testLocalFile");
-        remoteFile.setContents(TEST_CONTENTS);
+        new FileWriter(remoteFile).setContents(TEST_CONTENTS);
 
         if (isMove)
         {
@@ -1710,7 +1712,7 @@ public class TestVFS extends VTestCase
         
         Assert.assertNotNull("new remote File is NULL", localFile);
 
-        String str = localFile.getContentsAsString();
+        String str = new FileReader(localFile).getContentsAsString();
         Assert.assertEquals("Contents of local file not the same:" + str, str, TEST_CONTENTS);
 
         // file should be moved: remote file may not exist.
@@ -1743,7 +1745,7 @@ public class TestVFS extends VTestCase
         for (int i = 0; i < len; i++)
             orgBuffer[i] = (byte) (i);
 
-        localFile.setContents(orgBuffer);
+        new FileWriter(localFile).setContents(orgBuffer);
         VFile rfile = localFile.moveTo(getRemoteTestDir());
         if ((rfile instanceof VRandomReadable) == false)
         {
@@ -1775,7 +1777,7 @@ public class TestVFS extends VTestCase
         for (int i = 0; i < len; i++)
             orgBuffer[i] = (byte) ((13 + len - i) % 256);
 
-        localFile.setContents(orgBuffer);
+        new FileWriter(localFile).setContents(orgBuffer);
         rfile = localFile.moveTo(getRemoteTestDir());
         vrfile = (VRandomReadable) rfile;
 
@@ -1806,21 +1808,28 @@ public class TestVFS extends VTestCase
         }
     }
 
-    @Test public void testVRandomReader() throws Exception
+    @Test 
+    public void testVRandomReader() throws Exception
     {
-        VFile localFile = this.localTempDir.createFile("RandomReaderFile");
+        VFile remoteFile = getRemoteTestDir().createFile("RandomReaderFile1");
+        
+        // VFile localFile = this.localTempDir.createFile("RandomReaderFile");
+
+        // mandatory ? 
+        if ((remoteFile instanceof VRandomReadable)==false)
+            return; 
 
         StringBuffer contents = new StringBuffer();
         for (int i = 0; i < 10; i++)
         {
             contents.append(i);
         }
-        localFile.setContents(contents.toString());
-
-        VRandomReader instance = new VRandomReader((VRandomReadable) localFile);
+        new FileWriter(remoteFile).setContents(contents.toString());
+        
+        VRandomReader instance = new VRandomReader((VRandomReadable) remoteFile);
         
         //-----------Test length
-        Assert.assertEquals(instance.length(), localFile.getLength());
+        Assert.assertEquals(instance.length(), remoteFile.getLength());
         Assert.assertEquals(instance.length(), contents.length());
         
         
@@ -2087,7 +2096,7 @@ public class TestVFS extends VTestCase
         {
             fileNames[i] = "testFile" + i;
             VFile file = localTestDir.createFile(fileNames[i]);
-            file.setContents(TEST_CONTENTS);
+            new FileWriter(file).setContents(TEST_CONTENTS);
         }
 
         if (getRemoteTestDir().existsDir(localTestDir.getBasename()))
@@ -2211,7 +2220,7 @@ public class TestVFS extends VTestCase
         VFile file = getRemoteTestDir().createFile("streamWrite", true);
         // write 1MB buffer:
         byte[] buffer = new byte[targetSize];
-        file.streamWrite(buffer, 0, buffer.length);
+        new FileWriter(file).streamWrite(buffer, 0, buffer.length);
 
         long size = file.getLength();
         Assert.assertEquals("testing write > 32k bug: Size of file after streamWrite not correct:" + size, size,
@@ -2239,7 +2248,7 @@ public class TestVFS extends VTestCase
             VUnixFileAttributes uxFile = (VUnixFileAttributes) remoteFile;
 
             // write something.
-            remoteFile.setContents(TEST_CONTENTS);
+            new FileWriter(remoteFile).setContents(TEST_CONTENTS);
 
             String uid = uxFile.getUid();
             if (StringUtil.isEmpty(uid))
@@ -2301,7 +2310,7 @@ public class TestVFS extends VTestCase
     @Test public void testVChecksum() throws Exception
     {
         VFile remoteFile = getRemoteTestDir().createFile("testChecksum.txt");
-        remoteFile.setContents(TEST_CONTENTS);
+        new FileWriter(remoteFile).setContents(TEST_CONTENTS);
 
         if (remoteFile instanceof VChecksum)
         {
@@ -2327,7 +2336,7 @@ public class TestVFS extends VTestCase
                 // now change the file and check if the checksum has also
                 // chanded
                 String initialChecksum = calculated;
-                remoteFile.setContents("Changed contents");
+                new FileWriter(remoteFile).setContents("Changed contents");
                 remoteFile = getRemoteTestDir().getFile("testChecksum.txt");
 
                 String newFetched = checksumRemoteFile.getChecksum(types[i]);
@@ -2371,7 +2380,6 @@ public class TestVFS extends VTestCase
                 localFile.delete();
             }
         }
-
     }
 
     @Test public void testVReplicatable() throws Exception
@@ -2384,7 +2392,7 @@ public class TestVFS extends VTestCase
         if (!getRemoteTestDir().existsFile(fileName))
         {
             remoteFile = getRemoteTestDir().createFile(fileName);
-            remoteFile.setContents("Test contents");
+            new FileWriter(remoteFile).setContents("Test contents");
         }
         else
         {
@@ -2706,7 +2714,7 @@ public class TestVFS extends VTestCase
 
         VFile file1 = dir1.createFile(sourceFilename);
 
-        file1.setContents(contents);
+        new FileWriter(file1).setContents(contents);
         VRL sourceVRL = file1.getVRL();
         VRL targetVRL = targetDir.appendPathToVRL(targetFilename);
         // create new VFile object, but do not really create file on filesystem
@@ -3004,7 +3012,7 @@ public class TestVFS extends VTestCase
     /**
      * API test for atomic directory creation.
      */
-    @Test public void testZExceptionCreateDirNotIgnoreExsting() throws Exception
+    @Test public void testZExceptionCreateDirNotIgnoreExisting() throws Exception
     {
         VDir newDir = getRemoteTestDir().createDir("testDir1");
         try

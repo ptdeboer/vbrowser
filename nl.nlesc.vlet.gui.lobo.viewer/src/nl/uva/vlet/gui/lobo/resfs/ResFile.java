@@ -53,7 +53,7 @@ public class ResFile extends VNode implements VRandomReadable,VStreamReadable
 
 	public InputStream getInputStream() throws IOException 
 	{
-		URL url=getURL();
+		URL url=getVRL().toURL();
     	String host = url.getHost();
     	ClassLoader classLoader;
     	

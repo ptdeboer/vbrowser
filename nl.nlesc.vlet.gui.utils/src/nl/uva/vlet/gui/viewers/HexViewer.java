@@ -57,6 +57,7 @@ import nl.uva.vlet.gui.dialog.ExceptionForm;
 import nl.uva.vlet.gui.font.FontInfo;
 import nl.uva.vlet.gui.font.FontToolBar;
 import nl.uva.vlet.gui.font.FontToolbarListener;
+import nl.uva.vlet.vfs.FileReader;
 import nl.uva.vlet.vfs.VFile;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.VNode;
@@ -797,7 +798,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
             setBusy(true); 
 
             this.setViewerTitle("Reading:"+getVRL()); 
-			vfile.read(fileOffset,buffer,0,len);
+			new FileReader(vfile).readBytes(fileOffset,buffer,0,len);
             this.setViewerTitle("Inspecting:"+getVRL());
 		} 
 		catch (VlException e) 

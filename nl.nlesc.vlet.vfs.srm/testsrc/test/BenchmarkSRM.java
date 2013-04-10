@@ -33,6 +33,7 @@ import junit.framework.TestCase;
 
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.util.bdii.StorageArea;
+import nl.uva.vlet.vfs.FileWriter;
 import nl.uva.vlet.vfs.VDir;
 import nl.uva.vlet.vfs.VUnixFileMode;
 import nl.uva.vlet.vfs.srm.SRMDir;
@@ -206,7 +207,7 @@ public class BenchmarkSRM
         {
             bulkFiles[j] = (SRMFile) testDir.newFile("chsFile" + j);
             bulkFiles[j].create();
-            bulkFiles[j].setContents("This test contents");
+            new FileWriter(bulkFiles[j]).setContents("This test contents");
         }
         return bulkFiles;
     }
@@ -258,7 +259,7 @@ public class BenchmarkSRM
         {
             start = System.currentTimeMillis();
             bulkFiles[j] = (SRMFile) testDir.newFile("chsOverheadFiles" + j);
-            bulkFiles[j].setContents(new byte[] { '1' });
+            new FileWriter(bulkFiles[j]).setContents(new byte[] { '1' });
             overhead = System.currentTimeMillis() - start;
             overheadSum += overhead;
         }

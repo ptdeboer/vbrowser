@@ -68,7 +68,7 @@ public class VRSProxyNode extends ProxyNode
             if (parent==null)
                 return null; 
            
-            return new VRSProxyNode(factory,parent,new VRI(parent.getURI()));
+            return new VRSProxyNode(factory,parent,parent.getVRL());
         }
         catch (Exception e)
         {
@@ -147,7 +147,7 @@ public class VRSProxyNode extends ProxyNode
     {
         try
         {
-            return new VRSProxyNode(factory,node,new VRI(node.getURI()));
+            return new VRSProxyNode(factory,node,node.getVRL());
         }
         catch (Exception e)
         {

@@ -1,6 +1,7 @@
 package nl.uva.vlet.vfs.jcraft.ssh;
 
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -414,5 +415,6 @@ public class JCraftClient
         java.io.File file=new java.io.File(filePath);
         return file.exists(); 
     }
+ 
 
 }
