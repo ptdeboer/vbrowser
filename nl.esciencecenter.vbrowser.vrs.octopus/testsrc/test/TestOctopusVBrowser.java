@@ -39,7 +39,7 @@ public class TestOctopusVBrowser
 
     private static void testGetDir() throws Exception
     {
-        VFSClient vfs=TestOctopusFS.initVFS(); 
+        VFSClient vfs=TestOctopusFS.initOctopusVFS(); 
         
         VDir dir = vfs.getDir("file:/home/ptdeboer/test"); 
         

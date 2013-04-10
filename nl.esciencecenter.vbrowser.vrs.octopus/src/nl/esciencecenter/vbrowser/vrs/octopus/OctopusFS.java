@@ -18,6 +18,7 @@
 
 package nl.esciencecenter.vbrowser.vrs.octopus;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
@@ -28,11 +29,10 @@ import nl.esciencecenter.octopus.exceptions.OctopusException;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.Path;
 import nl.esciencecenter.octopus.files.PathAttributes;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.FileSystemNode;
-import nl.uva.vlet.vfs.VDir;
 import nl.uva.vlet.vfs.VFSNode;
-import nl.uva.vlet.vfs.VFile;
 import nl.uva.vlet.vrl.VRL;
 import nl.uva.vlet.vrs.ServerInfo;
 import nl.uva.vlet.vrs.VRSContext;
@@ -43,6 +43,14 @@ import nl.uva.vlet.vrs.VRSContext;
  */  
 public class OctopusFS extends FileSystemNode
 {
+    private static ClassLogger logger=null; 
+    
+    static 
+    {
+        logger=ClassLogger.getLogger(OctopusFS.class);
+        logger.setLevelToDebug();
+    }
+    
 	// ========================================================================
 	// Instance
 	// ========================================================================
@@ -153,11 +161,10 @@ public class OctopusFS extends FileSystemNode
 		// throw new nl.uva.vlet.exception.ResourceNotFoundException("Don't know what this is:"+vrl);
 	}
 
-	private VFSNode newVFSNode(Path path,FileAttributes optFileattrs) throws OctopusException
+	protected VFSNode newVFSNode(Path path,FileAttributes optFileattrs) throws OctopusException
     {
-	    System.out.println("NEW path     :"+path.toUri()); 
-	    System.out.println("NEW abs path :"+path.toAbsolutePath());
-	    
+	    //logger.debugPrintf("NEW path     :%s\n",path.toUri()); 
+	    //logger.debugPrintf("NEW abs path :%s\n",path.toAbsolutePath());
 	    
 	    // check ? 
         if ((optFileattrs!=null) && optFileattrs.isDirectory())
@@ -169,75 +176,11 @@ public class OctopusFS extends FileSystemNode
             // default to file: 
             return new OctopusFile(this,optFileattrs,path);
         }
-
     }
 
     // ========================================================================
 	// Filesystem helper methods: 
 	// ========================================================================
-	
-	public long getLength(String path)
-	{
-		return 0;
-	}
-
-	public long getModificationTime(String path) 
-	{
-		// -1=unknown. Return in seconds after EPOCH. 
-		return -1;
-	}
-
-
-	public boolean delete(String path, boolean force, boolean recurse) 
-	{
-		return false;
-	}
-
-	public boolean exists(String path, boolean isDirectory) 
-	{
-		// check whether path exists and is a directory.
-		return false; 
-	}
-
-	public boolean hasReadAccess(String path) 
-	{
-		// Return whether current user can read and/or has access ot this 
-		// this file or directory.  
-		return false;
-	}
-
-	public boolean hasWriteAccess(String path) 
-	{
-		// return whether current user can write this file/directory 
-		return false;
-	}
-
-	public VRL rename(String originalPath, String newPath, boolean renameFullPath)
-	{
-		return null;
-	}
-
-	public boolean mkdir(String path, boolean force) 
-	{
-		return false;
-	}
-
-	public boolean createFile(String path, boolean ignoreExisting)
-	{
-		// create empty file. 
-		return false;
-	}
-
-
-	public InputStream createNewInputstream(String path) 
-	{
-		return null;
-	}
-
-	public OutputStream createNewOutputstream(String path) 
-	{
-		return null;
-	}
 	
 	/** Convert Octopus path to VRL */ 
     public VRL createVRL(Path path)
@@ -245,13 +188,14 @@ public class OctopusFS extends FileSystemNode
         return new VRL(path.toUri()); 
     }
 
+    /** List nodes without fetching file attributes. All node are 'VFile' */ 
     public VFSNode[] listNodes(Path octoPath) throws VlException
     {
         List<Path> paths=null; 
         
         try
         {
-            paths = this.octoClient.listDir(octoPath);
+            paths = octoClient.listDir(octoPath);
             if ((paths==null) || (paths.size()==0))
                     return null; 
                 
@@ -269,7 +213,6 @@ public class OctopusFS extends FileSystemNode
         {
             throw new VlException(e.getMessage(),e); 
         } 
-        
     }
 
     public VFSNode[] listNodesAndAttrs(Path octoPath) throws VlException
@@ -278,7 +221,7 @@ public class OctopusFS extends FileSystemNode
         
         try
         {
-            paths = this.octoClient.statDir(octoPath);
+            paths = octoClient.statDir(octoPath);
             if ((paths==null) || (paths.size()==0))
                     return null; 
                 
@@ -296,6 +239,58 @@ public class OctopusFS extends FileSystemNode
         {
             throw new VlException(e.getMessage(),e); 
         } 
-        
+     }
+
+    public long getModificationTime(FileAttributes attrs, long currentTimeMillis) // throws VlException
+    {
+        try
+        {
+            return attrs.lastModifiedTime();
+        }
+        catch (AttributeNotSupportedException e)
+        {
+            // throw new VlException(e.getMessage(),e); 
+            return currentTimeMillis; 
+        }
     }
+
+    public boolean isReadable(FileAttributes attrs, boolean defaultValue) throws VlException
+    {
+        try
+        {
+            return attrs.isReadable();
+        }
+        catch (AttributeNotSupportedException e)
+        {
+            throw new VlException(e.getMessage(),e); 
+        }
+    }
+
+    public boolean isWritable(FileAttributes attrs, boolean defaultValue) throws VlException
+    {
+        try
+        {
+            return attrs.isWritable();
+        }
+        catch (AttributeNotSupportedException e)
+        {
+            throw new VlException(e.getMessage(),e); 
+        }
+    }
+    public long getLength(FileAttributes attrs, long defaultVal) throws IOException
+    {
+        try
+        {
+            return attrs.size();
+        }
+        catch (AttributeNotSupportedException e)
+        {
+            throw new IOException(e.getMessage(),e); 
+            // return defaultVal;
+        }
+    }
+
+  
+    
+   
 }

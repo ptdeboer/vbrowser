@@ -22,8 +22,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
+import nl.esciencecenter.octopus.exceptions.OctopusException;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.Path;
+import nl.uva.vlet.exception.ResourceAlreadyExistsException;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.VFSTransfer;
 import nl.uva.vlet.vfs.VFile;
@@ -34,77 +37,178 @@ import nl.uva.vlet.vrl.VRL;
  */
 public class OctopusFile extends VFile
 {
+    private FileAttributes fileAttrs;
+    private Path octoPath;
+
     public OctopusFile(OctopusFS octopusFS, FileAttributes attrs, Path path)
     {
        super(octopusFS,octopusFS.createVRL(path));
+       this.fileAttrs=attrs; 
+       this.octoPath=path;
     }
 
+    /** 
+     * Get file attributes, if file does not exists
+     * @param update
+     * @return
+     * @throws VlException 
+     */
+    public FileAttributes getAttrs(boolean update) throws VlException
+    {
+        try
+        {
+            if ((fileAttrs==null) || (update==true))
+            {
+                fileAttrs=getOctoClient().getFileAttributes(octoPath);
+            }
+            return fileAttrs; 
+        }
+        catch (OctopusException e)
+        {
+            // Check for File Not Found Here !
+            throw new VlException(e.getMessage(),e); 
+        } 
+    }
+    
+    public boolean sync() throws VlException
+    {
+        // Caching: do not sync non-existing files 
+        if (this.fileAttrs==null) 
+            if (exists()==false)
+                return true; 
+        
+        getAttrs(true); 
+        return (this.fileAttrs!=null); 
+    }
+    
     public boolean create(boolean ignoreExisting) throws VlException
 	{
-		return getFS().createFile(getPath(),ignoreExisting);  
+        // existing attributes -> file exist. 
+        if (exists()==true) 
+        {
+            if (ignoreExisting)
+            {
+                return true; // existing file. 
+            }
+            else
+            {
+                throw new ResourceAlreadyExistsException("File already exists:"+this); 
+            }
+        }
+            
+		try
+        {
+	        // Path is immutable, update it here ? 
+            Path newPath = this.getOctoClient().createFile(octoPath);
+            return true;
+        }
+        catch (OctopusException e)
+        {
+           throw new VlException(e.getMessage(),e); 
+        }
 	}
 	
 	@Override
 	public long getLength() throws IOException 
 	{
-		return getFS().getLength(this.getPath()); 
+	    try
+        {
+            return getFS().getLength(getAttrs(false),-1);
+        }
+        catch (VlException e)
+        {
+            throw new IOException(e.getMessage(),e); 
+        } 
 	}
 
 	@Override
 	public long getModificationTime() throws VlException
 	{
-		return getFS().getModificationTime(this.getPath());
+	    return getFS().getModificationTime(getAttrs(false),System.currentTimeMillis());
 	}
 
 	@Override
 	public boolean isReadable() throws VlException 
 	{
-		return this.getFS().hasReadAccess(this.getPath()); 
+	    try
+        {
+            return getAttrs(false).isReadable();
+        }
+        catch (AttributeNotSupportedException e)
+        {
+            throw new VlException(e.getMessage(),e); 
+        }
 	}
 
 	@Override
 	public boolean isWritable() throws VlException
 	{
-		return this.getFS().hasWriteAccess(this.getPath()); 
+	    return getFS().isWritable(getAttrs(false),false); 
 	}
 
 	public InputStream getInputStream() throws IOException
 	{
-		return this.getFS().createNewInputstream(getPath()); 
+		return this.getOctoClient().createInputStream(octoPath); 
 	}
 
 	public OutputStream getOutputStream() throws IOException 
 	{
-		return this.getFS().createNewOutputstream(getPath()); 
+	    return this.getOctoClient().createOutputStream(octoPath); 
 	}
 
 	public VRL rename(String newName, boolean renameFullPath)
 		throws VlException
 	{
-		return this.getFS().rename(getPath(),newName,renameFullPath);  
+	    throw new VlException("Not Implemented:rename"); 
 	}
 
 	public boolean delete() throws VlException
 	{
-		return this.getFS().delete(this.getPath(),true,false);
-	}
+		try
+        {
+            return this.getOctoClient().deleteFile(octoPath,true);
+        }
+        catch (OctopusException e)
+        {
+            throw new VlException(e.getMessage(),e); 
+        } 
+	}		
 
 	@Override
 	public boolean exists() throws VlException
 	{
-		return this.getFS().exists(this.getPath(),false); 
+	    try
+        {
+	        // Caching: if file attributes are already fetched, the file exists. 
+	        if (this.fileAttrs!=null)
+	        {
+	            return fileAttrs.isRegularFile();
+	        }
+	        else
+	        {
+	            // call exists, do not fetch file attributes from a non existing file
+	            // as this might throw an error.  
+	            return this.getOctoClient().exists(octoPath); 
+	        }
+        }
+	    catch (AttributeNotSupportedException e)
+	    {
+	        throw new VlException(e.getMessage(),e); 
+	    }
+        catch (OctopusException e)
+        {
+            throw new VlException(e.getMessage(),e); 
+        }
 	}
 
 	// === 
-	// Optimization methods  
-	// Override the following methods if this File implementation 
-	// can do them faster 
-	// ===
+	// Protected implementation 
+	// === 
+	
     protected void uploadFrom(VFSTransfer transferInfo, VFile localSource) throws VlException 
     {
         // localSource is a file on the local filesystem. 
-        super.uploadFrom(transferInfo,localSource); 
-         
+        super.uploadFrom(transferInfo,localSource);          
     }
 
     protected void downloadTo(VFSTransfer transfer,VFile targetLocalFile)
@@ -120,4 +224,10 @@ public class OctopusFile extends VFile
     	// downcast from VFileSystem interface to actual (Skeleton) FileSystem object. 
     	return ((OctopusFS)this.getFileSystem()); 
     }
+    
+    protected OctopusClient getOctoClient()
+    {
+        return this.getFS().octoClient; 
+    }
+
 }

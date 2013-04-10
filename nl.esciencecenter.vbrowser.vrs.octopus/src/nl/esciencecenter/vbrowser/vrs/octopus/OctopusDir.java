@@ -18,8 +18,10 @@
 
 package nl.esciencecenter.vbrowser.vrs.octopus;
 
+import nl.esciencecenter.octopus.exceptions.OctopusException;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.Path;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.uva.vlet.exception.VlException;
 import nl.uva.vlet.vfs.VDir;
 import nl.uva.vlet.vfs.VFSNode;
@@ -30,7 +32,6 @@ import nl.uva.vlet.vrl.VRL;
  */
 public class OctopusDir extends VDir
 {
-
 	private FileAttributes fileAttrs;
     private Path octoPath;
 
@@ -41,24 +42,69 @@ public class OctopusDir extends VDir
 		this.octoPath=path;
 	}
 	
-	
+    /** 
+     * Get file attributes, if file does not exists
+     * @param update
+     * @return
+     * @throws VlException 
+     */
+    public FileAttributes getAttrs(boolean update) throws VlException
+    {
+        try
+        {
+            if ((fileAttrs==null) || (update==true))
+            {
+                fileAttrs=getOctoClient().getFileAttributes(octoPath);
+            }
+            return fileAttrs; 
+        }
+        catch (OctopusException e)
+        {
+            // Check for File Not Found Here !
+            throw new VlException(e.getMessage(),e); 
+        } 
+    }
+    	
 	@Override
 	public boolean create(boolean force) throws VlException
 	{
-		return this.getFS().mkdir(this.getPath(),force); 
+		try
+        {
+            this.getOctoClient().mkdir(octoPath,force);
+        }
+        catch (OctopusException e)
+        {
+            throw new VlException(e.getMessage(),e); 
+        } 
+		return true; // no exception -> true; 
 	}
 	
 	@Override
 	public boolean exists() throws VlException
 	{
-		return this.getFS().exists(this.getPath(),true); 
+	    try
+        {
+            // if file attributes are already fetched the path exists, now check attributes. 
+            if (this.fileAttrs!=null)
+                return fileAttrs.isDirectory();
+            else
+            {
+                // call exists, do not fetch file attributes from a non existing file
+                // as this might throw an error.  
+                return this.getOctoClient().exists(octoPath); 
+            }
+        }
+        catch (OctopusException e)
+        {
+            throw new VlException(e.getMessage(),e); 
+        }
 	}
 	
 	@Override
 	public VFSNode[] list() throws VlException 
 	{
 	    //return this.getFS().listNodes(octoPath); 
-        return this.getFS().listNodesAndAttrs(octoPath); 
+        return getFS().listNodesAndAttrs(octoPath); 
 	}
 	
 	public OctopusFS getFileSystem()
@@ -70,23 +116,19 @@ public class OctopusDir extends VDir
 	@Override
 	public long getModificationTime() throws VlException
 	{
-		// Example: Return current time (for testing), replace with actual modification time 
-		// of file. 
-		return System.currentTimeMillis();
+	    return getFS().getModificationTime(getAttrs(false),System.currentTimeMillis());
 	}
 
 	@Override
 	public boolean isReadable() throws VlException 
 	{
-		// check user accessibility. 
-		return this.getFS().hasReadAccess(this.getPath()); 
+	    return getFS().isReadable(getAttrs(false),true);
 	}
 
 	@Override
 	public boolean isWritable() throws VlException
 	{
-		// check user whether user has the rights to change this file. 
-		return this.getFS().hasWriteAccess(this.getPath()); 
+		return this.getFS().isWritable(getAttrs(false),false); 
 	}
 
 	public long getNrOfNodes() throws VlException
@@ -103,18 +145,43 @@ public class OctopusDir extends VDir
 	public VRL rename(String newName, boolean renameFullPath)
 			throws VlException
 	{
-		// Perform rename. This can be a full path rename or a relative (path) rename. 
-		return this.getFS().rename(getPath(),newName,renameFullPath);  
+		throw new VlException("Not implemented");
 	}
 
 	public boolean delete(boolean recurse) throws VlException
 	{
-		return this.getFS().delete(this.getPath(),true,recurse);
+	    if (recurse)
+	    {
+	        // my recursive delete 
+	        ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting Octopuse Directory:" + this.getPath(), 1);
+	        getTransferManager().recursiveDeleteDirContents(monitor, this,true); 
+	    }
+	    
+	    // delete single empty directory:
+		try
+        {
+            this.getOctoClient().rmdir(octoPath);
+            return true; 
+        }
+        catch (OctopusException e)
+        {
+            throw new VlException(e.getMessage(),e);  
+        } 
 	}
 	
-	protected OctopusFS getFS()
+	// ===
+	// Protected 
+	// === 
+	
+	 // explicit downcast: 
+    protected OctopusFS getFS()
     {
-    	return ((OctopusFS)this.getFileSystem());  
+        // downcast from VFileSystem interface to actual (Skeleton) FileSystem object. 
+        return ((OctopusFS)this.getFileSystem()); 
     }
-
+    
+    protected OctopusClient getOctoClient()
+    {
+        return this.getFS().octoClient; 
+    }
 }

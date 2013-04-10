@@ -11,7 +11,7 @@ public class TestOctopusFS
 {
     private static VFSClient vfs=null; 
     
-    public static VFSClient initVFS() throws Exception
+    public static VFSClient initOctopusVFS() throws Exception
     {
         if (vfs!=null)
             return vfs; 
@@ -26,9 +26,9 @@ public class TestOctopusFS
     
     public static void main(String args[]) throws Exception
     {
-        VFSClient vfs=initVFS(); 
+        VFSClient vfs=initOctopusVFS(); 
         
-        VDir dir = vfs.getDir("file:///home/ptdeboer"); 
+        VDir dir = vfs.getDir("file:///home/"+VletConfig.getUserName()); 
         
         VFSNode[] nodes = dir.list(); 
         
