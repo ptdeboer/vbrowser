@@ -20,7 +20,7 @@ import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.DirectoryStream;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.FileSystem;
-import nl.esciencecenter.octopus.files.PathAttributes;
+import nl.esciencecenter.octopus.files.PathAttributesPair;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
 import nl.esciencecenter.octopus.files.RelativePath;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -104,17 +104,17 @@ public class OctopusClient
     }
 
     /** Stat Directory including attributes */ 
-    public List<PathAttributes> statDir(AbsolutePath octoAbsolutePath) throws OctopusIOException
+    public List<PathAttributesPair> statDir(AbsolutePath octoAbsolutePath) throws OctopusIOException
     {
-        DirectoryStream<PathAttributes> dirIterator = engine.files().newAttributesDirectoryStream(octoAbsolutePath); 
+        DirectoryStream<PathAttributesPair> dirIterator = engine.files().newAttributesDirectoryStream(octoAbsolutePath); 
 
-        Iterator<PathAttributes> iterator = dirIterator.iterator(); 
+        Iterator<PathAttributesPair> iterator = dirIterator.iterator(); 
         
-        List<PathAttributes> paths=new ArrayList<PathAttributes>(); 
+        List<PathAttributesPair> paths=new ArrayList<PathAttributesPair>(); 
         
         while(iterator.hasNext())
         {
-            PathAttributes el = iterator.next();
+            PathAttributesPair el = iterator.next();
             paths.add(el); 
         }
         

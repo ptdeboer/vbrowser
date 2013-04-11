@@ -29,7 +29,7 @@ import nl.esciencecenter.octopus.exceptions.OctopusIOException;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.FileSystem;
-import nl.esciencecenter.octopus.files.PathAttributes;
+import nl.esciencecenter.octopus.files.PathAttributesPair;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -237,7 +237,7 @@ public class OctopusFS extends FileSystemNode
 
     public VFSNode[] listNodesAndAttrs(AbsolutePath octoAbsolutePath) throws VlException
     {
-        List<PathAttributes> paths=null; 
+        List<PathAttributesPair> paths=null; 
         
         try
         {
@@ -249,7 +249,7 @@ public class OctopusFS extends FileSystemNode
             
             for (int i=0;i<paths.size();i++)
             {
-                PathAttributes pathAttrs=paths.get(i); 
+                PathAttributesPair pathAttrs=paths.get(i); 
                 nodes[i]=newVFSNode(pathAttrs.path(),pathAttrs.attributes()); 
             }
             
