@@ -1,0 +1,19 @@
+###
+# File      : build.prop
+# Component : Octopus VRS
+# 
+
+#
+vdriver.name=nlesc-vbrowser.vrs.octopus
+# Package name space and plugin directory  
+vdriver.package=nl.esciencecenter.vbrowser.vrs.octopus
+# VRS Factory class 
+vdriver.factory=nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory
+
+# build environment: 
+vdriver.dist=${vdriver.root}/dist
+vdriver.build=${vdriver.root}/build
+vdriver.src=${vdriver.root}/src
+vdriver.lib=${vdriver.root}/lib
+
+
