@@ -5,13 +5,13 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
-import nl.uva.vlet.exception.VlURISyntaxException;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.VNode;
-import nl.uva.vlet.vrs.VRS;
-import nl.uva.vlet.vrs.VRSClient;
-import nl.uva.vlet.vrs.VRSContext;
-import nl.uva.vlet.vrs.VRSFactory;
+import nl.nlesc.vlet.exception.VlURISyntaxException;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.VNode;
+import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.VRSClient;
+import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.VRSFactory;
 
 
 /** 

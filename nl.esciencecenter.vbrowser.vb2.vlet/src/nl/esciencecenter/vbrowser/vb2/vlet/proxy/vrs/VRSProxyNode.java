@@ -13,15 +13,15 @@ import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentable;
 import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
-import nl.uva.vlet.data.VAttribute;
-import nl.uva.vlet.data.VAttributeType;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.gui.presentation.VRSPresentation;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrms.LogicalResourceNode;
-import nl.uva.vlet.vrms.VResourceLink;
-import nl.uva.vlet.vrs.VComposite;
-import nl.uva.vlet.vrs.VNode;
+import nl.nlesc.vlet.data.VAttribute;
+import nl.nlesc.vlet.data.VAttributeType;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.gui.presentation.VRSPresentation;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrms.LogicalResourceNode;
+import nl.nlesc.vlet.vrms.VResourceLink;
+import nl.nlesc.vlet.vrs.VComposite;
+import nl.nlesc.vlet.vrs.VNode;
 
 
 /** 
