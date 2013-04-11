@@ -798,7 +798,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
             setBusy(true); 
 
             this.setViewerTitle("Reading:"+getVRL()); 
-			new FileReader(vfile).readBytes(fileOffset,buffer,0,len);
+			new FileReader(vfile).read(fileOffset,buffer,0,len);
             this.setViewerTitle("Inspecting:"+getVRL());
 		} 
 		catch (VlException e) 
