@@ -10,7 +10,7 @@
 ###
 # Do not add spaces to the end of the values ! 
 # Component defaults (not that component.root is set in the main build file)
-component.name=vlet-vrs-core
+component.name=vlet-vrs.core
 component.dist=${component.root}/dist
 component.build=${component.root}/build
 component.src=${component.root}/src

@@ -32,7 +32,7 @@
     <property name="dist.package.dir" location="${dist}/${srm.name}"/> 
     <property name="dist.package.doc" location="${dist}/${srm.name}/doc"/> 
     <property name="dist.package.lib" location="${dist}/${srm.name}/lib"/> 
-	<property name="dist.package.jar" location="${dist}/${srm.name}/lib/${srm.package}-${srm.version}.jar"/> 
+	<property name="dist.package.jar" location="${dist}/${srm.name}/lib/${srm.name}-${srm.version}.jar"/> 
 
     <!-- Target: init --> 
     

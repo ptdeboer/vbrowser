@@ -21,7 +21,7 @@
 lfcj.package=nl.nlesc.glite.lfc
 # name for distribution to use 
 lfcj.name=vlet-glite.lfc
-lfcj.version=1.0.2
+lfcj.version=1.1
 
 ###
 # Java Compiler options : Updated to 1.6 

@@ -20,7 +20,7 @@
 #  
 # this information is stored in plugin.prop. 
 #
-vdriver.name=nl.nlesc.vlet.vfs.lfc
+vdriver.name=vlet-vfs.lfc
 # Package name space and plugin directory  
 vdriver.package=nl.nlesc.vlet.vfs.lfc
 # VRS Factory class 

@@ -30,7 +30,7 @@
         <!-- Create the build directory structure used by compile -->
         <mkdir dir="${vdriver.build}" />
 	    <mkdir dir="${vdriver.dist}" />	
-        <!-- <mkdir dir="${vdriver.dist}/lib" /> -->
+		<mkdir dir="${vdriver.dist}/lib" />
     </target>
         
     <!-- Target: Config (configure this component) -->
@@ -54,24 +54,19 @@
              <include name="**/*.jar" />
          </fileset> 
         	
-    	<!--
         <fileset dir="${vdriver.lib}">
              <include name="**/*.jar" />
          </fileset> 
-          -->
     	
         <!-- add local paths settings --> 
-                
         <pathelement location="${vdriver.build}" />
         <pathelement location="${vdriver.src}" />
             
     </path>
-                
             
     <!--
         Target = Compilation 
     -->
-               
     <target name="build" depends="init" description="compile the source ">
         <!-- Compile the java code from the ${src} into ${build} -->
     	

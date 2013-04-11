@@ -15,7 +15,7 @@
 #  
 # this information is stored in plugin.prop. 
 #
-vdriver.name=nl.nlesc.vlet.vfs.jcraft.ssh
+vdriver.name=vlet-vfs.jcraft.ssh
 # Package name space and plugin directory  
 vdriver.package=nl.nlesc.vlet.vfs.jcraft.ssh
 # VRS Factory class 

@@ -26,7 +26,7 @@
     <property name="dist.package.dir" location="${dist}/${lfcj.name}"/> 
     <property name="dist.package.doc" location="${dist}/${lfcj.name}/doc"/> 
     <property name="dist.package.lib" location="${dist}/${lfcj.name}/lib"/> 
-    <property name="dist.package.jar" location="${dist}/${lfcj.name}/lib/${lfcj.package}-${lfcj.version}.jar"/> 
+    <property name="dist.package.jar" location="${dist}/${lfcj.name}/lib/${lfcj.name}-${lfcj.version}.jar"/> 
 
     <!-- Target: init --> 
     

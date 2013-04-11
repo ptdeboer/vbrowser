@@ -18,7 +18,7 @@
 #  
 # this information is stored in plugin.prop. 
 #
-vdriver.name=nl.nlesc.vlet.vfs.srm
+vdriver.name=vlet-vfs.srm
 # Package name space and plugin directory  
 vdriver.package=nl.nlesc.vlet.vfs.srmfs
 # VRS Factory class 

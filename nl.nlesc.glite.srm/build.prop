@@ -18,7 +18,7 @@ srm.package=nl.nlesc.glite.lbl.srm
 # name for distribution to use 
 srm.name=vlet-lbl.srm
 # version
-srm.version=0.4
+srm.version=0.5
 
 ###
 # Java Compiler options : Explicitly use java 1.6
