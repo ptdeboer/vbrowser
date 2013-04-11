@@ -72,6 +72,7 @@ public class OctopusFS extends FileSystemNode
 		
 		try
         {
+		    // create optional shared client. 
 		    octoClient=OctopusClient.createFor(context,info,location); 
             octoFS=octoClient.newFileSystem(fsVrl.toURI());
         }
@@ -81,6 +82,7 @@ public class OctopusFS extends FileSystemNode
         } 
 	}
 
+    /** Resolve VRL against this FileSystem */ 
     public AbsolutePath createPath(VRL vrl) throws VlException
     {
         try
@@ -94,7 +96,7 @@ public class OctopusFS extends FileSystemNode
         }  
     }
     
-    /** Convert Octopus path to VRL */ 
+    /** Convert Octopus path to (absolute) VRL */ 
     public VRL createVRL(AbsolutePath path)
     {
         FileSystem fs = path.getFileSystem(); 
@@ -151,14 +153,11 @@ public class OctopusFS extends FileSystemNode
 
 	public void connect() throws VlException 
 	{
-		// connect if not connected yet, or ignore if not applicable. 
-		// multiple connect() calls are possible. Ignore if this happens. 
 	}
 
 	public void disconnect() throws VlException
 	{
-		// disconnect if applicable or ignore. 
-		// multiple disconnect() are allow. Ignore if this happens. 
+	    // could destroy FileSystem object here. 
 	}
 
 	public boolean isConnected() 
@@ -182,18 +181,12 @@ public class OctopusFS extends FileSystemNode
 	    {
 	        throw new VlException(e.getMessage(),e); 
 	    }
-	    
-		// throw new nl.uva.vlet.exception.ResourceNotFoundException("Don't know what this is:"+vrl);
 	}
 
 	protected VFSNode newVFSNode(AbsolutePath path,FileAttributes optFileattrs) throws VlException
     {
 	    try
 	    {
-	    //logger.debugPrintf("NEW path     :%s\n",path.toUri()); 
-	    //logger.debugPrintf("NEW abs path :%s\n",path.toAbsoluteAbsolutePath());
-	    
-	    // check ? 
             if ((optFileattrs!=null) && optFileattrs.isDirectory())
             {
                 return new OctopusDir(this,optFileattrs,path);

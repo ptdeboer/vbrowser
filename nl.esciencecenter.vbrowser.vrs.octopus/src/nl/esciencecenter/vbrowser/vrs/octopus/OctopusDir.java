@@ -71,25 +71,23 @@ public class OctopusDir extends VDir
 	@Override
 	public boolean create(boolean force) throws VlException
 	{
+	    boolean exists=exists(); 
+	        
+	    if (exists)
+	    {
+	        if ((force==true) && (exists))
+	        {
+	            return true; //already exist. Ok. 
+	        }
+	        else
+	        {
+	            // exist, but force==false may not ignore existing. 
+	            throw new ResourceAlreadyExistsException("Directory already exists:"+this); 
+	        }
+	    }
 		try
         {
-		    if (this.fileAttrs!=null)
-		    {
-		        if (this.fileAttrs.isDirectory()==false)
-                    throw new ResourceAlreadyExistsException("Can't create directory, file with same name already exists!"); 
-
-		        // existing dir
-		        if (force==false)
-		        {
-		            throw new ResourceAlreadyExistsException("Directory already exists"); 
-		        }
-		        else
-		        {
-		            return true; // already existing dir. 
-		        }
-		    }
-		    
-            this.getOctoClient().mkdir(octoPath,force);
+            this.getOctoClient().mkdir(octoPath);
         }
         catch (OctopusIOException e)
         {

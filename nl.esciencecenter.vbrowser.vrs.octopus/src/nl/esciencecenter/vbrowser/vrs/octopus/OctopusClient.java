@@ -24,6 +24,9 @@ import nl.esciencecenter.octopus.files.PathAttributes;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
 import nl.esciencecenter.octopus.files.RelativePath;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.nlesc.vlet.GlobalUtil;
+import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
@@ -37,7 +40,23 @@ public class OctopusClient
         // check shared clients here. 
         try
         {
-            OctopusClient client = new OctopusClient(); 
+            Properties props=new Properties();
+
+            // lib subdirs. when started from eclipse, these might not exist!
+            String subDirs[]={"octopus","auxlib/octopus","vdriver/octopus"};
+            
+            for (String subDir:subDirs)
+            {
+                String octoDir=VletConfig.getInstallationLibDir().resolvePath(subDir).getPath(); 
+                if (GlobalUtil.existsDir(octoDir))
+                {
+                    ClassLogger.getLogger(OctopusClient.class).infoPrintf("Using ocotopus dir:%s\n",octoDir); 
+                    props.put("octopus.adaptor.dir",octoDir);
+                    break;
+                }
+            }
+            
+            OctopusClient client = new OctopusClient(props); 
             client.updateProperties(context,info); 
             return client;
         }
@@ -56,9 +75,9 @@ public class OctopusClient
     /**
      * Protected constructor: Use factory method.
      */
-    protected OctopusClient() throws OctopusException
+    protected OctopusClient(Properties props) throws OctopusException
     {
-        octoProperties=new Properties(); 
+        octoProperties=props;
         //octoCredentials=new Credentials(); 
         engine=OctopusEngine.newEngine(octoProperties); 
     }
@@ -142,7 +161,7 @@ public class OctopusClient
         return engine.files().exists(octoAbsolutePath); 
     }
 
-    public AbsolutePath mkdir(AbsolutePath octoAbsolutePath, boolean force) throws OctopusIOException
+    public AbsolutePath mkdir(AbsolutePath octoAbsolutePath) throws OctopusIOException
     {
         return engine.files().createDirectory(octoAbsolutePath); //,getDefaultDirPermissions());
     }
