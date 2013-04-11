@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 
-import nl.esciencecenter.vbrowser.vb2.ui.data.ConfigProperties;
+import nl.esciencecenter.vbrowser.vrs.data.ConfigProperties;
 
 public class GuiSettings
 {

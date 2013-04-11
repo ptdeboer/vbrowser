@@ -7,9 +7,9 @@ import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import nl.esciencecenter.vbrowser.vb2.ui.data.Attribute;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 
 import javax.swing.Icon;
 

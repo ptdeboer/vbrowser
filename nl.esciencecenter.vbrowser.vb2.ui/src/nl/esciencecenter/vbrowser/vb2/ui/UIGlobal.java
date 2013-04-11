@@ -10,29 +10,24 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 public class UIGlobal
 {
-//    private static ProxyFactory proxyItemFactory;
     private static GuiSettings guiSettings; 
     private static ClassLogger uiLogger;
     private static UIResourceLoader resourceLoader; 
     private static JFrame rootFrame;
     private static IconProvider iconProvider;
-//    private static MimeTypes mimeTypes;
     
     static
     {
     	uiLogger=ClassLogger.getLogger(UIGlobal.class); 
-    	
         uiLogger.debugPrintf(">>> UIGlobal.init() <<<\n"); 
         
         try
         {
-//            proxyItemFactory=ProxyRegistry.getInstance().getDefaultFactory(); 
             guiSettings=new GuiSettings();
             uiLogger=ClassLogger.getLogger("UIGlobal"); 
             resourceLoader=UIResourceLoader.getDefault();
             rootFrame=new JFrame(); 
             iconProvider=new IconProvider(rootFrame,resourceLoader); 
-//            mimeTypes=MimeTypes.getDefault();
         }
         catch (Exception e)
         {
@@ -43,43 +38,7 @@ public class UIGlobal
     public static void init()
     {
     }
-    
-//    public static ProxyFactory getProxyItemFactory()
-//    {
-//        return proxyItemFactory; 
-//    }
-
-//    public static void errorPrintf(Object source, String format, Object... args)
-//    {   
-//        uiLogger.errorPrintf(ClassLogger.object2classname(source),format,args);  
-//    }
-//   
-//
-//    public static void debugPrintf(Object source, String format, Object... args)
-//    {   
-//        uiLogger.debugPrintf(ClassLogger.object2classname(source)+":"+format,args);
-//    }
-//    
-//    public static void warnPrintf(Object source, String format, Object... args)
-//    {   
-//        uiLogger.warnPrintf(ClassLogger.object2classname(source)+":"+format,args);
-//    }
-//    
-//    public static void logException(Object source, Throwable e, String format, Object... args) 
-//    {
-//        uiLogger.logException(ClassLogger.ERROR,e,ClassLogger.object2classname(source)+":"+format,args);  
-//    }
-//
-//
-//    public static void infoPrintf(Object source,String format, Object... args)
-//    {
-//        uiLogger.infoPrintf(ClassLogger.object2classname(source)+":"+format,args);  
-//    }
-
-//    public static ResourceLoader getResourceLoader()
-//    {
-//        return resourceLoader; 
-//    }
+   
 
     public static GuiSettings getGuiSettings()
     {
@@ -89,12 +48,7 @@ public class UIGlobal
     public static IconProvider getIconProvider()
     {
         return iconProvider; 
-    }
-    
-//    public MimeTypes getMimeTypes()
-//    {
-//        return mimeTypes; 
-//    }
+    }  
 
     public static void assertNotGuiThread(String msg) throws Error
 	{

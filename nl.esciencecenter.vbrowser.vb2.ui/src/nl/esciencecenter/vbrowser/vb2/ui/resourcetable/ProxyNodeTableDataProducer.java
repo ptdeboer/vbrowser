@@ -4,8 +4,6 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.vbrowser.vb2.ui.data.Attribute;
-import nl.esciencecenter.vbrowser.vb2.ui.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
@@ -13,6 +11,8 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeDataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTableModel.RowData;
 import nl.esciencecenter.vbrowser.vb2.ui.tasks.UITask;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 
 public class ProxyNodeTableDataProducer implements TableDataProducer 
 {

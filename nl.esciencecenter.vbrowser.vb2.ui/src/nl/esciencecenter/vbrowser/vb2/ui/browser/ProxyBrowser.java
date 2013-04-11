@@ -16,7 +16,6 @@ import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.ActionMenu;
 import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.ActionMenuListener;
 import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.ActionMethod;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserFrame.BrowserViewMode;
-import nl.esciencecenter.vbrowser.vb2.ui.data.History;
 import nl.esciencecenter.vbrowser.vb2.ui.dialogs.ExceptionDialog;
 import nl.esciencecenter.vbrowser.vb2.ui.iconspanel.IconsPanel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
@@ -29,6 +28,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEventNotifier;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTable;
 import nl.esciencecenter.vbrowser.vb2.ui.widgets.NavigationBar;
 import nl.esciencecenter.vbrowser.vb2.ui.widgets.NavigationBar.NavigationAction;
+import nl.esciencecenter.vbrowser.vrs.data.History;
 
 /**
  * Proxy Resource Browser.

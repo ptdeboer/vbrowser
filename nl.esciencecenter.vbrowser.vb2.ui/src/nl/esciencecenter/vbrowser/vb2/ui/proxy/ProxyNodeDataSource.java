@@ -3,12 +3,12 @@ package nl.esciencecenter.vbrowser.vb2.ui.proxy;
 import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.presentation.Presentation;
-import nl.esciencecenter.vbrowser.vb2.ui.data.Attribute;
 import nl.esciencecenter.vbrowser.vb2.ui.model.AttributeDataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.model.DataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ExtendedDataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 
 /** 
  * DataSource which produces ViewItems from ProxyItems. 

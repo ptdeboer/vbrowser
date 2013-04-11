@@ -24,8 +24,8 @@
 package nl.esciencecenter.vbrowser.vb2.ui.resourcetable;
 
 import nl.esciencecenter.ptk.util.Comparer;
-import nl.esciencecenter.vbrowser.vb2.ui.data.Attribute;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTableModel.RowData;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 
 public class TableRowComparer implements Comparer<RowData>
 {

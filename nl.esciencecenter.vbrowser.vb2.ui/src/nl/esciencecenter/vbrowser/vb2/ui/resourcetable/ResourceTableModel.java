@@ -11,10 +11,10 @@ import javax.swing.table.AbstractTableModel;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.QSort;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.vbrowser.vb2.ui.data.Attribute;
-import nl.esciencecenter.vbrowser.vb2.ui.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTableModel.RowData;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 
 /**
  * Generic Resource Table Model. 
