@@ -11,11 +11,11 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.net.VRI;
-import nl.esciencecenter.vbrowser.vb2.ui.data.Attribute;
-import nl.esciencecenter.vbrowser.vb2.ui.data.AttributeType;
 import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 import nl.nlesc.medim.dicom.DicomUtil;
 import nl.nlesc.medim.dicom.DicomWrapper;
 
