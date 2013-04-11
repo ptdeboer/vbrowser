@@ -7,7 +7,7 @@ import java.io.PrintStream;
 import javax.swing.JFrame;
 import javax.swing.JTextPane;
 
-import nl.uva.vlet.gui.vhtml.VHTMLKit;
+import nl.nlesc.vlet.gui.vhtml.VHTMLKit;
 
 
 public class TestVHTMLPopup

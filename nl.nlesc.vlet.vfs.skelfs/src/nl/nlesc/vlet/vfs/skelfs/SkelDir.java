@@ -23,10 +23,10 @@
 
 package nl.nlesc.vlet.vfs.skelfs;
 
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.vfs.VDir;
-import nl.uva.vlet.vfs.VFSNode;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vfs.VDir;
+import nl.nlesc.vlet.vfs.VFSNode;
+import nl.nlesc.vlet.vrl.VRL;
 
 /**
  * Minimal implementation of the VDir class. 

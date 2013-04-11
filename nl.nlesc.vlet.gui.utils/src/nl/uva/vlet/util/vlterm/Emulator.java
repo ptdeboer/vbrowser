@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Vector;
 
-import nl.uva.vlet.gui.util.charpane.ICharacterTerminal;
+import nl.nlesc.vlet.gui.util.charpane.ICharacterTerminal;
 
 /**
  * Emulator Super class

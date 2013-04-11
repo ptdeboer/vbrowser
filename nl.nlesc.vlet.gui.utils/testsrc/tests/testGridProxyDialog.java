@@ -25,7 +25,7 @@ package tests;
 
 import javax.swing.JFrame;
 
-import nl.uva.vlet.gui.util.proxy.GridProxyDialog;
+import nl.nlesc.vlet.gui.util.proxy.GridProxyDialog;
 
 public class testGridProxyDialog
 {

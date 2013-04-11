@@ -7,10 +7,6 @@
 #   Build properties. Holds customizable properties 
 #   
 
-###
-# *** IMPORTANT *** 
-# Do not add spaces to the end of the values ! 
-
 ##
 # Component properties: 
 # - The property  "driver.root" is set in the main build file. 
@@ -18,11 +14,11 @@
 ##
 # srm package properties. 
 
-srm.package=nl.uva.vlet.lbl.srm
+srm.package=nl.nlesc.glite.lbl.srm
 # name for distribution to use 
-srm.name=vlet-lbl-srm
+srm.name=vlet-lbl.srm
 # version
-srm.version=0.3
+srm.version=0.4
 
 ###
 # Java Compiler options : Explicitly use java 1.6
@@ -31,7 +27,7 @@ srm.version=0.3
 javac.target=1.6
 javac.compiler=javac1.6
 
-project.name=nl.uva.vlet.lbl.srm
+project.name=nl.nlesc.glite.lbl.srm
 
 lib.location=lib
 

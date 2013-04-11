@@ -1,4 +1,4 @@
-<project name="vlet.gui.pedal" default="dist" basedir=".">
+<project name="vlet-gui.pedal" default="dist" basedir=".">
 	<description>
 		Project	  : VLeT/Application
 		Component : Pedal PDF Viewer

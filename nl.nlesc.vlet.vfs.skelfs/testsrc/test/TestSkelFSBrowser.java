@@ -23,10 +23,10 @@
 
 package test;
 
+import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.vfs.skelfs.SkelFSFactory;
+import nl.nlesc.vlet.vrs.VRS;
 
-import nl.uva.vlet.VletConfig;
-import nl.uva.vlet.vrs.VRS;
 
 public class TestSkelFSBrowser
 {
@@ -43,7 +43,7 @@ public class TestSkelFSBrowser
 		}
 		
 		// The VBrowser classes must be in the classpath to be able to start this. 
-		nl.uva.vlet.gui.startVBrowser.main(args);
+		nl.nlesc.vlet.gui.startVBrowser.main(args);
 	}
 
 

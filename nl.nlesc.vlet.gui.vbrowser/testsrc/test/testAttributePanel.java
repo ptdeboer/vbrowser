@@ -26,12 +26,12 @@ package test;
 import javax.swing.JFrame;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.data.VAttributeSet;
-import nl.uva.vlet.exception.VRLSyntaxException;
-import nl.uva.vlet.gui.panels.attribute.AttributePanel;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.ServerInfo;
-import nl.uva.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.data.VAttributeSet;
+import nl.nlesc.vlet.exception.VRLSyntaxException;
+import nl.nlesc.vlet.gui.panels.attribute.AttributePanel;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.ServerInfo;
+import nl.nlesc.vlet.vrs.VRSContext;
 
 public class testAttributePanel
 {

@@ -26,16 +26,16 @@ package test;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.lbl.srm.SRMClientV2;
-import nl.uva.vlet.vfs.VFSClient;
-import nl.uva.vlet.vfs.VFSNode;
-import nl.uva.vlet.vfs.VFile;
-import nl.uva.vlet.vfs.VFileSystem;
-import nl.uva.vlet.vfs.srm.SRMFSFactory;
-import nl.uva.vlet.vfs.srm.SRMFileSystem;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.VRS;
-import nl.uva.vlet.vrs.VRSContext;
+import nl.nlesc.glite.lbl.srm.SRMClientV2;
+import nl.nlesc.vlet.vfs.VFSClient;
+import nl.nlesc.vlet.vfs.VFSNode;
+import nl.nlesc.vlet.vfs.VFile;
+import nl.nlesc.vlet.vfs.VFileSystem;
+import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
+import nl.nlesc.vlet.vfs.srm.SRMFileSystem;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.VRSContext;
 
 public class TestSrmMultiLs
 {

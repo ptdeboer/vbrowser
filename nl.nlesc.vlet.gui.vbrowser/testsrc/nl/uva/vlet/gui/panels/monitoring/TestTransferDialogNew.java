@@ -26,8 +26,8 @@ package nl.uva.vlet.gui.panels.monitoring;
 import javax.swing.JFrame;
 
 import nl.esciencecenter.ptk.ui.panels.monitoring.TransferMonitorPanel;
-import nl.uva.vlet.vfs.VFSTransfer;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.vfs.VFSTransfer;
+import nl.nlesc.vlet.vrl.VRL;
 
 public class TestTransferDialogNew
 {

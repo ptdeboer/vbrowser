@@ -4,8 +4,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import nl.uva.vlet.glite.lfc.LFCServer;
-import nl.uva.vlet.glite.lfc.internal.ReplicaDesc;
+import nl.nlesc.glite.lfc.LFCServer;
+import nl.nlesc.glite.lfc.internal.ReplicaDesc;
 
 
 public class testFMichel

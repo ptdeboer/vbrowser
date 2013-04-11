@@ -23,10 +23,10 @@
 
 package tests;
 
-import nl.uva.vlet.VletConfig;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.gui.viewers.VHTMLViewer;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.VletConfig;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.gui.viewers.VHTMLViewer;
+import nl.nlesc.vlet.vrl.VRL;
 
 public class testHTMLViewer
 {

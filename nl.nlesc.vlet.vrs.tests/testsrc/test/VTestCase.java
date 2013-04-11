@@ -21,8 +21,8 @@
 package test;
 
 
-import nl.uva.vlet.vfs.VFSClient;
-import nl.uva.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vfs.VFSClient;
+import nl.nlesc.vlet.vrs.VRSContext;
 
 /**
  * My own subclasses VTestCase. Added some conveniance methods.

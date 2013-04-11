@@ -29,10 +29,10 @@ import org.junit.Test;
 
 import nl.esciencecenter.ptk.Global;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.uva.vlet.exception.VRLSyntaxException;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrl.VRLUtil;
-import nl.uva.vlet.vrs.VRS;
+import nl.nlesc.vlet.exception.VRLSyntaxException;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrl.VRLUtil;
+import nl.nlesc.vlet.vrs.VRS;
 
 /**
  * Test VRLs

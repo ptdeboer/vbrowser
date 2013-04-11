@@ -37,10 +37,10 @@ import gov.lbl.srm.v22.stubs.TTransferParameters;
 
 import java.util.ArrayList;
 
-import nl.uva.vlet.lbl.srm.SRMClientV2;
-import nl.uva.vlet.lbl.srm.SRMConstants;
-import nl.uva.vlet.lbl.srm.SRMException;
-import nl.uva.vlet.lbl.srm.status.SRMPutRequest;
+import nl.nlesc.glite.lbl.srm.SRMClientV2;
+import nl.nlesc.glite.lbl.srm.SRMConstants;
+import nl.nlesc.glite.lbl.srm.SRMException;
+import nl.nlesc.glite.lbl.srm.status.SRMPutRequest;
 
 import org.apache.axis.types.URI;
 import org.apache.axis.types.URI.MalformedURIException;

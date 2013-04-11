@@ -25,11 +25,11 @@ package test;
 
 
 import nl.esciencecenter.ptk.Global;
-import nl.uva.vlet.VletConfig;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.gui.panels.acldialog.ACLPanel;
-import nl.uva.vlet.gui.proxynode.impl.direct.ProxyVNodeFactory;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.VletConfig;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.gui.panels.acldialog.ACLPanel;
+import nl.nlesc.vlet.gui.proxynode.impl.direct.ProxyVNodeFactory;
+import nl.nlesc.vlet.vrl.VRL;
 
 public class TestACLPanel
 {

@@ -1,14 +1,10 @@
 ###
 # File      : build.prop
-# Component : Irods VFS Driver
+# Component : InfoRS
 # 
 # Info: 
 #   Build properties. Holds customizable properties 
 #   
-
-###
-# *** IMPORTANT *** 
-# Do not add spaces to the end of the values ! 
 
 ##
 # Component properties: 

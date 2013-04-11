@@ -27,10 +27,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.vfs.VFSTransfer;
-import nl.uva.vlet.vfs.VFile;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vfs.VFSTransfer;
+import nl.nlesc.vlet.vfs.VFile;
+import nl.nlesc.vlet.vrl.VRL;
 
 /** 
  * Example Skeleton VFile.

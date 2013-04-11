@@ -23,7 +23,7 @@
 
 package test;
 
-import nl.uva.vlet.gui.dialog.AboutDialog;
+import nl.nlesc.vlet.gui.dialog.AboutDialog;
 
 public class testAboutDialog
 {

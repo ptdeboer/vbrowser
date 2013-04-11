@@ -1,6 +1,6 @@
 ###
 # File      : build.prop
-# Component : 
+# Component : vlet-gui.utils 
 # 
 # Info: 
 #
@@ -10,7 +10,7 @@
 ###
 # Do not add spaces to the end of the values ! 
 # Component defaults (not that component.root is set in the main build file)
-component.name=vlet-gui-utils
+component.name=vlet-gui.utils
 component.dist=${component.root}/dist
 component.build=${component.root}/build
 component.src=${component.root}/src

@@ -1,10 +1,10 @@
 package test;
 
 
-import nl.uva.vlet.VletConfig;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.gui.lobo.LoboBrowser;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.VletConfig;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.gui.lobo.LoboBrowser;
+import nl.nlesc.vlet.vrl.VRL;
 
 public class startStandalone
 {

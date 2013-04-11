@@ -1,4 +1,4 @@
-<project name="vfs.jcraft.ssh" default="dist" basedir=".">
+<project name="vlet-vfs.jcraft.ssh" default="dist" basedir=".">
     <description>
         Project   : VLET/VBrowser
         Component : VFS JCraft SSH 
@@ -69,7 +69,6 @@
     <!--
         Target = Compilation 
     -->
-               
     <target name="build" depends="init" description="compile the source ">
         <!-- Compile the java code from the ${src} into ${build} -->
     	
@@ -84,12 +83,12 @@
     </target>
     
 	<target name="jar" depends="build" >
-	        <!-- Create application JAR file -->
-	        <jar jarfile="${vdriver.dist}/lib/${vdriver.name}.jar"
-	             basedir="${vdriver.build}">
-	        	<!-- .. includes/excludes .. -->
-			</jar> 
-	    </target>
+		<!-- Create application JAR file -->
+	    <jar jarfile="${vdriver.dist}/lib/${vdriver.name}.jar"
+	    	basedir="${vdriver.build}">
+		    <!-- .. includes/excludes .. -->
+		</jar> 
+    </target>
 	
     <target name="dist" depends="build,jar" >
     

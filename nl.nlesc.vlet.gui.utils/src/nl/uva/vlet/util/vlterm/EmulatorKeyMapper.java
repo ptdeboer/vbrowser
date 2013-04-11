@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.gui.UILogger;
+import nl.nlesc.vlet.gui.UILogger;
 
 
 /**

@@ -14,12 +14,11 @@
 viewer.name=PedalPDFViewer
 # The Gui will use this classname to start the Viewer
 # it is also used as the jar file name 
-viewer.mainclass=nl.uva.vlet.gui.pedal.JPedalPDFViewer
-viewer.package=nl.uva.vlet.gui.pedal
+viewer.mainclass=nl.nlesc.vlet.gui.pedal.JPedalPDFViewer
+viewer.package=nl.nlesc.vlet.gui.pedal
 viewer.dist=${viewer.root}/dist
 viewer.build=${viewer.root}/build
 viewer.src=${viewer.root}/src
-
 
 ###
 # Local Project Settings: 

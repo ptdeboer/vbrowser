@@ -1,4 +1,4 @@
-<project name="vrs.infors" default="dist" basedir=".">
+<project name="vlet-vrs.infors" default="dist" basedir=".">
     <description>
         Project   : VLET/VBrowser
         Component : InfoRS

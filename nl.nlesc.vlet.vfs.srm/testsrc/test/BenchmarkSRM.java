@@ -31,19 +31,19 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.util.bdii.StorageArea;
-import nl.uva.vlet.vfs.FileWriter;
-import nl.uva.vlet.vfs.VDir;
-import nl.uva.vlet.vfs.VUnixFileMode;
-import nl.uva.vlet.vfs.srm.SRMDir;
-import nl.uva.vlet.vfs.srm.SRMFSFactory;
-import nl.uva.vlet.vfs.srm.SRMFile;
-import nl.uva.vlet.vfs.srm.SRMFileSystem;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.VNode;
-import nl.uva.vlet.vrs.VRS;
-import nl.uva.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.util.bdii.StorageArea;
+import nl.nlesc.vlet.vfs.FileWriter;
+import nl.nlesc.vlet.vfs.VDir;
+import nl.nlesc.vlet.vfs.VUnixFileMode;
+import nl.nlesc.vlet.vfs.srm.SRMDir;
+import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
+import nl.nlesc.vlet.vfs.srm.SRMFile;
+import nl.nlesc.vlet.vfs.srm.SRMFileSystem;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.VNode;
+import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.VRSContext;
 
 public class BenchmarkSRM
 {
@@ -306,7 +306,7 @@ public class BenchmarkSRM
                 }
                 catch (Exception ex)
                 {
-                    if (!(ex instanceof nl.uva.vlet.exception.ResourceAccessDeniedException))
+                    if (!(ex instanceof nl.nlesc.vlet.exception.ResourceAccessDeniedException))
                     {
                         return false;
                     }

@@ -1,4 +1,4 @@
-<project name="grid.globus" default="dist" basedir=".">
+<project name="vlet-grid.globus-4.1" default="dist" basedir=".">
 	<description>
 		Project	  : VLeT
 		Component : Grid Globus bindings

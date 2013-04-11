@@ -33,7 +33,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import nl.uva.vlet.gui.util.FileSelector;
+import nl.nlesc.vlet.gui.util.FileSelector;
 
 
 public class TestFileSelector extends JFrame 

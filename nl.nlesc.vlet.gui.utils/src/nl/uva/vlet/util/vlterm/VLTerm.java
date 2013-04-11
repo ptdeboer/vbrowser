@@ -55,18 +55,18 @@ import javax.swing.SwingUtilities;
 
 import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.VletConfig;
-import nl.uva.vlet.GlobalUtil;
-import nl.uva.vlet.gui.UIGlobal;
-import nl.uva.vlet.gui.UILogger;
-import nl.uva.vlet.gui.dialog.ExceptionForm;
-import nl.uva.vlet.gui.util.charpane.ColorMap;
-import nl.uva.vlet.vdriver.vfs.localfs.BASHChannel;
-import nl.uva.vlet.vfs.jcraft.ssh.SSHChannel;
-import nl.uva.vlet.vfs.jcraft.ssh.SSHChannel.SSHChannelOptions;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.VRSContext;
-import nl.uva.vlet.vrs.io.VShellChannel;
+import nl.nlesc.vlet.GlobalUtil;
+import nl.nlesc.vlet.VletConfig;
+import nl.nlesc.vlet.gui.UIGlobal;
+import nl.nlesc.vlet.gui.UILogger;
+import nl.nlesc.vlet.gui.dialog.ExceptionForm;
+import nl.nlesc.vlet.gui.util.charpane.ColorMap;
+import nl.nlesc.vlet.vdriver.vfs.localfs.BASHChannel;
+import nl.nlesc.vlet.vfs.jcraft.ssh.SSHChannel;
+import nl.nlesc.vlet.vfs.jcraft.ssh.SSHChannel.SSHChannelOptions;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.io.VShellChannel;
 
 public class VLTerm extends JFrame implements  Runnable
 {

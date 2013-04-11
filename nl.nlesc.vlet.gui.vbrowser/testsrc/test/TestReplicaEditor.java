@@ -24,12 +24,12 @@
 package test;
 
 import nl.esciencecenter.ptk.Global;
-import nl.uva.vlet.gui.panels.resourcetable.ResourceTable;
-import nl.uva.vlet.gui.viewers.grid.replicaviewer.ReplicaController;
-import nl.uva.vlet.gui.viewers.grid.replicaviewer.ReplicaDataModel;
-import nl.uva.vlet.gui.viewers.grid.replicaviewer.ReplicaEditor;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.VRS;
+import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
+import nl.nlesc.vlet.gui.viewers.grid.replicaviewer.ReplicaController;
+import nl.nlesc.vlet.gui.viewers.grid.replicaviewer.ReplicaDataModel;
+import nl.nlesc.vlet.gui.viewers.grid.replicaviewer.ReplicaEditor;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.VRS;
 
 public class TestReplicaEditor
 {

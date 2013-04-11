@@ -52,7 +52,7 @@ fi
 
 ##
 # java class to start
-CLASS=nl.uva.vlet.vrs.tools.URIStat
+CLASS=nl.nlesc.vlet.vrs.tools.URIStat
 
 # Start bootstrapper which does the rest 
 $JAVA -Dvlet.install.sysconfdir=$VLET_SYSCONFDIR -jar $BASE_DIR/bin/bootstrapper.jar  $CLASS $@

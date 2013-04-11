@@ -6,10 +6,6 @@
 #   Build properties. Holds customizable properties 
 #   
 
-###
-# *** IMPORTANT *** 
-# Do not add spaces to the end of the values ! 
-
 ##
 # Component properties: 
 # - The property  "driver.root" is set in the main build file. 
@@ -22,11 +18,11 @@
 #  
 # this information is stored in plugin.prop. 
 #
-vdriver.name=nl.uva.vlet.vfs.srm
+vdriver.name=nl.nlesc.vlet.vfs.srm
 # Package name space and plugin directory  
-vdriver.package=nl.uva.vlet.vfs.srmfs
+vdriver.package=nl.nlesc.vlet.vfs.srmfs
 # VRS Factory class 
-vdriver.factory=nl.uva.vlet.vfs.srmfs.SRMFSFactory
+vdriver.factory=nl.nlesc.vlet.vfs.srmfs.SRMFSFactory
 
 # build environment: 
 vdriver.dist=${vdriver.root}/dist

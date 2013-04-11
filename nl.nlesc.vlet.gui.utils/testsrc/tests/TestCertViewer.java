@@ -23,9 +23,9 @@
 
 package tests;
 
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.gui.viewers.x509viewer.ViewerX509;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.gui.viewers.x509viewer.ViewerX509;
+import nl.nlesc.vlet.vrl.VRL;
 
 public class TestCertViewer
 {

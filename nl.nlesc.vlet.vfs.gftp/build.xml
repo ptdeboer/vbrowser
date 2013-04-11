@@ -1,6 +1,6 @@
-<project name="vfs.gftp" default="dist" basedir=".">
+<project name="vlet-vfs.gftp" default="dist" basedir=".">
     <description>
-        Project   : VLET/VBrowser
+        Project   : VLET
         Component : GFTP VDriver 
                 
         Configuring: 

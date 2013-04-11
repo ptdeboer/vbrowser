@@ -1,6 +1,6 @@
 ###
 # File      : build.prop
-# Component : Globus GridFTP Java VDriver
+# Component : Globus GridFTP VFS
 # 
 # Info: 
 #   Build properties. Holds customizable properties 
@@ -22,11 +22,11 @@
 #  
 # this information is stored in plugin.prop. 
 #
-vdriver.name=nl.uva.vlet.vfs.gftp
+vdriver.name=nl.nlesc.vlet.vfs.gftp
 # Package name space and plugin directory  
-vdriver.package=nl.uva.vlet.vfs.gridftpfs
+vdriver.package=nl.nlesc.vlet.vfs.gridftpfs
 # VRS Factory class 
-vdriver.factory=nl.uva.vlet.vfs.gridftpfs.GftpFSFactory
+vdriver.factory=nl.nlesc.vlet.vfs.gridftpfs.GftpFSFactory
 
 # build environment: 
 vdriver.dist=${vdriver.root}/dist

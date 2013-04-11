@@ -1,4 +1,4 @@
-<project name="vfs.lfc" default="dist" basedir=".">
+<project name="vlet-vfs.lfc" default="dist" basedir=".">
     <description>
         Project   : VLET/VBrowser
         Component : LFC vrdiver 
@@ -86,13 +86,12 @@
     </target>
     
 	<target name="jar" depends="build" >
-	        <!-- Create application JAR file -->
-	        <jar jarfile="${vdriver.dist}/lib/${vdriver.name}.jar"
-	             basedir="${vdriver.build}"
-	        	 includes="nl/uva/vlet/vfs/**"	
-	 			 excludes="org/glite/lfc/**,eu/geclipse/**" >
-			</jar> 
-	    </target>
+		<!-- Create application JAR file -->
+	    <jar jarfile="${vdriver.dist}/lib/${vdriver.name}.jar"
+	    	basedir="${vdriver.build}">
+	    <!-- .. includes/excludes .. -->
+		</jar> 
+    </target>
 	
     <target name="dist" depends="build,jar" >
     

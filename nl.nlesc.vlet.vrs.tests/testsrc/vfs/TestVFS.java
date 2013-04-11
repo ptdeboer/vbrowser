@@ -20,16 +20,16 @@
 
 package vfs;
 
-import static nl.uva.vlet.data.VAttributeConstants.ATTR_EXISTS;
-import static nl.uva.vlet.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.uva.vlet.data.VAttributeConstants.ATTR_LENGTH;
-import static nl.uva.vlet.data.VAttributeConstants.ATTR_LOCATION;
-import static nl.uva.vlet.data.VAttributeConstants.ATTR_MIMETYPE;
-import static nl.uva.vlet.data.VAttributeConstants.ATTR_NAME;
-import static nl.uva.vlet.data.VAttributeConstants.ATTR_PATH;
-import static nl.uva.vlet.data.VAttributeConstants.ATTR_PORT;
-import static nl.uva.vlet.data.VAttributeConstants.ATTR_SCHEME;
-import static nl.uva.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
+import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_EXISTS;
+import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_HOSTNAME;
+import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LENGTH;
+import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LOCATION;
+import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_MIMETYPE;
+import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_NAME;
+import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PATH;
+import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PORT;
+import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
+import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SCHEME;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -47,43 +47,43 @@ import nl.esciencecenter.ptk.io.StreamUtil;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 
-import nl.uva.vlet.data.VAttribute;
-import nl.uva.vlet.exception.ResourceAlreadyExistsException;
-import nl.uva.vlet.exception.ResourceCreationFailedException;
-import nl.uva.vlet.exception.ResourceException;
-import nl.uva.vlet.exception.ResourceNotFoundException;
-import nl.uva.vlet.exception.ResourceWriteAccessDeniedException;
+import nl.nlesc.vlet.data.VAttribute;
+import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
+import nl.nlesc.vlet.exception.ResourceCreationFailedException;
+import nl.nlesc.vlet.exception.ResourceException;
+import nl.nlesc.vlet.exception.ResourceNotFoundException;
+import nl.nlesc.vlet.exception.ResourceWriteAccessDeniedException;
+import nl.nlesc.vlet.tasks.VRSTaskMonitor;
+import nl.nlesc.vlet.util.ChecksumUtil;
+import nl.nlesc.vlet.util.bdii.BdiiService;
+import nl.nlesc.vlet.util.bdii.StorageArea;
+import nl.nlesc.vlet.vdriver.vfs.localfs.LFile;
+import nl.nlesc.vlet.vfs.FileReader;
+import nl.nlesc.vlet.vfs.FileWriter;
+import nl.nlesc.vlet.vfs.VChecksum;
+import nl.nlesc.vlet.vfs.VDir;
+import nl.nlesc.vlet.vfs.VFSClient;
+import nl.nlesc.vlet.vfs.VFSNode;
+import nl.nlesc.vlet.vfs.VFile;
+import nl.nlesc.vlet.vfs.VFileSystem;
+import nl.nlesc.vlet.vfs.VLogicalFileAlias;
+import nl.nlesc.vlet.vfs.VReplicatable;
+import nl.nlesc.vlet.vfs.VThirdPartyTransferable;
+import nl.nlesc.vlet.vfs.VUnixFileAttributes;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.ServerInfo;
+import nl.nlesc.vlet.vrs.VCommentable;
+import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.io.VRandomAccessable;
+import nl.nlesc.vlet.vrs.io.VRandomReadable;
+import nl.nlesc.vlet.vrs.io.VRandomReader;
+import nl.nlesc.vlet.vrs.io.VResizable;
+import nl.nlesc.vlet.vrs.io.VZeroSizable;
+import nl.nlesc.vlet.vrs.util.VRSStreamUtil;
 
 
-import nl.uva.vlet.tasks.VRSTaskMonitor;
-import nl.uva.vlet.util.ChecksumUtil;
-import nl.uva.vlet.util.bdii.BdiiService;
-import nl.uva.vlet.util.bdii.StorageArea;
-import nl.uva.vlet.vdriver.vfs.localfs.LFile;
-import nl.uva.vlet.vfs.FileReader;
-import nl.uva.vlet.vfs.FileWriter;
-import nl.uva.vlet.vfs.VChecksum;
-import nl.uva.vlet.vfs.VDir;
-import nl.uva.vlet.vfs.VFSClient;
-import nl.uva.vlet.vfs.VFSNode;
-import nl.uva.vlet.vfs.VFile;
-import nl.uva.vlet.vfs.VFileSystem;
-import nl.uva.vlet.vfs.VLogicalFileAlias;
-import nl.uva.vlet.vfs.VReplicatable;
-import nl.uva.vlet.vfs.VThirdPartyTransferable;
-import nl.uva.vlet.vfs.VUnixFileAttributes;
 
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.ServerInfo;
-import nl.uva.vlet.vrs.VCommentable;
 
-import nl.uva.vlet.vrs.VRSContext;
-import nl.uva.vlet.vrs.io.VRandomAccessable;
-import nl.uva.vlet.vrs.io.VRandomReadable;
-import nl.uva.vlet.vrs.io.VRandomReader;
-import nl.uva.vlet.vrs.io.VResizable;
-import nl.uva.vlet.vrs.io.VZeroSizable;
-import nl.uva.vlet.vrs.util.VRSStreamUtil;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -2347,7 +2347,7 @@ public class TestVFS extends VTestCase
                 }
                 catch (Exception ex)
                 {
-                    if (!(ex instanceof nl.uva.vlet.exception.NotImplementedException))
+                    if (!(ex instanceof nl.nlesc.vlet.exception.NotImplementedException))
                     {
                         Assert.fail("Should throw NotImplementedException. Instead got back " + ex.getMessage());
                     }

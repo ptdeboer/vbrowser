@@ -1,6 +1,6 @@
 ###
 # File      : build.prop
-# Component : 
+# Component : vlet-grid.globus-4.1
 # 
 # Info: 
 #
@@ -10,7 +10,7 @@
 ###
 # Do not add spaces to the end of the values ! 
 # Component defaults (not that component.root is set in the main build file)
-component.name=vlet-grid-globus-4.1
+component.name=vlet-grid.globus-4.1
 component.dist=${component.root}/dist
 component.build=${component.root}/build
 component.src=${component.root}/src

@@ -23,11 +23,11 @@
 
 package tests;
 
-import nl.uva.vlet.exception.ResourceReadAccessDeniedException;
-import nl.uva.vlet.exception.ResourceAlreadyExistsException;
-import nl.uva.vlet.exception.ResourceToBigException;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.gui.dialog.ExceptionForm;
+import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
+import nl.nlesc.vlet.exception.ResourceReadAccessDeniedException;
+import nl.nlesc.vlet.exception.ResourceToBigException;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 
 
 public class testExceptionForm

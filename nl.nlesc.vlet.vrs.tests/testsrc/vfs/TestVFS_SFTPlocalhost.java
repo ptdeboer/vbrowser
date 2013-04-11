@@ -27,8 +27,8 @@ import org.junit.Before;
 
 import test.TestSettings;
 //import nl.uva.vlet.gui.dialog.AuthenticationDialog;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.ServerInfo;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.ServerInfo;
 
 /**
  * Test SRB case

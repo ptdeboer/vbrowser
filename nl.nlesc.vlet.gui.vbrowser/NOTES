@@ -1,13 +1,10 @@
 ###
-#Project    : VLeT
+#Project    : VLET
 #Component  : VBrowser
-#Maintainer : P.T. de Boer 
-#
 
 Info
 === 
 The Main VBrowser of the VL-e Toolkit. 
-
 
 Component Structure: 
 ===

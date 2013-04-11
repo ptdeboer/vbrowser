@@ -1,16 +1,12 @@
 ###
 # File      : build.prop
-# Component : 
+# Component : vlet-gui.vbrowser
 # 
-# Info: 
-#
-#   build properties. Holds ALL customizable properties 
-#   
 
 ###
 # Do not add spaces to the end of the values ! 
 # Component defaults (not that component.root is set in the main build file)
-component.groupid=nl.uva.vlet
+component.groupid=nl.nlesc.vlet
 component.name=vlet-gui.vbrowser
 component.dist=${component.root}/dist
 component.build=${component.root}/build

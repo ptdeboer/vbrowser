@@ -25,9 +25,9 @@ package tests;
 
 import java.util.Properties;
 
-import nl.uva.vlet.gui.dialog.AuthenticationDialog;
-import nl.uva.vlet.vrs.ServerInfo;
-import nl.uva.vlet.vrs.VRS;
+import nl.nlesc.vlet.gui.dialog.AuthenticationDialog;
+import nl.nlesc.vlet.vrs.ServerInfo;
+import nl.nlesc.vlet.vrs.VRS;
 
 public class testAuthenticationDialog
 {

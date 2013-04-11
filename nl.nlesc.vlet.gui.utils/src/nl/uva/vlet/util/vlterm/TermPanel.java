@@ -33,10 +33,10 @@ import java.awt.event.ComponentListener;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-import nl.uva.vlet.gui.font.FontInfo;
-import nl.uva.vlet.gui.util.charpane.CharPane;
-import nl.uva.vlet.gui.util.charpane.ColorMap;
-import nl.uva.vlet.gui.util.charpane.ICharacterTerminal;
+import nl.nlesc.vlet.gui.font.FontInfo;
+import nl.nlesc.vlet.gui.util.charpane.CharPane;
+import nl.nlesc.vlet.gui.util.charpane.ColorMap;
+import nl.nlesc.vlet.gui.util.charpane.ICharacterTerminal;
 
 /** 
  * TermPanel which contains and manages a CharPane 

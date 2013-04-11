@@ -32,11 +32,11 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import nl.esciencecenter.ptk.Global;
-import nl.uva.vlet.gui.panels.resourcetable.ResourceTable;
-import nl.uva.vlet.gui.proxymodel.ProxyNodeTableModel;
-import nl.uva.vlet.gui.proxyvrs.ProxyNode;
-import nl.uva.vlet.gui.vbrowser.VBrowserInit;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
+import nl.nlesc.vlet.gui.proxymodel.ProxyNodeTableModel;
+import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
+import nl.nlesc.vlet.gui.vbrowser.VBrowserInit;
+import nl.nlesc.vlet.vrl.VRL;
 
 public class TestProxyNodeTable
 {

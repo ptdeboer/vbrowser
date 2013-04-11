@@ -1,4 +1,4 @@
-<project name="lfcj" default="dist" basedir=".">
+<project name="vlet-glite.lfc" default="dist" basedir=".">
     <description>
         Project   : VLET/LFCJ
         Component : Pure LFC Java package 
@@ -20,13 +20,13 @@
     <property name="dist"  value="dist"/> 
     <property name="build" value="build"/> 
     <property name="src"   value="src"/>
-	<property name="root"   location="." /> <!-- resolve ./ -->
+    <property name="root"   location="." /> <!-- resolve ./ -->
     
     <!-- derived properties --> 
     <property name="dist.package.dir" location="${dist}/${lfcj.name}"/> 
     <property name="dist.package.doc" location="${dist}/${lfcj.name}/doc"/> 
     <property name="dist.package.lib" location="${dist}/${lfcj.name}/lib"/> 
-	<property name="dist.package.jar" location="${dist}/${lfcj.name}/lib/${lfcj.package}-${lfcj.version}.jar"/> 
+    <property name="dist.package.jar" location="${dist}/${lfcj.name}/lib/${lfcj.package}-${lfcj.version}.jar"/> 
 
     <!-- Target: init --> 
     
@@ -75,10 +75,10 @@
         <!-- Compile the java code from the ${src} into ${build} -->
         
          <javac srcdir="src" destdir="${build}"
-		       compiler="${javac.compiler}"
-			   debug="${javac.debug}"
-			   source="${javac.source}" 
-			   target="${javac.target}">
+               compiler="${javac.compiler}"
+               debug="${javac.debug}"
+               source="${javac.source}" 
+               target="${javac.target}">
                <classpath refid="classpath" />
         </javac>
     </target>
@@ -88,43 +88,43 @@
         <!-- Create application JAR file -->
         <jar jarfile="${dist.package.jar}"
             basedir="${build}"
-            includes="nl/uva/vlet/glite/lfc/**"
+            includes="nl/nlesc/glite/lfc/**"
             >
                 
-               <!-- Add Source --> 
+            <!-- Add Source --> 
             <fileset dir="src"/>
                 
             <manifest>
-            <attribute name="Built-By" value="UvA/g-Eclipse" />
-                   <attribute name="Main-Class" value="nl.uva.vlet.glite.lfc.main.Lfcls" />
+            <attribute name="Built-By" value="nl.esciencenter.com" />
+                   <attribute name="Main-Class" value="nl.nlesc.glite.lfc.main.Lfcls" />
                    <section name="common">
-                    <attribute name="Specification-Title" value="UvA/g-Eclipse LFC implementation" />
+                    <attribute name="Specification-Title" value="LFC Java Implementation" />
                          <attribute name="Specification-Version" value="${lfcj.version}" />
-                         <attribute name="Specification-Vendor" value="www.vl-e.nl/www.geclipse.org" />
+                         <attribute name="Specification-Vendor" value="www.esciencecenter.nl" />
                          <attribute name="Implementation-Title" value="lfc for java" />
                      <attribute name="Implementation-Version" value="${lfcj.version}" />
-                     <attribute name="Implementation-Vendor" value="www.vl-e.nl/www.geclipse.org" />
+                     <attribute name="Implementation-Vendor" value="VLET" />
                    </section>
             </manifest>
          </jar> 
     </target>
 
-	<target name="javadoc" depends="init" description="documentation">
-			<mkdir dir="${dist.package.doc}/api" />
-			<javadoc  use="true"
-	             private="false"
-	            destdir="${dist.package.doc}/api"
-	            author="false"
-	            version="false"
-	            windowtitle="VL-e Toolkit"
-	            packagenames="vlet.*">
-				<!-- include all java source found in the 'src' directory of this component -->
-				<fileset dir="${src}" defaultexcludes="yes">
-					<include name="**/*.java" />
-				</fileset>
-			</javadoc>
-		</target>
-	
+    <target name="javadoc" depends="init" description="documentation">
+            <mkdir dir="${dist.package.doc}/api" />
+            <javadoc  use="true"
+                 private="false"
+                destdir="${dist.package.doc}/api"
+                author="false"
+                version="false"
+                windowtitle="VL-e Toolkit"
+                packagenames="vlet.*">
+                <!-- include all java source found in the 'src' directory of this component -->
+                <fileset dir="${src}" defaultexcludes="yes">
+                    <include name="**/*.java" />
+                </fileset>
+            </javadoc>
+        </target>
+    
     <target name="dist" depends="build,javadoc,jar" >
         
        <!-- copy extra libs --> 
@@ -160,10 +160,10 @@
         <fail message="*** Error: property VLET 'project.root' not defined or could not find project environment.${line.separator}. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
               unless="project.env.ok"/>         
 
-    	
+        
         <!-- install lfcj.jar only -->
         <mkdir dir="${project.lib}/vdrivers" />
- 	    <copy todir="${project.lib}/vdrivers"
+         <copy todir="${project.lib}/vdrivers"
                file="${dist.package.jar}"  />
         
     </target>
@@ -172,42 +172,42 @@
         <delete dir="${dist}"/>
         <delete dir="${build}"/>
     </target>
-	
-	<target name="source-zip" depends="source-dist" description="create source zipfile">
-		
-	        <mkdir dir="${dist}" />
-		
-	        <!-- create zip file from dist/* to vlet-<Version>  -->
-			<zip destfile="${dist}/${lfcj.name}-src-${lfcj.version}.zip">
-	            <!-- create zipfile with some standard exlcludes --> 
-			    <zipfileset dir="${root}" 
-			        filemode="644" prefix="${lfcj.name}-${lfcj.version}" 
-					excludes="dist/**,build/**,**/*.class,testsrc/**" />
-				
-			    	<!-- excludes="configure,*.ac,*.m4,**/dist,**/build,**/*.class"  -->
-	                <!-- add shell scrips with x permissions ! -->
-			        <!-- <zipfileset dir="${project.topleveldir}/bin" filemode="755" prefix="${vlet.source.prefix}/bin" />
-			          -->
-			 </zip>
-	</target>
-	
-	<target name="dist-zip" depends="dist" description="create distro zipfile">
-		
-  		<!-- create zip file from dist/* to vlet-<Version>  -->
-		<zip destfile="${dist}/${lfcj.name}-${lfcj.version}.zip">
-				
-		    <!-- create zipfile with some standard exlcludes --> 
-	    	<zipfileset dir="${dist}/${lfcj.name}"
-		        filemode="644"  prefix="${lfcj.name}-${lfcj.version}" 
-				excludes="dist/**,build/**,**/*.class,testsrc/**" />
-					
-	    	<!-- excludes="configure,*.ac,*.m4,**/dist,**/build,**/*.class"  -->
+    
+    <target name="source-zip" depends="source-dist" description="create source zipfile">
+        
+            <mkdir dir="${dist}" />
+        
+            <!-- create zip file from dist/* to vlet-<Version>  -->
+            <zip destfile="${dist}/${lfcj.name}-src-${lfcj.version}.zip">
+                <!-- create zipfile with some standard exlcludes --> 
+                <zipfileset dir="${root}" 
+                    filemode="644" prefix="${lfcj.name}-${lfcj.version}" 
+                    excludes="dist/**,build/**,**/*.class,testsrc/**" />
+                
+                    <!-- excludes="configure,*.ac,*.m4,**/dist,**/build,**/*.class"  -->
+                    <!-- add shell scrips with x permissions ! -->
+                    <!-- <zipfileset dir="${project.topleveldir}/bin" filemode="755" prefix="${vlet.source.prefix}/bin" />
+                      -->
+             </zip>
+    </target>
+    
+    <target name="dist-zip" depends="dist" description="create distro zipfile">
+        
+          <!-- create zip file from dist/* to vlet-<Version>  -->
+        <zip destfile="${dist}/${lfcj.name}-${lfcj.version}.zip">
+                
+            <!-- create zipfile with some standard exlcludes --> 
+            <zipfileset dir="${dist}/${lfcj.name}"
+                filemode="644"  prefix="${lfcj.name}-${lfcj.version}" 
+                excludes="dist/**,build/**,**/*.class,testsrc/**" />
+                    
+            <!-- excludes="configure,*.ac,*.m4,**/dist,**/build,**/*.class"  -->
             <!-- add shell scrips with x permissions ! -->
-	        <!-- <zipfileset dir="${project.topleveldir}/bin" filemode="755" prefix="${vlet.source.prefix}/bin" />
+            <!-- <zipfileset dir="${project.topleveldir}/bin" filemode="755" prefix="${vlet.source.prefix}/bin" />
              -->
-		 </zip>
-		
-	</target>
+         </zip>
+        
+    </target>
 
 </project>
     

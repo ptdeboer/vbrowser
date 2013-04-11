@@ -23,13 +23,13 @@
 
 package test.viewers;
 
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.exception.VRLSyntaxException;
-import nl.uva.vlet.gui.viewers.HexViewer;
-import nl.uva.vlet.gui.viewers.TextViewer;
-import nl.uva.vlet.gui.viewers.ViewContext;
-import nl.uva.vlet.gui.viewers.ViewerManager;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.exception.VRLSyntaxException;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.gui.viewers.HexViewer;
+import nl.nlesc.vlet.gui.viewers.TextViewer;
+import nl.nlesc.vlet.gui.viewers.ViewContext;
+import nl.nlesc.vlet.gui.viewers.ViewerManager;
+import nl.nlesc.vlet.vrl.VRL;
 
 public class TestTextViewer
 {

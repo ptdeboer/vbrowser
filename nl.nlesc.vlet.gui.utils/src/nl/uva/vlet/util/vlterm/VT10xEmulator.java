@@ -30,8 +30,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.gui.util.charpane.ICharacterTerminal;
-import nl.uva.vlet.gui.util.charpane.StyleChar;
+import nl.nlesc.vlet.gui.util.charpane.ICharacterTerminal;
+import nl.nlesc.vlet.gui.util.charpane.StyleChar;
 import nl.uva.vlet.util.vlterm.VT10xEmulatorDefs.Token;
 
 /**

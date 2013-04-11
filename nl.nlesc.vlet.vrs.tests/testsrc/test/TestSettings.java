@@ -26,10 +26,10 @@ import java.util.Set;
 
 
 import nl.esciencecenter.ptk.Global;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.ServerInfo;
-import nl.uva.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.ServerInfo;
+import nl.nlesc.vlet.vrs.VRSContext;
 
 /**
  * Test configuarion settings. TODO: custom settings.

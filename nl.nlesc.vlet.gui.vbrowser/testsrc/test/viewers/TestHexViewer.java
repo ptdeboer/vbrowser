@@ -23,10 +23,10 @@
 
 package test.viewers;
 
-import nl.uva.vlet.gui.viewers.HexViewer;
-import nl.uva.vlet.gui.viewers.ViewContext;
-import nl.uva.vlet.gui.viewers.ViewerManager;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.gui.viewers.HexViewer;
+import nl.nlesc.vlet.gui.viewers.ViewContext;
+import nl.nlesc.vlet.gui.viewers.ViewerManager;
+import nl.nlesc.vlet.vrl.VRL;
 
 public class TestHexViewer
 {

@@ -28,7 +28,7 @@ import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import nl.uva.vlet.gui.util.gif.NS2GifDecoder;
+import nl.nlesc.vlet.gui.util.gif.NS2GifDecoder;
 
 public class TestGifDecoder
 {

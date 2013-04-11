@@ -1,14 +1,7 @@
 ###
 # File      : build.prop
-# Component : Irods VFS Driver
+# Component : JCraft SSH FileSystem
 # 
-# Info: 
-#   Build properties. Holds customizable properties 
-#   
-
-###
-# *** IMPORTANT *** 
-# Do not add spaces to the end of the values ! 
 
 ##
 # Component properties: 
@@ -22,11 +15,11 @@
 #  
 # this information is stored in plugin.prop. 
 #
-vdriver.name=nl.uva.vlet.vfs.jcraft.ssh
+vdriver.name=nl.nlesc.vlet.vfs.jcraft.ssh
 # Package name space and plugin directory  
-vdriver.package=nl.uva.vlet.vfs.jcraft.ssh
+vdriver.package=nl.nlesc.vlet.vfs.jcraft.ssh
 # VRS Factory class 
-vdriver.factory=nl.uva.vlet.vfs.jcraft.ssh.SftpFSFactory
+vdriver.factory=nl.nlesc.vlet.vfs.jcraft.ssh.SftpFSFactory
 
 # build environment: 
 vdriver.dist=${vdriver.root}/dist

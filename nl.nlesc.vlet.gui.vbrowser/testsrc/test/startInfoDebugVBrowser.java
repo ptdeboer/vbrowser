@@ -25,14 +25,14 @@ package test;
 
 import nl.esciencecenter.ptk.Global;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.uva.vlet.VletConfig;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.gui.UIGlobal;
-import nl.uva.vlet.gui.UILogger;
-import nl.uva.vlet.gui.UIPlatform;
-import nl.uva.vlet.gui.dialog.ExceptionForm;
-import nl.uva.vlet.gui.vbrowser.VBrowserFactory;
-import nl.uva.vlet.gui.vbrowser.VBrowserInit;
+import nl.nlesc.vlet.VletConfig;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.gui.UIGlobal;
+import nl.nlesc.vlet.gui.UILogger;
+import nl.nlesc.vlet.gui.UIPlatform;
+import nl.nlesc.vlet.gui.dialog.ExceptionForm;
+import nl.nlesc.vlet.gui.vbrowser.VBrowserFactory;
+import nl.nlesc.vlet.gui.vbrowser.VBrowserInit;
 
 /**
  * 

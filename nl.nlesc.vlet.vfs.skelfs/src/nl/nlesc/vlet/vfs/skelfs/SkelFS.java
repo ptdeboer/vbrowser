@@ -26,14 +26,14 @@ package nl.nlesc.vlet.vfs.skelfs;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.vfs.FileSystemNode;
-import nl.uva.vlet.vfs.VDir;
-import nl.uva.vlet.vfs.VFSNode;
-import nl.uva.vlet.vfs.VFile;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.ServerInfo;
-import nl.uva.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vfs.FileSystemNode;
+import nl.nlesc.vlet.vfs.VDir;
+import nl.nlesc.vlet.vfs.VFSNode;
+import nl.nlesc.vlet.vfs.VFile;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.ServerInfo;
+import nl.nlesc.vlet.vrs.VRSContext;
 
 /**
  *  Example Skeleton FileSystemServer implementation 
@@ -79,7 +79,7 @@ public class SkelFS extends FileSystemNode
         
         // openDir() must return existing directory: 
         if (dir.exists()==false)
-            throw new nl.uva.vlet.exception.ResourceNotFoundException("Directory doesn't exists:"+dir); 
+            throw new nl.nlesc.vlet.exception.ResourceNotFoundException("Directory doesn't exists:"+dir); 
         
         return dir; 
     }
@@ -93,7 +93,7 @@ public class SkelFS extends FileSystemNode
         
         // openFile() must return existing file: 
         if (file.exists()==false)
-            throw new nl.uva.vlet.exception.ResourceNotFoundException("File doesn't exists:"+file); 
+            throw new nl.nlesc.vlet.exception.ResourceNotFoundException("File doesn't exists:"+file); 
         
         return file; 
     }
@@ -128,7 +128,7 @@ public class SkelFS extends FileSystemNode
 			return new SkelDir(this,vrl);
 		}
  
-		throw new nl.uva.vlet.exception.ResourceNotFoundException("Don't know what this is:"+vrl);
+		throw new nl.nlesc.vlet.exception.ResourceNotFoundException("Don't know what this is:"+vrl);
 	}
 
 	// ========================================================================

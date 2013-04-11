@@ -26,9 +26,9 @@ package test;
 import java.io.PrintStream;
 import java.net.URI;
 
-import nl.uva.vlet.glite.lfc.LFCServer;
-import nl.uva.vlet.glite.lfc.internal.FileDesc;
-import nl.uva.vlet.vrs.VRS;
+import nl.nlesc.glite.lfc.LFCServer;
+import nl.nlesc.glite.lfc.internal.FileDesc;
+import nl.nlesc.vlet.vrs.VRS;
 
 
 

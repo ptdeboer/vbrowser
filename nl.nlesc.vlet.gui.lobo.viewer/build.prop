@@ -1,6 +1,6 @@
 ###
 # File      : build.prop
-# Component : Lobo Viewer
+# Component : VLET-Lobo Viewer
 # 
 # Info: 
 #
@@ -14,8 +14,8 @@
 viewer.name=LoboViewer
 # The Gui will use this classname to start the Viewer
 # it is also used as the jar file name 
-viewer.mainclass=nl.uva.vlet.gui.lobo.LoboBrowser
-viewer.package=nl.uva.vlet.gui.lobo
+viewer.mainclass=nl.nlesc.vlet.gui.lobo.LoboBrowser
+viewer.package=nl.nelsc.vlet.gui.lobo
 viewer.dist=${viewer.root}/dist
 viewer.build=${viewer.root}/build
 # seperate build directory for viewer classes and cobra classes !
@@ -28,16 +28,3 @@ viewer.src=${viewer.root}/src
 #cobra.topleveldir=cobra-0.98.4
 ## seperate build directory for viewer classes and cobra classes !
 #cobra.classes=${viewer.build}/cobraclasses
-
-###
-# Local Project Settings: 
-#
-# Note: for the env.<ENVIRONMENT VARIABLE> construct to work 
-# the property 'environment' needs to be set (in the main build file) to 'env'
-# as follows:  <property environment="env"/>
-
-# To use VLET_INSTALL as project.root uncomment the following: 
-project.root=../mbuild 
-#Installed project libraries: 
-#project.lib=${project.root}/lib
-

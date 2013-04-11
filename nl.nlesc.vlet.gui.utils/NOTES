@@ -1,7 +1,6 @@
 ###
-#Project    : VLeT
+#Project    : VLET
 #Component  : Gui Utils 
-#Maintainer : P.T. de Boer 
 #
 
 Info
@@ -9,10 +8,10 @@ Info
 This component contains the utility classes of the GUI. 
 Helper classes/viewers and/or other reusable source is 
 placed in this component. 
-Most components can be used as 'standalone' GUI components
+Most components can be used as 'stand alone' GUI components
 or other conveniant GUI building blocks.
 
-Some usefull components are, for example: 
+Some useful components are, for example: 
 
 - AttributeEditorForm   for VAttributes
 - AuthenticationDialog  for ServerInfo

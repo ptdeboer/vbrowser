@@ -45,7 +45,7 @@ package vfs;
 
 
 import test.TestSettings;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrl.VRL;
 
 
 /**

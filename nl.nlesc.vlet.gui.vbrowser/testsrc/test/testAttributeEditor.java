@@ -24,13 +24,13 @@
 package test;
 
 
-import nl.uva.vlet.VletConfig;
-import nl.uva.vlet.data.VAttribute;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.gui.panels.attribute.AttributeEditorForm;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.ServerInfo;
-import nl.uva.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.VletConfig;
+import nl.nlesc.vlet.data.VAttribute;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.gui.panels.attribute.AttributeEditorForm;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.ServerInfo;
+import nl.nlesc.vlet.vrs.VRSContext;
 
 
 public class testAttributeEditor

@@ -1,12 +1,7 @@
-<project name="vlet.gui.cobraviewer" default="dist" basedir=".">
+<project name="vlet-gui.lobo" default="dist" basedir=".">
 	<description>
-		Project	  : VLeT/Application
+		Project	  : VLET
 		Component : Cobra Viewer/HTML Renderer
-        Eclipse target : dist
-            	
-        Configuring: 
-        ===
-            - All configuration settings are in build.prop 
             	
     </description>
 

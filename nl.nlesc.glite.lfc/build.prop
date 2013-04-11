@@ -18,10 +18,10 @@
 ##
 # lfc package properties. 
 
-lfcj.package=nl.uva.vlet.glite.lfc
+lfcj.package=nl.nlesc.glite.lfc
 # name for distribution to use 
-lfcj.name=vlet_lfc
-lfcj.version=1.0.1
+lfcj.name=vlet-glite.lfc
+lfcj.version=1.0.2
 
 ###
 # Java Compiler options : Updated to 1.6 

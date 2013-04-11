@@ -6,15 +6,15 @@ import java.util.logging.Level;
 
 import nl.esciencecenter.ptk.Global;
 import nl.esciencecenter.ptk.crypt.Secret;
-import nl.uva.vlet.VletConfig;
-import nl.uva.vlet.exception.VRLSyntaxException;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.vfs.VFS;
-import nl.uva.vlet.vfs.VFSClient;
-import nl.uva.vlet.vfs.VFSNode;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.ServerInfo;
-import nl.uva.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.VletConfig;
+import nl.nlesc.vlet.exception.VRLSyntaxException;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vfs.VFS;
+import nl.nlesc.vlet.vfs.VFSClient;
+import nl.nlesc.vlet.vfs.VFSNode;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.ServerInfo;
+import nl.nlesc.vlet.vrs.VRSContext;
 
 public class TestNoInteraction 
 {

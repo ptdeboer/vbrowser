@@ -29,13 +29,13 @@ import java.util.Set;
 
 import org.globus.gsi.GlobusCredential;
 
-import nl.uva.vlet.VletConfig;
-import nl.uva.vlet.grid.globus.GlobusUtil;
-import nl.uva.vlet.grid.voms.VO;
-import nl.uva.vlet.grid.voms.VomsProxyCredential;
-import nl.uva.vlet.grid.voms.VomsUtil;
-import nl.uva.vlet.grid.voms.VomsProxyCredential.VomsInfo;
-import nl.uva.vlet.util.grid.GridProxy;
+import nl.nlesc.vlet.VletConfig;
+import nl.nlesc.vlet.grid.globus.GlobusUtil;
+import nl.nlesc.vlet.grid.voms.VO;
+import nl.nlesc.vlet.grid.voms.VomsProxyCredential;
+import nl.nlesc.vlet.grid.voms.VomsUtil;
+import nl.nlesc.vlet.grid.voms.VomsProxyCredential.VomsInfo;
+import nl.nlesc.vlet.util.grid.GridProxy;
 
 public class VomsTest
 {
@@ -60,7 +60,7 @@ public class VomsTest
             // String
             // vourl="https://voms.grid.sara.nl:8443/voms/vlemed/webui/admin";
             // pvierVO=VomsUtil.getVO("vlemed");
-            VO pvierVO = nl.uva.vlet.grid.voms.VomsUtil.getVO("pvier"); // VlePvierVO();
+            VO pvierVO = nl.nlesc.vlet.grid.voms.VomsUtil.getVO("pvier"); // VlePvierVO();
 
             if (pvierVO == null)
             {

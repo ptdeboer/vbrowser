@@ -1,8 +1,7 @@
-<project name="vls.gui.utils" default="dist" basedir=".">
+<project name="vlet-gui.util" default="dist" basedir=".">
 	<description>
-		Project	  : VLeT
+		Project	  : VLET
 		Component : Gui Utils
-        Eclipse target : dist
             	
         Configuring: 
         ===

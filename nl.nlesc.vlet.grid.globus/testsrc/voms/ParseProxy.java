@@ -2,9 +2,9 @@ package voms;
 
 import org.globus.gsi.GlobusCredential;
 
-import nl.uva.vlet.grid.globus.GlobusUtil;
-import nl.uva.vlet.grid.voms.VomsUtil;
-import nl.uva.vlet.util.grid.GridProxy;
+import nl.nlesc.vlet.grid.globus.GlobusUtil;
+import nl.nlesc.vlet.grid.voms.VomsUtil;
+import nl.nlesc.vlet.util.grid.GridProxy;
 
 public class ParseProxy 
 {

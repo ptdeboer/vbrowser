@@ -1,4 +1,4 @@
-<project name="vfs.srm" default="dist" basedir=".">
+<project name="vlet-vfs.srm" default="dist" basedir=".">
     <description>
         Project   : VLET/VBrowser
         Component : SRM VDriver 

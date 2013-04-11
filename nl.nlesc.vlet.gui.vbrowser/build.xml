@@ -1,13 +1,9 @@
-<project name="VBrowser" default="dist" basedir=".">
+<project name="vlet-gui.vbrowser" default="dist" basedir=".">
 	<description>
-		Project	  : VLeT
+		Project	  : VLET
 		Component : VBrowser
-        Eclipse target : dist
-            	
-        Configuring: 
-        ===
-            - All configuration settings are in build.prop 
-            	
+
+		
     </description>
 
     <!--
@@ -71,14 +67,12 @@
     	<!-- creat jar file out of icons -->
     	<jar jarfile="${component.dist}/lib/icons.jar"
          basedir="${component.root}/icons"/>
-    	
-		
-	</target>
+
+    </target>
 
     <!-- source distribution: nothing to do --> 
     <target name="source-dist"/>
-        
-
+   
 	<target name="javadoc" depends="init" description="documentation" >
 		<mkdir dir="${component.dist}/doc/api" />
 		<javadoc  use="true"

@@ -1,4 +1,4 @@
-<project name="nl.uva.vlet.lbl.srm" default="dist" basedir=".">
+<project name="vlet-glite.lbl.srm" default="dist" basedir=".">
     <description>
         Project   : VLET/srm
         Component : Pure SRM Java package 
@@ -244,7 +244,7 @@
        </copy>
 
        <!-- copy extra files to the root distribution directory --> 
-       <copy todir="${dist.package.dir}" file="ReleaseNotes.txt"/>
+	   <!-- <copy todir="${dist.package.dir}" file="ReleaseNotes.txt"/> -->
                 
        <!-- extra run script --> 
     	<!--

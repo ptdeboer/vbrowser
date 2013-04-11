@@ -23,15 +23,15 @@
 
 package test;
 
-import nl.uva.vlet.VletConfig;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.vfs.VFSClient;
-import nl.uva.vlet.vfs.VFSNode;
-import nl.uva.vlet.vfs.VFile;
-import nl.uva.vlet.vfs.srm.SRMFSFactory;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.VRS;
-import nl.uva.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.VletConfig;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vfs.VFSClient;
+import nl.nlesc.vlet.vfs.VFSNode;
+import nl.nlesc.vlet.vfs.VFile;
+import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.VRSContext;
 
 public class TestSrmCreateBigDir
 {
