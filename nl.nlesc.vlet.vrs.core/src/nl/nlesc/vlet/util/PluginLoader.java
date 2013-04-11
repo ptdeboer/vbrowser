@@ -19,30 +19,6 @@
 // source: 
 
 package nl.nlesc.vlet.util;
-/*
- * Copyright 2006-2011 The Virtual Laboratory for e-Science (VL-e) 
- * 
- * Licensed under the Apache License, Version 2.0 (the "License").  
- * You may not use this file except in compliance with the License. 
- * For details, see the LICENCE.txt file location in the root directory of this 
- * distribution or obtain the Apache Licence at the following location: 
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License.
- * 
- * See: http://www.vl-e.nl/ 
- * See: LICENCE.txt (located in the root folder of this distribution). 
- * ---
- * $Id: PluginLoader.java,v 1.2 2013/01/25 11:22:30 piter Exp $  
- * $Date: 2013/01/25 11:22:30 $
- */ 
-// source: 
-
-
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -54,7 +30,6 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.GlobalUtil;
-import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrl.VRL;
 
@@ -352,8 +327,7 @@ public class PluginLoader
 		//
 		// Convert local path to VRL location for consistency !
 		// 
-		String uriPath = VRL.uripath(pluginLoc.getPath(), true,
-				File.separatorChar);
+		String uriPath = VRL.uripath(pluginLoc.getPath(), true, File.separatorChar);
 		VRL baseLocation = new VRL("file", null, uriPath);
 
 		// Add plugin directory (=base location) to classpath.
@@ -374,7 +348,7 @@ public class PluginLoader
 				try
 				{
 					// use VRL as URL factory: use full path
-					VRL subvrl = newVRL(baseLocation, fileName, false);
+					VRL subvrl = baseLocation.resolvePath(fileName);
 
 					// list entry (local FILE/URL!):
 					File subfile = new File(subvrl.getPath());
@@ -405,8 +379,8 @@ public class PluginLoader
 	                try
 	                {
 	                    // use VRL as URL factory: use full path
-	                    VRL subvrl = newVRL(baseLocation, fileName, false);
-
+	                    VRL subvrl = baseLocation.resolvePath(fileName); 
+	                    
 	                    // list entry (local FILE/URL!):
 	                    File subfile = new File(subvrl.getPath());
 	                    URL suburl = subvrl.toURL();
@@ -492,7 +466,7 @@ public class PluginLoader
 			try
 			{
 				// use VRL as path factory
-				VRL pluginLocation = newVRL(dirLocation, name);
+				VRL pluginLocation = dirLocation.resolvePath(name);
 				// use plugin loader:
 				PluginInfo pluginInfo = loadLocalPlugin(pluginLocation.getPath());
 
@@ -528,16 +502,5 @@ public class PluginLoader
 		return plugins;
 	}
 
-
-	private VRL newVRL(VRL dirLocation, String filepath)
-    {
-        return null;
-    }
-	
-	private VRL newVRL(VRL baseLocation, String filepath, boolean useDirName)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
 }
