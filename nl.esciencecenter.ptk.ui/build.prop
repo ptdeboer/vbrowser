@@ -9,7 +9,7 @@
 
 #module specific settings: 
 
-comp.name=nl.nlesc.ptk.ui
+comp.name=nlesc-ptk.ui
 comp.package.prefix=nl.nlesc.ptk.ui
 comp.package.dir=nl/nlesc/ptk/ui
 comp.version=0.1

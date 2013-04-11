@@ -1,6 +1,6 @@
 ###
 # File      : build.prop
-# Component : vbrowser.vb2
+# Component : vbrowser.vb2.ui
 # 
 # Info: 
 #
@@ -10,15 +10,15 @@
 ###
 # Do not add spaces to the end of the values ! 
 # Component defaults (not that component.root is set in the main build file)
-component.groupid=nl.uva.vlet
-component.name=vbrowser-vb2.ui
+component.groupid=nlesc
+component.name=nlesc-vbrowser.vb2.ui
 component.dist=${component.root}/dist
 component.build=${component.root}/build
 component.src=${component.root}/src
 
 # needed for manifest: 
 component.version=${TODAY}
-component.vendor=www.vl-e.nl
+component.vendor=www.esciencecenter.nl
 
 ###
 # Local Project Settings: 

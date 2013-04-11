@@ -70,12 +70,6 @@
 
 	<target name="build" depends="init" description="compile the source ">
 		<!-- Compile the java code from into ${build} -->
-		<!--
-	    <javac srcdir="${comp.src}/bootstrap" destdir="${comp.build}" 
-	                compiler="javac1.5">
-	    			<classpath refid="comp.classpath" />
-	    		</javac>
-	    		-->
 	        
 	    <javac srcdir="${comp.src}" destdir="${comp.build.classdir}"
 	       	   compiler="${javac.compiler}"
@@ -84,17 +78,7 @@
 	    	   target="${javac.target}">
 	           <classpath refid="comp.classpath" />
 	    </javac>
-		
-		
-		
-	    <!--	    
-	    <javac srcdir="${comp.src}/vdriver" destdir="${comp.build}" 
-	           compiler="${javac.compiler}"
-	    	   debug="${javac.debug}"
-               target="${javac.target}">
-	           <classpath refid="comp.classpath" />
-	    </javac>
-	     -->
+	
 	</target>
 
 	<target name="build-bootstrap" depends="init" description="compile the source ">

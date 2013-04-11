@@ -7,7 +7,7 @@
 #   build properties. Holds ALL customizable properties 
 #   
 
-comp.name=nl.nlesc.ptk
+comp.name=nlesc-ptk
 comp.package.prefix=nl.esciencecenter.ptk
 comp.package.dir=nl/esciencecenter/ptk
 comp.version=0.1

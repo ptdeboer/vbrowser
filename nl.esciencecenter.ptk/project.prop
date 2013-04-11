@@ -1,6 +1,6 @@
 ##
 # Default project settings for standalone build 
-
+#
 
 ##
 # Project Build Enviroment 
@@ -24,7 +24,7 @@ project.vendor=nlesc.nl
 javac.debug=true
 javac.target=1.6
 javac.source=1.6
-javac.compiler=javac1.6
+javac.compiler=modern
 
 
 
