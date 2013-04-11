@@ -22,9 +22,9 @@
 // source: 
 package test;
 
-import nl.uva.vlet.vfs.VDir;
-import nl.uva.vlet.vfs.VFSClient;
-import nl.uva.vlet.vfs.VFSNode;
+import nl.nlesc.vlet.vfs.VDir;
+import nl.nlesc.vlet.vfs.VFSClient;
+import nl.nlesc.vlet.vfs.VFSNode;
 
 public class TestOctopusVBrowser
 {
@@ -34,7 +34,7 @@ public class TestOctopusVBrowser
 	    testGetDir(); 
 	    
 	    // The VBrowser classes must be in the classpath to be able to start this. 
-        nl.uva.vlet.gui.startVBrowser.main(args);
+        nl.nlesc.vlet.gui.startVBrowser.main(args);
     }
 
     private static void testGetDir() throws Exception

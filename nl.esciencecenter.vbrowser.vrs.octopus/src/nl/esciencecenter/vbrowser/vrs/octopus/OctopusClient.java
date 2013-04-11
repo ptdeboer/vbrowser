@@ -12,26 +12,29 @@ import java.util.Properties;
 import java.util.Set;
 
 import nl.esciencecenter.octopus.Octopus;
+import nl.esciencecenter.octopus.credentials.Credentials;
 import nl.esciencecenter.octopus.engine.OctopusEngine;
 import nl.esciencecenter.octopus.exceptions.OctopusException;
-import nl.esciencecenter.octopus.files.DeleteOption;
+import nl.esciencecenter.octopus.exceptions.OctopusIOException;
+import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.DirectoryStream;
 import nl.esciencecenter.octopus.files.FileAttributes;
-import nl.esciencecenter.octopus.files.Files;
-import nl.esciencecenter.octopus.files.Path;
+import nl.esciencecenter.octopus.files.FileSystem;
 import nl.esciencecenter.octopus.files.PathAttributes;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
+import nl.esciencecenter.octopus.files.RelativePath;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.vrl.VRL;
-import nl.uva.vlet.vrs.ServerInfo;
-import nl.uva.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.ServerInfo;
+import nl.nlesc.vlet.vrs.VRSContext;
 
 public class OctopusClient
 {
 
     public static OctopusClient createFor(VRSContext context, ServerInfo info, VRL location) throws VlException
     {
+        // check shared clients here. 
         try
         {
             OctopusClient client = new OctopusClient(); 
@@ -48,7 +51,7 @@ public class OctopusClient
     
     private Octopus engine;
     private Properties octoProperties;
-    //private Credentials octoCredentials;
+    private Credentials octoCredentials;
 
     /**
      * Protected constructor: Use factory method.
@@ -65,26 +68,26 @@ public class OctopusClient
         ; // 
     }
     
-    public URI createURI(Path path)
+    public AbsolutePath resolvePath(FileSystem fs,String pathString) throws OctopusIOException, OctopusException
     {
-        return path.toUri(); 
+        RelativePath relativePath=new RelativePath(pathString);
+        return engine.files().newPath(fs, relativePath); 
     }
-
-    public Path createPath(URI uri) throws OctopusException
+    
+    public FileSystem newFileSystem(java.net.URI uri) throws OctopusIOException, OctopusException
     {
-        Path path = engine.files().newPath(octoProperties, uri); 
-        return path; 
+        return engine.files().newFileSystem(uri, null, octoProperties);
     }
-
-    public FileAttributes statPath(Path path) throws OctopusException
+ 
+    public FileAttributes statPath(AbsolutePath path) throws OctopusIOException
     {
         return engine.files().getAttributes(path); 
     }
 
-    /** Full Stat */ 
-    public List<PathAttributes> statDir(Path octoPath) throws OctopusException
+    /** Stat Directory including attributes */ 
+    public List<PathAttributes> statDir(AbsolutePath octoAbsolutePath) throws OctopusIOException
     {
-        DirectoryStream<PathAttributes> dirIterator = engine.files().newAttributesDirectoryStream(octoPath); 
+        DirectoryStream<PathAttributes> dirIterator = engine.files().newAttributesDirectoryStream(octoAbsolutePath); 
 
         Iterator<PathAttributes> iterator = dirIterator.iterator(); 
         
@@ -103,17 +106,17 @@ public class OctopusClient
     }
 
     /** list files only without attributes */ 
-    public List<Path> listDir(Path octoPath) throws OctopusException
+    public List<AbsolutePath> listDir(AbsolutePath octoAbsolutePath) throws OctopusIOException
     {
-        DirectoryStream<Path> dirIterator = engine.files().newDirectoryStream(octoPath); 
+        DirectoryStream<AbsolutePath> dirIterator = engine.files().newDirectoryStream(octoAbsolutePath); 
 
-        Iterator<Path> iterator = dirIterator.iterator(); 
+        Iterator<AbsolutePath> iterator = dirIterator.iterator(); 
         
-        List<Path> paths=new ArrayList<Path>(); 
+        List<AbsolutePath> paths=new ArrayList<AbsolutePath>(); 
         
         while(iterator.hasNext())
         {
-            Path el = iterator.next();
+            AbsolutePath el = iterator.next();
             paths.add(el); 
         }
         
@@ -123,25 +126,25 @@ public class OctopusClient
         return paths;
     }
 
-    public FileAttributes getFileAttributes(Path octoPath) throws OctopusException
+    public FileAttributes getFileAttributes(AbsolutePath octoAbsolutePath) throws OctopusIOException
     {
-        return engine.files().getAttributes(octoPath); 
+        return engine.files().getAttributes(octoAbsolutePath); 
     }
 
-    public boolean deleteFile(Path octoPath, boolean force) throws OctopusException
+    public boolean deleteFile(AbsolutePath octoAbsolutePath, boolean force) throws OctopusIOException
     {
-        engine.files().delete(octoPath); 
+        engine.files().delete(octoAbsolutePath); 
         return true; // no exceptions 
     }
     
-    public boolean exists(Path octoPath) throws OctopusException
+    public boolean exists(AbsolutePath octoAbsolutePath) throws OctopusIOException
     {
-        return engine.files().exists(octoPath); 
+        return engine.files().exists(octoAbsolutePath); 
     }
 
-    public Path mkdir(Path octoPath, boolean force) throws OctopusException
+    public AbsolutePath mkdir(AbsolutePath octoAbsolutePath, boolean force) throws OctopusIOException
     {
-        return engine.files().createDirectories(octoPath,getDefaultDirPermissions());
+        return engine.files().createDirectory(octoAbsolutePath); //,getDefaultDirPermissions());
     }
 
     public Set<PosixFilePermission> createPermissions(int mode)
@@ -216,65 +219,53 @@ public class OctopusClient
         return createPermissions(0755); // octal 
     }
      
-    public Path createFile(Path octoPath) throws OctopusException
+    public AbsolutePath createFile(AbsolutePath octoAbsolutePath) throws OctopusIOException
     {
-        return engine.files().createFile(octoPath, getDefaultFilePermissions());
+        return engine.files().createFile(octoAbsolutePath); //, getDefaultFilePermissions());
     }
 
-    public InputStream createInputStream(Path octoPath) throws IOException
+    public InputStream createInputStream(AbsolutePath octoAbsolutePath) throws OctopusIOException
     {
-        try
-        {
-            return engine.files().newInputStream(octoPath);
-        }
-        catch (OctopusException e)
-        {
-            throw new IOException(e.getMessage(),e); 
-        } 
+        return engine.files().newInputStream(octoAbsolutePath);
     }
 
-    public OutputStream createOutputStream(Path path) throws IOException
+    public OutputStream createOutputStream(AbsolutePath path) throws IOException
     {
-        try
-        {
-            return engine.files().newOutputStream(path);
-        }
-        catch (OctopusException e)
-        {
-            throw new IOException(e.getMessage(),e); 
-        }
+        return engine.files().newOutputStream(path);
     }
 
-    public void rmdir(Path octoPath) throws OctopusException
+    public void rmdir(AbsolutePath octoAbsolutePath) throws OctopusIOException
     {
         //DeleteOption options;
-        engine.files().delete(octoPath) ;; // (octoPath,options);  
-        
+        engine.files().delete(octoAbsolutePath) ;; // (octoAbsolutePath,options);  
     }
 
-    public Path rename(Path oldPath, Path newPath) throws VlException, OctopusException
+    public AbsolutePath rename(AbsolutePath oldAbsolutePath, AbsolutePath newAbsolutePath) throws VlException, OctopusIOException
     {
         // Move must here be a rename on the same filesystem!
 
-        if (checkSameFilesystem(oldPath,newPath)==false)
-            throw new VlException("Cannot rename file when new file is on other file system:"+oldPath+"=>"+newPath); 
-        Path actualPath=engine.files().move(oldPath, newPath);
-        return actualPath;
+        if (checkSameFilesystem(oldAbsolutePath,newAbsolutePath)==false)
+            throw new VlException("Cannot rename file when new file is on other file system:"+oldAbsolutePath+"=>"+newAbsolutePath); 
+        
+        AbsolutePath actualAbsolutePath=engine.files().move(oldAbsolutePath, newAbsolutePath);
+        return actualAbsolutePath;
     }
 
-    private boolean checkSameFilesystem(Path oldPath, Path newPath)
+    public boolean checkSameFilesystem(AbsolutePath path1, AbsolutePath path2)
     {
-        if (StringUtil.compare(oldPath.getAdaptorName(),newPath.getAdaptorName())!=0) 
+        URI uri1 = path1.getFileSystem().getUri(); 
+        URI uri2 = path2.getFileSystem().getUri(); 
+        
+        if (StringUtil.compare(uri1.getHost(),uri2.getHost())!=0) 
             return false;
         
-        if (StringUtil.compare(oldPath.toUri().getHost(),newPath.toUri().getHost())!=0) 
-            return false;
-
-        if (oldPath.toUri().getPort()!=newPath.toUri().getPort())
-            return false;
+//        if (StringUtil.compare(uri1.getHost(),uri2.getHost())!=0) 
+//            return false;
+        
         return true; 
     }
 
     
-    
+  
+
 }

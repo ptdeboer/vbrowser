@@ -5,12 +5,16 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.junit.Assert;
+
 import nl.esciencecenter.octopus.Octopus;
 import nl.esciencecenter.octopus.engine.OctopusEngine;
 import nl.esciencecenter.octopus.exceptions.OctopusException;
+import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.DirectoryStream;
-import nl.esciencecenter.octopus.files.Path;
-import nl.esciencecenter.octopus.security.Credentials;
+import nl.esciencecenter.octopus.files.AbsolutePath;
+import nl.esciencecenter.octopus.files.FileSystem;
+import nl.esciencecenter.octopus.files.RelativePath;
 
 public class TestOctopus
 {
@@ -20,7 +24,7 @@ public class TestOctopus
         try
         {
             Octopus oct=createEngine();
-            testListDir(oct,"file:/home/ptdeboer/test/");
+            testListDir(oct,new URI("file:/"),"/home/ptdeboer/");
         }
         catch (Exception e)
         {
@@ -29,19 +33,22 @@ public class TestOctopus
         
     }
     
-    private static void testListDir(Octopus oct, String string) throws OctopusException, URISyntaxException
+    private static void testListDir(Octopus oct, URI fsUri,String pathStr) throws Exception
     {
-        Path path = oct.files().newPath(new URI("file:/home/ptdeboer/test/"));
-        DirectoryStream<Path> dirStream = oct.files().newDirectoryStream(path); 
         
-        Iterator<Path> iterator = dirStream.iterator(); 
+        FileSystem fs = oct.files().newFileSystem(fsUri, null, null); 
+        Assert.assertNotNull("FileSystem is null",fs); 
+        
+        RelativePath relPath=new RelativePath(pathStr);
+        AbsolutePath path = oct.files().newPath(fs, relPath); 
+        DirectoryStream<AbsolutePath> dirStream = oct.files().newDirectoryStream(path); 
+        
+        Iterator<AbsolutePath> iterator = dirStream.iterator(); 
         
         while (iterator.hasNext())
         {
-            Path el = iterator.next();
-            System.out.printf(">Path:%s\n",el); 
-            System.out.printf(">Path.getPath():%s\n",el.getPath()); 
-
+            AbsolutePath el = iterator.next();
+            System.out.printf("> Path:%s\n",el.getPath()); 
         }
         
     }

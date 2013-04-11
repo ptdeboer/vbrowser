@@ -25,16 +25,17 @@ import java.util.Set;
 
 import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
 import nl.esciencecenter.octopus.exceptions.OctopusException;
+import nl.esciencecenter.octopus.exceptions.OctopusIOException;
 import nl.esciencecenter.octopus.files.FileAttributes;
-import nl.esciencecenter.octopus.files.Path;
+import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
-import nl.uva.vlet.exception.ResourceAlreadyExistsException;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.vfs.VFS;
-import nl.uva.vlet.vfs.VFSTransfer;
-import nl.uva.vlet.vfs.VFile;
-import nl.uva.vlet.vfs.VUnixFileMode;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vfs.VFS;
+import nl.nlesc.vlet.vfs.VFSTransfer;
+import nl.nlesc.vlet.vfs.VFile;
+import nl.nlesc.vlet.vfs.VUnixFileMode;
+import nl.nlesc.vlet.vrl.VRL;
 
 /** 
  * 
@@ -42,9 +43,9 @@ import nl.uva.vlet.vrl.VRL;
 public class OctopusFile extends VFile
 {
     private FileAttributes fileAttrs;
-    private Path octoPath;
+    private AbsolutePath octoPath;
 
-    public OctopusFile(OctopusFS octopusFS, FileAttributes attrs, Path path)
+    public OctopusFile(OctopusFS octopusFS, FileAttributes attrs, AbsolutePath path)
     {
        super(octopusFS,octopusFS.createVRL(path));
        this.fileAttrs=attrs; 
@@ -67,7 +68,7 @@ public class OctopusFile extends VFile
             }
             return fileAttrs; 
         }
-        catch (OctopusException e)
+        catch (OctopusIOException e)
         {
             // Check for File Not Found Here !
             throw new VlException(e.getMessage(),e); 
@@ -103,10 +104,10 @@ public class OctopusFile extends VFile
 		try
         {
 	        // Path is immutable, update it here ? 
-            Path newPath = this.getOctoClient().createFile(octoPath);
+            AbsolutePath newPath = this.getOctoClient().createFile(octoPath);
             return true;
         }
-        catch (OctopusException e)
+        catch (OctopusIOException e)
         {
            throw new VlException(e.getMessage(),e); 
         }
@@ -177,7 +178,7 @@ public class OctopusFile extends VFile
             this.fileAttrs=null; 
             return result; 
         }
-        catch (OctopusException e)
+        catch (OctopusIOException e)
         {
             throw new VlException(e.getMessage(),e); 
         } 
@@ -204,7 +205,7 @@ public class OctopusFile extends VFile
 	    {
 	        throw new VlException(e.getMessage(),e); 
 	    }
-        catch (OctopusException e)
+        catch (OctopusIOException e)
         {
             throw new VlException(e.getMessage(),e); 
         }

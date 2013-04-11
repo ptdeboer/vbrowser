@@ -18,15 +18,17 @@
 
 package nl.esciencecenter.vbrowser.vrs.octopus;
 
+import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
 import nl.esciencecenter.octopus.exceptions.OctopusException;
+import nl.esciencecenter.octopus.exceptions.OctopusIOException;
 import nl.esciencecenter.octopus.files.FileAttributes;
-import nl.esciencecenter.octopus.files.Path;
+import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.uva.vlet.exception.ResourceAlreadyExistsException;
-import nl.uva.vlet.exception.VlException;
-import nl.uva.vlet.vfs.VDir;
-import nl.uva.vlet.vfs.VFSNode;
-import nl.uva.vlet.vrl.VRL;
+import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vfs.VDir;
+import nl.nlesc.vlet.vfs.VFSNode;
+import nl.nlesc.vlet.vrl.VRL;
 
 /**
  * Minimal implementation of the VDir class. 
@@ -34,11 +36,11 @@ import nl.uva.vlet.vrl.VRL;
 public class OctopusDir extends VDir
 {
 	private FileAttributes fileAttrs;
-    private Path octoPath;
+    private AbsolutePath octoPath;
 
-    public OctopusDir(OctopusFS skelfs, FileAttributes attrs, Path path)
+    public OctopusDir(OctopusFS vfs, FileAttributes attrs, AbsolutePath path)
 	{
-		super(skelfs, skelfs.createVRL(path));
+		super(vfs, vfs.createVRL(path));
 		this.fileAttrs=attrs;
 		this.octoPath=path;
 	}
@@ -59,7 +61,7 @@ public class OctopusDir extends VDir
             }
             return fileAttrs; 
         }
-        catch (OctopusException e)
+        catch (OctopusIOException e)
         {
             // Check for File Not Found Here !
             throw new VlException(e.getMessage(),e); 
@@ -89,7 +91,7 @@ public class OctopusDir extends VDir
 		    
             this.getOctoClient().mkdir(octoPath,force);
         }
-        catch (OctopusException e)
+        catch (OctopusIOException e)
         {
             throw new VlException(e.getMessage(),e); 
         } 
@@ -111,7 +113,7 @@ public class OctopusDir extends VDir
                 return this.getOctoClient().exists(octoPath); 
             }
         }
-        catch (OctopusException e)
+        catch (OctopusIOException e)
         {
             throw new VlException(e.getMessage(),e); 
         }
@@ -190,7 +192,7 @@ public class OctopusDir extends VDir
             this.fileAttrs=null; 
             return true; 
         }
-        catch (OctopusException e)
+        catch (OctopusIOException e)
         {
             throw new VlException(e.getMessage(),e);  
         } 

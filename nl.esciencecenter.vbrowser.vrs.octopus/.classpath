@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vrs.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/octopus"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.gui.vbrowser"/>
+	<classpathentry kind="lib" path="/octopus/test/lib/junit-4.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
