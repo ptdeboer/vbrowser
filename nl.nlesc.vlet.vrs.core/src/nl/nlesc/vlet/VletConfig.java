@@ -26,6 +26,7 @@ package nl.nlesc.vlet;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
@@ -347,7 +348,96 @@ public class VletConfig
    
     public static String[] parseArguments(String[] args)
     {
-        return args;
+        if (args==null)
+            return null; 
+        
+        List<String> remainingArgs = new ArrayList<String>();
+                
+        for (String arg : args)
+        {
+            //infoPrintf(Global.class, "Checking arg:%s\n",arg); 
+
+            boolean parsed = false;
+
+            if (arg.startsWith("-D"))
+            {
+                //debugPrintln("Global","arg="+arg); 
+
+                // property argument
+                String propDef = arg.substring(2);
+                String strs[] = propDef.split("[ ]*=[ ]*");
+
+                if ((strs != null) && (strs.length > 1) && (strs[0] != null))
+                {
+                    System.setProperty(strs[0], strs[1]);
+                    parsed = true;
+                }
+                else
+                {
+                    //Global.errorPrintf(Global.class, "Couldn't parse property:%s\n",arg);
+                } 
+            }
+            else if (arg.equalsIgnoreCase("-debug"))
+            {
+                logger.setLevelToDebug();
+                parsed = true;
+            }
+            else if (arg.equalsIgnoreCase("-warn"))
+            {
+                logger.setLevelToWarn(); 
+                parsed = true;
+            }
+            else if (arg.equalsIgnoreCase("-info"))
+            {
+                logger.setLevelToInfo();
+                //Global.setDebug(true);
+                parsed = true;
+            }
+            else if (arg.startsWith("-loglevel="))
+            {
+                String levelstr=arg.substring("-loglevel=".length());
+
+                if (levelstr.compareToIgnoreCase("NONE")==0)
+                {
+                    logger.setLevelToNone(); 
+                    parsed = true;
+                }
+                else if (levelstr.compareToIgnoreCase("FATAL")==0)
+                {
+                    logger.setLevelToFatal();  
+                    parsed = true;
+                }
+                else if (levelstr.compareToIgnoreCase("ERROR")==0)
+                {
+                    logger.setLevelToError(); 
+                    parsed = true;
+                }
+                else if (levelstr.compareToIgnoreCase("WARN")==0)
+                {
+                    logger.setLevelToWarn(); 
+                    parsed = true;
+                }
+                else if (levelstr.compareToIgnoreCase("INFO")==0)
+                {
+                    logger.setLevelToInfo();
+                    parsed = true;
+                }
+                else if (levelstr.compareToIgnoreCase("DEBUG")==0)
+                {
+                    logger.setLevelToDebug();
+                    parsed = true;
+                }
+                else
+                    ; //Global.errorPrintf(Global.class,"unrecognized log level=%s\n",arg); 
+            }
+
+            if (parsed==false)
+                remainingArgs.add(arg); 
+        }
+        
+        String newArgs[]=new String[remainingArgs.size()];
+        newArgs=remainingArgs.toArray(newArgs); 
+        return newArgs;
     }
     
     /** <b>Pre Global Init</b>:Set Applet environment */ 
