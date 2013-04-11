@@ -275,12 +275,12 @@
               unless="project.env.ok"/>         
 		
         <!-- install srm distribution into project -->
-        <mkdir dir="${project.lib}/vdrivers" />
-    	<echo message="Installing SRM jar only:${dist.package.jar}"/>
-    	
-        <copy todir="${project.lib}/vdrivers"
+        <mkdir dir="${project.lib}" />
+        <mkdir dir="${project.lib}/glite" />
+
+    	<copy todir="${project.lib}/glite"
                file="${dist.package.jar}"  />
-        
+    	
     </target>
         
     <target name="clean" description="clean">

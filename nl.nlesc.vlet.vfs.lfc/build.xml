@@ -93,104 +93,91 @@
 		</jar> 
     </target>
 	
-    <target name="dist" depends="build,jar" >
-    
+	<target name="dist" depends="vdriver-dist" >
     </target> 
-    
-	 <target name="vdriver.plugin" depends="build,jar" >
+		
+    <target name="vdriver-dist" depends="build,jar" >
 	    
-	        <!-- 
-	          instead of an single jar file, the 
-	          vdriver distribution can also be a directory containing the 
-	          jar files needed for the vdriver. 
-	          The directory MUST have the name of the Main Viewer Class. 
-	          The jar file can have another name. 
-	          Optionally extra jars/file can be copied to this directory
-	        -->
+        <property name="vdriver.dir"  value="${vdriver.dist}/${vdriver.name}"/> 
 	              
-	        <property name="vdriver.dir"  value="${vdriver.dist}/${vdriver.package}"/> 
-	              
-	        <mkdir dir="${vdriver.dir}" />
+        <mkdir dir="${vdriver.dir}" />
 		         
-	        <!-- Add extra files from etc --> 
-	        <copy todir="${vdriver.dir}">
-	            <fileset dir="${vdriver.root}/etc" /> 
-	        </copy>
+        <!-- Add extra files from etc --> 
+    	<!--
+		 <copy todir="${vdriver.dir}">
+        	<fileset dir="${vdriver.root}/etc" /> 
+		 </copy> 
+        -->
 	        
-			<!-- Add external libs --> 
-			<!-- <copy todir="${vdriver.dir}">
-	             <fileset dir="${vdriver.root}/lib" /> 
-	             </copy>
-	          --> 
-	                	
-	        <!-- Add vdrivers libs  --> 
-	        <copy todir="${vdriver.dir}">
-	            <fileset dir="${vdriver.dist}/lib" />  
-	        </copy> 
+		<!-- Add external libs --> 
+    	<!-- 
+    	 <copy todir="${vdriver.dir}">
+             <fileset dir="${vdriver.root}/lib" /> 
+         </copy>
+        -->
+	      	          	
+        <!-- Add vdrivers libs  --> 
+	    <copy todir="${vdriver.dir}">
+            <fileset dir="${vdriver.dist}/lib" /> 
+        </copy> 
 	        	
-	        <!-- create plugin.prop file -->
-	        <property name="plugininfo" value="${vdriver.dir}/plugin.prop"/>
-	        <echo message="##${line.separator}#Generated Plugin Description for: ${vdriver.name}${line.separator}#${line.separator}" 
-	              file="${plugininfo}" append="false" /> 
+        <!-- create plugin.prop file -->
+        <property name="plugininfo" value="${vdriver.dir}/plugin.prop"/>
+        <echo message="##${line.separator}#Plugin description for: ${vdriver.name}${line.separator}#${line.separator}" 
+              file="${plugininfo}" append="false" /> 
 	        	
-		    <echo message="#Plugin name:${line.separator}vdriver.name=${vdriver.name}${line.separator}${line.separator}" 
-	              file="${plugininfo}" append="true" /> 
+	    <echo message="#Plugin name:${line.separator}vdriver.name=${vdriver.name}${line.separator}${line.separator}" 
+              file="${plugininfo}" append="true" /> 
 
-			<echo message="#Plugin package name:${line.separator}vdriver.package=${vdriver.package}${line.separator}${line.separator}" 
-	              file="${plugininfo}" append="true" />
+		<echo message="#Plugin package name:${line.separator}vdriver.package=${vdriver.package}${line.separator}${line.separator}" 
+              file="${plugininfo}" append="true" />
 	              	
-	        <echo message="#Plugin (VRS)Factory name.${line.separator}#(Must be subclass of VRSFactory which will be registered in the VRS Registry!):${line.separator}vdriver.factory=${vdriver.factory}${line.separator}${line.separator}" 
-	              file="${plugininfo}" append="true" />
+        <echo message="#Plugin (VRS)Factory name (Must be subclass of VRSFactory which will be registered in the VRS Registry!):${line.separator}vdriver.factory=${vdriver.factory}${line.separator}${line.separator}" 
+              file="${plugininfo}" append="true" /> 
 	    	
-	        <echo message="#Dependencies.${line.separator}#Comma seperated list of package names (Under construction):${line.separator}vdriver.depends=nl.uva.vlet.vfs.srmfs${line.separator}${line.separator}" 
-	              file="${plugininfo}" append="true" /> 
-	             	
-	    </target> 
+    </target> 
+	    
     <!--
-    *    Target: dist-install
+    *    Target: vdriver-dist-install
     *    Info:
-    *          Only used when component is part of the main project. 
-    *        
+    *          Install into plugin directory
     -->
-    
-    <target name="pluign-dist-install" depends="dist" description="install libraries">
+    <target name="vdriver-dist-install" depends="vdriver-dist" description="install libraries">
         <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
               unless="project.env.ok"/>         
         <mkdir dir="${project.doc}" />
         <!-- install in lib/plugins/  --> 
         <mkdir dir="${project.lib}/plugins" />
-        
+	        
         <!-- Copy all-in-one package lib into project lib dir --> 
         <!-- <copy file="${vdriver.dist}/${vdriver.package}.jar" todir="${project.dist}/lib/plugins" /> 
-          --> 
-    	
-    	<copy todir="${project.dist}/lib/plugins/${vdriver.package}">
-	 		<fileset dir="${vdriver.dist}/${vdriver.package}" />
-    	</copy>
-    </target>
-	
-	  <!--
-	    *    Target: dist-install
-	    *    Info:
-	    *          Only used when component is part of the main project. 
-	    *        
-	    -->
-	    
-    <target name="dist-install" depends="dist" description="install libraries">
-	        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
-	              unless="project.env.ok"/>         
-	        <mkdir dir="${project.doc}" />
-	        <!-- install in lib/plugins/  --> 
-	        <mkdir dir="${project.lib}/vdrivers" />
-	        
-	        <!-- Copy all-in-one package lib into project lib dir --> 
-	        <!-- <copy file="${vdriver.dist}/${vdriver.package}.jar" todir="${project.dist}/lib/plugins" /> 
-	          --> 
+	      --> 
+    	<!-- 
+			Register plugin! do this by creating a plugin directory 
+            and copy the properties file there. 
+    	  -->
+    	<mkdir dir="${project.dist}/lib/plugins/${vdriver.name}" />
 	    	
-	    	<copy todir="${project.lib}/vdrivers">
-		 		<fileset dir="${vdriver.dist}/lib" />
-	    	</copy>
-	    </target>
+    	<copy todir="${project.dist}/lib/plugins/${vdriver.name}">
+    		<resources> 
+    			<fileset dir="${vdriver.dist}/${vdriver.name}" >
+    				<include name="plugin.prop"/>
+    			</fileset>
+    		</resources> 
+    	</copy>
+	    			
+    </target>
+	        
+	<target name="dist-install" depends="dist,vdriver-dist-install" description="install libraries">
+		<fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
+			  unless="project.env.ok"/>
+	   	
+		<!-- dist-install done by target dependencies --> 
+   		<!-- 
+   			optional dist install *here * 
+   		  -->
+	   	
+	</target>	
         
     <target name="clean" description="clean">
         <delete dir="${vdriver.dist}"/>

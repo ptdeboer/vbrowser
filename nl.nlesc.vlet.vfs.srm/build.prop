@@ -20,9 +20,9 @@
 #
 vdriver.name=vlet-vfs.srm
 # Package name space and plugin directory  
-vdriver.package=nl.nlesc.vlet.vfs.srmfs
+vdriver.package=nl.nlesc.vlet.vfs.srm
 # VRS Factory class 
-vdriver.factory=nl.nlesc.vlet.vfs.srmfs.SRMFSFactory
+vdriver.factory=nl.nlesc.vlet.vfs.srm.SRMFSFactory
 
 # build environment: 
 vdriver.dist=${vdriver.root}/dist

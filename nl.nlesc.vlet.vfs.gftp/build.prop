@@ -26,7 +26,7 @@ vdriver.name=vlet-vfs.gftp
 # Package name space and plugin directory  
 vdriver.package=nl.nlesc.vlet.vfs.gridftpfs
 # VRS Factory class 
-vdriver.factory=nl.nlesc.vlet.vfs.gridftpfs.GftpFSFactory
+vdriver.factory=nl.nlesc.vlet.vfs.gftp.GftpFSFactory
 
 # build environment: 
 vdriver.dist=${vdriver.root}/dist

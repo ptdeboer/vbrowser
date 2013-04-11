@@ -159,11 +159,12 @@
     <target name="dist-install" depends="dist" description="install lfcj into VLET distribution">
         <fail message="*** Error: property VLET 'project.root' not defined or could not find project environment.${line.separator}. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
               unless="project.env.ok"/>         
-
         
         <!-- install lfcj.jar only -->
-        <mkdir dir="${project.lib}/vdrivers" />
-         <copy todir="${project.lib}/vdrivers"
+        <mkdir dir="${project.lib}" />
+        <mkdir dir="${project.lib}/glite" />
+
+    	<copy todir="${project.lib}/glite"
                file="${dist.package.jar}"  />
         
     </target>
