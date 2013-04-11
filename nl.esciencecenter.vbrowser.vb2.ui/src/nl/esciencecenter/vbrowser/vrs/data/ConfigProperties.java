@@ -1,4 +1,4 @@
-package nl.esciencecenter.vbrowser.vb2.ui.data;
+package nl.esciencecenter.vbrowser.vrs.data;
 
 import java.util.Properties;
 

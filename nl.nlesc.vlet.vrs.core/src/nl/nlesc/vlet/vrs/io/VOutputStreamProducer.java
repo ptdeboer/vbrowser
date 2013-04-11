@@ -18,14 +18,21 @@
  */ 
 // source: 
 
-package nl.nlesc.vlet.vrs;
+package nl.nlesc.vlet.vrs.io;
+
+import java.io.OutputStream;
+
+import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vrl.VRL;
 
 /** 
- * Composite Interface which combines VInputStreamProducer and VOutputStreamProducer.
- * 
- * @author Piter T. de Boer
+ * Interface for ResourceSystems which can create OutputStreams. 
  */
-public interface VStreamProducer extends VInputStreamProducer,VOutputStreamProducer
+public interface VOutputStreamProducer 
 {
-	
+    /**
+     * Open the specified location and get OutputStream to read from. 
+     * This is a combined openLocation().getOutputStream() method
+     */ 
+	OutputStream openOutputStream(VRL location) throws VlException; 
 }

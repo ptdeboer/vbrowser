@@ -1,7 +1,7 @@
 //
 // Copyright 2010-2011 Piter.NL
 //
-package nl.esciencecenter.vbrowser.vb2.ui.data;
+package nl.esciencecenter.vbrowser.vrs.data;
 
 import java.net.URI;
 import java.net.URL;

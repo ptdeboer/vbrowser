@@ -1,7 +1,7 @@
 //
 // Copyright 2010-2011 Piter.NL
 //
-package nl.esciencecenter.vbrowser.vb2.ui.data;
+package nl.esciencecenter.vbrowser.vrs.data;
 
  
 import java.io.Serializable;
@@ -32,7 +32,6 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
  * 
  * @author P.T. de Boer
  */
-
 public class Attribute implements Cloneable, Serializable, Duplicatable<Attribute>// Triple<VAttributeType,String,Object>
 {
     private static final long serialVersionUID = -8999238098979470171L;

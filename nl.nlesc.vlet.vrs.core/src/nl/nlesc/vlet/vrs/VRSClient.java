@@ -34,6 +34,8 @@ import nl.nlesc.vlet.util.bdii.BdiiService;
 import nl.nlesc.vlet.util.bdii.ServiceInfo;
 import nl.nlesc.vlet.vfs.VRSTransferManager;
 import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.io.VInputStreamProducer;
+import nl.nlesc.vlet.vrs.io.VOutputStreamProducer;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
 
