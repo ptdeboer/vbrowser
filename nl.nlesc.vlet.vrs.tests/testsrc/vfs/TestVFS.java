@@ -231,7 +231,7 @@ public class TestVFS extends VTestCase
     }
 
     @After
-    protected void tearDown()
+    public void tearDown()
     {
         // 
     }
@@ -1518,7 +1518,8 @@ public class TestVFS extends VTestCase
      * contents.
      */
 
-    @Test public void testStreamWrite() throws Exception
+    @Test 
+    public void testStreamWrite() throws Exception
     {
         if (getTestDoBigTests() == false)
             return;

@@ -41,6 +41,11 @@ public class TestVFS_SRMsara extends TestVFS_SRM
 {
     static private ServerInfo info;
 
+    static
+    {
+        TestVFS_LocalFS.initLocalFS(); 
+    }
+    
     public TestVFS_SRMsara()
     {
         // this.doRename=false;
@@ -52,27 +57,6 @@ public class TestVFS_SRMsara extends TestVFS_SRM
     {
         return TestSettings.getTestLocation(TestSettings.VFS_SRM_DCACHE_SARA_LOCATION); 
     }
-
-//    public static void authenticate() throws VlException
-//    {
-//        if (info == null)
-//            info = TestSettings.getServerInfoFor(TestSettings.getTestLocation(TestSettings.VFS_SFTP_ELAB_LOCATION), true);
-//
-//        info.store();
-//
-//        if (info.hasValidAuthentication() == false)
-//        {
-//            ServerInfo ans = AuthenticationDialog.askAuthentication("Password for:" + info.getUsername() + "@"
-//                    + info.getHostname(), info);
-//
-//            if (ans == null)
-//            {
-//                // fail("Authentication Failed!!!");
-//            }
-//
-//            ans.store(); // store in ServerInfo database !
-//        }
-//    }
 
     @Before
     public void testSetup()

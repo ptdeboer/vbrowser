@@ -28,12 +28,30 @@ import org.junit.Before;
 //import nl.uva.vlet.gui.dialog.AuthenticationDialog;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
+import nl.nlesc.vlet.vrs.VRS;
 
 /**
  * Test LFC. 
  */
 public class TestVFS_LFCsara extends TestVFS
 {
+
+    static
+    {
+        initLocalFS();
+    }
+    
+    public static void initLocalFS()
+    {
+        try
+        {
+            VRS.getRegistry().registerVRSDriverClass(nl.nlesc.vlet.vfs.lfc.LFCFSFactory.class);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        } 
+    }
     static private ServerInfo info;
 
     VRL testLoc=null; 

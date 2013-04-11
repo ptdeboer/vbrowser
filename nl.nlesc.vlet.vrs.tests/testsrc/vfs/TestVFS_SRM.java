@@ -1,6 +1,6 @@
 package vfs;
 
-public class TestVFS_SRM extends TestVFS
+abstract public class TestVFS_SRM extends TestVFS
 {
 
     /** SRM does not support URI encoding ! */
@@ -14,4 +14,5 @@ public class TestVFS_SRM extends TestVFS
     {
         return false;
     }
+    
 }
