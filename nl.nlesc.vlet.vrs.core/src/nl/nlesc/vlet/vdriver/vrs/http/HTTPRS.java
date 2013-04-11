@@ -32,7 +32,7 @@ import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VResourceSystem;
-import nl.nlesc.vlet.vrs.VStreamProducer;
+import nl.nlesc.vlet.vrs.io.VStreamProducer;
 
 public class HTTPRS implements VResourceSystem, VStreamProducer
 {

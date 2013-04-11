@@ -7,7 +7,7 @@ import java.io.UnsupportedEncodingException;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.vrs.ResourceWriter;
+import nl.nlesc.vlet.vrs.io.ResourceWriter;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
 
@@ -73,43 +73,7 @@ public class FileWriter extends ResourceWriter
         write(0,buffer,0,nrOfBytes);
     }
 
-    /**
-     * Uses OutputStream to write to method i.s.o. RandomAccesFile methods. 
-     * For some implementations this is faster. 
-     * No offset is supported. 
-     */
-    public void streamWrite(byte[] buffer,int bufferOffset,int nrOfBytes) throws VlException
-    {
-        if (source instanceof VStreamWritable)
-        {
-            try
-            {
-
-                VStreamWritable wfile = (VStreamWritable) (source);
-                OutputStream ostr = wfile.getOutputStream(); // do not append
-
-                ostr.write(buffer, bufferOffset, nrOfBytes);
-                try
-                {
-                    ostr.flush(); 
-                    ostr.close(); // Close between actions !
-                }
-                catch (IOException e)
-                {
-                    ; // 
-                }
-            }
-            catch (IOException e)
-            {
-                throw new VlIOException("Failed to write to file:" + this, e);
-            }
-        }
-        else
-        {
-            throw new NotImplementedException("File type does not support (remote) write access");
-        }
-    }
-
+    
     /**
      * Set contents using specified String and encoding.
      * 

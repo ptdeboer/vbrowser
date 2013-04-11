@@ -1,7 +1,6 @@
 package nl.nlesc.vlet.vfs;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 import nl.esciencecenter.ptk.io.RandomReadable;
@@ -9,8 +8,8 @@ import nl.esciencecenter.ptk.io.StreamUtil;
 import nl.nlesc.vlet.exception.ResourceToBigException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.vrs.ResourceReader;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.io.ResourceReader;
 import nl.nlesc.vlet.vrs.io.VRandomReadable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 
@@ -126,6 +125,21 @@ public class FileReader extends ResourceReader
     }
     
     /**
+     * Synchronized read bytes until buffer is full. 
+     * 
+     * @see FileReader#read(long, byte[], int, int) 
+     * 
+     * @param buffer - the buffer to fill
+     * @return nr of bytes read. This method keep on reading until all bytes are read.  
+     * @throws VlException
+     */
+    public int read(byte buffer[])
+            throws VlException
+    {
+        return readBytes(0,buffer,0,buffer.length); 
+    }
+    
+    /**
      * Read from a (remote) VFile.<br>
      * Method tries to use the RandomAccessable interface 
      * or the  InputStream from VStreamReasable to read from.
@@ -145,7 +159,7 @@ public class FileReader extends ResourceReader
         return readBytes(offset,buffer,bufferOffset,nrOfBytes);
     }
     
-    public int readBytes(long offset, byte buffer[],int bufferOffset,int nrOfBytes)
+    protected int readBytes(long offset, byte buffer[],int bufferOffset,int nrOfBytes)
                 throws VlException
     {
         boolean forceUseStreamRead=false; //true; // default value  
@@ -180,29 +194,5 @@ public class FileReader extends ResourceReader
         }
     }
  
-    /**
-     * Use InputStream to read bytes, not the RandomAcces method readBytes. 
-     * For some implemenations this is faster. 
-     * It creates a new Input Stream, skip [offset] nr of bytes and then 
-     * tries to read nrOfBytes. 
-     */
-    public int streamRead(long offset, byte[] buffer, int bufferOffset, int nrOfBytes) throws VlException
-    {
-        // implementation moved to generic StreamUtil: 
-        try
-        {
-            VStreamReadable rfile = (VStreamReadable) (source);
-            InputStream istr = rfile.getInputStream();
-
-            if (istr==null)
-                return -1; 
-            
-            return StreamUtil.syncReadBytes(istr,offset,buffer,bufferOffset,nrOfBytes);
-        }
-        catch (IOException e)
-        {
-            throw new VlIOException(e);
-        } 
-
-    }
+    
 }
