@@ -203,14 +203,8 @@
 
 		<!-- toplevel directory structure -->
 		<mkdir dir="${project.lib}" />
-		<mkdir dir="${project.lib}/linux" />
-		<mkdir dir="${project.lib}/win32" />
-		<mkdir dir="${project.lib}/win64" />
 
 		<mkdir dir="${project.bin}" />
-		<mkdir dir="${project.bin}/linux" />
-		<mkdir dir="${project.bin}/win32" />
-		<mkdir dir="${project.bin}/win64" />
 
 		<mkdir dir="${project.lib}" />
 		<copy todir="${project.lib}">
