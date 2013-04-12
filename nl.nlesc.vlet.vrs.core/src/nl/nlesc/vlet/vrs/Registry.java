@@ -88,7 +88,6 @@ final public class Registry
     static
     {
         logger=ClassLogger.getLogger(Registry.class);
-        logger.setLevelToDebug();
         // Class instance initialization is done during (Singleton) Constructor
         // to avoid mutual initialization conflicts at startup!
     }
