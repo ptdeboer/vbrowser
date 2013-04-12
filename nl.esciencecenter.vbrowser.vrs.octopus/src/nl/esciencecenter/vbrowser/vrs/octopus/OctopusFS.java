@@ -19,6 +19,7 @@
 package nl.esciencecenter.vbrowser.vrs.octopus;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +33,9 @@ import nl.esciencecenter.octopus.files.FileSystem;
 import nl.esciencecenter.octopus.files.PathAttributesPair;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vfs.FileSystemNode;
 import nl.nlesc.vlet.vfs.VFS;
@@ -68,13 +71,43 @@ public class OctopusFS extends FileSystemNode
     public OctopusFS(VRSContext context, ServerInfo info,VRL location) throws VlException 
 	{
 		super(context, info);
-		VRL fsVrl=location.replacedPath("/"); // server uri.  
+		
+		boolean isSftp="sftp".equals(location.getScheme());
+        boolean isLocal="file".equals(location.getScheme());
+
+		String fsUriStr=null;
+		
+		if (isSftp)
+		{
+		    String user=info.getUsername(); 
+	        
+	        user=info.getUsername(); 
+   
+            if (StringUtil.isEmpty(user))
+                user=VletConfig.getUserName(); 
+            
+            fsUriStr=location.getScheme()+"://"+user+"@"+location.getHostname();
+		}
+		else
+		{
+		    fsUriStr="file:/";
+		}
 		
 		try
         {
+		    URI fsUri=new URI(fsUriStr);
+		    
 		    // create optional shared client. 
 		    octoClient=OctopusClient.createFor(context,info,location); 
-            octoFS=octoClient.newFileSystem(fsVrl.toURI());
+		    
+		    if ("sftp".equals(location.getScheme()))
+		    {
+	            octoFS=octoClient.newFileSystem(fsUri,octoClient.getSSHCredentials());
+		    }
+		    else
+		    {
+		        octoFS=octoClient.newFileSystem(fsUri);
+		    }
         }
         catch (OctopusIOException | OctopusException | URISyntaxException e)
         {
@@ -103,7 +136,7 @@ public class OctopusFS extends FileSystemNode
         String pathstr=path.getPath(); 
         
         VRL fsVrl=new VRL(fs.getUri()); 
-        return fsVrl.replacedPath(pathstr); 
+        return fsVrl.replacePath(pathstr); 
     }
     
    
@@ -333,7 +366,7 @@ public class OctopusFS extends FileSystemNode
         {
             // resolve against root: 
             VRL oldVRL=createVRL(octoAbsolutePath); 
-            newVRL= oldVRL.replacedPath(newName); 
+            newVRL= oldVRL.replacePath(newName); 
         }
         
         newAbsolutePath=createPath(newVRL); 

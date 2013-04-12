@@ -57,7 +57,7 @@ public class TestOctopus
     {
         Properties octoProperties = new Properties(); 
         //Credentials octoCredentials = new Credentials(); 
-        Octopus engine = OctopusEngine.newEngine(octoProperties); 
+        Octopus engine = OctopusEngine.newOctopus(octoProperties); 
         
         return engine; 
         

@@ -29,6 +29,8 @@ import nl.esciencecenter.octopus.exceptions.OctopusIOException;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
+import nl.esciencecenter.ptk.data.StringList;
+import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vfs.VFS;
@@ -113,6 +115,24 @@ public class OctopusFile extends VFile
         }
 	}
 	
+    // ===
+    // Attributes 
+    // ===
+    public String[] getAttributeNames()
+    {
+        StringList list=new StringList(super.getAttributeNames());
+        list.add("octoFile"); 
+        return list.toArray(); 
+    }
+    
+    public VAttribute getAttribute(String name) throws VlException
+    {
+        if ("octoFile".equals(name))
+            return new VAttribute (name,true); 
+        else
+            return super.getAttribute(name); 
+    }
+    
 	@Override
 	public long getLength() throws IOException 
 	{

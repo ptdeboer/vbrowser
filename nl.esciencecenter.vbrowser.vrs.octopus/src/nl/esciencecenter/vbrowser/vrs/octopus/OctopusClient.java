@@ -12,6 +12,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import nl.esciencecenter.octopus.Octopus;
+import nl.esciencecenter.octopus.credentials.Credential;
 import nl.esciencecenter.octopus.credentials.Credentials;
 import nl.esciencecenter.octopus.engine.OctopusEngine;
 import nl.esciencecenter.octopus.exceptions.OctopusException;
@@ -79,7 +80,7 @@ public class OctopusClient
     {
         octoProperties=props;
         //octoCredentials=new Credentials(); 
-        engine=OctopusEngine.newEngine(octoProperties); 
+        engine=OctopusEngine.newOctopus(octoProperties); 
     }
     
     protected void updateProperties(VRSContext context, ServerInfo info)
@@ -98,6 +99,11 @@ public class OctopusClient
         return engine.files().newFileSystem(uri, null, octoProperties);
     }
  
+    public FileSystem newFileSystem(java.net.URI uri,Credential cred) throws OctopusIOException, OctopusException
+    {
+        return engine.files().newFileSystem(uri, cred, octoProperties);
+    }
+    
     public FileAttributes statPath(AbsolutePath path) throws OctopusIOException
     {
         return engine.files().getAttributes(path); 
@@ -283,8 +289,14 @@ public class OctopusClient
         
         return true; 
     }
-
     
-  
+    public Credential getSSHCredentials() throws OctopusException
+    {
+        Credentials creds = engine.credentials();
 
+        String username = System.getProperty("user.name");
+        Credential cred = creds.newCertificateCredential("ssh", null, "/home/" + username + "/.ssh/id_rsa", 
+                            "/home/" + username + "/.ssh/id_rsa.pub", username, "");
+        return cred; 
+    }
 }

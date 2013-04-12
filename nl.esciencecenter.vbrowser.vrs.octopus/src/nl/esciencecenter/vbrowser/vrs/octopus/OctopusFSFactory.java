@@ -42,9 +42,10 @@ public class OctopusFSFactory extends VFSFactory
 	static private String schemes[]=
 		{
 			"file",
+			"sftp",
 			// for testing: 
-			"octopus",
-			"octopus.file"
+			"octopus.file",
+			"octopus.sftp"
 		}; 
 
 	// ========================================================================
@@ -69,8 +70,7 @@ public class OctopusFSFactory extends VFSFactory
 		// Checks ServerInfo for Resource Info settings and properties. 
 		return new OctopusFS(context,info,location);
 	}
-	
-	
+		
 	@Override
 	public void clear() 
 	{
@@ -88,8 +88,7 @@ public class OctopusFSFactory extends VFSFactory
 	{
 		return schemes;
 	}
-	
-	
+		
 	// See super method 
 	public ServerInfo updateServerInfo(VRSContext context,ServerInfo info, VRL loc) throws VlException
 	{
@@ -133,4 +132,6 @@ public class OctopusFSFactory extends VFSFactory
         // resolve per scheme: file is
         return 0;
     }
+
+   
 }

@@ -18,12 +18,12 @@
 
 package nl.esciencecenter.vbrowser.vrs.octopus;
 
-import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
-import nl.esciencecenter.octopus.exceptions.OctopusException;
 import nl.esciencecenter.octopus.exceptions.OctopusIOException;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.AbsolutePath;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vfs.VDir;
@@ -121,7 +121,7 @@ public class OctopusDir extends VDir
 	public VFSNode[] list() throws VlException 
 	{
 	    //return this.getFS().listNodes(octoPath); 
-        return getFS().listNodesAndAttrs(octoPath); 
+        return getFileSystem().listNodesAndAttrs(octoPath); 
 	}
 	
 	public OctopusFS getFileSystem()
@@ -130,28 +130,77 @@ public class OctopusDir extends VDir
 	    return (OctopusFS)super.getFileSystem(); 
 	}
 	
+	public VRL rename(String newName, boolean renameFullPath)
+            throws VlException
+    {
+        VRL vrl=getFileSystem().rename(octoPath,true,newName,renameFullPath);
+        this.fileAttrs=null; // clear cached attributes!
+        return vrl; 
+    }
+
+    public boolean delete(boolean recurse) throws VlException
+    {
+        if (recurse)
+        {
+            // my recursive delete 
+            ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting Octopus Directory:" + this.getPath(), 1);
+            getTransferManager().recursiveDeleteDirContents(monitor, this,true); 
+        }
+        
+        // delete single empty directory:
+        try
+        {
+            this.getOctoClient().rmdir(octoPath);
+            // clear attributes to indicate non existing dir! 
+            this.fileAttrs=null; 
+            return true; 
+        }
+        catch (OctopusIOException e)
+        {
+            throw new VlException(e.getMessage(),e);  
+        } 
+    }
+    
+	// ===
+    // Attributes 
+    // ===
+    public String[] getAttributeNames()
+    {
+        StringList list=new StringList(super.getAttributeNames());
+        list.add("octoDir"); 
+        return list.toArray(); 
+    }
+    
+    public VAttribute getAttribute(String name) throws VlException
+    {
+        if ("octoDir".equals(name))
+            return new VAttribute (name,true); 
+        else
+            return super.getAttribute(name); 
+    }
+    
 	@Override
 	public long getModificationTime() throws VlException
 	{
-	    return getFS().getModificationTime(getAttrs(false),System.currentTimeMillis());
+	    return getFileSystem().getModificationTime(getAttrs(false),System.currentTimeMillis());
 	}
 	
 	@Override
 	public String getPermissionsString() throws VlException
 	{
-	    return getFS().createPermissionsString(getAttrs(false),true); 
+	    return getFileSystem().createPermissionsString(getAttrs(false),true); 
     }
 	   
 	@Override
 	public boolean isReadable() throws VlException 
 	{
-	    return getFS().isReadable(getAttrs(false),true);
+	    return getFileSystem().isReadable(getAttrs(false),true);
 	}
 
 	@Override
 	public boolean isWritable() throws VlException
 	{
-		return this.getFS().isWritable(getAttrs(false),false); 
+		return this.getFileSystem().isWritable(getAttrs(false),false); 
 	}
 
 	public long getNrOfNodes() throws VlException
@@ -165,50 +214,12 @@ public class OctopusDir extends VDir
 		return files.length; 
 	}
 
-	public VRL rename(String newName, boolean renameFullPath)
-			throws VlException
-	{
-	    VRL vrl=getFS().rename(octoPath,true,newName,renameFullPath);
-        this.fileAttrs=null; // clear cached attributes!
-        return vrl; 
-	}
-
-	public boolean delete(boolean recurse) throws VlException
-	{
-	    if (recurse)
-	    {
-	        // my recursive delete 
-	        ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting Octopus Directory:" + this.getPath(), 1);
-	        getTransferManager().recursiveDeleteDirContents(monitor, this,true); 
-	    }
-	    
-	    // delete single empty directory:
-		try
-        {
-            this.getOctoClient().rmdir(octoPath);
-            // clear attributes to indicate non existing dir! 
-            this.fileAttrs=null; 
-            return true; 
-        }
-        catch (OctopusIOException e)
-        {
-            throw new VlException(e.getMessage(),e);  
-        } 
-	}
-	
 	// ===
 	// Protected 
 	// === 
-	
-	 // explicit downcast: 
-    protected OctopusFS getFS()
-    {
-        // downcast from VFileSystem interface to actual (Skeleton) FileSystem object. 
-        return ((OctopusFS)this.getFileSystem()); 
-    }
     
     protected OctopusClient getOctoClient()
     {
-        return this.getFS().octoClient; 
+        return this.getFileSystem().octoClient; 
     }
 }
