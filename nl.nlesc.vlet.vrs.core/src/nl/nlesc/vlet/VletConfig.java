@@ -22,7 +22,7 @@ package nl.nlesc.vlet;
 
 // IMPORTANT: Keep Import footprint SMALL to avoid chicken and egg
 // problems at class initialization. 
-// import only 'core' classes which do not refer back to GlobalConfig!
+// import only 'core' classes which do not refer back to VletConfig!
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -47,12 +47,12 @@ import nl.nlesc.vlet.vrs.VRS;
  * <ul>
  * <li> 1) The installation settings from VLET_INSTALL/etc/vletrc.prop
  * <li> 2) The environment variables using System.getenv() 
- * <li> 3) Optional user settings from ~/.vletrc/vletrc.prop (this can be disabled!)
+ * <li> 3) Optional user settings from ~/.vletrc/vletrc.prop 
  * <li> 4) System property using System.getProperty()
  * </ul>
  * Where the last one matched will be used (each next configuration 'overrides' the previous). 
  * <p>
- * Important GlobalConfig methods which must be specified as <strong>first</strong> statements
+ * Important VletConfig methods which must be specified as <strong>first</strong> statements
  * in an application before using the VRS are: 
  * <ul>
  * <li> {@link #setBaseLocation(String)} Alternative VLET_INSTALL or 'code base' location.  
@@ -292,7 +292,7 @@ public class VletConfig
     
     static
     {
-        // this should be the ONLY dependency from GlobalConfig ! 
+        // this should be the ONLY dependency from VletConfig ! 
         logger=ClassLogger.getLogger(VletConfig.class); 
     }
     
@@ -453,10 +453,10 @@ public class VletConfig
     }
     
     /**
-     * GlobalConfig's alternative to System.setProperty(). 
+     * VletConfig's alternative to System.setProperty(). 
      * Not all security manager allow System.get/setProperty() calls. 
-     * Use GlobalConfig.get/setProperty which are applet and service safe. 
-     * If the environment is an applet GlobalConfig will use a private property
+     * Use VletConfig.get/setProperty which are applet and service safe. 
+     * If the environment is an applet VletConfig will use a private property
      * instance to put/get global properties.    
      */ 
     public static void setSystemProperty(String key,String value)
@@ -521,7 +521,7 @@ public class VletConfig
     {
         // assertNotInitialized(); 
         //if (globalIsInitialized==true) 
-        //    throw new GlobalConfigurationException("Cannot set User Home after Global has been initialized"); 
+        //    throw new VletConfigurationException("Cannot set User Home after Global has been initialized"); 
         
         userHomeLocation=new VRL(url); 
     }
@@ -631,7 +631,7 @@ public class VletConfig
      * Alternative for System.getProperty() when running as an applet.
      * The methods setSystemProperty() and getSystemProperty() can be used 
      * as applet safe versions of System.getProperty() and System.setProperty(). 
-     * It is recommend all application use GlobalConfig versions.   
+     * It is recommend all application use VletConfig versions.   
      */ 
     public static String getSystemProperty(String key)
     {
@@ -1085,11 +1085,11 @@ public class VletConfig
      * <p>  
      * Checks system property settings in the following order (first found is returned) 
      * <ul>
-     * <li> I) Check system properties GlobalConfig.getSystemProperty (command line) 
+     * <li> I) Check system properties VletConfig.getSystemProperty (command line) 
      *         for user specified (and optional overridden) properties. 
      * <li> II) Check user stored properties (~/.vletrc/vletrc.prop)
      * <li> III) Check Installation stored properties ($VLET_INSTALL/etc/vletrc.prop)
-     * <li> IV)  Check Environment Variable GlobalConfig.getSystemEnv();
+     * <li> IV)  Check Environment Variable VletConfig.getSystemEnv();
      * </ul> 
      * </pre>
      */
@@ -1225,7 +1225,7 @@ public class VletConfig
             }
             catch (Exception e)
             {   
-                //rootLogger.logException(ERROR,e,"Unrecognized Logger Level:%s=%s.\n",GlobalConfig.ENV_VLET_DEBUG,valstr); 
+                //rootLogger.logException(ERROR,e,"Unrecognized Logger Level:%s=%s.\n",VletConfig.ENV_VLET_DEBUG,valstr); 
             }
         }
         return null; 
@@ -1355,8 +1355,5 @@ public class VletConfig
     {
         return VletConfig.getUserConfigDir().appendPath(VletConfig.PLUGIN_SUBDIR);
     }
-
-  
-    
     
 }// FIN ! 

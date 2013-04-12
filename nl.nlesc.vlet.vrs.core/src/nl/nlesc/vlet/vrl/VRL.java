@@ -232,7 +232,7 @@ public final class VRL extends VRI // implements Comparable<VRL>
         return new VRL(super.appendPath(path)); 
     }
 
-    public VRL replacedPath(String path)
+    public VRL replacePath(String path)
     {
         return new VRL(super.replacePath(path)); 
     }
