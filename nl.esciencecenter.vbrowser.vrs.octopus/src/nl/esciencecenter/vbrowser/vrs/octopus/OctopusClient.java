@@ -91,15 +91,17 @@ public class OctopusClient
     public AbsolutePath resolvePath(FileSystem fs,String pathString) throws OctopusIOException, OctopusException
     {
         RelativePath relativePath=new RelativePath(pathString);
-        return engine.files().newPath(fs, relativePath); 
+        AbsolutePath path=engine.files().newPath(fs, relativePath); 
+
+        return path; 
     }
     
-    public FileSystem newFileSystem(java.net.URI uri) throws OctopusIOException, OctopusException
+    public FileSystem createFileSystem(java.net.URI uri) throws OctopusIOException, OctopusException
     {
         return engine.files().newFileSystem(uri, null, octoProperties);
     }
  
-    public FileSystem newFileSystem(java.net.URI uri,Credential cred) throws OctopusIOException, OctopusException
+    public FileSystem createFileSystem(java.net.URI uri,Credential cred) throws OctopusIOException, OctopusException
     {
         return engine.files().newFileSystem(uri, cred, octoProperties);
     }

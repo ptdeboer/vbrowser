@@ -102,11 +102,11 @@ public class OctopusFS extends FileSystemNode
 		    
 		    if ("sftp".equals(location.getScheme()))
 		    {
-	            octoFS=octoClient.newFileSystem(fsUri,octoClient.getSSHCredentials());
+	            octoFS=octoClient.createFileSystem(fsUri,octoClient.getSSHCredentials());
 		    }
 		    else
 		    {
-		        octoFS=octoClient.newFileSystem(fsUri);
+		        octoFS=octoClient.createFileSystem(fsUri);
 		    }
         }
         catch (OctopusIOException | OctopusException | URISyntaxException e)
