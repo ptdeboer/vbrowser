@@ -32,13 +32,12 @@ vlet.build_date=@DATE@
 #tcp.connection.timeout=60000
 tcp.connection.timeout=30000
 
-
 ##
 # http/https proxy settings. 
 # Works ONLY for plain http and NOT for Globus GSI connections! 
 # these settings are similar to Java's http.proxyHost and http.proxyPort. 
 # Plain (Axis) webservices are under investigation 
-#http.proxy.host=elab.science.uva.nl
+#http.proxy.host=proxy.localhost.localdomain
 #http.proxy.port=3128 
 
 ###
@@ -46,13 +45,6 @@ tcp.connection.timeout=30000
 ## if set to true, firewall portranges will be ignored !
 #
 #passiveMode=true
-
-###
-## Additional globus client libs, use custom globus_location 
-##  If the location is prefixed with 'lib' this will be replaced by ${vlet.install.libdir} 
-##  if this property is set. 
-#
-globus.location=lib/auxlib/gt4.1.0
 
 ###
 ## Optional fixed user home. (USB Stick Option)
@@ -111,33 +103,11 @@ globus.location=lib/auxlib/gt4.1.0
 #vlet.vrs.initDefaultVDrivers=true
 
 ###
-## Default SRB Settings for the SRB host at SARA. 
-## This is the installation wide setting. 
-## Do NOT specify a username here ! 
-# 
-
-# Default SRB host at SARA :
-srb.hostname=srb.grid.sara.nl
-srb.path=/VLENL/home
-srb.port=50000
-srb.mdasCollectionHome=/VLENL/home
-srb.mdasDomainHome=vlenl
-srb.mdasDomainName=vlenl
-srb.defaultResource=vleGridStore
-#srb.username=
-srb.mcatZone=VLENL
-# set to true when behind a firewall (Default)
-# if incoming connection are allowed set to 'false'
-srb.passiveMode=true
-#this string MUST match the Enum Value for 'GSI_AUTH'
-srb.AUTH_SCHEME=GSI_AUTH
-
-###
 ## Default LFC Server settings: 
 ## 
 # Default LFC hostname: Specify empty field for the user to fill in. 
 #lfc.hostname=lfc.grid.sara.nl
-lfc.hostname=<LFCHOST>
+lfc.hostname=lfc.grid.sara.nl
 # Default port: 
 lfc.port=5010
 ## Example of preconfigured Storage Elements:
