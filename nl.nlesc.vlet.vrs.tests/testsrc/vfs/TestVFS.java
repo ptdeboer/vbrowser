@@ -336,9 +336,10 @@ public class TestVFS extends VTestCase
         if (inf!=null)
             rootPath=inf.getRootPath(); 
         else
-            rootPath=this.getRemoteLocation().resolveToVRL("/"); 
+            rootPath=this.getRemoteLocation().replacePath("/"); 
         
-        boolean result = getRemoteTestDir().existsDir(rootPath.getPath());
+        VDir rootDir=getRemoteTestDir().getFileSystem().newDir(rootPath); 
+        boolean result = rootDir.exists(); // existsDir(rootPath.getPath());
         Assert.assertTrue("Exists(): root path  '"+rootPath+"' Doesn't exist!", result);
     }
 

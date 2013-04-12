@@ -44,7 +44,7 @@ public class TestSettings
     public static final String VFS_GFTP_LOCATION    ="vfsGFTPLocation"; 
     public static final String VFS_GFTP_LOCATION2   ="vfsGFTPLocation2"; 
     public static final String VFS_GFTP_ELAB_LOCATION   ="vfsGFTPElabLocation"; 
-    public static final String VFS_SFTP_ELAB_LOCATION    ="vfsSFTPElabLocation"; 
+    public static final String VFS_SFTP_SARA_LOCATION    ="vfsSFTPSARALocation"; 
     public static final String VFS_SFTP_LOCALHOST    ="vfsSFTPLocalhostLocation"; 
     public static final String VFS_SRB_LOCATION     ="vfsSRBLocation";
     public static final String VFS_SRM_DCACHE_SARA_LOCATION ="vfsSRM_dCache_SARA_Location";
@@ -123,8 +123,8 @@ public class TestSettings
         testLocations.put(VFS_GFTP_ELAB_LOCATION,
                 new VRL("gftp", "elab.lab.uvalight.net", "/tmp/" + testUserName + "/testGFTP3"));
         
-        testLocations.put(VFS_SFTP_ELAB_LOCATION,
-                new VRL("sftp", "elab.lab.uvalight.net", "/tmp/" + testUserName+ "/testSFTP1"));
+        testLocations.put(VFS_SFTP_SARA_LOCATION,
+                new VRL("sftp", "ui.grid.sara.nl", "/tmp/" + testUserName+ "/testSFTP1"));
 
         testLocations.put(VFS_SFTP_LOCALHOST,
                 new VRL("sftp", "localhost", "/tmp/" + testUserName+ "/testSFTP2"));
