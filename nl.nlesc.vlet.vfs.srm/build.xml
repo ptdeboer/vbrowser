@@ -161,7 +161,7 @@
     	<copy todir="${project.dist}/lib/plugins/${vdriver.name}">
     		<resources> 
     			<fileset dir="${vdriver.dist}/${vdriver.name}" >
-    				<include name="plugin.prop"/>
+    				<!-- <include name="plugin.prop"/> -->
     			</fileset>
     		</resources> 
     	</copy>

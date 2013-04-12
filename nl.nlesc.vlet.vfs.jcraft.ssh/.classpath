@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="testsrc"/>
-	<classpathentry kind="lib" path="lib/jsch/jsch-0.1.42.jar"/>
+	<classpathentry kind="lib" path="lib/jsch/jsch-0.1.49.jar"/>
 	<classpathentry kind="src" path="/nl.esciencecenter.ptk"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vrs.core"/>
