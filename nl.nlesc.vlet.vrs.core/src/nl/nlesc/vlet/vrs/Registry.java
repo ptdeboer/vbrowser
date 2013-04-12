@@ -83,12 +83,12 @@ final public class Registry
     /** Class instance ! */ 
     private static Registry instance=null; 
   
-    private static boolean globalURLStreamFactoryInitialed=false;
+    private static boolean globalURLStreamFactoryInitialized=false;
 
     static
     {
         logger=ClassLogger.getLogger(Registry.class);
-        // logger.setLevelToDebug();
+        logger.setLevelToDebug();
         // Class instance initialization is done during (Singleton) Constructor
         // to avoid mutual initialization conflicts at startup!
     }
@@ -200,27 +200,35 @@ final public class Registry
 
         // Initialize default VDriver classes 
         String str=Global.getStringProperty(VletConfig.PROP_INIT_DEFAULT_VDRIVERS);
+        
         if ((str==null) || StringUtil.isTrueString(str))
         {
             logger.infoPrintf("Initializing default core vdrivers=%s\n",str);
 
-            // Core VDrivers: 
-            registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vrs.infors.InfoRSFactory");
-            registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vdriver.vfs.localfs.LocalFSFactory");
-            // Core Implementations: might not work from applet/grid service context !
-            registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.gftp.GftpFSFactory");
-            registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.jcraft.ssh.SftpFSFactory");
-            // Internal VFS classes: 
+            // Core VDrivers which must be located lib/vdrivers or other global lib dir. 
+            // Must not be located in lib/plugins;
+           
             registerVRSDriverClassNoError(currentLoader,HTTPFactory.class.getCanonicalName()); 
             registerVRSDriverClassNoError(currentLoader,HTTPSFactory.class.getCanonicalName());
-        
-            // Duymmy factory which initializes Globus Grid bindings!
+            registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vrs.infors.InfoRSFactory");
+            //registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vdriver.vfs.localfs.LocalFSFactory");
+            registerVRSDriverClassNoError(currentLoader,"nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory"); 
+            
+            // === Others: ===
+                        
+            // Core Implementations: might not work from applet/grid service context !
+            //registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.jcraft.ssh.SftpFSFactory");
+            
+            // Internal VFS classes: 
+            // Dummy factory which initializes Globus Grid bindings!
+            
             // All Globus dependencies are in a plugin themselves.
-            // addVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vrs.globusrs.GlobusRSFactory");
-           
+            //registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vrs.globusrs.GlobusRSFactory");
+            //registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.gftp.GftpFSFactory");
+            
             // Other VFS/VRS implementations from lib/vdrivers:
-            registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.srm.SRMFSFactory");
-            registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.lfc.LFCFSFactory");
+            //registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.srm.SRMFSFactory");
+            //registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.lfc.LFCFSFactory");
             
         }
         
