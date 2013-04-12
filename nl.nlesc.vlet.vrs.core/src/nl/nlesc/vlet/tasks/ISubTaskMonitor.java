@@ -1,4 +1,3 @@
-package nl.nlesc.vlet.tasks;
 /*
  * Copyrighted 2012-2013 Netherlands eScience Center.
  *
@@ -19,7 +18,8 @@ package nl.nlesc.vlet.tasks;
  */ 
 // source: 
 
-//package nl.uva.vlet.tasks;
+package nl.nlesc.vlet.tasks;
+
 //
 ///**
 // * Interface Methods for subtasks. 

@@ -1,15 +1,17 @@
 #!/bin/bash
 ##
+# PTB. 
 #
 
-#arguments: 
-
+#default header file: 
 headerfile=etc/header.txt
- 
+
+# Usage updateHeaders: <header file> 
 if [ -n "$1" ] ; then
     headerfile="$1"
 fi 
 
+# replaceHeader()
 replaceHeader()
 {
  if [ -z "$1" ] ; then
@@ -53,7 +55,7 @@ for file in `find . -name "*.java"` ; do
   fi 
 
   diff "$file" "$file".new
-  echo "proceed ? [Y/n/s/q]"
+  echo "proceed ? [Y/n/s/q] (Yes,No,Skip File, Quit)"
   read answer 
   case $answer in 
         ""|[yY]) 

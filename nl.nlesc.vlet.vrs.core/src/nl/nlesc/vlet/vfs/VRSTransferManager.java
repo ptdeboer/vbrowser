@@ -569,7 +569,9 @@ public final class VRSTransferManager
                     if (node instanceof VDir)
                     {
                         String name=node.getName(); 
+                        
                         VDir targetDir=targetParentDir.newDir(name);
+                        
                         BooleanHolder skipH=new BooleanHolder(false); 
                         targetDir=checkTarget(interactor,node,targetDir,skipH);
                         
