@@ -1,6 +1,6 @@
 ##
 # Default project settings for standalone build 
-
+#
 
 ##
 # Project Build Enviroment 
@@ -22,14 +22,14 @@ project.env.ok=ok;
 
 ##
 #
-project.vendor=nlesc.nl
+project.vendor=eScienceCenter.nl
 
 ###
 # Java Compiler options : Explicitly use java 1.6 
 javac.debug=true
-javac.target=1.6
-javac.source=1.6
-javac.compiler=javac1.6
+javac.target=1.7
+javac.source=1.7
+javac.compiler=modern
 
 
 

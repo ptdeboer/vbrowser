@@ -38,9 +38,12 @@
         
     </target> 
 
-    <target name="doModules" depends="project-init,vlet-core,vlet-vbrowser">
+    <target name="doModules" depends="vlet-all">
     </target> 
- 
+	
+    <target name="vlet-all" depends="project-init,vlet-core,vlet-vfs-adaptors,vlet-vbrowser">
+	</target> 
+	
     <target name="vlet-auxlibs" depends="project-init">
 
 	 <antcall target="build-component">
@@ -130,7 +133,7 @@
 	
 	<target name="vlet-vfs-adaptors" depends="vlet-vfs-globus,vlet-vfs-lfc-srm"/>
 	
- 	<target name="vlet-vbrowser" depends="vlet-core,vlet-vfs-adaptors">
+ 	<target name="vlet-vbrowser" depends="vlet-core">
 
         <antcall target="build-component">
             <param name="name" value="nl.esciencecenter.ptk.ui"/>
