@@ -15,28 +15,24 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
-/**
- * @author P.T. de Boer
- * 
- */
 public class ResourceToBigException extends ResourceException
 {
     private static final long serialVersionUID = 4212619986099429089L;
 
     public ResourceToBigException(String message)
     {
-        super(ExceptionStrings.RESOURCE_TO_BIG,message);
+        super(ExceptionStrings.RESOURCE_TO_BIG, message);
     }
 
     /** Constructor which keeps original System Exception */
-    public ResourceToBigException(String message, Exception e)
+    public ResourceToBigException(String message, Throwable e)
     {
-        super(ExceptionStrings.RESOURCE_TO_BIG,message,e); 
+        super(ExceptionStrings.RESOURCE_TO_BIG, message, e);
     }
 
 }

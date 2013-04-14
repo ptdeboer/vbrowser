@@ -139,7 +139,7 @@ public class SftpDir extends VDir implements VUnixFileAttributes
     public VRL rename(String newName, boolean nameIsPath) throws VlException
     {
         String newpath=server.rename(getPath(),newName,nameIsPath); 
-        return this.resolvePathVRL(newpath); 
+        return this.resolvePath(newpath); 
     }
     
     @Override

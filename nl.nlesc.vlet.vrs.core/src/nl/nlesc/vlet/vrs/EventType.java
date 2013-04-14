@@ -15,40 +15,46 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.vrs;
 
 import java.io.Serializable;
 
-/** 
- * Event types supported by the VRS Event Handler. 
- */ 
+/**
+ * Event types supported by the VRS Event Handler.
+ */
 public enum EventType implements Serializable
-{ 
-  /** For testing purposes only */
-  NO_EVENT,	
-  /** New Resource Added. Note that the CHILDS_ADDED event also notifies the creation
-   * of new resources but here the getSource() method will return the actual new source. */
-  NEW_RESOURCE,
-  /** Resource has been deleted */
-  DELETE,
-  /** Resource has a new child list */ 
-  SET_CHILDS,
-  /** New child resources added. Note that NEW_RESOURCE event also notifies the creation
-   * of new resource(s) but the source (getSource() in this case is the parent resource. */ 
-  CHILDS_ADDED,
-  /** Child resources deleted */ 
-  CHILDS_DELETED,
-  /** If attributes of the specified resource are cached, refresh them all  */ 
-  REFRESH,			
-  /** When a rename occured, the event contains both old and new VRL ! */
-  RENAME, 		  
-  /** Certain attributes have been changed. */
-  SET_ATTRIBUTES,
-  /** A SET_BUSY event is used to set busy to true and to false */
-  SET_BUSY,  
-  /** Resource Message Event */ 
-  MESSAGE;
+{
+    /** For testing purposes only */
+    NO_EVENT,
+    /**
+     * New Resource Added. Note that the CHILDS_ADDED event also notifies the
+     * creation of new resources but here the getSource() method will return the
+     * actual new source.
+     */
+    NEW_RESOURCE,
+    /** Resource has been deleted */
+    DELETE,
+    /** Resource has a new child list */
+    SET_CHILDS,
+    /**
+     * New child resources added. Note that NEW_RESOURCE event also notifies the
+     * creation of new resource(s) but the source (getSource() in this case is
+     * the parent resource.
+     */
+    CHILDS_ADDED,
+    /** Child resources deleted */
+    CHILDS_DELETED,
+    /** If attributes of the specified resource are cached, refresh them all */
+    REFRESH,
+    /** When a rename occured, the event contains both old and new VRL ! */
+    RENAME,
+    /** Certain attributes have been changed. */
+    SET_ATTRIBUTES,
+    /** A SET_BUSY event is used to set busy to true and to false */
+    SET_BUSY,
+    /** Resource Message Event */
+    MESSAGE;
 }

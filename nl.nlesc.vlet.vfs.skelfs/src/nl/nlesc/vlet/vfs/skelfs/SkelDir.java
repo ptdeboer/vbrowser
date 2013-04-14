@@ -41,7 +41,7 @@ public class SkelDir extends VDir
 	
 	public SkelDir(SkelFS skelfs, String path)  throws VlException
 	{
-		this(skelfs, skelfs.resolvePathVRL(path));  	
+		this(skelfs, skelfs.resolvePath(path));  	
 	}
 	
 	@Override
@@ -67,9 +67,9 @@ public class SkelDir extends VDir
 		
 		String[] paths = this.getVRL().getPathElements(); 
 		
-		nodes[0]=new SkelDir(this.getFileSystem(),this.resolvePathVRL("SK-Dir#"+paths.length)); 
-		nodes[1]=new SkelFile(this.getFileSystem(),this.resolvePathVRL("SK-file1")); 
-        nodes[2]=new SkelFile(this.getFileSystem(),this.resolvePathVRL("SK-file2")); 
+		nodes[0]=new SkelDir(this.getFileSystem(),this.resolvePath("SK-Dir#"+paths.length)); 
+		nodes[1]=new SkelFile(this.getFileSystem(),this.resolvePath("SK-file1")); 
+        nodes[2]=new SkelFile(this.getFileSystem(),this.resolvePath("SK-file2")); 
 		    	
         return nodes; 
 	}

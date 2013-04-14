@@ -32,4 +32,5 @@ public interface VUnixGroupMode
      * can not be resolved. 
      */ 
     public String getGid() throws VlException; 
+    
 }

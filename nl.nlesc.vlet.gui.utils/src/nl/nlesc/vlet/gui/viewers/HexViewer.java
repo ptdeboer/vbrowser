@@ -1,10 +1,10 @@
 /*
- * Copyright 2006-2011 The Virtual Laboratory for e-Science (VL-e) 
- * 
+ * Copyrighted 2012-2013 Netherlands eScience Center.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License").  
  * You may not use this file except in compliance with the License. 
  * For details, see the LICENCE.txt file location in the root directory of this 
- * distribution or obtain the Apache Licence at the following location: 
+ * distribution or obtain the Apache License at the following location: 
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software 
@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  * 
- * See: http://www.vl-e.nl/ 
- * See: LICENCE.txt (located in the root folder of this distribution). 
+ * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- * $Id: HexViewer.java,v 1.4 2013/01/25 11:21:13 piter Exp $  
- * $Date: 2013/01/25 11:21:13 $
  */ 
 // source: 
 
@@ -66,14 +63,13 @@ import nl.nlesc.vlet.vrs.VNode;
  * Implementation of a simple Binary Hex Viewer.<br>
  * Show the contents of in hexidecimal form
  *  
- * @author Code donated by Piter .T. de Boer (Piter.NL)
+ * @author Piter.NL.
  */
 public class HexViewer extends InternalViewer implements FontToolbarListener
 
 {
 	// todo: UTF-8 Char Mapping 
-	public final String charMapping[]=
-		{
+	public final String charMapping[]= {
 	      "�"," "," "," "     ," "," "," "," ",  " "," "," "," "," "," "," "," ", // 00 - 0f
 	      " "," "," ","\u240d"," "," "," "," ",  " "," "," "," "," "," "," "," ", // 10 - 1f
 	      " ","A","B","C"     ,"D","E","F","G",  " "," "," "," "," "," "," "," ", // 20 - 2f
@@ -89,7 +85,6 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 	      " "," "," "," "     ," "," "," "," ",  " "," "," "," "," "," "," "," ", // d0 - df  
 	      " "," "," "," "     ," "," "," "," ",  " "," "," "," "," "," "," "," ", // e0 - ef  
 	      " "," "," "," "     ," "," "," "," ",  " "," "," "," "," "," "," "," ", // f0 - ff  
-
 		};
 	
 	/** unicode for Carriage return C/R */ 
@@ -126,18 +121,12 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 	//
 	
 	private VFile vfile;
-	
 	private long offset;
-	
 	private long fileOffset; // start of current buffer in file ! 
-	
 	private int maxBufferSize=1*1024*1024; 
-	
 	private byte buffer[]=new byte[0];
-	
 	private long length;
-	
-	 private int wordSize=2;
+	private int wordSize=2;
 
 	/** Actual bytes per line (nrBytesPerLine) is nrWordPerLine*wordSize */ 
 	private int minimumBytesPerLine=32;
@@ -149,48 +138,28 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 	// Derived/Secondary fields: 
 	// ================================
 	
-	private JToolBar toolBar;
-	
-	int nrBytesPerLine;
-	
-	private int nrWordsPerLine;
-	
-	private int maxRows;
-	
-	int nrBytesPerView;
-	
-	private long scrollMutiplier=1;
+	protected int nrBytesPerLine;
+	protected int nrWordsPerLine;
+	protected int maxRows;
+	protected int nrBytesPerView;
+	protected long scrollMutiplier=1;
 	
 	// === GUI components: 
-	
-	JTextArea textArea=null;
-	
+	private JToolBar toolBar;
+    JTextArea textArea=null;
 	private JPanel mainPanel;
-	
 	private JScrollBar scrollbar;
-	
 	private HexViewController hexViewController;
-	
 	private JLabel offsetLabel;
-	
 	JTextField offsetField;
-	
 	private JLabel lengthLabel;
-	
 	private JTextField lengthField;
-	
 	private JLabel magicLabel;
-	
 	private JTextField magicField;
-		
 	private JPanel toolPanel;
-	
 	private FontToolBar fontToolBar;
-	
 	private JLabel encodingLabel;
-	
 	private JTextField encodingField;
-	
 	private ActionTask updateTask; 
 	
 	public void initGui()
@@ -724,7 +693,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
     	}
         else
         {
-            throw new VlException("Not supported","Sorry cannot read yet from:"+vnode); 
+            throw new VlIOException("Sorry cannot read yet from:"+vnode); 
         }
     }
 	
@@ -810,31 +779,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 		{
 		    setBusy(false); 
 		}
-		
-	
 	}
-	
-//	public void postMoveTo()
-//	{
-//		debug("postMoveTo");
-//		
-//		redrawContents(); // (re)draw
-//         
-////		 
-////		
-////	    final HexViewer fviewer = this;
-////	    Runnable updater=new Runnable()
-////	    {
-////	        public void run()
-////	        {
-////	           // fviewer.requestFrameResizeToPreferred(); 
-////	            setBusy(false); 
-////	        }
-////	    };
-////	    
-////	   updater.run(); 
-//	   // UIGlobal.swingInvokeLater(updater); 
-//	}
 	
 	void debug(String msg) 
 	{

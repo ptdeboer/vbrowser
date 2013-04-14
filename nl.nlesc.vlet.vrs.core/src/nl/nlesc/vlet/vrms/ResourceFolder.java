@@ -30,9 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.w3c.dom.DOMException;
-
-
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -45,7 +42,6 @@ import nl.nlesc.vlet.exception.ResourceDeletionFailedException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlXMLDataException;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VComposite;

@@ -34,5 +34,5 @@ public interface VOutputStreamProducer
      * Open the specified location and get OutputStream to read from. 
      * This is a combined openLocation().getOutputStream() method
      */ 
-	OutputStream openOutputStream(VRL location) throws VlException; 
+	public OutputStream openOutputStream(VRL location) throws VlException; 
 }

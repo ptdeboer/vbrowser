@@ -41,7 +41,7 @@ import javax.swing.JOptionPane;
  * This class must be able work as a standalone class !  
  * Cannot reference external classes not in the same jar ! 
  *   
- * @author Piter T. de Boer
+ * @author Piter T. de Boer/Piter.NL
  */
 public class Bootstrapper
 {

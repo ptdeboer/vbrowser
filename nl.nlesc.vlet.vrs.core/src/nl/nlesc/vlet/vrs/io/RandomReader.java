@@ -24,11 +24,11 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class VRandomReader implements VRandomReadable
+public class RandomReader implements VRandomReadable
 {
     private VRandomReadable source;
 
-    private long filePointer;
+    private long fileIndex;
 
     public long getLength() throws IOException
     {
@@ -45,18 +45,18 @@ public class VRandomReader implements VRandomReadable
      */
     public int readBytes(long fileOffset, byte[] buffer, int bufferOffset, int nrBytes) throws IOException
     {
-        filePointer = filePointer + nrBytes;
+        fileIndex = fileIndex + nrBytes;
         return this.source.readBytes(fileOffset, buffer, bufferOffset, nrBytes);
     }
 
-    public VRandomReader(VRandomReadable source)
+    public RandomReader(VRandomReadable source)
     {
         this.source = source;
     }
 
     public void close() throws IOException
     {
-        filePointer = 0;
+        fileIndex = 0;
         this.source = null;
         try
         {
@@ -85,8 +85,8 @@ public class VRandomReader implements VRandomReadable
      */
     public void readFully(byte[] signatureBytes) throws IOException
     {
-        this.source.readBytes(filePointer, signatureBytes, 0, signatureBytes.length);
-        filePointer = filePointer + signatureBytes.length;
+        this.source.readBytes(fileIndex, signatureBytes, 0, signatureBytes.length);
+        fileIndex = fileIndex + signatureBytes.length;
     }
 
     /**
@@ -117,7 +117,7 @@ public class VRandomReader implements VRandomReadable
      */
     public void seek(long off)
     {
-        this.filePointer = off;
+        this.fileIndex = off;
     }
 
     /**
@@ -138,8 +138,8 @@ public class VRandomReader implements VRandomReadable
     public int read() throws IOException
     {
         byte[] buffer = new byte[1];
-        this.source.readBytes(filePointer, buffer, 0, 1);
-        filePointer = filePointer + 1;
+        this.source.readBytes(fileIndex, buffer, 0, 1);
+        fileIndex = fileIndex + 1;
         return buffer[0];
     }
 
@@ -171,7 +171,7 @@ public class VRandomReader implements VRandomReadable
         {
             return 0;
         }
-        pos = this.filePointer;
+        pos = this.fileIndex;
         len = length();
         newpos = pos + lenToSkip;
         if (newpos > len)
@@ -211,12 +211,7 @@ public class VRandomReader implements VRandomReadable
      */
     public int read(byte[] b, int off, int len) throws IOException
     {
-        return readBytes(filePointer, b, off, len);
-    }
-
-    public long getFilePointer()
-    {
-        return this.filePointer;
+        return readBytes(fileIndex, b, off, len);
     }
 
     public InputStream getInputStream()

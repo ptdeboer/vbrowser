@@ -43,9 +43,9 @@ import nl.nlesc.vlet.vrs.VRSContext;
 
 /**
  * Bdii service for GLUE (ldap) database.
+ * Caches queries. 
  * 
- * Caches queries
- * 
+ * @author S. Koulouzis
  */
 
 public class BdiiService

@@ -24,7 +24,7 @@ package nl.nlesc.vlet.exception;
  * Service Implementation can throw this when an interface method is not (yet) 
  * implemented. 
  */
-public class VlInitializationException extends VlInternalError // VlException
+public class VlInitializationException extends VlInternalError 
 {
 	private static final long serialVersionUID = -4486738847955149984L;
 	

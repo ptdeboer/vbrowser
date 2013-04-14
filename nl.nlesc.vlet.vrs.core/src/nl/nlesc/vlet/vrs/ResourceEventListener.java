@@ -28,7 +28,6 @@ package nl.nlesc.vlet.vrs;
  * @see VRSContext#addResourceEventListener(ResourceEventListener)
  * @see ResourceEvent
  */
-
 public interface ResourceEventListener
 {
 	/** 

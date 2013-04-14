@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
@@ -26,11 +26,11 @@ public class VAttributeNotEditableException extends VlException
 
     public VAttributeNotEditableException()
     {
-        super(ExceptionStrings.ATTRIBUTE_NOT_EDITABLE);  
+        super(ExceptionStrings.ATTRIBUTE_NOT_EDITABLE);
     }
-    
+
     public VAttributeNotEditableException(String message)
     {
-        super(ExceptionStrings.ATTRIBUTE_NOT_EDITABLE,message); 
+        super(ExceptionStrings.ATTRIBUTE_NOT_EDITABLE, message);
     }
 }

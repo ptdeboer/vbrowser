@@ -31,7 +31,6 @@ import nl.nlesc.vlet.vrs.ResourceSystemNode;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
 
-
 /** 
  * FileSystemNode is a {@link VFileSystem} adaptor class, which extends the 
  * {@link ResourceSystemNode} and adds VFileSystem methods. 
@@ -60,7 +59,7 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 	
 	public VFSNode getNode(String path) throws VlException
 	{
-		return this.openLocation(this.resolvePathVRL(path));   
+		return openLocation(resolvePath(path));   
 	}
 	
 
@@ -69,8 +68,29 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 		return getNode(path); 
 	}
 	
+	/**
+     * Resolve relative or absolute path against this resource. Uses
+     * VRL.resolvePaths(this.getPath(),subPath) as default implementation.
+	 * @throws VlException,VRISyntaxException 
+     * 
+     * @throws VlException
+     */
+    public String resolvePathString(String path) throws VlException
+    {
+        return getVRL().resolvePathToVRL(path).getPath(); 
+    }
+   
+    /**
+     * Resolve path against this VRL and return resolved VRL. 
+     * Only match path elements!
+     */
+    public VRL resolvePath(String path) throws VlException
+    {
+        return getLocation().resolvePathToVRL(path);
+    }
+    
 	// implementations are encourage to override this method for speed
-	public VDir openDir(VRL dirVrl) throws VlException
+	public VDir getDir(VRL dirVrl) throws VlException
 	{
 		VFSNode node=this.getNode(dirVrl); 
 		
@@ -84,7 +104,7 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 	}
 	
 	// implementations are encourage to override this method for speed
-	public VFile openFile(VRL fileVrl) throws VlException
+	public VFile getFile(VRL fileVrl) throws VlException
 	{
 		VFSNode node=this.getNode(fileVrl);
 		
@@ -218,12 +238,12 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 	 
 	public VFile newFile(String path) throws VlException
 	{
-		return newFile(resolvePathVRL(path)); 
+		return newFile(resolvePath(path)); 
 	}
 	
 	public VDir newDir(String path) throws VlException
 	{
-		return newDir(resolvePathVRL(path)); 
+		return newDir(resolvePath(path)); 
 	}
 	
 	public void dispose()

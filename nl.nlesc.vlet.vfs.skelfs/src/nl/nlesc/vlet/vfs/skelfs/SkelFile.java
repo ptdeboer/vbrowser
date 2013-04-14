@@ -45,7 +45,7 @@ public class SkelFile extends VFile
 
 	public SkelFile(SkelFS skelfs, String path) throws VlException
 	{
-		this(skelfs, skelfs.resolvePathVRL(path));  	
+		this(skelfs, skelfs.resolvePath(path));  	
 	}
 	
 	public boolean create(boolean ignoreExisting) throws VlException

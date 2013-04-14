@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.actions;
@@ -318,7 +318,6 @@ class ResourceMappingPatterns
 
             return str;
         }
-
     }
 
     /** MAtches against MimeType REs */
@@ -460,7 +459,7 @@ class ResourceMappingPatterns
         return ((this.selectionMode & mode) == mode);
     }
 
-    /* *
+    /**
      * Match source+selections as follows:
      * 
      * (I) Check source type+scheme Pre check selections: (IIa) Selection Mode =
@@ -664,7 +663,6 @@ class ResourceMappingPatterns
     {
         return "ResourceMappingPatterns:" + allowedSources + " / " + allowedSelections;
     }
-    
 
     private static void Debug(String msg)
     {

@@ -352,10 +352,10 @@ public class VFS extends VRS
 		VResourceSystem rs=openResourceSystem(context, location); 
 		
 		if (rs==null) 
-			throw new nl.nlesc.vlet.exception.VlServiceException("Could find filesystem implementation for:"+location);
+			throw new nl.nlesc.vlet.exception.VlServiceMismatchException("Could find filesystem implementation for:"+location);
 		
 		if  ((rs instanceof VFileSystem)==false)
-			throw new nl.nlesc.vlet.exception.VlServiceException("Remote Resource is not a File System:"+location);
+			throw new nl.nlesc.vlet.exception.VlServiceMismatchException("Remote Resource is not a File System:"+location);
 			
 		return (VFileSystem)rs; 
 	}

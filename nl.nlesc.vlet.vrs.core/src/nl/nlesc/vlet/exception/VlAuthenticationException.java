@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
@@ -23,30 +23,56 @@ package nl.nlesc.vlet.exception;
 /**
  * @author P.T. de Boer
  * 
- * Grid Credential Exception(s)
+ *         Grid Credential Exception(s)
  */
 public class VlAuthenticationException extends VlException
 {
+    /**
+     * Credential Exceptions
+     */
+    public class VlPasswordException extends VlAuthenticationException
+    {
+        private static final long serialVersionUID = -9218600987549414855L;
+    
+        public VlPasswordException(String message)
+        {
+            super("Invalid Password Exception", message);
+        }
+    
+        /**
+         * Create VlException: CrendentialException which keeps original System
+         * Exception
+         */
+        public VlPasswordException(String message, Exception e)
+        {
+            super("Invalid Password Exception", message, e);
+        }
+    
+    }
+
     private static final long serialVersionUID = -3432982318417803312L;
 
     public VlAuthenticationException(String message)
     {
-        super(ExceptionStrings.INVALID_AUTHENTICATION_EXCEPTION,message);
+        super(ExceptionStrings.INVALID_AUTHENTICATION_EXCEPTION, message);
     }
 
-    /** Create VlException:  CrendentialException which keeps original System Exception */
+    /**
+     * Create VlException: CrendentialException which keeps original System
+     * Exception
+     */
     public VlAuthenticationException(String message, Exception e)
     {
-        super(ExceptionStrings.INVALID_AUTHENTICATION_EXCEPTION,message,e); 
+        super(ExceptionStrings.INVALID_AUTHENTICATION_EXCEPTION, message, e);
     }
 
     protected VlAuthenticationException(String name, String message, Throwable e)
     {
-        super(name,message,e); 
+        super(name, message, e);
     }
 
     protected VlAuthenticationException(String name, String message)
     {
-        super(name,message); 
+        super(name, message);
     }
 }

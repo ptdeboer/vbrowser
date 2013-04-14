@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
@@ -26,18 +26,21 @@ public class VlInterruptedException extends VlInternalError
 
     public VlInterruptedException(String message)
     {
-        super(ExceptionStrings.VLINTERRUPTEDEXCEPTION,message);
+        super(ExceptionStrings.VLINTERRUPTEDEXCEPTION, message);
     }
 
-    /** Create VlException:  CrendentialException which keeps original System Exception */
+    /**
+     * Create VlException: CrendentialException which keeps original System
+     * Exception
+     */
     public VlInterruptedException(String message, Exception e)
     {
-        super(ExceptionStrings.VLINTERRUPTEDEXCEPTION,message,e); 
+        super(ExceptionStrings.VLINTERRUPTEDEXCEPTION, message, e);
     }
-    
-    /** For Exception Chaining */ 
+
+    /** For Exception Chaining */
     public VlInterruptedException(InterruptedException e)
     {
-        super(ExceptionStrings.VLINTERRUPTEDEXCEPTION,e.getMessage(),e); 
+        super(ExceptionStrings.VLINTERRUPTEDEXCEPTION, e.getMessage(), e);
     }
 }

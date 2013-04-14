@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
@@ -26,28 +26,26 @@ public class VlIOException extends VlException
 
     public VlIOException(String message)
     {
-        super(ExceptionStrings.VLIOEXCEPTION,message);
+        super(ExceptionStrings.VLIOEXCEPTION, message);
     }
 
-    /** Create VlException:  CrendentialException which keeps original System Exception */
+    /**
+     * Create VlException: CrendentialException which keeps original System
+     * Exception
+     */
     public VlIOException(String message, Throwable err)
     {
-        super(ExceptionStrings.VLIOEXCEPTION,message,err); 
+        super(ExceptionStrings.VLIOEXCEPTION, message, err);
     }
 
-    public VlIOException(Exception e)
+    public VlIOException(Throwable e)
     {
-        super(ExceptionStrings.VLIOEXCEPTION,e.getMessage(),e); 
+        super(ExceptionStrings.VLIOEXCEPTION, e.getMessage(), e);
     }
 
-	protected VlIOException(String name, String message)
-	{
-		super(name,message); 
-	}
-
-	public VlIOException(String name, String message, Throwable e)
-	{
-		super(name,message,e); 
-	}
+    protected VlIOException(String name, String message, Throwable cause)
+    {
+        super(name, message, cause);
+    }
 
 }

@@ -32,7 +32,6 @@ import java.net.URLStreamHandler;
  * 
  * @author P.T. de Boer
  */
-
 public class VRLStreamHandler extends URLStreamHandler
 {
 

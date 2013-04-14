@@ -18,7 +18,7 @@
  * ---
  * $Id: GlobusCredentialWrapper.java,v 1.1 2013/02/05 11:27:46 piter Exp $  
  * $Date: 2013/02/05 11:27:46 $
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.grid.globus;
@@ -32,10 +32,10 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 
-
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.grid.voms.VOMSAttributeCertificate;
 import nl.nlesc.vlet.grid.voms.VomsUtil;
 import nl.nlesc.vlet.util.grid.GridProxy;
@@ -46,87 +46,91 @@ import org.bouncycastle.asn1.x509.AttributeCertificate;
 import org.globus.gsi.CertUtil;
 import org.globus.gsi.GlobusCredential;
 import org.globus.util.Util;
+
+
 /**
- * GlobusCredentail wrapper 
- * 
+ * GlobusCredentail wrapper
  */
 public class GlobusCredentialWrapper implements VGridCredential
 {
     private static ClassLogger logger;
-    
+
     static
     {
-        logger=ClassLogger.getLogger(GlobusCredentialWrapper.class); 
-        //logger.setLevelToDebug(); 
+        logger = ClassLogger.getLogger(GlobusCredentialWrapper.class);
+        // logger.setLevelToDebug();
     }
-    
-    private GlobusCredential credential=null;
+
+    private GlobusCredential credential = null;
+
     private GlobusCredentialProvider provider;
+
     private String userCertFile;
-    private String userKeyFile; 
+
+    private String userKeyFile;
+
     private String proxyFilename;
 
-    public GlobusCredentialWrapper(GlobusCredentialProvider globusCredProvider,GlobusCredential globusCredential)
+    public GlobusCredentialWrapper(GlobusCredentialProvider globusCredProvider, GlobusCredential globusCredential)
     {
-        logger.infoPrintf("New GlobusCredential:%s\n",globusCredential.getSubject());
-        
-        this.credential=globusCredential; 
-        this.provider=globusCredProvider; 
+        logger.infoPrintf("New GlobusCredential:%s\n", globusCredential.getSubject());
+
+        this.credential = globusCredential;
+        this.provider = globusCredProvider;
     }
-    
+
     public String getVOName()
     {
-        // try to parse VO information from Credential ! 
+        // try to parse VO information from Credential !
         ArrayList<VOMSInfo> vos = this.getVoInfoFromProxy();
-        if ((vos!=null) && (vos.size()>0))
-            return vos.get(0).vo; 
-        
-        return null; 
+        if ((vos != null) && (vos.size() > 0))
+            return vos.get(0).vo;
+
+        return null;
     }
-    
+
     public String getVOGroup()
     {
-        // try to parse VO information from Credential ! 
+        // try to parse VO information from Credential !
         ArrayList<VOMSInfo> vos = this.getVoInfoFromProxy();
-        if ((vos!=null) && (vos.size()>0))
+        if ((vos != null) && (vos.size() > 0))
             return vos.get(0).group;
-        
-        return null; 
+
+        return null;
     }
-    
+
     public String getVORole()
     {
-        // try to parse VO information from Credential ! 
+        // try to parse VO information from Credential !
         ArrayList<VOMSInfo> vos = this.getVoInfoFromProxy();
-        if ((vos!=null) && (vos.size()>0))
+        if ((vos != null) && (vos.size() > 0))
             return vos.get(0).role;
-        
-        return null; 
+
+        return null;
     }
 
     @Override
     public VGridCredentialProvider getProvider()
     {
-        return this.provider; 
+        return this.provider;
     }
-   
+
     @Override
     public String getIssuer()
     {
-        return credential.getIssuer(); 
+        return credential.getIssuer();
     }
 
     @Override
     public long getTimeLeft()
     {
-        return this.credential.getTimeLeft(); 
+        return this.credential.getTimeLeft();
     }
-
 
     @Override
     public boolean isType(String credentialType)
     {
-        return StringUtil.equals(GridProxy.GLOBUS_CREDENTIAL_TYPE,credentialType); 
+        return StringUtil.equals(GridProxy.GLOBUS_CREDENTIAL_TYPE, credentialType);
     }
 
     @Override
@@ -134,11 +138,12 @@ public class GlobusCredentialWrapper implements VGridCredential
     {
         try
         {
-            java.io.File jFile=new java.io.File(path);
-            
+            java.io.File jFile = new java.io.File(path);
+
             if (jFile.isDirectory())
-                throw new nl.nlesc.vlet.exception.ResourceAlreadyExistsException("Location is a directory, must be a file:"+path); 
-            
+                throw new nl.nlesc.vlet.exception.ResourceAlreadyExistsException(
+                        "Location is a directory, must be a file:" + path);
+
             OutputStream out = null;
             out = new FileOutputStream(path);
 
@@ -147,21 +152,20 @@ public class GlobusCredentialWrapper implements VGridCredential
             Util.setFilePermissions(path, 600);
             out.flush();
             out.close();
-            
-            // Update Path when successful: 
-            this.proxyFilename=path; 
+
+            // Update Path when successful:
+            this.proxyFilename = path;
 
             return true;
         }
         catch (FileNotFoundException e)
         {
-            throw new nl.nlesc.vlet.exception.ResourceNotFoundException("File creation error (File not found)."+
-                    "While trying to save proxy to file:" + path, e);
+            throw new nl.nlesc.vlet.exception.ResourceNotFoundException("File creation error (File not found)."
+                    + "While trying to save proxy to file:" + path, e);
         }
         catch (IOException e)
         {
-            throw new VlException("IOExeception", "While trying to save file:"
-                    + path, e);
+            throw new VlIOException("Couldn't write credential file to:" + path, e);
         }
     }
 
@@ -177,96 +181,94 @@ public class GlobusCredentialWrapper implements VGridCredential
         return this.proxyFilename;
     }
 
-
     @Override
     public String getUserCertFile()
     {
-        return this.userCertFile; 
+        return this.userCertFile;
     }
-    
+
     @Override
     public String getUserKeyFile()
     {
-        return this.userKeyFile; 
+        return this.userKeyFile;
     }
 
     public String getUserSubject()
     {
         return CertUtil.toGlobusID(credential.getSubject());
     }
-    
+
     /**
-     * Try to get some Voms info from current credential.
-     * Since there can be more then one VOMS attributes, return a list.  
-     */ 
-    public ArrayList<VOMSInfo>  getVoInfoFromProxy()
+     * Try to get some Voms info from current credential. Since there can be
+     * more then one VOMS attributes, return a list.
+     */
+    public ArrayList<VOMSInfo> getVoInfoFromProxy()
     {
-        if (this.credential==null) 
-            return null; 
-        
+        if (this.credential == null)
+            return null;
+
         X509Certificate[] certs = credential.getCertificateChain();
-        
-        ArrayList<AttributeCertificate> vomsACs = VomsUtil.extractVOMSACs(certs); 
-        
-        if ((vomsACs == null) || (vomsACs.size()<=0)) 
-        	return null;  
-        
-        //get first: 
-    	VOMSAttributeCertificate vomsAC=new VOMSAttributeCertificate(vomsACs.get(0));
-    	
-    	ArrayList<VOMSInfo> vos = new ArrayList<VOMSInfo>(); 
-    	
-		try 
-		{
-			ArrayList<String> strs = vomsAC.getVOMSFQANs();
-			for (String str:strs)
-			{
-			    VOMSInfo info=VOMSInfo.parse(str);
-			    
-			    if (info!=null)
-			        vos.add(info); 
-			}
-			return vos; 
-		} 
-		catch (Exception e) 
-		{
-			logger.logException(ClassLogger.WARN,e,"Couldn't get VOMS Attributes from VOMS Certificate\n"); 
-			e.printStackTrace();
-			return null; 
-		}
+
+        ArrayList<AttributeCertificate> vomsACs = VomsUtil.extractVOMSACs(certs);
+
+        if ((vomsACs == null) || (vomsACs.size() <= 0))
+            return null;
+
+        // get first:
+        VOMSAttributeCertificate vomsAC = new VOMSAttributeCertificate(vomsACs.get(0));
+
+        ArrayList<VOMSInfo> vos = new ArrayList<VOMSInfo>();
+
+        try
+        {
+            ArrayList<String> strs = vomsAC.getVOMSFQANs();
+            for (String str : strs)
+            {
+                VOMSInfo info = VOMSInfo.parse(str);
+
+                if (info != null)
+                    vos.add(info);
+            }
+            return vos;
+        }
+        catch (Exception e)
+        {
+            logger.logException(ClassLogger.WARN, e, "Couldn't get VOMS Attributes from VOMS Certificate\n");
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public GlobusCredential getGlobusCredential()
     {
-        return this.credential; 
+        return this.credential;
     }
 
     public void setUserKeyFile(String keyFile)
     {
-        this.userKeyFile=keyFile; 
+        this.userKeyFile = keyFile;
     }
-    
+
     public void setUserCertFile(String certFile)
     {
-        this.userCertFile=certFile; 
+        this.userCertFile = certFile;
     }
-    
+
     public void setProxyFile(String proxyFile)
     {
-        this.proxyFilename=proxyFile;  
+        this.proxyFilename = proxyFile;
     }
 
     @Override
     public Certificate[] getProxyCertificateChain() throws VlException
     {
-        return this.credential.getCertificateChain();  
+        return this.credential.getCertificateChain();
     }
 
     @Override
     public PrivateKey getProxyPrivateKey() throws VlException
     {
-        return this.credential.getPrivateKey(); 
+        return this.credential.getPrivateKey();
     }
 
-    
 }

@@ -20,11 +20,8 @@
 
 package nl.nlesc.vlet.vrs;
 
-
 import nl.esciencecenter.ptk.data.IntegerHolder;
-import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.VlException;
-
 
 /**
  * The Composite interface for VNodes which have 'child nodes' 
@@ -106,8 +103,7 @@ public interface VComposite
      * @param isMove
      * @return new created VNode
      * @throws VlException
-     */
-  
+     */ 
     public VNode addNode(VNode node,String newName,boolean isMove) throws VlException;
     
     /**
@@ -118,8 +114,7 @@ public interface VComposite
      * For optimization the isMove determines if it is a move, 
      * so the implementation can optimize local movements for example on the 
      * same filesystems. 
-     */
-    
+     */    
     public VNode[] addNodes(VNode[] nodes,boolean isMove) throws VlException;
     
     /** 
@@ -162,27 +157,7 @@ public interface VComposite
     
     /** Checks whether this node has a child with the specified name */ 
     public boolean hasNode(String name) throws VlException;
-   
-    /**
-     * Return attribute matrix for given childs. 
-     * The matrix should be in the form: VAttribute[childName][attrname].<br>
-     * <b>Developers note:</b><br>
-     * Override this method for a faster getall attributes. 
-     * Also allow for entries in the name and node list to be null !
-     * This is for attribute list merging and optimization ! 
-     * 
-     * @param childNames  list of child names 
-     * @param attrNames   list of attribute names 
-     * @return
-     * @throws VlException 
-     * @throws VlException
-     */
-   
-    public VAttribute[][] getNodeAttributes(String[] childNames, String[] attrNames) throws VlException;
-    
-    /** Returns attributes for all childs */ 
-    public VAttribute[][] getNodeAttributes(String attributeNames[]) throws VlException;
-    
+  
     /**
      * Override this method if your directory can be accessible
      * but not be 'readable'. 

@@ -80,7 +80,7 @@ public class ResFS extends VRSFactory
 			ServerInfo info, VRL location) throws VlException 
 	{
 		// should be singleton! 
-		return new ResResourceSystem(context);
+		return new ResResourceSystem(context,location);
 	}
 
 }

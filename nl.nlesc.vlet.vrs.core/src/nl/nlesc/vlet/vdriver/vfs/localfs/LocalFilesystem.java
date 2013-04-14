@@ -422,10 +422,10 @@ public class LocalFilesystem extends FileSystemNode
 
             if (status!=0)
             {
-                throw new VlException("Execution Error",
+                throw VlException.create("Execution Error",
                         "Exit status="+status
                         +"\n. stdout="+result[1]
-                                              +"\n. stderr="+result[2]);
+                        +"\n. stderr="+result[2],null);
             }
         }
 
@@ -458,7 +458,7 @@ public class LocalFilesystem extends FileSystemNode
     public VDir createDir(String path, boolean force) throws VlException
     {
         // TBD: not portable using forward slash!
-        String fullpath=resolvePath(path); 
+        String fullpath=resolvePathString(path); 
 
         File dir=new File(fullpath); 
 
@@ -515,7 +515,7 @@ public class LocalFilesystem extends FileSystemNode
     public VFile createFile(String name, boolean force) throws VlException 
     {
         // URI: use forward slash: 
-        String loc = resolvePath(name); 
+        String loc = resolvePathString(name); 
 
         java.io.File f = new File(loc);
 

@@ -20,56 +20,62 @@
 
 package nl.nlesc.vlet.vrs;
 
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrl.VRL;
 
-
 /**
- * 
  * VResourceSystem is a factory class for VNodes. 
- * 
+ * It represents an abstract resource like a remote (web) service or a file system. 
  * @author P.T. de Boer 
- *
  */
 public interface VResourceSystem
 {
-	/** 
+	/**
 	 * Return unique identifier for this Resource System.
 	 * This is used in the VRSContext to manage resource system
 	 * instances.    
-	 * @return Unique identifier String 
+	 * @return Unique Identifier String 
 	 */
-	abstract public String getID();  
+	public String getID();  
 	
+	/** Returns ResourceSystem VRL */ 
+	public VRL getVRL(); 
+	
+    /** 
+     * Resolve relative path or URI part to this Filesystem and return Absolute VRL.
+     * Actual result depend in implementing ResourceSystem. 
+     */ 
+    public VRL resolve(String path) throws VRISyntaxException, VlException; 
+    
 	/**
 	 * Main VNode factory method. 
 	 * Open the location and return the resource from this ResourceSystem specified
 	 * by the VRL. 
 	 */
-	abstract public VNode openLocation(VRL vrl) throws VlException;
+	public VNode openLocation(VRL vrl) throws VlException;
 	
 	/** 
 	 * Returns VRSContext associated with this ResourceSystem  
 	 */ 
-	abstract public VRSContext getVRSContext();
+	public VRSContext getVRSContext();
 
 	/**
 	 * Setup connection if not already connected. 
 	 * Multiple connect() calls may occur. If already connected ignore 
 	 * any successive invocations.  
-	 * @throws VlException
 	 */
-	abstract public void connect() throws VlException ;
+	public void connect() throws VlException ;
 	
 	/** 
 	 * Disconnected and close/cleanup all resources associated with this 
 	 * resource system.
 	 * After this call a connect() may be called. 
 	 */
-    abstract public void disconnect() throws VlException ;
+    public void disconnect() throws VlException ;
 
     /** 
      * Dispose all resources, object may not be used anymore.
      */
-    public abstract void dispose();
+    public void dispose();
 }

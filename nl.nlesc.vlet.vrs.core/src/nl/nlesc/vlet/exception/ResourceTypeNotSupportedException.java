@@ -15,13 +15,13 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
 /**
- *  Resource type not supported. 
+ * Resource type not supported.
  */
 public class ResourceTypeNotSupportedException extends ResourceException // VlException
 {
@@ -29,11 +29,11 @@ public class ResourceTypeNotSupportedException extends ResourceException // VlEx
 
     public ResourceTypeNotSupportedException()
     {
-        super(ExceptionStrings.RESOURCE_TYPE_NOT_SUPPORTED,"Type not supported");
+        super(ExceptionStrings.RESOURCE_TYPE_NOT_SUPPORTED, "Type not supported");
     }
-    
+
     public ResourceTypeNotSupportedException(String message)
     {
-        super(ExceptionStrings.RESOURCE_TYPE_NOT_SUPPORTED,message); 
+        super(ExceptionStrings.RESOURCE_TYPE_NOT_SUPPORTED, message);
     }
 }

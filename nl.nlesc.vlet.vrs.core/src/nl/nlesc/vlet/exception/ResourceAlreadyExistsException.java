@@ -15,27 +15,24 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
-/**
- * @author P.T. de Boer
- */
 public class ResourceAlreadyExistsException extends ResourceException
 {
     private static final long serialVersionUID = -4749406987489027971L;
 
     public ResourceAlreadyExistsException(String message)
     {
-        super(ExceptionStrings.RESOURCE_ALREADY_EXISTS,message);
+        super(ExceptionStrings.RESOURCE_ALREADY_EXISTS, message);
     }
 
     /** Constructor which keeps original System Exception */
-    public ResourceAlreadyExistsException(String message, Exception e)
+    public ResourceAlreadyExistsException(String message, Throwable e)
     {
-        super(ExceptionStrings.RESOURCE_ALREADY_EXISTS,message,e); 
+        super(ExceptionStrings.RESOURCE_ALREADY_EXISTS, message, e);
     }
 
 }

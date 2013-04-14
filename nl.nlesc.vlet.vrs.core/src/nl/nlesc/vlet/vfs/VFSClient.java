@@ -20,9 +20,6 @@
 
 package nl.nlesc.vlet.vfs;
 
-import java.io.Serializable;
-import java.util.regex.Pattern;
-
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
@@ -36,7 +33,7 @@ import nl.nlesc.vlet.vrs.VRSContext;
 
 /**
  * VFSClient class is a client interface to the Virtual File System classes and methods.
- * It provides a stable interface to the methods of the different Filesystem  
+ * It provides a stable interface to the methods of the different FileSystem  
  * implementations.
  * <p>
  * Use  method openLocation(VRL) to get any file/directory 
@@ -54,22 +51,20 @@ import nl.nlesc.vlet.vrs.VRSContext;
  * </pre>
  *  
  * @author P.T. de Boer
+ * 
  * @see nl.nlesc.vlet.vfs.VFS
  * @see nl.nlesc.vlet.vfs.VFileSystem
- * @see nl.nlesc.vlet.vfs.VFSNode
- * @see nl.nlesc.vlet.vfs.VDir
- * @see nl.nlesc.vlet.vfs.VFile
- *  
+ * @see VFSNode
+ * @see VFile 
+ * @see VDir
+ * @see VFSClient 
  */
-public final class VFSClient extends VRSClient implements Serializable 
+public final class VFSClient extends VRSClient 
 {
     // ========================================================================
     // Class
     // ========================================================================
     
-    // needed for Serializable      
-    private static final long serialVersionUID = -2705281290761113901L;
-
     /** class object */ 
     private static VFSClient defaultVFSClient=new VFSClient();
     
@@ -83,7 +78,7 @@ public final class VFSClient extends VRSClient implements Serializable
     // Instance: Members must be Serializable !
     // ========================================================================
     
-     private VRL tempDirLocation=null; 
+    private VRL tempDirLocation=null; 
     
     /** Create VFS Client object */
     public VFSClient()
@@ -102,7 +97,7 @@ public final class VFSClient extends VRSClient implements Serializable
     public VFSClient(VRSContext context)
     {
         super(context); 
-        this.tempDirLocation=VletConfig.getDefaultTempDir(); 
+        tempDirLocation=VletConfig.getDefaultTempDir(); 
     }
     
     /** Returns VFSNode pointing to the specified location */ 
@@ -128,10 +123,10 @@ public final class VFSClient extends VRSClient implements Serializable
         throw new ResourceTypeNotSupportedException("VRL is not a VFS location:"+location);
     }
     
-    /** @see #openFile(VRL) */ 
+    /** @see #getFile(VRL) */ 
     public  VFile getFile(String locStr) throws VlException
     {
-        return openFile(resolve(locStr)); 
+        return getFile(resolve(locStr)); 
     }
     
     /**
@@ -150,7 +145,7 @@ public final class VFSClient extends VRSClient implements Serializable
                 return vrl; 
             
             // check relative locations against current working dir. 
-            return this.getWorkingDir().resolvePath(locStr); 
+            return getWorkingDir().resolvePath(locStr); 
         }
         catch (VRISyntaxException e)
         {
@@ -166,10 +161,10 @@ public final class VFSClient extends VRSClient implements Serializable
     public VRL resolve(VRL relLoc) throws VRLSyntaxException
     {
         if (relLoc==null)
-            return this.getWorkingDir(); 
+            return getWorkingDir(); 
         
         if (relLoc.isAbsolute()==true)
-            return this.getWorkingDir();
+            return relLoc;
         
         // check relative locations against current working dir. 
             
@@ -193,17 +188,12 @@ public final class VFSClient extends VRSClient implements Serializable
         throw new ResourceTypeNotSupportedException("VRL is not a VFSnode:"+location);
     }
     
-    /** @see #openFile(VRL) */ 
-    public VFile getFile(VRL location) throws VlException
-    {
-    	return openFile(location); 
-    }
-    
     /** 
-     * Open remote file location and return VFile. 
-     * The (remote) file must exist. 
-     */  
-    public  VFile openFile(VRL location) throws VlException
+     * Returns existing file. If the (remote) file does not exists, 
+     * and exception is thrown. 
+     * Use newFiler() to create an VDir object. 
+     */ 
+    public  VFile getFile(VRL location) throws VlException
     {
         VFSNode node=openLocation(location); 
 
@@ -231,20 +221,15 @@ public final class VFSClient extends VRSClient implements Serializable
      */  
     public  VDir getDir(String locStr) throws VlException
     {
-        return openDir(resolve(locStr)); 
+        return getDir(resolve(locStr)); 
     }
 
-    /** @see #openDir(VRL) */ 
-    public  VDir getDir(VRL location) throws VlException
-    {
-    	return openDir(location);
-    }
-    
     /** 
-     * Open remote directory location and return VDir. 
-     * The (remote) directory must exist. 
+     * Returns existing Directory. If the (remote) directory does not exists, 
+     * and exception is thrown. 
+     * Use newDir() to create an VDir object. 
      */ 
-    public  VDir openDir(VRL location) throws VlException
+    public VDir getDir(VRL location) throws VlException
     {
         VFSNode node=openLocation(location); 
         
@@ -252,7 +237,6 @@ public final class VFSClient extends VRSClient implements Serializable
             return (VDir)node; 
       
         throw new ResourceTypeNotSupportedException("VRL is not VDir:"+location);
-        
     }
     
     /** 
@@ -265,13 +249,13 @@ public final class VFSClient extends VRSClient implements Serializable
      */
     public  VFile move(VFile sourceFile, VDir destDir) throws VlException
     {
-        return (VFile)this.getTransferManager().doCopyMove(sourceFile,destDir,null,true); 
+        return (VFile)getTransferManager().doCopyMove(sourceFile,destDir,null,true); 
     }
     
     /** Move VFile to target file. */ 
     public VFile move(VFile sourceFile,VFile targetFile) throws VlException 
     {
-        return (VFile)this.getTransferManager().doCopyMove(sourceFile,targetFile,true);  
+        return (VFile)getTransferManager().doCopyMove(sourceFile,targetFile,true);  
     }
     
     /** 
@@ -283,16 +267,15 @@ public final class VFSClient extends VRSClient implements Serializable
      * @throws VlException
      */
     
-    public  VFile copy(VFile vfile, VDir parentDir) throws VlException
+    public VFile copy(VFile vfile, VDir parentDir) throws VlException
     {
-        return (VFile)this.getTransferManager().doCopyMove(vfile,parentDir,null,false); 
+        return (VFile)getTransferManager().doCopyMove(vfile,parentDir,null,false); 
     }
     
-    public void copy(VFile file, VFile targetFile) throws VlException
+    public VFile copy(VFile file, VFile targetFile) throws VlException
     {
-        file.copyTo(targetFile); 
+        return (VFile)getTransferManager().doCopyMove(file,targetFile,false); 
     }
-
     
     /**
      * Copy single VDir.
@@ -301,55 +284,7 @@ public final class VFSClient extends VRSClient implements Serializable
      */ 
     public  VDir copy(VDir dir, VDir parentDir) throws VlException
     {
-        return (VDir)this.getTransferManager().doCopyMove(dir,parentDir,null,false); 
-    }
-    
-    /** 
-     * Copy single VDir in the background. 
-     * New Directory will be created as child of parentDir. 
-     * Returns VFSTransfer object which can be used to monitor the result. 
-     */ 
-    public  VFSTransfer asyncCopy(VDir dir, VDir parentDir) throws VlException
-    {
-        // create new director as sub directory of parentDirectory: 
-        VRL targetVRL=parentDir.resolvePathVRL(dir.getBasename()); 
-        return getTransferManager().asyncCopyMoveTo(null, dir,parentDir.getFileSystem(),targetVRL,false,null);
-    }
-
-    /**
-     * Copy single VFile in the background. 
-     * The default implementation will always overwrite existing file(s).
-     * Returns VFSTransfer object which can be used to monitor the result.
-     */ 
-    public  VFSTransfer asyncCopy(VFile file, VDir parentDir) throws VlException
-    {
-        // create new file in parent directory 
-        VRL targetVRL=parentDir.resolvePathVRL(file.getBasename()); 
-        return getTransferManager().asyncCopyMoveTo(null, file,parentDir.getFileSystem(),targetVRL,false,null);
-    }
-    
-    /** 
-     * Move a single directory in the background. 
-     * New directory will be created as subdirectory of the parentDir. 
-     * 
-     * Returns VFSTransfer object which can be used to monitor the result.
-     */ 
-    public  VFSTransfer asyncMove(VDir dir, VDir parentDir) throws VlException
-    {
-        // create new file in parent directory 
-        VRL targetVRL=parentDir.resolvePathVRL(dir.getBasename()); 
-        return getTransferManager().asyncCopyMoveTo(null, dir,parentDir.getFileSystem(),targetVRL,true,null);
-    }
-
-    /**
-     * Move a single VFile in background to the target directory. 
-     * Returns VFSTransfer object which can be used to monitor the result.
-     */ 
-    public  VFSTransfer asyncMove(VFile file, VDir parentDir) throws VlException
-    {
-        // create new file in parent directory 
-        VRL targetVRL=parentDir.resolvePathVRL(file.getBasename()); 
-        return getTransferManager().asyncCopyMoveTo(null, file,parentDir.getFileSystem(),targetVRL,true,null);
+        return (VDir)getTransferManager().doCopyMove(dir,parentDir,null,false); 
     }
    
     /**
@@ -364,7 +299,7 @@ public final class VFSClient extends VRSClient implements Serializable
      */
     public  VDir move(VDir sourceDir, VDir destDir) throws VlException
     {
-        return (VDir)this.getTransferManager().doCopyMove(sourceDir,destDir,null,true); 
+        return (VDir)getTransferManager().doCopyMove(sourceDir,destDir,null,true); 
     }
     
     /**
@@ -506,7 +441,7 @@ public final class VFSClient extends VRSClient implements Serializable
         VRL parentLoc=loc.getParent();
         
         // use new (optimized?) filesystem methods: 
-        VFileSystem fs = this.openFileSystem(loc);        
+        VFileSystem fs = openFileSystem(loc);        
         
         boolean parentExists=fs.newDir(parentLoc).exists();  
     
@@ -532,7 +467,7 @@ public final class VFSClient extends VRSClient implements Serializable
                if (ignoreExisting==false)
                 throw new nl.nlesc.vlet.exception.ResourceAlreadyExistsException("Directory already exists:"+loc);
             else
-                newDir=fs.openDir(loc);
+                newDir=fs.getDir(loc);
         }
         else
         {
@@ -548,7 +483,7 @@ public final class VFSClient extends VRSClient implements Serializable
     /** Get local temp directory. On Unix this is "/tmp" */
     public VDir getTempDir() throws VlException 
     {
-        return this.getDir(tempDirLocation); 
+        return getDir(tempDirLocation); 
     }
 
     /**
@@ -577,7 +512,7 @@ public final class VFSClient extends VRSClient implements Serializable
      */  
     public boolean setTempDir(VRL loc) 
     {
-        this.tempDirLocation=loc;  
+        tempDirLocation=loc;  
         return true; 
     }
 
@@ -630,7 +565,7 @@ public final class VFSClient extends VRSClient implements Serializable
      */
     public void setWorkingDir(VDir dir)
     {
-        this.setWorkingDir(dir.getVRL()); 
+        setWorkingDir(dir.getVRL()); 
     }
 
      /** 
@@ -654,17 +589,7 @@ public final class VFSClient extends VRSClient implements Serializable
      
      public VFSNode[] list(VRL path) throws VlException
      {
-        return this.getDir(path).list();     
-     }
-     
-     public VFSNode[] list(VRL path,String regexpFilter) throws VlException
-     {
-         return this.getDir(path).list(regexpFilter,true); 
-     }
-     
-     public VFSNode[] list(VRL path,Pattern regexpPattern) throws VlException
-     {
-         return this.getDir(path).list(regexpPattern); 
+        return getDir(path).list();     
      }
      
      /**
@@ -708,10 +633,10 @@ public final class VFSClient extends VRSClient implements Serializable
      }
      
      /** Returns new FileSystem or throws Exception */ 
-    public VFileSystem openFileSystem(VRL location) throws VlException
-    {
-        return this.getVRSContext().openFileSystem(location);  
-    }
+     public VFileSystem openFileSystem(VRL location) throws VlException
+     {
+         return getVRSContext().openFileSystem(location);  
+     }
 
     /**
      * Returns user home location. When running in service or applet mode, this might not always
@@ -721,7 +646,5 @@ public final class VFSClient extends VRSClient implements Serializable
     {
         return getDir(getUserHomeLocation()); 
     }
-
-
     
 }

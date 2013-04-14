@@ -22,7 +22,6 @@ package nl.nlesc.vlet.exception;
 
 /**
  * XML Parsing Error. 
- * @author P.T. de Boer
  */
 public class VlXMLDataException extends VlInternalError
 {
@@ -30,13 +29,12 @@ public class VlXMLDataException extends VlInternalError
 
 	public VlXMLDataException(String message)
     {
-        super("XMLDataException",message);
+        super("XML Parsing Error",message);
     }
 
-    /** Constructor which keeps original System Exception */
     public VlXMLDataException(String message, Throwable cause)
     {
-        super("XMLDataException",message,cause); 
+        super("XML Parsiong Error",message,cause); 
     }
 
 }

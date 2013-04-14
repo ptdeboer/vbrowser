@@ -15,22 +15,22 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
 /**
- * Broken Link 
+ * B0rken Link.
  */
 public class ResourceLinkIsBorkenException extends ResourceNotFoundException
 {
     private static final long serialVersionUID = 5416111351964077739L;
-    
+
     public ResourceLinkIsBorkenException(String message)
     {
         super(message);
-        setName("Broken Link Exception"); 
+        setName("Broken Link Exception");
     }
 
     /** Constructor which keeps original Exception */

@@ -34,11 +34,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
-
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.SecretHolder;
-import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.io.StreamUtil;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -49,6 +46,7 @@ import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.VlAuthenticationException;
 import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.vfs.FileSystemNode;
 import nl.nlesc.vlet.vfs.VDir;
 import nl.nlesc.vlet.vfs.VFS;
@@ -63,8 +61,6 @@ import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.io.VShellChannelCreator;
 import nl.nlesc.vlet.vrs.net.VOutgoingTunnelCreator;
-
-
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.HostKey;
@@ -344,7 +340,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
             
             for (int i=0;i<ids.length;i++)
             {
-                String idFile=home.resolvePath(getSSHConfigDir()+"/"+ids[i]);
+                String idFile=home.resolvePathString(getSSHConfigDir()+"/"+ids[i]);
                 idPaths[i]=idFile;
             }
             jcraftClient.setSSHIdentityFiles(idPaths);  
@@ -1170,29 +1166,22 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
             // logger.messagePrintln(this,"sftp error="+getJschErrorString(ex.id));
 
             if (ex.id == 1)
-                return new VlException(message + "End of file error", reason, e);
+                return new VlIOException(message + "End of file error.\n"+reason, e);
 
             if (ex.id == 2) // SftpException reason 2=no such file !
                 return new ResourceNotFoundException(message + "StfpException:" + reason, e);
 
             if (ex.id == 3)
                 // don't know whether it is read or write
-                return new VlException("AccessDenied", message + reason, e);
+                return new VlAuthenticationException("AccessDenied:"+ message + reason, e);
 
-            return new VlException("SFTP Exception", message + reason, e);
+            return new VlIOException("SFTP Exception:"+ message + reason, e);
         }
         else
         {
-            return new VlException("Exception", message + e.getMessage(), e);
+            return new VlException( message + e.getMessage(), e);
         }
     }
-
-    // ===
-    // Factory methods
-    // ===
-
-  
-
 
     public String toString()
     {

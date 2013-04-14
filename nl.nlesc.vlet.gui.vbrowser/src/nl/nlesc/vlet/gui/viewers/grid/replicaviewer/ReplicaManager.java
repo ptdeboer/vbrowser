@@ -1,10 +1,10 @@
 /*
- * Copyright 2006-2011 The Virtual Laboratory for e-Science (VL-e) 
- * 
+ * Copyrighted 2012-2013 Netherlands eScience Center.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License").  
  * You may not use this file except in compliance with the License. 
  * For details, see the LICENCE.txt file location in the root directory of this 
- * distribution or obtain the Apache Licence at the following location: 
+ * distribution or obtain the Apache License at the following location: 
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software 
@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  * 
- * See: http://www.vl-e.nl/ 
- * See: LICENCE.txt (located in the root folder of this distribution). 
+ * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- * $Id: ReplicaManager.java,v 1.2 2013/01/23 11:53:58 piter Exp $  
- * $Date: 2013/01/23 11:53:58 $
  */ 
 // source: 
 
@@ -31,8 +28,10 @@ import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vfs.VFSClient;
+import nl.nlesc.vlet.vfs.VFSNode;
 import nl.nlesc.vlet.vfs.VFile;
 import nl.nlesc.vlet.vfs.VLogicalFileAlias;
 import nl.nlesc.vlet.vfs.VReplicatable;
@@ -48,7 +47,7 @@ public class ReplicaManager
     private VFSClient vfsClient; 
     
     private VRL vrl;
-    private VNode node; 
+    private VFSNode node; 
     
     public ReplicaManager(VRSContext context)
     {
@@ -187,10 +186,10 @@ public class ReplicaManager
         return (VReplicatable)node;  
     }
     
-    private VNode getNode() throws VlException
+    private VFSNode getNode() throws VlException
     {
         if (this.node==null)
-            this.node=vfsClient.getNode(vrl);
+            this.node=vfsClient.getVFSNode(vrl);
         
         return node; 
     }
@@ -231,7 +230,7 @@ public class ReplicaManager
         else if (node instanceof VResizable) 
             ((VResizable)node).setLength(size); 
         else
-            throw new VlException("Error","File size can't be set for:"+node.getClass()+":"+node); 
+            throw new VlIOException("File size can't be set for:"+node.getClass()+":"+node); 
     }
     
 }

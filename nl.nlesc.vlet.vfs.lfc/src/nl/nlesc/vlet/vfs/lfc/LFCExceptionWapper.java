@@ -25,6 +25,7 @@ package nl.nlesc.vlet.vfs.lfc;
 
 import nl.nlesc.glite.lfc.LFCException;
 import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.exception.VlIOException;
 
 /**
  * Mapping of LFC error codes to VlExceptions.  
@@ -114,8 +115,7 @@ public class LFCExceptionWapper
 		VlException ex=null;
 		String msgstr=e.getMessage(); 
 		
-		// cast some LFCExceptions into known VlExceptions: 
-		
+		// cast some Posix based LFCExceptions into known VlExceptions: 
 		switch (code)
 		{
 			case 2: 
@@ -134,13 +134,13 @@ public class LFCExceptionWapper
 				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // Bad File number
 				break;
             case 11:
-                ex=new nl.nlesc.vlet.exception.VlException("LFCException","Bacon not ready. Try again",e);  // Try again ? 
+                ex=new nl.nlesc.vlet.exception.VlIOException("LFCException: Bacon not ready. Try again",e);  // Try again ? 
                 break;
             case 13:
                 ex=new nl.nlesc.vlet.exception.ResourceAccessDeniedException(msgstr,e); // Permission denied
                 break;
 			case 15: 
-				ex=new nl.nlesc.vlet.exception.VlIOException("Block device required\n."+msgstr,e);
+				ex=new nl.nlesc.vlet.exception.VlIOException("Lego Block device required\n."+msgstr,e);
 				break; 
 			case 16:
 				ex=new nl.nlesc.vlet.exception.VlIOException("Device or resource busy.\n"+msgstr,e);
@@ -165,7 +165,7 @@ public class LFCExceptionWapper
 				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // Too many open files
 				break;
 			case 25: 
-				ex=new nl.nlesc.vlet.exception.VlException("LFCException","Not a typewriter? o.O.\n"+msgstr,e);
+				ex=new nl.nlesc.vlet.exception.VlException("LFCException: Not a typewriter? o.O.\n"+msgstr,e);
 				break; 
 			case 26: 
 				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // Text file busy
@@ -177,7 +177,7 @@ public class LFCExceptionWapper
 				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // No space left on device 
 				break; 
 			case 29:  
-				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); //Illegal Seek ? 
+				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // Illegal Seek ? 
 				break; 
 			case 30: 
 				ex=new nl.nlesc.vlet.exception.ResourceException("Read-only file system.\n"+msgstr,e);
@@ -192,7 +192,7 @@ public class LFCExceptionWapper
 				ex=new nl.nlesc.vlet.exception.VlException("Math result not representable (or you can't understand it).\n"+msgstr,e);
 				break;
 			default:
-				ex=new VlException("LFCException",e.getMessage(),e); 
+				ex=new VlIOException("LFCException\n."+e.getMessage(),e); 
 				break;
 		}
 		return ex; 

@@ -20,10 +20,6 @@
 
 package nl.nlesc.vlet.exception;
 
-/**
- * @author P.T. de Boer
- * 
- */
 public class ResourceWriteAccessDeniedException extends ResourceAccessDeniedException
 {
     private static final long serialVersionUID = -1331279123455086302L;
@@ -34,7 +30,7 @@ public class ResourceWriteAccessDeniedException extends ResourceAccessDeniedExce
     }
 
     /** Constructor which keeps original Exception */
-    public ResourceWriteAccessDeniedException(String message, Exception e)
+    public ResourceWriteAccessDeniedException(String message, Throwable e)
     {
         super(ExceptionStrings.WRITE_ACCESS_DENIED,message,e); 
     }

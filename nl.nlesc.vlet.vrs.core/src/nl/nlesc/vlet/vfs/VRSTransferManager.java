@@ -31,9 +31,6 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-
-
-
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
@@ -51,7 +48,6 @@ import nl.nlesc.vlet.vrms.VLogicalResource;
 import nl.nlesc.vlet.vrs.ResourceEvent;
 import nl.nlesc.vlet.vrs.VActiveTransferable;
 import nl.nlesc.vlet.vrs.VComposite;
-import nl.nlesc.vlet.vrs.VCompositeDeletable;
 import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -135,7 +131,7 @@ public final class VRSTransferManager
 	    {
     		// resolve Opt New Name: 
     		optNewName=(optNewName==null?sourceNode.getBasename():optNewName);
-    		VRL targetVRL=parentDir.resolvePathVRL(optNewName);
+    		VRL targetVRL=parentDir.resolvePath(optNewName);
     		VFSTransfer transferInfo = newTransfer(null,sourceNode,targetVRL,isMove); 
     		VFileSystem fs=parentDir.getFileSystem();
     		// create new object: 
@@ -329,7 +325,7 @@ public final class VRSTransferManager
 		    else
 		    {
 		        // Exception Chaining: Throwable/Exception to Exception 
-		        Exception ex = new VlIOException("TransferException",tr.getMessage(),tr); 
+		        Exception ex = new VlIOException(tr.getMessage(),tr); 
 		        transfer.setException(ex);
 		        transfer.endTask(taskStr); //transfer.setDone();
 		        
@@ -549,7 +545,7 @@ public final class VRSTransferManager
         {
             public void doTask() throws Exception
             {
-                VDir targetParentDir=context.openFileSystem(targetParentDirVrl).openDir(targetParentDirVrl); 
+                VDir targetParentDir=context.openFileSystem(targetParentDirVrl).getDir(targetParentDirVrl); 
                                 
                 ArrayList<VNode> nodes=new ArrayList<VNode>(); 
                 for (VRL vrl:vrls)
@@ -1238,7 +1234,7 @@ public final class VRSTransferManager
 			// get relative path starting from source directory path: 
 			String relPath=VRL.relativePath(sourceDir.getPath(),node.getPath());
 			// full path VRL of directory or file: 
-			VRL targetPath=targetDir.resolvePathVRL(relPath);
+			VRL targetPath=targetDir.resolvePath(relPath);
 
 			debugPrintf("Relative Path=%s\n",relPath);
 			debugPrintf("Target Path=%s\n",targetPath);
@@ -1419,7 +1415,7 @@ public final class VRSTransferManager
 			if (result==true)
 			{
 				// use filesystem method: 
-				VDir newDir=targetFS.openDir(_targetDirVrl);
+				VDir newDir=targetFS.getDir(_targetDirVrl);
 				if (newDir==null)
 					throw new nl.nlesc.vlet.exception.ResourceCreationFailedException("Rename succeeded, but could not fetch new dir:"+targetDir);
 

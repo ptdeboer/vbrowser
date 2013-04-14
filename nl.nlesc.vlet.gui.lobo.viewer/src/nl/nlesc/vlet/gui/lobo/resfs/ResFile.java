@@ -29,7 +29,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
@@ -43,12 +42,6 @@ public class ResFile extends VNode implements VRandomReadable,VStreamReadable
 	public ResFile(ResResourceSystem resResourceSystem, VRL vrl)
 	{
 		super(resResourceSystem.getVRSContext(), vrl);
-	}
-
-	@Override
-	public boolean exists() throws VlException
-	{
-		return true;
 	}
 
 	public InputStream getInputStream() throws IOException 

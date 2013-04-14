@@ -23,12 +23,6 @@ public class GlobusInfoNode extends VNode
 	{
 		return "GlobusInfo"; 
 	}
-
-	@Override
-	public boolean exists() throws VlException 
-	{
-		return true;
-	}
 	
 	public String getName()
 	{

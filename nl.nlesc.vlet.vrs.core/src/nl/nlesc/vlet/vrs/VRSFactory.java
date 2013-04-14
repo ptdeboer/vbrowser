@@ -22,14 +22,12 @@ package nl.nlesc.vlet.vrs;
 
 import java.util.Vector;
 
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
 import nl.nlesc.vlet.exception.NotImplementedException;
-import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vfs.VFSFactory;
 import nl.nlesc.vlet.vrl.VRL;

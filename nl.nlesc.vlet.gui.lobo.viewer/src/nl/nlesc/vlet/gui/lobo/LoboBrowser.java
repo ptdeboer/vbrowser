@@ -32,6 +32,7 @@ import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.net.ssl.SslUtil;
 import nl.nlesc.vlet.vrl.VRL;
@@ -190,7 +191,7 @@ public class LoboBrowser extends ViewerPlugin
         }
         catch (Exception e1)
         {
-            throw new VlException("SSLException","SSLException:"+e1.getMessage(),e1);
+            throw new VlIOException("SSLException:"+e1.getMessage(),e1);
         } 
         
 		try

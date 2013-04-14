@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.actions;
@@ -28,339 +28,338 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.vrl.VRL;
 
 /**
- * Optimized ActionMenuMatcher matches ActionMenuMappings against 
- * selected resources. 
+ * Optimized ActionMenuMatcher matches ActionMenuMappings against selected
+ * resources.
  * 
  * This class also create hashmaps for faster matching.
  * 
- * The Matcher is a seperate class so that optimization is possible 
- * if needed since the matching will be done during the menu creation process
- * of the VBrowser.  
- *  
- * @author P.T.de Boer 
+ * The Matcher is a seperate class so that optimization is possible if needed
+ * since the matching will be done during the menu creation process of the
+ * VBrowser.
+ * 
+ * @author P.T.de Boer
  */
 public class ActionMenuMatcher
 {
-	public static class ActionMenuMappingList extends Vector<ActionMenuMapping> 
-	{
-		private static final long serialVersionUID = 8873295552142124846L;
-	}
-		
-	// === instance === // 
-		
-	private ActionMenuMappingList mappings=null; 
+    public static class ActionMenuMappingList extends Vector<ActionMenuMapping>
+    {
+        private static final long serialVersionUID = 8873295552142124846L;
+    }
 
-	/** Fast matching from Type+Scheme to menu mappings which match Type+Scheme */ 
-	//OrdenedHashtable<String,ActionMenuMappingList> sourceTypeToMapping;
-	//private OrdenedHashtable<String,String> actionNames=new  OrdenedHashtable<String,String>();
-	//private OrdenedHashtable<String,String> actionMenuNames=new  OrdenedHashtable<String,String>();
-	//private OrdenedHashtable<String,String> actionSubMenuNames=new  OrdenedHashtable<String,String>();
+    // === instance === //
 
-	/**
-	 * Action Patterns which allows this action. Action is matched if any 
-	 * of the resourcePatterns match. 
-	 */  
-	private IndexedHashtable<String,Vector<ResourceMappingPatterns>> resourceTypePatterns= new IndexedHashtable<String,Vector<ResourceMappingPatterns>>();
+    private ActionMenuMappingList mappings = null;
 
-	private Vector<ResourceMappingPatterns> resourceSelectionPatterns=new	Vector<ResourceMappingPatterns>();
+    /** Fast matching from Type+Scheme to menu mappings which match Type+Scheme */
+    // OrdenedHashtable<String,ActionMenuMappingList> sourceTypeToMapping;
+    // private OrdenedHashtable<String,String> actionNames=new
+    // OrdenedHashtable<String,String>();
+    // private OrdenedHashtable<String,String> actionMenuNames=new
+    // OrdenedHashtable<String,String>();
+    // private OrdenedHashtable<String,String> actionSubMenuNames=new
+    // OrdenedHashtable<String,String>();
 
+    /**
+     * Action Patterns which allows this action. Action is matched if any of the
+     * resourcePatterns match.
+     */
+    private IndexedHashtable<String, Vector<ResourceMappingPatterns>> resourceTypePatterns = new IndexedHashtable<String, Vector<ResourceMappingPatterns>>();
 
-	// ========================================================================
-	// Cached/Derives lists 
-	// ========================================================================
+    private Vector<ResourceMappingPatterns> resourceSelectionPatterns = new Vector<ResourceMappingPatterns>();
 
-	/** Latest matched mappings */ 
-	private Vector<ActionMenuMapping>  matchedMappings=null;
+    // ========================================================================
+    // Cached/Derives lists
+    // ========================================================================
 
-	/** Latest matched subMenus, also used as order for matchedSubMenuMappings */ 
-	private StringList matchedSubMenus;    
+    /** Latest matched mappings */
+    private Vector<ActionMenuMapping> matchedMappings = null;
 
-	/** Matches Mappings collected per subMenu */ 
-	//private Map<String,Vector<ActionMenuMapping>> matchedSubMenuMappings= new Hashtable<String,Vector<ActionMenuMapping>>();
+    /** Latest matched subMenus, also used as order for matchedSubMenuMappings */
+    private StringList matchedSubMenus;
 
-	public ActionMenuMatcher(ActionMenuMappingList mappings)
-	{
-		init(mappings); 
-	}
+    /** Matches Mappings collected per subMenu */
+    // private Map<String,Vector<ActionMenuMapping>> matchedSubMenuMappings= new
+    // Hashtable<String,Vector<ActionMenuMapping>>();
 
-	public ActionMenuMatcher(Vector<ActionMenuMapping> mappings)
-	{
-		init(mappings); 
-	}
+    public ActionMenuMatcher(ActionMenuMappingList mappings)
+    {
+        init(mappings);
+    }
 
-	private synchronized void init(Vector<ActionMenuMapping> newMappings)
-	{
-		mappings=new ActionMenuMappingList();
-		addMappings(newMappings);
-	}
+    public ActionMenuMatcher(Vector<ActionMenuMapping> mappings)
+    {
+        init(mappings);
+    }
 
-	public synchronized void addMappings(Vector<ActionMenuMapping> newMappings)
-	{
-		for(ActionMenuMapping mapping:newMappings)
-		{
-			Debug("Adding mapping:"+mapping);
-			
-			this.mappings.add(mapping); 
-		}
-		
-		/* (re)create hashmaps */ 
-		createHashMaps(); 
-	}
+    private synchronized void init(Vector<ActionMenuMapping> newMappings)
+    {
+        mappings = new ActionMenuMappingList();
+        addMappings(newMappings);
+    }
 
-	/** After matching create derived lists */
-	private synchronized void createHashMaps()
-	{
-		Debug("createHashMaps()");
-		//sourceTypeToMapping=new OrdenedHashtable<String,ActionMenuMappingList>(); 
+    public synchronized void addMappings(Vector<ActionMenuMapping> newMappings)
+    {
+        for (ActionMenuMapping mapping : newMappings)
+        {
+            Debug("Adding mapping:" + mapping);
+            this.mappings.add(mapping);
+        }
 
-		//actionNames.clear();
-		//actionMenuNames.clear();
-		//actionSubMenuNames.clear();
-		resourceSelectionPatterns.clear();
-		
-		// update/clear matchedMappings: 
-		matchedMappings=new Vector<ActionMenuMapping>(); 
-		
-		// sub menu list:
-		matchedSubMenus=new StringList(); 
+        /* (re)create hashmaps */
+        createHashMaps();
+    }
 
-		for(ActionMenuMapping mapping:mappings)
-		{
-			Debug("processing mapping:"+mapping); 
-			
-			//String actionName=mapping.getActionName(); 
-			//String actionMenuName=mapping.getActionMenuName(); 
-			//String actionSubMenuName=mapping.getActionSubMenuName(); 
+    /** After matching create derived lists */
+    private synchronized void createHashMaps()
+    {
+        Debug("createHashMaps()");
+        // sourceTypeToMapping=new
+        // OrdenedHashtable<String,ActionMenuMappingList>();
 
-			//actionNames.put(actionName,actionName); 
-			//actionMenuNames.put(actionMenuName,actionName);
+        // actionNames.clear();
+        // actionMenuNames.clear();
+        // actionSubMenuNames.clear();
+        resourceSelectionPatterns.clear();
 
-			//if (actionSubMenuName!=null)
-			//	actionSubMenuNames.put(actionSubMenuName,actionName);
+        // update/clear matchedMappings:
+        matchedMappings = new Vector<ActionMenuMapping>();
 
-			// collect all ResourceSelectionPatterns: 
-			Vector<ResourceMappingPatterns> patterns = mapping.getResourceTypeSchemePatterns();
-			resourceSelectionPatterns.addAll(patterns); 
+        // sub menu list:
+        matchedSubMenus = new StringList();
 
-			//
-			// Level (I) Hashmapping is by ResourceType (Type) since each 
-			// resource has to have a Type ! 
-			//
+        for (ActionMenuMapping mapping : mappings)
+        {
+            Debug("processing mapping:" + mapping);
 
-			// all patterns (no hashing) 
-			this.resourceSelectionPatterns.addAll(patterns); 
+            // String actionName=mapping.getActionName();
+            // String actionMenuName=mapping.getActionMenuName();
+            // String actionSubMenuName=mapping.getActionSubMenuName();
 
-			
-			// Create Pattern By Type hash: 
-			for (ResourceMappingPatterns pat:patterns)
-			{
-				Debug(" - Adding pattern:"+pat);
-				
-				StringList types=pat.getAllowedSources().getAllowedTypes();
+            // actionNames.put(actionName,actionName);
+            // actionMenuNames.put(actionMenuName,actionName);
 
-				// hashing (I) by Type:
-				if (types==null)
-				{
-					String type="*";//null is not allowed to be used as key :-(
+            // if (actionSubMenuName!=null)
+            // actionSubMenuNames.put(actionSubMenuName,actionName);
 
-					// get pattern list for this type: 
-					Vector<ResourceMappingPatterns> list = resourceTypePatterns.get(type);
-					// autocreate: 
+            // collect all ResourceSelectionPatterns:
+            Vector<ResourceMappingPatterns> patterns = mapping.getResourceTypeSchemePatterns();
+            resourceSelectionPatterns.addAll(patterns);
 
-					if (list==null)
-						list=new Vector<ResourceMappingPatterns>();
+            //
+            // Level (I) Hashmapping is by ResourceType (Type) since each
+            // resource has to have a Type !
+            //
 
-					list.add(pat);
-					// put updated pattern list: 
-					resourceTypePatterns.put(type,list); 
-				}
-				else	
-					for (String type:types)
-					{
-						// null not allowed in hashtables: 
-						if (type==null)
-							type="*";
+            // all patterns (no hashing)
+            this.resourceSelectionPatterns.addAll(patterns);
 
-						// get pattern list for this type: 
-						Vector<ResourceMappingPatterns> list = resourceTypePatterns.get(type);
-						
-						// autocreate: 
-						if (list==null)
-							list=new Vector<ResourceMappingPatterns>();
+            // Create Pattern By Type hash:
+            for (ResourceMappingPatterns pat : patterns)
+            {
+                Debug(" - Adding pattern:" + pat);
 
-						list.add(pat);
-						// put updated pattern list: 
-						resourceTypePatterns.put(type,list); 
-					}
-			}
-			// todo: additional resource type to menu mappings: 
-		}
-	}
+                StringList types = pat.getAllowedSources().getAllowedTypes();
 
-	public synchronized void matchForTypeAndVRL(String sourceType,VRL sourceVRL)
-	{
-		ActionContext context=new ActionContext(sourceType,sourceVRL,null,null,null,null,false); 
-		matchFor(context); 
-	}
-	
-	public void matchFor(ActionContext selContext)
-	{
-		String sourceType=selContext.type; 
-		
-		
-		synchronized(matchedMappings)
-		{
-			matchedMappings.clear();
+                // hashing (I) by Type:
+                if (types == null)
+                {
+                    String type = "*";// null is not allowed to be used as key
+                                      // :-(
 
-			Vector<ResourceMappingPatterns> patternList=null; 
-			//patternList=this.resourceSelectionPatterns;
+                    // get pattern list for this type:
+                    Vector<ResourceMappingPatterns> list = resourceTypePatterns.get(type);
+                    // autocreate:
 
-			// sourceType is used as hash entry, since each VNode MUST have a type! 
-			if (sourceType==null)
-				throw new NullPointerException("sourceType can not be null"); 
+                    if (list == null)
+                        list = new Vector<ResourceMappingPatterns>();
 
-			// hashlist (I): use hashed list by type: 
-			patternList=this.resourceTypePatterns.get(sourceType);
+                    list.add(pat);
+                    // put updated pattern list:
+                    resourceTypePatterns.put(type, list);
+                }
+                else
+                    for (String type : types)
+                    {
+                        // null not allowed in hashtables:
+                        if (type == null)
+                            type = "*";
 
-			// get match *any* patterns as well:  
-			Vector<ResourceMappingPatterns> patternList2 = this.resourceTypePatterns.get("*");
-			
-			if (patternList==null)
-				patternList=patternList2; 
-			else if (patternList2!=null)
-				patternList.addAll(patternList2); 
+                        // get pattern list for this type:
+                        Vector<ResourceMappingPatterns> list = resourceTypePatterns.get(type);
 
-			// no mappings: 
-			if (patternList==null)
-			{
-				matchedMappings.clear();
-				return; 
-			}
+                        // autocreate:
+                        if (list == null)
+                            list = new Vector<ResourceMappingPatterns>();
 
-			// Search reduced Pattern List (Based on hashed Type list) 
-			for (ResourceMappingPatterns pattern:patternList) 
-			{
-				if (pattern.matches(selContext))
-				{
-					//get (parent) mapping  of resource pattern: 
-					ActionMenuMapping mapping=pattern.getActionMenuMapping();
+                        list.add(pat);
+                        // put updated pattern list:
+                        resourceTypePatterns.put(type, list);
+                    }
+            }
+            // todo: additional resource type to menu mappings:
+        }
+    }
 
-					// add mapping if not in vector already: 
-					if (matchedMappings.contains(mapping)==false)
-					{
-						matchedMappings.add(mapping);
-						Debug("+++ Adding mapping:"+mapping); 
-					}
-				}
-			}
-			// INSIDE synchronized ! 
-			createMatchedSubmenus();
-		}// synchronized
-	}
+    public synchronized void matchForTypeAndVRL(String sourceType, VRL sourceVRL)
+    {
+        ActionContext context = new ActionContext(sourceType, sourceVRL, null, null, null, null, false);
+        matchFor(context);
+    }
 
-	/** Return Matched mapping since latest match */ 
-	public Vector<ActionMenuMapping>  getMatchedMappings()
-	{
- 		return this.matchedMappings; 
-	}
+    public void matchFor(ActionContext selContext)
+    {
+        String sourceType = selContext.type;
 
-	/** Get Submenu names which match curren selection */ 
-	public StringList getMatchedSubMenus()
-	{
-		return this.matchedSubMenus;
-	}
+        synchronized (matchedMappings)
+        {
+            matchedMappings.clear();
 
-	private void createMatchedSubmenus()
-	{
-		
-		synchronized(matchedMappings)
-		{
-			synchronized(matchedSubMenus)
-			{
-				this.matchedSubMenus.clear(); 
+            Vector<ResourceMappingPatterns> patternList = null;
+            // patternList=this.resourceSelectionPatterns;
 
-				for (ActionMenuMapping map:matchedMappings)
-				{
-					String subName=map.getSubMenuName(); 
+            // sourceType is used as hash entry, since each VNode MUST have a
+            // type!
+            if (sourceType == null)
+                throw new NullPointerException("sourceType can not be null");
 
-					if ((subName!=null) && (matchedSubMenus.contains(subName)==false))
-					{
-						//Global.debugPrintf(this,"adding submenu:%s\n",subName); 
-						
-						matchedSubMenus.add(subName);
-					}
-				}
-			} // synchronized,synchronized 
-		}
-	}
+            // hashlist (I): use hashed list by type:
+            patternList = this.resourceTypePatterns.get(sourceType);
 
-	/** Get actions for subMenu. subMenu==null mean toplevel menu */
+            // get match *any* patterns as well:
+            Vector<ResourceMappingPatterns> patternList2 = this.resourceTypePatterns.get("*");
 
-	public StringList getMatchedActionMenuNamesForSubMenu(String subMenu)
-	{
-		StringList actions=new StringList();  
+            if (patternList == null)
+                patternList = patternList2;
+            else if (patternList2 != null)
+                patternList.addAll(patternList2);
 
-		for (ActionMenuMapping map:matchedMappings)
-		{
-			String name=map.getSubMenuName(); 
+            // no mappings:
+            if (patternList == null)
+            {
+                matchedMappings.clear();
+                return;
+            }
 
-			if (StringUtil.compare(subMenu,name)==0) 
-				actions.add(map.getMenuItemName());
-		}
+            // Search reduced Pattern List (Based on hashed Type list)
+            for (ResourceMappingPatterns pattern : patternList)
+            {
+                if (pattern.matches(selContext))
+                {
+                    // get (parent) mapping of resource pattern:
+                    ActionMenuMapping mapping = pattern.getActionMenuMapping();
 
-		return actions; 
-	}
+                    // add mapping if not in vector already:
+                    if (matchedMappings.contains(mapping) == false)
+                    {
+                        matchedMappings.add(mapping);
+                        Debug("+++ Adding mapping:" + mapping);
+                    }
+                }
+            }
+            // INSIDE synchronized !
+            createMatchedSubmenus();
+        }// synchronized
+    }
 
-	public Vector<ActionMenuMapping> getMatchedMappingsForSubMenu(String subMenu)
-	{
-		Debug("getMatchedMappingsForSubMenu:"+subMenu);
-		
-		Vector<ActionMenuMapping> mappings=new  Vector<ActionMenuMapping>();
+    /** Return Matched mapping since latest match */
+    public Vector<ActionMenuMapping> getMatchedMappings()
+    {
+        return this.matchedMappings;
+    }
 
-		for (ActionMenuMapping map:matchedMappings)
-		{
-			String name=map.getSubMenuName();
-			
-			Debug("getMatchedMappingsForSubMenu checking submenu:"+name); 
-			
-			if (StringUtil.compare(subMenu,name)==0) 
-			{
-				Debug("getMatchedMappingsForSubMenu adding submenu map:"+map);
-				mappings.add(map);
-			}
-		}
-		
-		if (mappings.size()==0)
-		{
-			//Global.warnPrintf(this,"Warning: Empty Submenu for:%s\n",subMenu);
-			return null; 
-		}
-		
-		return mappings;
-	}
+    /** Get Submenu names which match curren selection */
+    public StringList getMatchedSubMenus()
+    {
+        return this.matchedSubMenus;
+    }
 
-	
+    private void createMatchedSubmenus()
+    {
 
-	public int getSubMenuOptions(String subMenu)
-	{
-		if (subMenu==null)
-			return -1; 
-		
-		for (ActionMenuMapping map: this.matchedMappings)
-		{
-			if (map.getSubMenuName().compareTo(subMenu)==0)
-			{
-				return map.getMenuOptions(); 
-			}
-		}
-		
-		return -1; 
-	}
-	
-	private void Debug(String msg)
-	{
-		//Global.errorPrintln(this,msg);
-	    //Global.debugPrintf(this,"%s\n",msg); 
-	}
+        synchronized (matchedMappings)
+        {
+            synchronized (matchedSubMenus)
+            {
+                this.matchedSubMenus.clear();
+
+                for (ActionMenuMapping map : matchedMappings)
+                {
+                    String subName = map.getSubMenuName();
+
+                    if ((subName != null) && (matchedSubMenus.contains(subName) == false))
+                    {
+                        // Global.debugPrintf(this,"adding submenu:%s\n",subName);
+
+                        matchedSubMenus.add(subName);
+                    }
+                }
+            } // synchronized,synchronized
+        }
+    }
+
+    /** Get actions for subMenu. subMenu==null mean toplevel menu */
+
+    public StringList getMatchedActionMenuNamesForSubMenu(String subMenu)
+    {
+        StringList actions = new StringList();
+
+        for (ActionMenuMapping map : matchedMappings)
+        {
+            String name = map.getSubMenuName();
+
+            if (StringUtil.compare(subMenu, name) == 0)
+                actions.add(map.getMenuItemName());
+        }
+
+        return actions;
+    }
+
+    public Vector<ActionMenuMapping> getMatchedMappingsForSubMenu(String subMenu)
+    {
+        Debug("getMatchedMappingsForSubMenu:" + subMenu);
+        Vector<ActionMenuMapping> mappings = new Vector<ActionMenuMapping>();
+
+        for (ActionMenuMapping map : matchedMappings)
+        {
+            String name = map.getSubMenuName();
+            Debug("getMatchedMappingsForSubMenu checking submenu:" + name);
+
+            if (StringUtil.compare(subMenu, name) == 0)
+            {
+                Debug("getMatchedMappingsForSubMenu adding submenu map:" + map);
+                mappings.add(map);
+            }
+        }
+
+        if (mappings.size() == 0)
+        {
+            // Global.warnPrintf(this,"Warning: Empty Submenu for:%s\n",subMenu);
+            return null;
+        }
+
+        return mappings;
+    }
+
+    public int getSubMenuOptions(String subMenu)
+    {
+        if (subMenu == null)
+            return -1;
+
+        for (ActionMenuMapping map : this.matchedMappings)
+        {
+            if (map.getSubMenuName().compareTo(subMenu) == 0)
+            {
+                return map.getMenuOptions();
+            }
+        }
+
+        return -1;
+    }
+
+    private void Debug(String msg)
+    {
+        // Global.errorPrintln(this,msg);
+        // Global.debugPrintf(this,"%s\n",msg);
+    }
 
 }

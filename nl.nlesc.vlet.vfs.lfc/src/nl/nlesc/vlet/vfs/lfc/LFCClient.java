@@ -412,7 +412,7 @@ public class LFCClient
         }
         catch (VlException e)
         {
-            throw new ResourceException("LFC Exception", "Couldn't fetch file with guid='" + guid + "'", e);
+            throw new ResourceException("LFC Exception: Couldn't fetch file with guid='" + guid + "'", e);
         }
         catch (LFCException e)
         {
@@ -981,7 +981,7 @@ public class LFCClient
             	// Monitoring: Method printout verbose message about replica
                 replicaVRL = path.getSelectedReplicaVRL(monitor, tryNr);
 
-                VNode node = this.getVNodeFrom(replicaVRL);
+                VFSNode node = this.getVFSNodeFrom(replicaVRL);
 
                 // ==========
                 // Bug #:285 Sometimes the LFC length doesn't match the Replica
@@ -1063,7 +1063,7 @@ public class LFCClient
         return text;
     }
 
-    protected VNode getVNodeFrom(VRL replicaVRL) throws VlException
+    protected VFSNode getVFSNodeFrom(VRL replicaVRL) throws VlException
     {
         // ===
         // Important: Make sure the SRM VRL points to the right V2.2 interface !
@@ -1074,7 +1074,7 @@ public class LFCClient
         // query ResourceSystem for more control over the object:
         VResourceSystem rs = this.getVRSContext().openResourceSystem(replicaVRL);
 
-        VNode node = null;
+        VFSNode node = null;
 
         if (rs instanceof VFileSystem)
         {
@@ -1111,12 +1111,11 @@ public class LFCClient
         {
             throw LFCExceptionWapper.getVlException(e.getErrorCode(), e);
         }
-
     }
 
     public VRL createVRL(String path) throws VRLSyntaxException
     {
-        return this.lfcServerNode.resolvePathVRL(path);
+        return lfcServerNode.getVRL().resolvePathToVRL(path);
     }
     
     /**
@@ -1241,10 +1240,10 @@ public class LFCClient
 
                 // node = getVNodeFromSfn(rep.getSfn());
                 VRL vrl = getSRMVRLfromSfn(new VRL(rep.getSfn()));
-                VNode node = null;
+                VFSNode node = null;
                 try
                 {
-                    node = this.getVNodeFrom(vrl);
+                    node = this.getVFSNodeFrom(vrl);
                     deleteFromSE(node, true);
                     monitor.logPrintf(" - deletion from SE succeed\n");
                     logger.debugPrintf(" - deletion from SE succeed\n");
@@ -1381,7 +1380,7 @@ public class LFCClient
         String sfn = rep.getSfn();
         monitor.logPrintf("LFC: Deleting replica:\n - " + sfn + "\n");
         VRL repVrl = new VRL(sfn);
-        VNode node = this.getVNodeFrom(repVrl);
+        VFSNode node = this.getVFSNodeFrom(repVrl);
 
         if (monitor.isCancelled())
             throw new VlInterruptedException("Interrupted");
@@ -2372,7 +2371,7 @@ public class LFCClient
 
                 if (nodes == null || nodes.length <= 0)
                 {
-                    throw new VlException("LFC Inconcistancy", "LFC service for " + path + " lists " + nodes.length
+                    throw new VlIOException("LFC Inconcistancy error: LFC service for " + path + " lists " + nodes.length
                             + " nodes but num of childern is: " + desc.getFileDesc().getULink());
                 }
 
@@ -2688,7 +2687,7 @@ public class LFCClient
                 // Select Replica to read from:
                 // ============================
                 replicaVRL = sourceFile.getSelectedReplicaVRL(monitor, trynr);
-                VNode sourceReplicaNode = this.getVNodeFrom(replicaVRL);
+                VFSNode sourceReplicaNode = this.getVFSNodeFrom(replicaVRL);
 
                 StringHolder reasonH = new StringHolder();
 
@@ -2906,13 +2905,13 @@ public class LFCClient
         // empty selection,etc;
         if ((listSEs == null) || (listSEs.size() <= 0))
         {
-            throw new VlException("LFCException", "No Preferred Storage Elements specified for replication");
+            throw new VlIOException("LFCException: No Preferred Storage Elements specified for replication");
         }
 
         // empty selection,etc;
         if (vrls == null)
         {
-            throw new VlException("LFCException", "No files selected (vrrss==null) for replication");
+            throw new VlIOException("LFCException: No files selected (vrrss==null) for replication");
         }
 
         int numSEs = listSEs.size();
@@ -2949,7 +2948,7 @@ public class LFCClient
 
             monitor.logPrintf("LFC: Updating replicas: (" + vrl.getHostname() + ") " + vrl.getBasename() + "\n");
 
-            LFCFile file = this.lfcServerNode.openFile(vrl);
+            LFCFile file = this.lfcServerNode.getFile(vrl);
 
             ReplicaDesc[] reps = file.getReplicaDescriptions();
 
@@ -3200,13 +3199,13 @@ public class LFCClient
         // empty selection,etc;
         if ((listSEs == null) || (listSEs.size() <= 0))
         {
-            throw new VlException("LFCException", "No Preferred Storage Elements specified for replication");
+            throw new VlIOException("LFCException: No Preferred Storage Elements specified for replication");
         }
 
         // empty selection,etc;
         if (dir == null)
         {
-            throw new VlException("LFCException", "No Directory selected (directory==null) for replication");
+            throw new VlIOException("LFCException: No Directory selected (directory==null) for replication");
         }
 
         LongHolder totalSize = new LongHolder();

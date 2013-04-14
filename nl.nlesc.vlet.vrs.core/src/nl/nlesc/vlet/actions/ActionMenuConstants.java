@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.actions;
@@ -45,8 +45,7 @@ public class ActionMenuConstants
     public static final int SELECTION_TWO_OR_MORE = 0x0001 << 5;
 
     /** Excplit one or more (>=1) */
-    public static final int SELECTION_ONE_OR_MORE = SELECTION_ONE
-            | SELECTION_TWO_OR_MORE;
+    public static final int SELECTION_ONE_OR_MORE = SELECTION_ONE | SELECTION_TWO_OR_MORE;
 
     /** Explicit No Selection may be done (==0) */
     public static final int SELECTION_NONE = 0x0001 << 10;
@@ -58,27 +57,19 @@ public class ActionMenuConstants
     public static final int SELECTION_TYPE_CLIPBOARD = 0x0001 << 12;
 
     /** Allow both of the above */
-    public static final int SELECTION_TYPE_ALL = SELECTION_TYPE_DRAG_AND_DROP
-            & SELECTION_TYPE_CLIPBOARD;
+    public static final int SELECTION_TYPE_ALL = SELECTION_TYPE_DRAG_AND_DROP & SELECTION_TYPE_CLIPBOARD;
 
     //
     // Default Actions : Recognised by the VBrowser.
     //
 
     public static final String DEFAULT_COPYDROP = "DefaultCopyDrop";
-
     public static final String DEFAULT_MOVEDROP = "DefaultMoveDrop";
-
     public static final String DEFAULT_LINKDROP = "DefaultLinkDrop";
-
     public static final String DEFAULT_COPYSELECTION = "DefaultCopySelection";
-
     public static final String DEFAULT_CUTSELECTION = "DefaultCutSelection";
-
     public static final String DEFAULT_COPYNPASTE = "DefaultCopyAndPaste";
-
     public static final String DEFAULT_CUTNPASTE = "DefaultCutAndPaste";
-
     public static final String DEFAULT_LINKPASTE = "DefaultLinkPaste";
 
     // =======================================================================

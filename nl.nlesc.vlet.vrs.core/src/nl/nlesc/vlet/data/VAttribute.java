@@ -28,7 +28,6 @@ import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.Duplicatable;
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.exception.VRLSyntaxException;

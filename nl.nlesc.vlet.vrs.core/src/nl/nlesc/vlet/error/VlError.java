@@ -15,28 +15,28 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.error;
 
 /**
- * The VlError cass is for low level errors which do not fit in the Exception paradigm.
- * Similar to the Java Convention to throw java.lang.Error in the case of programming 
- * errors except VlError the the VRS Variant.  
+ * The VlError is for low runtime level errors which do not fit in the Exception
+ * paradigm. Similar to the Java Convention to throw java.lang.Error in the case
+ * of programming errors.
  */
 public class VlError extends Error
 {
-	private static final long serialVersionUID = 6510047961863859404L;
+    private static final long serialVersionUID = 6510047961863859404L;
 
-	public VlError(String msg) 
-	{
-		super(msg); 
-	}
+    public VlError(String msg)
+    {
+        super(msg);
+    }
 
-	public VlError(String msg, Throwable cause) 
-	{
-		super(msg,cause); 
-	}
+    public VlError(String msg, Throwable cause)
+    {
+        super(msg, cause);
+    }
 
 }

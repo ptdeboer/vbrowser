@@ -15,29 +15,32 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
-public class VlConnectionException extends VlIOException
+public class VlConnectionException extends VlNetworkException
 {
-	private static final long serialVersionUID = 4058564395522741076L;
+    private static final long serialVersionUID = 8489684930456309265L;
 
-	public VlConnectionException(String message)
+    public VlConnectionException(String message)
     {
-        super(ExceptionStrings.VLCONNECTIONEXCEPTION,message);
+        super(ExceptionStrings.VLCONNECTIONEXCEPTION, message,null);
     }
 
-    /** Create VlException:  CrendentialException which keeps original System Exception */
+    /**
+     * Create VlException: CrendentialException which keeps original System
+     * Exception
+     */
     public VlConnectionException(String message, Throwable lastex)
     {
-        super(ExceptionStrings.VLCONNECTIONEXCEPTION,message,lastex); 
+        super(ExceptionStrings.VLCONNECTIONEXCEPTION, message, lastex);
     }
 
     public VlConnectionException(Throwable e)
     {
-        super(ExceptionStrings.VLCONNECTIONEXCEPTION,e.getMessage(),e); 
+        super(ExceptionStrings.VLCONNECTIONEXCEPTION, e.getMessage(), e);
     }
 
 }

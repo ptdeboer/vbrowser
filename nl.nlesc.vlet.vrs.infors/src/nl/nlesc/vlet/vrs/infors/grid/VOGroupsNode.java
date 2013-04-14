@@ -1,10 +1,10 @@
 /*
- * Copyright 2006-2011 The Virtual Laboratory for e-Science (VL-e) 
- * 
+ * Copyrighted 2012-2013 Netherlands eScience Center.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License").  
  * You may not use this file except in compliance with the License. 
  * For details, see the LICENCE.txt file location in the root directory of this 
- * distribution or obtain the Apache Licence at the following location: 
+ * distribution or obtain the Apache License at the following location: 
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software 
@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  * 
- * See: http://www.vl-e.nl/ 
- * See: LICENCE.txt (located in the root folder of this distribution). 
+ * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- * $Id: VOGroupsNode.java,v 1.1 2013/02/05 11:57:00 piter Exp $  
- * $Date: 2013/02/05 11:57:00 $
  */ 
 // source: 
 
@@ -27,7 +24,6 @@ import java.util.ArrayList;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.Presentation;
-import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.VletConfig;
@@ -37,7 +33,6 @@ import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.util.bdii.BdiiService;
 import nl.nlesc.vlet.util.bdii.ServiceInfo;
 import nl.nlesc.vlet.util.bdii.StorageArea;
@@ -48,8 +43,6 @@ import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.infors.CompositeServiceInfoNode;
 import nl.nlesc.vlet.vrs.infors.InfoConstants;
-
-
 
 public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
 {

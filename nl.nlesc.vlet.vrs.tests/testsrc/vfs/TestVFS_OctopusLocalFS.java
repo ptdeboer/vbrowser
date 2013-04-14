@@ -20,20 +20,12 @@
 
 package vfs;
 
-import java.net.URI;
-
-import junit.framework.Assert;
-import test.TestSettings;
-import nl.esciencecenter.octopus.credentials.Credential;
-import nl.esciencecenter.octopus.credentials.Credentials;
-import nl.esciencecenter.octopus.files.AbsolutePath;
-import nl.esciencecenter.octopus.files.FileSystem;
-import nl.esciencecenter.octopus.files.RelativePath;
 import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.vfs.VFSClient;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
+import test.TestSettings;
 
 
 public class TestVFS_OctopusLocalFS extends TestVFS

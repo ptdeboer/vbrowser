@@ -23,6 +23,7 @@
 
 package nl.nlesc.vlet.gui.lobo.resfs;
 
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
@@ -31,13 +32,27 @@ import nl.nlesc.vlet.vrs.VResourceSystem;
 
 public class ResResourceSystem implements VResourceSystem
 {
-    private VRSContext vrsContext; 
+    private VRSContext vrsContext;
+    private VRL vrl; 
     
-    public ResResourceSystem(VRSContext context)
+    public ResResourceSystem(VRSContext context, VRL location)
     {
         this.vrsContext=context;
+        this.vrl=location.replacePath("/"); 
     }
 
+    @Override
+    public VRL resolve(String path) throws VRISyntaxException 
+    {
+        return vrl.resolve(path);
+    }
+    
+    @Override
+    public VRL getVRL()
+    {
+        return this.vrl; 
+    }
+    
     //@Override
     public String getID()
     {

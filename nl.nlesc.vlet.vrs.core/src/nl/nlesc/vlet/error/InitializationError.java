@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.error;
@@ -26,11 +26,11 @@ public class InitializationError extends VlError
 
     public InitializationError(String msg)
     {
-        super(msg); 
+        super(msg);
     }
-    
-    public InitializationError(String msg,Throwable cause)
+
+    public InitializationError(String msg, Throwable cause)
     {
-        super(msg,cause); 
+        super(msg, cause);
     }
 }

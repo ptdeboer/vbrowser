@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.dialog;
@@ -24,23 +24,19 @@ import javax.swing.JFrame;
 
 /**
  * Simple Super Class for vrs.core dialogs. 
- * Note that vrs.core dialogs have nothing to do
- * with gui.utils and the vbrowser. 
- * 
- * @author Piter T. de Boer
  */
 public class VletDialog extends javax.swing.JDialog
 {
-	private static final long serialVersionUID = 77675878481916532L;
-	
-	public VletDialog()
-	{
-		super();  
-	}
+    private static final long serialVersionUID = 77675878481916532L;
 
-	public VletDialog(JFrame frame)
-	{
-		super(frame); 
-	}
+    public VletDialog()
+    {
+        super();
+    }
+
+    public VletDialog(JFrame frame)
+    {
+        super(frame);
+    }
 
 }

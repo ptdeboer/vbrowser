@@ -20,8 +20,6 @@
 
 package nl.nlesc.vlet.tasks;
 
-import nl.esciencecenter.ptk.task.ActionTask;
-import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.task.MonitorAdaptor;
 
 /**
@@ -29,13 +27,6 @@ import nl.esciencecenter.ptk.task.MonitorAdaptor;
  */
 public class VRSTaskMonitor extends MonitorAdaptor 
 {
-    // Task Registery for VRSTasks:
-    private static int instanceCounter = 0;
-
-
-
-   
-
     // =========================================================================
     //
     // =========================================================================

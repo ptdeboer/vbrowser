@@ -24,7 +24,7 @@ public class VRLSyntaxException extends VlURISyntaxException
 {
     private static final long serialVersionUID = 1127122143063694760L;
 
-    public VRLSyntaxException(Exception e)
+    public VRLSyntaxException(Throwable e)
     {
         super("VRLSyntaxException",e.getMessage(),e);  
     }
@@ -34,7 +34,7 @@ public class VRLSyntaxException extends VlURISyntaxException
         super("VRLSyntaxException",msg,null);
     }
 
-	public VRLSyntaxException(String message, Exception e)
+	public VRLSyntaxException(String message, Throwable e)
 	{
 		super("VRLSyntaxException",message,e);
 	}

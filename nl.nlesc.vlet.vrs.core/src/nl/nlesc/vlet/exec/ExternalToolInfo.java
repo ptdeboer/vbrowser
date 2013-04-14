@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exec;
@@ -24,51 +24,49 @@ import nl.nlesc.vlet.vrl.VRL;
 
 public class ExternalToolInfo
 {
-    private String toolName="echo"; 
-    
-    private String commandPath="/bin/echo";
-    
-    private boolean downloadFirst=false;
-    
-    // whether URI syntax can be used or local path only 
-    private boolean useURItrue; 
-    
-    // StringBuilder.format compatible syntax, first '%s' argument is start VRL 
-    private String startupSyntax="%s";
+    private String toolName = "echo";
 
-    public static ExternalToolInfo createLocalCommand(String path, 
-            boolean downloadFirst, 
-            boolean canUseUri)
+    private String commandPath = "/bin/echo";
+
+    private boolean downloadFirst = false;
+
+    // whether URI syntax can be used or local path only
+    private boolean useURItrue;
+
+    // StringBuilder.format compatible syntax, first '%s' argument is start VRL
+    private String startupSyntax = "%s";
+
+    public static ExternalToolInfo createLocalCommand(String path, boolean downloadFirst, boolean canUseUri)
     {
-        ExternalToolInfo info=new ExternalToolInfo(); 
-        info.commandPath=path;
-        info.toolName=VRL.basename(info.commandPath); 
-        info.useURItrue=canUseUri; 
-        info.downloadFirst=downloadFirst;  
-        
-        return info; 
+        ExternalToolInfo info = new ExternalToolInfo();
+        info.commandPath = path;
+        info.toolName = VRL.basename(info.commandPath);
+        info.useURItrue = canUseUri;
+        info.downloadFirst = downloadFirst;
+
+        return info;
     }
-    
+
     public String getName()
     {
-        return toolName; 
+        return toolName;
     }
-    
+
     public String getCommandPath()
     {
-        return this.commandPath; 
+        return this.commandPath;
     }
-    
+
     public boolean canUseUri()
     {
         return this.useURItrue;
     }
-    
+
     public String getStartSyntax()
     {
-        return this.startupSyntax; 
+        return this.startupSyntax;
     }
-    
+
     public boolean getDownloadFirst()
     {
         return this.downloadFirst;

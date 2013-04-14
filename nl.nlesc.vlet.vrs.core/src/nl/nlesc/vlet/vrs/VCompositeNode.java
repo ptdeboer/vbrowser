@@ -182,12 +182,6 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
     {
         return true;
     }
-
-    @Override
-    public boolean exists() throws VlException
-    {
-        return true;
-    }
     
     public VNode createNode(String type, String name, boolean force)
             throws VlException

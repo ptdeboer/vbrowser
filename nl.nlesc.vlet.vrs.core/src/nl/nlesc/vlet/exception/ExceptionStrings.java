@@ -22,7 +22,7 @@ package nl.nlesc.vlet.exception;
 
 public class ExceptionStrings
 {
-    // keep static string alphabetical ordered:
+    // keep static strings in alphabetical order:
 	public static final String ACCES_DENIED = "Access denied";
     public final static String ATTRIBUTE_NOT_EDITABLE = "Attribute is not editable";
     public final static String CONFIGURATION_EXCEPTION = "Configuration Error.";

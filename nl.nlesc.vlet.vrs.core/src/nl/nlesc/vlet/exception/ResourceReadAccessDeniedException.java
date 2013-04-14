@@ -15,14 +15,13 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
 /**
- * Read acces denied exception.
- * @author P.T. de Boer
+ * Read access denied.
  */
 public class ResourceReadAccessDeniedException extends ResourceAccessDeniedException
 {
@@ -30,13 +29,13 @@ public class ResourceReadAccessDeniedException extends ResourceAccessDeniedExcep
 
     public ResourceReadAccessDeniedException(String message)
     {
-        super(ExceptionStrings.READ_ACCES_DENIED,message);
+        super(ExceptionStrings.READ_ACCES_DENIED, message);
     }
 
     /** Constructor which keeps original System Exception */
     public ResourceReadAccessDeniedException(String message, Exception e)
     {
-        super(ExceptionStrings.READ_ACCES_DENIED,message,e); 
+        super(ExceptionStrings.READ_ACCES_DENIED, message, e);
     }
 
 }

@@ -50,10 +50,8 @@ import nl.nlesc.vlet.exception.VlServerException;
 import nl.nlesc.vlet.util.bdii.info.glue.GlueConstants;
 import nl.nlesc.vlet.util.bdii.info.glue.GlueObject;
 
-
 /**
  * @author S. Koulouzis
- * 
  */
 public class BDIIQuery
 {

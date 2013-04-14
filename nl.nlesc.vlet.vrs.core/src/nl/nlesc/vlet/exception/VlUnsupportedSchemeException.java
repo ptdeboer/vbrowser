@@ -22,7 +22,6 @@ package nl.nlesc.vlet.exception;
 
 /**
  * Exception is thrown when a scheme is requested which is not supported. 
- *  
  */
 public class VlUnsupportedSchemeException extends VlInternalError // VlException
 {
@@ -33,7 +32,7 @@ public class VlUnsupportedSchemeException extends VlInternalError // VlException
         super(ExceptionStrings.SERVICE_TYPE_MISMATCH_EXCEPTION,message);
     }
     
-    public VlUnsupportedSchemeException(String message,Exception e)
+    public VlUnsupportedSchemeException(String message,Throwable e)
     {
         super(ExceptionStrings.SERVICE_TYPE_MISMATCH_EXCEPTION,message,e); 
     }

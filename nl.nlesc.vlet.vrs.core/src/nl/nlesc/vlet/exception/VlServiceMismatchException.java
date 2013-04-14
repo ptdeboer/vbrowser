@@ -20,12 +20,12 @@
 
 package nl.nlesc.vlet.exception;
 
-public class VlServiceException extends VlInternalError
+public class VlServiceMismatchException extends VlInternalError
 {
 	private static final long serialVersionUID = 776601693066415709L;
 
-	public VlServiceException(String message)
+	public VlServiceMismatchException(String message)
 	{
-		super("VlServiceException", message);
+		super("Service Mismatch.", message);
 	}
 }

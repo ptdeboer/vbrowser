@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
@@ -26,12 +26,12 @@ public class ResourceNotEditableException extends ResourceException
 
     public ResourceNotEditableException(String message)
     {
-        super(ExceptionStrings.NOT_EDITABLE_EXCEPTION,message);
+        super(ExceptionStrings.NOT_EDITABLE_EXCEPTION, message);
     }
 
     /** Constructor which keeps original System Exception */
-    public ResourceNotEditableException(String message, Exception e)
+    public ResourceNotEditableException(String message, Throwable e)
     {
-        super(ExceptionStrings.NOT_EDITABLE_EXCEPTION,message,e); 
+        super(ExceptionStrings.NOT_EDITABLE_EXCEPTION, message, e);
     }
 }

@@ -25,6 +25,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Proxy;
 
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.vrl.VRL;
@@ -71,9 +73,12 @@ public class HTTPRS implements VResourceSystem, VStreamProducer
 
     private Proxy httpsProxy;
 
+    private VRL sourceVrl;
+
     public HTTPRS(VRSContext context, ServerInfo info)
     {
         this.vrsContext = context;
+        this.sourceVrl=info.getServerVRL(); 
         // this.cache=new HTTPCache(context);
     }
 
@@ -161,6 +166,18 @@ public class HTTPRS implements VResourceSystem, VStreamProducer
     @Override
     public void dispose()
     {
+    }
+
+    @Override
+    public VRL getVRL()
+    {
+        return this.sourceVrl; 
+    }
+
+    @Override
+    public VRL resolve(String path) throws VRISyntaxException 
+    {
+        return sourceVrl.resolve(path);
     }
 
 }

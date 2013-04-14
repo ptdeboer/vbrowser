@@ -28,7 +28,6 @@ import java.util.Vector;
 import java.util.regex.Pattern;
 
 import nl.esciencecenter.ptk.data.IntegerHolder;
-import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
@@ -40,16 +39,16 @@ import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRenamable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
-import nl.nlesc.vlet.vrs.io.VStreamWritable;
 import nl.nlesc.vlet.vrs.util.VRSSort;
-
 
 /**
  * Super class of the VFS Directory implementation. 
  * Represents an abstract interface to a Directory implementation. 
  *  
- * @see VFile 
  * @see VFSNode
+ * @see VFile 
+ * @see VDir
+ * @see VFSClient 
  * @author P.T. de Boer
  */
 public abstract class VDir extends VFSNode implements VComposite,VRenamable,
@@ -68,6 +67,26 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     {
         VRSSort.sortVNodesByTypeName(nodes,typeFirst,ignoreCase);
         return nodes; 
+    }
+    
+    /** Class method to filter out childs of type VNode */ 
+    public static VNode[] applyFilter(VNode[] nodes, NodeFilter filter)
+    {
+        if (nodes==null)
+            return null;
+        
+        if (filter==null)
+            return nodes; 
+        
+        Vector<VNode>filtered=new Vector<VNode>();
+        
+        for (VNode node:nodes) 
+            if (filter.accept(node))
+                filtered.add(node); 
+
+        VNode _nodes[]=new VNode[filtered.size()];
+        _nodes=filtered.toArray(_nodes); 
+        return _nodes; 
     }
     
     //  ==========================================================================
@@ -104,9 +123,29 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
         return childTypes; 
     }
     
-//  ==========================================================================
-//  VComposite Interface 
-//  ==========================================================================
+    /**
+     * For unix fileystem this means the 'x' bit should be enabled. 
+     */
+    public boolean isAccessable() throws VlException
+    {
+         return isReadable();
+    }
+       
+    /** 
+     * The length() attribute for directories is system depended and really 
+     * not usuable in a Virtual environment. 
+     * This method will return -1 if not implemented by the File System 
+     * On unix filesystems this method provides the size of the directory
+     * object needed to store the file information.
+     */
+    public long getLength() throws VlException 
+    {
+        return -1; 
+    }
+    
+    //  ==========================================================================
+    //  VComposite Interface 
+    //  ==========================================================================
     
     /** 
      * Add (VFS)Node to this directory location. 
@@ -179,21 +218,6 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
             return results; 
         }
     }
-    
-    public VFSNode[] addNodes(VFSNode[] nodes,boolean isMove) throws VlException
-    {
-        VFSNode[] vfsNodes=new VFSNode[nodes.length];
-        
-        for (int i=0; i<nodes.length; i++)
-        {
-            if (nodes[i] instanceof VFSNode)
-            {
-                vfsNodes[i]=addNode(((VFSNode)nodes[i]),null,isMove); 
-            }
-        }
-        
-        return vfsNodes;
-    }
 
     /** Delete node. Node must be of type VFSNode */ 
     public boolean delNode(VNode childNode) throws VlException
@@ -227,9 +251,9 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     public boolean hasNode(String name) throws VlException
     {
         // todo: more efficient method 
-        if (this.existsFile(resolvePath(name))==true)
+        if (existsFile(resolvePathString(name))==true)
             return true; 
-        if (this.existsDir(resolvePath(name))==true)
+        if (existsDir(resolvePathString(name))==true)
             return true; 
 
         return false; 
@@ -237,36 +261,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     
     public VFSNode getNode(String path) throws VlException
     {
-        return this.vfsSystem.openLocation(resolvePathVRL(path)); 
-    }
-    
-//  ==========================================================================
-//  VFSNode interface 
-//  ==========================================================================
-        
-    /** return true if the VFSNode is a (V)File */
-    public boolean isFile()
-    {
-        return false;
-    };
-    
-    /** return true if the VFSNode is a (V)Directory */ 
-    public boolean isDir()
-    {
-        return true;
-    };
-    
-    /** 
-     * Default implementation calls the VDir method list() 
-     */ 
-    public VFSNode[] getNodes() throws VlException
-    {
-        return list();
-    }
-    
-    public VNode[] getNodes(int offset,int maxNodes,IntegerHolder totalNumNodes) throws VlException /// Tree,Graph, Composite etc.
-    {
-        return list(offset,maxNodes,totalNumNodes); 
+        return vfsSystem.openLocation(resolvePath(path)); 
     }
     
     /** 
@@ -294,6 +289,35 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
         }
     }
     
+    /** 
+     * Default implementation calls the VDir method list() 
+     */ 
+    public VFSNode[] getNodes() throws VlException
+    {
+        return list();
+    }
+    
+    public VNode[] getNodes(int offset,int maxNodes,IntegerHolder totalNumNodes) throws VlException /// Tree,Graph, Composite etc.
+    {
+        return list(offset,maxNodes,totalNumNodes); 
+    }
+    
+    //  ==========================================================================
+    //  VFSNode interface 
+    //  ==========================================================================
+        
+    /** return true if the VFSNode is a (V)File */
+    public boolean isFile()
+    {
+        return false;
+    };
+    
+    /** return true if the VFSNode is a (V)Directory */ 
+    public boolean isDir()
+    {
+        return true;
+    };
+       
     /**
      * Returns new VFile object. Path may or may not exist. 
      * This is not checked. 
@@ -305,7 +329,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      */
     public VFile newFile(String path) throws VlException
     {
-        return this.getFileSystem().newFile(resolvePathVRL(path)); 
+        return getFileSystem().newFile(resolvePath(path)); 
     }
     
     /**
@@ -319,7 +343,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      */
     public VDir newDir(String path) throws VlException
     {
-        return this.getFileSystem().newDir(resolvePathVRL(path)); 
+        return getFileSystem().newDir(resolvePath(path)); 
     }
     
     /**
@@ -329,7 +353,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      */  
     public VFile createFile(String name) throws VlException
     {
-        return createFile(resolvePath(name),true);   
+        return createFile(resolvePathString(name),true);   
     }
     
     /**
@@ -339,7 +363,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      */
     public VDir createDir(String dirName) throws VlException
     {
-    	VDir dir=getFileSystem().newDir(resolvePathVRL(dirName)); 
+    	VDir dir=getFileSystem().newDir(resolvePath(dirName)); 
     	dir.create(true);
     	return dir; 
     }
@@ -399,116 +423,33 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     /** Deletes file */ 
     public boolean deleteFile(String name) throws VlException
     {
-        return this.getFile(name).delete(); 
+        return getFile(name).delete(); 
     }
     
     /** Deleted (sub)directory */ 
     public boolean deleteDir(String name,boolean recursive) throws VlException
     {
-        return this.getDir(name).delete(recursive); 
+        return getDir(name).delete(recursive); 
     }
     
-    /** Get subdirectory or if dirname is absolute get the directory using the absolute path */  
+    /**
+     * Get existing subdirectory or if dirname is absolute get the directory using
+     * the absolute path.
+     */  
     public VDir getDir(String dirname) throws VlException
     {
-        return this.vfsSystem.openDir(resolvePathVRL(dirname)); 
+        return vfsSystem.getDir(resolvePath(dirname)); 
     }
 
-    /** Get file in this directory using the relative or absolute path */   
+    /** Get exsiting file in this directory using the relative or absolute path. */   
     public VFile getFile(String filename) throws VlException
     {
-        return this.vfsSystem.openFile(resolvePathVRL(filename)); 
-    }
-            
-    /**
-     * Return attribute matrix for given nodes. 
-     * The matrix should be in the form: VAttribute[node][attrname].<br>
-     * <b>Developers note:</b><br>
-     * Override this method for a faster getall attributes. 
-     * Also allow for entries in the name and node list to be null !
-     * This is for attribute list merging (Ritsen)! 
-     * 
-     * @param childNames array of VNodes names
-     * @param names VAttribute names to fetch. 
-     * @return VAttibute matrix [rows][columns]. Rows match nodes, columns match attributes. 
-     * @throws VlException
-     */
-    
-    //@Override
-    public VAttribute[][] getNodeAttributes(String childNames[], String names[]) throws VlException 
-    {
-        VNode nodes[]=new VNode[childNames.length]; 
-        
-        VAttribute attrs[][] = new VAttribute[nodes.length][];
-        
-        for (int i = 0; i < childNames.length; i++)
-        {
-            nodes[i]=getNode(childNames[i]); 
-            
-            if (nodes[i]!=null)
-                attrs[i]=nodes[i].getAttributes(names);
-            else
-                attrs[i]=null;
-        }
-        
-        return attrs;
+        return vfsSystem.getFile(resolvePath(filename)); 
     }
     
-    public VAttribute[][] getNodeAttributes(String names[]) throws VlException 
-    {
-        VNode nodes[]=getNodes(); 
-        
-        VAttribute attrs[][] = new VAttribute[nodes.length][];
-        
-        for (int i = 0; i < nodes.length; i++)
-        {
-            if (nodes[i]!=null)
-                attrs[i]=nodes[i].getAttributes(names);
-            else
-                attrs[i]=null;
-        }
-        return attrs;
-    }
-    
-    /**
-     * For unix fileystem this means the 'x' bit should be enabled. 
-     */
-    public boolean isAccessable() throws VlException
-    {
-         return isReadable();
-    }
-    
-    /** Class method to filter out childs of type VNode */ 
-    public static VNode[] applyFilter(VNode[] nodes, NodeFilter filter)
-    {
-        if (nodes==null)
-            return null;
-        
-        if (filter==null)
-            return nodes; 
-        
-        Vector<VNode>filtered=new Vector<VNode>();
-        
-        for (VNode node:nodes) 
-            if (filter.accept(node))
-                filtered.add(node); 
-
-        VNode _nodes[]=new VNode[filtered.size()];
-        _nodes=filtered.toArray(_nodes); 
-        return _nodes; 
-    }
-     
-    /** 
-     * The length() attribute for directories is system depended and really 
-     * not usuable in a Virtual environment. 
-     * This method will return -1 if not implemented by the File System 
-     * On unix filesystems this method provides the size of the directory
-     * object needed to store the file information.
-     */
-    public long getLength() throws VlException 
-    {
-        return -1; 
-    }
+    //  ==========================================================================
+    //  VDir.list(...)
+    //  ==========================================================================
     
     /**
      * List the chidren and sort them. 
@@ -544,30 +485,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     {
          return list(new NodeFilter(pattern,isRegularExpression),0,-1,null); 
     }
-    
-    /**
-     * Returns filtered childs with specified wildcard pattern or
-     * Regular Expression.  
-      * <p>
-     * This method calls {@link #list(NodeFilter, int, int, IntegerHolder)}. 
-     * See that method for details.
-     */
-    public VFSNode[] list(Pattern pattern) throws VlException
-    {
-         return list(new NodeFilter(pattern),0,-1,null); 
-    }
-    
-    /**
-     * Returns filtered childs using the specified Node Filter.
-     * <p>
-     * This method calls {@link #list(NodeFilter, int, int, IntegerHolder)}. 
-     * See that method for details.
-     */
-    public VFSNode[] list(NodeFilter filter) throws VlException
-    {
-        return list(filter,0,-1,null); 
-    }
-    
+   
     /**
      * This method calls {@link #list(NodeFilter, int, int, IntegerHolder)}. 
      * See that method for details.
@@ -600,18 +518,15 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     public VFSNode[] list(NodeFilter filter,int offset,int maxNodes,IntegerHolder totalNumNodes) throws VlException
     {
         // use default list() ! 
-        
         VFSNode nodes[] =list();
 
         //Global.debugPrintf(this,"listFiltered(): nr of UNfiltered nodes=%d\n",nodes.length);
-            
         if (filter!=null)
         {
             nodes=NodeFilter.filterNodes(nodes,filter); 
         }
             
         //Global.debugPrintf(this,"listFiltered(): nr of filtered nodes=%d\n",nodes.length); 
-        
         if (totalNumNodes==null)
             totalNumNodes=new IntegerHolder(); 
 
@@ -620,7 +535,9 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     }
 
     // ========================================================================
-
+    // IO
+    // ========================================================================
+    
     public VDir createUniqueDir(String prefix, String postfix) throws VlException
     {
         if (prefix==null) 
@@ -675,43 +592,14 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     {
         try
         {
-            // ===
-            // Since 0.9.2 ! 
-            // use new newFile interface. Create object and call getOutputStream() 
-            // ===
-            
-            VFile file=this.getFileSystem().newFile(resolvePathVRL(fileName));
-            
-            if (file!=null)
-            {
-                return file.getOutputStream(); 
-            }
-            
-            //
-            // Backup Mechanism: Old way: first call createFile(), then getOutputStream. 
-            //
-            
-            VFile newFile=this.createFile(fileName,force);
-            
-            if (newFile==null)
-                throw new nl.nlesc.vlet.exception.ResourceCreationFailedException("Couldn't create new file:"+fileName);
-            
-            if ((newFile instanceof VStreamWritable)==false)
-            {
-                throw new nl.nlesc.vlet.exception.ResourceTypeMismatchException("Create file resource is not StreamWritable:"+newFile); 
-            }
-            
-            return newFile.getOutputStream(); 
+            VFile file=getFileSystem().newFile(resolvePath(fileName));
+            return file.getOutputStream(); 
         }
         catch (IOException e)
         {
             throw new VlIOException(e); 
         }
     }
-
-    // ========================================================================
-    // New Implemented Methods by using VFileSystem interface ! 
-    // ========================================================================
 
     /**
      * Create new directory or subdirectory.  
@@ -729,7 +617,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     public VDir createDir(String name, boolean ignoreExisting)
             throws VlException
     {
-         VDir dir=getFileSystem().newDir(resolvePathVRL(name));
+         VDir dir=getFileSystem().newDir(resolvePath(name));
          dir.create(ignoreExisting);
          return dir;
     }
@@ -746,10 +634,14 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      */
     public VFile createFile(String fileName, boolean ignoreExisting) throws VlException
     {
-    	VFile file=getFileSystem().newFile(resolvePathVRL(fileName));
+    	VFile file=getFileSystem().newFile(resolvePath(fileName));
     	file.create(ignoreExisting);
     	return file; 
     }
+    
+    // ========================================================================
+    //
+    // ========================================================================
     
     /** 
      * Returns true whether (child) filename exists and is a VFile.
@@ -758,7 +650,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      */ 
     public boolean existsFile(String fileName) throws VlException
     {
-        return this.getFileSystem().newFile(resolvePathVRL(fileName)).exists();  
+        return getFileSystem().newFile(resolvePath(fileName)).exists();  
     }
     
     /**
@@ -768,16 +660,8 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      */
     public boolean existsDir(String dirName) throws VlException
     {
-        return this.getFileSystem().newDir(resolvePathVRL(dirName)).exists(); 
+        return getFileSystem().newDir(resolvePath(dirName)).exists(); 
     }
-    
-     /** Alias for existsFile 
-     *  @see VDir#existsFile(String) */  
-    public boolean hasFile(String fileName) throws VlException {return existsFile(fileName);} 
-
-    /** Alias for existsDir 
-     * @see VDir#existsDir(String) */  
-    public boolean hasDir(String dirName) throws VlException {return existsDir(dirName);}
 
     // ========================================================================
     // Abstract Interface Methods 
@@ -790,7 +674,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * the method {@link #list(NodeFilter, int, int, IntegerHolder)} is also
      * overriden. 
      * 
-     * @return array of VFSNodes  
+     * @return array of VFSNodes using default filtering.  
      * @throws VlException
      */
     public abstract VFSNode[] list() throws VlException;

@@ -15,46 +15,46 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
-/** 
- * Super class for Program Errors or other internal errors 
- *
- * @author P.T. de Boer
- *
+/**
+ * Super class for Program Errors or other internal errors
  */
 public class VlInternalError extends VlException
 {
-	private static final long serialVersionUID = -8673540323173565403L;
+    private static final long serialVersionUID = -8673540323173565403L;
 
-	public VlInternalError(String message)
+    public VlInternalError(String message)
     {
-        super(ExceptionStrings.VLINTERNALERROR,message);
+        super(ExceptionStrings.VLINTERNALERROR, message);
     }
 
-    /** Create VlException:  CrendentialException which keeps original System Exception */
+    /**
+     * Create VlException: CrendentialException which keeps original System
+     * Exception
+     */
 
     public VlInternalError(String message, Throwable e)
     {
-        super(ExceptionStrings.VLINTERNALERROR,message,e); 
+        super(ExceptionStrings.VLINTERNALERROR, message, e);
     }
 
     public VlInternalError(Throwable e)
     {
-        super(ExceptionStrings.VLINTERNALERROR,e.getMessage(),e); 
+        super(ExceptionStrings.VLINTERNALERROR, e.getMessage(), e);
     }
 
-	protected VlInternalError(String name, String message)
-	{
-		super(name,message); 
-	}
+    protected VlInternalError(String name, String message)
+    {
+        super(name, message);
+    }
 
-	protected VlInternalError(String name, String message, Throwable e)
-	{
-		super(name,message,e); 
-	}
-	
+    protected VlInternalError(String name, String message, Throwable e)
+    {
+        super(name, message, e);
+    }
+
 }

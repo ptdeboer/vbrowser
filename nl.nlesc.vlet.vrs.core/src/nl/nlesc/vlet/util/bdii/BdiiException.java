@@ -20,27 +20,26 @@
 
 package nl.nlesc.vlet.util.bdii;
 
-import java.io.IOException;
-
 import nl.nlesc.vlet.exception.VlIOException;
 
 public class BdiiException extends VlIOException
 {
-    public BdiiException(IOException e)
+    private static final long serialVersionUID = 4909976444566127514L;
+
+    public BdiiException(Exception e)
     {
         super(e);
     }
 
     public BdiiException(String message, Throwable err)
     {
-        super("BDII Exception", message, err);
+        super(message, err);
     }
 
     public BdiiException(String msg)
     {
-        super("BDII Exception", msg);
+        super(msg);
     }
 
-    private static final long serialVersionUID = 4909976444566127514L;
 
 }

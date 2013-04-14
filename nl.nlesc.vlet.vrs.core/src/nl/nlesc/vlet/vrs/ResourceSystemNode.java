@@ -21,9 +21,11 @@
 package nl.nlesc.vlet.vrs;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeSet;
+import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrl.VRL;
 
@@ -86,6 +88,17 @@ public abstract class ResourceSystemNode extends VCompositeNode implements VReso
 		// final ! 
 		this.serverInfo=info;
 	}
+    
+    /**
+     * Resolve path against this VRL and return resolved VRL. 
+     * Actual resolve might be ResourceSystem depended. 
+     * @throws VRLSyntaxException 
+     * @throws VRISyntaxException 
+     */
+    public VRL resolve(String path) throws VRISyntaxException
+    {
+        return this.getVRL().resolve("/").resolvePath(path);
+    }
     
     /** Default implementation is to browse the remote server home  */ 
     public VNode[] getNodes() throws VlException

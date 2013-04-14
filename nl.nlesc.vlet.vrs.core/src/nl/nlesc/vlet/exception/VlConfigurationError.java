@@ -15,24 +15,23 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
 public class VlConfigurationError extends VlInternalError
 {
-	private static final long serialVersionUID = -7424220445698013896L;
+    private static final long serialVersionUID = -7424220445698013896L;
 
-	
-	public VlConfigurationError(String message, Exception e) 
-	{
-		super("Configuration Error", message, e);
-	}
+    public VlConfigurationError(String message, Exception e)
+    {
+        super("Configuration Error", message, e);
+    }
 
-	public VlConfigurationError(String message) 
-	{
-		super("Configuration Error", message);
-	}
+    public VlConfigurationError(String message)
+    {
+        super("Configuration Error", message);
+    }
 
 }

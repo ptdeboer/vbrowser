@@ -25,6 +25,7 @@ import nl.nlesc.vlet.vrs.VResourceSystem;
 
 public interface VJobMonitorResource extends VResourceSystem
 {
+    
     public VJob getJob(String jobid) throws VlException;
     
     public VJob[] getJobs(String jobids[]) throws VlException;

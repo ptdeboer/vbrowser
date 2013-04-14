@@ -30,5 +30,5 @@ package nl.nlesc.vlet.vfs;
  */
 public interface VThirdPartyTransferable extends VFileActiveTransferable
 {
-	// see VActivePartyTransferable ... 
+    // See VActivePartyTransferable ... 
 }

@@ -15,46 +15,33 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
-
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 
 public class VlURISyntaxException extends VlInternalError
 {
     private static final long serialVersionUID = 857296791130965746L;
 
-    public VlURISyntaxException(URISyntaxException e)
+    public VlURISyntaxException(Throwable e)
     {
-        super(ExceptionStrings.URISYNTAXEXCEPTION,e.getMessage(),e);  
+        super(ExceptionStrings.URISYNTAXEXCEPTION, e.getMessage(), e);
     }
 
     public VlURISyntaxException(String msg)
     {
-        super(ExceptionStrings.URISYNTAXEXCEPTION,msg);
+        super(ExceptionStrings.URISYNTAXEXCEPTION, msg);
     }
 
-	public VlURISyntaxException(MalformedURLException e)
-	{
-        super(ExceptionStrings.URISYNTAXEXCEPTION,e.getMessage(),e);  
-	}
-
-	public VlURISyntaxException(String message, Exception e)
-	{
-		super(ExceptionStrings.URISYNTAXEXCEPTION,message,e);
-	}
-
-    public VlURISyntaxException(Exception e)
+    public VlURISyntaxException(String message, Throwable e)
     {
-        super(ExceptionStrings.URISYNTAXEXCEPTION,e.getMessage(),e); 
+        super(ExceptionStrings.URISYNTAXEXCEPTION, message, e);
     }
 
-    public VlURISyntaxException(String name, String message, Exception e)
+    protected VlURISyntaxException(String name, String message, Throwable cause)
     {
-        super(name,message,e);
+        super(name,message,cause); 
     }
 
 }

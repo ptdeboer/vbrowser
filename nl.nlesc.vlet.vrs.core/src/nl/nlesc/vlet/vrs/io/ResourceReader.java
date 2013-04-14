@@ -47,20 +47,30 @@ public class ResourceReader
      */
     public int streamRead(long offset, byte[] buffer, int bufferOffset, int nrOfBytes) throws VlException
     {
+        InputStream istr=null;
+        
         // implementation moved to generic StreamUtil: 
         try
         {
-            InputStream istr = source.getInputStream();
+            istr = source.getInputStream();
 
             if (istr==null)
                 return -1; 
             
-            return StreamUtil.syncReadBytes(istr,offset,buffer,bufferOffset,nrOfBytes);
+            int val=StreamUtil.syncReadBytes(istr,offset,buffer,bufferOffset,nrOfBytes);
+
+            return val;
         }
         catch (IOException e)
         {
             throw new VlIOException(e);
         } 
-
+        finally
+        {
+            if (istr!=null)
+            {
+                try {istr.close(); } catch (Exception e) { ; } 
+            }
+        }
     }
 }

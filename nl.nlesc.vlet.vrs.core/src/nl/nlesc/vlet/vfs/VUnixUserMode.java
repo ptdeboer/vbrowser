@@ -32,4 +32,5 @@ public interface VUnixUserMode
      * can not be resolved. 
      */ 
     public String getUid() throws VlException; 
+    
 }

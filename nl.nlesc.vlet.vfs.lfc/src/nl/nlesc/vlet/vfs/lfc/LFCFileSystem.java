@@ -297,7 +297,7 @@ public class LFCFileSystem extends FileSystemNode
     }
 
     @Override // Overridden for performance and type preservation (LFCFile) 
-    public LFCFile openFile(VRL fileVrl) throws VlException
+    public LFCFile getFile(VRL fileVrl) throws VlException
     {
         FileDescWrapper wrapp = new FileDescWrapper();
         wrapp.setNameAndPath(fileVrl.getPath());
@@ -311,7 +311,7 @@ public class LFCFileSystem extends FileSystemNode
     }
     
     @Override // Overridden for performance and type preservation (LFCDir) 
-    public LFCDir openDir(VRL dirVrl) throws VlException
+    public LFCDir getDir(VRL dirVrl) throws VlException
     {
         // create object only!
         LFCDir dir=new LFCDir(this, dirVrl); 
@@ -441,13 +441,13 @@ public boolean getUseSimilarReplicaNames()
 
  public VFile replicateFile(ITaskMonitor monitor, VRL fileVrl, String storageElement) throws VlException
  {
-	 LFCFile file=openFile(fileVrl); 
+	 LFCFile file=getFile(fileVrl); 
 	 return getLFCClient().replicateFile(monitor, file, storageElement); 
  }
  
  public void replicateDirectory(ITaskMonitor monitor,VRL lfcDir, List<String> listSEs) throws VlException
  {
-     LFCDir dir=openDir(lfcDir);
+     LFCDir dir=getDir(lfcDir);
      replicateDirectory(monitor,dir,listSEs); 
  }
  

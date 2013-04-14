@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exec;
@@ -26,62 +26,62 @@ import java.io.OutputStream;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 
-/** 
- * Simple abstract process class (Under construction)
- * for local and remote command execution. 
+/**
+ * Simple abstract process class (Under construction) for local and remote
+ * command execution.
  * 
- * @author P.T. de Boer. 
+ * @author P.T. de Boer.
  */
 public interface VProcess
 {
-	/**
-	 * Returns stdout String after execution. 
-	 * Do a waitFor() to make sure all input is read 
-	 */
-	public String getStdout();
-	
-	/**
-	 * Returns stderr String after execution. 
-	 * Do a waitFor() to make sure all input is read 
-	 */	
-	public String getStderr(); 
-	
-	/**
-	 * Wait for the process to terminate.  
-	 * @throws VlException */ 
-	public void waitFor() throws VlException; 
+    /**
+     * Returns stdout String after execution. Do a waitFor() to make sure all
+     * input is read
+     */
+    public String getStdout();
 
-	/**
-	 * Terminate process immediately. 
-	 * It is recommended to do a waitFor() after this command
-	 * before issuing a getStderr(), getStdout() or getExitValue()
-	 * so the process stats are updated correctly. 
-	 */
-	public void terminate();
+    /**
+     * Returns stderr String after execution. Do a waitFor() to make sure all
+     * input is read
+     */
+    public String getStderr();
 
-	/**
-	 * Check whether process still is running or not. 
-	 *  
-	 * @return true if process has ended. 
-	 */
-	public boolean isTerminated(); 
-	
-	/**
-	 * Get exit value. 
-	 * Process must have terminated before this method can be called.  
-	 * Use isTerminated() first to check this.  
-	 */
-	public int getExitValue(); 
-	
-	/** Get Stdin OutputStream to write to: */ 
-	public OutputStream getStdinStream()throws VlIOException;
-	
-	/** Get Stdout InputStream to read from. */ 
-	public InputStream getStdoutStream() throws VlIOException; 
-	
-	/** Get Stderr InputStream to read from.*/ 
-	public InputStream getStderrStream()throws VlIOException; 
-	
-	// public void addProcessListener(ProcessListener listener); 
-	
+    /**
+     * Wait for the process to terminate.
+     * 
+     * @throws VlException
+     */
+    public void waitFor() throws VlException;
+
+    /**
+     * Terminate process immediately. It is recommended to do a waitFor() after
+     * this command before issuing a getStderr(), getStdout() or getExitValue()
+     * so the process stats are updated correctly.
+     */
+    public void terminate();
+
+    /**
+     * Check whether process still is running or not.
+     * 
+     * @return true if process has ended.
+     */
+    public boolean isTerminated();
+
+    /**
+     * Get exit value. Process must have terminated before this method can be
+     * called. Use isTerminated() first to check this.
+     */
+    public int getExitValue();
+
+    /** Get Stdin OutputStream to write to: */
+    public OutputStream getStdinStream() throws VlIOException;
+
+    /** Get Stdout InputStream to read from. */
+    public InputStream getStdoutStream() throws VlIOException;
+
+    /** Get Stderr InputStream to read from. */
+    public InputStream getStderrStream() throws VlIOException;
+
+    // public void addProcessListener(ProcessListener listener);
+
 }

@@ -15,33 +15,33 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
-public class ResourceException extends VlException
+public class ResourceException extends VlIOException
 {
-	private static final long serialVersionUID = 8599481352396538655L;
+    private static final long serialVersionUID = 8599481352396538655L;
 
-	public ResourceException(String msg) 
-	{
-		super("ResourceException",msg); 
-	}
+    public ResourceException(String msg)
+    {
+        super("ResourceException", msg,null);
+    }
 
-	public ResourceException(String name, String message) 
-	{
-		super(name,message); 
-	}
-	
-	public ResourceException(String message,Throwable cause)
-	{
-		super("ResourceException",message,cause);
-	}
-	
-	public ResourceException(String name, String message,Throwable cause)
-	{
-		super(name,message,cause); 
-	}
+    public ResourceException(String message, Throwable cause)
+    {
+        super("ResourceException", message, cause);
+    }
+
+    protected ResourceException(String name, String message)
+    {
+        super(name, message,null);
+    }
+
+    protected ResourceException(String name, String message, Throwable cause)
+    {
+        super(name, message, cause);
+    }
 
 }

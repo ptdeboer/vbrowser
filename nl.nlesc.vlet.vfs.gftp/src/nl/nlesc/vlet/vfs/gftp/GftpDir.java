@@ -118,7 +118,7 @@ public class GftpDir extends VDir
     public VRL rename(String newName, boolean nameIsPath) throws VlException
     {
         String path = server.rename(this.getPath(), newName, nameIsPath);
-        return this.resolvePathVRL(path);
+        return this.resolvePath(path);
     }
 
     public VDir getParentDir() throws VlException
@@ -207,13 +207,13 @@ public class GftpDir extends VDir
     /** Check if directory has child */
     public boolean existsFile(String name) throws VlException
     {
-        String newPath = resolvePath(name);
+        String newPath = resolvePathString(name);
         return server.existsFile(newPath);
     }
 
     public boolean existsDir(String dirName) throws VlException
     {
-        String newPath = resolvePath(dirName);
+        String newPath = resolvePathString(dirName);
         return server.existsDir(newPath);
     }
 

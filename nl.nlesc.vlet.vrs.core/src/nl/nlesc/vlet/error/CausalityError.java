@@ -15,14 +15,14 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.error;
 
 /**
- * Causality error when calling methods in the wrong order.
- * For example start() and stop() methods.  
+ * Causality error when calling methods in the wrong order. For example start()
+ * and stop() methods.
  */
 public class CausalityError extends VlError
 {
@@ -30,11 +30,11 @@ public class CausalityError extends VlError
 
     public CausalityError(String msg)
     {
-        super(msg); 
+        super(msg);
     }
-    
-    public CausalityError(String msg,Throwable cause)
+
+    public CausalityError(String msg, Throwable cause)
     {
-        super(msg,cause); 
+        super(msg, cause);
     }
 }

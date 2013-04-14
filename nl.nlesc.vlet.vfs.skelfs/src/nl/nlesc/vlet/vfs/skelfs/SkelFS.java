@@ -71,7 +71,7 @@ public class SkelFS extends FileSystemNode
     }
     
     @Override
-    public SkelDir openDir(VRL path) throws VlException
+    public SkelDir getDir(VRL path) throws VlException
     {
     	// Open filepath and return new VDir object. 
     	// (remote) directory must exist. 
@@ -85,7 +85,7 @@ public class SkelFS extends FileSystemNode
     }
 
     @Override
-    public SkelFile openFile(VRL path) throws VlException
+    public SkelFile getFile(VRL path) throws VlException
     {
     	// Open filepath and return new VFile object. 
     	// (remote) file must exist.  

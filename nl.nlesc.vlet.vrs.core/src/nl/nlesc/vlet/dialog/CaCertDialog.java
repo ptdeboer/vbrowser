@@ -32,34 +32,23 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 
-/**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
 public class CaCertDialog extends VletDialog
 {
 	private static final long serialVersionUID = -8943578879979815967L;
 
+	// --- //
+	
+	public static final int CANCEL = -1;
+    public static final int OK = 0;
+    public static final int TEMPORARY = 1;
+    public static final int NO  = 2;
+
+    // --- //
+    
 	private JButton temporaryButton;
 	private JLabel certInfoLabel;
 	private JPanel topBorderPanel;
 	private JPanel topPanel;
-
-	public static final int CANCEL = -1;
-	
-	public static final int OK = 0;
-	
-	public static final int TEMPORARY = 1;
-	
-	public static final int NO  = 2;
 		
 	private JTextArea upperText;
 	private JPanel buttonPanel;
@@ -146,8 +135,6 @@ public class CaCertDialog extends VletDialog
 						buttonPanel.add(yesButton);
 						yesButton.setText("yes");
 						yesButton.addActionListener(new ActionListener() {
-							
-
 							public void actionPerformed(ActionEvent evt) 
 							{
 								exit(OK); 
@@ -159,7 +146,6 @@ public class CaCertDialog extends VletDialog
 						buttonPanel.add(temporaryButton);
 						temporaryButton.setText("Temporary");
 						temporaryButton.addActionListener(new ActionListener() {
-						
 							public void actionPerformed(ActionEvent evt) 
 							{
 								exit(TEMPORARY);  
@@ -196,15 +182,18 @@ public class CaCertDialog extends VletDialog
 		this.middleText.setText(text); 
 	}
 	
-	/**
-	* Auto-generated main method to display this JDialog
-	*/
+	private void setQuestion(String text)
+    {
+        this.upperText.setText(text);
+    }
+	
+	// Main // 
+	
 	public static void main(String[] args) 
 	{
 		JFrame frame = new JFrame();
 		CaCertDialog inst = new CaCertDialog(frame);
 		inst.setVisible(true);
-		
 	}
 	
 	public static int showDialog(String text, String chainMessage)
@@ -218,11 +207,5 @@ public class CaCertDialog extends VletDialog
 		
 		return inst.value;
 	}
-
-	private void setQuestion(String text)
-	{
-		this.upperText.setText(text);
-	}
-
 
 }

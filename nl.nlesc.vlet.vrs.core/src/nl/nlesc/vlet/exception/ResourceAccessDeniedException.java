@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
@@ -26,22 +26,22 @@ public class ResourceAccessDeniedException extends ResourceException
 
     public ResourceAccessDeniedException(String message)
     {
-        super(ExceptionStrings.ACCES_DENIED,message);
+        super(ExceptionStrings.ACCES_DENIED, message);
     }
 
     /** Constructor which keeps original System Exception */
     public ResourceAccessDeniedException(String message, Exception e)
     {
-        super(ExceptionStrings.ACCES_DENIED,message,e); 
+        super(ExceptionStrings.ACCES_DENIED, message, e);
     }
 
-	public ResourceAccessDeniedException(String name, String message)
-	{
-		super(name,message); 
-	}
+    protected ResourceAccessDeniedException(String name, String message)
+    {
+        super(name, message);
+    }
 
-	public ResourceAccessDeniedException(String name, String message, Exception e)
-	{
-		super(name,message,e);
-	}
+    protected ResourceAccessDeniedException(String name, String message, Throwable e)
+    {
+        super(name, message, e);
+    }
 }

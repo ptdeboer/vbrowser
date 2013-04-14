@@ -144,7 +144,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
     public VRL rename(String newName, boolean nameIsPath) throws VlException
     {
         String path = gftpServer.rename(this.getPath(), newName, nameIsPath);
-        return this.resolvePathVRL(path);
+        return this.resolvePath(path);
     }
 
     /**

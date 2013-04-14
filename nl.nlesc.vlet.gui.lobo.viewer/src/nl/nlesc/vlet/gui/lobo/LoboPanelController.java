@@ -35,7 +35,7 @@ public class LoboPanelController implements org.lobobrowser.ua.NavigationListene
     void handle(String msg,Throwable e)
     {
         logger.logException(ClassLogger.ERROR,e,"%s\n",msg); 
-        ExceptionForm.show(new VlException("Lobo Error",msg+"\n"+e.getMessage(),e));
+        ExceptionForm.show(new VlException("Lobo Error:"+msg+"\n"+e.getMessage(),e));
     }
 
     public boolean isStandalone()

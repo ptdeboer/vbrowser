@@ -15,22 +15,25 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.error;
 
+/**
+ * Runtime Parameter/argument error 
+ */ 
 public class ParameterError extends VlError
 {
     private static final long serialVersionUID = -6434835821934089158L;
 
     public ParameterError(String msg)
     {
-        super(msg); 
+        super(msg);
     }
-    
-    public ParameterError(String msg,Throwable cause)
+
+    public ParameterError(String msg, Throwable cause)
     {
-        super(msg,cause); 
+        super(msg, cause);
     }
 }

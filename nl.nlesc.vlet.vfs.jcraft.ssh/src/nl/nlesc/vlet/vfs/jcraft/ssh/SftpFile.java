@@ -141,7 +141,7 @@ public class SftpFile extends VFile implements VUnixFileAttributes,
     public VRL rename(String newName, boolean nameIsPath) throws VlException
     {
         String newpath=server.rename(getPath(),newName,nameIsPath); 
-        return this.resolvePathVRL(newpath); 
+        return this.resolvePath(newpath); 
     }
 
     public boolean delete() throws VlException

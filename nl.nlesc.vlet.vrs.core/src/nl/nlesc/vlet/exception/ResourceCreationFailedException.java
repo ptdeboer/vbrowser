@@ -15,27 +15,24 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
-/**
- * @author P.T. de Boer
- */
 public class ResourceCreationFailedException extends ResourceException
 {
     private static final long serialVersionUID = -2011249376460824842L;
 
     public ResourceCreationFailedException(String message)
     {
-        super(ExceptionStrings.RESOURCE_CREATION_FAILED,message);
+        super(ExceptionStrings.RESOURCE_CREATION_FAILED, message);
     }
 
     /** Constructor which keeps original System Exception */
     public ResourceCreationFailedException(String message, Throwable e)
     {
-        super(ExceptionStrings.RESOURCE_CREATION_FAILED,message,e); 
+        super(ExceptionStrings.RESOURCE_CREATION_FAILED, message, e);
     }
 
 }

@@ -26,5 +26,5 @@ package nl.nlesc.vlet.vfs;
  */
 public interface VUnixFileAttributes extends VUnixFileMode,VUnixGroupMode,VUnixUserMode
 {
- 
+    ;
 }

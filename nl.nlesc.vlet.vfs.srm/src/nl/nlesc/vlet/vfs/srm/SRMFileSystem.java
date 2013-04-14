@@ -352,7 +352,7 @@ public class SRMFileSystem extends FileSystemNode
         // create empty file
         try
         {
-            String fullpath = resolvePath(pathVRL.getPath());
+            String fullpath = resolvePathString(pathVRL.getPath());
             // file may NOT exist yet:
             SRMOutputStream outps = createNewOutputStream(monitor, fullpath, force);
 
@@ -363,12 +363,12 @@ public class SRMFileSystem extends FileSystemNode
             // refetch or check
             // return new SRMFile(srmClient, new SrmDetails);
 
-            return this.openFile(pathVRL);
+            return this.getFile(pathVRL);
 
         }
         catch (IOException e)
         {
-            throw new VlIOException(e);
+            throw new VlIOException("Couldn't create file:"+pathVRL,e);
         }
 
     }
@@ -383,7 +383,7 @@ public class SRMFileSystem extends FileSystemNode
     {
         debug("createDir: " + name + " " + force);
 
-        String fullpath = resolvePath(name);
+        String fullpath = resolvePathString(name);
 
         if (mkdir(fullpath, force))
         {
@@ -411,7 +411,7 @@ public class SRMFileSystem extends FileSystemNode
         
         String path=pathVrl.getPath(); 
         // normalize and absolute path
-        path = this.resolvePath(path);
+        path = this.resolvePathString(path);
 
         TMetaDataPathDetail detail;
 
@@ -1476,7 +1476,6 @@ public class SRMFileSystem extends FileSystemNode
 
     public VlException convertException(String message, Exception cause)
     {
-
         logger.debugPrintf(message + " ex: %s\n", cause);
 
         // to be extended
@@ -1510,7 +1509,7 @@ public class SRMFileSystem extends FileSystemNode
             {
                 return new ResourceAlreadyExistsException(message, cause);
             }
-            return new VlException("SRMException", message+"\n"+ex.getMessage(), ex);
+            return new VlIOException(message+"\n"+ex.getMessage(), ex);
         }
 
         String errorstr = cause.getMessage();
@@ -1534,7 +1533,7 @@ public class SRMFileSystem extends FileSystemNode
             return globusEx;
 
         // default:
-        return new VlException("SRMException", message, cause);
+        return new VlIOException("SRMException:"+message, cause);
     }
 
     // ============================================================ //

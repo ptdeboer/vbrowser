@@ -15,15 +15,13 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
 /**
- * @author P.T. de Boer
- * 
- * Grid Credential Exception(s)
+ * Credential Exceptions
  */
 public class VlPasswordException extends VlAuthenticationException
 {
@@ -31,13 +29,16 @@ public class VlPasswordException extends VlAuthenticationException
 
     public VlPasswordException(String message)
     {
-        super("Invalid Password Exception",message);
+        super("Invalid Password Exception", message);
     }
 
-    /** Create VlException:  CrendentialException which keeps original System Exception */
+    /**
+     * Create VlException: CrendentialException which keeps original System
+     * Exception
+     */
     public VlPasswordException(String message, Exception e)
     {
-        super("Invalid Password Exception",message,e); 
+        super("Invalid Password Exception", message, e);
     }
 
 }

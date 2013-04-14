@@ -15,24 +15,24 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
 public class ResourceReadException extends ResourceException
 {
-	private static final long serialVersionUID = -5601874731914678614L;
+    private static final long serialVersionUID = -5601874731914678614L;
 
-	public ResourceReadException(String message)
+    public ResourceReadException(String message)
     {
-        super("Read Error",message);
+        super("Read Error", message);
     }
 
     /** Constructor which keeps original System Exception */
     public ResourceReadException(String message, Throwable e)
     {
-        super("Read Error",message,e);  
+        super("Read Error", message, e);
     }
 
 }

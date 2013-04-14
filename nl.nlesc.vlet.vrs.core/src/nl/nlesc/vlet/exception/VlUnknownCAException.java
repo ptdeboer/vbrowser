@@ -21,9 +21,7 @@
 package nl.nlesc.vlet.exception;
 
 /**
- * @author P.T. de Boer
- * 
- * Unknown CA Exception: triggers CA loading/configuration in VBrowser ! 
+ * Unknown CA Exception: Triggers CA loading/configuration in VBrowser ! 
  */
 public class VlUnknownCAException extends VlAuthenticationException
 {

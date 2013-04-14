@@ -1,5 +1,7 @@
 package nl.nlesc.vlet.vrs.globusrs;
 
+import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
@@ -22,6 +24,12 @@ public class GlobusInfoSystem extends CompositeServiceInfoNode<VNode> implements
 		return "globusinfo";
 	}
 
+	@Override
+	public VRL resolve(String path) throws VRISyntaxException
+	{
+	    return this.getVRL().resolve(path);
+    }
+	 
 	@Override
 	public VNode openLocation(VRL vrl) throws VlException 
 	{
@@ -57,4 +65,5 @@ public class GlobusInfoSystem extends CompositeServiceInfoNode<VNode> implements
 		return null;
 	}
 
+	
 }

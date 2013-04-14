@@ -33,18 +33,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 
-/**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
 public class WarningDialog extends javax.swing.JDialog implements ActionListener
 {
 	private static final long serialVersionUID = -3135290068915968993L;
@@ -57,14 +45,12 @@ public class WarningDialog extends javax.swing.JDialog implements ActionListener
 	private String value;
 
 	/**
-	* Auto-generated main method to display this JDialog
-	*/
+	 * Auto-generated main method to display this JDialog
+	 */
 	public static void main(String[] args)
 	{
 		String buts[]={"yes","no","cancel"};
-		
 		String value=WarningDialog.showMessage("Warning","This is a Warning",buts);
-		
 		System.err.println("Value="+value); 
 	}
 	
@@ -109,11 +95,12 @@ public class WarningDialog extends javax.swing.JDialog implements ActionListener
 			buttons[index] = but; 
 			index++;
 		}
-		
 	}
 
-	private void initGUI() {
-		try {
+	private void initGUI()
+	{
+		try 
+		{
 			BorderLayout thisLayout = new BorderLayout();
 			getContentPane().setLayout(thisLayout);
 			{
@@ -151,7 +138,9 @@ public class WarningDialog extends javax.swing.JDialog implements ActionListener
 				}
 			}
 			this.setSize(400, 218);
-		} catch (Exception e) {
+		} 
+		catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 	}
@@ -159,9 +148,7 @@ public class WarningDialog extends javax.swing.JDialog implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		String cmd=e.getActionCommand(); 
-	
 		this.value=cmd; 
-		
 		this.setVisible(false); 
 	}
 	

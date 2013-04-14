@@ -21,9 +21,6 @@
 package nl.nlesc.vlet;
 
 /**
- * 
- * @author P.T. de Boer
- * 
  * TODO: Move all VRS message strings to this place. 
  */
 public class MessageStrings 

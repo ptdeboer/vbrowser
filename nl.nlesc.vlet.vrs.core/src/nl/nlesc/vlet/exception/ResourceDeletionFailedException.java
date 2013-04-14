@@ -15,27 +15,24 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
-/**
- * @author P.T. de Boer
- */
 public class ResourceDeletionFailedException extends ResourceException
 {
     private static final long serialVersionUID = -5697916428807131886L;
 
     public ResourceDeletionFailedException(String message)
     {
-        super(ExceptionStrings.RESOURCE_DELETION_FAILED,message);
+        super(ExceptionStrings.RESOURCE_DELETION_FAILED, message);
     }
 
     /** Constructor which keeps original System Exception */
-    public ResourceDeletionFailedException(String message, Exception e)
+    public ResourceDeletionFailedException(String message, Throwable e)
     {
-        super(ExceptionStrings.RESOURCE_DELETION_FAILED,message,e); 
+        super(ExceptionStrings.RESOURCE_DELETION_FAILED, message, e);
     }
 
 }

@@ -15,11 +15,10 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exec;
-
 
 import nl.nlesc.vlet.exception.VlException;
 
@@ -49,7 +48,8 @@ public class LocalExec
      */
     public static String[] execute(String cmds[]) throws VlException
     {
-        //Global.debugPrintf(LocalExec.class, "Executing command:%s\n", cmds[0]);
+        // Global.debugPrintf(LocalExec.class, "Executing command:%s\n",
+        // cmds[0]);
         String result[] = new String[3];
 
         // try
@@ -140,7 +140,8 @@ public class LocalExec
      */
     public static LocalProcess execute(String cmds[], boolean wait) throws VlException
     {
-        //Global.debugPrintf(LocalExec.class, "Executing command:%s\n", cmds[0]);
+        // Global.debugPrintf(LocalExec.class, "Executing command:%s\n",
+        // cmds[0]);
 
         // try
         {
@@ -153,6 +154,6 @@ public class LocalExec
 
             return proc;
         }
-   }
+    }
 
 }

@@ -37,31 +37,43 @@ import nl.nlesc.vlet.vrs.io.VStreamProducer;
  * <br>
  * Use:<br>
  * <lu>
- *  <li> - openFile() and openDir() to fetch existing files or directories.  
- *  <li> - newFile and newDir() to create new VFile and VDir objects which may 
- *       point to existing locations or not. 
- *  <li> - Use exists() and/or create() method from VDir and VFile to check existance
- *       and/or creation of the actual resources. 
+ *  <li> getFile() and getDir() to fetch existing files or directories.  
+ *  <li> newFile and newDir() to create new VFile and VDir objects which may 
+ *          point to existing locations or not. 
+ *  <li> Use exists() and/or create() method from VDir and VFile to check existance
+ *          and/or creation of the actual resources. 
  * </lu>
  *  
  * @author P.T. de Boer 
+ * 
+ * @see nl.nlesc.vlet.vfs.VFS
+ * @see nl.nlesc.vlet.vfs.VFileSystem
+ * @see VFSNode
+ * @see VFile 
+ * @see VDir
+ * @see VFSClient 
  */
 public interface VFileSystem extends VResourceSystem, VStreamProducer
 {
-    // same as VResourceSystem but returns VFSNode type.  
-    abstract public VFSNode openLocation(VRL vrl) throws VlException;
+    /** 
+     * Resolve relative path or URI part to this FileSystem and return Absolute VRL.
+     */ 
+    public VRL resolvePath(String path) throws VlException;
+    
+    // Same as VResourceSystem but returns VFSNode type.  
+    public VFSNode openLocation(VRL vrl) throws VlException;
     
     /**
      * Open filesystem path and return new VFile object. 
      * The (remote) file must exist.
      */
-    abstract public VFile openFile(VRL fileVRL) throws VlException;
+    public VFile getFile(VRL fileVRL) throws VlException;
     
     /**
      * Open filesystem path and return new VDir object. 
      * The (remote) directory must exist.
      */
-    abstract public VDir openDir(VRL dirVRL) throws VlException;
+    public VDir getDir(VRL dirVRL) throws VlException;
   
     /**
      * Generic VFile (object) constructor: Create new VFile object linked to this resource system. 
@@ -69,19 +81,19 @@ public interface VFileSystem extends VResourceSystem, VStreamProducer
      * Use VFile.exists() to check whether it exists or VFile.create() to create the actual
      * file on the (remote) resource. 
      */
-    abstract public VFile newFile(VRL fileVRL) throws VlException;
+    public VFile newFile(VRL fileVRL) throws VlException;
 
     /**
      * Generic VDir constructor: Create new VDir object linked to this (remote) filesystem. 
      * This object may exist or may not exist on the remote resource,<br>
      * Use openDir() to get an existing directory.  
      */
-    abstract public VDir newDir(VRL dirVRL) throws VlException;
+    public VDir newDir(VRL dirVRL) throws VlException;
     
     // Explicit declaration from VInputStreamProducer
-    abstract public InputStream openInputStream(VRL location) throws VlException; 
+    public InputStream openInputStream(VRL location) throws VlException; 
 
     // Explicit declaration from VOutputStreamProducer
-    abstract public OutputStream openOutputStream(VRL location) throws VlException; 
+    public OutputStream openOutputStream(VRL location) throws VlException; 
 
 }

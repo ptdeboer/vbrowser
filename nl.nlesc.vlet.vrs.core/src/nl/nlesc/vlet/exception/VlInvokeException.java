@@ -15,23 +15,23 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
-public class VlInvokeException extends VlException 
+public class VlInvokeException extends VlException
 {
     private static final long serialVersionUID = 5777029355097666508L;
 
     public VlInvokeException(String message)
     {
-        super("Invoke Exception",message); 
+        super("Invoke Exception", message);
     }
-    
+
     public VlInvokeException(String message, Throwable t)
     {
-        super("Invoke Exception",message,t); 
+        super("Invoke Exception", message, t);
     }
 
 }

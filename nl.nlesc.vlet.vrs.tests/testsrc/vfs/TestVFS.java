@@ -76,7 +76,7 @@ import nl.nlesc.vlet.vrs.VCommentable;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 import nl.nlesc.vlet.vrs.io.VRandomReadable;
-import nl.nlesc.vlet.vrs.io.VRandomReader;
+import nl.nlesc.vlet.vrs.io.RandomReader;
 import nl.nlesc.vlet.vrs.io.VResizable;
 import nl.nlesc.vlet.vrs.io.VZeroSizable;
 import nl.nlesc.vlet.vrs.util.VRSStreamUtil;
@@ -402,7 +402,7 @@ public class TestVFS extends VTestCase
     {
         verbose(1, "Remote testdir=" + getRemoteTestDir());
 
-        VRL fullpath = getRemoteTestDir().resolvePathVRL(nextFilename("testFSFile"));
+        VRL fullpath = getRemoteTestDir().resolvePath(nextFilename("testFSFile"));
         VFileSystem fs = getRemoteTestDir().getFileSystem();
 
         // ===
@@ -421,7 +421,7 @@ public class TestVFS extends VTestCase
         // ===
         // use FileSystem.newFile().create()
         // ===
-        fullpath = getRemoteTestDir().resolvePathVRL(nextFilename("testFSFile"));
+        fullpath = getRemoteTestDir().resolvePath(nextFilename("testFSFile"));
         newFile = fs.newFile(fullpath);
         newFile.create();
 
@@ -467,7 +467,7 @@ public class TestVFS extends VTestCase
         Assert.assertFalse("After deletion, a file may NOT report it still 'exists'!", newFile.exists());
 
         // Test ./File !
-        filevrl = getRemoteTestDir().resolvePathVRL("./" + nextFilename("testFileC"));
+        filevrl = getRemoteTestDir().resolvePath("./" + nextFilename("testFileC"));
 
         // use fullpath:
         newFile = getRemoteTestDir().createFile(filevrl.getPath());
@@ -663,7 +663,7 @@ public class TestVFS extends VTestCase
      */
     @Test  public void testCreateAndDeleteFullDir() throws Exception
     {
-        VRL fullPath = getRemoteTestDir().resolvePathVRL(nextFilename("testDirC"));
+        VRL fullPath = getRemoteTestDir().resolvePath(nextFilename("testDirC"));
 
         // get parent dir to check whether directory allow (sub) directories in
         // the create method.
@@ -674,7 +674,7 @@ public class TestVFS extends VTestCase
         newDir.delete();
 
         // check ./path !
-        fullPath = getRemoteTestDir().resolvePathVRL("./" + nextFilename("testDirD"));
+        fullPath = getRemoteTestDir().resolvePath("./" + nextFilename("testDirD"));
         newDir = parentDir.createDir(fullPath.getPath());
         Assert.assertEquals("Directory should use complete pathname as new directory name.", fullPath.getPath(), newDir
                 .getPath());
@@ -700,7 +700,7 @@ public class TestVFS extends VTestCase
      */
     @Test public void testFSCreateAndDeleteDir() throws Exception
     {
-        VRL fullPath = getRemoteTestDir().resolvePathVRL(nextFilename("testFSDirE"));
+        VRL fullPath = getRemoteTestDir().resolvePath(nextFilename("testFSDirE"));
         VFileSystem fs = getRemoteTestDir().getFileSystem();
 
         VDir newDir = createDir(fs,fullPath, true);
@@ -891,7 +891,7 @@ public class TestVFS extends VTestCase
      */
     @Test public void testCopyEmptyDir() throws Exception
     {
-        VRL sourcePath = getRemoteTestDir().resolvePathVRL(nextFilename("testFSDirEmpty_original"));
+        VRL sourcePath = getRemoteTestDir().resolvePath(nextFilename("testFSDirEmpty_original"));
         VFileSystem fs = getRemoteTestDir().getFileSystem();
         
         VDir destParentDir = getRemoteTestDir(); 
@@ -1150,8 +1150,8 @@ public class TestVFS extends VTestCase
         VFile orgFile = getRemoteTestDir().createFile("testLinkFileOriginal-1", true);
         String link1name = "testLinkto-1";
         String link2name = "testLinkto-2";
-        VRL link1 = getRemoteTestDir().resolvePathVRL(link1name);
-        VRL link2 = getRemoteTestDir().resolvePathVRL(link2name);
+        VRL link1 = getRemoteTestDir().resolvePath(link1name);
+        VRL link2 = getRemoteTestDir().resolvePath(link2name);
 
         if (getRemoteTestDir().existsFile(link1name))
         {
@@ -1246,7 +1246,7 @@ public class TestVFS extends VTestCase
 
         // test1: small string
         VFileSystem fs = getRemoteTestDir().getFileSystem();
-        VFile newFile = fs.newFile(getRemoteTestDir().resolvePathVRL("testFile7"));
+        VFile newFile = fs.newFile(getRemoteTestDir().resolvePath("testFile7"));
 
         new FileWriter(newFile).setContents(TEST_CONTENTS);
 
@@ -1260,7 +1260,7 @@ public class TestVFS extends VTestCase
 
         //
         // recreat file:
-        newFile = fs.newFile(getRemoteTestDir().resolvePathVRL("testFile7a"));
+        newFile = fs.newFile(getRemoteTestDir().resolvePath("testFile7a"));
         //
         // test2: big string
         //
@@ -1807,7 +1807,7 @@ public class TestVFS extends VTestCase
         }
         new FileWriter(remoteFile).setContents(contents.toString());
         
-        VRandomReader instance = new VRandomReader((VRandomReadable) remoteFile);
+        RandomReader instance = new RandomReader((VRandomReadable) remoteFile);
         
         //-----------Test length
         Assert.assertEquals(instance.length(), remoteFile.getLength());

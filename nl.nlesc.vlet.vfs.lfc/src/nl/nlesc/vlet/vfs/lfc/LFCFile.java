@@ -720,7 +720,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
 
         for (int i = 0; i < paths.size(); i++)
         {
-            vrls[i] = this.resolvePathVRL(paths.get(i));
+            vrls[i] = this.resolvePath(paths.get(i));
         }
 
         return vrls;

@@ -79,7 +79,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     final public VFile copyTo(VDir parentDir) throws VlException
     {
       //return (VFile)doCopyMoveTo(parentDir,null,false /*,options*/);
-        return (VFile)this.getTransferManager().doCopyMove(this,parentDir,null,false); 
+        return (VFile)getTransferManager().doCopyMove(this,parentDir,null,false); 
     }
     
     /**
@@ -89,7 +89,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     final public VFile copyTo(VFile targetFile) throws VlException
     {
       //return (VFile)doCopyMoveTo(parentDir,null,false /*,options*/);
-        return (VFile)this.getTransferManager().doCopyMove(this,targetFile,false);  
+        return (VFile)getTransferManager().doCopyMove(this,targetFile,false);  
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
      */
     final public VFile moveTo(VFile targetFile) throws VlException
     {
-        return (VFile)this.getTransferManager().doCopyMove(this,targetFile,true);  
+        return (VFile)getTransferManager().doCopyMove(this,targetFile,true);  
     }
     
     /**
@@ -108,7 +108,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
      */
     final public VFile copyTo(VDir parentDir,String newName) throws VlException
     {
-        return (VFile)this.getTransferManager().doCopyMove(this,parentDir,newName,false);
+        return (VFile)getTransferManager().doCopyMove(this,parentDir,newName,false);
         //return (VFile)doCopyMoveTo(parentDir,newName,false /*,options*/);
     }
 
@@ -118,7 +118,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
      */
     final public VFile moveTo(VDir parentDir) throws VlException
     {
-        return (VFile)this.getTransferManager().doCopyMove(this,parentDir,null,true); 
+        return (VFile)getTransferManager().doCopyMove(this,parentDir,null,true); 
         //return (VFile)doCopyMoveTo(parentDir, null,true);
     }
 
@@ -129,7 +129,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
      */
     final public VFile moveTo(VDir parentDir,String newName) throws VlException
     {
-        return (VFile)this.getTransferManager().doCopyMove(this,parentDir,newName,true); 
+        return (VFile)getTransferManager().doCopyMove(this,parentDir,newName,true); 
         //return (VFile)doCopyMoveTo(parentDir, newName,true);
     }
   
@@ -145,7 +145,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     protected void uploadFrom(VFSTransfer transferInfo, VFile localSource) throws VlException 
     {
         // copy contents into this file. 
-        vrsContext.getTransferManager().doStreamCopy(transferInfo, localSource,this); 
+        getTransferManager().doStreamCopy(transferInfo, localSource,this); 
     }
 
     /**
@@ -163,7 +163,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
             throws VlException
     {
         // copy contents into local file:
-        vrsContext.getTransferManager().doStreamCopy(transfer,this,targetLocalFile);  
+        getTransferManager().doStreamCopy(transfer,this,targetLocalFile);  
     }
 
     // ========================================================================

@@ -316,17 +316,6 @@ public class LogicalResourceNode extends VNode implements
         return name;   
     }
 
-    /** 
-     * A ResourcNode is an already resolved node (data object) in 
-     * memory so as an 'object' it already exists.
-     * The storage location might not exist (yet). 
-     */
-    @Override
-    public boolean exists() 
-    {
-        return true; 
-    }
-
     /** Returns 'Logical' Parent. For example another virtual 
      * node or the 'MyVle' object */ 
     @Override
@@ -502,7 +491,7 @@ public class LogicalResourceNode extends VNode implements
             }
             else if (parent==null)
             {
-                throw new VlException("Storage Error","Both description Location as Parent are set to NULL"); 
+                throw new VlIOException("Storage Error.\nBoth description Location as Parent are set to NULL"); 
             }
             else
             {
@@ -1100,7 +1089,7 @@ public class LogicalResourceNode extends VNode implements
 
         if ((resourceAttributes==null) && (resourceAttributes.size()==0))
         {
-            throw new VlException("ReadError","Empty resource:"+this);
+            throw new VlIOException("ReadError.\nEmpty resource:"+this);
         }
 
         //update target attributes (if possible)  
@@ -1412,7 +1401,7 @@ public class LogicalResourceNode extends VNode implements
             
             // Assert ! 
             if (newnode.equals(this)==false)    
-                throw new VlException("Internal Error","LogicalResourceNode:save() at ResourceGroup must return same node"); 
+                throw new VlException("Internal Error: LogicalResourceNode:save() at ResourceGroup must return same node"); 
           
             return; 
             

@@ -1,10 +1,10 @@
 /*
- * Copyright 2006-2011 The Virtual Laboratory for e-Science (VL-e) 
- * 
+ * Copyrighted 2012-2013 Netherlands eScience Center.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License").  
  * You may not use this file except in compliance with the License. 
  * For details, see the LICENCE.txt file location in the root directory of this 
- * distribution or obtain the Apache Licence at the following location: 
+ * distribution or obtain the Apache License at the following location: 
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software 
@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  * 
- * See: http://www.vl-e.nl/ 
- * See: LICENCE.txt (located in the root folder of this distribution). 
+ * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- * $Id: ProxyVNode.java,v 1.7 2013/01/25 11:11:34 piter Exp $  
- * $Date: 2013/01/25 11:11:34 $
  */ 
 // source: 
 
@@ -39,6 +36,7 @@ import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
+import nl.nlesc.vlet.exception.ResourceException;
 import nl.nlesc.vlet.exception.ResourceLinkIsBorkenException;
 import nl.nlesc.vlet.exception.ResourceNotEditableException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
@@ -53,6 +51,7 @@ import nl.nlesc.vlet.gui.view.ViewFilter;
 import nl.nlesc.vlet.vfs.VACL;
 import nl.nlesc.vlet.vfs.VDir;
 import nl.nlesc.vlet.vfs.VFSClient;
+import nl.nlesc.vlet.vfs.VFSNode;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrms.LogicalResourceNode;
 import nl.nlesc.vlet.vrms.MyVLe;
@@ -1356,7 +1355,10 @@ public final class ProxyVNode extends ProxyNode
 //    
     private boolean exists() throws VlException
     {
-        return vnode.exists();
+        if (vnode instanceof VFSNode)
+            return ((VFSNode)vnode).exists();
+        
+        return true; 
     }
     
     public boolean isLogicalNode()
@@ -1612,7 +1614,7 @@ public final class ProxyVNode extends ProxyNode
 					}
 					else
 					{
-						throw new VlException("Not Deleteable","Node is not deletable:"+vnode); 
+						throw new ResourceException("Node is not deletable:"+vnode); 
 					}
 				}
 			}
@@ -1724,7 +1726,7 @@ public final class ProxyVNode extends ProxyNode
         lnode.save();
         
         if (lnode.getVRL()==null)
-            throw new VlException("Internal Error","New create LinkNode has NULL VRL when creating a link to:"+pnode);
+            throw new VlInternalError("Internal Error: New create LinkNode has NULL VRL when creating a link to:"+pnode);
         
             //refetch logiccal VRL, this might have changed ! 
         fireChildAdded(getVRL(),lnode.getVRL());

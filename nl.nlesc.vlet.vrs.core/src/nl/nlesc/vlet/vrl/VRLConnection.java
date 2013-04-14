@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.vrl;
@@ -27,9 +27,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownServiceException;
 
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vfs.VDir;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
@@ -129,12 +127,12 @@ public class VRLConnection extends URLConnection
     private IOException convertToIO(Exception e)
     {
         if (e instanceof IOException)
-            return (IOException)e; 
-        
+            return (IOException) e;
+
         return new IOException(e.getClass().getName() + "\n" + e.getMessage());
     }
 
-    public VRL getVRL() throws VRLSyntaxException 
+    public VRL getVRL() throws VRLSyntaxException
     {
         return new VRL(this.getURL());
     }

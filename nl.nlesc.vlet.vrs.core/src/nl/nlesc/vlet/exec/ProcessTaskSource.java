@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exec;
@@ -24,42 +24,40 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
-
-/** 
- * Simple ProcessTasksource listener. 
- * This is not a TaskSource for actual started processes, but
- * for the Tasks started in the Java Process objects which watch
- * the started process. For example the streamReader task. 
- */ 
-public class ProcessTaskSource implements ITaskSource 
+/**
+ * Simple ProcessTasksource listener. This is not a TaskSource for actual
+ * started processes, but for the Tasks started in the Java Process objects
+ * which watch the started process. For example the streamReader task.
+ */
+public class ProcessTaskSource implements ITaskSource
 {
-    private static ClassLogger logger; 
+    private static ClassLogger logger;
     {
-        logger=ClassLogger.getLogger(ProcessTaskSource.class); 
+        logger = ClassLogger.getLogger(ProcessTaskSource.class);
     }
-    
-	// === Class === // 
-	
-	static private ProcessTaskSource instance=new ProcessTaskSource(); 
-	
-	public static ProcessTaskSource getDefault()
-	{
-		return instance; 
-	}
-	
-	// === Instance === // 
-	
-	private boolean hasTasks;
 
-	public String getID()
-	{
-		return "ProcessTaskSource"; 
-	}
-	
-	public boolean getHasTasks()
-	{
-		return hasTasks; 
-	}
+    // === Class === //
+
+    static private ProcessTaskSource instance = new ProcessTaskSource();
+
+    public static ProcessTaskSource getDefault()
+    {
+        return instance;
+    }
+
+    // === Instance === //
+
+    private boolean hasTasks;
+
+    public String getID()
+    {
+        return "ProcessTaskSource";
+    }
+
+    public boolean getHasTasks()
+    {
+        return hasTasks;
+    }
 
     @Override
     public void registerTask(ActionTask actionTask)
@@ -79,7 +77,7 @@ public class ProcessTaskSource implements ITaskSource
     @Override
     public void setHasActiveTasks(boolean active)
     {
-        hasTasks=active;
+        hasTasks = active;
     }
 
     @Override
@@ -90,8 +88,7 @@ public class ProcessTaskSource implements ITaskSource
     @Override
     public void notifyTaskException(ActionTask actionTask, Throwable t)
     {
-        logger.logException(ClassLogger.ERROR,t,"ProcessTaskSource Exception:%s\n",this);  
+        logger.logException(ClassLogger.ERROR, t, "ProcessTaskSource Exception:%s\n", this);
     }
 
-    
 }

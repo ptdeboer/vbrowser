@@ -1,10 +1,10 @@
 /*
- * (C) 2013 Netherlands eScience Center. 
- * 
+ * Copyrighted 2012-2013 Netherlands eScience Center.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License").  
  * You may not use this file except in compliance with the License. 
  * For details, see the LICENCE.txt file location in the root directory of this 
- * distribution or obtain the Apache Licence at the following location: 
+ * distribution or obtain the Apache License at the following location: 
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software 
@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  * 
+ * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
+ * ---
  */ 
 // source: 
 
@@ -157,7 +159,7 @@ public class OctopusFS extends FileSystemNode
     }
     
     @Override
-    public OctopusDir openDir(VRL pathVrl) throws VlException
+    public OctopusDir getDir(VRL pathVrl) throws VlException
     {
     	// Open filepath and return new VDir object. 
     	// (remote) directory must exist. 
@@ -171,7 +173,7 @@ public class OctopusFS extends FileSystemNode
     }
 
     @Override
-    public OctopusFile openFile(VRL pathVrl) throws VlException
+    public OctopusFile getFile(VRL pathVrl) throws VlException
     {
     	// Open filepath and return new VFile object. 
     	// (remote) file must exist.  

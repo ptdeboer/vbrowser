@@ -183,12 +183,6 @@ public class HTTPNode extends VNode implements VStreamAccessable
     }
 
     @Override
-    public boolean exists()
-    {
-        return true; 
-    }
-
-    @Override
     public String getResourceType()
     {
         return VRS.HTTP_SCHEME; 

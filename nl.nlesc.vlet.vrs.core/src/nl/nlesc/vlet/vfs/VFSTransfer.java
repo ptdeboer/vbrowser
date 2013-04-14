@@ -71,8 +71,6 @@ public class VFSTransfer extends TransferMonitor
     // not source but current (sub)resource; 
     private VRL currentSource; 
     
-   // private ICopyInteractor interactor; 
-    
     // instance methods
     public VFSTransfer(ITaskMonitor parentMonitor, String resourceType,VRL source, VRL destination,boolean isMove)
     {
@@ -83,18 +81,6 @@ public class VFSTransfer extends TransferMonitor
         this.isMove=isMove; 
         this.setTotalSources(-1);  
     }
-
-       
-//    /** 
-//     * Return type of action: Rename,Delete or 3rd Party copy. 
-//     * Use isMove() to determine whether this is a copy or a move action 
-//     * (If applicable).  
-//     * @return
-//     */
-//    public String getActionType()
-//    {
-//        return this.actionType; 
-//    }
 
     /** Specify what kinf of action this transfer is */ 
     public void setVFSTransferType(VFSActionType type)
@@ -124,13 +110,13 @@ public class VFSTransfer extends TransferMonitor
     {
         VAttribute attrs[]= 
           {
-                new VAttribute("transferID",getID()),  
-                new VAttribute("type",resourceType),  
-                new VAttribute("method",(isMove?"Move":"Copy")),
-                new VAttribute("source",getSource()),  
-                new VAttribute("destination",getDestination()),  
-                new VAttribute("done",isDone()),  
-                new VAttribute("exception",getException().toString())  
+             new VAttribute("transferID",getID()),  
+             new VAttribute("type",resourceType),  
+             new VAttribute("method",(isMove?"Move":"Copy")),
+             new VAttribute("source",getSource()),  
+             new VAttribute("destination",getDestination()),  
+             new VAttribute("done",isDone()),  
+             new VAttribute("exception",getException().toString())  
           };
         
         return attrs; 
@@ -138,13 +124,12 @@ public class VFSTransfer extends TransferMonitor
    
     public String toString()
     {
-        return 
-         "transferID  ="+this.getID()+"\n"
-        +"resourceType="+this.resourceType+"\n"
-        +"method      ="+(isMove?"move":"copy")+"\n"
-        +"source      ="+this.getSource()+"\n"
-        +"destination ="+this.getDestination()+"\n"
-        +"exception   ="+(this.getException()==null?"none":getException().getClass().getName());
+        return "transferID  ="+this.getID()+"\n"
+                +"resourceType="+this.resourceType+"\n"
+                +"method      ="+(isMove?"move":"copy")+"\n"
+                +"source      ="+this.getSource()+"\n"
+                +"destination ="+this.getDestination()+"\n"
+                +"exception   ="+(this.getException()==null?"none":getException().getClass().getName());
     }
            
     /**
@@ -246,7 +231,6 @@ public class VFSTransfer extends TransferMonitor
         super.updateSubTaskDone(this.getCurrentSubTaskName(), numTransferred);
     }
 
-
     public void setTotalWorkTodo(long i)
     {
         this.taskStats.todo=i; 
@@ -261,8 +245,7 @@ public class VFSTransfer extends TransferMonitor
     {
         super.updateTaskDone(size);
     }
-    
-    
+        
     public TaskStats getCurrentSubTask()
     {
         taskStats = super.getSubTaskStats(super.getCurrentSubTaskName());

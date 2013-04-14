@@ -15,27 +15,24 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
-/**
- * @author P.T. de Boer
- */
 public class ResourceTypeMismatchException extends ResourceException
 {
- 	private static final long serialVersionUID = -3699997598346607422L;
+    private static final long serialVersionUID = -3699997598346607422L;
 
-	public ResourceTypeMismatchException(String message)
+    public ResourceTypeMismatchException(String message)
     {
-        super(ExceptionStrings.RESOURCE_TYPE_MISMATCH,message);
+        super(ExceptionStrings.RESOURCE_TYPE_MISMATCH, message);
     }
 
     /** Constructor which keeps original Exception */
     public ResourceTypeMismatchException(String message, Exception e)
     {
-        super(ExceptionStrings.RESOURCE_NOT_FOUND_EXCEPTION,message, e);
+        super(ExceptionStrings.RESOURCE_NOT_FOUND_EXCEPTION, message, e);
     }
 
 }

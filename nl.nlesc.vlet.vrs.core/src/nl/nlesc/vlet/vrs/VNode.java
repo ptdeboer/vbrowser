@@ -15,13 +15,12 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.vrs;
 
 import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ATTRIBUTE_NAMES;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_CHARSET;
 import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_HOSTNAME;
 import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ICONURL;
 import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ISCOMPOSITE;
@@ -37,336 +36,313 @@ import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPES;
 import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SCHEME;
 import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_URI_FRAGMENT;
 import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_URI_QUERY;
-
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vfs.VDir;
-import nl.nlesc.vlet.vfs.VFSNode;
-import nl.nlesc.vlet.vfs.VFile;
 import nl.nlesc.vlet.vrl.VRL;
 
 /**
- * The VNode class, the super class of all resource nodes in the VRS package.    
- * It can be seen as a handler object, for example a reference to 
- * a (remote) file or directory or other generic resource.
- * Every VNode is associated with a VRL. 
- *  
+ * The VNode class, the super class of all resource nodes in the VRS package. It
+ * can be seen as a handler object, for example a reference to a (remote) file
+ * or directory or other generic resource.
+ * 
+ * Every VNode is associated with a VRL.
+ * 
  * @author P.T. de Boer
- * @see VFSNode
- * @see VFile
- * @see VDir
  */
-public abstract class VNode //implements IVNode
+public abstract class VNode // implements IVNode
 {
-    /**
-     * Class object counter. 
-     * Currently used for debugging (see vnodeid)
-     */
-    private static long vnodecounter=0;
-
-    static private String[] attributeNames=
-    {
-            ATTR_RESOURCE_TYPE,
-            ATTR_NAME,
-            ATTR_SCHEME,
-            ATTR_HOSTNAME,
-            ATTR_PORT,
-            ATTR_ICONURL,
-            ATTR_PATH,
+    static protected String[] vnodeAttributeNames =
+        {
+            ATTR_RESOURCE_TYPE, 
+            ATTR_NAME, 
+            ATTR_SCHEME, 
+            ATTR_HOSTNAME, 
+            ATTR_PORT, 
+            ATTR_ICONURL, 
+            ATTR_PATH, 
             ATTR_MIMETYPE,
             ATTR_LOCATION
-    };
-    
+        };
+
     // ========================================================================
-    
+
     // ========================================================================
-    
-    /** The URI Compatable VRL or which specified the resource location */ 
-    private VRL _nodeVRL=null;  
-    
-    /** 
-     * Object ID. 
-     * Currently used for debugging, but can be used 
-     * to uniquely identify VNode objects in memory 
+
+    /** URI compatable VRL which specifies the resource location. */
+    private VRL _vrl = null;
+
+    /**
+     * Final VRSContext associated with this node.
      */
-    private long vnodeid=vnodecounter++;
+    protected final VRSContext vrsContext;
 
-    /**
-     * The *NEW* VRSContext to ensure shared environments !
-     * Is FINAL, once set it may never be changed. 
-     */ 
-	protected final VRSContext vrsContext;
-    
-   // protected ResourceManager resourceManager;
+    // ========================================================================
+    // Constuctors/Initializers
+    // ========================================================================
 
-  
-    //  ========================================================================
-    //  Constuctors/Initializers 
-    //  ========================================================================
-    
-    /** Block empty constructor */ 
+    /** Block empty constructor */
     @SuppressWarnings("unused")
-	private VNode()
+    private VNode()
     {
-    	vrsContext=null;
+        vrsContext = null;
     }
-    
-    //  ========================================================================
-    //  Field Methods  
-    //  ========================================================================
-    
+
     /**
      * 
-     */ 
-    public VNode(VRSContext context,VRL vrl)
-	{
-		this.vrsContext=context;
-        setLocation(vrl); 
-	}  
-  
-	/**
-     * See getVRL() 
-     * @see getVRL() 
-     */ 
-    final public VRL getLocation() 
+     */
+    public VNode(VRSContext context, VRL vrl)
     {
-        return _nodeVRL; 
+        this.vrsContext = context;
+        setLocation(vrl);
     }
 
-    /** Returns extension part of VRL */ 
-	final public String getExtension()
-	{
-		return this.getLocation().getExtension();  
-	}
+    // ========================================================================
+    // Field Methods
+    // ========================================================================
 
-	
-    /** Returns VRSContext which whas used to create this node */
-	final public VRSContext getVRSContext()
-	{
-		return this.vrsContext; 
-	}
-    /** 
-     * Returns Virtual Resource Locator (VRL) of this object. 
-     * This is an URI compatible class but with more (URL like) features. 
+    /**
+     * See getVRL()
      * 
-     * @see VRL 
-     * @see java.net.URI 
-     */ 
-    final public VRL getVRL() 
+     * @see getVRL()
+     */
+    final public VRL getLocation()
     {
-        return _nodeVRL; 
+        return _vrl;
     }
-   
-    /** 
-     * Returns the short name of the resource.<br> 
-     * The default is the basename of the resource or the last part
-     * of the path part in the URI. 
-     * To use another name, subclassses must
-     * overide this method.
-      */ 
+
+    /** Returns extension part of VRL */
+    final public String getExtension()
+    {
+        return this.getLocation().getExtension();
+    }
+
+    /** Returns VRSContext which whas used to create this node */
+    final public VRSContext getVRSContext()
+    {
+        return this.vrsContext;
+    }
+
+    /**
+     * Returns Virtual Resource Locator (VRL) of this object. This is an URI
+     * compatible class but with more (URL like) features.
+     * 
+     * @see VRL
+     * @see java.net.URI
+     */
+    final public VRL getVRL()
+    {
+        return _vrl;
+    }
+
+    public String getScheme()
+    {
+        return this.getLocation().getScheme();
+    }
+    
+    /**
+     * Returns the short name of the resource.<br>
+     * The default is the basename of the resource or the last part of the path
+     * part in the URI. To use another name, subclassses must overide this
+     * method.
+     */
     public String getName()
     {
-    	if (_nodeVRL==null)
-    		return null;
-    	
-        return _nodeVRL.getBasename(); // default= last part of path
+        if (_vrl == null)
+            return null;
+
+        return _vrl.getBasename(); // default= last part of path
     }
-    
-    /** Returns logical path of this resource */ 
+
+    /** Returns logical path of this resource */
     public String getPath()
     {
-    	if (_nodeVRL==null)
-    		return null;
-    	
-        return _nodeVRL.getPath();
+        if (_vrl == null)
+            return null;
+
+        return _vrl.getPath();
     }
 
     /** Returns Hostname */
     public String getHostname()
     {
-    	if (_nodeVRL==null)
-    		return null;
-    	
-        return _nodeVRL.getHostname();  
+        if (_vrl == null)
+            return null;
+
+        return _vrl.getHostname();
     }
-    
+
     /** Returns Port. If the value <=0 then the default port must be used. */
     public int getPort()
     {
-        return _nodeVRL.getPort();  
+        return _vrl.getPort();
     }
-   
-    /** Returns basename part of the path of a node. */ 
-     public String getBasename()
+
+    /** Returns basename part of the path of a node. */
+    public String getBasename()
     {
-        // Default  implementation: getBasename of path 
-       return _nodeVRL.getBasename();  
+        // Default implementation: getBasename of path
+        return _vrl.getBasename();
     }
-    
-    /** 
-     * Returns Mime Type based upon file filename/extension. 
-     * For a more robust method, use MimeTypes.getMagicMimeType().
-     * 
-     * @throws VlException 
-     *  
-     * @see MimeTypes.getMagicMimeType(byte[]) 
-     * @see MimeTypes.getMimeType(String) 
-     */
-   public String getMimeType() throws VlException
-   {
-       return MimeTypes.getDefault().getMimeType(this.getPath());
-   }
-   
-   /**
-    * Default charset for text resources 
-    * @throws VlException 
-    */ 
-   public String getCharSet() throws VlException
-   {
-       return ResourceLoader.CHARSET_UTF8;
-   }
- 
+
     /**
-     * Check whether this VNode implements the VComposite interface. 
-     */ 
+     * Returns Mime Type based upon file filename/extension. For a more robust
+     * method, use MimeTypes.getMagicMimeType().
+     * 
+     * @throws VlException
+     * 
+     * @see MimeTypes.getMagicMimeType(byte[])
+     * @see MimeTypes.getMimeType(String)
+     */
+    public String getMimeType() throws VlException
+    {
+        return MimeTypes.getDefault().getMimeType(this.getPath());
+    }
+
+    /**
+     * Default charset for text resources
+     * 
+     * @throws VlException
+     */
+    public String getCharSet() throws VlException
+    {
+        return ResourceLoader.CHARSET_UTF8;
+    }
+
+    /**
+     * Check whether this VNode implements the VComposite interface.
+     */
     public boolean isComposite()
     {
-        return (this instanceof VComposite); 
+        return (this instanceof VComposite);
     }
-    
+
     /**
-     *Get the names of the all attributes this resource has.
-     *To get the subset of resource specific 
-     */ 
+     * Get the names of the all attributes this resource has. To get the subset
+     * of resource specific
+     */
     public String[] getAttributeNames()
     {
-        return attributeNames;
+        return vnodeAttributeNames;
     }
-    
-    /** 
-     * Get the names of the resource specific attributes leaving out default attributes and
-     * optional super class attributes this resource has.
-     * This typically is the subset of getAttributeNames() minus super.getAttributeNames(); 
-     */ 
+
+    /**
+     * Get the names of the resource specific attributes leaving out default
+     * attributes and optional super class attributes this resource has. This
+     * typically is the subset of getAttributeNames() minus
+     * super.getAttributeNames();
+     */
     public String[] getResourceAttributeNames()
     {
         return null;
     }
-    /** 
-     * Get all attributes defined by attributeNames 
-     * @throws VlException 
+
+    /**
+     * Get all attributes defined by attributeNames
+     * 
+     * @throws VlException
      */
-    public VAttribute[] getAttributes() throws VlException 
+    public VAttribute[] getAttributes() throws VlException
     {
         return getAttributes(getAttributeNames());
     }
 
-    /** 
+    /**
      * Get all attributes defined by <code>names</code>.<br>
-     * Elements in the <code>names</code> array may be null! 
-     * It means do not fetch the attribute.
-     * This is to speed up fetching of indexed attributes.
-     * <br>
+     * Elements in the <code>names</code> array may be null! It means do not
+     * fetch the attribute. This is to speed up fetching of indexed attributes. <br>
      * <b>Developers note</b>:<br>
-     * Subclasses are encouraged to override this method to 
-     * speed up fetching multiple attributes as this method
-     * does a getAttribute call per attribute. 
-     * @throws VlException 
+     * Subclasses are encouraged to override this method to speed up fetching
+     * multiple attributes as this method does a getAttribute call per
+     * attribute.
+     * 
+     * @throws VlException
      */
-    public VAttribute[] getAttributes(String names[]) throws VlException 
+    public VAttribute[] getAttributes(String names[]) throws VlException
     {
         VAttribute[] attrs = new VAttribute[names.length];
 
         for (int i = 0; i < names.length; i++)
         {
-            if (names[i]!=null)
+            if (names[i] != null)
                 attrs[i] = getAttribute(names[i]);
             else
-                attrs[i]=null; 
+                attrs[i] = null;
         }
 
         return attrs;
     }
-    
+
     /**
-     * Same as getAttributes(), but return the attributes in an 
-     * (Ordened) Attribute set. 
+     * Same as getAttributes(), but return the attributes in an (Ordened)
+     * Attribute set.
      */
     public VAttributeSet getAttributeSet(String names[]) throws VlException
     {
-    	return new VAttributeSet(getAttributes(names)); 
+        return new VAttributeSet(getAttributes(names));
     }
-   
-    /** 
-     * Get non changable (static) attribute. 
-     * This is an attribute which can be derived from the location or object type, 
-     * and doesn't change during the lifetime of the Object because it 
-     * is implicit bound to the object class.   
-     * Even if the object doesn't exist the attribute can be determined, for 
-     * example the Resource Type of a VFile which doesn't change during 
-     * the lifetime of the (VFile) Object as this always must be "File" !   
-     */ 
+
+    /**
+     * Get non changeable (static) attributes. This is an attribute which can be
+     * derived from the location or object type, and doesn't change during the
+     * lifetime of the Object because it is implicit bound to the object class.
+     * Even if the object doesn't exist the attribute can be determined, for
+     * example the Resource Type of a VFile which doesn't change during the
+     * lifetime of the (VFile) Object as this always must be "File" !
+     */
     public VAttribute getStaticAttribute(String name) throws VlException
     {
         // by prefix values with "", a NULL value will be convert to "NULL".
         if (name.compareTo(ATTR_RESOURCE_TYPE) == 0)
             return new VAttribute(name, getResourceType());
         else if (name.compareTo(ATTR_LOCATION) == 0)
-            return new VAttribute(name, getVRL()); 
+            return new VAttribute(name, getVRL());
         else if (name.compareTo(ATTR_NAME) == 0)
             return new VAttribute(name, getName());
         else if (name.compareTo(ATTR_HOSTNAME) == 0)
             return new VAttribute(name, getHostname());
-        // only return port attribute if it has a meaningful value 
+        // only return port attribute if it has a meaningful value
         else if (name.compareTo(ATTR_PORT) == 0)
-            return new VAttribute(name,getPort());
+            return new VAttribute(name, getPort());
         else if (name.compareTo(ATTR_ICONURL) == 0)
             return new VAttribute(name, getIconURL());
         else if (name.compareTo(ATTR_SCHEME) == 0)
             return new VAttribute(name, getScheme());
         else if (name.compareTo(ATTR_PATH) == 0)
             return new VAttribute(name, getPath());
-        else if ( (name.compareTo(ATTR_URI_QUERY) == 0) && getLocation().hasQuery() )
+        else if ((name.compareTo(ATTR_URI_QUERY) == 0) && getLocation().hasQuery())
             return new VAttribute(name, getQuery());
-        else if  ( (name.compareTo(ATTR_URI_FRAGMENT) == 0) &&  getLocation().hasFragment() )
+        else if ((name.compareTo(ATTR_URI_FRAGMENT) == 0) && getLocation().hasFragment())
             return new VAttribute(name, getLocation().getFragment());
-        else if (name.compareTo(ATTR_NAME) == 0) 
+        else if (name.compareTo(ATTR_NAME) == 0)
             return new VAttribute(name, getName());
         else if (name.compareTo(ATTR_LOCATION) == 0)
             return new VAttribute(name, getLocation());
         else if (name.compareTo(ATTR_MIMETYPE) == 0)
             return new VAttribute(name, getMimeType());
-        
-        return null; 
+
+        return null;
     }
-    
-    /** 
-     * This is the single method a Node has to implement so that attributes can be fetched.  
-     * subclasses can override this method and do a super.getAttribute first to
-     * check whether the superclass provides an attribute name. 
+
+    /**
+     * This is the single method a Node has to implement so that attributes can
+     * be fetched. subclasses can override this method and do a
+     * super.getAttribute first to check whether the superclass provides an
+     * attribute name.
      */
     public VAttribute getAttribute(String name) throws VlException
     {
-        if (name==null)
+        if (name == null)
             return null;
 
-        // Check Non-mutable attributes first! 
-        VAttribute attr=this.getStaticAttribute(name); 
-        
-        if (attr!=null)
-            return attr; 
+        // Check Non-mutable attributes first!
+        VAttribute attr = this.getStaticAttribute(name);
+
+        if (attr != null)
+            return attr;
 
         // ===
         // VAttribute Interface for remote invokation
@@ -375,263 +351,202 @@ public abstract class VNode //implements IVNode
             return new VAttribute(name, (this instanceof VComposite));
         else if (name.compareTo(ATTR_RESOURCE_CLASS) == 0)
             return new VAttribute(name, this.getClass().getCanonicalName());
-        
+
         else if (name.compareTo(ATTR_RESOURCE_TYPES) == 0)
         {
             if (this instanceof VComposite)
             {
-                String types[]=((VComposite)this).getResourceTypes(); 
-                StringList list=new StringList(types);
-                return new VAttribute(name,list.toString(",")); 
+                String types[] = ((VComposite) this).getResourceTypes();
+                StringList list = new StringList(types);
+                return new VAttribute(name, list.toString(","));
             }
             else
-                return null; 
-        } 
+                return null;
+        }
         else if (name.compareTo(ATTR_ISEDITABLE) == 0)
         {
             if (this instanceof VEditable)
-                return new VAttribute(name,((VEditable)this).isEditable());
+                return new VAttribute(name, ((VEditable) this).isEditable());
             else
-                return new VAttribute(name,false); 
+                return new VAttribute(name, false);
         }
         else if (name.compareTo(ATTR_ATTRIBUTE_NAMES) == 0)
         {
-            StringList attrL=new StringList(this.getAttributeNames());
-            return new VAttribute(name,attrL.toString(","));
+            StringList attrL = new StringList(this.getAttributeNames());
+            return new VAttribute(name, attrL.toString(","));
         }
-        
-        return null;   
+
+        return null;
     }
 
-    /** Return Query part of VRL */ 
+    /** Return Query part of VRL */
     public String getQuery()
-	{
-		VRL loc=getLocation();
-		
-		if (loc==null)
-			return null;
-		
-		return loc.getQuery();
-	}
+    {
+        VRL loc = getLocation();
 
-	/**
+        if (loc == null)
+            return null;
+
+        return loc.getQuery();
+    }
+
+    /**
      * Return this node's location as String representation.<br>
      * Note that special characters are not encoded.
-      */  
+     */
     public String toString()
     {
-        return "("+getResourceType()+")"+getLocation(); 
+        return "(" + getResourceType() + ")" + getLocation();
     }
 
-    /** @see setVRL(VRL loc) */
-	protected void setLocation(VRL loc)
-	{
-		this._nodeVRL=loc;  
-	}
-    
     /**
-     * Only subclasses may change the location. 
-     * Note that the location should be immutable:
-     * It may not change during the lifetime of the object!
-     * 
-     */ 
-    protected void setVRL(VRL loc)
+     * Method for subclasses, a VRL should never change during the lifetime of
+     * an object. May only be used during initialization.
+     */
+    protected void setLocation(VRL loc)
     {
-        this._nodeVRL=loc; 
+        this._vrl = loc;
     }
-    
-    /** Compares whether the nodes represent the same location */ 
+
+    /** Compares whether the nodes represent the same location */
     public int compareTo(VNode other)
     {
-        if (other==null) 
-            return 1; // this > null 
-        
-        return _nodeVRL.compareTo(other.getLocation()); 
+        if (other == null)
+            return 1; // this > null
+
+        return _vrl.compareTo(other.getLocation());
     }
 
     /**
-     * Returns optional icon URL given the preferred size. 
-     * Default implementation is to call getIconURL(). 
-     * This method allows resources to return different icons
-     * for different sizes. 
-     * The actual displayed size in the vbrowser may differ
-     * from the given size and the preferredSize should be regarded as an indication. 
-     * It is recommended to provide optimized icons for sizes less
-     * than or equal to 16. 
-     */ 
+     * Returns optional icon URL given the preferred size. Default
+     * implementation is to call getIconURL(). This method allows resources to
+     * return different icons for different sizes. The actual displayed size in
+     * the vbrowser may differ from the given size and the preferredSize should
+     * be regarded as an indication. It is recommended to provide optimized
+     * icons for sizes less than or equal to 16.
+     */
     public String getIconURL(int preferredSize)
     {
-    	return getIconURL();  
+        return getIconURL();
     }
 
-    
-    /** Returns optional icon url */ 
+    /** Returns optional icon url */
     public String getIconURL()
     {
-        return null; 
+        return null;
     }
 
-    //public abstract String getResourceType(); // type (File) or class
-
-    /** 
+    /**
      * Get Parent Node (if any).<br>
-     * Default implementation is to open the location provided
-     * by getParentLocation(). Override that method to provide
-     * the parent location of this node.  
-     * Overide this method to provide a more eficient way 
-     * to return a VNode that is the (logical) parent of this. 
-     * 
-     * @see #getParents()
-     * @see #getParentLocation()
-     * @return Parent VNode or null. 
-     * @throws VlException
+     * Default implementation is to open the location provided by
+     * getParentLocation(). Override that method to provide the parent location
+     * of this node. Overide this method to provide a more eficient way to
+     * return a VNode that is the (logical) parent of this.
      */
-  
     public VNode getParent() throws VlException
     {
-        VRL pvrl=getParentLocation(); 
-        
-        if (pvrl==null)
-        	return null; 
-        
+        VRL pvrl = getParentLocation();
+
+        if (pvrl == null)
+            return null;
+
         return vrsContext.openLocation(getParentLocation());
     }
-    
+
     /**
-     * Returns logical parent location of this node. 
-     * By default this method returns getVRL().getParent(); 
-     * If an implementation has another 'logical' parent then just
-     * the dirname of the current location, override this method. 
+     * Returns logical parent location of this node. By default this method
+     * returns getVRL().getParent(); If an implementation has another 'logical'
+     * parent then just the dirname of the current location, override this
+     * method.
      */
     public VRL getParentLocation()
     {
-    	if (this.getVRL()==null)
-    		return null; 
-    	
-    	return new VRL(this._nodeVRL.getParent());
+        if (this.getVRL() == null)
+            return null;
+
+        return new VRL(this._vrl.getParent());
     }
-    /** 
-     * Get Parents if the Node is part of a Graph.
-     * <br>
-     * Returns one parent if Node is part of a Tree or null if
-     * Node has no parents. 
+
+    /**
+     * Get Parents if the Node is part of a Graph. <br>
+     * Returns one parent if Node is part of a Tree or null if Node has no
+     * parents.
+     * 
      * @throws VlException
      */
     public VNode[] getParents() throws VlException // for Graph
     {
-        VNode parent=getParent();
-        
-        if (parent==null)
-            return null; 
-        
-        VNode nodes[]=new VNode[1]; 
-        nodes[0]=parent; 
+        VNode parent = getParent();
+
+        if (parent == null)
+            return null;
+
+        VNode nodes[] = new VNode[1];
+        nodes[0] = parent;
         return nodes;
-    }
-    
-    public String getScheme()
-    {
-        return this.getLocation().getScheme(); 
     }
 
     /**
-     * Like cloneable, to use this method, implement the VDuplicatable interface 
-     * and override this method to return a copy. 
-     * By default the object should create a deep copy of it's contents
-     * and it's children.
-     * This default behaviour is different then clone().  
-     */ 
-	public VNode duplicate() throws VlException
-	{
-		throw new nl.nlesc.vlet.exception.NotImplementedException("Duplicate method not implemented"); 
-	}
-
-
-	/**
-     * New Action Method version I. (Under Construction).
-     * The ActionMappings are taken from the VRS.getActionMappings();
-     * @see ActionMenuMapping class.  
+     * Like cloneable, to use this method, implement the VDuplicatable interface
+     * and override this method to return a copy. By default the object should
+     * create a deep copy of it's contents and it's children. This default
+     * behaviour is different then clone().
      */
-    //public void performAction(String name, ActionContext actionContext,VRL selections[]) throws VlException
-    //{
-    //    throw new NotImplementedException("Node doesn't support actions:"+getName()); 
-    // }
-	
-	/** 
-	 * Resolve relative or absolute path against this resource. 
-	 * Uses VRL.resolvePaths(this.getPath(),subPath) as default 
-	 * implementation.  
-	 * @throws VlException 
-	 */ 
-    public String resolvePath(String subPath) throws VRLSyntaxException
-	{
-        try
-        {
-            return getVRL().resolvePath(subPath).getPath();
-        }
-        catch (VRISyntaxException e)
-        {
-            throw new VRLSyntaxException("Failed to resolve path:"+subPath); 
-        }
-	}
-    
-    /** Resolve path against this VRL and return resolved VRL */  
-	public VRL resolvePathVRL(String path) throws VRLSyntaxException
-	{
-	    return getLocation().resolvePathToVRL(path);
-	}
-	
-	/** 
-	 * Status String for nodes which implemented Status. 
-	 * Returns NULL if not supported. 
-	 * This method is exposed in the toplevel VNode interface even if not supported.  
-	 * @return
-	 * @throws VlException 
-	 */
-	public String getResourceStatus() throws VlException
-	{
-		return null; 
-	}
-	
-	/** 
-	 * Synchronize cached attributes and/or refresh cached attributes
-	 * from remote resource. 
-	 * This is an import method in the case that a resource caches resource attributes, like
-	 * file attributes. 
-	 * @return - false : not applicable/not implemented for this resource.<br>
-	 *         - true : synchronize/refresh is implemented and was successful.  
-	 * @throws VlException when resource synchronisation wasn't successful   
-	 */
-	public boolean sync() throws VlException 
-	{
-	    return false; 
-	}
-	
-	/** Fire attribute(s) changed event with this resource as even source.*/ 
-	protected void fireAttributesChanged(VAttribute attrs[])
-	{
-		ResourceEvent event=ResourceEvent.createAttributesChangedEvent(getVRL(),attrs); 
-		this.vrsContext.getResourceEventNotifier().fire(event); 
-	}
-	
-	/** Fire attribute changed event with this resource as even source.*/ 
-	protected void fireAttributeChanged(VAttribute attr)
-	{
-		ResourceEvent event=ResourceEvent.createAttributesChangedEvent(getVRL(),
-				new VAttribute[]{attr}); 
-		this.vrsContext.getResourceEventNotifier().fire(event); 
-	}
-    // ========================================================================
-    // Abstract Interface 
-    // ========================================================================
-    
-    /** Returns resource type, if it has one */ 
-    public abstract String getResourceType();
-    
-    /** Whether this node (still) exists 
-     * @throws VlException */
-    public abstract boolean exists() throws VlException;
+    public VNode duplicate() throws VlException
+    {
+        throw new nl.nlesc.vlet.exception.NotImplementedException("Duplicate method not implemented");
+    }
 
-	
     
+
+    /**
+     * Status String for nodes which implemented Status. Returns NULL if not
+     * supported. This method is exposed in the toplevel VNode interface even if
+     * not supported.
+     * 
+     * @return
+     * @throws VlException
+     */
+    public String getResourceStatus() throws VlException
+    {
+        return null;
+    }
+
+    /**
+     * Synchronize cached attributes and/or refresh cached attributes from
+     * remote resource. This is an import method in the case that a resource
+     * caches resource attributes, like file attributes.
+     * 
+     * @return - false : not applicable/not implemented for this resource.<br>
+     *         - true : synchronize/refresh is supported and was successful.
+     * @throws VlException
+     *             Is thrown when resource synchronization couldn't be performed. 
+     */
+    public boolean sync() throws VlException
+    {
+        return false;
+    }
+
+    /** Fire attribute(s) changed event with this resource as even source. */
+    protected void fireAttributesChanged(VAttribute attrs[])
+    {
+        ResourceEvent event = ResourceEvent.createAttributesChangedEvent(getVRL(), attrs);
+        this.vrsContext.getResourceEventNotifier().fire(event);
+    }
+
+    /** Fire attribute changed event with this resource as even source. */
+    protected void fireAttributeChanged(VAttribute attr)
+    {
+        ResourceEvent event = ResourceEvent.createAttributesChangedEvent(getVRL(), new VAttribute[]
+        { attr });
+        this.vrsContext.getResourceEventNotifier().fire(event);
+    }
+
+    // ========================================================================
+    // Abstract Interface
+    // ========================================================================
+
+    /** Returns resource type, if it has one */
+    public abstract String getResourceType();
+
 }

@@ -21,16 +21,15 @@
 package nl.nlesc.vlet.exception;
 
 /**
- * Exception is thrown when a service type is requested which is not supported. 
- *  
+ * Server problem.
  */
-public class VlServerException extends VlException // VlException
+public class VlServerException extends VlIOException // VlException
 {
     private static final long serialVersionUID = -7642588247123924146L;
 
     public VlServerException(String message)
     {
-        super(ExceptionStrings.SERVER_EXCEPTION,message);
+        super(ExceptionStrings.SERVER_EXCEPTION,message,null);
     }
     
     public VlServerException(String message,Throwable e)

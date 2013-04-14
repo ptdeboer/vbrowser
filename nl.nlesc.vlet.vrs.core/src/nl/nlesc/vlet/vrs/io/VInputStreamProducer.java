@@ -35,5 +35,5 @@ public interface VInputStreamProducer
 	 * Opens the specified location and gets an InputStream to read from. 
 	 * This method combines openLocation() and getInputStream().
 	 */ 
-	InputStream openInputStream(VRL location) throws VlException; 
+	public InputStream openInputStream(VRL location) throws VlException; 
 }

@@ -1,7 +1,7 @@
 #!/bin/bash
 ##
-# PTB. 
-#
+# (C) PTdB.  
+# 
 
 #default header file: 
 headerfile=etc/header.txt
@@ -33,7 +33,7 @@ replaceHeader()
  cat "$1" | sed -n '
   # from start to "package"
   0,/package/ {
-                # remove lines exluding 'package'
+                # remove lines excluding 'package'
                 /package/ !{
                              x
                              d

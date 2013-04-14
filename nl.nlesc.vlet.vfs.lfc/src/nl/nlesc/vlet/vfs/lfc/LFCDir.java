@@ -116,7 +116,7 @@ public class LFCDir extends VDir
     public VDir createDir(String name, boolean ignoreExisting)
             throws VlException
     {
-        name = resolvePath(name);
+        name = resolvePathString(name);
 
         debug("Will create: " + name);
         lfcClient.mkdir(name, ignoreExisting);
@@ -130,7 +130,7 @@ public class LFCDir extends VDir
     {
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Create file:"+this,1);
         
-        name = resolvePath(name);
+        name = resolvePathString(name);
         debug("Will create: " + name);
 
         // if (!ignoreExisting)
@@ -166,7 +166,7 @@ public class LFCDir extends VDir
     public boolean existsDir(String fileName) throws VlException
     {
         // check relative vs absolute path names
-        fileName = resolvePath(fileName);
+        fileName = resolvePathString(fileName);
 
         BooleanHolder isDir = new BooleanHolder();
 
@@ -179,7 +179,7 @@ public class LFCDir extends VDir
     @Override
     public boolean existsFile(String fileName) throws VlException
     {
-        fileName = resolvePath(fileName);
+        fileName = resolvePathString(fileName);
 
         BooleanHolder isDir = new BooleanHolder();
 
@@ -266,7 +266,7 @@ public class LFCDir extends VDir
         {
 //            newPath = resolvePath(newPath);//this returns the same path    
             thisPath = new VRL(getPath());
-            newPath = resolvePath(thisPath.getParent().getPath()+VRL.SEP_CHAR+newName);    
+            newPath = resolvePathString(thisPath.getParent().getPath()+VRL.SEP_CHAR+newName);    
         }
         
         return lfcClient.mv(getPath(), newPath);

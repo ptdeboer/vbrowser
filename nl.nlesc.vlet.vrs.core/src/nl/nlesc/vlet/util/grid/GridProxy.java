@@ -1075,7 +1075,7 @@ public class GridProxy
         save();
     }
     
-    public void setDefaultVOName(String name)
+    public void setDefaultVOName(String name) 
     {
         logger.debugPrintf("setVOName:"+name); 
 

@@ -247,7 +247,7 @@ public class GftpFileSystem extends FileSystemNode
             if (e instanceof VlException)
                 throw ((VlException) e);
             else
-                throw new VlException(e.getClass().getName(), e);
+                throw new GftpException(e.getClass().getName(), e);
         }
 
         return server;
@@ -840,7 +840,7 @@ public class GftpFileSystem extends FileSystemNode
                 if (transferState.getError() != null)
                 {
                     Exception e = transferState.getError();
-                    throw new VlException("TransferError", e
+                    throw new GftpException("TransferError", e
                             .getMessage(), e);
                 }
             }
@@ -965,7 +965,7 @@ public class GftpFileSystem extends FileSystemNode
                     && (transferState.getError() != null))
             {
                 Exception e = transferState.getError();
-                throw new VlException("TransferError",
+                throw new GftpException("TransferError",
                         e.getMessage(), e);
             }
 
@@ -1025,12 +1025,12 @@ public class GftpFileSystem extends FileSystemNode
         catch (ServerException e)
         {
             this.serverException = true;
-            throw new VlException("GFTP VlServerException", e
+            throw new GftpException("GFTP VlServerException", e
                     .getMessage(), e);
         }
         catch (IOException e)
         {
-            throw new VlException("GFTP IOException", e.getMessage(),
+            throw new GftpException("GFTP IOException", e.getMessage(),
                     e);
         }
 
@@ -1067,12 +1067,12 @@ public class GftpFileSystem extends FileSystemNode
         catch (ServerException e)
         {
             this.serverException = true;
-            throw new VlException("GFTP VlServerException", e
+            throw new GftpException("GFTP VlServerException", e
                     .getMessage(), e);
         }
         catch (IOException e)
         {
-            throw new VlException("GFTP IOException", e.getMessage(),
+            throw new GftpException("GFTP IOException", e.getMessage(),
                     e);
         }
     }
@@ -1326,13 +1326,13 @@ public class GftpFileSystem extends FileSystemNode
         catch (ServerException e) // org.globus.ftp.exception.ServerException
         {
             this.serverException = true;
-            throw new VlException("GFTP VlServerException",
+            throw new GftpException("GFTP VlServerException",
                     "When accessing:" + loc + "\nMessage="
                             + e.getMessage(), e);
         }
         catch (IOException e) // java.io.IOException
         {
-            throw new VlException("GFTP IOException",
+            throw new GftpException("GFTP IOException",
                     "When accessing:" + loc + "\nMessage="
                             + e.getMessage(), e);
         }
@@ -2025,7 +2025,7 @@ public class GftpFileSystem extends FileSystemNode
     public VFile createFile(String path, boolean force)
             throws VlException
     {
-        String fullPath=resolvePath(path); 
+        String fullPath=resolvePathString(path); 
         
         MlsxEntry entry = mlst(fullPath);
         
@@ -2097,7 +2097,7 @@ public class GftpFileSystem extends FileSystemNode
 
     
     @Override
-    public GftpFile openFile(VRL vrl) throws VlException
+    public GftpFile getFile(VRL vrl) throws VlException
     {
         return getFile(vrl.getPath());
     }
@@ -2153,7 +2153,7 @@ public class GftpFileSystem extends FileSystemNode
     }
     
     @Override
-    public GftpDir openDir(VRL vrl) throws VlException
+    public GftpDir getDir(VRL vrl) throws VlException
     {
         return getDir(vrl.getPath());
     }
@@ -2251,16 +2251,16 @@ public class GftpFileSystem extends FileSystemNode
         }
         else if (e instanceof ClientException)
         {
-            return new VlException(ename, errtxt, e);
+            return new GftpException(ename, errtxt, e);
         }
         else if (e instanceof IOException)
         {
-            return new VlException(ename, errtxt, e);
+            return new GftpException(ename, errtxt, e);
         }
         else if (e instanceof FTPException)
         {
             logger.errorPrintf("FTPException:%s\n",e); 
-            return new VlException("IOException:" + ename, errtxt, e);
+            return new GftpException("IOException:" + ename, errtxt, e);
         }
         // pass my own:
         else if (e instanceof VlException)
@@ -2270,7 +2270,7 @@ public class GftpFileSystem extends FileSystemNode
         else
         {
             // Generic VlException wrapper:
-            return new VlException(ename, errtxt, e);
+            return new GftpException(ename, errtxt, e);
         }
     }
 
@@ -3001,7 +3001,7 @@ public class GftpFileSystem extends FileSystemNode
        
         // should be there: 
         
-        return targetServer.openFile(targetVrl);
+        return targetServer.getFile(targetVrl);
     }
     
     /** 

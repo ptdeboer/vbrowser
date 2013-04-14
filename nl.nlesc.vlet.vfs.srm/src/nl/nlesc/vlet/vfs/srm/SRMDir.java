@@ -223,7 +223,7 @@ public class SRMDir extends VDir implements VUnixFileMode
 
     public OutputStream createFileOutputStream(String fileName, boolean force) throws VlException
     {
-        String srmFilePath = resolvePath(fileName);
+        String srmFilePath = resolvePathString(fileName);
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("createFileOutputStream:" + srmFilePath, -1);
 
         // // use absolute path:

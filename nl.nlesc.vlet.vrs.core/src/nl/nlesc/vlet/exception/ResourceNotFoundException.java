@@ -15,28 +15,24 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.exception;
 
-/**
- * @author P.T. de Boer
- */
 public class ResourceNotFoundException extends ResourceException
 {
     private static final long serialVersionUID = -4451313345246528097L;
 
     public ResourceNotFoundException(String message)
     {
-        super(ExceptionStrings.RESOURCE_NOT_FOUND_EXCEPTION,message);
+        super(ExceptionStrings.RESOURCE_NOT_FOUND_EXCEPTION, message);
     }
 
     /** Constructor which keeps original Exception */
     public ResourceNotFoundException(String message, Throwable e)
     {
-        super(ExceptionStrings.RESOURCE_NOT_FOUND_EXCEPTION,message, e);
+        super(ExceptionStrings.RESOURCE_NOT_FOUND_EXCEPTION, message, e);
     }
 
- 
 }

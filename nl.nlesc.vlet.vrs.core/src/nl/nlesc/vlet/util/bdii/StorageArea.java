@@ -29,8 +29,8 @@ import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
 
 /**
- * tbn18.nikhef.nl,gb-se-amc.amc.nl Storage Area description for a VO. A Storage
- * Area is linked to a VO and a Storage Element. For each VO on the same Storage
+ * Containst Storage Area description for a VO. or example: tbn18.nikhef.nl,gb-se-amc.amc.nl.
+ * A Storage Area is linked to a VO and a Storage Element. For each VO on the same Storage
  * Element there is a different StorageArea with a storagePath where that VO may
  * write.
  */
