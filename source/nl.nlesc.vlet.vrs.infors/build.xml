@@ -156,7 +156,7 @@
     	<mkdir dir="${project.dist}/lib/plugins/${vdriver.name}" />
 
     	<!-- copy vdriver jar outside plugins dir --> 
-    	<copy todir="${project.lib}/vdrivers">
+    	<copy todir="${project.lib}/vdriver">
 			<fileset dir="${vdriver.dist}/lib" />
 		</copy> 
 
