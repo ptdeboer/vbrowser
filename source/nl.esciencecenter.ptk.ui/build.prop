@@ -10,8 +10,8 @@
 #module specific settings: 
 
 comp.name=nlesc-ptk.ui
-comp.package.prefix=nl.nlesc.ptk.ui
-comp.package.dir=nl/nlesc/ptk/ui
+comp.package.prefix=nl.esciencecenter.ptk.ui
+comp.package.dir=nl/esciencecenter/ptk/ui
 comp.version=0.1
 #comp.mainclass=nl.nlesc.ptk.bootstrap.Bootstrapper
 

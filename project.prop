@@ -21,6 +21,10 @@ project.doc=${project.dist}/doc
 project.env.ok=ok; 
 
 ##
+# source structure: 
+project.sourcedir=source
+
+##
 #
 project.vendor=eScienceCenter.nl
 

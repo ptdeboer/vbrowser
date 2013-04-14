@@ -143,7 +143,7 @@
         <mkdir dir="${project.doc}" />    	
     	
         <!-- install in lib/plugins/  --> 
-        <mkdir dir="${project.lib}/vdriver" />
+        <mkdir dir="${project.lib}/vdrivers" />
         <mkdir dir="${project.lib}/plugins" />
 	        
         <!-- Copy all-in-one package lib into project lib dir --> 
@@ -156,7 +156,7 @@
     	<mkdir dir="${project.dist}/lib/plugins/${vdriver.name}" />
 
     	<!-- copy vdriver jar outside plugins dir --> 
-    	<copy todir="${project.lib}/vdriver">
+    	<copy todir="${project.lib}/vdrivers">
 			<fileset dir="${vdriver.dist}/lib" />
 		</copy> 
 
