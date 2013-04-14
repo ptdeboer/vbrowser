@@ -13,23 +13,23 @@
       1) Read global project properties (if specified) from: project.prop
          - for this to work project.root variable must be set to project root 
       2) Set environment properties prefix to 'env.' 
-      3) Set component.root to the location if this component 
+      3) Set comp.root to the location if this component 
       4) Read local components properties from: build.prop 
     --> 
     
     <property name="project.root" location="../mbuild" />
     <property file="${project.root}/project.prop"/> 
     <property environment="env"/>
-    <property name="component.root" location="." />
+    <property name="comp.root" location="." />
     <property file="build.prop"/> 
 	
 	<!-- Target: init --> 
 	
 	<target name="init" >
 		<!-- Create the build directory structure used by compile -->
-		<mkdir dir="${component.build}" />
-		<mkdir dir="${component.dist}" />
-		<mkdir dir="${component.dist}/lib" />
+		<mkdir dir="${comp.build}" />
+		<mkdir dir="${comp.dist}" />
+		<mkdir dir="${comp.dist}/lib" />
 	</target>
 		
 	<target name="config" >
@@ -41,7 +41,7 @@
     <!-- source distribution: nothing to do --> 
     <target name="source-dist"/>
     
-	<path id="component.classpath">
+	<path id="comp.classpath">
 		<!-- include project libraries--> 
 		<fileset dir="${project.lib}">
 					<include name="**/*.jar" />
@@ -53,8 +53,8 @@
 				
 		<!-- add local paths settings --> 
 				
-		<pathelement location="${component.build}" />
-		<pathelement location="${component.src}" />
+		<pathelement location="${comp.build}" />
+		<pathelement location="${comp.src}" />
 			
 	</path>
 				
@@ -65,30 +65,30 @@
 	   		
 	<target name="build" depends="init" description="compile the source ">
 		<!-- Compile the java code from the srclist } into ${build} -->
-		<javac srcdir="${component.src}" destdir="${component.build}"
+		<javac srcdir="${comp.src}" destdir="${comp.build}"
 		       compiler="${javac.compiler}"
 			   debug="${javac.debug}"
 			   source="${javac.source}" 
 			   target="${javac.target}">
-			<classpath refid="component.classpath" />
+			<classpath refid="comp.classpath" />
 		</javac>
 		<!-- copy icons into build dir, so they will be copied into the jar --> 
-		<copy todir="${component.build}">
-			<fileset dir="${component.root}/icons" /> 
+		<copy todir="${comp.build}">
+			<fileset dir="${comp.root}/icons" /> 
 	    </copy>
 	</target>
 	
 	<target name="jar" depends="build" unless="project.includesource">
 			<!-- Create application JAR file -->
-			<jar jarfile="${component.dist}/lib/${component.name}.jar"
-	            basedir="${component.build}">
+			<jar jarfile="${comp.dist}/lib/${comp.artifactId}.jar"
+	            basedir="${comp.build}">
 			</jar>
 		</target>
 		
 		<target name="jar-sdk" depends="build"  if="project.includesource">
 			<!-- Create application JAR file -->
-			<jar jarfile="${component.dist}/lib/${component.name}.jar"
-	            basedir="${component.build}">
+			<jar jarfile="${comp.dist}/lib/${comp.artifactId}.jar"
+	            basedir="${comp.build}">
 				 <fileset dir="src"/>
 			</jar>
 		</target>
@@ -109,7 +109,7 @@
 		<mkdir dir="${project.lib}" />
 		
 		<!-- Copy all-in-one package lib into project lib dir --> 
-		<copy file="${component.dist}/lib/${component.name}.jar" todir="${project.dist}/lib" /> 
+		<copy file="${comp.dist}/lib/${comp.artifactId}.jar" todir="${project.dist}/lib" /> 
 
 		<!-- 3rd party libs --> 
 		<mkdir dir="${project.auxlib}/com.jgoodies"/>
@@ -120,8 +120,8 @@
 	</target>
 		
 	<target name="clean" description="clean">
-		<delete dir="{$component.dist}"/>
-		<delete dir="{$component.build}"/>
+		<delete dir="{$comp.dist}"/>
+		<delete dir="{$comp.build}"/>
 	</target>
 	
 </project>

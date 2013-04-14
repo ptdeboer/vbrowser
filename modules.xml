@@ -8,12 +8,14 @@
         <available property="comp.exists" file="${sourcepath}/build.xml"/> 
         
         <!-- print header --> 
-        <echo message="============================================="/> 
+        <echo message="=============================================================="/> 
         <echo message="=== Build Component: ${name}: ${target}"/> 
-        <echo message="============================================="/> 
+        <echo message="=============================================================="/> 
         <echo message=" project root         = ${project.root}"/> 
         <echo message=" project dist         = ${project.dist}"/> 
         <echo message=" project sourceroot   = ${project.sourcedir}"/> 
+        <echo message=" component name       = ${name}"/> 
+        <echo message=" component scm.path   = ${scm.path}"/> 
         <echo message=" component sourcepath = ${sourcepath}"/> 
             
     </target> 
@@ -26,7 +28,7 @@
     <target name="build-component" depends="check-component"> 
 
         <fail unless="comp.exists" 
-         message="*** Component: ${name} at ${sourcepath} is missing or scm checkout went wrong (missing build.xml file ?)" />
+              message="*** Component: ${name} at ${sourcepath} is missing or scm checkout went wrong (missing build.xml file ?)" />
         
         <!-- default target: can be overriden by previous target--> 
         <property name="target" value="dist-install"/> 

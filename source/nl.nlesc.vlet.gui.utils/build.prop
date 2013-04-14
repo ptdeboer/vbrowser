@@ -9,21 +9,12 @@
 
 ###
 # Do not add spaces to the end of the values ! 
-# Component defaults (not that component.root is set in the main build file)
-component.name=vlet-gui.utils
-component.dist=${component.root}/dist
-component.build=${component.root}/build
-component.src=${component.root}/src
+# Component defaults (not that comp.root is set in the main build file)
+comp.groupId=nl.nlesc.vlet
+comp.artifactId=vlet-gui.utils
+comp.dist=${comp.root}/dist
+comp.build=${comp.root}/build
+comp.src=${comp.root}/src
 
-###
-# Local Project Settings: 
+##
 #
-# Note: for the env.<ENVIRONMENT VARIABLE> construct to work 
-# the property 'environment' needs to be set (in the main build file) to 'env'
-# as follows:  <property environment="env"/>
-
-# To use VLET_INSTALL as project.root uncomment the following: 
-#project.root=${env.VLET_INSTALL} 
-#Installed project libraries: 
-#project.lib=${project.root}/lib
-

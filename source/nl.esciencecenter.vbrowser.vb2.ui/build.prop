@@ -9,16 +9,16 @@
 
 ###
 # Do not add spaces to the end of the values ! 
-# Component defaults (not that component.root is set in the main build file)
-component.groupid=nlesc
-component.name=nlesc-vbrowser.vb2.ui
-component.dist=${component.root}/dist
-component.build=${component.root}/build
-component.src=${component.root}/src
+# Component defaults (not that comp.root is set in the main build file)
+comp.groupId=nl.esciencecenter.vbrowser
+comp.artefactId=nlesc-vbrowser.vb2.ui
+comp.dist=${comp.root}/dist
+comp.build=${comp.root}/build
+comp.src=${comp.root}/src
 
 # needed for manifest: 
-component.version=${TODAY}
-component.vendor=www.esciencecenter.nl
+comp.version=${TODAY}
+comp.vendor=www.esciencecenter.nl
 
 ###
 # Local Project Settings: 
