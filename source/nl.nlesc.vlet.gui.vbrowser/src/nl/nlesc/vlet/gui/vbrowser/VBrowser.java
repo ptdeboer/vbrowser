@@ -28,6 +28,7 @@ import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.util.TooManyListenersException;
 
 import javax.swing.BoxLayout;
@@ -322,11 +323,11 @@ public class VBrowser extends javax.swing.JFrame
                                     busyIcon = new JLabel();
                                     navigationToolBar.add(busyIcon);
                                     // compoundIcon.add(busyIcon);
-                                    // busyIcon.setIcon(IconRenderer.getIcon("default/vle_animate48.gif"));
+                                    // busyIcon.setIcon(IconRenderer.getIcon("menu/vle_animate48.gif"));
 
-                                    // busyIcon.setIcon(IconProvider.getDefault().getAnimatedIcon("default/vle_animated_blue32.gif"));
-                                    busyIcon.setIcon(loadIcon("default/vle_animated_blue32.gif"));
-                                    busyIcon.setDisabledIcon(loadIcon("default/vle_animated_blue_disabled32.gif"));
+                                    // busyIcon.setIcon(IconProvider.getDefault().getAnimatedIcon("menu/vle_animated_blue32.gif"));
+                                    busyIcon.setIcon(loadIcon("menu/vle_animated_blue32.gif"));
+                                    busyIcon.setDisabledIcon(loadIcon("menu/vle_animated_blue_disabled32.gif"));
                                     // busyIcon.setBorder(new
                                     // EtchedBorder(EtchedBorder.LOWERED));
                                     busyIcon.setEnabled(false);
@@ -523,7 +524,10 @@ public class VBrowser extends javax.swing.JFrame
 
     private Icon loadIcon(String urlstr)
     {
-        return new ImageIcon(getClass().getClassLoader().getResource(urlstr)); 
+        URL imgUrl = getClass().getClassLoader().getResource(urlstr);
+        if (imgUrl==null)
+            return null; 
+        return new ImageIcon(imgUrl); 
     }
 
     private JMenuBar createMenuBar()
