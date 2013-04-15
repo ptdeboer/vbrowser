@@ -114,7 +114,7 @@
     -->
     <target name="vrsfactory-dist-install" depends="vrsfactory-dist" description="install libraries">
         <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
-        <mkdir dir="${project.doc}" />
+
         <!-- install in lib/plugins/  -->
         <mkdir dir="${project.dist.lib}/plugins" />
 
