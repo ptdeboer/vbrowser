@@ -29,8 +29,8 @@ import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vfs.VFSFactory;
 import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 
 
 /**

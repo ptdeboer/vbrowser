@@ -27,7 +27,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import nl.esciencecenter.ptk.util.Wildcard2Regex;
-import nl.nlesc.vlet.vfs.VFSNode;
+import nl.nlesc.vlet.vrs.vfs.VFSNode;
 
 /**
  * java.io.FileFilter compatible NodeFilter. Use by VDir.list(...) methods.

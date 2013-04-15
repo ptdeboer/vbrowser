@@ -42,11 +42,11 @@ import nl.nlesc.vlet.exception.VlServiceMismatchException;
 import nl.nlesc.vlet.exception.VlUnsupportedSchemeException;
 import nl.nlesc.vlet.util.PluginLoader;
 import nl.nlesc.vlet.util.PluginLoader.PluginInfo;
-import nl.nlesc.vlet.vdriver.vrs.http.HTTPFactory;
-import nl.nlesc.vlet.vdriver.vrs.http.HTTPSFactory;
-import nl.nlesc.vlet.vfs.VFileSystem;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.MyVLe;
+import nl.nlesc.vlet.vrs.vdriver.http.HTTPFactory;
+import nl.nlesc.vlet.vrs.vdriver.http.HTTPSFactory;
+import nl.nlesc.vlet.vrs.vfs.VFileSystem;
+import nl.nlesc.vlet.vrs.vrms.MyVLe;
 
 /**
  * The VRS ResourceSystem and FileSystem factory registry. 
@@ -70,9 +70,9 @@ import nl.nlesc.vlet.vrms.MyVLe;
  * @see nl.nlesc.vlet.vrs.VRSFactory
  * @see nl.nlesc.vlet.vrs.VResourceSystem
  * @see nl.nlesc.vlet.vrs.VNode
- * @see nl.nlesc.vlet.vfs.VFileSystem
- * @see nl.nlesc.vlet.vfs.VFSFactory
- * @see nl.nlesc.vlet.vfs.VFSNode
+ * @see nl.nlesc.vlet.vrs.vfs.VFileSystem
+ * @see nl.nlesc.vlet.vrs.vfs.VFSFactory
+ * @see nl.nlesc.vlet.vrs.vfs.VFSNode
  * @author P.T. de Boer
  */
 final public class Registry

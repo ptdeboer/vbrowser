@@ -31,12 +31,12 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.util.bdii.BdiiService;
 import nl.nlesc.vlet.util.bdii.ServiceInfo;
-import nl.nlesc.vlet.vfs.VRSTransferManager;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.io.VInputStreamProducer;
 import nl.nlesc.vlet.vrs.io.VOutputStreamProducer;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
+import nl.nlesc.vlet.vrs.vfs.VRSTransferManager;
 
 
 /** 
@@ -47,7 +47,7 @@ import nl.nlesc.vlet.vrs.io.VStreamWritable;
  * anywhere on the grid.
  * First create your local VRS handler object which interacts with the VRS services.
  * 
- * @see nl.nlesc.vlet.vfs.VFSClient VFSClient for VFS methods 
+ * @see nl.nlesc.vlet.vrs.vfs.VFSClient VFSClient for VFS methods 
  * 
  * @author P.T. de Boer 
  */
