@@ -15,10 +15,10 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors.net;
+package nl.nlesc.vlet.vrs.vdriver.infors.net;
 
 import java.io.IOException;
 import java.net.InetAddress;

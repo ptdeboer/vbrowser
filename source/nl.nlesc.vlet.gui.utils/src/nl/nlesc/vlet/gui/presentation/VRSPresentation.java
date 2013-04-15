@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.presentation;
@@ -44,9 +44,9 @@ import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SOURCE_URL;
 import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_STATUS;
 
 import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
-import nl.nlesc.vlet.vfs.VFS;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.vfs.VFS;
 
 /** 
  * Factory class for UIPresentation of VRS Nodes. 

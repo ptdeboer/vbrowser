@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.util;
@@ -52,21 +52,15 @@ public class PluginLoader
     
 	// === Class === //
 
-    public static final String PLUGIN_ENABLED_PROP = "plugin.enabled";
-    
-    public static final String PLUGIN_DEPENDENCIES_PROP = "plugin.dependencies";
-    
-    public static final String VDRIVER_NAME_PROP = "vdriver.name";
-
-    public static final String VDRIVER_PACKAGE_PROP = "vdriver.package";
-
-    public static final String VDRIVER_FACTORY_PROP = "vdriver.factory";
-    
-    public static final String VIEWER_NAME_PROP = "viewer.name";
-
+    public static final String PLUGIN_ENABLED_PROP       = "plugin.enabled";
+    public static final String PLUGIN_DEPENDENCIES_PROP  = "plugin.dependencies";
+    public static final String VRSFACTORY_NAME_PROP    = "vrsfactory.name";
+    public static final String VRSFACTORY_PACKAGE_PROP = "vrsfactory.package";
+    public static final String VRSFACTORY_FACTORY_PROP = "vrsfactory.factory";
+    public static final String VRSFACTROY_IS_VDRIVER   = "vrsfactory.isvdriver";
+    public static final String VIEWER_NAME_PROP    = "viewer.name";
     public static final String VIEWER_PACKAGE_PROP = "viewer.package";
-    
-    public static final String VIEWER_CLASS_PROP = "viewer.mainclass";
+    public static final String VIEWER_CLASS_PROP   = "viewer.mainclass";
 
 
 	/** default class object */
@@ -149,7 +143,8 @@ public class PluginLoader
 		Properties pluginProps = readPluginProps(localPath);
 
 		info.classLoader = classLoader;
-		info.className = subdirName; // default use subdir name as VRSFactory class name:
+		// default use subdir name as VRSFactory class name. plugin.prop overrides this. 
+		info.className = subdirName; 
 		info.isValid = false;
 		info.isViewer=false; 
 		info.enabled=true; 
@@ -157,9 +152,9 @@ public class PluginLoader
 		if (pluginProps != null)
 		{
 		    // check VDriver: 
-            String pluginClass = pluginProps.getProperty(VDRIVER_FACTORY_PROP);
-            String name = pluginProps.getProperty(VDRIVER_NAME_PROP);
-            String packageName = pluginProps.getProperty(VDRIVER_PACKAGE_PROP);
+            String pluginClass = pluginProps.getProperty(VRSFACTORY_FACTORY_PROP);
+            String name = pluginProps.getProperty(VRSFACTORY_NAME_PROP);
+            String packageName = pluginProps.getProperty(VRSFACTORY_PACKAGE_PROP);
             String enabledStr=pluginProps.getProperty(PLUGIN_ENABLED_PROP);
             String depStr=pluginProps.getProperty(PLUGIN_DEPENDENCIES_PROP);
             StringList deps=null;

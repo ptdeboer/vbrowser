@@ -15,10 +15,10 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors.net;
+package nl.nlesc.vlet.vrs.vdriver.infors.net;
 
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
@@ -28,10 +28,10 @@ import java.util.Map;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.nlesc.vlet.vrs.infors.net.testers.GFTPTester;
-import nl.nlesc.vlet.vrs.infors.net.testers.HTTPSTester;
-import nl.nlesc.vlet.vrs.infors.net.testers.HTTPTester;
-import nl.nlesc.vlet.vrs.infors.net.testers.SSHTester;
+import nl.nlesc.vlet.vrs.vdriver.infors.net.testers.GFTPTester;
+import nl.nlesc.vlet.vrs.vdriver.infors.net.testers.HTTPSTester;
+import nl.nlesc.vlet.vrs.vdriver.infors.net.testers.HTTPTester;
+import nl.nlesc.vlet.vrs.vdriver.infors.net.testers.SSHTester;
 
 public class PortInfo
 {

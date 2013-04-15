@@ -15,18 +15,18 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors.net;
+package nl.nlesc.vlet.vrs.vdriver.infors.net;
 
 
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
-import nl.nlesc.vlet.vrs.infors.CompositeServiceInfoNode;
-import nl.nlesc.vlet.vrs.infors.InfoConstants;
+import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
+import nl.nlesc.vlet.vrs.vdriver.infors.InfoConstants;
 
 
 public class HostInfoNode extends CompositeServiceInfoNode<VNode>

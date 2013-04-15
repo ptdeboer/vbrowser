@@ -15,10 +15,10 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors;
+package nl.nlesc.vlet.vrs.vdriver.infors;
 
 import java.io.File;
 
@@ -32,12 +32,12 @@ import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.ConfigManager;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.infors.net.NetworkNode;
+import nl.nlesc.vlet.vrs.vdriver.infors.net.NetworkNode;
+import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 
 
 public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEditable

@@ -15,10 +15,10 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors.grid;
+package nl.nlesc.vlet.vrs.vdriver.infors.grid;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.Presentation;
@@ -27,10 +27,10 @@ import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.LogicalResourceNode;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrms.LogicalResourceNode;
 
 
 /**

@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.vbrowser;
@@ -47,9 +47,6 @@ import nl.nlesc.vlet.gui.editors.ResourceEditor;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNodeFactory;
 import nl.nlesc.vlet.gui.util.proxy.GridProxyDialog;
-import nl.nlesc.vlet.vfs.VFS;
-import nl.nlesc.vlet.vfs.VFSTransfer;
-import nl.nlesc.vlet.vfs.VRSTransferManager;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ResourceEvent;
 import nl.nlesc.vlet.vrs.ServerInfo;
@@ -58,6 +55,9 @@ import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.ui.ICopyInteractor;
+import nl.nlesc.vlet.vrs.vfs.VFS;
+import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
+import nl.nlesc.vlet.vrs.vfs.VRSTransferManager;
 
 
 /**

@@ -15,29 +15,37 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors.net.testers;
+package nl.nlesc.vlet.vrs.vdriver.infors.net.testers;
 
-import nl.nlesc.vlet.vrs.infors.net.ProtocolTester;
+import nl.nlesc.vlet.vrs.vdriver.infors.net.ProtocolTester;
 
 /**
- * SSH tester. 
+ * HTTP tester. 
  */
-public class SSHTester extends ProtocolTester
+public class HTTPTester extends ProtocolTester
 {
-
-    public SSHTester(String scheme)
+    protected HTTPTester(String name, boolean isSSL)
     {
-        super("SSHTester",false); // initial socket is NOT SSL!
-        this.setScheme(scheme); 
+        super(name,isSSL); 
     }
+
+    public HTTPTester()
+    {
+        super("HTTPTester",false); 
+    }
+
+    public String getScheme()
+    {
+        return "http"; 
+    }
+    
     
     protected byte[] getReponseChallenge()
     {
-        // Isnot correct. 
-        return "HELO SSH\n".getBytes();  
+        return "GET / HTTP/1.0\n\n\n".getBytes();  
     }
     
     // Check HTTP/HTML response: any is ok. 
@@ -47,11 +55,11 @@ public class SSHTester extends ProtocolTester
         {
             String string=new String(bytes); 
         
-            if (string.contains("OpenSSH"))
+            if (string.contains("html") || string.contains("HTML"))
                 return true;
-                    
-            if (string.contains("SSH"))
-                return true;
+            
+            if (string.contains("text/html")) 
+                return true; 
         
             return false;
         }
@@ -59,7 +67,7 @@ public class SSHTester extends ProtocolTester
         {
             setException(t); 
             return false; 
-        }  
+        }
     }
  
     

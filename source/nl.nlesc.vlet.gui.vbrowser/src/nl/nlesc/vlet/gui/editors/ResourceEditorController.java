@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.editors;
@@ -61,11 +61,11 @@ import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.panels.fields.IAttributeField;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
-import nl.nlesc.vlet.vfs.VFS;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vfs.VFS;
 
 
 public class ResourceEditorController implements ActionListener, WindowListener, ITaskSource

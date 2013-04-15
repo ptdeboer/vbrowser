@@ -15,37 +15,29 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors.net.testers;
+package nl.nlesc.vlet.vrs.vdriver.infors.net.testers;
 
-import nl.nlesc.vlet.vrs.infors.net.ProtocolTester;
+import nl.nlesc.vlet.vrs.vdriver.infors.net.ProtocolTester;
 
 /**
- * GFTP tester. 
+ * SSH tester. 
  */
-public class GFTPTester extends ProtocolTester
+public class SSHTester extends ProtocolTester
 {
-    protected GFTPTester(String name, boolean isSSL)
-    {
-        super(name,isSSL); 
-    }
 
-    public GFTPTester()
+    public SSHTester(String scheme)
     {
-        super("GFTPTester",false); // initial socket is NOT SSL! 
+        super("SSHTester",false); // initial socket is NOT SSL!
+        this.setScheme(scheme); 
     }
-
-    public String getScheme()
-    {
-        return "gftp"; 
-    }
-    
     
     protected byte[] getReponseChallenge()
     {
-        return "HELO GFTP\n".getBytes();  
+        // Isnot correct. 
+        return "HELO SSH\n".getBytes();  
     }
     
     // Check HTTP/HTML response: any is ok. 
@@ -55,13 +47,10 @@ public class GFTPTester extends ProtocolTester
         {
             String string=new String(bytes); 
         
-            if ( (string.contains("GridFTP")) || (string.contains("gridftp")) )
+            if (string.contains("OpenSSH"))
                 return true;
-            
-            // response to "HELO" command :-) 
-            if (string.contains("Must perform GSSAPI"))
-                return true; 
-            if (string.contains("gridftp"))
+                    
+            if (string.contains("SSH"))
                 return true;
         
             return false;
@@ -70,7 +59,7 @@ public class GFTPTester extends ProtocolTester
         {
             setException(t); 
             return false; 
-        }
+        }  
     }
  
     

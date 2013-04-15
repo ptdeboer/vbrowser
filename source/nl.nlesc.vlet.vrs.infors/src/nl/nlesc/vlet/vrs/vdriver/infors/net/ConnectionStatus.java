@@ -15,21 +15,34 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors.net.testers;
+package nl.nlesc.vlet.vrs.vdriver.infors.net;
 
-public class HTTPSTester extends HTTPTester
+public enum ConnectionStatus
 {
-    public HTTPSTester()
+    UNKNOWN("Unknown"),
+    CONNECTING("Connecting"),
+    CONNECTED("Connected"),
+    REFUSED("Refused"),
+    ROUTE_BLOCKED("No Route or Route Blocked"), // ICMP NO ROUTE TO HOST !
+    TIMED_OUT("Timed Out");
+    
+    private String statusMessage;  
+    
+    private ConnectionStatus(String message)
     {
-        super("HTTPSTester",true);
+       this.statusMessage=message; 
     }
     
-    public String getScheme()
+    public String getMessage()
     {
-        return "https"; 
+        return statusMessage; 
     }
-
+    
+    public String toString()
+    {
+        return super.toString()+"("+statusMessage+")"; 
+    }
 }

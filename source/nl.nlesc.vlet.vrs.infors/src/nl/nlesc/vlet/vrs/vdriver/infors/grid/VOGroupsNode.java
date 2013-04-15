@@ -15,10 +15,10 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors.grid;
+package nl.nlesc.vlet.vrs.vdriver.infors.grid;
 
 import java.util.ArrayList;
 
@@ -37,12 +37,12 @@ import nl.nlesc.vlet.util.bdii.BdiiService;
 import nl.nlesc.vlet.util.bdii.ServiceInfo;
 import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.ResourceFolder;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.infors.CompositeServiceInfoNode;
-import nl.nlesc.vlet.vrs.infors.InfoConstants;
+import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
+import nl.nlesc.vlet.vrs.vdriver.infors.InfoConstants;
+import nl.nlesc.vlet.vrs.vrms.ResourceFolder;
 
 public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
 {

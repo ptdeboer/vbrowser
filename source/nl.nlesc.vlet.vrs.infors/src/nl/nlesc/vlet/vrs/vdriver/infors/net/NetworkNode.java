@@ -15,13 +15,13 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors.net;
+package nl.nlesc.vlet.vrs.vdriver.infors.net;
 
-import static nl.nlesc.vlet.vrs.infors.InfoConstants.ATTR_NETWORK_ADRESS;
-import static nl.nlesc.vlet.vrs.infors.InfoConstants.NETWORK_INFO;
+import static nl.nlesc.vlet.vrs.vdriver.infors.InfoConstants.ATTR_NETWORK_ADRESS;
+import static nl.nlesc.vlet.vrs.vdriver.infors.InfoConstants.NETWORK_INFO;
 
 import java.net.UnknownHostException;
 
@@ -37,7 +37,7 @@ import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.infors.CompositeServiceInfoNode;
+import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
 
 public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEditable
 {

@@ -49,7 +49,7 @@ import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vrms.MyVLe;
 
 /**
- * The VRS ResourceSystem and FileSystem factory registry. 
+ * The VRS ResourceSystem and FileSystem factory registry.
  * <p>
  * Main registry which holds the registered schemes and associated VRSFactory
  * instances. Per JVM there should be only one Registry. All access to this
@@ -63,19 +63,19 @@ import nl.nlesc.vlet.vrs.vrms.MyVLe;
  * <p>
  * Important: This Class also sets the URL.setURLStreamHandlerFactory so that
  * ALL Supported VRLs can be used as URL. This way the default Java Resource
- * loaders and streamreaders will use the (default) Registry as stream handlers
- * ! <br>
+ * loaders and streamreaders will use the (default) Registry as stream handlers ! <br>
  * 
  * @see VRSContext
  * @see nl.nlesc.vlet.vrs.VRSFactory
  * @see nl.nlesc.vlet.vrs.VResourceSystem
  * @see nl.nlesc.vlet.vrs.VNode
- * @see nl.nlesc.vlet.vrs.vfs.VFileSystem
  * @see nl.nlesc.vlet.vrs.vfs.VFSFactory
+ * @see nl.nlesc.vlet.vrs.vfs.VFileSystem
  * @see nl.nlesc.vlet.vrs.vfs.VFSNode
+ * 
  * @author P.T. de Boer
  */
-final public class Registry
+public final class Registry  // todo: change to vrs protected class.
 {
     private static ClassLogger logger;
 
@@ -204,24 +204,18 @@ final public class Registry
         {
             logger.infoPrintf("Initializing default core vdrivers=%s\n", str);
 
-            // Core VDrivers which must be located lib/vdrivers or other global
-            // lib dir.
-            // Must not be located in lib/plugins;
-
+            // Core VDrivers. Typically located in lib/vdrivers.
+            // Are not loaded in a private class loader, but directly
+            // accessable.
             registerVRSDriverClassNoError(currentLoader, HTTPFactory.class.getCanonicalName());
             registerVRSDriverClassNoError(currentLoader, HTTPSFactory.class.getCanonicalName());
-            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.infors.InfoRSFactory");
-            registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vdriver.vfs.localfs.LocalFSFactory");
-            //registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory");
+            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.vdriver.infors.InfoRSFactory");
+            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory");
+            // registerVRSDriverClassNoError(currentLoader,
+            // "nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory");
 
             // === Others: ===
-
-            // Core Implementations: might not work from applet/grid service
-            // context !
             // registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.jcraft.ssh.SftpFSFactory");
-
-            // Internal VFS classes:
-            // Dummy factory which initializes Globus Grid bindings!
 
             // All Globus dependencies are in a plugin themselves.
             // registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vrs.globusrs.GlobusRSFactory");
@@ -255,7 +249,7 @@ final public class Registry
         }
 
         // now add VRS plugins:
-        addLocalVRSPlugins();
+        loadVRSPlugins();
         //
         // Initialize URL Stream Factory AFTER loading VRS plugins
         //
@@ -288,7 +282,7 @@ final public class Registry
     }
 
     /** Read local plugin directory (Java File!) and register them */
-    private void addLocalVRSPlugins()
+    private void loadVRSPlugins()
     {
         VRL plugDir = VletConfig.getInstallationPluginDir();
         logger.debugPrintf(">>> Load plugins from:%s\n", plugDir);
@@ -868,11 +862,6 @@ final public class Registry
     // ===========================================================================
     // Event handlers
     // ===========================================================================
-
-    public void fireEvent(ResourceEvent event)
-    {
-        this.resourceEventNotifier.fire(event);
-    }
 
     public ResourceEventNotifier getResourceEventNotifier()
     {

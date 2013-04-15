@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.vrs.vfs;
@@ -1509,7 +1509,7 @@ public final class VRSTransferManager
 	{
 		// Asynchronous Update ! 
 		ResourceEvent event = ResourceEvent.createChildAddedEvent(parent,child); 
-		vrsContext.getRegistry().fireEvent(event);
+		vrsContext.getResourceEventNotifier().fire(event);
 	}
 
 	// Asynchronous updates !
@@ -1517,7 +1517,7 @@ public final class VRSTransferManager
 	{
 		// Asynchronous Update ! 
 		ResourceEvent event = ResourceEvent.createChildsAddedEvent(parent,childs); 
-		vrsContext.getRegistry().fireEvent(event);
+		vrsContext.getResourceEventNotifier().fire(event);
 	}
 	
     // Asynchronous updates !
@@ -1525,7 +1525,7 @@ public final class VRSTransferManager
     {
         // Asynchronous Update ! 
         ResourceEvent event = ResourceEvent.createDeletedEvent(node);  
-        vrsContext.getRegistry().fireEvent(event);
+        vrsContext.getResourceEventNotifier().fire(event);
     }
     
     // Asynchronous updates !
@@ -1533,7 +1533,7 @@ public final class VRSTransferManager
     {
         // Asynchronous Update ! 
         ResourceEvent event = ResourceEvent.createDeletedEvent(node,parent);  
-        vrsContext.getRegistry().fireEvent(event);
+        vrsContext.getResourceEventNotifier().fire(event);
     }
 
     /** 

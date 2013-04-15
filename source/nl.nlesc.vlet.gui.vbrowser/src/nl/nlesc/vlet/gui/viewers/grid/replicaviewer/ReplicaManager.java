@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.viewers.grid.replicaviewer;
@@ -30,15 +30,15 @@ import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.util.bdii.StorageArea;
-import nl.nlesc.vlet.vfs.VFSClient;
-import nl.nlesc.vlet.vfs.VFSNode;
-import nl.nlesc.vlet.vfs.VFile;
-import nl.nlesc.vlet.vfs.VLogicalFileAlias;
-import nl.nlesc.vlet.vfs.VReplicatable;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.io.VResizable;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.nlesc.vlet.vrs.vfs.VLogicalFileAlias;
+import nl.nlesc.vlet.vrs.vfs.VReplicatable;
 
 
 public class ReplicaManager

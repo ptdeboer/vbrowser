@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.viewers;
@@ -40,13 +40,13 @@ import nl.nlesc.vlet.actions.ActionMenuConstants;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
-import nl.nlesc.vlet.vfs.VFS;
-import nl.nlesc.vlet.vfs.VFSClient;
-import nl.nlesc.vlet.vfs.VFSNode;
-import nl.nlesc.vlet.vfs.VFileSystem;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.io.VShellChannel;
 import nl.nlesc.vlet.vrs.io.VShellChannelCreator;
+import nl.nlesc.vlet.vrs.vfs.VFS;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.uva.vlet.util.vlterm.VLTerm;
 
 public class VLTermStarter extends ViewerPlugin implements ActionListener

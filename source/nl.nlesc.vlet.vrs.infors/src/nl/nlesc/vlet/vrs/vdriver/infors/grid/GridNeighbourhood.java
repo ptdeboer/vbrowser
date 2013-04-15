@@ -15,10 +15,10 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors.grid;
+package nl.nlesc.vlet.vrs.vdriver.infors.grid;
 
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringList;
@@ -27,13 +27,13 @@ import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.ConfigManager;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.infors.CompositeServiceInfoNode;
-import nl.nlesc.vlet.vrs.infors.InfoConstants;
-import nl.nlesc.vlet.vrs.infors.net.NetworkNode;
+import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
+import nl.nlesc.vlet.vrs.vdriver.infors.InfoConstants;
+import nl.nlesc.vlet.vrs.vdriver.infors.net.NetworkNode;
+import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 
 public class GridNeighbourhood extends CompositeServiceInfoNode<VNode> 
     implements VEditable // editable methods already defined in super class hierarchy  

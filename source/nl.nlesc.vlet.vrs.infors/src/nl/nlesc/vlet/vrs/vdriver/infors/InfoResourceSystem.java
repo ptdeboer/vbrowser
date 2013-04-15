@@ -15,10 +15,10 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors;
+package nl.nlesc.vlet.vrs.vdriver.infors;
 
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -29,7 +29,7 @@ import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VResourceSystem;
-import nl.nlesc.vlet.vrs.infors.grid.GridNeighbourhood;
+import nl.nlesc.vlet.vrs.vdriver.infors.grid.GridNeighbourhood;
 
 public class InfoResourceSystem extends CompositeServiceInfoNode<VNode> implements VResourceSystem
 {

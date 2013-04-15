@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.aboutrs;
@@ -32,12 +32,12 @@ import nl.nlesc.vlet.gui.Messages;
 import nl.nlesc.vlet.gui.viewers.ViewerInfo;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry.ViewerList;
-import nl.nlesc.vlet.vfs.VFSFactory;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSFactory;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
+import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 
 public class AboutNode extends VNode implements VStreamReadable
 {

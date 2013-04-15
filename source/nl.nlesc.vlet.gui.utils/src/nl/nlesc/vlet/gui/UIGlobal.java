@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui;
@@ -41,16 +41,16 @@ import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.dialog.SimpleDialog;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
 import nl.nlesc.vlet.net.ssl.CertificateStore;
-import nl.nlesc.vlet.tasks.VRSTaskWatcher;
 import nl.nlesc.vlet.util.grid.GridProxy;
-import nl.nlesc.vlet.vfs.VFSClient;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.ConfigManager;
 import nl.nlesc.vlet.vrs.Registry;
 import nl.nlesc.vlet.vrs.ResourceEvent;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.tasks.VRSTaskWatcher;
 import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 
 
 

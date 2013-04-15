@@ -15,17 +15,17 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors;
+package nl.nlesc.vlet.vrs.vdriver.infors;
 
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlInternalError;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.LogicalFolderNode;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrms.LogicalFolderNode;
 
 /** 
  * Non generic super class for Grid Info Nodes 

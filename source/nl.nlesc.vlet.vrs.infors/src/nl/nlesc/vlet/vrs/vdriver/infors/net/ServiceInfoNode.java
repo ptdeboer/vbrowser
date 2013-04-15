@@ -15,15 +15,15 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.nlesc.vlet.vrs.infors.net;
+package nl.nlesc.vlet.vrs.vdriver.infors.net;
 
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.infors.grid.InfoNode;
+import nl.nlesc.vlet.vrs.vdriver.infors.grid.InfoNode;
 
 public class ServiceInfoNode extends InfoNode
 {
