@@ -25,7 +25,6 @@ import java.io.OutputStream;
 
 import nl.nlesc.vlet.exception.VlException;
 
-
 /**
  * VStreamAppendable extends VStreamWritable by adding getOutputStream() method which 
  * which starts at the end of the resource.
@@ -41,7 +40,7 @@ public interface VStreamAppendable extends VStreamWritable
      * @return java.io.OutputStream object
      * @throws VlException
      */
-    public OutputStream getOutputStream(boolean append) throws IOException; 
+    public OutputStream createOutputStream(boolean append) throws IOException; 
 
     
 }

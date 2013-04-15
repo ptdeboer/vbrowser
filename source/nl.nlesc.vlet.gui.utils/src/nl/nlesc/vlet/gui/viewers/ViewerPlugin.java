@@ -481,7 +481,7 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
             VNode node = getVNode();
     
             if (node instanceof VStreamReadable)
-                return ((VStreamReadable) node).getInputStream();
+                return ((VStreamReadable) node).createInputStream();
             else
                 throw new ResourceTypeMismatchException("VRL is not streamreadable:" + location);
         }
@@ -499,7 +499,7 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
             VNode node = getVNode();
     
             if (node instanceof VStreamWritable)
-                return ((VStreamWritable) node).getOutputStream();
+                return ((VStreamWritable) node).createOutputStream();
             else
                 throw new ResourceTypeMismatchException("VRL is not stream writable:" + location);
         }

@@ -23,13 +23,13 @@ package nl.nlesc.vlet.vrs.io;
 import java.io.IOException;
 
 /**
- * Interface for resource which have a 'length'  
+ * Interface for resource which have a 'length'.  
  */
 public interface VSize
 {
     /**
      * Returns a resource's length, for example a file length. 
-     * Thw method could return '-1' for an unkown or dynamic resource. 
+     * 
      * @return resource length or -1 for unknown. 
      * @throws IOException
      */

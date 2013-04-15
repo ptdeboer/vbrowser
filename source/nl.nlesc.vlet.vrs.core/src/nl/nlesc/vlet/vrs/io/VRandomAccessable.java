@@ -22,11 +22,8 @@ package nl.nlesc.vlet.vrs.io;
 
 /**
  * Combination of VRandomReadable and VRandomWritable.
- *  
- * @author P.T. de Boer
  */
 public interface VRandomAccessable extends VRandomReadable,VRandomWritable
 {
-   
-
+    // 
 }

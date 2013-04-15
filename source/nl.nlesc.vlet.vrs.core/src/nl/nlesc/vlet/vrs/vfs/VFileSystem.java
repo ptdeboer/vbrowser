@@ -28,7 +28,6 @@ import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VResourceSystem;
 import nl.nlesc.vlet.vrs.io.VStreamProducer;
 
-
 /**
  * VFileSystem is a factory class for VFSNodes. 
  * Its purpose is to create new VFile or VDir objects. 
@@ -91,9 +90,9 @@ public interface VFileSystem extends VResourceSystem, VStreamProducer
     public VDir newDir(VRL dirVRL) throws VlException;
     
     // Explicit declaration from VInputStreamProducer
-    public InputStream openInputStream(VRL location) throws VlException; 
+    public InputStream createInputStream(VRL location) throws VlException; 
 
     // Explicit declaration from VOutputStreamProducer
-    public OutputStream openOutputStream(VRL location) throws VlException; 
+    public OutputStream createOutputStream(VRL location) throws VlException; 
 
 }

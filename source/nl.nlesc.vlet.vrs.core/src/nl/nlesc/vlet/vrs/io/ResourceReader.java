@@ -52,7 +52,7 @@ public class ResourceReader
         // implementation moved to generic StreamUtil: 
         try
         {
-            istr = source.getInputStream();
+            istr = source.createInputStream();
 
             if (istr==null)
                 return -1; 

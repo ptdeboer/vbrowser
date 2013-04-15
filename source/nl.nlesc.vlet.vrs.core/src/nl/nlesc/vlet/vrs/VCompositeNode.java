@@ -27,7 +27,6 @@ import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrl.VRL;
 
-
 /**
  * Super Class of all "Composite" Nodes. Extends VNode class by adding 
  * VComposite methods. 

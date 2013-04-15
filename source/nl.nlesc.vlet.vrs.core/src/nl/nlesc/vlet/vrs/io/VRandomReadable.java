@@ -27,8 +27,6 @@ import nl.nlesc.vlet.exception.VlException;
 
 /**
  * Random Readable interface. 
- *  
- * @author P.T. de Boer 
  */
 public interface VRandomReadable extends RandomReadable 
 {

@@ -177,12 +177,12 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         return GftpFileSystem._getModificationTime(getMlsxEntry());
     }
 
-    public InputStream getInputStream() throws IOException
+    public InputStream createInputStream() throws IOException
     {
         return gftpServer.createInputStream(this.getPath());
     }
 
-    public OutputStream getOutputStream() throws IOException
+    public OutputStream createOutputStream() throws IOException
     {
         return gftpServer.createOutputStream(this.getPath());
     }
@@ -202,7 +202,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         {
 
             // create outputstream to write to:
-            outps = getOutputStream();
+            outps = createOutputStream();
             outps.write(new byte[0]);
             outps.close();
             outps=null;

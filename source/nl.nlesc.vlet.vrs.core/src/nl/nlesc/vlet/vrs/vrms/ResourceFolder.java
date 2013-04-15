@@ -721,7 +721,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
 
     public static ResourceFolder readFromXMLStream(VRSContext context, VStreamReadable source) throws Exception
     {
-        InputStream stream = source.getInputStream();
+        InputStream stream = source.createInputStream();
         ResourceFolder node = readFromXMLStream(context, stream);
 
         if (node == null)
@@ -743,7 +743,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
 
     }
 
-    public InputStream getInputStream() throws IOException
+    public InputStream createInputStream() throws IOException
     {
         // outputstream to ByteArray
         ByteArrayOutputStream outps = new ByteArrayOutputStream(1024);

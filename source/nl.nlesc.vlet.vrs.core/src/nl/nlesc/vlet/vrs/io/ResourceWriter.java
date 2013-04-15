@@ -42,7 +42,7 @@ public class ResourceWriter
     {
         try
         {
-            OutputStream ostr = source.getOutputStream(); // do not append
+            OutputStream ostr = source.createOutputStream(); // do not append
             ostr.write(buffer, bufferOffset, nrOfBytes);
             
             try

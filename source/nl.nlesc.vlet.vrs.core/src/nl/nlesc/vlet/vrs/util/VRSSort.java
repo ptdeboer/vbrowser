@@ -26,7 +26,9 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.vrs.VNode;
 
-
+/**
+ * Sort VRSNodes. 
+ */
 public class VRSSort<Type> extends QSort<Type>
 {
 

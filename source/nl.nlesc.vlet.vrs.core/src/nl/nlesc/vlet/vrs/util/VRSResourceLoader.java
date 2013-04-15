@@ -95,7 +95,7 @@ public class VRSResourceLoader extends ResourceLoader
         
         if (node instanceof VStreamWritable)
         {
-            outps=((VStreamWritable) node).getOutputStream();
+            outps=((VStreamWritable) node).createOutputStream();
         }
         else
         {

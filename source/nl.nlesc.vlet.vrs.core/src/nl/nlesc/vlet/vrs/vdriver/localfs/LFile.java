@@ -328,7 +328,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         return true;
     }
 
-    public InputStream getInputStream() throws IOException
+    public InputStream createInputStream() throws IOException
     {
         try
         {
@@ -346,12 +346,12 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         }
     }
 
-    public OutputStream getOutputStream() throws IOException 
+    public OutputStream createOutputStream() throws IOException 
     {
-        return getOutputStream(false);
+        return createOutputStream(false);
     }
 
-    public OutputStream getOutputStream(boolean append) throws IOException 
+    public OutputStream createOutputStream(boolean append) throws IOException 
     {
         try
         {
@@ -477,7 +477,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
             {
                 if (algorithm.equalsIgnoreCase(types[i]))
                 {
-                    InputStream in = this.getInputStream();
+                    InputStream in = this.createInputStream();
                     algorithm = algorithm.toUpperCase();
                     return ChecksumUtil.calculateChecksum(in, algorithm);
                 }

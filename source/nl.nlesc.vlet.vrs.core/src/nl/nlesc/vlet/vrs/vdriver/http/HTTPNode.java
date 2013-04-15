@@ -188,7 +188,7 @@ public class HTTPNode extends VNode implements VStreamAccessable
         return VRS.HTTP_SCHEME; 
     }
 
-    public InputStream getInputStream() throws IOException
+    public InputStream createInputStream() throws IOException
     {
         return this.connection.getInputStream();
     }
@@ -287,7 +287,7 @@ public class HTTPNode extends VNode implements VStreamAccessable
         return null;   // no icon
     }
 
-    public OutputStream getOutputStream() throws IOException
+    public OutputStream createOutputStream() throws IOException
     {
         return this.connection.getOutputStream();
     }

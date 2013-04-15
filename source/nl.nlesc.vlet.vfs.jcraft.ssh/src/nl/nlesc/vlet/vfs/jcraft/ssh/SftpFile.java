@@ -152,7 +152,7 @@ public class SftpFile extends VFile implements VUnixFileAttributes,
     // ========================================================================
     
 
-    public InputStream getInputStream() throws IOException
+    public InputStream createInputStream() throws IOException
     {
         // redirect to server to synchronise file access:
         try
@@ -166,7 +166,7 @@ public class SftpFile extends VFile implements VUnixFileAttributes,
     }
 
 
-    public OutputStream getOutputStream() throws IOException
+    public OutputStream createOutputStream() throws IOException
     {
         try
         {
@@ -179,7 +179,7 @@ public class SftpFile extends VFile implements VUnixFileAttributes,
         } 
     }
     
-    public OutputStream getOutputStream(boolean append) throws IOException
+    public OutputStream createOutputStream(boolean append) throws IOException
     {
         try
         {
@@ -225,7 +225,7 @@ public class SftpFile extends VFile implements VUnixFileAttributes,
     {
         try
         {
-            OutputStream outps = getOutputStream();
+            OutputStream outps = createOutputStream();
             
             // must currently write in 32000 byte sized chunks
             int chunksize=sftpChunksize;  

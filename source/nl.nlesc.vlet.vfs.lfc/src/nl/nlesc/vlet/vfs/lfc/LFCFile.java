@@ -264,7 +264,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         return getWrapperDesc().isWritableByUser();
     }
 
-    public InputStream getInputStream() throws IOException
+    public InputStream createInputStream() throws IOException
     {
         // fetch or create TaskMonitor
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor(
@@ -279,7 +279,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         }
     }
 
-    public OutputStream getOutputStream() throws IOException
+    public OutputStream createOutputStream() throws IOException
     {
         // fetch or create TaskMonitor
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor(

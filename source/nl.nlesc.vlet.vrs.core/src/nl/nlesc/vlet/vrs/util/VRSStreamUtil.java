@@ -126,7 +126,7 @@ public class VRSStreamUtil extends StreamUtil
         InputStream istr=null;
         if (sourceNode instanceof VStreamReadable)
         {
-            istr = ((VStreamReadable) sourceNode).getInputStream(); // read stream
+            istr = ((VStreamReadable) sourceNode).createInputStream(); // read stream
             // bugs,bugs,bugs
             if (istr==null)
                 throw new IOException("Read Error: source returned NULL InputStream:"+sourceNode); 
@@ -144,7 +144,7 @@ public class VRSStreamUtil extends StreamUtil
         OutputStream ostr = null;  
         if (destNode instanceof VStreamWritable)
         {
-            ostr = ((VStreamWritable)destNode).getOutputStream();  // create new empty file
+            ostr = ((VStreamWritable)destNode).createOutputStream();  // create new empty file
             // bugs,bugs,bugs
             if (ostr==null)
                 throw new IOException("Write Error: destination returned NULL OutputStream to write to:"+destNode); 

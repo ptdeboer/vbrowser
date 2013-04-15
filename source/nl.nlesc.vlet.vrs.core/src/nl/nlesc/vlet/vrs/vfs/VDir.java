@@ -593,7 +593,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
         try
         {
             VFile file=getFileSystem().newFile(resolvePath(fileName));
-            return file.getOutputStream(); 
+            return file.createOutputStream(); 
         }
         catch (IOException e)
         {

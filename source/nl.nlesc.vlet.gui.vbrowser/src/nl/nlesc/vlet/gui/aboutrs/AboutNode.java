@@ -52,7 +52,7 @@ public class AboutNode extends VNode implements VStreamReadable
 		super(resResourceSystem.getVRSContext(), vrl);
 	}
 
-	public InputStream getInputStream() throws IOException 
+	public InputStream createInputStream() throws IOException 
 	{
 	    byte[] bytes;
 	    

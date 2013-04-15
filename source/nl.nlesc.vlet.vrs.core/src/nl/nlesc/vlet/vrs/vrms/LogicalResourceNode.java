@@ -500,7 +500,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
 
         try
         {
-            OutputStream outp = ((VStreamWritable) storageNode).getOutputStream();
+            OutputStream outp = ((VStreamWritable) storageNode).createOutputStream();
 
             // BUUGGY this.properties.storeToXML(outp,"VRS.LinkNode");
             // if (useXML)
@@ -1037,7 +1037,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         {
             try
             {
-                inps = ((VStreamReadable) vnode).getInputStream();
+                inps = ((VStreamReadable) vnode).createInputStream();
                 XMLData data = getXMLData();
                 resourceAttributes = data.parseVAttributeSet(inps);
             }
@@ -1255,18 +1255,18 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         return list.toArray();
     }
 
-    public InputStream getInputStream() throws IOException
+    public InputStream createInputStream() throws IOException
     {
         if (this.storageNode instanceof VStreamReadable)
-            return ((VStreamReadable) this.storageNode).getInputStream();
+            return ((VStreamReadable) this.storageNode).createInputStream();
 
         throw new IOException("Couldn't get InputStream from:" + storageNode);
     }
 
-    public OutputStream getOutputStream() throws IOException
+    public OutputStream createOutputStream() throws IOException
     {
         if (this.storageNode instanceof VStreamWritable)
-            return ((VStreamWritable) this.storageNode).getOutputStream();
+            return ((VStreamWritable) this.storageNode).createOutputStream();
 
         throw new IOException("Couldn't get InputStream from:" + storageNode);
     }

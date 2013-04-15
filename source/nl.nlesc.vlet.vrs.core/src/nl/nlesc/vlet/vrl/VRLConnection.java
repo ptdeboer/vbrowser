@@ -75,7 +75,7 @@ public class VRLConnection extends URLConnection
         {
             try
             {
-                return ((VStreamReadable) node).getInputStream();
+                return ((VStreamReadable) node).createInputStream();
             }
             catch (Exception e)
             {
@@ -104,7 +104,7 @@ public class VRLConnection extends URLConnection
         {
             try
             {
-                return ((VStreamWritable) node).getOutputStream();
+                return ((VStreamWritable) node).createOutputStream();
             }
             catch (Exception e)
             {

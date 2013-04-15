@@ -22,8 +22,6 @@ package nl.nlesc.vlet.vrs.io;
 
 /** 
  * Composite Interface which combines VInputStreamProducer and VOutputStreamProducer.
- * 
- * @author Piter T. de Boer
  */
 public interface VStreamProducer extends VInputStreamProducer,VOutputStreamProducer
 {

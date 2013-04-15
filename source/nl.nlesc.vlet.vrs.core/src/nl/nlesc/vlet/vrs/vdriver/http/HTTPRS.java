@@ -93,28 +93,23 @@ public class HTTPRS implements VResourceSystem, VStreamProducer
         return new HTTPNode(this, location);
     }
 
-    public InputStream openInputStream(VRL location) throws VlException
+    public InputStream createInputStream(VRL location) throws VlException
     {
         try
         {
-            return new HTTPNode(this, location).getInputStream();
+            return new HTTPNode(this, location).createInputStream();
         }
         catch (IOException e)
         {
             throw new VlIOException(e); 
         }
     }
-
+    
     public OutputStream createOutputStream(VRL location) throws VlException
-    {
-        return openOutputStream(location);
-    }
-
-    public OutputStream openOutputStream(VRL location) throws VlException
     {
         try
         {
-            return new HTTPNode(this, location).getOutputStream();
+            return new HTTPNode(this, location).createOutputStream();
         }
         catch (IOException e)
         {

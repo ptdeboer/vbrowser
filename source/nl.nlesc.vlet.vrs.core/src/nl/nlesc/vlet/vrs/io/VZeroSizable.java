@@ -33,7 +33,6 @@ import java.io.IOException;
  * This method can be used when the meta data attributes of the resource
  * needs to be kept, but a new (empty) resource needs to be created before writing to it. 
  */
-
 public interface VZeroSizable 
 {
     /**

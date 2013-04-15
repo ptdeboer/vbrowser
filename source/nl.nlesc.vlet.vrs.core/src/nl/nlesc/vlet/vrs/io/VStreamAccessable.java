@@ -21,11 +21,9 @@
 package nl.nlesc.vlet.vrs.io;
 
 /**
- * Combined interface class for VStreamReadable and VStreamWritable 
- * 
- * @author P.T. de Boer
+ * Combined interface class for VStreamReadable and VStreamWritable.
  */
 public interface VStreamAccessable extends VStreamReadable, VStreamWritable
 {
-
+    // 
 }

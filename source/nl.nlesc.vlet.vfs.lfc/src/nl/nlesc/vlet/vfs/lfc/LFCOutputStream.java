@@ -53,7 +53,7 @@ public class LFCOutputStream extends OutputStream
         this.replica = replica;
 
         info("Opening OutputStream to replica:" + replica);
-        this.outputStream = replica.getOutputStream();
+        this.outputStream = replica.createOutputStream();
         this.isNewReplica = isNewRepl;
         this.monitor = monitor;
         debug("Replica should be created in: " + replica.getVRL());

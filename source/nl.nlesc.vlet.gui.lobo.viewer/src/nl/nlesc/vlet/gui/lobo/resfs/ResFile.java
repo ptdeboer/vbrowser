@@ -41,7 +41,7 @@ public class ResFile extends VNode implements VRandomReadable,VStreamReadable
 		super(resResourceSystem.getVRSContext(), vrl);
 	}
 
-	public InputStream getInputStream() throws IOException 
+	public InputStream createInputStream() throws IOException 
 	{
 		URL url=getVRL().toURL();
     	String host = url.getHost();

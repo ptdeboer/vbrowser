@@ -36,14 +36,12 @@ public interface VStreamWritable
      * Create OutputStream to this file/object to write to. <p>
      * This method will start to write at the beginning of the file. 
      * File length is not decreased. Old data is just overwritten! 
-     * Appending is currently not supported since the Jargon (SRB) implementation 
-     * doesn't support this.
      *  
      * @see java.io.OutputStream
      * @return java.io.OutputStream object
      * @throws VlException
      */
-    public OutputStream getOutputStream() throws IOException; 
+    public OutputStream createOutputStream() throws IOException; 
     //OutputStream getOutputStream(boolean append) throws VlException;
     
 }

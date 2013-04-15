@@ -32,32 +32,21 @@ import nl.esciencecenter.ptk.io.RandomWritable;
  */
 public interface VRandomWritable extends RandomWritable, VZeroSizable
 {
-    /* Since SRB does not YET support the setLength() call, 
-     * this method cannot be implemented. 
-     * Instead use setLengtToZero is provided to reset the length. 
-     * To make a file longer, simply use 'writeBytes' to extend it. 
-     */ 
-    
-     // public void setLength(long newLength) throws VlException;
+    // Explicit inheritance from VSize 
+    public long getLength() throws IOException; 
 
-     /** 
-      * Resets file length to zero.<br>  
-      * Currently setLength() is not supported by SRB so this
-      * method is currently the only method
-      * which can decrease the file size. <br>
-      * To extend a file, use writeBytes to append data to a file.  
-      */ 
-     public void setLengthToZero() throws IOException;
-     
+    // Explicit inheritance from VZeroSizable 
+    public void setLengthToZero()  throws IOException;
+    
+    // Not yet implemented by all file systems! 
+    //public void setLength(long newLength)  throws IOException;
    
     /**
      * Writes <code>nrBytes</code> to the file starting  
-     * at position fileOffset in the file. Data is  and reading 
-     * from byte array buffer[bufferOffset].
+     * at position fileOffset in the file. 
      * 
      * @see java.io.RandomAccessFile#writeBytes
      */
-
     public void writeBytes(long fileOffset, byte buffer[], int bufferOffset,
             int nrBytes) throws IOException;
 }

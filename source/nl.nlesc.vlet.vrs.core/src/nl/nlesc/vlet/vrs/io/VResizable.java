@@ -27,7 +27,6 @@ import java.io.IOException;
  *  
  * @author Piter T. de Boer 
  */
-
 public interface VResizable extends VZeroSizable, VSize
 {
     // Explicit inheritance from  VSize 
@@ -36,6 +35,11 @@ public interface VResizable extends VZeroSizable, VSize
     // Explicit inheritance from  VZeroSizable 
     public void setLengthToZero()  throws IOException;
     
+    /**
+     * Reset length of file.
+     * This method can be used to 'reserve' file space before actually writing to it. 
+     * If the file size is increased, the data should be kept. 
+     */ 
 	public void setLength(long newLength)  throws IOException;
 	
 }

@@ -270,7 +270,7 @@ public class SRMFile extends VFile implements VThirdPartyTransferable,
     }
     
     @Override
-    public InputStream getInputStream() throws IOException
+    public InputStream createInputStream() throws IOException
     {
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor(
                 "getInputStream:" + this, -1);
@@ -293,7 +293,7 @@ public class SRMFile extends VFile implements VThirdPartyTransferable,
     }
     
     @Override
-    public SRMOutputStream getOutputStream() throws IOException
+    public SRMOutputStream createOutputStream() throws IOException
     {
         ITaskMonitor minitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor(
                 "getOutputStream:" + this, -1);

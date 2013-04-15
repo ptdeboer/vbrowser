@@ -997,7 +997,7 @@ public class LFCClient
                 	//superfluous: 
                 	monitor.logPrintf("LFC: Trying to read from replica (try #%d):\n - %s \n",tryNr,node.getVRL()); 
                 	VStreamAccessable resource = (VStreamAccessable) node;
-                    return resource.getInputStream();
+                    return resource.createInputStream();
                 }
                 String text = "*** Error: Can not handle replica (Unknown resource type):" + node + "\n";
                 monitor.logPrintf(text);

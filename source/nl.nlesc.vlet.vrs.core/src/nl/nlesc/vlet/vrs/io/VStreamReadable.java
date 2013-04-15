@@ -25,23 +25,18 @@ import java.io.InputStream;
 
 import nl.nlesc.vlet.exception.VlException;
 
-
 /**
  * Interface for stream readable resources. 
- * Default method creates an InputStream to read from. 
  */
 public interface VStreamReadable
 {
     /**
-     * Create InputStream to read from this (remote) resource.<p> 
-     * Note that not all protocols support 'partially' reading from a remote file. 
-     * Currently both Jargon's SRB and Java's File type support
-     * Input and OutputStreams ! 
+     * Create InputStream to read from this (remote) resource.
+     * <p> 
      * 
      * @see java.io.InputStream
      * @return java.io.InputStream object
      * @throws VlException
      */
-    
-    InputStream getInputStream() throws IOException;
+    InputStream createInputStream() throws IOException;
 }

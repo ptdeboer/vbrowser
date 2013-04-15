@@ -179,6 +179,11 @@ public class FileReader extends ResourceReader
         return readBytes(offset,buffer,bufferOffset,nrOfBytes);
     }
     
+    // ===================
+    // Protected interface 
+    // ===================
+    
+    /** Actual read method */ 
     protected int readBytes(long offset, byte buffer[],int bufferOffset,int nrOfBytes)
                 throws VlException
     {

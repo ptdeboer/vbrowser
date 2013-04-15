@@ -165,11 +165,11 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 		return false; 
 	}
 
-	public InputStream openInputStream(VRL location) throws VlException
+	public InputStream createInputStream(VRL location) throws VlException
 	{
 		try
         {
-            return newFile(location).getInputStream();
+            return newFile(location).createInputStream();
         }
 		catch (IOException e)
 		{
@@ -177,16 +177,11 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
         }
 	}
 	
-	public OutputStream createOutputStream(VRL location) throws VlException
-    {
-        return openOutputStream(location);
-    }
-
-    public OutputStream openOutputStream(VRL location) throws VlException
+    public OutputStream createOutputStream(VRL location) throws VlException
 	{
 		try
         {
-            return newFile(location).getOutputStream();
+            return newFile(location).createOutputStream();
         }
 		catch (IOException e)
         {

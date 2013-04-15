@@ -197,14 +197,14 @@ public class VRSClient
     		VResourceSystem rs = openResourceSystem(loc); 
     		if (rs instanceof VInputStreamProducer)
     		{
-    			return ((VInputStreamProducer)rs).openInputStream(loc); 
+    			return ((VInputStreamProducer)rs).createInputStream(loc); 
     		}
     		
     		// use default method: 
     		VNode node=openLocation(loc);
     		
     		if (node instanceof VStreamReadable) 
-    			return ((VStreamReadable)node).getInputStream();
+    			return ((VStreamReadable)node).createInputStream();
 	    }
 	    catch (IOException e)
 	    {
@@ -226,14 +226,14 @@ public class VRSClient
     		VResourceSystem rs = openResourceSystem(loc); 
     		if (rs instanceof VOutputStreamProducer)
     		{
-    			return ((VOutputStreamProducer)rs).openOutputStream(loc); 
+    			return ((VOutputStreamProducer)rs).createOutputStream(loc); 
     		}
     		
     		// use default method: 
     		VNode node=openLocation(loc);
     		
     		if (node instanceof VStreamWritable) 
-    			return ((VStreamWritable)node).getOutputStream();
+    			return ((VStreamWritable)node).createOutputStream();
     			
 	    }
 	    catch (IOException e)

@@ -74,12 +74,12 @@ public class SkelFile extends VFile
 		return this.getFS().hasWriteAccess(this.getPath()); 
 	}
 
-	public InputStream getInputStream() throws IOException
+	public InputStream createInputStream() throws IOException
 	{
 		return this.getFS().createNewInputstream(getPath()); 
 	}
 
-	public OutputStream getOutputStream() throws IOException 
+	public OutputStream createOutputStream() throws IOException 
 	{
 		return this.getFS().createNewOutputstream(getPath()); 
 	}
