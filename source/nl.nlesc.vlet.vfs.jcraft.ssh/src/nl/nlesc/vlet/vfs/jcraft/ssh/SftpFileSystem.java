@@ -1,10 +1,10 @@
 /*
- * Copyright 2006-2011 The Virtual Laboratory for e-Science (VL-e) 
- * 
+ * Copyrighted 2012-2013 Netherlands eScience Center.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License").  
  * You may not use this file except in compliance with the License. 
  * For details, see the LICENCE.txt file location in the root directory of this 
- * distribution or obtain the Apache Licence at the following location: 
+ * distribution or obtain the Apache License at the following location: 
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software 
@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  * 
- * See: http://www.vl-e.nl/ 
- * See: LICENCE.txt (located in the root folder of this distribution). 
+ * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- * $Id: SftpFileSystem.java,v 1.2 2013/01/25 11:11:35 piter Exp $  
- * $Date: 2013/01/25 11:11:35 $
  */
 // source: 
 
@@ -47,13 +44,6 @@ import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.VlAuthenticationException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.vfs.FileSystemNode;
-import nl.nlesc.vlet.vfs.VDir;
-import nl.nlesc.vlet.vfs.VFS;
-import nl.nlesc.vlet.vfs.VFSClient;
-import nl.nlesc.vlet.vfs.VFSNode;
-import nl.nlesc.vlet.vfs.VFSTransfer;
-import nl.nlesc.vlet.vfs.VFile;
 import nl.nlesc.vlet.vfs.jcraft.ssh.SSHChannel.SSHChannelOptions;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
@@ -61,6 +51,13 @@ import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.io.VShellChannelCreator;
 import nl.nlesc.vlet.vrs.net.VOutgoingTunnelCreator;
+import nl.nlesc.vlet.vrs.vfs.FileSystemNode;
+import nl.nlesc.vlet.vrs.vfs.VDir;
+import nl.nlesc.vlet.vrs.vfs.VFS;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
+import nl.nlesc.vlet.vrs.vfs.VFile;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.HostKey;

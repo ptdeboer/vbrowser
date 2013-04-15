@@ -1,175 +1,97 @@
 <project name="VBrowser" default="dist" basedir=".">
-	<description>
+    <description>
 		Project	  : VBrowser
 		Component : VBrowser.VB2.UI
-        Eclipse target : dist
-            	
-        Configuring: 
-        ===
-            - All configuration settings are in build.prop 
-            	
+            	            	
     </description>
 
-    <!--
-      1) Read global project properties (if specified) from: project.prop
-         - for this to work project.root variable must be set to project root 
-      2) Set environment properties prefix to 'env.' 
-      3) Set comp.root to the location if this component 
-      4) Read local components properties from: build.prop 
-    --> 
-    
-    <property name="project.root" location="../mbuild" />
-    <property file="${project.root}/project.prop"/> 
-    <property environment="env"/>
+    <property name="project.root" location="../.." />
+    <!-- project environment + component settings -->
+    <property file="${project.root}/project.prop" />
+    <property environment="env" />
     <property name="comp.root" location="." />
-    <property file="build.prop"/> 
-	<!-- Target: init --> 
-	
-	<target name="init" >
-		<!-- Create the build directory structure used by compile -->
-		<mkdir dir="${comp.build}" />
-		<mkdir dir="${comp.dist}" />
-		<mkdir dir="${comp.dist}/lib" />
-		<mkdir dir="${comp.dist}/etc" />
-	</target>
-		
-	<target name="config" >
-	</target> 
-	
-	<target name="generate" >
-	</target> 
-	
-	<path id="comp.classpath">
-			<!-- include project libraries--> 
-			<fileset dir="${project.lib}">
-			    <include name="**/*.jar" />
-			</fileset>
-			<!-- add local paths settings --> 
+    <property file="build.prop" />
+
+    <!-- 
+      *	Target: init 
+      -->
+    <target name="init">
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${comp.build}" />
+        <mkdir dir="${comp.build.classes}" />
+        <mkdir dir="${comp.dist}" />
+        <mkdir dir="${comp.dist}/lib" />
+        <mkdir dir="${comp.dist}/etc" />
+    </target>
+
+    <target name="config">
+    </target>
+
+    <target name="generate">
+    </target>
+
+    <path id="comp.classpath">
+        <!-- include project libraries-->
+        <fileset dir="${project.dist.lib}">
+            <include name="**/*.jar" />
+        </fileset>
+        <!-- add local paths settings -->
     </path>
-				
-			
-	<!--
-		Target = Compilation 
-	-->
-	   		
-	<target name="build" depends="init" description="compile the source ">
-		<!-- Compile the java code from the srclist } into ${build} -->
-		<javac srcdir="${comp.src}" destdir="${comp.build}"
-		       compiler="${javac.compiler}"
-			   debug="${javac.debug}"
-			   source="${javac.source}" 
-			   target="${javac.target}">
-			<classpath refid="comp.classpath" />
-		</javac>
-	</target>
-	    
-    <target name="jar" depends="build" >
+
+    <!--
+     *	Target : Compilation 
+	 -->
+    <target name="build" depends="init" description="compile the source ">
+        <!-- Compile the java code from the srclist } into ${build} -->
+        <javac srcdir="${comp.src}" destdir="${comp.build}" compiler="${javac.compiler}" debug="${javac.debug}" source="${javac.source}" target="${javac.target}">
+            <classpath refid="comp.classpath" />
+        </javac>
+    </target>
+
+    <target name="jar" depends="build">
+
         <!-- Create application JAR file -->
-    	<jar jarfile="${comp.dist}/lib/${comp.artefactId}.jar"
-         basedir="${comp.build}"/>
-    	
-    	<!-- creat jar file out of icons -->
-    	<jar jarfile="${comp.dist}/lib/${comp.artefactId}-icons.jar"
-         basedir="${comp.root}/icons"/>
-    	
-		
-	</target>
+        <jar jarfile="${comp.dist}/lib/${comp.artefactId}.jar" basedir="${comp.build}" />
 
-    <!-- source distribution: nothing to do --> 
-    <target name="source-dist"/>
-        
+        <!-- creat jar file out of icons -->
+        <jar jarfile="${comp.dist}/lib/${comp.artefactId}-icons.jar" basedir="${comp.root}/icons" />
 
-	<target name="javadoc" depends="init" description="documentation" >
-		<mkdir dir="${comp.dist}/doc/api" />
-		<javadoc  use="true"
-             private="false"
-             destdir="${comp.dist}/doc/api"
-             author="false"
-             version="false"
-             windowtitle="VL-e Toolkit"
-             packagenames="vlet.*">
-			 <!-- include all java source found in the 'src' directory of this component -->
-			 <fileset dir="${comp.src}" defaultexcludes="yes">
-				<include name="**/*.java" />
-				<exclude name="vdriver/**/*" /> 
-			</fileset>
-		</javadoc>
-	</target>
-					
-	<!-- <target name="dist" depends="build,jar,javadoc" > --> 
-    <target name="dist" depends="build,jar" >
-		    
-		<!-- <copy todir="${comp.dist}/lib/icons">
-			<fileset dir="${comp.root}/icons" /> 
-		</copy>-->
-		
-		<!-- <copy todir="${comp.dist}/etc">
-			<fileset dir="${comp.root}/etc" /> 
-		</copy> --> 
-			
-	</target> 
+    </target>
 
-	<!--
-	*	Target: web-install, copy component jars, etc into project web directory 
-    -->
+    <!-- source distribution: nothing to do -->
+    <target name="source-dist" />
 
-	    
-    <target name="applet-install" depends="dist" description="install libraries">
-    	<fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok"/> 		
-    	<mkdir dir="${project.doc}" />
-    	
-    	<property name="applet.installdir" value="${project.webdir}/vbrowser_applet" /> 
-    	
-		<mkdir dir="${applet.installdir}" />
-		<mkdir dir="${applet.installdir}/lib" />
-		
-        <copy todir="${applet.installdir}" 
-      		  file="${comp.dist}/lib/${comp.artefactId}.jar"/>
-    	
-        <copy todir="${applet.installdir}/lib">
-    		  <fileset file="${project.lib}/*.jar"/>
-         </copy> 
-    	
-         
-        <copy todir="${applet.installdir}" 
-      		  file="${comp.dist}/lib/icons.jar"/>
-        
-        <copy todir="${applet.installdir}"> 
-      		  <fileset dir="${comp.root}/html"/>
-        	
-		<!-- todo copy libraries -->
-        	
+    <!-- 
+    	Target: dist 
+      -->
+    <target name="dist" depends="build,jar">
+    </target>
+
+    <!--
+	 *	Target: dist-install
+	 *  Info  : 
+	 * 		    copy component jars, etc into project directory 
+     -->
+    <target name="dist-install" depends="dist" description="install libraries">
+        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
+
+        <!-- create system directories for vbrowser -->
+        <mkdir dir="${project.dist.lib}" />
+        <mkdir dir="${project.dist.lib}/icons" />
+
+        <!-- lib -->
+        <copy todir="${project.dist.lib}">
+            <fileset file="${comp.dist}/lib/${comp.artefactId}.jar" />
         </copy>
-    </target> 
-        
-            
-	<!--
-	*	Target: dist-install, copy component jars, etc into project directory 
-    -->
-	
-	<target name="dist-install" depends="dist" description="install libraries">
-		<fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok"/> 		
-		<mkdir dir="${project.doc}" />
-		
-		<!-- create system directories for vbrowser -->
-		<mkdir dir="${project.lib}" />
-		<mkdir dir="${project.lib}/viewers" />
-		<mkdir dir="${project.lib}/applets" />
-		<mkdir dir="${project.lib}/icons" />
-		
-	    <!-- lib --> 
-		<copy todir="${project.lib}">
-		    <fileset file="${comp.dist}/lib/${comp.artefactId}.jar"/>  
-		</copy>
-				
-	    <!-- icons --> 
-		<copy todir="${project.lib}/icons">
-		    <fileset file="${comp.dist}/lib/${comp.artefactId}-icons.jar"/>  
-		</copy>
 
-        
-        <!-- etc --> 
-		<!-- <mkdir dir="${project.dist}/etc" />
+        <!-- icons -->
+        <copy todir="${project.dist.lib}/icons">
+            <fileset file="${comp.dist}/lib/${comp.artefactId}-icons.jar" />
+        </copy>
+
+
+        <!-- etc -->
+        <!-- <mkdir dir="${project.dist}/etc" />
 		<copy todir="${project.dist}/etc">
 			<fileset dir="${comp.root}/etc" /> 
 		</copy> -->
@@ -180,14 +102,14 @@
 			<fileset dir="${comp.root}/bin" /> 
 		</copy>
 		-->
-		
-	</target>
-		
-	<target name="clean" description="clean">
-		<delete dir="${comp.dist}"/>
-		<delete dir="${comp.build}"/>
-	</target>
-	
+
+    </target>
+
+    <target name="clean" description="clean">
+        <delete dir="${comp.dist}"/>
+        <delete dir="${comp.build}"/>
+    </target>
+
 </project>
-	
+
 

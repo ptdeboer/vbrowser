@@ -1,6 +1,6 @@
 ###
 # File      : build.prop
-# Component : VLET-Lobo Viewer
+# Component : VLET Lobo Viewer
 # 
 # Info: 
 #
@@ -8,23 +8,16 @@
 #   
 
 ###
-# Do not add spaces to the end of the values ! 
-# Component defaults (not that viewer.root is set in the main build file)
-
+# Viewer 
 viewer.name=LoboViewer
-# The Gui will use this classname to start the Viewer
-# it is also used as the jar file name 
+viewer.artefactId=vlet-loboviewer
+#
+viewer.package=nl.nlesc.vlet.gui.lobo
 viewer.mainclass=nl.nlesc.vlet.gui.lobo.LoboBrowser
-viewer.package=nl.nelsc.vlet.gui.lobo
+
+# build settings 
 viewer.dist=${viewer.root}/dist
 viewer.build=${viewer.root}/build
-# seperate build directory for viewer classes and cobra classes !
-viewer.classes=${viewer.build}/classes
+viewer.build.classes=${viewer.build}/classes
 viewer.src=${viewer.root}/src
 
-##
-## Cobra package:
-##cobra.zipfile=zips/cobra-0.98.4.zip
-#cobra.topleveldir=cobra-0.98.4
-## seperate build directory for viewer classes and cobra classes !
-#cobra.classes=${viewer.build}/cobraclasses

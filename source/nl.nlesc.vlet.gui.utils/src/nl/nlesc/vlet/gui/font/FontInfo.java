@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.font;
@@ -36,10 +36,10 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
-import nl.nlesc.vlet.vfs.VDir;
-import nl.nlesc.vlet.vfs.VFSClient;
-import nl.nlesc.vlet.vfs.VFSNode;
 import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vfs.VDir;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import nl.nlesc.vlet.vrs.vfs.VFSNode;
 
 /** 
  * Simple Font Information holder class. 

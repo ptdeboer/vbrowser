@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.vrs;
@@ -23,8 +23,8 @@ package nl.nlesc.vlet.vrs;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vfs.VFileActiveTransferable;
 import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
 
 
 /** 
@@ -36,12 +36,12 @@ import nl.nlesc.vlet.vrl.VRL;
  * If a resource implements a more efficient way to copy, for example bulk methods or third
  * party copy mechanics, this interface can be used.
  *  
- * @see nl.nlesc.vlet.vfs.VFileActiveTransferable
+ * @see nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable
  * @see nl.uva.vlet.vfs.VDirActiveTransferable
  */
 public interface VActiveTransferable
 {
-    /** @see nl.nlesc.vlet.vfs.VFileActiveTransferable#canTransferTo(VRL, StringHolder) */
+    /** @see nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable#canTransferTo(VRL, StringHolder) */
     boolean canTransferTo(VRL remoteLocation,StringHolder explanation) throws VlException;
     
     /** @see VFileActiveTransferable#canTransferFrom(VRL, StringHolder) */

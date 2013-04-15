@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.util.bdii;
@@ -38,8 +38,8 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.util.bdii.ServiceInfo.ServiceInfoType;
 import nl.nlesc.vlet.util.bdii.info.glue.GlueConstants;
 import nl.nlesc.vlet.util.bdii.info.glue.GlueObject;
-import nl.nlesc.vlet.vrms.ConfigManager;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 
 /**
  * Bdii service for GLUE (ldap) database.

@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.data;
@@ -185,7 +185,7 @@ public class VAttributeConstants
 
 	/** 
 	 * Length or size of resource if applicable. 
-	 * @see nl.nlesc.vlet.vfs.VFile#getLength() VFile.getLenght()
+	 * @see nl.nlesc.vlet.vrs.vfs.VFile#getLength() VFile.getLenght()
 	 */
 	public static final String ATTR_LENGTH = "length";
 	

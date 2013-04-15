@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.proxyvrs;
@@ -24,9 +24,9 @@ import nl.nlesc.vlet.error.InitializationError;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.ConfigManager;
 import nl.nlesc.vlet.vrs.ResourceEvent;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 
 /**
  * ProxyVRSClient. 

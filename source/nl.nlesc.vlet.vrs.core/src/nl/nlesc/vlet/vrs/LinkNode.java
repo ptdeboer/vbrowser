@@ -21,10 +21,10 @@
 package nl.nlesc.vlet.vrs;
 
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vfs.VFS;
-import nl.nlesc.vlet.vfs.VFSNode;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.LogicalResourceNode;
+import nl.nlesc.vlet.vrs.vfs.VFS;
+import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.nlesc.vlet.vrs.vrms.LogicalResourceNode;
 
 /**
  * The LinkNode class which represents a link or a remote resource.

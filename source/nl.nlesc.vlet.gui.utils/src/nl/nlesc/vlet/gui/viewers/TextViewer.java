@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.viewers;
@@ -64,10 +64,10 @@ import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.font.FontInfo;
 import nl.nlesc.vlet.gui.font.FontToolBar;
 import nl.nlesc.vlet.gui.font.FontToolbarListener;
-import nl.nlesc.vlet.vfs.VReplicatable;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
+import nl.nlesc.vlet.vrs.vfs.VReplicatable;
 
 
 /**

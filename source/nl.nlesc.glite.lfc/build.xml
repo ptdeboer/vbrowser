@@ -161,10 +161,10 @@
               unless="project.env.ok"/>         
         
         <!-- install lfcj.jar only -->
-        <mkdir dir="${project.lib}" />
-        <mkdir dir="${project.lib}/glite" />
+        <mkdir dir="${project.dist.lib}" />
+        <mkdir dir="${project.dist.lib}/glite" />
 
-    	<copy todir="${project.lib}/glite"
+    	<copy todir="${project.dist.lib}/glite"
                file="${dist.package.jar}"  />
         
     </target>

@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.vrs;
@@ -41,8 +41,8 @@ import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.ConfigManager;
-import nl.nlesc.vlet.vrms.SecretStore;
+import nl.nlesc.vlet.vrs.vrms.ConfigManager;
+import nl.nlesc.vlet.vrs.vrms.SecretStore;
 
 
 /**

@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
@@ -38,10 +38,10 @@ import nl.nlesc.vlet.data.VAttributeType;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.presentation.VRSPresentation;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.LogicalResourceNode;
-import nl.nlesc.vlet.vrms.VResourceLink;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VNode;
+import nl.nlesc.vlet.vrs.vrms.LogicalResourceNode;
+import nl.nlesc.vlet.vrs.vrms.VResourceLink;
 
 
 /** 

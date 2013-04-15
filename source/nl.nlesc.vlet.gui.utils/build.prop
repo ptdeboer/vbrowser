@@ -12,6 +12,7 @@
 # Component defaults (not that comp.root is set in the main build file)
 comp.groupId=nl.nlesc.vlet
 comp.artifactId=vlet-gui.utils
+#
 comp.dist=${comp.root}/dist
 comp.build=${comp.root}/build
 comp.src=${comp.root}/src

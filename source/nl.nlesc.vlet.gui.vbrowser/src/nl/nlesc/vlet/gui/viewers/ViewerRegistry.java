@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.viewers;
@@ -35,11 +35,11 @@ import nl.nlesc.vlet.gui.viewers.ViewerInfo;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.util.PluginLoader;
 import nl.nlesc.vlet.util.PluginLoader.PluginInfo;
-import nl.nlesc.vlet.vfs.VDir;
-import nl.nlesc.vlet.vfs.VFSClient;
-import nl.nlesc.vlet.vfs.VFSNode;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRSFactory;
+import nl.nlesc.vlet.vrs.vfs.VDir;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import nl.nlesc.vlet.vrs.vfs.VFSNode;
 
 /**
  * The Viewer Registry.<br>

@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.vrs;
@@ -37,8 +37,8 @@ import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.SecretStore;
-import nl.nlesc.vlet.vrms.SecretStore.SecretCombi;
+import nl.nlesc.vlet.vrs.vrms.SecretStore;
+import nl.nlesc.vlet.vrs.vrms.SecretStore.SecretCombi;
 
 /** 
  * Server (Resource) Info class to keep record of Server Resources.

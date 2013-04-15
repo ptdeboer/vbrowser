@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.dnd;
@@ -29,8 +29,8 @@ import java.util.Vector;
 
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.data.ResourceRef;
-import nl.nlesc.vlet.vfs.VFS;
 import nl.nlesc.vlet.vrs.Registry;
+import nl.nlesc.vlet.vrs.vfs.VFS;
 
 /**
  * Generic DnD (Drag and Drop) class. 

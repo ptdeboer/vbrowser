@@ -28,11 +28,11 @@ import java.net.URLConnection;
 import java.net.UnknownServiceException;
 
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.vfs.VDir;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
+import nl.nlesc.vlet.vrs.vfs.VDir;
 
 /**
  * VRL Connection which support VRLs. It extends URLConnection with the

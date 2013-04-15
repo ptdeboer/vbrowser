@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.proxynode.impl.direct;
@@ -48,15 +48,7 @@ import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.presentation.VRSPresentation;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.view.ViewFilter;
-import nl.nlesc.vlet.vfs.VACL;
-import nl.nlesc.vlet.vfs.VDir;
-import nl.nlesc.vlet.vfs.VFSClient;
-import nl.nlesc.vlet.vfs.VFSNode;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.LogicalResourceNode;
-import nl.nlesc.vlet.vrms.MyVLe;
-import nl.nlesc.vlet.vrms.VLogicalResource;
-import nl.nlesc.vlet.vrms.VResourceLink;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.ResourceEvent;
 import nl.nlesc.vlet.vrs.VComposite;
@@ -66,6 +58,14 @@ import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRenamable;
 import nl.nlesc.vlet.vrs.util.VRSSort;
+import nl.nlesc.vlet.vrs.vfs.VACL;
+import nl.nlesc.vlet.vrs.vfs.VDir;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.nlesc.vlet.vrs.vrms.LogicalResourceNode;
+import nl.nlesc.vlet.vrs.vrms.MyVLe;
+import nl.nlesc.vlet.vrs.vrms.VLogicalResource;
+import nl.nlesc.vlet.vrs.vrms.VResourceLink;
 
 
 

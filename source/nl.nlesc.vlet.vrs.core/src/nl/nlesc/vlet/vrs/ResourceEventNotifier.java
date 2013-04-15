@@ -276,34 +276,7 @@ public class ResourceEventNotifier implements ITaskSource
             return array;
         }
     }
-
-    public static void startTestMessages()
-    {
-        Runnable tester = new Runnable()
-        {
-            public void run()
-            {
-                while (true)
-                {
-                    try
-                    {
-                        Thread.sleep(10000);
-                    }
-                    catch (InterruptedException e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                    for (int i = 1; i < 10; i++)
-                        VRS.getRegistry().fireEvent(ResourceEvent.createMessageEvent(null, "*** TEST MESSAGE ***"));
-                }
-            }
-        };
-
-        Thread thread = new Thread(tester);
-        thread.start();
-    }
-
+   
     public String getID()
     {
         return "Resource Event Notifier";

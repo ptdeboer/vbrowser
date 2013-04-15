@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.util.grid;
@@ -49,8 +49,8 @@ import nl.nlesc.vlet.grid.voms.VOServer;
 import nl.nlesc.vlet.net.ssl.CertificateStore;
 import nl.nlesc.vlet.net.ssl.SSLContextManager;
 import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrms.ConfigManager;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 
 
 /**

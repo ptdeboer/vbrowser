@@ -1,34 +1,16 @@
 ###
 # File      : build.prop
 # Component : Pedal PDF Viewer
-# 
-# Info: 
-#
-#   Build properties. Holds customizable properties 
-#   
 
-###
-# Do not add spaces to the end of the values ! 
-# Component defaults (not that viewer.root is set in the main build file)
-
+# Viewer Plugin 
 viewer.name=PedalPDFViewer
+viewer.artefactId=vlet-pedalViewer
 # The Gui will use this classname to start the Viewer
 # it is also used as the jar file name 
-viewer.mainclass=nl.nlesc.vlet.gui.pedal.JPedalPDFViewer
 viewer.package=nl.nlesc.vlet.gui.pedal
+viewer.mainclass=nl.nlesc.vlet.gui.pedal.JPedalPDFViewer
+
+# build 
 viewer.dist=${viewer.root}/dist
 viewer.build=${viewer.root}/build
 viewer.src=${viewer.root}/src
-
-###
-# Local Project Settings: 
-#
-# Note: for the env.<ENVIRONMENT VARIABLE> construct to work 
-# the property 'environment' needs to be set (in the main build file) to 'env'
-# as follows:  <property environment="env"/>
-
-# To use VLET_INSTALL as project.root uncomment the following: 
-project.root=../mbuild 
-#Installed project libraries: 
-#project.lib=${project.root}/lib
-

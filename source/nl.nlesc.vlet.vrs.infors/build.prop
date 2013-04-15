@@ -12,17 +12,17 @@
 
 ##
 # VDriver (VRS Plugin) settings: 
-# - name     Symbolic plugin name  
-# - package  The full name space and plugin directory 
-# - factory  VRSFactory class to register 
+# - artefactId  - name of vdriver.   
+# - package     - Java package name  
+# - factory     - VRSFactory class to register 
 #  
 # this information is stored in plugin.prop. 
 #
-vdriver.name=vlet-vrs.infors
+vdriver.artefactId=vlet-vrs.infors
 # Package name space and plugin directory  
-vdriver.package=nl.nlesc.vlet.vrs.infors
+vdriver.package=nl.nlesc.vlet.vrs.vdriver.infors
 # VRS Factory class 
-vdriver.factory=nl.nlesc.vlet.vrs.infors.InfoRSFactory
+vdriver.factory=nl.nlesc.vlet.vrs.vdriver.infors.InfoRSFactory
 
 # build environment: 
 vdriver.dist=${vdriver.root}/dist
@@ -30,18 +30,5 @@ vdriver.build=${vdriver.root}/build
 vdriver.src=${vdriver.root}/src
 vdriver.lib=${vdriver.root}/lib
 
-# "etc" and "icons" directory are derived from "driver.root"
 
-###
-# Local Project Settings: 
-#
-# Note: for the env.<ENVIRONMENT VARIABLE> construct to work 
-# the property 'environment' has to be set in the main ant build file. 
-# This is done as follows:  <property environment="env"/>
-# If the above line is missing the followin lines will not work: 
-
-# To use VLET_INSTALL as project.root uncomment the following: 
-#project.root=${env.VLET_INSTALL} 
-#Installed project libraries: 
-#project.lib=${project.root}/lib
 

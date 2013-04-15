@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.nlesc.vlet.gui.vbrowser;
@@ -80,13 +80,13 @@ import nl.nlesc.vlet.gui.viewers.ViewerEvent;
 import nl.nlesc.vlet.gui.viewers.ViewerManager;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry;
-import nl.nlesc.vlet.tasks.VRSTaskWatcher;
 import nl.nlesc.vlet.util.grid.GridProxy;
 import nl.nlesc.vlet.util.grid.GridProxyListener;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.EventType;
 import nl.nlesc.vlet.vrs.ResourceEvent;
 import nl.nlesc.vlet.vrs.VRSFactory;
+import nl.nlesc.vlet.vrs.tasks.VRSTaskWatcher;
 
 
 import nl.uva.vlet.util.vlterm.VLTerm;
