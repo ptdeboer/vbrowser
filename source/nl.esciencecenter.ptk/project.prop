@@ -7,17 +7,17 @@
 # default project structure: 
 project.dist=${project.root}/dist
 # var is used during build to write logs to 
-project.var=${project.dist}/var
+project.dist.var=${project.dist}/var
 # configure files/etc:
 project.conf=${project.var}/conf
-project.lib=${project.dist}/lib
-project.etc=${project.dist}/etc
-project.bin=${project.dist}/bin
-project.doc=${project.dist}/doc
+project.dist.lib=${project.dist}/lib
+project.dist.etc=${project.dist}/etc
+project.dist.bin=${project.dist}/bin
+project.dist.doc=${project.dist}/doc
 
 ##
 #
-project.vendor=nlesc.nl
+project.vendor=eScienceCenter.nl
 
 ###
 # Java Compiler options : Explicitly use java 1.6 

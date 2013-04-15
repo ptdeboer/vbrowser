@@ -1,6 +1,6 @@
 ###
 # File      : build.prop
-# Component : VRS Main 
+# Component : VRS Core 
 # 
 # Info: 
 #
@@ -10,24 +10,18 @@
 ###
 # Do not add spaces to the end of the values ! 
 # Component defaults (not that component.root is set in the main build file)
-component.name=vlet-vrs.core
-component.dist=${component.root}/dist
-component.build=${component.root}/build
-component.src=${component.root}/src
-component.src.main=${component.root}/src
+
+comp.artefactId=vlet-vrs.core
+comp.dist=${comp.root}/dist
+comp.build=${comp.root}/build
+comp.src=${comp.root}/src
+comp.src.main=${comp.root}/src
 
 # build location for bootstrapper code which is standalone jar!
-build.bootstrap=${component.root}/build.bootstrap
+build.bootstrap=${comp.root}/build.bootstrap
 
 #certificates
-project.certificates=${component.dist}/etc/certificates
+project.certificates=${comp.dist}/etc/certificates
 certdir=${project.certificates}
-urldir=${component.root}/cert_urls
-
-###
-# Local Project Settings: 
-#
-# Note: for the env.<ENVIRONMENT VARIABLE> construct to work 
-# the property 'environment' needs to be set (in the main build file) to 'env'
-# as follows:  <property environment="env"/>
+urldir=${comp.root}/cert_urls
 

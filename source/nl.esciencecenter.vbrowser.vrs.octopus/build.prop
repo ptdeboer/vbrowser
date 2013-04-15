@@ -4,7 +4,7 @@
 # 
 
 #
-vdriver.name=nlesc-vbrowser.vrs.octopus
+vdriver.artefactId=nlesc-vbrowser.vrs.octopus
 # Package name space and plugin directory  
 vdriver.package=nl.esciencecenter.vbrowser.vrs.octopus
 # VRS Factory class 

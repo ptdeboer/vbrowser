@@ -12,6 +12,11 @@
 # - The property  "driver.root" is set in the main build file. 
 
 ##
+# Project. 
+
+project.name=nl.nlesc.glite.lbl.srm
+
+##
 # srm package properties. 
 
 srm.package=nl.nlesc.glite.lbl.srm
@@ -25,9 +30,7 @@ srm.version=0.5
 #disabled: 
 #javac.debug=true
 javac.target=1.6
-javac.compiler=javac1.6
-
-project.name=nl.nlesc.glite.lbl.srm
+javac.compiler=modern 
 
 lib.location=lib
 

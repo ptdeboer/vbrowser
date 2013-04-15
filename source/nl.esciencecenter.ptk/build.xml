@@ -1,5 +1,5 @@
-<project name="nl.nlesc.ptk" default="dist" basedir=".">
-	<description>
+<project name="nlesc-ptk" default="dist" basedir=".">
+    <description>
         Project        : PTK
         Component      : ptk
 		
@@ -7,246 +7,173 @@
 		
     </description>
 
-	<!--
+    <!--
       1) Read global project properties (if specified) from: project.prop
          - for this to work project.root variable must be set to project root 
       2) Set environment properties prefix to 'env.' 
       3) Set comp.root to the location if this comp 
       4) Read local comps properties from: build.prop 
     -->
-	<!--	<property name="project.root" value="../mbuild"/> --> 
-	<!-- standalone component: --> 
-	<property name="project.root" value="."/>  
+    <!--	<property name="project.root" value="../mbuild"/> -->
+    <!-- standalone component: -->
+    <property name="project.root" value="." />
 
-	<property file="${project.root}/project.prop"/>
-	<property environment="env"/>
-	<property name="comp.root" location="." />
-	<property file="build.prop"/>
-	    
-	<!-- Default component structure. Can also be specifed in build.prop.--> 
-    <property name="comp.src" value="src"/> 			
-	<property name="comp.build" value="build"/>
-	<property name="comp.build.classdir" value="${comp.build}/classes/"/>
-	<property name="comp.dist" value="dist"/>
-					
-	<!-- Target: init -->
+    <property file="${project.root}/project.prop" />
+    <property environment="env" />
+    <property name="comp.root" location="." />
+    <property file="build.prop" />
 
-	<target name="init">
-		<!-- Create the build directory structure used by compile -->
-		<mkdir dir="${comp.build}"/>
-		<mkdir dir="${comp.build}/bootstrap"/>
-		<mkdir dir="${comp.build.classdir}"/>
-		<mkdir dir="${comp.dist}"/>
-		<mkdir dir="${comp.dist}/lib"/>
-	</target>
+    <!-- Default component structure. Can also be specifed in build.prop.-->
+    <property name="comp.src" value="src" />
+    <property name="comp.build" value="build" />
+    <property name="comp.build.classdir" value="${comp.build}/classes/" />
+    <property name="comp.dist" value="dist" />
+
+    <!-- Target: init -->
+    <target name="init">
+    </target>
+
+    <target name="init-build" depends="init">
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${comp.build}" />
+        <mkdir dir="${comp.build}/bootstrap" />
+        <mkdir dir="${comp.build.classdir}" />
+        <mkdir dir="${comp.dist}" />
+        <mkdir dir="${comp.dist}/lib" />
+    </target>
 
 
-	<target name="config" >
-	</target>
+    <target name="config" depends="init">
+    </target>
 
-	<target name="generate" >
-	</target>
+    <target name="generate" depends="init">
+    </target>
 
-	<path id="comp.classpath">
-		<!-- include project libraries-->
-		<fileset dir="${project.lib}">
-			<include name="**/*.jar" />
-		</fileset>
-		
-		<fileset dir="${comp.root}/lib">
-			<include name="**/*.jar" />
-		</fileset>
+    <path id="comp.classpath">
+        <!-- include project libraries-->
+        <fileset dir="${project.dist.lib}">
+            <include name="**/*.jar" />
+        </fileset>
 
-		<!-- add local paths settings -->
+        <fileset dir="${comp.root}/lib">
+            <include name="**/*.jar" />
+        </fileset>
 
-		<pathelement location="${comp.build.classdir}" />
-		<pathelement location="${comp.src}" />
+        <!-- add local paths settings -->
 
-	</path>
+        <pathelement location="${comp.build.classdir}" />
+        <pathelement location="${comp.src}" />
 
-	<!--
-        Target = Compilation 
+    </path>
+
+    <!--
+		Target : Compilation 
     -->
+    <target name="build" depends="init-build" description="compile the source ">
+        <!-- Compile the java code from into ${build} -->
 
-	<target name="build" depends="init" description="compile the source ">
-		<!-- Compile the java code from into ${build} -->
-	        
-	    <javac srcdir="${comp.src}" destdir="${comp.build.classdir}"
-	       	   compiler="${javac.compiler}"
-               debug="${javac.debug}"
-	    	   source="${javac.source}" 
-	    	   target="${javac.target}">
-	           <classpath refid="comp.classpath" />
-	    </javac>
-	
-	</target>
+        <javac srcdir="${comp.src}" destdir="${comp.build.classdir}" compiler="${javac.compiler}" debug="${javac.debug}" source="${javac.source}" target="${javac.target}">
+            <classpath refid="comp.classpath" />
+        </javac>
 
-	<target name="build-bootstrap" depends="init" description="compile the source ">
+    </target>
 
-		<property name="comp.build.bootstrap" value="${comp.build}/bootstrap"/> 
-				
-		<javac srcdir="${comp.src}/${bootstrap.package.dir}" destdir="${comp.build.bootstrap}"
-				compiler="${javac.compiler}"
-	           	source="1.6" 
-	           	debug="${javac.debug}"
-		       	target="1.6" />
-	</target> 
-		
-	<target name="jar" depends="build">
-		<!-- defaults --> 
-		<property name="comp.version" value="dev"/> 
-		<property name="project.version" value="dev"/> 
-		<property name="project.vendor" value="${user.name}"/>
-		
-		<!-- Create application JAR file -->
-		<jar jarfile="${comp.dist}/lib/${comp.name}-${comp.version}.jar"
-            basedir="${comp.build.classdir}">
-			<manifest>
-				<attribute name="Built-By" value="${user.name}" />
-		    	<attribute name="Main-Class" value="${comp.mainclass}" />
-		    	<section name="common">
-		    		<attribute name="Specification-Title"   value="${comp.name}" />
-		    		<attribute name="Specification-Version" value="${project.version}" />
-		    		<attribute name="Specification-Vendor"  value="${project.vendor}" />
-		    		<attribute name="Implementation-Title"  value="${comp.name}" />
-		    		<attribute name="Implementation-Version" value="${comp.version} ${TODAY}" />
-		    		<attribute name="Implementation-Vendor"  value="${project.vendor}" />
-		    	</section>
-   				<!-- <attribute name="Class-Path" value="bootstrap.jar" /> --> 
-  			</manifest>
-		</jar>
-	</target>
-	
-	 <target name="bootstrap-jar" depends="build-bootstrap">
-	    
-	    <jar jarfile="${comp.dist}/lib/Bootstrapper.jar"
-	                  basedir="${comp.build.bootstrap}"
-	                  includes="${bootstrap.package.dir}/*.class">
+    <target name="build-bootstrap" depends="init-build" description="compile the source ">
 
-	    			<!-- define MANIFEST.MF -->
-	    			<manifest>
-	    				<attribute name="Built-By" value="${user.name}" />
-	    				<attribute name="Main-Class" value="${bootstrap.mainclass}" />
-	    				<section name="common">
-	    					<attribute name="Specification-Title" value="${name}" />
-	    					<attribute name="Specification-Version" value="${vlet.version}" />
-	    					<attribute name="Specification-Vendor" value="www.eScienceCenter.nl" />
-	    					<attribute name="Implementation-Title" value="${component.name}" />
-	    					<attribute name="Implementation-Version" value="${component.version} ${TODAY}" />
-	    					<attribute name="Implementation-Vendor" value="www.eScienceCenter.nl" />
-	    				</section>
+        <property name="comp.build.bootstrap" value="${comp.build}/bootstrap" />
+        <javac srcdir="${comp.src}/${bootstrap.package.dir}" destdir="${comp.build.bootstrap}" compiler="${javac.compiler}" source="1.6" debug="${javac.debug}" target="1.6" />
 
-	    				<!-- <attribute name="Class-Path" value="bootstrap.jar" /> --> 
-	    			</manifest>
-	    		</jar>
-	    </target>
-    
-	<target name="dist" depends="build,bootstrap-jar,jar" >
+    </target>
 
-		<filterset id="compfilters">
-			<!-- nifty:  ant filterset (keyword subtitution) while copying files ! -->
-			<filter token="COMP_VERSION" value="${comp.version}"/>
-			<filter token="DATE" value="${comp.tstamp}"/>
-		</filterset>
+    <target name="jar" depends="build">
+        <!-- defaults -->
+        <property name="comp.version" value="dev" />
+        <property name="project.version" value="dev" />
+        <property name="project.vendor" value="${user.name}" />
 
-		<!--
-		<copy todir="${comp.dist}/etc" verbose="true" >
-			
-			<fileset dir="etc/"
-   	 			excludes="**/genvoms.sh,**/voms.inf,**/voms.xml.header,**/voms.xml.old,**/cacerts"> 
-			</fileset>
-	
-			<filterset refid="compfilters"/>
-		</copy>
-		-->
-		
-		<!-- <copy todir="${comp.dist}/lib/icons" verbose="true" >
-              <fileset dir="icons/">
-			  </fileset>
-		</copy>  -->
-		
-		<!-- Copy BINARY Files --> 
-		<!--	<copy todir="${comp.dist}/etc" verbose="true" >
-			<fileset file="etc/cacerts">
-			</fileset>
+        <!-- Create application JAR file -->
+        <jar jarfile="${comp.dist}/lib/${comp.artefactId}-${comp.version}.jar" basedir="${comp.build.classdir}">
+            <manifest>
+                <attribute name="Built-By" value="${user.name}" />
+                <attribute name="Main-Class" value="${comp.mainclass}" />
+                <section name="common">
+                    <attribute name="Specification-Title" value="${comp.artefactId}" />
+                    <attribute name="Specification-Version" value="${project.version}" />
+                    <attribute name="Specification-Vendor" value="${project.vendor}" />
+                    <attribute name="Implementation-Title" value="${comp.artefactId}" />
+                    <attribute name="Implementation-Version" value="${comp.version} ${TODAY}" />
+                    <attribute name="Implementation-Vendor" value="${project.vendor}" />
+                </section>
+                <!-- <attribute name="Class-Path" value="bootstrap.jar" /> -->
+            </manifest>
+        </jar>
+    </target>
 
-		</copy>
-		 -->
-		
-		<!--
-			<copy todir="${comp.dist}/doc" verbose="true" >
-			<fileset dir="doc/">
-			</fileset>
+    <target name="bootstrap-jar" depends="build-bootstrap">
 
-			<filterset refid="compfilters"/>
-		</copy>
-		-->
-		<!--
-		<copy todir="${comp.dist}/bin" verbose="true" >
-			<fileset dir="bin/"/>
-		</copy>
-		 -->
-	
-	</target>
-        
- 	<!--
+        <jar jarfile="${comp.dist}/lib/Bootstrapper.jar" basedir="${comp.build.bootstrap}" includes="${bootstrap.package.dir}/*.class">
+
+            <!-- define MANIFEST.MF -->
+            <manifest>
+                <attribute name="Built-By" value="${user.name}" />
+                <attribute name="Main-Class" value="${bootstrap.mainclass}" />
+                <section name="common">
+                    <attribute name="Specification-Title" value="${name}" />
+                    <attribute name="Specification-Version" value="${vlet.version}" />
+                    <attribute name="Specification-Vendor" value="www.eScienceCenter.nl" />
+                    <attribute name="Implementation-Title" value="${component.name}" />
+                    <attribute name="Implementation-Version" value="${component.version} ${TODAY}" />
+                    <attribute name="Implementation-Vendor" value="www.eScienceCenter.nl" />
+                </section>
+
+                <!-- <attribute name="Class-Path" value="bootstrap.jar" /> -->
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="dist" depends="build,bootstrap-jar,jar">
+
+        <filterset id="compfilters">
+            <!-- nifty:  ant filterset (keyword subtitution) while copying files ! -->
+            <filter token="COMP_VERSION" value="${comp.version}" />
+            <filter token="DATE" value="${comp.tstamp}" />
+        </filterset>
+
+    </target>
+
+    <!--
     *    Target: dist-install
     *    Info:
-    *     install auxiliary (3rd party) libraries into {project.lib}  dir 
+    *     install auxiliary (3rd party) libraries into {project.dist.lib}  dir 
     *        
     -->
 
-	<target name="dist-install" depends="dist" description="install libraries">
-		<fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
-              unless="project.env.ok"/>
-		<mkdir dir="${project.doc}" />
+    <target name="dist-install" depends="dist" description="install libraries">
+        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
+        <mkdir dir="${project.dist.doc}" />
 
-		<!-- toplevel directory structure -->
-		<mkdir dir="${project.lib}" />
+        <!-- toplevel directory structure -->
+        <mkdir dir="${project.dist.lib}" />
+        <mkdir dir="${project.dist.bin}" />
+        <mkdir dir="${project.dist.lib}" />
 
-		<mkdir dir="${project.bin}" />
+        <copy todir="${project.dist.lib}">
+            <fileset dir="${comp.dist}/lib" />
+        </copy>
 
-		<mkdir dir="${project.lib}" />
-		<copy todir="${project.lib}">
-			<fileset dir="${comp.dist}/lib" />
-		</copy>
-	
-		<!-- etc -->
-	
-		<mkdir dir="${project.auxlib}/jmimemagic"/>
-		<copy todir="${project.auxlib}/hmimemagic" >
-		     <fileset dir="lib/jmimemagic" />
-		</copy>
-		
-		<!--
-		<copy todir="${project.dist}/">
-			<fileset dir="${comp.dist}/root" />
-		</copy>
-		  -->
-		
-		<!--
-			<mkdir dir="${project.dist}/etc" />
-			<copy todir="${project.dist}/etc">
-				<fileset dir="${comp.dist}/etc">
-				</fileset>
-			</copy>
-		--> 
-		
-        <!-- update permissions on previous file set  -->
-        <!-- 
-            <chmod perm="ugo+x" >
-                <fileset dir="${project.bin}">
-                  <patternset refid="binaries.fileset.id"/>
-                </fileset>
-            </chmod>
-		--> 
+        <!-- etc -->
 
-	</target>
+        <mkdir dir="${project.dist.auxlib}/jmimemagic"/>
+        <copy todir="${project.dist.auxlib}/hmimemagic" >
+            <fileset dir="lib/jmimemagic" />
+        </copy>
 
-	<target name="clean" description="clean">
-		<delete dir="${comp.dist}"/>
-		<delete dir="${comp.build}"/>
-	</target>
+    </target>
+
+    <target name="clean" description="clean">
+        <delete dir="${comp.dist}"/>
+        <delete dir="${comp.build}"/>
+    </target>
 
 </project>
 
