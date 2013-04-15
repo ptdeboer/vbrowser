@@ -102,8 +102,7 @@
      -->
     <target name="dist-install" depends="dist" description="install libraries">
         <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
-        <mkdir dir="${project.doc}" />
-
+    
         <!-- toplevel directory structure -->
         <mkdir dir="${project.dist.lib}" />
         <copy todir="${project.dist.lib}">
