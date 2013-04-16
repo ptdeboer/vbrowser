@@ -40,7 +40,7 @@ public class testDCMBrowser
             
 		    ProxyBrowser frame=(ProxyBrowser)platform.createBrowser(); 
 		    
-    		ProxyNode root = fac.openLocation(FSUtil.getDefault().getUserHomeDir().getVRI().toString()+"/dicom"); 
+    		ProxyNode root = fac.openLocation(FSUtil.getDefault().getUserHomeDir().getVRI().toString()+"/data"); 
     		
 			frame.setRoot(root,true); 
 		}

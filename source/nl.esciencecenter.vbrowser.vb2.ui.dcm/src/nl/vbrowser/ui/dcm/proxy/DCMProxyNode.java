@@ -22,13 +22,11 @@ package nl.vbrowser.ui.dcm.proxy;
 
 
 import java.io.IOException;
-import java.util.Map;
 
-import org.dcm4che2.data.Tag;
-
+import nl.esciencecenter.medim.dicom.DicomUtil;
+import nl.esciencecenter.medim.dicom.DicomWrapper;
 import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
@@ -36,8 +34,8 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
-import nl.nlesc.medim.dicom.DicomUtil;
-import nl.nlesc.medim.dicom.DicomWrapper;
+
+import org.dcm4che2.data.Tag;
 
 
 /** 

@@ -6,6 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vbrowser.vb2.ui"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk.ui"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.xnat.client"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.xnat.client"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

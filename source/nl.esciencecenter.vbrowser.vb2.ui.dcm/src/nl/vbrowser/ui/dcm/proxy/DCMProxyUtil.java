@@ -23,8 +23,8 @@ package nl.vbrowser.ui.dcm.proxy;
 import java.io.IOException;
 
 import nl.esciencecenter.ptk.io.FSNode;
-import nl.nlesc.medim.dicom.DicomUtil;
-import nl.nlesc.medim.dicom.DicomWrapper;
+import nl.esciencecenter.medim.dicom.DicomUtil;
+import nl.esciencecenter.medim.dicom.DicomWrapper;
 
 public class DCMProxyUtil
 {
