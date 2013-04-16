@@ -15,16 +15,14 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.uva.vlet.gui.panels.monitoring;
+package monitoring;
 
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.ui.panels.monitoring.TaskMonitorDialog;
-import nl.nlesc.vlet.tasks.VRSTaskMonitor;
-
 
 public class testTaskMonitorDialog
 {

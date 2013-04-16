@@ -15,16 +15,16 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
-package nl.uva.vlet.gui.panels.monitoring;
+package monitoring;
 
 import javax.swing.JFrame;
 
 import nl.esciencecenter.ptk.ui.panels.monitoring.TransferMonitorPanel;
-import nl.nlesc.vlet.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 
 public class TestTransferDialogNew
 {
