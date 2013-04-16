@@ -15,16 +15,16 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package vfs;
 
 import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.vfs.VFSClient;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import test.TestSettings;
 
 
@@ -50,7 +50,7 @@ public class TestVFS_OctopusLocalFS extends TestVFS
             return vfs; 
                 
         VletConfig.init();
-        VRS.getRegistry().unregisterVRSDriverClass(nl.nlesc.vlet.vdriver.vfs.localfs.LocalFSFactory.class); 
+        VRS.getRegistry().unregisterVRSDriverClass(nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory.class); 
         VRS.getRegistry().registerVRSDriverClass(OctopusFSFactory.class);
         
         VFSClient vfs=VFSClient.getDefault(); 

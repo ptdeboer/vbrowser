@@ -15,14 +15,14 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package test;
 
 
-import nl.nlesc.vlet.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
 
 /**
  * My own subclasses VTestCase. Added some conveniance methods.

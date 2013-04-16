@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package vfs;
@@ -25,10 +25,10 @@ import junit.framework.TestCase;
 
 import nl.esciencecenter.ptk.Global;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vfs.VDir;
-import nl.nlesc.vlet.vfs.VFSClient;
-import nl.nlesc.vlet.vfs.VFile;
 import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vfs.VDir;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import nl.nlesc.vlet.vrs.vfs.VFile;
 
 /**
  * Test VFSClient specific methods not tested in VFSTest! 

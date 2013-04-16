@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package vfs;
@@ -53,23 +53,9 @@ import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.ResourceWriteAccessDeniedException;
-import nl.nlesc.vlet.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.util.ChecksumUtil;
 import nl.nlesc.vlet.util.bdii.BdiiService;
 import nl.nlesc.vlet.util.bdii.StorageArea;
-import nl.nlesc.vlet.vdriver.vfs.localfs.LFile;
-import nl.nlesc.vlet.vfs.FileReader;
-import nl.nlesc.vlet.vfs.FileWriter;
-import nl.nlesc.vlet.vfs.VChecksum;
-import nl.nlesc.vlet.vfs.VDir;
-import nl.nlesc.vlet.vfs.VFSClient;
-import nl.nlesc.vlet.vfs.VFSNode;
-import nl.nlesc.vlet.vfs.VFile;
-import nl.nlesc.vlet.vfs.VFileSystem;
-import nl.nlesc.vlet.vfs.VLogicalFileAlias;
-import nl.nlesc.vlet.vfs.VReplicatable;
-import nl.nlesc.vlet.vfs.VThirdPartyTransferable;
-import nl.nlesc.vlet.vfs.VUnixFileAttributes;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VCommentable;
@@ -79,7 +65,21 @@ import nl.nlesc.vlet.vrs.io.VRandomReadable;
 import nl.nlesc.vlet.vrs.io.RandomReader;
 import nl.nlesc.vlet.vrs.io.VResizable;
 import nl.nlesc.vlet.vrs.io.VZeroSizable;
+import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.util.VRSStreamUtil;
+import nl.nlesc.vlet.vrs.vdriver.localfs.LFile;
+import nl.nlesc.vlet.vrs.vfs.FileReader;
+import nl.nlesc.vlet.vrs.vfs.FileWriter;
+import nl.nlesc.vlet.vrs.vfs.VChecksum;
+import nl.nlesc.vlet.vrs.vfs.VDir;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.nlesc.vlet.vrs.vfs.VFileSystem;
+import nl.nlesc.vlet.vrs.vfs.VLogicalFileAlias;
+import nl.nlesc.vlet.vrs.vfs.VReplicatable;
+import nl.nlesc.vlet.vrs.vfs.VThirdPartyTransferable;
+import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
 
 
 
@@ -1467,7 +1467,7 @@ public class TestVFS extends VTestCase
             byte newcontents[] = new byte[len];
 
             verbose(1, "Getting inputstream of:" + remoteFile);
-            InputStream inps = remoteFile.getInputStream();
+            InputStream inps = remoteFile.createInputStream();
 
             int nrread = 0;
             int totalread = 0;
@@ -2137,7 +2137,7 @@ public class TestVFS extends VTestCase
         {
             remoteFile = this.getRemoteTestDir().createFile("single_byte", true);
 
-            OutputStream outps = remoteFile.getOutputStream();
+            OutputStream outps = remoteFile.createOutputStream();
 
             for (int value : values)
             {
@@ -2145,7 +2145,7 @@ public class TestVFS extends VTestCase
             }
             outps.close();
 
-            InputStream inps = remoteFile.getInputStream();
+            InputStream inps = remoteFile.createInputStream();
 
             for (int i = 0; i < bytevals.length; i++)
             {
@@ -2305,7 +2305,7 @@ public class TestVFS extends VTestCase
             for (int i = 0; i < types.length; i++)
             {
                 // recreate InputStream:
-                InputStream remoteIn = remoteFile.getInputStream();
+                InputStream remoteIn = remoteFile.createInputStream();
                 
                 message("Testing checksum type:" + types[i]);
                 // check if both methods retun the same checksum

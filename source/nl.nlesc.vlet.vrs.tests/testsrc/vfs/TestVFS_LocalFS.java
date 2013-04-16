@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package vfs;
@@ -42,7 +42,7 @@ public class TestVFS_LocalFS extends TestVFS
     {
         try
         {
-            VRS.getRegistry().registerVRSDriverClass(nl.nlesc.vlet.vdriver.vfs.localfs.LocalFSFactory.class);
+            VRS.getRegistry().registerVRSDriverClass(nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory.class);
         }
         catch (Exception e)
         {
