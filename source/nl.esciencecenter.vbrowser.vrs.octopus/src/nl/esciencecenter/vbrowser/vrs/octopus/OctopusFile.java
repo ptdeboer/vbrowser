@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.esciencecenter.vbrowser.vrs.octopus;
@@ -23,23 +23,18 @@ package nl.esciencecenter.vbrowser.vrs.octopus;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Set;
 
 import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
-import nl.esciencecenter.octopus.exceptions.OctopusException;
 import nl.esciencecenter.octopus.exceptions.OctopusIOException;
-import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.AbsolutePath;
-import nl.esciencecenter.octopus.files.PosixFilePermission;
+import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vfs.VFS;
-import nl.nlesc.vlet.vfs.VFSTransfer;
-import nl.nlesc.vlet.vfs.VFile;
-import nl.nlesc.vlet.vfs.VUnixFileMode;
 import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
+import nl.nlesc.vlet.vrs.vfs.VFile;
 
 /** 
  * 
@@ -173,12 +168,12 @@ public class OctopusFile extends VFile
 	    return getFS().isWritable(getAttrs(false),false); 
 	}
 
-	public InputStream getInputStream() throws IOException
+	public InputStream createInputStream() throws IOException
 	{
 		return this.getOctoClient().createInputStream(octoPath); 
 	}
 
-	public OutputStream getOutputStream() throws IOException 
+	public OutputStream createOutputStream() throws IOException 
 	{
 	    return this.getOctoClient().createOutputStream(octoPath); 
 	}

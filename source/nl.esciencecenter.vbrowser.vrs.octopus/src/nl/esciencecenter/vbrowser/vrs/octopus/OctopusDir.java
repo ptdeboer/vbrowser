@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.esciencecenter.vbrowser.vrs.octopus;
@@ -28,9 +28,9 @@ import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vfs.VDir;
-import nl.nlesc.vlet.vfs.VFSNode;
 import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vfs.VDir;
+import nl.nlesc.vlet.vrs.vfs.VFSNode;
 
 /**
  * Minimal implementation of the VDir class. 

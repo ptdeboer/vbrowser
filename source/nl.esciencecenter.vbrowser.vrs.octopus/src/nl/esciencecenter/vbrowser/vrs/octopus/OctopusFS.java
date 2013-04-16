@@ -15,7 +15,7 @@
  * 
  * For the full license, see: LICENCE.txt (located in the root folder of this distribution). 
  * ---
- */ 
+ */
 // source: 
 
 package nl.esciencecenter.vbrowser.vrs.octopus;
@@ -39,12 +39,12 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vfs.FileSystemNode;
-import nl.nlesc.vlet.vfs.VFS;
-import nl.nlesc.vlet.vfs.VFSNode;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vfs.FileSystemNode;
+import nl.nlesc.vlet.vrs.vfs.VFS;
+import nl.nlesc.vlet.vrs.vfs.VFSNode;
 
 /**
  *  Example Skeleton FileSystemServer implementation 
