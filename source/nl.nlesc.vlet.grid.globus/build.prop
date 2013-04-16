@@ -1,29 +1,25 @@
 ###
 # File      : build.prop
-# Component : vlet-grid.globus-4.1
-# 
-# Info: 
+# Component : Globus 4.1
+
+##
+# VRS Plugin settings: 
+# - name     Symbolic plugin name  
+# - package  The full name space and plugin directory 
+# - factory  VRSFactory class to register 
+#  
+# this information is stored in plugin.prop. 
 #
-#   build properties. Holds ALL customizable properties 
-#   
+vrsfactory.name=GlobusRS
+vrsfactory.artefactId=vlet-grid.globus-4.1
+# Package name space and plugin directory  
+vrsfactory.package=nl.nlesc.vlet.vrs.globusrs
+# VRS Factory class 
+vrsfactory.factory=nl.nlesc.vlet.vrs.globusrs.GlobusRSFactory
 
-###
-# Do not add spaces to the end of the values ! 
-# Component defaults (not that comp.root is set in the main build file)
-comp.name=vlet-grid.globus-4.1
-comp.dist=${comp.root}/dist
-comp.build=${comp.root}/build
-comp.src=${comp.root}/src
-
-###
-# Local Project Settings: 
-#
-# Note: for the env.<ENVIRONMENT VARIABLE> construct to work 
-# the property 'environment' needs to be set (in the main build file) to 'env'
-# as follows:  <property environment="env"/>
-
-# To use VLET_INSTALL as project.root uncomment the following: 
-#project.root=${env.VLET_INSTALL} 
-#Installed project libraries: 
-#project.lib=${project.root}/lib
+# build environment: 
+vrsfactory.dist=${vrsfactory.root}/dist
+vrsfactory.build=${vrsfactory.root}/build
+vrsfactory.src=${vrsfactory.root}/src
+vrsfactory.lib=${vrsfactory.root}/lib
 

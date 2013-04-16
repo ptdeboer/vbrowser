@@ -1,106 +1,173 @@
 <project name="vlet-grid.globus-4.1" default="dist" basedir=".">
     <description>
-		Project	  : VLeT
-		Component : Grid Globus bindings
-        Eclipse target : dist
-            	
-        Configuring: 
-        ===
-            - All configuration settings are in build.prop 
-            	
+        Project   : VLET
+        Component : Globus 4.1 
+        
     </description>
 
-    <!--
-      1) Read global project properties (if specified) from: project.prop
-         - for this to work project.root variable must be set to project root 
-      2) Set environment properties prefix to 'env.' 
-      3) Set comp.root to the location if this component 
-      4) Read local components properties from: build.prop 
-    -->
-
-    <property name="project.root" location="../mbuild" />
-    <property file="${project.root}/project.prop" />
-    <property environment="env" />
-    <property name="comp.root" location="." />
-    <property file="build.prop" />
+    <property name="vrsfactory.root" location="." />
+    <!-- default mbuild location -->
+    <property name="project.root" value="../.."/>
+    <property environment="env"/>
+    <property file="${project.root}/project.prop"/>
+    <property file="build.prop"/>
 
     <!-- Target: init -->
-
-    <target name="init">
+    <target name="init" >
         <!-- Create the build directory structure used by compile -->
-        <mkdir dir="${comp.build}" />
-        <mkdir dir="${comp.dist}" />
-        <mkdir dir="${comp.dist}/lib" />
+        <mkdir dir="${vrsfactory.build}" />
+        <mkdir dir="${vrsfactory.dist}" />
+        <mkdir dir="${vrsfactory.dist}/lib" />
+        <!-- <mkdir dir="${vrsfactory.dist}/lib" /> -->
     </target>
 
-    <target name="config">
+    <!-- Target: Config (configure this component) -->
+    <target name="config" >
     </target>
 
-    <target name="generate">
+    <!-- Target: generate (create stubbers or other code) -->
+    <target name="generate" >
     </target>
 
-    <!-- source distribution: nothing to do -->
-    <target name="source-dist" />
+    <!--
+         Target: source-dist (Only needed when creating source distributions) 
+      -->
+    <target name="source-dist" >
+    </target>
 
-    <path id="comp.classpath">
-        <!-- include project libraries -->
+
+    <path id="vrsfactory.classpath">
+        <!-- include project libraries-->
         <fileset dir="${project.dist.lib}">
             <include name="**/*.jar" />
         </fileset>
 
-        <!-- add globus+glite jars -->
-        <fileset dir="lib">
-            <include name="**/*.jar" />
-        </fileset>
+        <!-- Moved to seperate srm project! -->
+        <!-- <fileset dir="${vrsfactory.lib}">
+             <include name="**/*.jar" />
+         </fileset> -->
 
         <!-- add local paths settings -->
-        <pathelement location="${comp.build}" />
-        <pathelement location="${comp.src}" />
+
+        <pathelement location="${vrsfactory.build}" />
+        <pathelement location="${vrsfactory.src}" />
 
     </path>
 
+
     <!--
-		Target = Compilation 
-	-->
+        Target = Compilation 
+    -->
 
     <target name="build" depends="init" description="compile the source ">
+        <!-- Compile the java code from the ${src} into ${build} -->
 
-        <!-- Compile the java code from the srclist  into ${build} -->
-        <javac srcdir="${comp.src}" destdir="${comp.build}" compiler="${javac.compiler}" debug="${javac.debug}" source="${javac.source}" target="${javac.target}">
-            <classpath refid="comp.classpath" />
+        <javac srcdir="${vrsfactory.src}" destdir="${vrsfactory.build}"
+		       compiler="${javac.compiler}"
+			   debug="${javac.debug}"
+			   source="${javac.source}" 
+			   target="${javac.target}">
+            <classpath refid="vrsfactory.classpath" />
         </javac>
 
     </target>
 
-    <target name="jar" depends="build" unless="project.includesource">
+    <target name="jar" depends="build" >
         <!-- Create application JAR file -->
-        <jar jarfile="${comp.dist}/lib/${comp.name}.jar" basedir="${comp.build}">
+        <jar jarfile="${vrsfactory.dist}/lib/${vrsfactory.artefactId}.jar"
+	             basedir="${vrsfactory.build}">
+            <!-- .. includes/excludes .. -->
         </jar>
     </target>
 
-    <target name="jar-sdk" depends="build" if="project.includesource">
-        <!-- Create application JAR file -->
-        <jar jarfile="${comp.dist}/lib/${comp.name}.jar" basedir="${comp.build}">
-            <fileset dir="src" />
-        </jar>
+    <target name="dist" depends="vrsfactory-dist" >
     </target>
 
-    <target name="dist" depends="build,jar,jar-sdk">
-    </target>
+    <target name="vrsfactory-dist" depends="build,jar" >
 
+        <!-- 
+          instead of an single jar file, the 
+          vrsfactory distribution can also be a directory containing the 
+          jar files needed for the vrsfactory. 
+          The directory MUST have the name of the Main Viewer Class. 
+          The jar file can have another name. 
+          Optionally extra jars/file can be copied to this directory
+        -->
+
+        <property name="vrsfactory.dir"  value="${vrsfactory.dist}/${vrsfactory.artefactId}"/>
+
+        <mkdir dir="${vrsfactory.dir}" />
+
+        <!-- Add extra files from etc -->
+        <!--
+         <copy todir="${vrsfactory.dir}">
+            <fileset dir="${vrsfactory.root}/etc" /> 
+         </copy> 
+         -->
+
+        <!-- Add external libs -->
+        <!-- 
+    	 <copy todir="${vrsfactory.dir}">
+             <fileset dir="${vrsfactory.root}/lib" /> 
+         </copy>
+        -->
+
+        <!-- Add vrsfactorys libs  -->
+        <copy todir="${vrsfactory.dir}">
+            <fileset dir="${vrsfactory.dist}/lib" />
+        </copy>
+
+        <!-- create plugin.prop file -->
+        <property name="plugininfo" value="${vrsfactory.dir}/plugin.prop"/>
+        <echo message="##${line.separator}#Plugin description for: ${vrsfactory.artefactId}${line.separator}#${line.separator}" 
+              file="${plugininfo}" append="false" />
+
+        <echo message="#Plugin name:${line.separator}vrsfactory.name=${vrsfactory.artefactId}${line.separator}${line.separator}" 
+              file="${plugininfo}" append="true" />
+
+        <echo message="#Plugin package name:${line.separator}vrsfactory.package=${vrsfactory.package}${line.separator}${line.separator}" 
+              file="${plugininfo}" append="true" />
+        <echo message="#Plugin (VRS)Factory name (Must be subclass of VRSFactory which will be registered in the VRS Registry!):${line.separator}vrsfactory.factory=${vrsfactory.factory}${line.separator}${line.separator}" 
+              file="${plugininfo}" append="true" />
+
+    </target>
 
     <!--
-	*	Target: dist-install
-	*	Info:
-	*	 install auxiliary (3rd party) libraries into {project.dist.lib}  dir 
-	*		
+    *    Target: plugin-dist-install
+    *    Info:
+    *          Install into plugin directory
     -->
-    <target name="dist-install" depends="dist" description="install libraries">
-        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
-        <mkdir dir="${project.dist.lib}" />
+    <target name="vrsfactory-dist-install" depends="vrsfactory-dist" description="install libraries">
+        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
+              unless="project.env.ok"/>
+
+        <!-- install in lib/plugins/  -->
+        <mkdir dir="${project.dist.lib}/plugins" />
 
         <!-- Copy all-in-one package lib into project lib dir -->
-        <copy file="${comp.dist}/lib/${comp.name}.jar" todir="${project.dist}/lib" />
+        <!-- <copy file="${vrsfactory.dist}/${vrsfactory.package}.jar" todir="${project.dist.lib}/plugins" /> 
+          -->
+        <!-- 
+			Register plugin! do this by creation a plugin directory 
+            and copy the properties file there. 
+    	  -->
+
+        <mkdir dir="${project.dist.lib}/plugins/${vrsfactory.artefactId}" />
+
+        <copy todir="${project.dist.lib}/plugins/${vrsfactory.artefactId}">
+            <resources>
+                <fileset dir="${vrsfactory.dist}/${vrsfactory.artefactId}" >
+                </fileset>
+            </resources>
+        </copy>
+
+    </target>
+
+    <target name="dist-install" depends="dist,vrsfactory-dist-install" description="install libraries">
+        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
+		              unless="project.env.ok"/>
+
+        <!-- dist-install done by target dependencies -->
 
         <mkdir dir="${project.dist.auxlib}/globus-4.1" />
         <copy todir="${project.dist.auxlib}/globus-4.1">
@@ -109,9 +176,10 @@
 
     </target>
 
+
     <target name="clean" description="clean">
-        <delete dir="{$comp.dist}"/>
-        <delete dir="{$comp.build}"/>
+        <delete dir="${vrsfactory.dist}"/>
+        <delete dir="${vrsfactory.build}"/>
     </target>
 
 </project>
