@@ -164,7 +164,7 @@
         <!-- etc -->
 
         <mkdir dir="${project.dist.auxlib}/jmimemagic"/>
-        <copy todir="${project.dist.auxlib}/hmimemagic" >
+        <copy todir="${project.dist.auxlib}/jmimemagic" >
             <fileset dir="lib/jmimemagic" />
         </copy>
 
