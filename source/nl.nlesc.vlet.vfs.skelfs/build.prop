@@ -1,51 +1,28 @@
 ###
 # File      : build.prop
-# Component : Skeleton example VFS Driver (plugin)
+# Component : Skeleton example VFS Factory. 
 # 
 # Info: 
 #   Build properties. Holds customizable properties 
-#   
-
-###
-# *** IMPORTANT *** 
-# Do not add spaces to the end of the values ! 
-
+   
 ##
-# Component properties: 
-# - The property  "driver.root" is set in the main build file. 
-
-##
-# VDriver (VRS Plugin) settings: 
+# VRSFactory settings: 
 # - name     Symbolic plugin name  
 # - package  The full name space and plugin directory 
 # - factory  VRSFactory class to register 
 #  
 # this information is stored in plugin.prop. 
 #
-vdriver.name=SkelFS
+vrsfactory.name=SkelFS
+vrsfactory.artefactId=example-skelfs
 # Package name space and plugin directory  
-vdriver.package=nl.nlesc.vlet.vfs.skelfs
+vrsfactory.package=nl.nlesc.vlet.vrs.vfs.skelfs
 # VRS Factory class 
-vdriver.factory=nl.nlesc.vlet.vfs.skelfs.SkelFSFactory
+vrsfactory.factory=nl.nlesc.vlet.vrs.vfs.skelfs.SkelFSFactory
 
 # build environment: 
-vdriver.dist=${vdriver.root}/dist
-vdriver.build=${vdriver.root}/build
-vdriver.src=${vdriver.root}/src
-vdriver.lib=${vdriver.root}/lib
-
-# "etc" and "icons" directory are derived from "driver.root"
-
-###
-# Local Project Settings: 
-#
-# Note: for the env.<ENVIRONMENT VARIABLE> construct to work 
-# the property 'environment' has to be set in the main ant build file. 
-# This is done as follows:  <property environment="env"/>
-# If the above line is missing the following lines will not work: 
-
-# To use VLET_INSTALL as project.root uncomment the following: 
-#project.root=${env.VLET_INSTALL} 
-#Installed project libraries: 
-#project.lib=${project.root}/lib
+vrsfactory.dist=${vrsfactory.root}/dist
+vrsfactory.build=${vrsfactory.root}/build
+vrsfactory.src=${vrsfactory.root}/src
+vrsfactory.lib=${vrsfactory.root}/lib
 
