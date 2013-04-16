@@ -243,6 +243,8 @@ public class VletConfig
      */
     public static final String PLUGIN_SUBDIR = "plugins";
 
+    public static final String VIEWERS_SUBDIR = "viewers";
+    
     /** Glite BDII or InfoSys environment variable. Contains BDII contact information. */  
     public static final String ENV_LCG_GFAL_INFOSYS = "LCG_GFAL_INFOSYS";
 
@@ -1291,6 +1293,14 @@ public class VletConfig
         return VletConfig.getInstallationLibDir().appendPath(VletConfig.PLUGIN_SUBDIR);
     }
 
+    public static VRL[] getViewerPluginDirs()
+    {
+        VRL vrls[]=new VRL[2]; 
+        vrls[0]=VletConfig.getInstallationLibDir().appendPath(VletConfig.PLUGIN_SUBDIR);
+        vrls[1]=VletConfig.getInstallationLibDir().appendPath(VletConfig.VIEWERS_SUBDIR);
+        return vrls; 
+    }
+    
     public static String getVletVersion()
     {
         return getProperty(PROP_VLET_VERSION); 

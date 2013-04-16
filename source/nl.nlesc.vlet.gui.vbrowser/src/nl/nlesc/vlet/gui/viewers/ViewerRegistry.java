@@ -23,7 +23,6 @@ package nl.nlesc.vlet.gui.viewers;
 import java.util.Properties;
 import java.util.Vector;
 
-import nl.esciencecenter.ptk.Global;
 import nl.esciencecenter.ptk.data.IndexedHashtable;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
@@ -31,8 +30,6 @@ import nl.nlesc.vlet.actions.ActionMenuMapping;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
-import nl.nlesc.vlet.gui.viewers.ViewerInfo;
-import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.util.PluginLoader;
 import nl.nlesc.vlet.util.PluginLoader.PluginInfo;
 import nl.nlesc.vlet.vrl.VRL;
@@ -275,11 +272,11 @@ public class ViewerRegistry
         for (String className : defaultViewers)
             registerViewer(Thread.currentThread().getContextClassLoader(), className);
 
-        VRL extraviewers = VletConfig.getInstallationPluginDir();
+        VRL viewerPlugins[] = VletConfig.getViewerPluginDirs();
+        loadViewerPlugins(viewerPlugins);
 
-        loadViewerPlugins(extraviewers);
-
-        VRL userviewers = VletConfig.getUserPluginDir();
+        VRL userviewers[] =new VRL[1]; 
+        userviewers[0] = VletConfig.getUserPluginDir();
         loadViewerPlugins(userviewers);
     }
 
@@ -298,79 +295,82 @@ public class ViewerRegistry
     }
 
     /* Scan directory for viewer implementations */
-    private void loadViewerPlugins(VRL viewersdir)
+    private void loadViewerPlugins(VRL viewersdirs[])
     {
-        try
+        VFSClient vfs = new VFSClient();
+        
+        for  (VRL dir:viewersdirs)
         {
-            VFSClient vfs = new VFSClient();
-
-            if (vfs.existsDir(viewersdir) == false)
+            try
             {
-                logger.debugPrintf("No viewerdirs:%s\n",viewersdir);
-                return;
-            }
-
-            VDir vdir = vfs.getDir(viewersdir);
-            VFSNode nodes[] = vdir.list();
-
-            // Check if file is a jar or directory contains
-            // implementation.
-            // Either the filename is the full package name
-            // or the directory is
-            if ((nodes == null) || (nodes.length <= 0))
-                return;
-
-            for (VFSNode node : nodes)
-            {
-                try
+                if (vfs.existsDir(dir) == false)
                 {
-                    ViewerInfo vinfo = null;
-                    // use plugin loader:
-                    PluginInfo pluginInfo = pluginLoader.loadLocalPlugin(node.getPath());
+                    logger.debugPrintf("viewers dir doesn't exist:%s\n",dir);
+                    continue;
+                }
 
-                    // use isAssignableFrom to check subclass/interface type of
-                    // Class:
-                    if (pluginInfo.actualClass != null)
+                VDir vdir = vfs.getDir(dir);
+                VFSNode nodes[] = vdir.list();
+    
+                // Check if file is a jar or directory contains
+                // implementation.
+                // Either the filename is the full package name
+                // or the directory is
+                if ((nodes == null) || (nodes.length <= 0))
+                    continue; 
+    
+                for (VFSNode node : nodes)
+                {
+                    try
                     {
-                        // ===
-                        // Currently must be ViewerPlugin
-                        // IMimeType interface not yet complete !
-                        // ====
-
-                        if (ViewerPlugin.class.isAssignableFrom((pluginInfo.actualClass)))
+                        ViewerInfo vinfo = null;
+                        // use plugin loader:
+                        PluginInfo pluginInfo = pluginLoader.loadLocalPlugin(node.getPath());
+    
+                        // use isAssignableFrom to check subclass/interface type of
+                        // Class:
+                        if (pluginInfo.actualClass != null)
                         {
-                            logger.debugPrintf("+++ adding ViewerPlugin plugin:%s\n",pluginInfo.className);
-                            vinfo = addViewerPlugin(pluginInfo);
-                        }
-                        else if (VRSFactory.class.isAssignableFrom(pluginInfo.actualClass))
-                        {
-                            logger.debugPrintf("Ignoring VRS plugin :%s\n",pluginInfo.className);
+                            // ===
+                            // Currently must be ViewerPlugin
+                            // IMimeType interface not yet complete !
+                            // ====
+    
+                            if (ViewerPlugin.class.isAssignableFrom((pluginInfo.actualClass)))
+                            {
+                                logger.debugPrintf("+++ adding ViewerPlugin plugin:%s\n",pluginInfo.className);
+                                vinfo = addViewerPlugin(pluginInfo);
+                            }
+                            else if (VRSFactory.class.isAssignableFrom(pluginInfo.actualClass))
+                            {
+                                logger.debugPrintf("Ignoring VRS plugin :%s\n",pluginInfo.className);
+                            }
+                            else
+                            {
+                                logger.errorPrintf("*** Error: Unknown plugin (not VRS Class nor ViewerPlugin Class):%s\n",
+                                                pluginInfo.className);
+                            }
                         }
                         else
                         {
-                            logger.errorPrintf("*** Error: Unknown plugin (not VRS Class nor ViewerPlugin Class):%s\n",
-                                            pluginInfo.className);
+                            logger.errorPrintf("*** Error: Unknown plugin loading failed:%s\n",pluginInfo.className);
                         }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        logger.errorPrintf("*** Error: Unknown plugin loading failed:%s\n",pluginInfo.className);
+                        logger.logException(ClassLogger.ERROR,e,"Error loading/initializing viewer:%s\n",node);
                     }
-                }
-                catch (Exception e)
-                {
-                    logger.logException(ClassLogger.ERROR,e,"Error loading/initializing viewer:%s\n",node);
-                }
-                catch (Throwable e)
-                {
-                    logger.logException(ClassLogger.ERROR,e,"Internal Error loading/initializing viewer:%s\n",node);
-                }
-            } // for
-
-        }
-        catch (VlException e)
-        {
-            logger.logException(ClassLogger.ERROR,e,"Error reading viewersdir:%s\n",viewersdir);
+                    catch (Throwable e)
+                    {
+                        logger.logException(ClassLogger.ERROR,e,"Internal Error loading/initializing viewer:%s\n",node);
+                    }
+                } // for node:nodes 
+ 
+            }
+            catch (VlException e)
+            {
+                logger.logException(ClassLogger.ERROR,e,"Error reading viewersdir:%s\n",dir);
+            }
         }
     }
 

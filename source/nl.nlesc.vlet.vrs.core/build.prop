@@ -14,11 +14,12 @@
 comp.artefactId=vlet-vrs.core
 comp.dist=${comp.root}/dist
 comp.build=${comp.root}/build
+comp.build.classes=${comp.build}/classes
 comp.src=${comp.root}/src
 comp.src.main=${comp.root}/src
 
 # build location for bootstrapper code which is standalone jar!
-build.bootstrap=${comp.root}/build.bootstrap
+build.bootstrap=${comp.build}/bootstrap
 
 #certificates
 project.certificates=${comp.dist}/etc/certificates

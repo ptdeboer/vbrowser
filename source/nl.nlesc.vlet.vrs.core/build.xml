@@ -31,6 +31,7 @@
     <target name="init" depends="">
         <!-- Create the build directory structure used by compile -->
         <mkdir dir="${comp.build}" />
+        <mkdir dir="${comp.build.classes}" />
         <mkdir dir="${build.bootstrap}" />
         <mkdir dir="${comp.dist}" />
         <mkdir dir="${comp.dist}/lib" />
@@ -307,6 +308,10 @@
         <mkdir dir="${project.dist.doc}" />
         <copy todir="${project.dist.doc}">
             <fileset dir="${comp.dist}/doc" />
+        </copy>
+        
+        <copy todir="${project.dist.doc}">
+            <fileset dir="${comp.root}/doc" />
         </copy>
 
         <!-- update permissions on previous file set  -->
