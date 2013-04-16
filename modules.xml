@@ -1,60 +1,60 @@
 <project name="vbrowser-modules" default="doModules" basedir=".">
-    
+
     <import file="build.xml"/>
-    
-    <target name="check-component"> 
-        
-        <property name="sourcepath" value="${project.sourcedir}/${name}" /> 
-        <available property="comp.exists" file="${sourcepath}/build.xml"/> 
-        
-        <!-- print header --> 
-        <echo message="=============================================================="/> 
-        <echo message="=== Build Component: ${name}: ${target}"/> 
-        <echo message="=============================================================="/> 
-        <echo message=" project root         = ${project.root}"/> 
-        <echo message=" project dist         = ${project.dist}"/> 
-        <echo message=" project sourceroot   = ${project.sourcedir}"/> 
-        <echo message=" component name       = ${name}"/> 
-        <echo message=" component scm.path   = ${scm.path}"/> 
-        <echo message=" component sourcepath = ${sourcepath}"/> 
-            
-    </target> 
-        
+
+    <target name="check-component">
+
+        <property name="sourcepath" value="${project.sourcedir}/${name}" />
+        <available property="comp.exists" file="${sourcepath}/build.xml"/>
+
+        <!-- print header -->
+        <echo message="=============================================================="/>
+        <echo message="=== Build Component: ${name}: ${target}"/>
+        <echo message="=============================================================="/>
+        <echo message=" project root         = ${project.root}"/>
+        <echo message=" project dist         = ${project.dist}"/>
+        <echo message=" project sourceroot   = ${project.sourcedir}"/>
+        <echo message=" component name       = ${name}"/>
+        <echo message=" component scm.path   = ${scm.path}"/>
+        <echo message=" component sourcepath = ${sourcepath}"/>
+
+    </target>
+
     <!-- 
         Build Component
             name   : Component Name 
             target : Target component (directory) 
       -->
-    <target name="build-component" depends="check-component"> 
+    <target name="build-component" depends="check-component">
 
         <fail unless="comp.exists" 
               message="*** Component: ${name} at ${sourcepath} is missing or scm checkout went wrong (missing build.xml file ?)" />
-        
-        <!-- default target: can be overriden by previous target--> 
-        <property name="target" value="dist-install"/> 
-        
+
+        <!-- default target: can be overriden by previous target-->
+        <property name="target" value="dist-install"/>
+
         <ant antfile="build.xml" 
             dir="${sourcepath}" 
             target="${target}">
-         </ant>
-        
-    </target> 
+        </ant>
+
+    </target>
 
     <target name="doModules" depends="vlet-all">
-    </target> 
-    
-    <target name="vlet-all" depends="project-init,vlet-core,vlet-vfs-adaptors,vlet-vbrowser">
-    </target> 
-    
+    </target>
+
+    <target name="vlet-all" depends="project-init,vlet-core,vlet-vfs-adaptors,vlet-vbrowser,vlet-vbrowser-viewers">
+    </target>
+
     <target name="vlet-auxlibs" depends="project-init">
 
-     <antcall target="build-component">
+        <antcall target="build-component">
             <param name="name" value="cog.jglobus-1.4"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
 
-    </target> 
+    </target>
 
     <target name="vlet-core" depends="project-init,vlet-auxlibs">
 
@@ -63,19 +63,19 @@
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
-        
-     <antcall target="build-component">
+
+        <antcall target="build-component">
             <param name="name" value="nl.nlesc.vlet.vrs.core"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
 
-     <antcall target="build-component">
+        <antcall target="build-component">
             <param name="name" value="nl.nlesc.vlet.vrs.infors"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
-    </target>    
+    </target>
 
     <target name="vlet-vfs-globus" depends="vlet-core">
 
@@ -84,21 +84,21 @@
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
-             
-         <antcall target="build-component">
-             <param name="name" value="nl.nlesc.vlet.grid.globus"/>
-             <param name="version" value=""/>
-             <param name="scm.path" value=""/>
-        </antcall>
-        
+
         <antcall target="build-component">
-             <param name="name" value="nl.nlesc.vlet.vfs.gftp"/>
-             <param name="version" value=""/>
-             <param name="scm.path" value=""/>
+            <param name="name" value="nl.nlesc.vlet.grid.globus"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+        <antcall target="build-component">
+            <param name="name" value="nl.nlesc.vlet.vfs.gftp"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
         </antcall>
 
     </target>
-        
+
     <target name="vlet-vfs-lfc-srm" depends="vlet-vfs-globus">
 
         <antcall target="build-component">
@@ -106,36 +106,36 @@
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
-       
+
         <antcall target="build-component">
-             <param name="name" value="nl.nlesc.glite.srm"/>
-             <param name="version" value=""/>
-             <param name="scm.path" value=""/>
+            <param name="name" value="nl.nlesc.glite.srm"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
         </antcall>
 
         <antcall target="build-component">
-             <param name="name" value="nl.nlesc.vlet.vfs.srm"/>
-             <param name="version" value=""/>
-             <param name="scm.path" value=""/>
+            <param name="name" value="nl.nlesc.vlet.vfs.srm"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
         </antcall>
 
         <antcall target="build-component">
             <param name="name" value="nl.nlesc.glite.lfc"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
-          </antcall>
+        </antcall>
 
         <antcall target="build-component">
-             <param name="name" value="nl.nlesc.vlet.vfs.lfc"/>
-             <param name="version" value=""/>
-             <param name="scm.path" value=""/>
-           </antcall>
-        
-    </target>    
-    
+            <param name="name" value="nl.nlesc.vlet.vfs.lfc"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+    </target>
+
     <target name="vlet-vfs-adaptors" depends="vlet-vfs-globus,vlet-vfs-lfc-srm"/>
-    
-     <target name="vlet-vbrowser" depends="vlet-core">
+
+    <target name="vlet-vbrowser" depends="vlet-core">
 
         <antcall target="build-component">
             <param name="name" value="nl.esciencecenter.ptk.ui"/>
@@ -154,7 +154,7 @@
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
-        
+
         <antcall target="build-component">
             <param name="name" value="nl.nlesc.vlet.gui.vbrowser"/>
             <param name="version" value=""/>
@@ -163,4 +163,20 @@
 
     </target>
 
-    </project>
+    <target name="vlet-vbrowser-viewers" depends="vlet-core,vlet-vbrowser">
+
+        <antcall target="build-component">
+            <param name="name" value="nl.nlesc.vlet.gui.lobo.viewer"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+        
+        <antcall target="build-component">
+            <param name="name" value="nl.nlesc.vlet.gui.pedal"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+    </target>
+
+</project>

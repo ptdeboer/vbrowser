@@ -22,10 +22,10 @@
 		
 		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${project.dist}"/>
-		<mkdir dir="${project.lib}"/>
-		<mkdir dir="${project.etc}"/>
-		<mkdir dir="${project.bin}"/>
-		<mkdir dir="${project.doc}"/>
+		<mkdir dir="${project.dist.lib}"/>
+		<mkdir dir="${project.dist.etc}"/>
+		<mkdir dir="${project.dist.bin}"/>
+		<mkdir dir="${project.dist.doc}"/>
 		
 		<!-- project defaults --> 
 		<property name="project.sourcedir" value="${project.root}" />	
