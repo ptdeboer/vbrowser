@@ -1,6 +1,6 @@
 #!/bin/bash
 ##
-# (C) PTdB.  
+# (C-Left) PTdB.
 # 
 
 #default header file: 

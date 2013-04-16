@@ -7,7 +7,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk.ui"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.gui.utils"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vrs.infors"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vrs.vdriver.infors"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vrs.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.glite.lfc"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.glite.srm"/>
