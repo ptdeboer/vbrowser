@@ -31,9 +31,9 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 
 import junit.framework.Assert;
+import nl.esciencecenter.ptk.crypt.CryptScheme;
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.crypt.StringCrypter;
-import nl.esciencecenter.ptk.crypt.StringCrypter.CryptScheme;
 import nl.esciencecenter.ptk.crypt.StringCrypter.EncryptionException;
 import nl.esciencecenter.ptk.util.StringUtil;
 
@@ -183,7 +183,7 @@ public class TestCrypter
     }
     
     @Test
-    public void TestLegacyAppKey1() throws EncryptionException 
+    public void TestLegacyAppKey1() throws Exception
     {
         // Legacy App1 doesn't use hash digest!  
         StringCrypter crypter=new StringCrypter(StringCrypter.getAppKey1(),CryptScheme.DESEDE_ECB_PKCS5,null,StringCrypter.CHARSET_UTF8);
@@ -204,9 +204,9 @@ public class TestCrypter
     }
     
 
-    public static void testEncrypt(StringCrypter crypter,String text,String expectedCrypt) throws EncryptionException
+    public static void testEncrypt(StringCrypter crypter,String text,String expectedCrypt) throws Exception
     {
-        String crypt=crypter.encryptString(text); 
+        String crypt=crypter.encryptToBase64(text); 
         printf("uuencrypt='%s' => '%s'\n",text,crypt);
         
         Assert.assertEquals("Encrypted String doesn't match actual!",expectedCrypt,crypt);
@@ -245,7 +245,7 @@ public class TestCrypter
    void testEncrypt(String password, String value,String expectedCrypt,CryptScheme encryptionScheme, String keyHashingScheme, String charsetUtf8) throws Exception
    {
        StringCrypter crypter=new StringCrypter(Secret.wrap(password.toCharArray()),encryptionScheme,keyHashingScheme,charsetUtf8);
-       String encryptStr=crypter.encryptString(value);
+       String encryptStr=crypter.encryptToBase64(value);
 
        printf(">Encoding: Hash:%s, Crypt:%s (charset=%s)\n",keyHashingScheme,encryptionScheme,charsetUtf8);
        printf(" - password = %s\n",password);

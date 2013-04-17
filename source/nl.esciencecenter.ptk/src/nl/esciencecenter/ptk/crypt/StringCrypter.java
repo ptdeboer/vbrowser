@@ -64,40 +64,7 @@ public class StringCrypter
         }
     }
 
-    public static enum CryptScheme
-    {
-        DESEDE_ECB_PKCS5("DESede","DESede/ECB/PKCS5Padding",24),
-        DES_ECB_PKCS5("DES","DES/ECB/PKCS5Padding",16)
-        ;
-        
-        private String schemeName;
-        
-        private String configString;
-        
-        private int minKeyLength; 
-        
-        private CryptScheme(String name,String configName,int minimalKeyLength)
-        {
-            this.schemeName=name; 
-            this.configString=configName;
-            this.minKeyLength=minimalKeyLength; 
-        }
-        
-        public String getSchemeName()
-        {
-            return schemeName; 
-        }
-        
-        public String getConfigString()
-        {
-            return configString; 
-        }
-        
-        public int getMinimalKeyLength()
-        {
-            return minKeyLength;
-        }
-    }
+    
 
     // ========================================================================
     // Class Constants  
@@ -143,22 +110,29 @@ public class StringCrypter
 //        init(getDefaultKey(),DESEDE_ENCRYPTION_SCHEME, StringHasher.SHA_256,CHARSET_UTF8);
 //    }
 
-    public StringCrypter(Secret encryptionKey) throws EncryptionException
+    public StringCrypter(Secret encryptionKey) throws EncryptionException, NoSuchAlgorithmException, UnsupportedEncodingException
     {
         init(encryptionKey,CryptScheme.DESEDE_ECB_PKCS5,StringHasher.SHA_256, CHARSET_UTF8);
     }
     
-    public StringCrypter(Secret encryptionKey, CryptScheme encryptionScheme) throws EncryptionException
+    public StringCrypter(Secret encryptionKey, CryptScheme encryptionScheme) throws EncryptionException, NoSuchAlgorithmException, UnsupportedEncodingException
     {
         init(encryptionKey,encryptionScheme,StringHasher.SHA_256,CHARSET_UTF8);
     }
     
-    public StringCrypter(Secret encryptionKey, CryptScheme encryptionScheme,String keyHashingScheme, String charEncoding) throws EncryptionException
+    public StringCrypter(Secret encryptionKey, CryptScheme encryptionScheme,String keyHashingScheme, String charEncoding) throws EncryptionException, NoSuchAlgorithmException, UnsupportedEncodingException
     { 
         init(encryptionKey,encryptionScheme,keyHashingScheme,charEncoding);
     }
     
-    private void init(Secret encryptionKey,CryptScheme encryptionScheme,String keyHasherScheme,String charEncoding) throws EncryptionException
+    public StringCrypter(byte encryptionKey[], CryptScheme encryptionScheme,String keyHashingScheme, String charEncoding) throws EncryptionException, NoSuchAlgorithmException, UnsupportedEncodingException
+    {
+        setCharacterEncoding(charEncoding);
+        keyHasher = MessageDigest.getInstance(keyHashingScheme); 
+        initKey(encryptionKey,null,encryptionScheme); 
+    }
+    
+    private void init(Secret encryptionKey,CryptScheme encryptionScheme,String keyHasherScheme,String charEncoding) throws EncryptionException, NoSuchAlgorithmException, UnsupportedEncodingException
     {
         if (encryptionKey == null)
         {
@@ -171,28 +145,19 @@ public class StringCrypter
 //            throw new IllegalArgumentException("Encryption key was less than "+MINIMUM_CRYPT_KEY_LENGTH+" characters");
 //        }
         
-        try
+        if (keyHasherScheme==null)
         {
-            if (keyHasherScheme==null)
-            {
-                this.usePlainCharBytes=true; 
-            }
-            else
-            {
-                keyHasher= MessageDigest.getInstance(keyHasherScheme);
-            }
-            setCharacterEncoding(charEncoding);
-            byte[] keyAsBytes = createKeyDigest(encryptionKey); 
-            initKey(keyAsBytes,null,encryptionScheme);
+            this.usePlainCharBytes=true; 
         }
-        catch (UnsupportedEncodingException e)
+        else    
         {
-            throw new EncryptionException(e.getMessage(),e);
+            keyHasher= MessageDigest.getInstance(keyHasherScheme);
         }
-        catch (NoSuchAlgorithmException e)
-        {
-            throw new EncryptionException(e.getMessage(),e);
-        }
+            
+        setCharacterEncoding(charEncoding);
+        byte[] keyAsBytes = createKeyDigest(encryptionKey); 
+        initKey(keyAsBytes,null,encryptionScheme);
+        
     }
     
     public void setUsePlainCharBytes(boolean value)
@@ -219,6 +184,9 @@ public class StringCrypter
 
     protected void initKey(byte rawKey[],byte IV[],CryptScheme encryptionScheme) throws EncryptionException
     {
+        if (rawKey==null)
+            throw new NullPointerException("Encryption key is null!");
+        
         try
         {
             // IV only needed for CBC, not ECB:
@@ -231,13 +199,13 @@ public class StringCrypter
             {
                 keySpec = new DESedeKeySpec(rawKey);
                 keyFactory = SecretKeyFactory.getInstance(encryptionScheme.getSchemeName());
-                cipher = Cipher.getInstance(encryptionScheme.configString);
+                cipher = Cipher.getInstance(encryptionScheme.getConfigString());
             }
             else if (encryptionScheme.equals(CryptScheme.DES_ECB_PKCS5))
             {
                 keySpec = new DESKeySpec(rawKey);
                 keyFactory = SecretKeyFactory.getInstance(encryptionScheme.getSchemeName());
-                cipher = Cipher.getInstance(encryptionScheme.configString);
+                cipher = Cipher.getInstance(encryptionScheme.getConfigString());
             }
             else
             {
@@ -281,14 +249,14 @@ public class StringCrypter
      * Encrypts String and returns encoded result as base64 encoded String. 
      * This increases the String size by ~33%.  
      */
-    public String encryptString(String unencryptedString) throws EncryptionException
+    public String encryptToBase64(String unencryptedString) throws EncryptionException
     {
         byte ciphertext[]=encrypt(unencryptedString);
         return StringUtil.base64Encode(ciphertext);
     }
     
     /**
-     * Encrypts String and returns encoded result as bytes. 
+     * Encrypts String and returns encoded result as bytes.
      */
     public byte[] encrypt(String unencryptedString) throws EncryptionException
     {
@@ -296,12 +264,17 @@ public class StringCrypter
         {
             throw new IllegalArgumentException("unencrypted string was null or contains only whitespace.");
         }
+        
+        return encrypt(unencryptedString.getBytes(charSet));
+    }
+    
+    public byte[] encrypt(byte bytes[]) throws EncryptionException
+    {
         try
         {
             SecretKey key = keyFactory.generateSecret(keySpec);
             cipher.init(Cipher.ENCRYPT_MODE, key);
-            byte[] cleartext = unencryptedString.getBytes(charSet);
-            byte[] ciphertext = cipher.doFinal(cleartext);
+            byte[] ciphertext = cipher.doFinal(bytes);
             return ciphertext;
         }
         catch (InvalidKeySpecException e)
@@ -338,7 +311,7 @@ public class StringCrypter
             cipher.init(Cipher.DECRYPT_MODE, key);
             
             byte[] ciphertext = cipher.doFinal(cleartext);
-            return newString(ciphertext);
+            return new String(ciphertext,charSet);
         }
         catch (Exception e)
         {
@@ -362,7 +335,7 @@ public class StringCrypter
             cipher.init(Cipher.DECRYPT_MODE, key);
             
             byte[] ciphertext = cipher.doFinal(cleartext);
-            return newString(ciphertext);
+            return new String(ciphertext,charSet);
         }
         catch (Exception e)
         {
@@ -388,12 +361,6 @@ public class StringCrypter
         {
             throw new EncryptionException(e.getMessage(),e);
         }
-    }
-    
-    /** Create new string using the configured character set */
-    public String newString(byte[] bytes)
-    {
-        return new String(bytes,charSet); 
     }
   
 }

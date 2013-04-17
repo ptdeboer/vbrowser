@@ -55,7 +55,7 @@ public class StringHasher implements Cloneable, Duplicatable<StringHasher>
     {
         logger=ClassLogger.getLogger(StringHasher.class);
     }
-  
+    
     // ========================================================================
     //
     // ========================================================================
@@ -297,6 +297,7 @@ public class StringHasher implements Cloneable, Duplicatable<StringHasher>
     {
         return clone(); 
     }
+
 
   
 }
