@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.glite.lfc.internal.FileDesc;

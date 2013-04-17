@@ -43,7 +43,7 @@ import nl.esciencecenter.ptk.Global;
 import nl.esciencecenter.ptk.data.IntegerHolder;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 
@@ -2009,7 +2009,7 @@ public class TestVFS extends VTestCase
         }
 
         // reread file contents: Use Sync READ !
-        numRead=StreamUtil.syncReadBytes(randomWriter, 0, buffer2, 0, maxlen);
+        numRead=IOUtil.syncReadBytes(randomWriter, 0, buffer2, 0, maxlen);
         Assert.assertEquals("Number of actual read bytes is wrong!",maxlen,numRead); 
         
         // check readbuffer;

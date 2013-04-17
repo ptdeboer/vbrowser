@@ -4,7 +4,7 @@
 	<classpathentry kind="src" path="testsrc"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nl.nlesc.glite.srm"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.grid.globus"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nl.nlesc.vlet.grid.globus"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.apache.axis-1.4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vrs.core"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>

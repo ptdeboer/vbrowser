@@ -33,7 +33,7 @@ import java.io.OutputStream;
 
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.SecretHolder;
-import nl.esciencecenter.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.data.VAttribute;
@@ -973,7 +973,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
                 }
 
                 // DONE BY SYNC READ: inps.skip(fileOffset);
-                int numread = StreamUtil.syncReadBytes(inps, fileOffset, buffer, bufferOffset, nrBytes);
+                int numread = IOUtil.syncReadBytes(inps, fileOffset, buffer, bufferOffset, nrBytes);
                 inps.close();
 
                 return numread;

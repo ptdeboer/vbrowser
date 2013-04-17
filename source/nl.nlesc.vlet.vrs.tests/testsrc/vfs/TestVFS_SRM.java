@@ -20,9 +20,39 @@
 
 package vfs;
 
+import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
+import nl.nlesc.vlet.VletConfig;
+import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
+
 abstract public class TestVFS_SRM extends TestVFS
 {
 
+    static
+    {
+        try
+        {
+            initSRM();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        } 
+    }
+    
+    public static VFSClient initSRM() throws Exception
+    {
+        //if (vfs!=null)
+        //    return vfs; 
+                
+        VletConfig.init();
+        VRS.getRegistry().registerVRSDriverClass(nl.nlesc.vlet.vfs.gftp.GftpFSFactory.class);
+        VRS.getRegistry().registerVRSDriverClass(nl.nlesc.vlet.vfs.srm.SRMFSFactory.class);
+        
+        VFSClient vfs=VFSClient.getDefault(); 
+        return vfs; 
+    }
+    
     /** SRM does not support URI encoding ! */
     boolean getTestEncodedPaths()
     {

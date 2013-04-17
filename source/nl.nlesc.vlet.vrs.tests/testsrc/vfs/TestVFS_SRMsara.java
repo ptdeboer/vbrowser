@@ -28,11 +28,8 @@ import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 
 /**
- * Test SRB case
+ * SRM. 
  * 
- * TestSuite uses testVFS class to tests SRB implementation.
- * 
- * @author P.T. de Boer
  */
 public class TestVFS_SRMsara extends TestVFS_SRM
 {
