@@ -65,7 +65,20 @@ public class StringCrypter
     }
 
     
+    public static class DecryptionFailedException extends EncryptionException
+    {
+        private static final long serialVersionUID = 1L;
 
+        public DecryptionFailedException(Throwable t)
+        {
+            super(t);
+        }
+        
+        public DecryptionFailedException(String message, Throwable cause)
+        {
+            super(message,cause);
+        }
+    }
     // ========================================================================
     // Class Constants  
     // ========================================================================
@@ -313,6 +326,10 @@ public class StringCrypter
             byte[] ciphertext = cipher.doFinal(cleartext);
             return new String(ciphertext,charSet);
         }
+        catch (javax.crypto.BadPaddingException e)
+        {
+            throw new DecryptionFailedException("Decryption Failed: Bad or invalid key",e); 
+        }
         catch (Exception e)
         {
             throw new EncryptionException(e.getMessage(),e);
@@ -337,6 +354,10 @@ public class StringCrypter
             byte[] ciphertext = cipher.doFinal(cleartext);
             return new String(ciphertext,charSet);
         }
+        catch (javax.crypto.BadPaddingException e)
+        {
+            throw new DecryptionFailedException("Decryption Failed: Bad or invalid key",e); 
+        }
         catch (Exception e)
         {
             throw new EncryptionException(e.getMessage(),e);
@@ -356,6 +377,10 @@ public class StringCrypter
             SecretKey key = keyFactory.generateSecret(keySpec);
             cipher.init(Cipher.DECRYPT_MODE, key);
             return cipher.doFinal(crypt);
+        }
+        catch (javax.crypto.BadPaddingException e)
+        {
+            throw new DecryptionFailedException("Decryption Failed: Bad or invalid key",e); 
         }
         catch (Exception e)
         {
