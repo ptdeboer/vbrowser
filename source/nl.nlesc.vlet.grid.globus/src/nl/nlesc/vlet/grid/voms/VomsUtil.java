@@ -530,7 +530,7 @@ public class VomsUtil
      *            the name of the Virtual Organisation.
      * @throws VlException
      */
-    public static VO readFromXML(String vomsFilename, String voName) throws VlException
+    public static VO readFromXML(String vomsFilename, String voName) throws Exception
     {
         ResourceLoader loader = ResourceLoader.getDefault();
 
@@ -655,24 +655,29 @@ public class VomsUtil
         }
         catch (ParserConfigurationException e)
         {
-            logger.debugPrintf("Exception when reading from file:%s\n", vomsFilename);
+            logger.warnPrintf("Parse error when reading from file:%s\n", vomsFilename);
             throw new VlException("VomsUtil: Couldn't parse:" + vomsFilename, e);
+        }
+        catch (java.io.FileNotFoundException e)
+        {
+            logger.warnPrintf("VomsUtil: File doesn't exists:%s\n", vomsFilename);
+            throw e;  // pass 
         }
         catch (IOException e)
         {
-            logger.debugPrintf("Exception when reading from file:%s\n", vomsFilename);
-            throw new VlIOException("VomsUtil: Couldn't read file:" + vomsFilename, e);
+            logger.warnPrintf("VomsUtil: Couldn't read VOMS file:%s\n", vomsFilename);
+            throw e ; // pass
         }
         catch (SAXException e)
         {
-            logger.debugPrintf("Exception when reading from file:%s\n", vomsFilename);
+            logger.warnPrintf("SAXException: Couldn't parse VOMS file:%s\n", vomsFilename);
             throw new VlException("VomsUtil: SAXException, couldn't parse:" + vomsFilename, e);
         }
         // others:
         catch (Exception e)
         {
-            logger.debugPrintf("Exception when reading from file:%s\n", vomsFilename);
-            throw new VlException("VomsUtil Exception:" + e.getMessage(), e);
+            logger.warnPrintf("Unknown Exception when reading from file:%s\n", vomsFilename);
+            throw e; 
         }
     }
 
@@ -755,6 +760,12 @@ public class VomsUtil
 
             }
             catch (ResourceNotFoundException e)
+            {
+                // allowed: file does not exist.
+                logger.infoPrintf("File does not exists:%s\n", path);
+                vo = null;
+            }
+            catch (java.io.FileNotFoundException e)
             {
                 // allowed: file does not exist.
                 logger.infoPrintf("File does not exists:%s\n", path);

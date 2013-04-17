@@ -43,6 +43,7 @@ import nl.nlesc.vlet.exception.VlUnsupportedSchemeException;
 import nl.nlesc.vlet.util.PluginLoader;
 import nl.nlesc.vlet.util.PluginLoader.PluginInfo;
 import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrl.VRLStreamHandlerFactory;
 import nl.nlesc.vlet.vrs.vdriver.http.HTTPFactory;
 import nl.nlesc.vlet.vrs.vdriver.http.HTTPSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
@@ -63,7 +64,8 @@ import nl.nlesc.vlet.vrs.vrms.MyVLe;
  * <p>
  * Important: This Class also sets the URL.setURLStreamHandlerFactory so that
  * ALL Supported VRLs can be used as URL. This way the default Java Resource
- * loaders and streamreaders will use the (default) Registry as stream handlers ! <br>
+ * loaders and streamreaders will use the (default) Registry as stream handlers
+ * ! <br>
  * 
  * @see VRSContext
  * @see nl.nlesc.vlet.vrs.VRSFactory
@@ -75,7 +77,7 @@ import nl.nlesc.vlet.vrs.vrms.MyVLe;
  * 
  * @author P.T. de Boer
  */
-public final class Registry  // todo: change to vrs protected class.
+public final class Registry // todo: change to vrs protected class.
 {
     private static ClassLogger logger;
 
@@ -205,25 +207,24 @@ public final class Registry  // todo: change to vrs protected class.
             logger.infoPrintf("Initializing default core vdrivers=%s\n", str);
 
             // Core VDrivers. Typically located in lib/vdrivers.
-            // Are not loaded in a private class loader, but directly
-            // accessable.
+            // Are not loaded in a private class loader, but directly accessible.
+            
             registerVRSDriverClassNoError(currentLoader, HTTPFactory.class.getCanonicalName());
             registerVRSDriverClassNoError(currentLoader, HTTPSFactory.class.getCanonicalName());
             registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.vdriver.infors.InfoRSFactory");
             registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory");
-            // registerVRSDriverClassNoError(currentLoader,
-            // "nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory");
+            // registerVRSDriverClassNoError(currentLoader,"nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory");
 
             // === Others: ===
-            // registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.jcraft.ssh.SftpFSFactory");
+            registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.jcraft.ssh.SftpFSFactory");
 
-            // All Globus dependencies are in a plugin themselves.
-            // registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vrs.globusrs.GlobusRSFactory");
-            // registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.gftp.GftpFSFactory");
+            // Globus is a plugin. 
+            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.globusrs.GlobusRSFactory");
+            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vfs.gftp.GftpFSFactory");
 
-            // Other VFS/VRS implementations from lib/vdrivers:
-            // registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.srm.SRMFSFactory");
-            // registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.lfc.LFCFSFactory");
+            // Other VFS/VRS implementations from lib/vdrivers or lib/plugins 
+            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vfs.srm.SRMFSFactory");
+            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vfs.lfc.LFCFSFactory");
 
         }
 
@@ -260,25 +261,23 @@ public final class Registry  // todo: change to vrs protected class.
 
     private static void initURLStreamFactory()
     {
+        // todo: check security context!
+        synchronized (initURLStreamFactoryMutex)
+        {
+            // never initialize twice !
+            if (globalURLStreamFactoryInitialized == true)
+                return;
 
-        // DISABLED!
+            // can only ovveride URL factory if NOT in applet mode:
+            if (VletConfig.getInitURLStreamFactory() == true)
+            {
+                // System.err.println("setting URLStreamHandlerFactory ...");
+                // After this method, the URL class excepts VRLs as valid URL !
+                java.net.URL.setURLStreamHandlerFactory(VRLStreamHandlerFactory.getDefault());
+            }
 
-        // synchronized(initURLStreamFactoryMutex)
-        // {
-        // // never initialize twice !
-        // if (globalURLStreamFactoryInitialed==true)
-        // return;
-        //
-        // // can only ovveride URL factory if NOT in applet mode:
-        // if (GlobalConfig.getInitURLStreamFactory()==true)
-        // {
-        // //System.err.println("setting URLStreamHandlerFactory ...");
-        // // After this method, the URL class excepts VRLs as valid URL !
-        // URL.setURLStreamHandlerFactory(VRLStreamHandlerFactory.getDefault());
-        // }
-        //
-        // globalURLStreamFactoryInitialed=true;
-        // }
+            globalURLStreamFactoryInitialized = true;
+        }
     }
 
     /** Read local plugin directory (Java File!) and register them */
@@ -303,9 +302,9 @@ public final class Registry  // todo: change to vrs protected class.
             {
                 this.registerVRSDriverClass(info.classLoader, info.className);
             }
-            catch (Exception e)
+            catch (Throwable e)
             {
-                logger.logException(ClassLogger.ERROR, e, "Error loading plugin:%s\n", info.className);
+                logger.logException(ClassLogger.ERROR, e, "Error registering plugin:%s\n", info.className);
             }
         }
     }

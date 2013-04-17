@@ -36,7 +36,8 @@ public class HTTPFactory extends VRSFactory
 	static
 	{
 	    // HTTPS/SSL verifier
-	    SslUtil.init(); // initSslHostnameVerifier(); 
+	    SslUtil.init(); 
+	    // initSslHostnameVerifier(); 
 	    //SslUtil.setMySslValidation();
 	    //SslUtil.setNoSslValidation();
 	}

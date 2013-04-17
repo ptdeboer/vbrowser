@@ -48,6 +48,7 @@ import nl.nlesc.vlet.grid.voms.VO;
 import nl.nlesc.vlet.grid.voms.VOServer;
 import nl.nlesc.vlet.net.ssl.CertificateStore;
 import nl.nlesc.vlet.net.ssl.SSLContextManager;
+import nl.nlesc.vlet.net.ssl.SslUtil;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
@@ -183,7 +184,7 @@ public class GridProxy
     {
         return new GridProxy(context);
     }
-      
+    
     // ========================================================================
     // Instance
     // ========================================================================
@@ -1257,7 +1258,7 @@ public class GridProxy
         this.privateKeystorePasswd=passwd; 
     }
     
-    public void updatePrivateKey(String passwd)
+    public void updatePrivateKey(String passwd) throws Exception 
     {
         try
         {
@@ -1285,16 +1286,17 @@ public class GridProxy
             SSLContext sslContext=sslCtxManager.getContext(); 
             
             {
-                String errorTxt="FIXME, cannot set default HTTPSSslContext\n";
-                logger.logException(ClassLogger.FATAL,new Exception(errorTxt),"Fatal:%s\n",errorTxt); 
-                // Update Default SSL Context for URL handlers to use ! 
-                // SslUtil.setDefaultHttpsSslContext(sslContext); 
+                //String errorTxt="FIXME, cannot set default HTTPSSslContext\n";
+                //    logger.logException(ClassLogger.FATAL,new Exception(errorTxt),"Fatal:%s\n",errorTxt); 
+                //   Update Default SSL Context for URL handlers to use !
+                SslUtil.setDefaultHttpsSslContext(sslContext);
             }
              
         }
         catch (Exception e)
         {
             logger.logException(ClassLogger.ERROR,e,"Couldn't initialize user key\n"); 
+            throw e; 
         }
     }
 //    

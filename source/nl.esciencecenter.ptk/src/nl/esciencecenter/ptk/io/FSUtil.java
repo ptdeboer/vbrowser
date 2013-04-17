@@ -113,7 +113,7 @@ public class FSUtil
         InputStream finput = newLocalFSNode(source).createInputStream();
         OutputStream foutput = newLocalFSNode(destination).createOutputStream();
 
-        StreamUtil.copyStreams(finput, foutput);
+        IOUtil.copyStreams(finput, foutput);
 
         try
         {
@@ -273,7 +273,7 @@ public class FSUtil
         
         byte buffer[] = new byte[len + 1];
 
-        int numRead = StreamUtil.syncReadBytes(finps, 0, buffer, 0, len);
+        int numRead = IOUtil.syncReadBytes(finps, 0, buffer, 0, len);
         // truncate buffer in the case of a read error:
         buffer[numRead] = 0;
 

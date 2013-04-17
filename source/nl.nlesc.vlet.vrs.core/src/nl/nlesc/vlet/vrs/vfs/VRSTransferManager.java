@@ -931,7 +931,7 @@ public final class VRSTransferManager
 	/**
 	 *  Default VFile stream copy uses VNode to VNode stream Copy.
 	 *  
-	 *  @see nl.nlesc.vlet.vrs.util.VRSStreamUtil.StreamUtil#streamCopy(VFSTransfer, VNode, VNode, int)
+	 *  @see nl.nlesc.vlet.vrs.util.VRSStreamUtil.IOUtil#streamCopy(VFSTransfer, VNode, VNode, int)
 	 */ 
 	protected void doStreamCopy(VFSTransfer transfer,
 			VNode sourceNode, 

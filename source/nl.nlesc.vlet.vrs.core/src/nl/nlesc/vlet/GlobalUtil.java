@@ -29,7 +29,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import nl.esciencecenter.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.exception.ResourceReadAccessDeniedException;
 import nl.nlesc.vlet.exception.VlException;
@@ -150,7 +150,7 @@ public class GlobalUtil
         FileInputStream finput = new FileInputStream(sourceFile);
         FileOutputStream foutput = new FileOutputStream(VRL.uripath(destination));
 
-        StreamUtil.copyStreams(finput, foutput);
+        IOUtil.copyStreams(finput, foutput);
 
         try
         {
@@ -261,7 +261,7 @@ public class GlobalUtil
         byte buffer[] = new byte[len + 1];
 
         FileInputStream finps = new FileInputStream(file);
-        int numRead = StreamUtil.syncReadBytes(finps, 0, buffer, 0, len);
+        int numRead = IOUtil.syncReadBytes(finps, 0, buffer, 0, len);
         // truncate buffer in the case of a read error:
         buffer[numRead] = 0;
 

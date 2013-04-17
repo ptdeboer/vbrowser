@@ -1365,5 +1365,12 @@ public class VletConfig
     {
         return VletConfig.getUserConfigDir().appendPath(VletConfig.PLUGIN_SUBDIR);
     }
+
+    public static boolean getUseHttpProxy()
+    {
+        // must move HTTP(S) proxies to delegated Worker class. 
+        return false;
+    }
+    
     
 }// FIN ! 

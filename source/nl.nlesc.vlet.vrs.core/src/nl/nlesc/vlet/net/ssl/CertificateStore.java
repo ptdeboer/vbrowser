@@ -54,9 +54,10 @@ import nl.nlesc.vlet.vrl.VRL;
 
 /**
  * Custom CertificateStore class for X509Certificates.  
+ * 
  * This class manages a JavaKeystore and saves it. 
  * Added support for PEM and DER Certificates. 
- *  
+ * See SslUtil for SSL methods. 
  */
 public class CertificateStore
 {
@@ -204,7 +205,7 @@ public class CertificateStore
 
         public X509Certificate[] getAcceptedIssuers()
         {
-            throw new UnsupportedOperationException();
+            return null; // throw new UnsupportedOperationException();
         }
 
         public void checkClientTrusted(X509Certificate[] chain, String authType)
@@ -557,7 +558,7 @@ public class CertificateStore
     /**
      * Gets current trust manager. 
      * When certificates have changed, the trust manager must be recreated.
-     * Set reload==true to trigger reinitialization. 
+     * Set reload==true to trigger re-initialization. 
      */ 
 	public X509TrustManager getTrustManager(boolean reinit) throws VlException
 	{
@@ -584,7 +585,7 @@ public class CertificateStore
 	}
 	
 	/**
-	 *  Conveniance method to create a custom SSLContext using this certificate store.
+	 *  Convenience method to create a custom SSLContext using this certificate store.
 	 */
 	public SSLContext createSSLContext(String sslProtocol) throws VlException
 	{
@@ -641,54 +642,17 @@ public class CertificateStore
 	    {
 	        throw convertException("Failure to intialize SSLContext.",e);
 	    }
-    		    
 	}
 	
-	/** Fetch certificate from remote server */ 
+	/**
+	 * Fetch certificated from remote server and put them into this certificatestore
+	 */ 
 	public boolean fetchCert(String hostname, int port) throws Exception
 	{
 	    return SslUtil.fetchCertificates(this,hostname,port); 
 	    // Update HTTPS SSL factory ? 
 	}
 	
-	// === //
-	
-	// === // 
-
-//	public boolean installCert(String hoststr, String passphrasestr)
-//			throws VlException
-//	{
-//		String host;
-//		int port;
-//	
-//		if (hoststr != null)
-//		{
-//			String[] c = hoststr.split(":");
-//			host = c[0];
-//			port = (c.length == 1) ? 443 : Integer.parseInt(c[1]);
-//		}
-//		else
-//	    {
-//		    logger.warnPrintf("Got NULL Hostname. Hostname must be:<host>[:port] [passphrase]\n");
-//			return false;
-//		}
-//		
-//		return installCert(host,port,passphrasestr,null); 
-//	}
-		
-//	public boolean installCert(String host, int port, String optPassphrase,CaCertOptions options)
-//		throws VlException
-//	{
-//	    try
-//	    {
-//	        return SslUtil.installCert(this, host, port, optPassphrase, options);
-//	    }
-//	    catch (Exception e)
-//	    {
-//	        throw convertException("Couldn't install host certificate from:"+host+":"+port,e); 
-//	    }
-//	}
-
     public void saveKeystore() throws VlException
     {
         saveKeystore(null,null); 

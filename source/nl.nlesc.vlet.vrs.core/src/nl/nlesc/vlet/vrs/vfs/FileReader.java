@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import nl.esciencecenter.ptk.io.RandomReadable;
-import nl.esciencecenter.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.io.IOUtil;
 import nl.nlesc.vlet.exception.ResourceToBigException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
@@ -199,7 +199,7 @@ public class FileReader extends ResourceReader
             // use Sync Read ! 
             try
             {
-                return StreamUtil.syncReadBytes((RandomReadable)source,offset,buffer,bufferOffset,nrOfBytes);
+                return IOUtil.syncReadBytes((RandomReadable)source,offset,buffer,bufferOffset,nrOfBytes);
             }
             catch (IOException e)
             {

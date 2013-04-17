@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import nl.esciencecenter.ptk.io.RingBufferStreamTransferer;
-import nl.esciencecenter.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.VlException;
@@ -42,7 +42,7 @@ import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
  *  
  * See methods for explenation 
  */ 
-public class VRSStreamUtil extends StreamUtil
+public class VRSStreamUtil extends IOUtil
 {
     private static ClassLogger logger; 
     

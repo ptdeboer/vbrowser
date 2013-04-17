@@ -30,6 +30,7 @@ import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.net.ssl.SslUtil;
 import nl.nlesc.vlet.vrl.VRL;
@@ -184,7 +185,10 @@ public class LoboBrowser extends ViewerPlugin
         try
         {
             if (location.hasScheme(VRS.HTTPS_SCHEME))
-                SslUtil.installCert(location.getHostname(),location.getPort());
+            {
+                //SslUtil.installCert(location.getHostname(),location.getPort());
+                UIGlobal.getVRSContext().getConfigManager().getCertificateStore().fetchCert(location.getHostname(),location.getPort());
+            }
         }
         catch (Exception e1)
         {

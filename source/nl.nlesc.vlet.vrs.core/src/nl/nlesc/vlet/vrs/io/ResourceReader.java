@@ -23,7 +23,7 @@ package nl.nlesc.vlet.vrs.io;
 import java.io.IOException;
 import java.io.InputStream;
 
-import nl.esciencecenter.ptk.io.StreamUtil;
+import nl.esciencecenter.ptk.io.IOUtil;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 
@@ -57,7 +57,7 @@ public class ResourceReader
             if (istr==null)
                 return -1; 
             
-            int val=StreamUtil.syncReadBytes(istr,offset,buffer,bufferOffset,nrOfBytes);
+            int val=IOUtil.syncReadBytes(istr,offset,buffer,bufferOffset,nrOfBytes);
 
             return val;
         }
