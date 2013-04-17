@@ -53,7 +53,6 @@ public class TransferMonitorDialog extends javax.swing.JDialog implements Action
     static
     {
         logger=ClassLogger.getLogger(TransferMonitorDialog.class);
-        logger.setLevelToDebug();
     }
     
     // === --- === //
