@@ -29,9 +29,8 @@ import javax.swing.JTextPane;
 import javax.swing.border.BevelBorder;
 
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exec.ExternalToolDB;
-import nl.nlesc.vlet.exec.LocalProcess;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
+import nl.nlesc.vlet.vrs.vdriver.localfs.LocalProcess;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 import com.jgoodies.forms.layout.CellConstraints;

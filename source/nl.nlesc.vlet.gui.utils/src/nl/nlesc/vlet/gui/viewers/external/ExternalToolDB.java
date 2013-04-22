@@ -18,13 +18,15 @@
  */
 // source: 
 
-package nl.nlesc.vlet.exec;
+package nl.nlesc.vlet.gui.viewers.external;
 
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.Global;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vrs.vdriver.localfs.LocalExec;
+import nl.nlesc.vlet.vrs.vdriver.localfs.LocalProcess;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ExternalToolDB

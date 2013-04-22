@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.nlesc.vlet.exec;
+package nl.nlesc.vlet.vrs.vdriver.localfs;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +32,7 @@ import nl.nlesc.vlet.exception.VlIOException;
 /** 
  * Process Information wrapper
  */ 
-public class LocalProcess implements VProcess
+public class LocalProcess 
 {
 	private Process process=null;
 
@@ -148,8 +148,10 @@ public class LocalProcess implements VProcess
 			stderrStream = process.getErrorStream();
 
 		// start backgrounded stream reader 
-		
-		streamReaderTask=new ActionTask(ProcessTaskSource.getDefault(),"StreamWatcher")
+
+		//streamReaderTask=new ActionTask(ProcessTaskSource.getDefault(),"StreamWatcher")
+
+		streamReaderTask=new ActionTask(null,"StreamWatcher")
 		{
 			boolean stop=false; 
 			

@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.nlesc.vlet.exec;
+package nl.nlesc.vlet.gui.viewers.external;
 
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
