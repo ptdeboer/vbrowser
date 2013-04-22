@@ -30,6 +30,7 @@ import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 
 import nl.esciencecenter.ptk.net.VRI;
+import nl.esciencecenter.ptk.ui.widgets.NavigationBar;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.Action;
 import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.ActionMenu;
@@ -46,8 +47,6 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeDataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEvent;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEventNotifier;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTable;
-import nl.esciencecenter.vbrowser.vb2.ui.widgets.NavigationBar;
-import nl.esciencecenter.vbrowser.vb2.ui.widgets.NavigationBar.NavigationAction;
 import nl.esciencecenter.vbrowser.vrs.data.History;
 
 /**
@@ -221,7 +220,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
         logger.debugPrintf(">>> NavBarAction: %s\n", e);
         String cmd=e.getActionCommand(); 
 
-        NavigationAction navAction = NavigationAction.valueOf(cmd); 
+        NavigationBar.NavigationAction navAction = NavigationBar.NavigationAction.valueOf(cmd); 
         ActionMethod meth=null;  
         
         switch(navAction)

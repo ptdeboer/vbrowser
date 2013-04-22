@@ -28,9 +28,9 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import nl.esciencecenter.ptk.ui.object.Disposable;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeContainer;
+import nl.esciencecenter.vbrowser.vb2.ui.object.Disposable;
 
 /**
  * Managed Tab Panel

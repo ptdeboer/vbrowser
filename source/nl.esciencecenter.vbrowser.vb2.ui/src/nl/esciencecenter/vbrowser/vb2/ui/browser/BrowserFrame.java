@@ -42,6 +42,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.border.EtchedBorder;
 
+import nl.esciencecenter.ptk.ui.widgets.NavigationBar;
 import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.ActionMethod;
 import nl.esciencecenter.vbrowser.vb2.ui.iconspanel.IconsPanel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.DataSource;
@@ -54,7 +55,6 @@ import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTable;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTableModel;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.TableDataProducer;
 import nl.esciencecenter.vbrowser.vb2.ui.tree.ResourceTree;
-import nl.esciencecenter.vbrowser.vb2.ui.widgets.NavigationBar;
 
 /**
  * Master browser frame.  
