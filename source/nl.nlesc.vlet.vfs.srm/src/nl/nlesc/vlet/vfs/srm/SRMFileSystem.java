@@ -60,6 +60,7 @@ import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
+import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.ServiceInfo;
 import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.util.grid.GridProxy;
@@ -136,7 +137,7 @@ public class SRMFileSystem extends FileSystemNode
     {
         try
         {
-            ServiceInfo se = context.getBdiiService().getSRMv22ServiceForHost(loc.getHostname());
+            ServiceInfo se = BdiiUtil.getBdiiService(context).getSRMv22ServiceForHost(loc.getHostname());
             if (se != null)
             {
                 loc = loc.copyWithNewPort(se.getPort());
@@ -315,7 +316,7 @@ public class SRMFileSystem extends FileSystemNode
 
     private String getSAPathFor(VRL saVRL, String vo) throws VlException
     {
-        ArrayList<StorageArea> sa = getVRSContext().getBdiiService().getVOStorageAreas(vo, saVRL.getHostname(), false);
+        ArrayList<StorageArea> sa = BdiiUtil.getBdiiService(getVRSContext()).getVOStorageAreas(vo, saVRL.getHostname(), false);
 
         if ((sa != null) && (sa.size() > 0))
             return sa.get(0).getStoragePath();

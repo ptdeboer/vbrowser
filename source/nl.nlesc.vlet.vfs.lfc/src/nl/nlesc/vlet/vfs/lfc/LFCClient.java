@@ -65,6 +65,7 @@ import nl.nlesc.vlet.exception.VlInterruptedException;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
 import nl.nlesc.vlet.util.bdii.BdiiException;
 import nl.nlesc.vlet.util.bdii.BdiiService;
+import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.ServiceInfo;
 import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vfs.lfc.LFCFSConfig.ReplicaCreationMode;
@@ -2096,7 +2097,7 @@ public class LFCClient
     private BdiiService getBdiiService() throws VlException
     {
         // will auto create one:
-        return this.getVRSContext().getBdiiService();
+        return BdiiUtil.getBdiiService(getVRSContext()); 
     }
 
     OutputStream createOutputStream(ITaskMonitor monitor, LFCFile file) throws VlException

@@ -33,6 +33,7 @@ import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlConfigurationError;
 import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.ServiceInfo;
 import nl.nlesc.vlet.vfs.lfc.LFCFSConfig.ReplicaCreationMode;
 import nl.nlesc.vlet.vfs.lfc.LFCFSConfig.ReplicaSelectionMode;
@@ -481,7 +482,7 @@ public boolean getUseSimilarReplicaNames()
 	try
 	{
 		// update Storage Element contact information. 
-		ServiceInfo se = this.getContext().getBdiiService().getSRMv22ServiceForHost(vrl.getHostname());
+		ServiceInfo se = BdiiUtil.getBdiiService(getContext()).getSRMv22ServiceForHost(vrl.getHostname());
 		
         if (se != null)
         {

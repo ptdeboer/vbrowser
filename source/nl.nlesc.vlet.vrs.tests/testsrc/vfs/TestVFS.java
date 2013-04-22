@@ -55,6 +55,7 @@ import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.ResourceWriteAccessDeniedException;
 import nl.nlesc.vlet.util.ChecksumUtil;
 import nl.nlesc.vlet.util.bdii.BdiiService;
+import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
@@ -2401,8 +2402,8 @@ public class TestVFS extends VTestCase
             }
         }
 
-        BdiiService service = VRSContext.getDefault().getBdiiService();
-
+        BdiiService service = BdiiUtil.getBdiiService(VRSContext.getDefault()); 
+        
         // get all se
         ArrayList<StorageArea> se = service.getSRMv22SAsforVO(VRSContext.getDefault().getVO());
 

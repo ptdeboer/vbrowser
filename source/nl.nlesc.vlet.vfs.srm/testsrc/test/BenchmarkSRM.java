@@ -3,6 +3,7 @@ package test;
 import java.util.ArrayList;
 
 import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vfs.srm.SRMDir;
 import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
@@ -76,7 +77,7 @@ public class BenchmarkSRM
         ArrayList<StorageArea> Sas = null;
         try
         {
-            Sas = context.getBdiiService().getSRMv22SAsforVO(context.getVO());
+            Sas = BdiiUtil.getBdiiService(context).getSRMv22SAsforVO(context.getVO());
         }
         catch (VlException e)
         {
