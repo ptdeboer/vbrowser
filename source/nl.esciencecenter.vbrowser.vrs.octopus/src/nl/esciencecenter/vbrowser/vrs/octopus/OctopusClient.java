@@ -41,6 +41,7 @@ import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.DirectoryStream;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.FileSystem;
+import nl.esciencecenter.octopus.files.OpenOption;
 import nl.esciencecenter.octopus.files.PathAttributesPair;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
 import nl.esciencecenter.octopus.files.RelativePath;
@@ -49,9 +50,9 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.GlobalUtil;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class OctopusClient
 {
@@ -276,9 +277,20 @@ public class OctopusClient
         return engine.files().newInputStream(octoAbsolutePath);
     }
 
-    public OutputStream createOutputStream(AbsolutePath path) throws IOException
+    // if append = true, to existin file
+    // if append = false create new, truncating existing (if it already exist) 
+    //
+    public OutputStream createOutputStream(AbsolutePath path, boolean append) throws IOException
     {
-        return engine.files().newOutputStream(path);
+        OpenOption opts[]=new OpenOption[1];
+        
+        if (append)
+            opts[0]=OpenOption.APPEND;
+        else
+            opts[0]=OpenOption.CREATE;
+        
+        return engine.files().newOutputStream(path, opts);
+        
     }
 
     public void rmdir(AbsolutePath octoAbsolutePath) throws OctopusIOException

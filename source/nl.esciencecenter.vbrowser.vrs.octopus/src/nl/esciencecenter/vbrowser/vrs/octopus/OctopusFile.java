@@ -32,9 +32,9 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * 
@@ -175,7 +175,7 @@ public class OctopusFile extends VFile
 
 	public OutputStream createOutputStream() throws IOException 
 	{
-	    return this.getOctoClient().createOutputStream(octoPath); 
+	    return this.getOctoClient().createOutputStream(octoPath,false); 
 	}
 
 	public VRL rename(String newName, boolean renameFullPath)

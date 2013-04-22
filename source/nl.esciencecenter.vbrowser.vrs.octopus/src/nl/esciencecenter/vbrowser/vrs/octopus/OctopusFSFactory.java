@@ -23,11 +23,11 @@ package nl.esciencecenter.vbrowser.vrs.octopus;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /**
