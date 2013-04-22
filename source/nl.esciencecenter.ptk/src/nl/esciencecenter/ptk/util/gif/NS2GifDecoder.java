@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.nlesc.vlet.gui.util.gif;
+package nl.esciencecenter.ptk.util.gif;
 
 import java.net.*;
 import java.io.*;

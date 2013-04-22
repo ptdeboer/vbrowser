@@ -36,7 +36,7 @@ import nl.esciencecenter.ptk.net.VRI;
  * Can be File or Directory. 
  * Uses URI based location.  
  */
-public abstract class FSNode implements StreamReadable,StreamWritable // But NOT RandomReadable/Writeable
+public abstract class FSNode 
 {
     public static final String FILE_TYPE = "File";
     
@@ -139,14 +139,11 @@ public abstract class FSNode implements StreamReadable,StreamWritable // But NOT
     // IO Methods 
     // =======================================================================
 
-    // Explicit inheritance! 
-    @Override
     public InputStream createInputStream() throws IOException
     {
     	throw new Error("Not supported: createInputStream() of:"+this); 
     }
     
-    @Override
     public OutputStream createOutputStream() throws IOException
     {
     	throw new Error("Not supported: createOutputStream() of:"+this); 

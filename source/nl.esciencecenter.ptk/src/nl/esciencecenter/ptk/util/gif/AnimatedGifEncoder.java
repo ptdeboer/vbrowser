@@ -18,16 +18,11 @@
  */
 // source: 
 
-package nl.nlesc.vlet.gui.util.gif;
+package nl.esciencecenter.ptk.util.gif;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.awt.*;
+import java.awt.image.*;
 
 /**
  * Class AnimatedGifEncoder - Encodes a GIF file consisting of one or more
@@ -55,25 +50,45 @@ import java.io.OutputStream;
 
 public class AnimatedGifEncoder 
 {
+
   protected int width; // image size
+
   protected int height;
+
   protected Color transparent = null; // transparent color if given
+
   protected int transIndex; // transparent index in color table
+
   protected int repeat = -1; // no repeat
+
   protected int delay = 0; // frame delay (hundredths)
+
   protected boolean started = false; // ready to output frames
+
   protected OutputStream out;
+
   protected BufferedImage image; // current frame
+
   protected byte[] pixels; // BGR byte array from frame
+
   protected byte[] indexedPixels; // converted frame indexed to palette
+
   protected int colorDepth; // number of bit planes
+
   protected byte[] colorTab; // RGB palette
+
   protected boolean[] usedEntry = new boolean[256]; // active palette entries
+
   protected int palSize = 7; // color table size (bits-1)
+
   protected int dispose = -1; // disposal code (-1 = use default)
+
   protected boolean closeStream = false; // close stream when finished
+
   protected boolean firstFrame = true;
+
   protected boolean sizeSet = false; // if false, get size from first frame
+
   protected int sample = 10; // default sample interval for quantizer
 
   /**

@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.esciencecenter.ptk.ui.util.gif;
+package nl.esciencecenter.ptk.util.gif;
 
 /*
  * NeuQuant Neural-Net Quantization Algorithm

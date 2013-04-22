@@ -18,14 +18,12 @@
  */ 
 // source: 
 
-package icons;
+package nl.esciencecenter.ptk.util.gif;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import nl.nlesc.vlet.gui.util.gif.NS2GifDecoder;
 
 public class TestGifDecoder
 {

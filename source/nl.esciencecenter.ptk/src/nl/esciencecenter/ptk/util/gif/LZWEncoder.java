@@ -18,15 +18,14 @@
  */
 // source: 
 
-package nl.nlesc.vlet.gui.util.gif;
+package nl.esciencecenter.ptk.util.gif;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-/**
- *Adapted from Jef Poskanzer's Java port by way of J. M. G. Elliott.
- *K Weiner 12/00
- */
+//==============================================================================
+//Adapted from Jef Poskanzer's Java port by way of J. M. G. Elliott.
+//K Weiner 12/00
 
 class LZWEncoder
 {

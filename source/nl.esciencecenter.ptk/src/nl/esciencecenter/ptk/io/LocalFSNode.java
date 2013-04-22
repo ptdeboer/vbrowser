@@ -34,7 +34,7 @@ import nl.esciencecenter.ptk.net.VRI;
 /** 
  * Local file implementation of FSNode.  
  */ 
-public class LocalFSNode extends FSNode implements StreamReadable,StreamWritable 
+public class LocalFSNode extends FSNode
 {
 	private java.io.File _file;
 	
