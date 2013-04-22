@@ -44,7 +44,7 @@ import nl.nlesc.vlet.gui.panels.attribute.AttributeViewer;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.vbrowser.BrowserController;
 import nl.nlesc.vlet.gui.viewers.ViewerEvent;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  *  

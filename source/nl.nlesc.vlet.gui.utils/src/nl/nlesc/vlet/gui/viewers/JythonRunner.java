@@ -55,8 +55,8 @@ import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.font.FontInfo;
 import nl.nlesc.vlet.gui.font.FontToolBar;
 import nl.nlesc.vlet.gui.font.FontToolbarListener;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  *Jython Runner To Be.  

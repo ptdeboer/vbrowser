@@ -32,7 +32,7 @@ import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNodeFactory;
 import nl.nlesc.vlet.gui.view.ViewFilter;
 import nl.nlesc.vlet.gui.view.ViewModel;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * Data Producer for the ProxyModel classes. 

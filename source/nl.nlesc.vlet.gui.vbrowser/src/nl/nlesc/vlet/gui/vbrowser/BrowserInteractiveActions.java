@@ -47,7 +47,6 @@ import nl.nlesc.vlet.gui.editors.ResourceEditor;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNodeFactory;
 import nl.nlesc.vlet.gui.util.proxy.GridProxyDialog;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ResourceEvent;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VComposite;
@@ -58,6 +57,7 @@ import nl.nlesc.vlet.vrs.ui.ICopyInteractor;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrs.vfs.VRSTransferManager;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /**

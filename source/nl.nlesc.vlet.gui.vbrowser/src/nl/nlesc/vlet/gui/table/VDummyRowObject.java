@@ -24,7 +24,7 @@ import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.data.ResourceRef;
 import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.VContainer;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * Current VComponent compatible Row Object.

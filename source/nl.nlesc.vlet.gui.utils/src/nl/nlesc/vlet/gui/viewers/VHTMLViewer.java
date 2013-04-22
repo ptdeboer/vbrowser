@@ -39,9 +39,9 @@ import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.vhtml.VHTMLEditorPane;
 import nl.nlesc.vlet.net.ssl.SslUtil;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * The (V)HTML Viewer.

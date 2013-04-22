@@ -23,8 +23,8 @@ package monitoring;
 import javax.swing.JFrame;
 
 import nl.esciencecenter.ptk.ui.panels.monitoring.TransferMonitorPanel;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class TestTransferDialogNew
 {

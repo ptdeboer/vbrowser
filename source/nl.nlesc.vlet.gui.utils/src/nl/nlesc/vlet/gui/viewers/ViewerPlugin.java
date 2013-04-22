@@ -55,12 +55,12 @@ import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.util.imageutil.ImageCapturer;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ResourceEvent;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
 import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 //import vls.gui.ActionTask;

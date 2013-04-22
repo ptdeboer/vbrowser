@@ -39,9 +39,9 @@ import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.viewers.ViewContext;
 import nl.nlesc.vlet.gui.viewers.ViewerEvent;
 import nl.nlesc.vlet.gui.widgets.NavigationBar;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class JobMonitorController implements ActionListener
 {

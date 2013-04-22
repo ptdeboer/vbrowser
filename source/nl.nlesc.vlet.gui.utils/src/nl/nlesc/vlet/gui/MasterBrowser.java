@@ -27,7 +27,7 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.dnd.DropAction;
 import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.ViewModel;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /** 

@@ -40,13 +40,13 @@ import nl.nlesc.vlet.actions.ActionMenuConstants;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.io.VShellChannel;
 import nl.nlesc.vlet.vrs.io.VShellChannelCreator;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.uva.vlet.util.vlterm.VLTerm;
 
 public class VLTermStarter extends ViewerPlugin implements ActionListener

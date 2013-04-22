@@ -23,7 +23,7 @@ package test.viewers;
 import nl.nlesc.vlet.gui.viewers.HexViewer;
 import nl.nlesc.vlet.gui.viewers.ViewContext;
 import nl.nlesc.vlet.gui.viewers.ViewerManager;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class TestHexViewer
 {

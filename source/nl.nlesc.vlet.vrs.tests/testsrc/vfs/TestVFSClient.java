@@ -25,10 +25,10 @@ import junit.framework.TestCase;
 
 import nl.esciencecenter.ptk.Global;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Test VFSClient specific methods not tested in VFSTest! 

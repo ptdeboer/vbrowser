@@ -39,9 +39,9 @@ import nl.nlesc.vlet.gui.proxyvrs.ProxyNodeFactory;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyResourceEventListener;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
 import nl.nlesc.vlet.gui.view.ViewNode;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.EventType;
 import nl.nlesc.vlet.vrs.ResourceEvent;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Produces table data. Todo:Use tablemodel and update model instead of creation

@@ -21,9 +21,9 @@
 package nl.nlesc.vlet.vrs.globusrs;
 
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class GlobusInfoNode extends VNode
 {

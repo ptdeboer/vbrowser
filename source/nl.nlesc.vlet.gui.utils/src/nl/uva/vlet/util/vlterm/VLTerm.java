@@ -60,10 +60,10 @@ import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.util.charpane.ColorMap;
 import nl.nlesc.vlet.vfs.jcraft.ssh.SSHChannel;
 import nl.nlesc.vlet.vfs.jcraft.ssh.SSHChannel.SSHChannelOptions;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.io.VShellChannel;
 import nl.nlesc.vlet.vrs.vdriver.localfs.BASHChannel;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class VLTerm extends JFrame implements  Runnable
 {

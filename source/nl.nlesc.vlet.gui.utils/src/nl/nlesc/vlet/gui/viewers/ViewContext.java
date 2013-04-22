@@ -32,8 +32,8 @@ import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.UILogger;
-import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrl.VRLList;
+import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRLList;
 
 
 /**

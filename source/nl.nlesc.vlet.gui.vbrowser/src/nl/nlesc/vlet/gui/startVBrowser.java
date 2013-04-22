@@ -32,7 +32,7 @@ import nl.nlesc.vlet.gui.vbrowser.VBrowserFactory;
 import nl.nlesc.vlet.gui.vbrowser.VBrowserInit;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * VBrowser Start Class.

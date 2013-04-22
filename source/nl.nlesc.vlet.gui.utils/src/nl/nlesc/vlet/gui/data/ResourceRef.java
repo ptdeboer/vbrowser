@@ -23,7 +23,7 @@ package nl.nlesc.vlet.gui.data;
 import java.io.Serializable;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * ResourceRef is a extended VRL. 

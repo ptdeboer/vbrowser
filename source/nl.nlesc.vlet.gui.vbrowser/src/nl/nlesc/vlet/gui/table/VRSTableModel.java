@@ -31,7 +31,7 @@ import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.view.ViewModel;
 import nl.nlesc.vlet.gui.view.ViewNode;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /**

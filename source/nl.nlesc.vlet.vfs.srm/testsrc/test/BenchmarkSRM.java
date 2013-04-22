@@ -9,13 +9,13 @@ import nl.nlesc.vlet.vfs.srm.SRMDir;
 import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
 import nl.nlesc.vlet.vfs.srm.SRMFile;
 import nl.nlesc.vlet.vfs.srm.SRMFileSystem;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vfs.FileWriter;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileMode;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class BenchmarkSRM
 {

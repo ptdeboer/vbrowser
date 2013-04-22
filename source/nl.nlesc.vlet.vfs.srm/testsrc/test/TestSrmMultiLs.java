@@ -6,11 +6,11 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.glite.lbl.srm.SRMClientV2;
 import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
 import nl.nlesc.vlet.vfs.srm.SRMFileSystem;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class TestSrmMultiLs
 {

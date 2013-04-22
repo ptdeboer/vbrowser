@@ -27,10 +27,10 @@ import java.io.OutputStream;
 import java.net.URL;
 
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.io.VRandomReadable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 import org.lobobrowser.main.ExtensionManager;
 

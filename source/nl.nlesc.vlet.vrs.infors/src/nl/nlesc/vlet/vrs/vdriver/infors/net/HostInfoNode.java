@@ -23,10 +23,10 @@ package nl.nlesc.vlet.vrs.vdriver.infors.net;
 
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
 import nl.nlesc.vlet.vrs.vdriver.infors.InfoConstants;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 public class HostInfoNode extends CompositeServiceInfoNode<VNode>

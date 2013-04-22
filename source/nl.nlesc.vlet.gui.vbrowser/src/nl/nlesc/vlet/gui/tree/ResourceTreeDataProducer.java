@@ -35,8 +35,8 @@ import nl.nlesc.vlet.gui.proxyvrs.ProxyResourceEventListener;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
 import nl.nlesc.vlet.gui.vbrowser.BrowserController;
 import nl.nlesc.vlet.gui.view.ViewNode;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ResourceEvent;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * Under construction: Move all updating methods to this class 

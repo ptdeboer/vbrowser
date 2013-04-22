@@ -30,7 +30,6 @@ import nl.nlesc.glite.lfc.internal.FileDesc;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VCommentable;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
@@ -40,6 +39,7 @@ import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VReplicatableDirectory;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileMode;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 public class LFCDir extends VDir 

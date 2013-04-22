@@ -47,7 +47,7 @@ import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.viewers.IMimeViewer;
 import nl.nlesc.vlet.gui.viewers.ViewContext;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 

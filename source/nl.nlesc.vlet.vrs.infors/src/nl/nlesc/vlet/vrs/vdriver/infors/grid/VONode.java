@@ -23,12 +23,12 @@ package nl.nlesc.vlet.vrs.vdriver.infors.grid;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VCompositeDeletable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
 import nl.nlesc.vlet.vrs.vdriver.infors.InfoConstants;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrms.ResourceFolder;
 
 /**

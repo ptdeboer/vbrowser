@@ -35,8 +35,8 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.data.ResourceRef;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * 

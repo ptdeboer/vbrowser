@@ -35,7 +35,7 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTableModel;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ProxyNodeTableModel extends ResourceTableModel
 {

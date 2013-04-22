@@ -24,7 +24,7 @@ import java.awt.Component;
 
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Interface extraction from the ViewerPanel class to allow

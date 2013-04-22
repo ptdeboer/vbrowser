@@ -21,12 +21,12 @@
 package nl.nlesc.vlet.vrs.vdriver.infors;
 
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VRSFactory;
 import nl.nlesc.vlet.vrs.VResourceSystem;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * nl.uva.vlet.vrs.info.InfoRSFactory; 

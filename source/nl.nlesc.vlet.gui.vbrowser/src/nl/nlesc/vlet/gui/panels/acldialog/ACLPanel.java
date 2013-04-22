@@ -44,7 +44,7 @@ import nl.nlesc.vlet.gui.panels.attribute.AttributePanel;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.vbrowser.BrowserController;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ACLPanel extends JPanel
 {

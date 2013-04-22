@@ -35,8 +35,8 @@ import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.net.ssl.CertificateStore;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ViewerX509 extends ViewerPlugin implements CertPanelListener
 {

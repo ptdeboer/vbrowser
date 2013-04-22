@@ -20,7 +20,7 @@
 
 package vfs;
 
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 import test.TestSettings;
 
 public class TestVFS_OctopusSftpFS_SARA extends TestVFS

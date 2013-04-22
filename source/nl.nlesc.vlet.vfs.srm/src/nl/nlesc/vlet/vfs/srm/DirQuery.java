@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.vfs.srm;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class DirQuery
 {

@@ -35,7 +35,6 @@ import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VChecksum;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
@@ -43,6 +42,7 @@ import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VThirdPartyTransferable;
 import nl.nlesc.vlet.vrs.vfs.VTransportable;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileMode;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 import org.apache.axis.types.UnsignedLong;
 

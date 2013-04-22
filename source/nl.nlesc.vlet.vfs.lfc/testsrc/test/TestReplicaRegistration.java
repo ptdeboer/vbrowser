@@ -5,7 +5,7 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VReplicatable;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
 
 public class TestReplicaRegistration

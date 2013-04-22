@@ -21,9 +21,9 @@
 package nl.nlesc.vlet.vrs.vdriver.infors.net;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vdriver.infors.grid.InfoNode;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ServiceInfoNode extends InfoNode
 {

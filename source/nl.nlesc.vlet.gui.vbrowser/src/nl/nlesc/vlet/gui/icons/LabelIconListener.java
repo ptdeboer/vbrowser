@@ -36,7 +36,7 @@ import javax.swing.JPopupMenu;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.view.VComponent;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * ButtonIcon Listener: handles mouse event on ButtonIcons. 

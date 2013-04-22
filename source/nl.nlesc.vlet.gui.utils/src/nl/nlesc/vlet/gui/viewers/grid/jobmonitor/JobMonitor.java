@@ -37,7 +37,7 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.gui.widgets.NavigationBar;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * Simple Job Status viewer. 

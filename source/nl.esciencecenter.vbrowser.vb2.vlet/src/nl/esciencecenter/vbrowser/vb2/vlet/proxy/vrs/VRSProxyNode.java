@@ -37,9 +37,9 @@ import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeType;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.presentation.VRSPresentation;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VNode;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrms.LogicalResourceNode;
 import nl.nlesc.vlet.vrs.vrms.VResourceLink;
 

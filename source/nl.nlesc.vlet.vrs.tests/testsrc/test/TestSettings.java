@@ -27,9 +27,9 @@ import java.util.Set;
 
 import nl.esciencecenter.ptk.Global;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Test configuarion settings. TODO: custom settings.

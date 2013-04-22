@@ -22,9 +22,9 @@ package vfs;
 
 import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 import test.TestSettings;
 
 

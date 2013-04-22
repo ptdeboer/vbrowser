@@ -57,7 +57,6 @@ import nl.nlesc.vlet.util.ChecksumUtil;
 import nl.nlesc.vlet.util.bdii.BdiiService;
 import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.StorageArea;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VCommentable;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -81,6 +80,7 @@ import nl.nlesc.vlet.vrs.vfs.VLogicalFileAlias;
 import nl.nlesc.vlet.vrs.vfs.VReplicatable;
 import nl.nlesc.vlet.vrs.vfs.VThirdPartyTransferable;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 

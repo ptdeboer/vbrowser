@@ -42,7 +42,7 @@ import nl.nlesc.vlet.net.ssl.CertificateStore;
 import nl.nlesc.vlet.util.grid.GridProxy;
 import nl.nlesc.vlet.util.grid.VGridCredential;
 import nl.nlesc.vlet.util.grid.VGridCredentialProvider;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 import org.globus.common.CoGProperties;

@@ -30,7 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class NavigationBar extends JToolBar 
 {

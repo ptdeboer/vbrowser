@@ -61,7 +61,6 @@ import nl.nlesc.vlet.exception.VlInterruptedException;
 import nl.nlesc.vlet.exception.VlServerException;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
 import nl.nlesc.vlet.util.grid.GridProxy;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -71,6 +70,7 @@ import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 import org.globus.ftp.Buffer;

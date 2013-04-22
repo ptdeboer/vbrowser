@@ -39,7 +39,6 @@ import nl.nlesc.vlet.exception.ResourceLinkIsBorkenException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlInternalError;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VCommentable;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
@@ -55,6 +54,7 @@ import nl.nlesc.vlet.vrs.vfs.VReplicatable;
 import nl.nlesc.vlet.vrs.vfs.VThirdPartyTransferable;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileMode;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttributes,

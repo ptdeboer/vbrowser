@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.vfs.lfc;
 
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** Shared method between LFCFile and LFCDirectory */ 
 public interface ILFCLocation

@@ -31,7 +31,6 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.StorageArea;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.io.VResizable;
@@ -40,6 +39,7 @@ import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VLogicalFileAlias;
 import nl.nlesc.vlet.vrs.vfs.VReplicatable;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 public class ReplicaManager

@@ -53,10 +53,10 @@ import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.font.FontInfo;
 import nl.nlesc.vlet.gui.font.FontToolBar;
 import nl.nlesc.vlet.gui.font.FontToolbarListener;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.vfs.FileReader;
 import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /**

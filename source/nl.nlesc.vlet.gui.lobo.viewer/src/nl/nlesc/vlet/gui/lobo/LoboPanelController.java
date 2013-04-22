@@ -25,7 +25,7 @@ import java.net.URL;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 import org.lobobrowser.ua.NavigationEvent;
 import org.lobobrowser.ua.NavigationVetoException;

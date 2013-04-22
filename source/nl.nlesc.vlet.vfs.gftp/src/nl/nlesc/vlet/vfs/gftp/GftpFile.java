@@ -32,7 +32,6 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
@@ -43,6 +42,7 @@ import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VThirdPartyTransferable;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 import org.globus.ftp.MlsxEntry;

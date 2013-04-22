@@ -36,7 +36,7 @@ import javax.swing.JTextField;
 
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.tree.ResourceTree;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Class that extend the JDIalog class. It can open a save or open dialog. User

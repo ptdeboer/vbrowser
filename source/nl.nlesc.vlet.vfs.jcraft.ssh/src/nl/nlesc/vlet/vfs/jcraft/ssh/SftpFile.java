@@ -29,7 +29,6 @@ import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.io.VRandomReadable;
 import nl.nlesc.vlet.vrs.io.VStreamAppendable;
@@ -37,6 +36,7 @@ import nl.nlesc.vlet.vrs.io.VZeroSizable;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 import com.jcraft.jsch.SftpATTRS;
 

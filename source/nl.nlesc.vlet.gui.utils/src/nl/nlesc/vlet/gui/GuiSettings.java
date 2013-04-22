@@ -47,7 +47,7 @@ import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.font.FontInfo;
 import nl.nlesc.vlet.gui.font.FontUtil;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Gui Settings. Contains Global settings for the UI Environment.

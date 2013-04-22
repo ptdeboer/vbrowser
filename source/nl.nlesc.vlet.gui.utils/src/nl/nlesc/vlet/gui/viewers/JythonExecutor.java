@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.gui.viewers;
 
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class JythonExecutor
 {

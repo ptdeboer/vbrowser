@@ -35,8 +35,8 @@ import nl.nlesc.vlet.gui.data.ResourceRef;
 import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.VContainer;
 import nl.nlesc.vlet.gui.view.ViewNode;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Class that represents a node in the ResourceTree. 

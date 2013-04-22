@@ -23,9 +23,9 @@ package vfs;
 import org.junit.Before;
 
 //import nl.uva.vlet.gui.dialog.AuthenticationDialog;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Test LFC. 

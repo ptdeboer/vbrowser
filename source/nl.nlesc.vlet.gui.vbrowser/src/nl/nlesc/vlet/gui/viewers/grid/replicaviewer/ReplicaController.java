@@ -51,8 +51,8 @@ import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.vbrowser.VBrowserFactory;
 import nl.nlesc.vlet.gui.widgets.NavigationBar;
 import nl.nlesc.vlet.gui.widgets.NavigationBar.NavigationAction;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ReplicaController implements ActionListener, ListSelectionListener, ListDataListener
 {

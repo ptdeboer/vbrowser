@@ -32,7 +32,7 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exec.ExternalToolDB;
 import nl.nlesc.vlet.exec.LocalProcess;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;

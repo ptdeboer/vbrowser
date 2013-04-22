@@ -41,7 +41,7 @@ import nl.esciencecenter.ptk.Global;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.dnd.VTransferData;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class HexViewController implements AdjustmentListener, KeyListener, ActionListener
 {

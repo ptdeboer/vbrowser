@@ -45,8 +45,8 @@ import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.VContainer;
 import nl.nlesc.vlet.gui.viewers.ViewerInfo;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRSFactory;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 
