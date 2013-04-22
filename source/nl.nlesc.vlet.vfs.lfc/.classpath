@@ -8,5 +8,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vrs.core"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nl.nlesc.vlet.vfs.srm"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.nlesc.vlet.vrs.vdriver.infors"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
