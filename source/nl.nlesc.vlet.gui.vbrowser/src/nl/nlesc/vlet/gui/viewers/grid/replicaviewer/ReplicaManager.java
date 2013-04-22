@@ -29,6 +29,7 @@ import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
@@ -59,7 +60,7 @@ public class ReplicaManager
     {
         StringList seList=new StringList(); 
         
-        ArrayList<StorageArea> prefSAs = vrsContext.getBdiiService().getSRMv22SAsforVO(vo); 
+        ArrayList<StorageArea> prefSAs = BdiiUtil.getBdiiService(vrsContext).getSRMv22SAsforVO(vo); 
         for (StorageArea sa:prefSAs)
         {
             seList.addUnique(sa.getHostname()); 
