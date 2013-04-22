@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.nlesc.vlet.vrs;
+package nl.nlesc.vlet.vrs.events;
 
 import java.util.Vector;
 

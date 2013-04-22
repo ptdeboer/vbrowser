@@ -18,7 +18,9 @@
  */
 // source: 
 
-package nl.nlesc.vlet.vrs;
+package nl.nlesc.vlet.vrs.events;
+
+import nl.nlesc.vlet.vrs.VRSContext;
 
 /** 
  * Interface for listeners which want to receive Resource Events. 
