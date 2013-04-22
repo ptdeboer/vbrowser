@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.nlesc.vlet.vrl;
+package nl.nlesc.vlet.vrs.vrl;
 
 import java.net.InetAddress;
 import java.net.MalformedURLException;

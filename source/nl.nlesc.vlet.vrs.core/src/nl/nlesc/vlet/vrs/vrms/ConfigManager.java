@@ -42,8 +42,8 @@ import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlInitializationException;
 import nl.nlesc.vlet.net.ssl.CertificateStore;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * The Configuration Manager is a VRSContext aware configuration manager. 

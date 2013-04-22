@@ -27,7 +27,7 @@ import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * ResourceSystemNode is a VResourceSystem adaptor class.  

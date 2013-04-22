@@ -25,10 +25,10 @@ import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.data.xml.XMLData;
 import nl.nlesc.vlet.data.xml.XMLtoNodeFactory;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /**

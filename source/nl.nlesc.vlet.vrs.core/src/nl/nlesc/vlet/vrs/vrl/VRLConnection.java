@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.nlesc.vlet.vrl;
+package nl.nlesc.vlet.vrs.vrl;
 
 import java.io.IOException;
 import java.io.InputStream;

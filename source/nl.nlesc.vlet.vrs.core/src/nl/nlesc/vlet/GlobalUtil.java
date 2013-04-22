@@ -34,7 +34,7 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.exception.ResourceReadAccessDeniedException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Global Helpers method outside Global to avoid Global initialization!

@@ -21,9 +21,9 @@
 package nl.nlesc.vlet.vrs;
 
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrms.LogicalResourceNode;
 
 /**

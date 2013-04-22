@@ -25,7 +25,7 @@ import nl.esciencecenter.ptk.task.TransferMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * VFSTransfer class. Keeps record of ongoing transfers. 

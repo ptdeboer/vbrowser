@@ -28,10 +28,10 @@ import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /**

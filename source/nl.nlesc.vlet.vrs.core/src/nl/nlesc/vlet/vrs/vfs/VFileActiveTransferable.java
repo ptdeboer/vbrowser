@@ -23,8 +23,8 @@ package nl.nlesc.vlet.vrs.vfs;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VActiveTransferable;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * The ActiveTransferables contain methods to indicate that

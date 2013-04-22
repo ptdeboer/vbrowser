@@ -1,4 +1,4 @@
-package nl.nlesc.vlet.vrl;
+package nl.nlesc.vlet.vrs.vrl;
 
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;

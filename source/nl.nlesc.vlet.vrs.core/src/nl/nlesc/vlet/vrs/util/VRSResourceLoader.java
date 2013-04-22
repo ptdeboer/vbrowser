@@ -31,11 +31,11 @@ import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class VRSResourceLoader extends ResourceLoader
 {

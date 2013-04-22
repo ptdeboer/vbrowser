@@ -40,8 +40,6 @@ import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.exception.VlInterruptedException;
-import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrl.VRLUtil;
 import nl.nlesc.vlet.vrs.ResourceEvent;
 import nl.nlesc.vlet.vrs.VActiveTransferable;
 import nl.nlesc.vlet.vrs.VComposite;
@@ -55,6 +53,8 @@ import nl.nlesc.vlet.vrs.ui.ICopyInteractor;
 import nl.nlesc.vlet.vrs.ui.ICopyInteractor.InteractiveAction;
 import nl.nlesc.vlet.vrs.util.VRSStreamUtil;
 import nl.nlesc.vlet.vrs.vdriver.http.HTTPNode;
+import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 import nl.nlesc.vlet.vrs.vrms.VLogicalResource;
 
 

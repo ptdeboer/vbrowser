@@ -25,7 +25,7 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.Global;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ExternalToolDB
 {

@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.vrs.vrms;
 
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Separate Link interface for resource links or Resource Nodes.

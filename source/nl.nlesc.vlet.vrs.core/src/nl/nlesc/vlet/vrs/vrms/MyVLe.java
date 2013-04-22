@@ -42,7 +42,6 @@ import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
 import nl.nlesc.vlet.exception.ResourceWriteAccessDeniedException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlInternalError;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VEditable;
@@ -55,6 +54,7 @@ import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /**

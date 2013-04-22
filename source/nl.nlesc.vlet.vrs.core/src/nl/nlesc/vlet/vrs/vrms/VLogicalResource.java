@@ -22,8 +22,8 @@ package nl.nlesc.vlet.vrs.vrms;
 
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * Interface for 'logical' resources which may or may not

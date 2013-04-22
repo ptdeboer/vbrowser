@@ -38,8 +38,8 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * The Global VletConfig class holds (static) global configuration settings. 

@@ -46,7 +46,6 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.exception.WritePermissionDeniedException;
 import nl.nlesc.vlet.util.ChecksumUtil;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 import nl.nlesc.vlet.vrs.io.VResizable;
@@ -56,6 +55,7 @@ import nl.nlesc.vlet.vrs.vfs.VChecksum;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /**

@@ -41,11 +41,11 @@ import nl.esciencecenter.ptk.net.VRI;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.io.VStreamAccessable;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 //import sun.security.validator.ValidatorException;
 /** Class represents a HTTP reference  */ 
 

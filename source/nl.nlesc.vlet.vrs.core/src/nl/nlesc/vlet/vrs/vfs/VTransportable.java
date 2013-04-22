@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.vrs.vfs;
 
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Interface for file resources which implement the 'transport' scheme. 

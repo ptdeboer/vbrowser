@@ -35,7 +35,6 @@ import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlInternalError;
 import nl.nlesc.vlet.exec.LocalExec;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -44,6 +43,7 @@ import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 

@@ -50,7 +50,7 @@ import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlInternalError;
 import nl.nlesc.vlet.exception.VlPasswordException;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Custom CertificateStore class for X509Certificates.  

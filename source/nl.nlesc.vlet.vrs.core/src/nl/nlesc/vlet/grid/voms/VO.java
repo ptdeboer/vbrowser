@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.grid.voms;
 
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * VO Information Holder class. 

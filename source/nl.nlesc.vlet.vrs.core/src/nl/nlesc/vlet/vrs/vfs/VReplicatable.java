@@ -22,7 +22,7 @@ package nl.nlesc.vlet.vrs.vfs;
 
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Replica Interface for files which support replicas (LFC).   

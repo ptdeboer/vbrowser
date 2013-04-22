@@ -22,7 +22,7 @@ package nl.nlesc.vlet.vrs;
 
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * VResourceSystem is a factory class for VNodes. 

@@ -31,7 +31,6 @@ import nl.esciencecenter.ptk.data.IntegerHolder;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.NodeFilter;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VCompositeDeletable;
@@ -40,6 +39,7 @@ import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRenamable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.util.VRSSort;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Super class of the VFS Directory implementation. 

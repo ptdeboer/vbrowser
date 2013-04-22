@@ -42,7 +42,7 @@ import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * The VNode class, the super class of all resource nodes in the VRS package. It

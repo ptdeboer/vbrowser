@@ -42,11 +42,11 @@ import nl.nlesc.vlet.exception.VlServiceMismatchException;
 import nl.nlesc.vlet.exception.VlUnsupportedSchemeException;
 import nl.nlesc.vlet.util.PluginLoader;
 import nl.nlesc.vlet.util.PluginLoader.PluginInfo;
-import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrl.VRLStreamHandlerFactory;
 import nl.nlesc.vlet.vrs.vdriver.http.HTTPFactory;
 import nl.nlesc.vlet.vrs.vdriver.http.HTTPSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
+import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRLStreamHandlerFactory;
 import nl.nlesc.vlet.vrs.vrms.MyVLe;
 
 /**

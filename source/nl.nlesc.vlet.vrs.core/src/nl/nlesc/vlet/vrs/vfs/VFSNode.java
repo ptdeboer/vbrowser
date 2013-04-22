@@ -58,12 +58,12 @@ import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRenamable;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Super class of VDir and VFile. 

@@ -25,10 +25,10 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /** 

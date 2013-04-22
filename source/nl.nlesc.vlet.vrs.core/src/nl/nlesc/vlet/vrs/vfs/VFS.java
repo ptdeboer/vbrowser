@@ -26,11 +26,11 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VResourceSystem;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * The Virtual File System Global Class.

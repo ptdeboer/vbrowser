@@ -26,10 +26,10 @@ import java.io.OutputStream;
 
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.ResourceSystemNode;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * FileSystemNode is a {@link VFileSystem} adaptor class, which extends the 

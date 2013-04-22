@@ -49,8 +49,8 @@ import nl.nlesc.vlet.grid.voms.VOServer;
 import nl.nlesc.vlet.net.ssl.CertificateStore;
 import nl.nlesc.vlet.net.ssl.SSLContextManager;
 import nl.nlesc.vlet.net.ssl.SslUtil;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 
 

@@ -58,8 +58,6 @@ import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.exception.VlXMLDataException;
-import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrl.VRLUtil;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.ServerInfoRegistry;
@@ -75,6 +73,8 @@ import nl.nlesc.vlet.vrs.io.VStreamAccessable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
 import nl.nlesc.vlet.vrs.vfs.VFS;
+import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
 /**
  * Super Class of LinkNode and ServerConfig, ResourceFolder and

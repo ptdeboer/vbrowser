@@ -25,7 +25,7 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.data.IndexedHashtable;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Optimized ActionMenuMatcher matches ActionMenuMappings against selected

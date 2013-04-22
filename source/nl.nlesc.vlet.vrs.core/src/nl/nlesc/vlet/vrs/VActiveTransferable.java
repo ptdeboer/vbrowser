@@ -23,8 +23,8 @@ package nl.nlesc.vlet.vrs;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /** 

@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.exec;
 
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ExternalToolInfo
 {

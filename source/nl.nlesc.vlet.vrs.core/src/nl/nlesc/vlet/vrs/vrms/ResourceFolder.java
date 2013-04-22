@@ -42,7 +42,6 @@ import nl.nlesc.vlet.exception.ResourceDeletionFailedException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VCompositeDeletable;
@@ -56,6 +55,7 @@ import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VRSFactory;
 import nl.nlesc.vlet.vrs.VRenamable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /**

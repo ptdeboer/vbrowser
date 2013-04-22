@@ -36,11 +36,11 @@ import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.error.InitializationError;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.util.grid.GridProxy;
-import nl.nlesc.vlet.vrl.VRL;
-import nl.nlesc.vlet.vrl.VRLUtil;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskWatcher;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vfs.VRSTransferManager;
+import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 import nl.nlesc.vlet.vrs.vrms.MyVLe;
 

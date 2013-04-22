@@ -22,7 +22,7 @@ package nl.nlesc.vlet.data;
 
 import java.util.Date;
 
-import nl.nlesc.vlet.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * Basic Attribute Types.  
