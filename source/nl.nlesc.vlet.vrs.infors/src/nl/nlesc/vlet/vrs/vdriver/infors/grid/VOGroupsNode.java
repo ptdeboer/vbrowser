@@ -34,6 +34,7 @@ import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.util.bdii.BdiiService;
+import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.ServiceInfo;
 import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vrl.VRL;
@@ -224,7 +225,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
     {
         infoPrintf("createSEFolderForVO(): For vo:%s\n", vo);
         
-        BdiiService bdii = this.vrsContext.getBdiiService();
+        BdiiService bdii = getBdiiService();
         ArrayList<StorageArea> sas = bdii.getSRMv22SAsforVO(vo);
 
         infoPrintf(" - got # %d Storage Areas for vo:%s\n", sas.size(), vo);
@@ -308,7 +309,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
 
     public synchronized ResourceFolder createLFCFolderForVO(VRL logicalParent, String vo) throws VlException
     {
-        BdiiService bdii = this.vrsContext.getBdiiService();
+        BdiiService bdii = getBdiiService();
         ArrayList<ServiceInfo> lfcs = bdii.getLFCsforVO(vo);
 
         VRL logVrl = logicalParent.appendPathToVRL("Logical File Catalogs (" + vo + ")");
@@ -362,7 +363,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
 
     public ResourceFolder createWMSFolderForVO(VRL logicalParent, String vo) throws VlException
     {
-        BdiiService bdii = this.vrsContext.getBdiiService();
+        BdiiService bdii = getBdiiService();
         ArrayList<ServiceInfo> wmss = bdii.getWMSServiceInfos(vo);
 
         VRL logVrl = logicalParent.appendPathToVRL("WMS Services (" + vo + ")");
@@ -414,9 +415,14 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         return resF;
     }
 
+    protected BdiiService getBdiiService() throws VlException
+    {
+        return BdiiUtil.getBdiiService(this.vrsContext); 
+    }
+    
     public ResourceFolder createLBFolderForVO(VRL logicalParent, String vo) throws VlException
     {
-        BdiiService bdii = this.vrsContext.getBdiiService();
+        BdiiService bdii = getBdiiService();  
         ArrayList<ServiceInfo> lbss = bdii.getLBServiceInfosForVO(vo);
 
         VRL logVrl = logicalParent.appendPathToVRL("LB Services (" + vo + ")");

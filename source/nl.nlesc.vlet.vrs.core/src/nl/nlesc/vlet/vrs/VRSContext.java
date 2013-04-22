@@ -35,7 +35,6 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.error.InitializationError;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.util.bdii.BdiiService;
 import nl.nlesc.vlet.util.grid.GridProxy;
 import nl.nlesc.vlet.vrl.VRL;
 import nl.nlesc.vlet.vrl.VRLUtil;
@@ -524,20 +523,18 @@ public class VRSContext implements Serializable
      * 'allowOtherHosts' determines whether non specified hosts are allowed or
      * blocked.
      */
-    Hashtable<String, Boolean> hostAccessList = new Hashtable<String, Boolean>();
+    protected Hashtable<String, Boolean> hostAccessList = new Hashtable<String, Boolean>();
 
-    boolean allowOtherHosts = true;
+    protected boolean allowOtherHosts = true;
 
     /**
      * Whether a scheme is allowed or blocked. If not in this list, the settings
      * 'allowOtherSchemes' determines whether non specified scheme is allowed or
      * not allowed.
      */
-    Hashtable<String, Boolean> schemeAccessList = new Hashtable<String, Boolean>();
+    protected Hashtable<String, Boolean> schemeAccessList = new Hashtable<String, Boolean>();
 
-    boolean allowOtherSchemes = true;
-
-    private BdiiService bdiiService;
+    protected boolean allowOtherSchemes = true;
 
     /**
      * Add host to blocked hosts list in the case allowOtherHosts==true. If
@@ -909,34 +906,7 @@ public class VRSContext implements Serializable
 
     private Object bdiiMutex = new Object();
 
-    /**
-     * Returns BDII Service for this context
-     * 
-     * @throws VlException
-     */
-    public BdiiService getBdiiService() throws VlException
-    {
-        synchronized (bdiiMutex)
-        {
-            boolean newService = false;
-
-            if (this.bdiiService == null)
-                newService = true;
-            else
-            {
-                // auto update !
-                java.net.URI newURI = getConfigManager().getBdiiServiceURI();
-
-                if (!StringUtil.equals(newURI.toString(), bdiiService.getURI().toString()))
-                    newService = true;
-            }
-
-            if (newService)
-                this.bdiiService = BdiiService.createService(this);
-
-            return bdiiService;
-        }
-    }
+   
 
     public String getSystemEnv(String envVar)
     {
