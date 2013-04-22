@@ -21,7 +21,6 @@
 package nl.nlesc.vlet.vfs.jcraft.ssh;
 
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
