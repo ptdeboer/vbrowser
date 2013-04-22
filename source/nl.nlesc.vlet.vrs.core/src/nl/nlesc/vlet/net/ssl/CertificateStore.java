@@ -22,7 +22,6 @@ package nl.nlesc.vlet.net.ssl;
 
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,9 +42,9 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.GlobalUtil;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlInternalError;
@@ -368,7 +367,9 @@ public class CertificateStore
 
         this.keystorePassword=passphrasestr;
         this.keyStoreLocation=keyStoreLoc;
-
+        
+        FSUtil fsUtil=FSUtil.getDefault(); 
+        
         // thread save! 
         synchronized(keyStoreMutex)
         {
@@ -383,19 +384,19 @@ public class CertificateStore
             String syscacertsPath=VletConfig.getInstallationConfigDir().appendPath("cacerts").getPath(); 
 		
     		// check user copy of cacerts
-    		if (GlobalUtil.existsFile(keyStoreLoc,true)==false) 
+    		if (fsUtil.existsFile(keyStoreLoc,true)==false) 
     		{
     			// check installation cacerts 
     			if (autoInitialize)
     			{
-    			    if (GlobalUtil.existsFile(syscacertsPath,true))
+    			    if (fsUtil.existsFile(syscacertsPath,true))
         			{
         			    try
         			    {
         			        logger.infoPrintf("Using cacerts file from instalation path:%s\n",syscacertsPath);
         			        // make sure .vletrc exists: 
-        			        GlobalUtil.mkdir(VletConfig.getUserConfigDir().getPath()); 
-        			        GlobalUtil.copyFile(syscacertsPath,usercacertsPath); 
+        			        fsUtil.mkdir(VletConfig.getUserConfigDir().getPath()); 
+        			        fsUtil.copyFile(syscacertsPath,usercacertsPath); 
         			        logger.infoPrintf("Copying installation cacerts file to:%s\n",usercacertsPath);
         			    }
         			    catch (Exception e)
@@ -424,7 +425,7 @@ public class CertificateStore
     		_keyStore=null; 
     		
     		// Try to load: 
-    		if (GlobalUtil.existsFile(usercacertsPath,true))
+    		if (fsUtil.existsFile(usercacertsPath,true))
     		{
     		    InputStream in=null; 
                 
@@ -432,7 +433,7 @@ public class CertificateStore
                 {
                     _keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
                     
-                    in = GlobalUtil.getFileInputStream(usercacertsPath); 
+                    in = fsUtil.getInputStream(usercacertsPath); 
                     _keyStore.load(in, passphrase);
                     in.close();
                 }
@@ -501,17 +502,18 @@ public class CertificateStore
     /** Add extra certificates from VLET_INSTALL/etc/certificates and ~/.vletrc/certificates */ 
     protected void loadCustomCertificates()
     {
+        FSUtil fsUtil=FSUtil.getDefault();
         VRL vrls[]=VletConfig.getCACertificateLocations(); 
         
         for (VRL vrl:vrls)
         {
             String dir=vrl.getPath();
 
-            if (GlobalUtil.existsDir(dir))
+            if (fsUtil.existsDir(dir))
             {
                 logger.infoPrintf("Checking custom certificate folder:%s\n",dir); 
 
-                String files[]=GlobalUtil.list(dir);
+                String files[]=fsUtil.list(dir);
                 if (files!=null) 
                     for (String file:files)
                     {   
@@ -725,7 +727,8 @@ public class CertificateStore
     {
         logger.debugPrintf("Loading (DER ENCODED) Certificate :%s\n",filename);
         
-        FileInputStream finps=GlobalUtil.getFileInputStream(filename);
+        FSUtil fsUtil=FSUtil.getDefault();
+        InputStream finps=fsUtil.getInputStream(filename);
         
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
         X509Certificate x590 = (X509Certificate)cf.generateCertificate(finps);
@@ -753,8 +756,8 @@ public class CertificateStore
     public static X509Certificate loadPEMCertificate(String filename) throws Exception
     {
         logger.debugPrintf("Loading (PEM) Certificate :%s\n",filename);  
-        
-        String pemStr=GlobalUtil.readText(filename);
+            
+        String pemStr=FSUtil.getDefault().readText(filename);
         
         int index=pemStr.indexOf("-----BEGIN CERTIFICATE"); 
         
@@ -828,10 +831,14 @@ public class CertificateStore
         if (save)
             saveKeystore();
     }
-	/** Delete cacerts file. */ 
-    public void delete()
+    
+	/**
+	 * Delete cacerts file. 
+	 * @throws IOException 
+	 */ 
+    public void delete() throws IOException
     {
-        GlobalUtil.deleteFile(this.getKeyStoreLocation());  
+        FSUtil.getDefault().deleteFile(this.getKeyStoreLocation());  
     }
     
     /** Returns snapshot of aliases */ 

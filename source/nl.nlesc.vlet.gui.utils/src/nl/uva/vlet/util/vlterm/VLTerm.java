@@ -52,7 +52,6 @@ import javax.swing.SwingUtilities;
 
 import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.GlobalUtil;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -1391,7 +1390,7 @@ public class VLTerm extends JFrame implements  Runnable
 		try 
 		{
 		    VRI loc=VletConfig.getUserConfigDir().appendPath("/vlterm.prop"); 
-			return GlobalUtil.loadPropertiesFromURL(loc.toURL());
+			return VletConfig.loadPropertiesFromURL(loc.toURL());
 		}
 		catch (Exception e) 
 		{

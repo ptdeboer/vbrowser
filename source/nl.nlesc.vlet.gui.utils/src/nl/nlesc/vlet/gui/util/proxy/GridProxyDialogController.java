@@ -27,11 +27,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.util.logging.Level;
 
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-
 
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -44,7 +44,6 @@ import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.dialog.SimpleDialog;
 import nl.nlesc.vlet.util.grid.GridProxy;
-import nl.nlesc.vlet.util.grid.VGridCredentialProvider;
 import nl.nlesc.vlet.vrs.VRSContext;
 
 /**
@@ -465,13 +464,22 @@ class GridProxyDialogController implements ActionListener, WindowListener, Focus
      * private void destroyProxy() { this.gridProxy.destroy(); update(); }
      */
 
-    private void destroyProxy()
+    private void destroyProxy() 
     {
-        this.gridProxy.destroy(); 
-        update();
-        // after Destroy, must be able to click OK ! 
-        proxyDialog.okButton.setEnabled(true); 
-        this.isOk=false;
+        try
+        {
+            this.gridProxy.destroy(); 
+        
+            update();
+            // after Destroy, must be able to click OK ! 
+            proxyDialog.okButton.setEnabled(true); 
+            this.isOk=false;
+        }
+        catch (IOException e)
+        {
+            ExceptionForm.show(this.proxyDialog,e,true);
+            return;
+        }
     }
 
     public void Exit()

@@ -217,7 +217,7 @@ public class FSUtil
      *            - relative or absolute file path (resolves to absolute path on
      *            local filesystem)
      */
-    public InputStream getFileInputStream(String filename) throws FileNotFoundException
+    public InputStream getInputStream(String filename) throws FileNotFoundException
     {
         return newLocalFSNode(filename).createInputStream();
     }
@@ -229,7 +229,7 @@ public class FSUtil
      *            - relative or absolute file path (resolves to absolute path on
      *            local fileystem)
      */
-    public OutputStream getFileOutputStream(String filename) throws FileNotFoundException
+    public OutputStream getOutputStream(String filename) throws FileNotFoundException
     {
         return newLocalFSNode(filename).createOutputStream();
     }

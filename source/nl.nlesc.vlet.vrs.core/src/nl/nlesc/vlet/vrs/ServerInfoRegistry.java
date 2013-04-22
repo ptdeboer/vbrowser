@@ -31,10 +31,10 @@ import java.util.Set;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.GlobalUtil;
 import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.data.xml.XMLData;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
@@ -539,10 +539,12 @@ public class ServerInfoRegistry
         try
         {
             // registry must be local path:
-            OutputStream outps = GlobalUtil.getFileOutputStream(loc.getPath());
+            OutputStream outps = FSUtil.getDefault().getOutputStream(loc.getPath());
             xmlifier.writeAsXML(outps, XML_SERVER_CONFIG_HEADER_TAG, sets, XML_SERVER_CONFIG_HEADER);
-            outps.close();
             this.isSaved = true;
+            
+            try {outps.close();} catch (Exception e){;} 
+            
         }
         catch (Exception e)
         {

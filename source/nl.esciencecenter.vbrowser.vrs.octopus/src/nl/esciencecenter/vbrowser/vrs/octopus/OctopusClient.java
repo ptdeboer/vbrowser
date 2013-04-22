@@ -45,9 +45,9 @@ import nl.esciencecenter.octopus.files.OpenOption;
 import nl.esciencecenter.octopus.files.PathAttributesPair;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
 import nl.esciencecenter.octopus.files.RelativePath;
+import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.GlobalUtil;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.ServerInfo;
@@ -70,7 +70,7 @@ public class OctopusClient
             for (String subDir:subDirs)
             {
                 String octoDir=VletConfig.getInstallationLibDir().resolvePath(subDir).getPath(); 
-                if (GlobalUtil.existsDir(octoDir))
+                if (FSUtil.getDefault().existsDir(octoDir))
                 {
                     ClassLogger.getLogger(OctopusClient.class).infoPrintf("Using ocotopus dir:%s\n",octoDir); 
                     props.put("octopus.adaptor.dir",octoDir);

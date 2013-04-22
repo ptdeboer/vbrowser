@@ -35,7 +35,6 @@ import nl.esciencecenter.ptk.Global;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.GlobalUtil;
 import nl.nlesc.vlet.MessageStrings;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.data.VAttribute;
@@ -328,7 +327,7 @@ public class ConfigManager
         try
         {
             // Persistance Properties Always Reload ! 
-            return GlobalUtil.staticLoadProperties(loc); 
+            return VletConfig.staticLoadProperties(loc); 
         }   
         catch (VlException e)
         {
@@ -506,7 +505,7 @@ public class ConfigManager
     {
         try
         {
-            GlobalUtil.staticSaveProperties(getUserPropertiesLocation(), "VLET user properties:  vletrc.prop",properties);
+            VletConfig.staticSaveProperties(getUserPropertiesLocation(), "VLET user properties:  vletrc.prop",properties);
         }   
         catch (Throwable e)
         {

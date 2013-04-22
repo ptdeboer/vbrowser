@@ -21,6 +21,7 @@
 package nl.nlesc.vlet.util.grid;
 
 
+import java.io.IOException;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
@@ -33,10 +34,10 @@ import java.util.Vector;
 import javax.net.ssl.SSLContext;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.GlobalUtil;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeSet;
@@ -982,16 +983,19 @@ public class GridProxy
             return "" + val;
     }
 
-    /** Delete proxy */ 
-    public synchronized boolean destroy()
+    /** 
+     * Delete proxy 
+     * @throws IOException 
+     */ 
+    public synchronized boolean destroy() throws IOException
     {
         //boolean prev = this.valid;
         if (this.credential==null)
             return true; 
         
-        GlobalUtil.deleteFile(credential.getCredentialFilename()); 
+        FSUtil.getDefault().deleteFile(credential.getCredentialFilename()); 
 
-        this.credential=null; 
+        this.credential=null;
         
         return (checkAndNotifyAttributes()==false); 
     }

@@ -29,7 +29,7 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.GlobalUtil;
+import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -238,7 +238,7 @@ public class PluginLoader
 		try
 		{
 			// use URL loader:
-			return GlobalUtil.loadPropertiesFromURL(propfile.toURI().toURL());
+			return VletConfig.loadPropertiesFromURL(propfile.toURI().toURL());
 		}
 		catch (Exception ex)
 		{

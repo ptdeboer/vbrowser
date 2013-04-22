@@ -24,7 +24,11 @@ package nl.nlesc.vlet;
 // problems at class initialization. 
 // import only 'core' classes which do not refer back to VletConfig!
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -34,10 +38,13 @@ import java.util.logging.Level;
 
 import nl.esciencecenter.ptk.Global;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.nlesc.vlet.exception.ResourceReadAccessDeniedException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -913,7 +920,7 @@ public class VletConfig
         {
             try
             {
-                vletrcProperties = GlobalUtil.loadPropertiesFromClasspath("vletrc.prop");
+                vletrcProperties = VletConfig.loadPropertiesFromClasspath("vletrc.prop");
             }
             catch (VlException e)
             {
@@ -929,7 +936,7 @@ public class VletConfig
             
             try 
             {
-                vletrcProperties=GlobalUtil.staticLoadProperties(vletrcLoc); 
+                vletrcProperties=VletConfig.staticLoadProperties(vletrcLoc); 
             }
             catch (VlException e)
             {
@@ -973,7 +980,7 @@ public class VletConfig
         try
         {
             VRL loc=VletConfig.getUserPropertiesLocation(); 
-            Properties props = GlobalUtil.staticLoadProperties(loc); 
+            Properties props = VletConfig.staticLoadProperties(loc); 
             return (String) props.get(name);
         }
         catch (Exception e)
@@ -1370,6 +1377,98 @@ public class VletConfig
     {
         // must move HTTP(S) proxies to delegated Worker class. 
         return false;
+    }
+
+    /** Load properties from this URL */
+    public static Properties loadPropertiesFromURL(URL url) throws VlException
+    {
+        Properties props = new Properties();
+    
+        try
+        {
+            logger.debugPrintf("Loading classpath properties from:%s\n", url);
+    
+            InputStream inputs = null;
+            if (url != null)
+                inputs = url.openConnection().getInputStream();
+    
+            if (inputs != null)
+                props.load(inputs);
+        }
+        catch (IOException e)
+        {
+            throw new VlIOException(e.getMessage(), e);
+        }
+        // in the case of applet startup: Not all files are
+        // Accessible, wrap exception for graceful exception handling.
+        catch (java.security.AccessControlException ex)
+        {
+            throw new ResourceReadAccessDeniedException("Security Exception: Permission denied for:" + url, ex);
+        }
+    
+        return props;
+    }
+
+    /**
+     * Load a property file specified on the classpath or URL.
+     */
+    public static Properties loadPropertiesFromClasspath(String urlstr) throws VlException
+    {
+        // check default classpath:
+        URL url = VletConfig.class.getClassLoader().getResource(urlstr);
+    
+        if (url == null)
+            // check context classpath
+            url = Thread.currentThread().getContextClassLoader().getResource(urlstr);
+    
+        if (url == null)
+            return new Properties();
+    
+        return loadPropertiesFromURL(url);
+    }
+
+    /** Load properties using URL stream readers */
+    public static Properties staticLoadProperties(VRL vrl) throws VlException
+    {
+        try
+        {
+            URL url = vrl.toURL();
+            InputStream inps = url.openConnection().getInputStream();
+            Properties props = new Properties();
+            props.load(inps);
+            return props;
+        }
+        catch (Exception e)
+        {
+            throw VlException.create("Properties Exception", "Couldn't load properties from:" + vrl, e);
+        }
+    }
+
+    /**
+     * Save properties using URL stream readers. Only works for file:/// URL!
+     */
+    public static void staticSaveProperties(VRL vrl, String optComments, Properties props) throws VlException
+    {
+        if (optComments == null)
+            optComments = "";
+    
+        try
+        {
+            OutputStream outps = FSUtil.getDefault().getOutputStream(vrl.getPath());
+            props.store(outps, optComments);
+            try
+            {
+                outps.close();
+            }
+            catch (Exception e)
+            {
+                ;
+            }
+        }
+        catch (Exception e)
+        {
+            throw VlException.create("Properties Exception", "Couldn't load properties from:" + vrl, e);
+        }
     }
     
     

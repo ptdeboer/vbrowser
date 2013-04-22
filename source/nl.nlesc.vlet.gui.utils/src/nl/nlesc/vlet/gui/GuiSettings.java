@@ -42,7 +42,6 @@ import javax.swing.UIManager;
 
 import nl.esciencecenter.ptk.Global;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.GlobalUtil;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.font.FontInfo;
@@ -133,7 +132,7 @@ public class GuiSettings
         VRL loc = getGuiSettingsLocation();
         try
         {
-            props = GlobalUtil.staticLoadProperties(loc);
+            props = VletConfig.staticLoadProperties(loc);
         }
         catch (VlException e)
         {
