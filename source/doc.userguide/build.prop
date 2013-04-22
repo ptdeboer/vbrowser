@@ -1,0 +1,13 @@
+###
+# File      : build.prop
+# Component : userguide 
+# 
+
+###
+#
+comp.name=doc.userguide
+comp.artefactId=vlet-userguide
+comp.dist=${comp.root}/dist
+comp.build=${comp.root}/build
+comp.tex=${comp.root}/tex
+comp.dist.lib=${comp.root}/dist/lib
