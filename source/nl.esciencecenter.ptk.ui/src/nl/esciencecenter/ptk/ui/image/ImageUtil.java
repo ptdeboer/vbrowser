@@ -28,7 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.esciencecenter.ptk.ui.util.gif.NS2GifDecoder;
+import nl.esciencecenter.ptk.util.gif.NS2GifDecoder;
 
 //import com.sun.media.jai.codec.ByteArraySeekableStream;
 //import com.sun.media.jai.codec.ImageDecodeParam;
