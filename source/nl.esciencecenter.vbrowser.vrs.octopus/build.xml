@@ -1,20 +1,20 @@
 <project name="nlesc-vbrowser.vrs.octopus" default="dist" basedir=".">
     <description>
-        Project   : VLET/VBrowser
+        Project   : VBrowser
         Component : Octopus
                 
     </description>
 
-    <property environment="env"/>
+    <property environment="env" />
     <property name="vdriver.root" location="." />
     <!-- project settings -->
-    <property name="project.root" value="../.."/>
-    <property file="${project.root}/project.prop"/>
-    <property file="build.prop"/>
+    <property name="project.root" value="../.." />
+    <property file="${project.root}/project.prop" />
+    <property file="build.prop" />
 
     <!-- Target: init -->
 
-    <target name="init" >
+    <target name="init">
         <!-- Create the build directory structure used by compile -->
         <mkdir dir="${vdriver.build}" />
         <mkdir dir="${vdriver.dist}" />
@@ -25,17 +25,17 @@
     </target>
 
     <!-- Target: Config (configure this component) -->
-    <target name="config" >
+    <target name="config">
     </target>
 
     <!-- Target: generate (create stubbers or other code) -->
-    <target name="generate" >
+    <target name="generate">
     </target>
 
     <!--
      *    Target: source-dist (Only needed when creating source distributions) 
      -->
-    <target name="source-dist" >
+    <target name="source-dist">
     </target>
 
     <path id="vdriver.classpath">
@@ -61,29 +61,24 @@
     <target name="build" depends="init" description="compile the source ">
         <!-- Compile the java code from the ${src} into ${build} -->
 
-        <javac srcdir="${vdriver.src}" destdir="${vdriver.build}"
-		       compiler="${javac.compiler}"
-			   debug="${javac.debug}"
-			   source="${javac.source}" 
-			   target="${javac.target}">
+        <javac srcdir="${vdriver.src}" destdir="${vdriver.build}" compiler="${javac.compiler}" debug="${javac.debug}" source="${javac.source}" target="${javac.target}">
             <classpath refid="vdriver.classpath" />
         </javac>
 
     </target>
 
-    <target name="jar" depends="build" >
+    <target name="jar" depends="build">
         <!-- Create application JAR file -->
-        <jar jarfile="${vdriver.dist}/lib/${vdriver.artefactId}.jar"
-	    	basedir="${vdriver.build}">
+        <jar jarfile="${vdriver.dist}/lib/${vdriver.artefactId}.jar" basedir="${vdriver.build}">
             <!-- .. includes/excludes .. -->
         </jar>
     </target>
-    <target name="dist" depends="vdriver-dist" >
+    <target name="dist" depends="vdriver-dist">
     </target>
 
-    <target name="vdriver-dist" depends="build,jar" >
+    <target name="vdriver-dist" depends="build,jar">
 
-        <property name="vdriver.dir"  value="${vdriver.dist}/${vdriver.artefactId}"/>
+        <property name="vdriver.dir" value="${vdriver.dist}/${vdriver.artefactId}" />
 
         <mkdir dir="${vdriver.dir}" />
 
@@ -107,18 +102,14 @@
         </copy>
 
         <!-- create plugin.prop file -->
-        <property name="plugininfo" value="${vdriver.dir}/plugin.prop"/>
-        <echo message="##${line.separator}#Plugin description for: ${vdriver.artefactId}${line.separator}#${line.separator}" 
-              file="${plugininfo}" append="false" />
+        <property name="plugininfo" value="${vdriver.dir}/plugin.prop" />
+        <echo message="##${line.separator}#Plugin description for: ${vdriver.artefactId}${line.separator}#${line.separator}" file="${plugininfo}" append="false" />
 
-        <echo message="#Plugin name:${line.separator}vdriver.artefactId=${vdriver.artefactId}${line.separator}${line.separator}" 
-              file="${plugininfo}" append="true" />
+        <echo message="#Plugin name:${line.separator}vdriver.artefactId=${vdriver.artefactId}${line.separator}${line.separator}" file="${plugininfo}" append="true" />
 
-        <echo message="#Plugin package name:${line.separator}vdriver.package=${vdriver.package}${line.separator}${line.separator}" 
-              file="${plugininfo}" append="true" />
+        <echo message="#Plugin package name:${line.separator}vdriver.package=${vdriver.package}${line.separator}${line.separator}" file="${plugininfo}" append="true" />
 
-        <echo message="#Plugin (VRS)Factory name (Must be subclass of VRSFactory which will be registered in the VRS Registry!):${line.separator}vdriver.factory=${vdriver.factory}${line.separator}${line.separator}" 
-              file="${plugininfo}" append="true" />
+        <echo message="#Plugin (VRS)Factory name (Must be subclass of VRSFactory which will be registered in the VRS Registry!):${line.separator}vdriver.factory=${vdriver.factory}${line.separator}${line.separator}" file="${plugininfo}" append="true" />
 
     </target>
 
@@ -128,9 +119,8 @@
     *          Install into plugin directory
     -->
     <target name="vdriver-dist-install" depends="vdriver-dist" description="install libraries">
-        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
-              unless="project.env.ok"/>
-        <mkdir dir="${project.doc}" />
+        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
+
         <!-- install in lib/plugins/  -->
         <mkdir dir="${project.dist.lib}/plugins" />
 
@@ -138,9 +128,9 @@
         <!-- <copy file="${vdriver.dist}/${vdriver.package}.jar" todir="${project.dist}/lib/plugins" /> 
 	      -->
 
-        <mkdir dir="${project.dist.lib}/vdriver" />
-        <copy todir="${project.dist.lib}/vdriver/">
-            <fileset file="${vdriver.dist}/lib/${vdriver.artefactId}.jar"/>
+        <mkdir dir="${project.dist.lib}/vdrivers" />
+        <copy todir="${project.dist.lib}/vdrivers/">
+            <fileset file="${vdriver.dist}/lib/${vdriver.artefactId}.jar" />
         </copy>
 
         <!-- 
@@ -162,8 +152,7 @@
     </target>
 
     <target name="dist-install-octopus" depends="dist" description="install libraries">
-        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
-	          unless="project.env.ok"/>
+        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
 
         <mkdir dir="${project.dist.lib}" />
         <mkdir dir="${project.dist.lib}/octopus" />
@@ -175,8 +164,7 @@
     </target>
 
     <target name="dist-install" depends="dist,dist-install-octopus,vdriver-dist-install" description="install libraries">
-        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
-			  unless="project.env.ok"/>
+        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
 
         <!-- dist-install done by target dependencies -->
         <!-- 
@@ -185,11 +173,9 @@
 
     </target>
 
-
-
     <target name="clean" description="clean">
-        <delete dir="${vdriver.dist}"/>
-        <delete dir="${vdriver.build}"/>
+        <delete dir="${vdriver.dist}" />
+        <delete dir="${vdriver.build}" />
     </target>
 
 </project>
