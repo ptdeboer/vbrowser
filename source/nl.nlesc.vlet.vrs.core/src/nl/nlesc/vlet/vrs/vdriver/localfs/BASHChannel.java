@@ -131,6 +131,7 @@ public class BASHChannel implements VShellChannel
         catch (Exception e)
         {
             logger.logException(ClassLogger.ERROR,e,"Couldn't initialize bash session:%s\n",e);
+            throw new IOException("Failed to start bash session.\n"+e.getMessage(),e);
         }
     }
 
