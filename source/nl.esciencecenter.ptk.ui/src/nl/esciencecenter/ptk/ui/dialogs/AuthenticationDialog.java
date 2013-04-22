@@ -41,7 +41,6 @@ import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.Global;
 import nl.esciencecenter.ptk.net.VRI;
-import nl.esciencecenter.ptk.ui.UIPlatform;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -410,7 +409,7 @@ public class AuthenticationDialog extends javax.swing.JDialog implements ActionL
         
         dialog.setModal(true);
         
-        if (UIPlatform.getPlatform().getAppletMode()==false)
+        //if (UIPlatform.getPlatform().getAppletMode()==false)
             dialog.setAlwaysOnTop(true);
 
         // if modal is enabled, this method blocks until window is closed !
