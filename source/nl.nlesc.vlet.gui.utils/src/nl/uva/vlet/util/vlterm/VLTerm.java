@@ -1049,7 +1049,7 @@ public class VLTerm extends JFrame implements  Runnable
                 this.vlTerm.requestFocus();  
                     
                 emulator.reset();
-                // start input/ouput loop (method will not return)
+                // start input/output loop (method will not return)
                 emulator.start();
 
             }
