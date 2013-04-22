@@ -39,8 +39,8 @@ import nl.nlesc.vlet.gui.proxyvrs.ProxyNodeFactory;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyResourceEventListener;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
 import nl.nlesc.vlet.gui.view.ViewNode;
-import nl.nlesc.vlet.vrs.EventType;
-import nl.nlesc.vlet.vrs.ResourceEvent;
+import nl.nlesc.vlet.vrs.events.EventType;
+import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**

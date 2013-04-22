@@ -29,17 +29,14 @@ import java.io.InputStream;
 
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VChecksum;
-import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFile;
-import nl.nlesc.vlet.vrs.vfs.VThirdPartyTransferable;
+import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
 import nl.nlesc.vlet.vrs.vfs.VTransportable;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileMode;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -51,7 +48,7 @@ import org.apache.axis.types.UnsignedLong;
  * 
  * @author Piter T. de Boer
  */
-public class SRMFile extends VFile implements VThirdPartyTransferable,
+public class SRMFile extends VFile implements VFileActiveTransferable,
         VUnixFileMode, VChecksum, VTransportable 
 {
     // private PathDetail srmDetails;

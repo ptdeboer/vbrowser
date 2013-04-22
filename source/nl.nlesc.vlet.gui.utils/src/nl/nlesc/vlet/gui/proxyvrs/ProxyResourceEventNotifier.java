@@ -26,9 +26,9 @@ import javax.swing.SwingUtilities;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.gui.UILogger;
-import nl.nlesc.vlet.vrs.ResourceEvent;
-import nl.nlesc.vlet.vrs.ResourceEventListener;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.events.ResourceEvent;
+import nl.nlesc.vlet.vrs.events.ResourceEventListener;
 
 /**
  * This class buffers ResourceEvents and sends them to listeners

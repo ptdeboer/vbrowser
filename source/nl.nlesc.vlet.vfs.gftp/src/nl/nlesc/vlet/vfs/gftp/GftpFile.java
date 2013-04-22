@@ -41,7 +41,7 @@ import nl.nlesc.vlet.vrs.vfs.VChecksum;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrs.vfs.VFile;
-import nl.nlesc.vlet.vrs.vfs.VThirdPartyTransferable;
+import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
@@ -53,7 +53,7 @@ import org.globus.ftp.MlsxEntry;
  * @author P.T. de Boer
  */
 public class GftpFile extends VFile implements VStreamReadable, VStreamWritable, VRandomAccessable, VZeroSizable,
-        VThirdPartyTransferable, VChecksum // VSizeAdjustable
+        VFileActiveTransferable, VChecksum // VSizeAdjustable
 {
     /** GridServer handler */
     protected GftpFileSystem gftpServer = null;

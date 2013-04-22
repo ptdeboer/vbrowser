@@ -75,7 +75,7 @@ import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFile;
-import nl.nlesc.vlet.vrs.vfs.VThirdPartyTransferable;
+import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
@@ -845,10 +845,10 @@ public class SRMFileSystem extends FileSystemNode
             // MODE !
             // !
 
-            if (sourceTransportFile instanceof VThirdPartyTransferable)
+            if (sourceTransportFile instanceof VFileActiveTransferable)
             {
                 debug("Invoking gftp->gftp transfer to:" + targetLocation);
-                return ((VThirdPartyTransferable) sourceTransportFile).activePartyTransferTo(monitor, targetLocation);
+                return ((VFileActiveTransferable) sourceTransportFile).activePartyTransferTo(monitor, targetLocation);
             }
 
             // srm location should result in SRM File:
@@ -905,7 +905,7 @@ public class SRMFileSystem extends FileSystemNode
 
         VFile sourceTransportFile = vfs.newFile(transportSourceVRL);
 
-        if ((sourceTransportFile instanceof VThirdPartyTransferable) == false)
+        if ((sourceTransportFile instanceof VFileActiveTransferable) == false)
         {
             throw new nl.nlesc.vlet.exception.ResourceTypeNotSupportedException(
                     "Transport source doesn't support 3rd party transfers:" + sourceTransportFile);
@@ -940,7 +940,7 @@ public class SRMFileSystem extends FileSystemNode
             
             try
             {
-                resultFile = ((VThirdPartyTransferable) sourceTransportFile).activePartyTransferTo(monitor,
+                resultFile = ((VFileActiveTransferable) sourceTransportFile).activePartyTransferTo(monitor,
                         targetTransferVRL);
                 debug("After activePartyTransfer, resulting file=" + resultFile);
             }

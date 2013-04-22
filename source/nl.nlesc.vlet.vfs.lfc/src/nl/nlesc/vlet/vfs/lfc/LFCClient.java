@@ -70,16 +70,14 @@ import nl.nlesc.vlet.util.bdii.ServiceInfo;
 import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vfs.lfc.LFCFSConfig.ReplicaCreationMode;
 import nl.nlesc.vlet.vfs.lfc.LFCFSConfig.ReplicaSelectionMode;
-import nl.nlesc.vlet.vrs.ResourceEvent;
-import nl.nlesc.vlet.vrs.VActiveTransferable;
 import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VResourceSystem;
+import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.io.VStreamAccessable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
-import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -2690,7 +2688,7 @@ public class LFCClient
                 StringHolder reasonH = new StringHolder();
 
                 // One of them MUST support active transfers
-                if ((sourceReplicaNode instanceof VActiveTransferable) || (targetFile instanceof VActiveTransferable))
+                if ((sourceReplicaNode instanceof VFileActiveTransferable) || (targetFile instanceof VFileActiveTransferable))
                 {
                     // Delegete to TransferManager!
                     boolean result = this.getVRSContext().getTransferManager().doActiveFileTransfer(monitor,

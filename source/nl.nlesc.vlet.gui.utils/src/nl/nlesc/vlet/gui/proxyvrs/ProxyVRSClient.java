@@ -23,8 +23,8 @@ package nl.nlesc.vlet.gui.proxyvrs;
 import nl.nlesc.vlet.error.InitializationError;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
-import nl.nlesc.vlet.vrs.ResourceEvent;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 

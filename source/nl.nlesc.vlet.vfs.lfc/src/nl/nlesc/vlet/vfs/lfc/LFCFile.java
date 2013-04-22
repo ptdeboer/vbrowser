@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.glite.lfc.internal.FileDesc;
@@ -41,24 +40,21 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlInternalError;
 import nl.nlesc.vlet.vrs.VCommentable;
 import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.util.VRSStreamUtil;
-import nl.nlesc.vlet.vrs.vfs.VChecksum;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
 import nl.nlesc.vlet.vrs.vfs.VGlobalUniqueID;
 import nl.nlesc.vlet.vrs.vfs.VLinkListable;
 import nl.nlesc.vlet.vrs.vfs.VLogicalFileAlias;
 import nl.nlesc.vlet.vrs.vfs.VReplicatable;
-import nl.nlesc.vlet.vrs.vfs.VThirdPartyTransferable;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
-import nl.nlesc.vlet.vrs.vfs.VUnixFileMode;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttributes,
-        ILFCLocation, VReplicatable, VThirdPartyTransferable, VGlobalUniqueID,
+        ILFCLocation, VReplicatable, VFileActiveTransferable, VGlobalUniqueID,
         VLinkListable, VCommentable// , VChecksum
 {
     private FileDescWrapper wrapperDesc;

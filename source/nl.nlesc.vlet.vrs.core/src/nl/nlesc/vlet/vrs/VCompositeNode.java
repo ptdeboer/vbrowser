@@ -25,6 +25,7 @@ import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.error.ParameterError;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**

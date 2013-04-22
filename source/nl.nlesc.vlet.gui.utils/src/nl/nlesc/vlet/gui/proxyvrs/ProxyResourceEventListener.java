@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.gui.proxyvrs;
 
-import nl.nlesc.vlet.vrs.ResourceEvent;
+import nl.nlesc.vlet.vrs.events.ResourceEvent;
 
 public interface ProxyResourceEventListener
 {

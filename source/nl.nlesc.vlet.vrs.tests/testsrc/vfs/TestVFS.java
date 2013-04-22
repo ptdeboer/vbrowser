@@ -78,7 +78,7 @@ import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vfs.VLogicalFileAlias;
 import nl.nlesc.vlet.vrs.vfs.VReplicatable;
-import nl.nlesc.vlet.vrs.vfs.VThirdPartyTransferable;
+import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -2709,7 +2709,7 @@ public class TestVFS extends VTestCase
 
         if (sourceIsActiveParty)
         {
-            if ((file1 instanceof VThirdPartyTransferable) == false)
+            if ((file1 instanceof VFileActiveTransferable) == false)
             {
                 message("Skipping test: Third party transfers not supported by source file:" + file1);
                 skipTest = true;
@@ -2717,7 +2717,7 @@ public class TestVFS extends VTestCase
             // fail("GridFTP file should be VThirdPartyTransferable resources");
             else
             {
-                boolean check = ((VThirdPartyTransferable) file1).canTransferTo(targetVRL, explanation);
+                boolean check = ((VFileActiveTransferable) file1).canTransferTo(targetVRL, explanation);
                 if (check == false)
                 {
                     message("Skipping test: Third party transfer not possible from source to target:" + targetVRL);
@@ -2728,7 +2728,7 @@ public class TestVFS extends VTestCase
         }
         else
         {
-            if ((newTargetFile instanceof VThirdPartyTransferable) == false)
+            if ((newTargetFile instanceof VFileActiveTransferable) == false)
             {
                 message("Skipping test: Third party transfer not possible by target file:" + newTargetFile);
                 skipTest = true;
@@ -2736,7 +2736,7 @@ public class TestVFS extends VTestCase
             // fail("GridFTP file should be VThirdPartyTransferable resources");
             else
             {
-                boolean check = ((VThirdPartyTransferable) newTargetFile).canTransferFrom(sourceVRL, explanation);
+                boolean check = ((VFileActiveTransferable) newTargetFile).canTransferFrom(sourceVRL, explanation);
                 if (check == false)
                 {
                     message("Skipping test: Third party transfer (target <= source), not possible from source:"
@@ -2760,11 +2760,11 @@ public class TestVFS extends VTestCase
 
         if (sourceIsActiveParty)
         {
-            resultFile = ((VThirdPartyTransferable) file1).activePartyTransferTo(monitor, targetVRL);
+            resultFile = ((VFileActiveTransferable) file1).activePartyTransferTo(monitor, targetVRL);
         }
         else
         {
-            resultFile = ((VThirdPartyTransferable) newTargetFile).activePartyTransferFrom(monitor, sourceVRL);
+            resultFile = ((VFileActiveTransferable) newTargetFile).activePartyTransferFrom(monitor, sourceVRL);
         }
 
         Assert.assertNotNull("Result of 3rd party transfer can not be null.", newTargetFile);

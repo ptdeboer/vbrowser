@@ -33,11 +33,11 @@ import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.data.ResourceRef;
-import nl.nlesc.vlet.vrs.ResourceEvent;
-import nl.nlesc.vlet.vrs.ResourceEventListener;
 import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRenamable;
+import nl.nlesc.vlet.vrs.events.ResourceEvent;
+import nl.nlesc.vlet.vrs.events.ResourceEventListener;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**

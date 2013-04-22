@@ -42,6 +42,7 @@ import nl.nlesc.vlet.exception.VlServiceMismatchException;
 import nl.nlesc.vlet.exception.VlUnsupportedSchemeException;
 import nl.nlesc.vlet.util.PluginLoader;
 import nl.nlesc.vlet.util.PluginLoader.PluginInfo;
+import nl.nlesc.vlet.vrs.events.ResourceEventNotifier;
 import nl.nlesc.vlet.vrs.vdriver.http.HTTPFactory;
 import nl.nlesc.vlet.vrs.vdriver.http.HTTPSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;

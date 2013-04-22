@@ -25,7 +25,7 @@ import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyResourceEventListener;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
-import nl.nlesc.vlet.vrs.ResourceEvent;
+import nl.nlesc.vlet.vrs.events.ResourceEvent;
 
 /**
  * Since the ProxyCNode uses a Cache, it must listen

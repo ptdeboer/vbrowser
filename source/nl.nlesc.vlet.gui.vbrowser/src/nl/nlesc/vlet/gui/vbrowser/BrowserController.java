@@ -82,9 +82,9 @@ import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry;
 import nl.nlesc.vlet.util.grid.GridProxy;
 import nl.nlesc.vlet.util.grid.GridProxyListener;
-import nl.nlesc.vlet.vrs.EventType;
-import nl.nlesc.vlet.vrs.ResourceEvent;
 import nl.nlesc.vlet.vrs.VRSFactory;
+import nl.nlesc.vlet.vrs.events.EventType;
+import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskWatcher;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 

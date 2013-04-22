@@ -40,12 +40,11 @@ import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.exception.VlInterruptedException;
-import nl.nlesc.vlet.vrs.ResourceEvent;
-import nl.nlesc.vlet.vrs.VActiveTransferable;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.io.VSize;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskWatcher;
@@ -857,12 +856,12 @@ public final class VRSTransferManager
 		VNode resultFile=null; 
 		String toStr=null;
 		String fromStr=null;  
-		if (sourceFile instanceof VThirdPartyTransferable)
+		if (sourceFile instanceof VFileActiveTransferable)
 		{    
 			//
 			// IIa) Check file::canTransferTo (target) 
 			//
-			canTransferToOther=((VThirdPartyTransferable)sourceFile).canTransferTo(targetVRL, reasonH);
+			canTransferToOther=((VFileActiveTransferable)sourceFile).canTransferTo(targetVRL, reasonH);
 			if (canTransferToOther)
 			{
 				//transfer.addLogText("Source can perform active (3rd party) transfer to:"+targetVRL+"\n"); 
@@ -872,12 +871,12 @@ public final class VRSTransferManager
 			}
 		}
 	
-		if (targetFile instanceof VActiveTransferable)
+		if (targetFile instanceof VFileActiveTransferable)
 		{    
 			//
 			// IIb) Check targetFile::canTransferFrom (file); 
 			//
-			canTransferFromOther=((VActiveTransferable)targetFile).canTransferFrom(sourceVRL,reasonH);
+			canTransferFromOther=((VFileActiveTransferable)targetFile).canTransferFrom(sourceVRL,reasonH);
 			if (canTransferFromOther)
 			{
 				logger.infoPrintf("Destination can perform active (3rd party) transfer from:%s\n",sourceVRL); 
@@ -900,7 +899,7 @@ public final class VRSTransferManager
                 transfer.setVFSTransferType(VFSActionType.THIRD_PARTY_TRANSFER);  
             
         	monitor.logPrintf("VFS: Initiating 3rd party transfer with active Source: source => target.\n");  
-			resultFile=((VActiveTransferable)sourceFile).activePartyTransferTo(monitor,targetVRL);
+			resultFile=((VFileActiveTransferable)sourceFile).activePartyTransferTo(monitor,targetVRL);
 			return true; 
 		}
 		else if (canTransferFromOther)
@@ -909,7 +908,7 @@ public final class VRSTransferManager
                 transfer.setVFSTransferType(VFSActionType.THIRD_PARTY_TRANSFER);  
         
 			monitor.logPrintf("VFS: Initiating 3rd party transfer with active Target: target <= source.\n");  
-			resultFile=((VActiveTransferable)targetFile).activePartyTransferFrom(monitor,sourceVRL); 
+			resultFile=((VFileActiveTransferable)targetFile).activePartyTransferFrom(monitor,sourceVRL); 
 			return true;  
 		}
 		else

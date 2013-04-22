@@ -42,6 +42,7 @@ import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
