@@ -1,18 +1,29 @@
 package nl.esciencecenter.ptk.crypt;
 
+/**
+ * Pre configured encryption schemes.  
+ * <p>
+ * Jackson POJO directives: enum classes are automatically converted. 
+ */
 public enum CryptScheme
 {
+    /** Triple DES, Electronic Coockbook and PKC5 Padding. */ 
     DESEDE_ECB_PKCS5("DESede","DESede/ECB/PKCS5Padding",24),
+    
+    /**
+     * Single DES, Electronic Coockbook and PKC5 Padding. 
+     * @deprecated Do not use single DES
+     */ 
     DES_ECB_PKCS5("DES","DES/ECB/PKCS5Padding",16)
     ;
     
     // === //
     
-    private String schemeName;
+    protected String schemeName;
     
-    private String configString;
+    protected String configString;
     
-    private int minimalKeyLength; 
+    protected int minimalKeyLength; 
     
     private CryptScheme(String name,String configName,int minimalKeyLength)
     {
