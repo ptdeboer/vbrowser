@@ -152,14 +152,14 @@ public class TestHasher
     
     public void testHash(StringHasher hasher, String salt, String text, String expectedHash)
     {
-        String digest=hasher.createHashString(salt,text,-1); 
+        String digest=hasher.createHashToHexString(salt,text,-1); 
         Assert.assertEquals("Salted hash not the same.",expectedHash,digest);
     }
     
     public void testHash(StringHasher hasher, String salt,String text,int maxLen,String expectedHash)
     {
         //hasher.setSalt(""); 
-        String digest=hasher.createHashString(salt,text,maxLen); 
+        String digest=hasher.createHashToHexString(salt,text,maxLen); 
         Assert.assertEquals("Salted hash not the same (maxLen="+maxLen+").",expectedHash,digest);
     }
  }
