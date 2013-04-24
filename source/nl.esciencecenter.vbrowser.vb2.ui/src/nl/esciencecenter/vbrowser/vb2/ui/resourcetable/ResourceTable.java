@@ -42,7 +42,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserInterface;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeContainer;
-import nl.esciencecenter.vbrowser.vb2.ui.object.Disposable;
+import nl.esciencecenter.vbrowser.vb2.ui.object.UIDisposable;
 import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
@@ -54,7 +54,7 @@ import nl.esciencecenter.vbrowser.vrs.data.Attribute;
  *  
  * @author Piter T. de Boer 
  */
-public class ResourceTable extends JTable implements Disposable, ViewNodeContainer 
+public class ResourceTable extends JTable implements UIDisposable, ViewNodeContainer 
 {
 	private static final long serialVersionUID = -8190587704685619938L;
   

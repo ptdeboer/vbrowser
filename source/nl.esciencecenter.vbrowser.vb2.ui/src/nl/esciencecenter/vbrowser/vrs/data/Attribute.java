@@ -24,10 +24,10 @@ package nl.esciencecenter.vbrowser.vrs.data;
 import java.io.Serializable;
 import java.util.Date;
 
-import nl.esciencecenter.ptk.data.Duplicatable;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.net.VRI;
+import nl.esciencecenter.ptk.object.Duplicatable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;

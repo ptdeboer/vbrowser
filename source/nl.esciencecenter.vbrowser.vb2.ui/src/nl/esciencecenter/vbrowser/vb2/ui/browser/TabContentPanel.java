@@ -30,7 +30,7 @@ import javax.swing.JScrollPane;
 
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeContainer;
-import nl.esciencecenter.vbrowser.vb2.ui.object.Disposable;
+import nl.esciencecenter.vbrowser.vb2.ui.object.UIDisposable;
 
 /**
  * Managed Tab Panel
@@ -86,8 +86,8 @@ public class TabContentPanel extends JPanel
 	{
 		if (this.content!=null)
 		{
-			if (content instanceof Disposable)
-				((Disposable)content).dispose(); 
+			if (content instanceof UIDisposable)
+				((UIDisposable)content).dispose(); 
 		}
 			
 		this.scrollPane.setViewportView(comp); 
