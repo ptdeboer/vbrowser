@@ -100,12 +100,11 @@ public class Secret
     }
     
     /** 
-     * Returns backing character array. 
-     * Modifications to this array change the actual secret.    
+     * Returns clone of secret character array. 
      */
     public char[] getChars()
     {
-        return secret; 
+        return secret.clone();
     }
     
     public void finalize()
@@ -115,8 +114,7 @@ public class Secret
     
     public String toString()
     {
-        throw new Error("Don't use toString on Secret"); 
-        //return "<Secret!>"; 
+        return "<Secret!>"; 
     }
 
     /** 

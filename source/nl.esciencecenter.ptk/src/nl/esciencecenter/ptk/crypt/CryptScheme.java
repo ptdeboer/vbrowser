@@ -7,7 +7,9 @@ package nl.esciencecenter.ptk.crypt;
  */
 public enum CryptScheme
 {
-    /** Triple DES, Electronic Coockbook and PKC5 Padding. */ 
+    /** 
+     * Triple DES (E-D-E), Electronic Cook Nook and PKC5 Padding.
+     */ 
     DESEDE_ECB_PKCS5("DESede","DESede/ECB/PKCS5Padding",24),
     
     /**
@@ -19,11 +21,15 @@ public enum CryptScheme
     
     // === //
     
+    /** Short name or alias */ 
     protected String schemeName;
     
+    /** Full Configuration String */ 
     protected String configString;
     
+    /** Minimal key length in bytes. For Triple Des, this is 24 */ 
     protected int minimalKeyLength; 
+    
     
     private CryptScheme(String name,String configName,int minimalKeyLength)
     {
