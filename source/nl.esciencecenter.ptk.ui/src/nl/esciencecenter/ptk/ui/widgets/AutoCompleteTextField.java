@@ -31,7 +31,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 
@@ -77,7 +77,7 @@ public class AutoCompleteTextField extends JComboBox
     
     private void init()
     {
-        history.addUnique("file:///"+Global.getGlobalUserHome());
+        history.addUnique("file:///"+GlobalProperties.getGlobalUserHome());
         
         history.sort(true);
 

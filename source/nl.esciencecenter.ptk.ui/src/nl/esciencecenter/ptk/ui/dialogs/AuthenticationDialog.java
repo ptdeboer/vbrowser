@@ -39,7 +39,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.net.VRI;
 
 import com.jgoodies.forms.layout.CellConstraints;
@@ -197,7 +197,7 @@ public class AuthenticationDialog extends javax.swing.JDialog implements ActionL
         
         if (user==null) 
         {
-            user=Global.getGlobalUserName(); 
+            user=GlobalProperties.getGlobalUserName(); 
             //authInfo.setUsername(user);
         }
         
