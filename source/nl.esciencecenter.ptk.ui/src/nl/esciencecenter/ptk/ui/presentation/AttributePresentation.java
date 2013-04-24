@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.esciencecenter.vbrowser.vb2.ui.presentation;
+package nl.esciencecenter.ptk.ui.presentation;
 
 import java.awt.Color;
 import java.util.Map;
