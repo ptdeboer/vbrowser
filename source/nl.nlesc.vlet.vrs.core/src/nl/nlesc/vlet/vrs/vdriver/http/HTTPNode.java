@@ -272,12 +272,10 @@ public class HTTPNode extends VNode implements VStreamAccessable
 
         try
         {
-
-            VRI vri=this.getVRL().replacePath("favicon.ico");
-            URL url=vri.toURL();
+            URL url=getVRL().replacePath("favicon.ico").toURL(); 
 
             if (exists(url))
-                return vri.toString();
+                return url.toString();
         }
         catch (Exception e)
         {

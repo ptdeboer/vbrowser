@@ -27,6 +27,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
@@ -120,12 +121,12 @@ public class PluginLoader
 	public PluginInfo loadLocalPlugin(String localPath)
 	{
 		// normalize localpath !
-		localPath = VRL.uripath(localPath, true, File.separatorChar);
+		localPath = URIFactory.uripath(localPath, true, File.separatorChar);
 		logger.infoPrintf(" Loading local plugin:%s\n",localPath);
 
 		PluginInfo info = new PluginInfo();
 
-		String subdirName = VRL.basename(localPath);
+		String subdirName = URIFactory.basename(localPath);
 		String jarSuffix = ".jar";
 
 		// strip .jar from single jar plugin:
@@ -258,7 +259,7 @@ public class PluginLoader
 			boolean recurse, boolean addDirs)
 	{
 		// normalize local path:
-		pluginPath = VRL.uripath(pluginPath, true, File.separatorChar);
+		pluginPath = URIFactory.uripath(pluginPath, true, File.separatorChar);
 		logger.infoPrintf(" Creating Plugin Classloader for:%s\n",pluginPath);
 
 		// INIT CLASS:
@@ -322,7 +323,7 @@ public class PluginLoader
 		//
 		// Convert local path to VRL location for consistency !
 		// 
-		String uriPath = VRL.uripath(pluginLoc.getPath(), true, File.separatorChar);
+		String uriPath = URIFactory.uripath(pluginLoc.getPath(), true, File.separatorChar);
 		VRL baseLocation = new VRL("file", null, uriPath);
 
 		// Add plugin directory (=base location) to classpath.
@@ -432,7 +433,7 @@ public class PluginLoader
 	public Vector<PluginInfo> loadLocalPlugins(String dirPath, Class<?> pluginClass)
 	{
 		// sanity local file path:
-		dirPath = VRL.uripath(dirPath, true, File.separatorChar);
+		dirPath = URIFactory.uripath(dirPath, true, File.separatorChar);
 
 		// use VRL as URL factory
 		VRL dirLocation = new VRL("file", null, dirPath);

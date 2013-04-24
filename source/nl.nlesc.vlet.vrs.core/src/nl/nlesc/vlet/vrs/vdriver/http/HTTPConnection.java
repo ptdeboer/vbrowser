@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URLConnection;
 
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -171,7 +172,7 @@ public class HTTPConnection
 
     private java.net.URL getUrl() throws MalformedURLException
     {   
-        return this.httpNode.getVRL().toURL(); 
+        return this.httpNode.getVRL().toURL();
     }
 
     public InputStream getInputStream() throws IOException

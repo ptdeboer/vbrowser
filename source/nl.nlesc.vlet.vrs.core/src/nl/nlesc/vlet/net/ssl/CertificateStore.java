@@ -43,6 +43,7 @@ import javax.net.ssl.X509TrustManager;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
@@ -734,7 +735,7 @@ public class CertificateStore
         X509Certificate x590 = (X509Certificate)cf.generateCertificate(finps);
         
 //        sun.security.x509.X509CertImpl x590=new sun.security.x509.X509CertImpl(finps); 
-        String alias=VRL.basename(filename);
+        String alias=URIFactory.basename(filename);
        
         logger.debugPrintf("+++ Adding cert file: %s\n",filename);  
         logger.debugPrintf(" -  Alias    = %s\n",alias); 
@@ -747,7 +748,7 @@ public class CertificateStore
     public void addDERCertificate(String filename,boolean save) throws Exception
     {
         X509Certificate x590 = loadDERCertificate(filename); 
-        String alias=VRL.basename(filename);
+        String alias=URIFactory.basename(filename);
         
         addCertificate(alias, x590,save);
     }
@@ -774,7 +775,7 @@ public class CertificateStore
     public void addPEMCertificate(String filename, boolean save) throws Exception
     {
         X509Certificate x590=loadPEMCertificate(filename);
-        String alias=VRL.basename(filename);  
+        String alias=URIFactory.basename(filename);  
         addCertificate(alias, x590,save);
     }
     

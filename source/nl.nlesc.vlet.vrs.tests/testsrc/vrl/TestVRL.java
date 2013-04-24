@@ -28,6 +28,7 @@ import org.junit.Test;
 
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.vrs.VRS;
@@ -411,11 +412,10 @@ public class TestVRL
     public void testPathEncoding() throws Exception, URISyntaxException
     {
         // Special character to test.
-        // All should be encoded except '?#&'. They should be kept 'as-is'.
-        // 
-        // String chars="`'\"~!%^*()_+-={}[]|;:'<>,.@?#&";
-        //String chars = "`'\"~!$%^*()_+-={}[]|;:'<>,.@?#&";
-        String chars = "'\"~!$%^*()_+-={}[]|;:'<>,.@?#&";
+        // All should be encoded except '?#&'. They should be kept 'as-is', but skip '.'
+        // as this relative path gets normalized. 
+        
+        String chars = "'\"~!$%^*()_+-={}[]|;:'<>,@?#&";
         
         for (int i = 0; i < chars.length(); i++)
         {
@@ -435,13 +435,13 @@ public class TestVRL
                 // fragment seperator
                 VRL vrl2;
                 if ((c == '#') || (c == '?') || (c == '&'))
-                    vrl2 = new VRL("aap://noot/" + VRL.encode("" + c));
+                    vrl2 = new VRL("aap://noot/" + URIFactory.encode("" + c));
                 else
                     vrl2 = new VRL("aap://noot/" + c);
 
-                VRL vrl3 = new VRL("aap://noot/" + VRL.encode("" + c));
+                VRL vrl3 = new VRL("aap://noot/" + URIFactory.encode("" + c));
 
-                Assert.assertEquals("encoded URI does not match VRL", uri.toString(), vrl.toURIString());
+                Assert.assertEquals("encoded URI does not match VRL", uri.toString(), vrl.toURI().toString());
                 Assert.assertEquals("Decoded VRL path does not match. ", "/" + c, vrl.getPath());
                 Assert.assertEquals("Decoded URI path does not match. ", "/" + c, uri.getPath());
                 Assert.assertEquals("VRL constructors do not match.", vrl.toString(), vrl2.toString());

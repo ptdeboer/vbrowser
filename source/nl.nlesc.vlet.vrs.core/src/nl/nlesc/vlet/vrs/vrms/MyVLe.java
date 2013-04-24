@@ -30,6 +30,7 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
@@ -1095,7 +1096,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         String path = location.getPath();
 
         // root node = me !
-        if ((path == null) || (path.equalsIgnoreCase("")) || path.equalsIgnoreCase(VRL.SEP_CHAR_STR))
+        if ((path == null) || (path.equalsIgnoreCase("")) || path.equalsIgnoreCase(URIFactory.SEP_CHAR_STR))
         {
             return this;
         }
@@ -1110,7 +1111,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         }
 
         String ref = els[0];
-        if (ref.charAt(0) == VRL.SEP_CHAR)
+        if (ref.charAt(0) == URIFactory.SEP_CHAR)
         {
             ref = ref.substring(1);
         }

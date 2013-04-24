@@ -52,6 +52,7 @@ import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.exception.NotImplementedException;
@@ -751,7 +752,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     {
         boolean fullpath=false;
         
-        if (newNameOrPath.startsWith(VRL.SEP_CHAR_STR)==true); 
+        if (newNameOrPath.startsWith(URIFactory.SEP_CHAR_STR)==true); 
             fullpath=true; 
         
        return (rename(newNameOrPath,fullpath)!=null);
@@ -761,7 +762,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     {
         boolean fullpath=false;
         
-        if (newNameOrPath.startsWith(VRL.SEP_CHAR_STR)==true)
+        if (newNameOrPath.startsWith(URIFactory.SEP_CHAR_STR)==true)
             fullpath=true; 
         
        return (rename(newNameOrPath,fullpath)!=null); 

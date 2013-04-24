@@ -25,6 +25,7 @@ import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
 import java.io.File;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.nlesc.vlet.data.VAttribute;
@@ -78,8 +79,8 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
         // Do this ONLY for the local filesystem !
         //
 
-        if (File.separatorChar != VRL.SEP_CHAR)
-            path = VRL.uripath(path, true, File.separatorChar);
+        if (File.separatorChar != URIFactory.SEP_CHAR)
+            path = URIFactory.uripath(path, true, File.separatorChar);
 
         // under widows: will convert windows path to URI path !
         setLocation(new VRL(VRS.FILE_SCHEME, null, path));
@@ -91,7 +92,7 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
     public LDir(LocalFilesystem local, String path) throws VlException
     {
         // VRL creation is done in init as well
-        super(local, new VRL(VRS.FILE_SCHEME + ":///" + VRL.uripath(path, true, java.io.File.separatorChar)));
+        super(local, new VRL(VRS.FILE_SCHEME + ":///" + URIFactory.uripath(path, true, java.io.File.separatorChar)));
         this.localfs = local;
         _file = new java.io.File(path);
         init(_file);
@@ -214,15 +215,15 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
 
         for (int i = 0; i < list.length; i++)
         {
-            java.io.File subFile = new java.io.File(path + VRL.SEP_CHAR + list[i]);
+            java.io.File subFile = new java.io.File(path + URIFactory.SEP_CHAR + list[i]);
 
             if (subFile.isDirectory() == true)
             {
-                nodes[i] = new LDir(localfs, path + VRL.SEP_CHAR + list[i]);
+                nodes[i] = new LDir(localfs, path + URIFactory.SEP_CHAR + list[i]);
             }
             else
             {
-                nodes[i] = new LFile(localfs, path + VRL.SEP_CHAR + list[i]);
+                nodes[i] = new LFile(localfs, path + URIFactory.SEP_CHAR + list[i]);
             }
         }
 

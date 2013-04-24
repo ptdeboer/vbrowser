@@ -33,6 +33,7 @@ import java.util.Properties;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.BooleanHolder;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.MessageStrings;
@@ -568,7 +569,7 @@ public class ConfigManager
     public VRL getMyVLeLocation()
     {
         VRL homeLoc = vrsContext.getUserHomeLocation(); 
-        return homeLoc.appendPath(VletConfig.USER_VLETRC_DIRNAME+VRL.SEP_CHAR_STR+MyVLe.MYVLE_SUBDIR_NAME);
+        return homeLoc.appendPath(VletConfig.USER_VLETRC_DIRNAME+URIFactory.SEP_CHAR_STR+MyVLe.MYVLE_SUBDIR_NAME);
     }
 
     public String getProperty(String name)

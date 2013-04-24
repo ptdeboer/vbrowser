@@ -21,6 +21,7 @@
 package nl.nlesc.vlet.vrs.vfs;
 
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
@@ -137,20 +138,14 @@ public final class VFSClient extends VRSClient
     public VRL resolve(String locStr) throws VRLSyntaxException
     {
         VRL vrl;
-        try
-        {
-            vrl = new VRL(locStr);
+
+        vrl = new VRL(locStr);
             
-            if (vrl.isAbsolute()==true)
-                return vrl; 
+        if (vrl.isAbsolute()==true)
+            return vrl; 
             
-            // check relative locations against current working dir. 
-            return getWorkingDir().resolvePath(locStr); 
-        }
-        catch (VRISyntaxException e)
-        {
-            throw new VRLSyntaxException(e);
-        }
+        // check relative locations against current working dir. 
+        return getWorkingDir().resolvePath(locStr); 
     }
 
     /**
@@ -172,7 +167,7 @@ public final class VFSClient extends VRSClient
     }
 
     /** Returns remote File or Directory specified by the location*/ 
-    public VFSNode getVFSNode(String vrl) throws VRLSyntaxException, VlException
+    public VFSNode getVFSNode(String vrl) throws VlException
     {
         return getVFSNode(resolve(vrl)); 
     }
@@ -318,7 +313,7 @@ public final class VFSClient extends VRSClient
         
         VFSNode node=getVFSNode(vrl);
         
-        if ((pathOrName!=null) && (pathOrName.charAt(0)==VRL.SEP_CHAR))
+        if ((pathOrName!=null) && (pathOrName.charAt(0)==URIFactory.SEP_CHAR))
             nameIsPath=true; 
         
         return node.renameTo(pathOrName,nameIsPath); 

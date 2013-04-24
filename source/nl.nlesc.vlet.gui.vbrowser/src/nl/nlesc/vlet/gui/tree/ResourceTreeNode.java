@@ -29,6 +29,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.data.ResourceRef;
@@ -248,7 +249,7 @@ public class ResourceTreeNode implements MutableTreeNode, VComponent
     public String getName()
     {
     	if (this.isRoot())
-    		if (getVRL().hasScheme(VRS.MYVLE_SCHEME)==false)
+    		if (StringUtil.equals(getVRL().getScheme(),VRS.MYVLE_SCHEME)==false)
     			return this.getRoot().getVRL().toString(); 
     	
     	return getViewItem().getName(); 

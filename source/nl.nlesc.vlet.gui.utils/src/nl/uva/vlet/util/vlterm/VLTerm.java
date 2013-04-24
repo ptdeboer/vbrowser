@@ -1389,7 +1389,7 @@ public class VLTerm extends JFrame implements  Runnable
 	{
 		try 
 		{
-		    VRI loc=VletConfig.getUserConfigDir().appendPath("/vlterm.prop"); 
+		    VRL loc=VletConfig.getUserConfigDir().appendPath("/vlterm.prop"); 
 			return VletConfig.loadPropertiesFromURL(loc.toURL());
 		}
 		catch (Exception e) 
@@ -1418,7 +1418,7 @@ public class VLTerm extends JFrame implements  Runnable
 		
 		try 
 		{
-		    VRI loc=VletConfig.getUserConfigDir().appendPath("/vlterm.prop"); 
+		    VRL loc=VletConfig.getUserConfigDir().appendPath("/vlterm.prop"); 
 			UIGlobal.getResourceLoader().saveProperties(loc.toURI(),persistantProperties,"VLTerm Configuration"); 
 		}
 		catch (Exception e) 

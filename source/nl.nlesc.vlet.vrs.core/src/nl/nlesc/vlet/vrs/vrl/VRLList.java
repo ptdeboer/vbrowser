@@ -23,6 +23,7 @@ package nl.nlesc.vlet.vrs.vrl;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 
 /**
@@ -231,7 +232,7 @@ public class VRLList extends ArrayList<VRL> implements Cloneable, Serializable
         if (uristr == null)
             return null;
 
-        String strs[] = uristr.split(VRL.URI_LIST_SEPERATOR);
+        String strs[] = uristr.split(URIFactory.URI_LIST_SEPERATOR);
         VRL vrls[] = new VRL[strs.length];
         int index = 0;
         for (String str : strs)

@@ -587,14 +587,15 @@ public class ServerInfoRegistry
             {
                 inps = loader.getInputStream(loc.toURL());
             }
-            catch (MalformedURLException e)
-            {
-              throw new VRLSyntaxException(e); 
-            }
             catch (IOException e)
             {
                 throw new VlIOException(e);
             } 
+            catch (Exception e)
+            {
+                throw new VRLSyntaxException(e); 
+            }
+          
 
             sets = xmlifier.parseVAttributeSets(inps, XML_SERVER_CONFIG_HEADER_TAG);
             // for (VAttributeSet set:sets)

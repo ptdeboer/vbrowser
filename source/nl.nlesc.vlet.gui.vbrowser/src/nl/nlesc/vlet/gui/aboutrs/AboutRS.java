@@ -21,6 +21,7 @@
 package nl.nlesc.vlet.gui.aboutrs;
 
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -51,7 +52,7 @@ public class AboutRS implements VResourceSystem
     }
     
     @Override
-    public VRL resolve(String path) throws VRISyntaxException
+    public VRL resolve(String path) throws VRLSyntaxException
     {
         return vrl.resolve(path);
     }

@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs;
 
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -46,7 +46,7 @@ public interface VResourceSystem
      * Resolve relative path or URI part to this Filesystem and return Absolute VRL.
      * Actual result depend in implementing ResourceSystem. 
      */ 
-    public VRL resolve(String path) throws VRISyntaxException, VlException; 
+    public VRL resolve(String path) throws VRLSyntaxException; 
     
 	/**
 	 * Main VNode factory method. 

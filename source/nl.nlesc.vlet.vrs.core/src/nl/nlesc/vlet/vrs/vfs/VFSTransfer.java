@@ -74,7 +74,7 @@ public class VFSTransfer extends TransferMonitor
     // instance methods
     public VFSTransfer(ITaskMonitor parentMonitor, String resourceType,VRL source, VRL destination,boolean isMove)
     {
-        super("VFSTransfer", source, destination);
+        super("VFSTransfer", source.toURINoException(), destination.toURINoException());
         
         setParent(parentMonitor); // add this transfer to parent monitor 
         this.resourceType=resourceType; 

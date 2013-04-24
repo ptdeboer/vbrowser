@@ -26,6 +26,7 @@ import java.util.Vector;
 
 import javax.swing.Icon;
 
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -1657,7 +1658,7 @@ public final class ProxyVNode extends ProxyNode
 		//fire rename event by using the locations! Not ProxyTNode !
 		
 		if (newLocation!=null)
-			fireRenameEvent(oldLocation,newLocation,VRL.basename(name));
+			fireRenameEvent(oldLocation,newLocation,URIFactory.basename(name));
 		
 		return newLocation; 
 	}

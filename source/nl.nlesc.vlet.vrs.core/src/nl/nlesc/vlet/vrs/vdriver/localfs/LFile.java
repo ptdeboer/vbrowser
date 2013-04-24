@@ -33,6 +33,7 @@ import java.io.RandomAccessFile;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.NestedFileNotFoundException;
@@ -90,13 +91,13 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
     public LFile(LocalFilesystem localFS, String path) throws VlException
     {
         super(localFS, new VRL("file:///"
-                + VRL.uripath(path, true, java.io.File.separatorChar)));
+                + URIFactory.uripath(path, true, java.io.File.separatorChar)));
         this.localfs = localFS;
 
         // windows hack: 'c:' is a relative path
         if (path.charAt(path.length() - 1) == ':')
         {
-            path = path + VRL.SEP_CHAR; // make absolute !
+            path = path + URIFactory.SEP_CHAR; // make absolute !
         }
         // Note: on windows the file path gets converted to use BACKSLASHES
         // for URI' use VRL.sepChar, for java Files use File.seperatorChar
@@ -116,8 +117,8 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         // Do this ONLY for the local filesystem !
         //
 
-        if (File.separatorChar != VRL.SEP_CHAR)
-            path = VRL.uripath(path, true, File.separatorChar);
+        if (File.separatorChar != URIFactory.SEP_CHAR)
+            path = URIFactory.uripath(path, true, File.separatorChar);
 
         this.setLocation(new VRL(VRS.FILE_SCHEME,null, path));
         this.path = path;

@@ -35,6 +35,7 @@ import javax.net.ssl.SSLContext;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -899,7 +900,7 @@ public class GridProxy
         String path=null; 
         
         if (this.credential!=null)
-            path=VRL.dirname(this.credential.getUserCertFile());
+            path=URIFactory.dirname(this.credential.getUserCertFile());
         
         if (StringUtil.notEmpty(path))
             return path;  
@@ -908,7 +909,7 @@ public class GridProxy
         if (this._getProvider()==null)
             return null; 
         
-        return VRL.dirname(this.getProvider().getDefaultUserCertLocation()); 
+        return URIFactory.dirname(this.getProvider().getDefaultUserCertLocation()); 
     }
     
     /** Returns time left from the proxy in seconds. */ 

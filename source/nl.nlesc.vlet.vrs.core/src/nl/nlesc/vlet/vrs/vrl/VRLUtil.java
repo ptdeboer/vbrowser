@@ -151,21 +151,7 @@ public class VRLUtil
         
         return false; 
     }
-    
-    /**
-     * Return URL, but with an added "/". 
-     * Some implementations, like Globus, specify 
-     * that URLs ending with a "/" are (always?) directories !
-     * This is a nice feature but not always the rule.  
-     * @return URL with as last character a '/'. 
-     * @throws MalformedURLException 
-     * @throws VRLSyntaxException 
-     * @throws URISyntaxException 
-     */
-    public static URL toDirURL(VRL vrl) throws VRLSyntaxException, MalformedURLException, URISyntaxException
-    {
-        return new URL(vrl.toURIString()+"/");
-    }
+
     /**
      * Check for empty or localhost names aliases and 
      * return 'localhost'. 

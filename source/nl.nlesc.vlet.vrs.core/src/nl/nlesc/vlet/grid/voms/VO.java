@@ -20,6 +20,7 @@
 
 package nl.nlesc.vlet.grid.voms;
 
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
@@ -131,7 +132,7 @@ public class VO
 		if (this.vomsXmlFile==null)
 			return null;
 		
-		return VRL.dirname(this.vomsXmlFile);  
+		return URIFactory.dirname(this.vomsXmlFile);  
 	}
 
 	public String toString() 

@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.gui.viewers.external;
 
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.ptk.net.URIFactory;
 
 public class ExternalToolInfo
 {
@@ -40,7 +40,7 @@ public class ExternalToolInfo
     {
         ExternalToolInfo info = new ExternalToolInfo();
         info.commandPath = path;
-        info.toolName = VRL.basename(info.commandPath);
+        info.toolName = URIFactory.basename(info.commandPath);
         info.useURItrue = canUseUri;
         info.downloadFirst = downloadFirst;
 

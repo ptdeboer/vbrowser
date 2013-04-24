@@ -39,6 +39,7 @@ import java.util.logging.Level;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.exception.ResourceReadAccessDeniedException;
@@ -865,7 +866,7 @@ public class VletConfig
 
         if (althome==null)
             // Return URI compatible path, but sanitise the location ! 
-            return VRL.uripath(VletConfig.getSystemProperty("user.home"),true,java.io.File.separatorChar);
+            return URIFactory.uripath(VletConfig.getSystemProperty("user.home"),true,java.io.File.separatorChar);
 
         // absolute path 
         if (althome.startsWith("/"))
@@ -889,7 +890,7 @@ public class VletConfig
         catch (Exception e) 
         {
             logger.logException(ClassLogger.ERROR,e,"Couldn't get UserHome!!!\n");  
-            return VRL.uripath(VletConfig.getSystemProperty(VletConfig.JAVA_USER_HOME));
+            return URIFactory.uripath(VletConfig.getSystemProperty(VletConfig.JAVA_USER_HOME));
         }
 
         // MUST OVERRIDE $HOME (cross fingers)
@@ -956,7 +957,7 @@ public class VletConfig
     {
         try
         {
-            return new VRL("file:///"+VRL.uripath(getSystemProperty(VletConfig.JAVA_TMPDIR),true,java.io.File.separatorChar));
+            return new VRL("file:///"+URIFactory.uripath(getSystemProperty(VletConfig.JAVA_TMPDIR),true,java.io.File.separatorChar));
         }
         catch (Exception e)
         {

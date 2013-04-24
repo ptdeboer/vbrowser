@@ -42,6 +42,7 @@ import java.io.OutputStream;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.MimeTypes;
@@ -1339,7 +1340,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         // =======================
 
         // auto-append .vlink when saving as file !
-        if (VRL.extension(baseName).compareTo(VRS.VLINK_EXTENSION) != 0)
+        if (URIFactory.extension(baseName).compareTo(VRS.VLINK_EXTENSION) != 0)
         {
             baseName = baseName + "." + VRS.VLINK_EXTENSION;
         }

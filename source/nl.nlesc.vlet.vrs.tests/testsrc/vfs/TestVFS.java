@@ -44,6 +44,7 @@ import nl.esciencecenter.ptk.data.IntegerHolder;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.IOUtil;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 
@@ -685,7 +686,7 @@ public class TestVFS extends VTestCase
         // New Since 0.9.2:
         // create full directory paths in between ! (as default)
         //
-        String pathStr = getRemoteTestDir().getPath() + VRL.SEP_CHAR + "testDir3d";
+        String pathStr = getRemoteTestDir().getPath() + URIFactory.SEP_CHAR + "testDir3d";
         newDir = getRemoteTestDir().createDir(pathStr);
         Assert.assertEquals("Directory should use complete pathname as new directory name", pathStr, newDir.getPath());
         // delete parent of parent !
