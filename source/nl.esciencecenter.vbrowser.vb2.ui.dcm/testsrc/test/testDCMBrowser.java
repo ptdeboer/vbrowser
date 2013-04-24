@@ -20,6 +20,7 @@
 
 package test;
 
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.ProxyBrowser;
@@ -40,7 +41,7 @@ public class testDCMBrowser
             
 		    ProxyBrowser frame=(ProxyBrowser)platform.createBrowser(); 
 		    
-    		ProxyNode root = fac.openLocation(FSUtil.getDefault().getUserHomeDir().getVRI().toString()+"/data"); 
+    		ProxyNode root = fac.openLocation(GlobalProperties.getGlobalUserHome()+"/data"); 
     		
 			frame.setRoot(root,true); 
 		}

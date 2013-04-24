@@ -36,7 +36,6 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.dummy.DummyProxyFactory;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 
 
-
 public class AnyFileProxyNode extends ProxyNode
 {
 	FSNode file;
@@ -128,7 +127,7 @@ public class AnyFileProxyNode extends ProxyNode
     	
     	
     	for (int i=0;i<files.length;i++)
-    		nodes[i]=new AnyFileProxyNode(files[i].getVRI(),files[i]); 
+    		nodes[i]=new AnyFileProxyNode(new VRI(files[i].getURI()),files[i]); 
         
     	return subrange(nodes,offset,range);  
     }
