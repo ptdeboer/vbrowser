@@ -22,13 +22,12 @@ package nl.nlesc.vlet.vrs.io;
 
 import java.io.IOException;
 
-import nl.esciencecenter.ptk.io.RandomReadable;
 import nl.nlesc.vlet.exception.VlException;
 
 /**
  * Random Readable interface. 
  */
-public interface VRandomReadable extends RandomReadable 
+public interface VRandomReadable 
 {
 	 /**
      * Reads <code>nrBytes</code> from file starting to read from 

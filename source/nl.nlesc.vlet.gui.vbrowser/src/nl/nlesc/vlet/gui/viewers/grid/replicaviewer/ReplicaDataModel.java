@@ -34,7 +34,7 @@ import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_STORAGE_ELEMENT;
 
 import java.util.Vector;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.data.VAttribute;

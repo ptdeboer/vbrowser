@@ -27,11 +27,9 @@ import java.io.OutputStream;
 import nl.esciencecenter.ptk.io.RingBufferStreamTransferer;
 import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.NotImplementedException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.io.VRandomReadable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
 import nl.nlesc.vlet.vrs.vfs.VFS;
@@ -51,47 +49,7 @@ public class VRSStreamUtil extends IOUtil
         logger=ClassLogger.getLogger(VRSStreamUtil.class); 
         //logger.setLevelToDebug(); 
     }
-    
-      
-//    /**
-//     * Actual Method which does the stream copying. 
-//     * 
-//     * @param transferInfo  VFSTransferInfo object which hols statistic about the transfer progress. 
-//     * @param bufSize   Circular Buffer size 
-//     * @param nrBytes   number of bytes to transfer. Specify -1 = transfer all 
-//     * @param input     InputStream to read from 
-//     * @param output    OuputStream to write to
-//     * @throws VlException 
-//     */
-//    
-//    public static long copyStreams(VFSTransfer transferInfo,int bufSize, long nrBytes,InputStream input,OutputStream output) throws VlException
-//    {
-//        // message being said in CircularStreamBufferTransferer. 
-//        //transferInfo.startSubTask("Performing stream copy:"+ ((nrBytes>0)?nrBytes:("Unknown length")),nrBytes); 
-//
-//        RingBufferStreamTransferer cBuffer=new RingBufferStreamTransferer(bufSize,input,output);
-//        cBuffer.setTaskMonitor(transferInfo); 
-//        cBuffer.startTransfer(nrBytes);
-//        return cBuffer.getTotalWritten(); 
-//    }
-  
-    
-//    /** 
-//     * Calls streamCopy bytes copies all the bytes available. Doesn't check for 
-//     * an actual length.
-//     *
-//     * @see {@link #streamCopy(VFSTransfer, VNode, VNode, long, int)}
-//     * @see CircularStreamBufferTransferer
-//     */ 
-//    public static void streamCopy(VFSTransfer transfer,
-//            VNode sourceNode, 
-//            VNode destNode, 
-//            int bufferSize) throws VlException
-//    {
-//        // specify -1 to indicate "copy all" 
-//        streamCopy(transfer,sourceNode,destNode,-1,bufferSize); 
-//    }
-//    
+
    /**
     * Default VNode to VNode stream Copy. 
     * Performs and monitors controlled stream copy.  
@@ -274,85 +232,84 @@ public class VRSStreamUtil extends IOUtil
         }
     }
 
-
-
-//    /**
-//     * Synchronized read loop which performs several readBytes() calls to 
-//     * fill buffer.
-//     * Helper method for read() method with should be done in a loop. 
-//     * (This since File.read() or InputStream reads() don't always return 
-//     * the desired nr. of bytes. This method keeps on reading until either
-//     * End Of File is reached (EOF) or the desired nr of bytes is read. 
-//     * <p> 
-//     * Returns -1 when EOF is encountered, or actual nr of bytes read. 
-//     * If the return value doesn't match the nrBytes wanted, no extra bytes
-//     * could be read so this method doesn't have to be called again. 
-//     */
-//    public static int syncReadBytes(VRandomReadable source,long fileOffset, byte[] buffer,int bufferOffset, long nrBytes) throws VlException
-//    {
-//    	int totalRead=0; 
-//    	int numRead=0;
-//    	int nullReads=0; 
-//    	int timeOut=60*1000; // 60 secs timeout. 
-//    	
-//    	// ***
-//    	// read loop
-//    	// read as much as possible until EOF occures or nrOfBytes is read. 
-//    	// ***
-//    	
-//    	do
-//    	{
-//    		long numToRead=(nrBytes-totalRead);
-//    		
-//    		// will encounter out-of-mem anyway, but who knows, be robuust here ! 
-//    		if (numToRead>Integer.MAX_VALUE) 
-//    			numToRead=Integer.MAX_VALUE;
-//    		
-//    		numRead = source.readBytes(fileOffset+totalRead, buffer,totalRead, (int)numToRead);
-//    		
-//    		if (numRead>0)
-//    		{
-//    			totalRead+=numRead;
-//    		}
-//    		else if (numRead==0)
-//    		{
-//    			nullReads++;
-//    			
-//    			try
-//    			{
-//    				Thread.sleep(100);
-//    			}
-//    			catch (InterruptedException e)
-//    			{
-//    				e.printStackTrace();
-//    			}
-//    			
-//    			// 100 seconds time out 
-//    			if (nullReads*100==timeOut)
-//    				throw new nl.uva.vlet.exception.VlIOException("Time out when reading from:"+source);
-//    		}
-//    		else if (numRead<0)
-//    		{
-//    			// EOF ! 
-//    			if (totalRead>0)
-//    			{
-//    				break;// stop & return nr of bytes actual read !
-//    			}
-//    			else
-//    			{
-//    				logger.debugPrintf("Warning:got EOF after read():%s\n",source);
-//    				return -1; // signal EOF without reading any bytes ! 
-//    			}
-//    		}
-//    			
-//    		//	throw new nl.uva.vlet.exception.VlIOException("EOF Exception when reading from:"+file); 
-//    	
-//    		logger.debugPrintf("syncReadBytes: Current numRead/totalRead=%d/%d\n",numRead,totalRead);
-//    	} while((totalRead<nrBytes) && (numRead>=0));
-//    	
-//    	logger.debugPrintf("syncReadBytes: Finished totalRead=%d\n",totalRead);
-//    	
-//    	return totalRead; 
-//    }
-//    
+   /**
+    * Synchronized read loop which performs several readBytes() calls to 
+    * fill buffer.
+    * Helper method for read() method with should be done in a loop. 
+    * (This since File.read() or InputStream reads() don't always return 
+    * the desired nr. of bytes. This method keeps on reading until either
+    * End Of File is reached (EOF) or the desired nr of bytes is read. 
+    * <p> 
+    * Returns -1 when EOF is encountered, or actual nr of bytes read. 
+    * If the return value doesn't match the nrBytes wanted, no extra bytes
+    * could be read so this method doesn't have to be called again. 
+    */
+   public static int syncReadBytes(VRandomReadable source,long fileOffset, byte[] buffer,int bufferOffset, long nrBytes) throws IOException
+   {
+       int totalRead=0; 
+       int numRead=0;
+       int nullReads=0; 
+       int timeOut=60*1000; // 60 secs timeout. 
+       
+       // ***
+       // read loop
+       // read as much as possible until EOF occures or nrOfBytes is read. 
+       // ***
+       
+       do
+       {
+           long numToRead=(nrBytes-totalRead);
+           
+           // will encounter out-of-mem anyway, but who knows, be robuust here ! 
+           if (numToRead>Integer.MAX_VALUE) 
+               numToRead=Integer.MAX_VALUE;
+           
+           numRead = source.readBytes(fileOffset+totalRead, buffer,totalRead, (int)numToRead);
+           
+           if (numRead>0)
+           {
+               totalRead+=numRead;
+           }
+           else if (numRead==0)
+           {
+               nullReads++;
+               
+               try
+               {
+                   Thread.sleep(100);
+               }
+               catch (InterruptedException e)
+               {
+                   e.printStackTrace();
+               }
+               
+               // 100 seconds time out 
+               if (nullReads*100==timeOut)
+                   throw new IOException("Time out when reading from:"+source);
+           }
+           else if (numRead<0)
+           {
+               // EOF ! 
+               if (totalRead>0)
+               {
+                   break;// stop & return nr of bytes actual read !
+               }
+               else
+               {
+                   logger.debugPrintf("Warning:got EOF after read():%s\n",source);
+                   return -1; // signal EOF without reading any bytes ! 
+               }
+           }
+               
+           //  throw new nl.uva.vlet.exception.VlIOException("EOF Exception when reading from:"+file); 
+       
+           logger.debugPrintf("syncReadBytes: Current numRead/totalRead=%d/%d\n",numRead,totalRead);
+       
+       } while((totalRead<nrBytes) && (numRead>=0));
+       
+       logger.debugPrintf("syncReadBytes: Finished totalRead=%d\n",totalRead);
+       
+       return totalRead; 
+   }
+   
 }

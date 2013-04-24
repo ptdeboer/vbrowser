@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.vrs.io.VShellChannel;
@@ -92,13 +92,13 @@ public class BASHChannel implements VShellChannel
 
             // pseudo tty which invokes bash.
 
-            if (Global.isLinux())
+            if (GlobalProperties.isLinux())
             {
                 cmds = new String[1];
                 // linux executable .lxe :-)
                 cmds[0] = VletConfig.getInstallBaseDir().getPath()+"/bin/ptty.lxe"; 
             }
-            else if (Global.isWindows())
+            else if (GlobalProperties.isWindows())
             {
                 cmds = new String[1];
                 cmds[0] = VletConfig.getInstallBaseDir().getPath()+"/bin/ptty.exe"; 

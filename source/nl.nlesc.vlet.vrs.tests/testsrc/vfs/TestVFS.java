@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Random;
 
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.IntegerHolder;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
@@ -931,7 +931,7 @@ public class TestVFS extends VTestCase
         {
             VDir root = getRemoteTestDir().getRoot();
             // "/test" is illegal under linux
-            if (Global.isLinux() == true)
+            if (GlobalProperties.isLinux() == true)
             {
                 if (root.isWritable()==false)
                 {
@@ -941,7 +941,7 @@ public class TestVFS extends VTestCase
                 }
                 //; continue
             }
-            if (Global.isWindows() == true)
+            if (GlobalProperties.isWindows() == true)
             {
                 // Need read only dir. Do these exists under windows ?
             }
@@ -2010,7 +2010,7 @@ public class TestVFS extends VTestCase
         }
 
         // reread file contents: Use Sync READ !
-        numRead=IOUtil.syncReadBytes(randomWriter, 0, buffer2, 0, maxlen);
+        numRead=VRSStreamUtil.syncReadBytes(randomWriter, 0, buffer2, 0, maxlen);
         Assert.assertEquals("Number of actual read bytes is wrong!",maxlen,numRead); 
         
         // check readbuffer;
@@ -2216,7 +2216,7 @@ public class TestVFS extends VTestCase
     
     @Test public void testVUnixAttributes() throws Exception
     {
-    	if ((getRemoteTestDir().isLocal()) && (Global.isWindows()))
+    	if ((getRemoteTestDir().isLocal()) && (GlobalProperties.isWindows()))
     	{
     		message("Skipping Unix atributes test for windows filesystem...");
     		return; 

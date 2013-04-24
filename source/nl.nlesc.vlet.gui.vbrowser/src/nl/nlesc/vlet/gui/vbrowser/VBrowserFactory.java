@@ -23,7 +23,7 @@ package nl.nlesc.vlet.gui.vbrowser;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.BrowserFactory;

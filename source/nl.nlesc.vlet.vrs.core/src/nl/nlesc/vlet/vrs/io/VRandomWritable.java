@@ -22,15 +22,13 @@ package nl.nlesc.vlet.vrs.io;
 
 import java.io.IOException;
 
-import nl.esciencecenter.ptk.io.RandomWritable;
-
 /** 
  * Random Writable interface for atomic writes().   
  * 
  * @author P.T. de Boer 
  *
  */
-public interface VRandomWritable extends RandomWritable, VZeroSizable
+public interface VRandomWritable extends VZeroSizable
 {
     // Explicit inheritance from VSize 
     public long getLength() throws IOException; 

@@ -33,7 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuConstants;
@@ -71,7 +71,7 @@ public class VLTermStarter extends ViewerPlugin implements ActionListener
         
         try
         {
-            VRL loc=new VRL("sftp://localhost/home/"+Global.getGlobalUserName());
+            VRL loc=new VRL("sftp://localhost/home/"+GlobalProperties.getGlobalUserName());
             
             //VFSClient.getDefault().openLocation(loc); 
 

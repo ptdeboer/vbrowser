@@ -33,7 +33,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.ui.image.ImagePane;
 import nl.esciencecenter.ptk.ui.image.ImagePane.ImageWaiter;
 import nl.nlesc.vlet.actions.ActionContext;

@@ -39,7 +39,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -906,7 +906,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 		
 		try
 		{
-			if (Global.isWindows()==false)
+			if (GlobalProperties.isWindows()==false)
 				viewStandAlone(new VRL("file:///etc/passwd"));
 			else
 				viewStandAlone(new VRL("file:///e:/INSTALL.txt" ));

@@ -23,7 +23,7 @@ package vfs;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
@@ -135,7 +135,7 @@ public class TestVFSClient extends TestCase
     {
         VRL homeVrl = vfsClient.getUserHomeLocation();
         
-        String path=Global.getGlobalUserHome();
+        String path=GlobalProperties.getGlobalUserHome();
         
         Assert.assertEquals("Home path and UserHomeLocation must be the same",path,homeVrl.getPath());
     }

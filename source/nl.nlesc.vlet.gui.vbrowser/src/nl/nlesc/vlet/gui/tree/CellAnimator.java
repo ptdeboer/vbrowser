@@ -28,7 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.nlesc.vlet.gui.UILogger;
 
 public class CellAnimator implements ImageObserver 

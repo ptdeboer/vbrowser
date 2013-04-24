@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
@@ -1485,7 +1485,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
             // Schemes of Stored Servers are NOT editable
             if (this.isServerConfigType() == true)
             {
-                editable = Global.getRootLogger().isLevelDebug();// // when in
+                editable = GlobalProperties.getRootLogger().isLevelDebug();// // when in
                                                                  // debug mode,
                                                                  // make this
                                                                  // editable !

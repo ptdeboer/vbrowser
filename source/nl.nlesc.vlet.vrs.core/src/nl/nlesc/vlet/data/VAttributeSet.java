@@ -32,9 +32,9 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
-import nl.esciencecenter.ptk.data.Duplicatable;
 import nl.esciencecenter.ptk.data.IndexedHashtable;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.object.Duplicatable;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.data.xml.XMLData;

@@ -23,7 +23,7 @@ package nl.nlesc.vlet.gui.proxynode.impl.direct;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;

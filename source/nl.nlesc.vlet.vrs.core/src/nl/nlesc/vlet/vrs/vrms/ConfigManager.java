@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Properties;
 
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -147,8 +147,8 @@ public class ConfigManager
     
     private void initWebProxy()
     {
-        String proxyHost=Global.getStringProperty(VletConfig.HTTP_PROXY_HOST); 
-        String proxyPort=Global.getStringProperty(VletConfig.HTTP_PROXY_PORT);
+        String proxyHost=GlobalProperties.getStringProperty(VletConfig.HTTP_PROXY_HOST); 
+        String proxyPort=GlobalProperties.getStringProperty(VletConfig.HTTP_PROXY_PORT);
         
         // String proxyEnabled=Global.getProperty(GlobalConfig.HTTP_PROXY_ENABLED);
         //        

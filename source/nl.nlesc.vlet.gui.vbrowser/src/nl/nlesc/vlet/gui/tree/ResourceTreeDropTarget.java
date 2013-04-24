@@ -32,7 +32,7 @@ import java.awt.dnd.DropTargetDropEvent;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.dnd.VTransferData;
 import nl.nlesc.vlet.gui.dnd.VTransferHandler;

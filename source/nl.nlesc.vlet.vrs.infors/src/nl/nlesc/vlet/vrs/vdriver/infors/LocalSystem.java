@@ -22,7 +22,7 @@ package nl.nlesc.vlet.vrs.vdriver.infors;
 
 import java.io.File;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -162,7 +162,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         File roots[]=null; 
 
         // for windows this method returns the drives: 
-        if (Global.isWindows()==true)
+        if (GlobalProperties.isWindows()==true)
         {
             // alt get drives to avoid annoying pop-up
             roots=VletConfig.getWindowsDrives();
@@ -215,7 +215,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         list.add(InfoConstants.ATTR_JAVAVERSION);
         list.add(InfoConstants.ATTR_JAVAHOME);
         
-        if (Global.isWindows())
+        if (GlobalProperties.isWindows())
             list.add(VletConfig.PROP_SKIP_FLOPPY_SCAN);
         
         return list.toArray(); 
@@ -228,19 +228,19 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
     	
         if (name.equals(InfoConstants.ATTR_SYSTEMHOSTNAME))
         {
-            attr=new VAttribute(name,Global.getHostname());
+            attr=new VAttribute(name,GlobalProperties.getHostname());
         }
         else if (name.equals(InfoConstants.ATTR_SYSTEMOS))
         {
-        	attr=new VAttribute(name,Global.getOsName()+" "+Global.getOsVersion());
+        	attr=new VAttribute(name,GlobalProperties.getOsName()+" "+GlobalProperties.getOsVersion());
         }
         else if (name.equals(InfoConstants.ATTR_JAVAVERSION))
         {
-        	attr=new VAttribute(name,Global.getJavaVersion()); 
+        	attr=new VAttribute(name,GlobalProperties.getJavaVersion()); 
         }
         else if (name.equals(InfoConstants.ATTR_JAVAHOME))
         {
-        	attr=new VAttribute(name,Global.getJavaHome()); 
+        	attr=new VAttribute(name,GlobalProperties.getJavaHome()); 
         }
         else if (name.equals(VletConfig.PROP_SKIP_FLOPPY_SCAN))
         {

@@ -30,7 +30,7 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.nlesc.vlet.gui.dnd.VTransferData;
 import nl.nlesc.vlet.gui.dnd.VTransferHandler;
 import nl.nlesc.vlet.gui.view.VComponent;

@@ -27,7 +27,7 @@ import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SCHEME;
 import java.io.File;
 import java.util.Vector;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -633,7 +633,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         File roots[] = null;
 
         // for windows this method returns the drives:
-        if (Global.isWindows() == true)
+        if (GlobalProperties.isWindows() == true)
         {
 
             // alt get drives to avoid annoying pop-up

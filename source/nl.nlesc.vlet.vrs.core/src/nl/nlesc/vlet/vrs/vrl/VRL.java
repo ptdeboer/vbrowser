@@ -24,7 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -69,7 +69,7 @@ public final class VRL extends VRI // implements Comparable<VRL>
         if (host.compareTo("127.0.0.1")==0)
             return true; 
         
-        if (host.compareTo(Global.getHostname())==0)
+        if (host.compareTo(GlobalProperties.getHostname())==0)
             return true; 
         
         return false;

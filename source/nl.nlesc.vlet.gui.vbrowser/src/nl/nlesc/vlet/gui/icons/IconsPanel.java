@@ -27,7 +27,7 @@ import java.awt.dnd.DropTarget;
 import java.util.Collection;
 import java.util.Vector;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;

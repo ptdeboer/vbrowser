@@ -28,7 +28,7 @@ import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.ui.UI;
@@ -77,7 +77,7 @@ public class UIGlobal
 	 */
 	public static void init()
 	{
-		Global.init(); 
+		GlobalProperties.init(); 
 		
 		// context and context configuration 
 		VRSContext ctx = getVRSContext();

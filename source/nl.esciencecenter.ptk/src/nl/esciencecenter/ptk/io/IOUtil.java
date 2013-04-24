@@ -43,7 +43,7 @@ public class IOUtil
         logger=ClassLogger.getLogger(IOUtil.class); 
         //logger.setLevelToDebug(); 
     }
-    
+        
     public static int syncReadBytes(InputStream inps, byte[] buffer, int bufferOffset, int nrOfBytes) throws IOException
     {
     	return syncReadBytes(inps,0,buffer,bufferOffset,nrOfBytes);

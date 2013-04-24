@@ -36,7 +36,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -1365,7 +1365,7 @@ public class VletConfig
 
     public static String getUserName()
     {
-       return Global.getGlobalUserName();
+       return GlobalProperties.getGlobalUserName();
     }
 
     public static VRL getUserPluginDir()

@@ -23,7 +23,7 @@ package nl.nlesc.vlet.gui.vbrowser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.gui.actions.ActionCommand;
 import nl.nlesc.vlet.gui.actions.ActionCommandType;

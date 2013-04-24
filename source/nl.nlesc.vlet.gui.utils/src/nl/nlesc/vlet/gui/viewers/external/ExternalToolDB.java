@@ -22,7 +22,7 @@ package nl.nlesc.vlet.gui.viewers.external;
 
 import java.util.Vector;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vdriver.localfs.LocalExec;
@@ -84,14 +84,14 @@ public class ExternalToolDB
         {
             String javahome=VletConfig.getProperty("java.home");
             cmdpath=javahome+"/bin/javaws";
-            if (Global.isWindows())
+            if (GlobalProperties.isWindows())
                 cmdpath+=".exe"; 
         }
         else if (cmd.equals(JAVA))
         {
             String javahome=VletConfig.getProperty("java.home");
             cmdpath=javahome+"/bin/java";
-            if (Global.isWindows())
+            if (GlobalProperties.isWindows())
                 cmdpath+=".exe"; 
         }
         

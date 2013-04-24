@@ -22,7 +22,7 @@ package nl.nlesc.vlet.gui.viewers;
 
 import java.util.Properties;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;

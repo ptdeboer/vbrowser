@@ -27,7 +27,7 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.gui.UILogger;
 

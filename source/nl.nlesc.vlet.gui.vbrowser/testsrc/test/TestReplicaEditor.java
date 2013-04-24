@@ -20,7 +20,7 @@
 
 package test;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.viewers.grid.replicaviewer.ReplicaController;
 import nl.nlesc.vlet.gui.viewers.grid.replicaviewer.ReplicaDataModel;

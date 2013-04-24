@@ -23,7 +23,7 @@ package nl.nlesc.vlet.gui.vbrowser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.task.ActionTask;

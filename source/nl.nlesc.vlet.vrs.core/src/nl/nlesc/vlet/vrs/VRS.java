@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -156,7 +156,7 @@ public class VRS
 	{
 	    // Correct Order of initialization: 
 	    // Other classes must obey this order: s
-	    Global.init(); 
+	    GlobalProperties.init(); 
 	    //
  		defaultRegistry = Registry.getInstance();
  		//

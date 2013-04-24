@@ -21,7 +21,7 @@
 package test;
 
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.panels.acldialog.ACLPanel;
@@ -34,7 +34,7 @@ public class TestACLPanel
     public static void main(String args[])
     {
         VletConfig.getRootLogger().setLevelToDebug(); 
-        testFor("file:/home/"+Global.getGlobalUserName());
+        testFor("file:/home/"+GlobalProperties.getGlobalUserName());
         //testFor("srb://piter.de.boer.vlenl@srb.grid.sara.nl/VLENL/home/piter.de.boer.vlenl");
         // testFor("sftp://ptdeboer@elab.science.uva.nl/home/ptdeboer"); 
      }

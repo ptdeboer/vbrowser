@@ -24,7 +24,7 @@ import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ICON;
 import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LOCATION;
 import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_NAME;
 import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;

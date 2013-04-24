@@ -26,8 +26,8 @@ import java.net.URL;
 import java.util.Date;
 import java.util.Vector;
 
-import nl.esciencecenter.ptk.data.Duplicatable;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.object.Duplicatable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.exception.VRLSyntaxException;

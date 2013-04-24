@@ -31,7 +31,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.data.VAttribute;
@@ -441,7 +441,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         }
 
         // windows lnk or shortcut (.lnk under *nix is also windows link!)
-        if ((Global.isWindows()) || (getPath().endsWith(".lnk")))
+        if ((GlobalProperties.isWindows()) || (getPath().endsWith(".lnk")))
             return localfs.getWindowsLinkTarget(this._file);
         else if (localfs.isUnixFS())
             return localfs.getSoftLinkTarget(this.getPath());

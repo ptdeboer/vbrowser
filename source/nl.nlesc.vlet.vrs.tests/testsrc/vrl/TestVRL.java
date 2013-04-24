@@ -27,7 +27,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.vrs.VRS;
@@ -295,7 +295,7 @@ public class TestVRL
         localVrl = new VRL("file", null, "/etc");
         Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
 
-        localVrl = new VRL("file", Global.getHostname(), "/etc");
+        localVrl = new VRL("file", GlobalProperties.getHostname(), "/etc");
         Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
     }
 

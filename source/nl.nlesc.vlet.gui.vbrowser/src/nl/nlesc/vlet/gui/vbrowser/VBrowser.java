@@ -52,7 +52,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.gui.GuiPropertyName;
@@ -895,7 +895,7 @@ public class VBrowser extends javax.swing.JFrame
                         nativeLAFmenuItem.addActionListener(bcActionListener);
                     }
                     
-                    if (Global.isWindows()==true)
+                    if (GlobalProperties.isWindows()==true)
                     {
                         nativeLAFmenuItem = new JMenuItem();
                         lafMenu.add(nativeLAFmenuItem);

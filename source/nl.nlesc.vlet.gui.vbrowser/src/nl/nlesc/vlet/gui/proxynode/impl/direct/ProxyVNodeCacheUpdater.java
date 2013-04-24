@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.gui.proxynode.impl.direct;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyResourceEventListener;

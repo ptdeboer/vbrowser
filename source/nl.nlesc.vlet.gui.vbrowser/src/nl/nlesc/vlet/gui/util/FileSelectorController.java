@@ -22,7 +22,7 @@ package nl.nlesc.vlet.gui.util;
 
 import javax.swing.JPopupMenu;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.nlesc.vlet.exception.VlException;
@@ -47,7 +47,7 @@ public class FileSelectorController implements MasterBrowser, ITaskSource
 
 	static
 	{
-        Global.init();
+        GlobalProperties.init();
         // ProxyVNodeFactory.initPlatform();
 	}
 	

@@ -3,7 +3,7 @@ package test.ssh;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
@@ -55,7 +55,7 @@ public class TestNoInteraction
         VletConfig.setUsePersistantUserConfiguration(false);
         // GlobalConfig.setUserHomeLocation(new URL("file:///tmp/myservice"));
 
-        Global.init();
+        GlobalProperties.init();
 
         VRL vrl = new VRL("sftp://user@elab.lab.uvalight.net/tmp");
 

@@ -40,7 +40,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlException;
@@ -81,7 +81,7 @@ public class GuiSettings
     private static void classInit()
     {
         // explicit call Global init !
-        Global.init();
+        GlobalProperties.init();
         defaultSettings = getDefault();
         // System.setProperty("swing.aatext","false");
         // System.setProperty("java.awt.RenderingHint","false");

@@ -23,8 +23,6 @@ package nl.nlesc.vlet.vrs.vfs;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import nl.esciencecenter.ptk.io.RandomReadable;
-import nl.esciencecenter.ptk.io.IOUtil;
 import nl.nlesc.vlet.exception.ResourceToBigException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
@@ -32,6 +30,7 @@ import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.io.ResourceReader;
 import nl.nlesc.vlet.vrs.io.VRandomReadable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
+import nl.nlesc.vlet.vrs.util.VRSStreamUtil;
 
 public class FileReader extends ResourceReader
 {
@@ -183,6 +182,7 @@ public class FileReader extends ResourceReader
     // Protected interface 
     // ===================
     
+    
     /** Actual read method */ 
     protected int readBytes(long offset, byte buffer[],int bufferOffset,int nrOfBytes)
                 throws VlException
@@ -199,7 +199,7 @@ public class FileReader extends ResourceReader
             // use Sync Read ! 
             try
             {
-                return IOUtil.syncReadBytes((RandomReadable)source,offset,buffer,bufferOffset,nrOfBytes);
+                return VRSStreamUtil.syncReadBytes((VRandomReadable)source,offset,buffer,bufferOffset,nrOfBytes);
             }
             catch (IOException e)
             {
@@ -218,6 +218,5 @@ public class FileReader extends ResourceReader
             "File type does not support (remote) read access");
         }
     }
- 
-    
+     
 }

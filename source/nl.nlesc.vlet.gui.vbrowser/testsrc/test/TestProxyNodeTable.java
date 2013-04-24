@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.proxymodel.ProxyNodeTableModel;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
@@ -46,7 +46,7 @@ public class TestProxyNodeTable
         {
             VBrowserInit.initPlatform(); 
             
-            pnode = ProxyNode.getProxyNodeFactory().openLocation(new VRL("file:///"+Global.getGlobalUserHome()));
+            pnode = ProxyNode.getProxyNodeFactory().openLocation(new VRL("file:///"+GlobalProperties.getGlobalUserHome()));
         }
         catch (Exception e)
         {

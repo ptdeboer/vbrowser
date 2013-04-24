@@ -28,7 +28,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.ui.SimpelUI;
 import nl.esciencecenter.ptk.ui.UI;
@@ -201,7 +201,7 @@ public final class Registry // todo: change to vrs protected class.
         ClassLoader currentLoader = Thread.currentThread().getContextClassLoader();
 
         // Initialize default VDriver classes
-        String str = Global.getStringProperty(VletConfig.PROP_INIT_DEFAULT_VDRIVERS);
+        String str = GlobalProperties.getStringProperty(VletConfig.PROP_INIT_DEFAULT_VDRIVERS);
 
         if ((str == null) || StringUtil.isTrueString(str))
         {
@@ -230,7 +230,7 @@ public final class Registry // todo: change to vrs protected class.
         }
 
         // check for additional driver
-        str = Global.getStringProperty(VletConfig.PROP_VDRIVERS);
+        str = GlobalProperties.getStringProperty(VletConfig.PROP_VDRIVERS);
         logger.infoPrintf("Extra vdrivers %s=%s", VletConfig.PROP_VDRIVERS, str);
 
         if ((str == null) || (str.compareTo("") == 0))
@@ -883,7 +883,7 @@ public final class Registry // todo: change to vrs protected class.
      */
     public static void init()
     {
-        Global.init();
+        GlobalProperties.init();
     }
 
     private static Object singletonLock = new Object();

@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -99,7 +99,7 @@ public class TestSettings
     
     private TestSettings()
     {
-        testUserName=Global.getGlobalUserName();  
+        testUserName=GlobalProperties.getGlobalUserName();  
     	initLocations();
     }
     
@@ -192,7 +192,7 @@ public class TestSettings
     // VRL("gftp","ds2a.das2.nikhef.nl","/tmp/"+Global.getUserName()+"/testGFTP");
     // GAT Locations:
     public static VRL testGAT_GFTPLocation = new VRL("gat.gsiftp", "fs2.das3.science.uva.nl", "/tmp/"
-            + Global.getGlobalUserName() + "/testGAT_GFTP");
+            + GlobalProperties.getGlobalUserName() + "/testGAT_GFTP");
 
     /**
 //     * local tempdir to create test files:
@@ -200,13 +200,13 @@ public class TestSettings
 //    public static VRL localTempDirLocation = new VRL("file", null, "/tmp/" + Global.getUsername() + "/vfstesttempdir");
 
     public static VRL testWSVFSLocation = new VRL("ws.vfs", null, "pc-vlab17.science.uva.nl", 8443, "/",
-            "vrl=gsiftp://pc-vlab19.science.uva.nl/tmp/" + Global.getGlobalUserName() + "/wsvfstestdir", (String) null);
+            "vrl=gsiftp://pc-vlab19.science.uva.nl/tmp/" + GlobalProperties.getGlobalUserName() + "/wsvfstestdir", (String) null);
 
 //    public static VRL testSRMNikhefLocation = new VRL("srm", null, "tbn18.nikhef.nl", 8446,
 //            "/dpm/nikhef.nl/home/pvier/" + Global.getUsername() + "/test_SRMVFS_DPM");
 
     public static VRL testSRMRuGLocation = new VRL("srm", null, "srm.grid.rug.nl", 8444, "/pvier/"
-            + Global.getGlobalUserName() + "/test_SRMVFS_STORM");
+            + GlobalProperties.getGlobalUserName() + "/test_SRMVFS_STORM");
 
 //    public static VRL testSRMAMCLocation = new VRL("srm", null, "gb-se-amc.amc.nl", 8446, "/dpm/amc.nl/home/pvier/"
 //            + Global.getUsername() + "/test_SRMVFS_DPM");
@@ -218,10 +218,10 @@ public class TestSettings
 //            "castor/ads.rl.ac.uk/test/dteam/" + Global.getUsername() + "/test_SRMVFS_CASTOR");
 
     public static VRL testLFCJSaraLocation = new VRL("lfn", null, "lfc.grid.sara.nl", 5010, "/grid/pvier/test-"
-            + Global.getGlobalUserName() + "-vfslfc2/");
+            + GlobalProperties.getGlobalUserName() + "-vfslfc2/");
 
     public static VRL testLFCJNikhefLocation = new VRL("lfn", null, "lfc03.nikhef.nl", 5010, "/grid/pvier/test-"
-            + Global.getGlobalUserName() + "-vfslfc2/");
+            + GlobalProperties.getGlobalUserName() + "-vfslfc2/");
 
     public static VRL testLFCLocation = testLFCJSaraLocation;
 
@@ -234,10 +234,10 @@ public class TestSettings
                                                      "/SARA_BIGGRID/home/public/testdir/testIrodsVFS");   
            
     public static VRL test_vCommentable_SaraLocation = new VRL("lfn", null, "lfc.grid.sara.nl", 5010,
-            "/grid/pvier/test-" + Global.getGlobalUserName() + "-vCommentableTest/");
+            "/grid/pvier/test-" + GlobalProperties.getGlobalUserName() + "-vCommentableTest/");
 
     public static VRL test_vCommentable_NikhefLocation = new VRL("lfn", null, "lfc03.nikhef.nl", 5010,
-            "/grid/pvier/test-" + Global.getGlobalUserName() + "-vCommentableTest/");
+            "/grid/pvier/test-" + GlobalProperties.getGlobalUserName() + "-vCommentableTest/");
 
     public static String[] BLACK_LISTED_SE =
             { "se.grid.rug.nl", "srm.grid.rug.nl" };

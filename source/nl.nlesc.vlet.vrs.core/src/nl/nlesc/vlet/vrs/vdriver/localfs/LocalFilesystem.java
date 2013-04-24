@@ -26,7 +26,7 @@ import java.io.IOException;
 
 import javax.swing.ImageIcon;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
@@ -69,7 +69,7 @@ public class LocalFilesystem extends FileSystemNode
         hasUxStatCmd = new Boolean(false);
 
         // Bug: #278
-        if (Global.isWindows())
+        if (GlobalProperties.isWindows())
         {
             // todo: cygwin !
             // Global.infoPrintf(Global.class,"checkHasUxStat()==false. Skipping stat check for Windows!\n");
@@ -173,11 +173,11 @@ public class LocalFilesystem extends FileSystemNode
         // resolve ~:
         if (path.startsWith("~"))
         {
-            path = Global.getProperty("user.home") + VRL.SEP_CHAR_STR + path.substring(1);
+            path = GlobalProperties.getProperty("user.home") + VRL.SEP_CHAR_STR + path.substring(1);
         }
         else if (path.startsWith("/~"))
         {
-            path = Global.getProperty("user.home") + VRL.SEP_CHAR_STR + path.substring(2);
+            path = GlobalProperties.getProperty("user.home") + VRL.SEP_CHAR_STR + path.substring(2);
         }
 
         File file = new File(path);
