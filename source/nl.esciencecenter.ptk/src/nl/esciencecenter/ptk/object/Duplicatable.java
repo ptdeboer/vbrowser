@@ -18,10 +18,13 @@
  */
 // source: 
 
-package nl.esciencecenter.ptk.data;
+package nl.esciencecenter.ptk.object;
 
 /** 
- * Alternative to clone() which supports Generics. 
+ * This interface is an alternative to clone() which supports Generics.
+ * Also it can be checked whether the duplicate method returns a shallow or a deep copy.  
+ * By default the Duplicate method return a full (deep) Copy. 
+ * This is useful for 'value' objects where each created copy is full stand alone copy.
  */
 public interface Duplicatable<Type> 
 {
@@ -29,15 +32,18 @@ public interface Duplicatable<Type>
 	 * Return whether shallow copies are supported. 
 	 * If shallow copies are supported, the duplicate(true) method
 	 * will always return a shallow copy. 
-	 * By default duplicate() returns a full (non-shallow) copy.
+	 * By default duplicate() should return a full (non-shallow) copy.
 	 */  
 	public boolean shallowSupported(); 
 	
-	/** Return copy (clone) of object */ 
+	/** 
+	 * Return copy (clone) of object.
+	 */ 
 	public Type duplicate(); 
 	
 	/**
-	 * Returns copy of object. Specify whether shallow copy is allowed. 
+	 * Returns copy of object. 
+	 * Specify whether shallow copy is allowed. 
 	 * If shallow==true, the duplicate method might still return 
 	 * a non shallow copy or throw an exception if shallowSupported()==false. 
 	 */ 
