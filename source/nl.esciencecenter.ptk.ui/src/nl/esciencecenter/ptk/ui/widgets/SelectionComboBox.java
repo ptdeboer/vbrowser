@@ -59,6 +59,11 @@ public class SelectionComboBox extends JComboBox
         this.setModel(new DefaultComboBoxModel(values));
     }
 
+    public boolean hasValue(String val)
+    {
+        return ( ((DefaultComboBoxModel) this.getModel()).getIndexOf(val)>=0);
+    }
+    
     public void addValue(String enumVal)
     {
         ((DefaultComboBoxModel) this.getModel()).addElement(enumVal);
