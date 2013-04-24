@@ -26,9 +26,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import nl.esciencecenter.ptk.Global;
-import nl.esciencecenter.ptk.data.Duplicatable;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.object.Duplicatable;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.URLUTF8Encoder;
 
@@ -1312,7 +1312,7 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
         if (StringUtil.compare(host,"::1",true)==0) 
             return true; 
         
-        if (StringUtil.compare(host,Global.getHostname(),true)==0) 
+        if (StringUtil.compare(host,GlobalProperties.getHostname(),true)==0) 
             return true; 
 
         return false;
