@@ -48,14 +48,14 @@ public class TestVRL
     {
         // scheme/host/path/fragment
         URI uri = new URI("file", "", "/etc", (String) null);
-        VRL vrl = new VRL("file", "", "/etc", (String) null);
+        VRL vrl = new VRL("file", "", "/etc");
 
         if (vrl.toURI().compareTo(uri) != 0)
             Assert.assertEquals("VRL not similar to URI", vrl.toString(), uri.toString());
 
         // scheme/host/path/fragment
         uri = new URI("file", null, "/etc", (String) null);
-        vrl = new VRL("file", null, "/etc", (String) null);
+        vrl = new VRL("file", null, "/etc");
 
         if (vrl.toURI().compareTo(uri) != 0)
             Assert.assertEquals("VRL not similar to URI", vrl.toString(), uri.toString());
@@ -429,7 +429,7 @@ public class TestVRL
                 // Make sure VRL and URI use same encoding:
                 URI uri = new URI("aap", "noot", "/" + c, null);
                 // note different constructor args: 
-                VRL vrl = new VRL("aap", null, "noot", "/" + c);
+                VRL vrl = new VRL("aap",  "noot", "/" + c);
 
                 // if c is in "#?&" then it will be recognised as query of
                 // fragment seperator

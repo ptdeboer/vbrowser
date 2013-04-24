@@ -122,11 +122,6 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         init(scheme,null,host,port,path, null,null); 
     }
 
-    public VRL(String scheme, String userinfo,String host,String path)
-    {
-        init(scheme,userinfo,host,-1,path,null,null); 
-    }
-
     public VRL(String scheme,String userInfo, String host,int port, String path)
     {
         init(scheme,userInfo,host,port,path, null,null); 
