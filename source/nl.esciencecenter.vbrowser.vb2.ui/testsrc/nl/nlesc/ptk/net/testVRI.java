@@ -230,11 +230,11 @@ public class testVRI extends TestCase
         relvri = new VRI("subdir");
         parent = new VRI("gftp://hostname/parentpath/base.html");
 
-        loc2 = parent.resolve(relvri);
+        loc2 = parent.resolveSibling(relvri);
         Assert.assertEquals("resolved VRI turned out wrong", "gftp://hostname/parentpath/subdir", loc2.toString());
 
         String subFile="other.html"; 
-        loc2 = parent.resolve(subFile);
+        loc2 = parent.resolveSibling(subFile);
         Assert.assertEquals("resolved VRI turned out wrong", "gftp://hostname/parentpath/other.html", loc2.toString());
     }
     
@@ -267,7 +267,7 @@ public class testVRI extends TestCase
         VRI parent = new VRI("gftp://hostname/parentpath/base.html");
 
         // index
-        VRI loc2 = parent.resolve("#index");
+        VRI loc2 = parent.resolveSibling("#index");
         Assert.assertEquals("resolved VRI turned out wrong", "gftp://hostname/parentpath/base.html#index", 
                 loc2.toString());
     }
@@ -277,12 +277,12 @@ public class testVRI extends TestCase
         VRI parent = new VRI("http://hostname/parentpath/base.html");
 
         // index
-        VRI loc2 = parent.resolve("?fraq");
+        VRI loc2 = parent.resolveSibling("?fraq");
         Assert.assertEquals("resolved VRI turned out wrong", "gftp://hostname/parentpath/base.html?fraq", 
                 loc2.toString());
 
         // index
-        loc2 = parent.resolve("?fraq&par=1;");
+        loc2 = parent.resolveSibling("?fraq&par=1;");
         Assert.assertEquals("resolved VRI turned out wrong", "gftp://hostname/parentpath/base.html?fraq&par=1;", 
                 loc2.toString());
     }
@@ -490,7 +490,7 @@ public class testVRI extends TestCase
             {
                 // Make sure VRI and URI use same encoding:
                 URI uri = new URI("aap", "noot", "/" + c, null);
-                VRI vri = new VRI("aap", "noot", "/" + c, null);
+                VRI vri = new VRI("aap", null,"noot", "/" + c);
 
                 // if c is in "#?&" then it will be recognised as query of
                 // fragment seperator
@@ -502,7 +502,7 @@ public class testVRI extends TestCase
 
                 VRI vri3 = new VRI("aap://noot/" + URIFactory.encode("" + c));
 
-                Assert.assertEquals("encoded URI does not match VRI", uri.toString(), vri.toURIString());
+                Assert.assertEquals("encoded URI does not match VRI", uri.toString(), vri.toURI().toString());
                 Assert.assertEquals("Decoded VRI path does not match. ", "/" + c, vri.getPath());
                 Assert.assertEquals("Decoded URI path does not match. ", "/" + c, uri.getPath());
                 Assert.assertEquals("VRI constructors do not match.", vri.toString(), vri2.toString());
