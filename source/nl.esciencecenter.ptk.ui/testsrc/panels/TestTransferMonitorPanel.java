@@ -20,6 +20,9 @@
 
 package panels;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.swing.JFrame;
 
 import nl.esciencecenter.ptk.net.VRI;
@@ -31,14 +34,15 @@ public class TestTransferMonitorPanel
 
     /**
      * Auto-generated main method to display this JDialog
+     * @throws URISyntaxException 
      */
-     public static void main(String[] args)
+     public static void main(String[] args) throws URISyntaxException
      {
          JFrame frame = new JFrame();
          // dimmy:
          TransferMonitor transfer=new TransferMonitor("Transfer", 
-                 new VRI("file","host","/source"),
-                 new VRI("file","host","/dest")); 
+                 new URI("file","host","/source"),
+                 new URI("file","host","/dest")); 
          
          TransferMonitorPanel inst = new TransferMonitorPanel(transfer);
         

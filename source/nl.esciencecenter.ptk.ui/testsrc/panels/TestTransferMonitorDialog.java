@@ -20,6 +20,8 @@
 
 package panels;
 
+import java.net.URI;
+
 import javax.swing.JFrame;
 
 import nl.esciencecenter.ptk.net.VRI;
@@ -35,56 +37,62 @@ public class TestTransferMonitorDialog
      */
      public static void main(String[] args)
      {
-         JFrame frame = new JFrame();
-         // dimmy:
-         TransferMonitor transfer=new TransferMonitor("Transfer", 
-                 new VRI("file","host","/source"),
-                 new VRI("file","host","/dest"));
-         
-         TransferMonitorDialog inst = new TransferMonitorDialog(transfer);
-         inst.setModal(false); 
-         inst.setVisible(true);
-         inst.start();
-         
-         int max=1000*1024; 
-         int dif=50*1024;
-         int step=1024; 
-         
-         transfer.startTask("TransferTask",max); 
-         transfer.setTotalSources(max/dif); 
-
-         String subTask="?";
-
-         for (int i=0;i<=max;i+=step)
+         try
          {
-             if (transfer.isCancelled())
+             JFrame frame = new JFrame();
+             // dimmy:
+             TransferMonitor transfer=new TransferMonitor("Transfer", 
+                     new URI("file","host","/source"),
+                     new URI("file","host","/dest"));
+             
+             TransferMonitorDialog inst = new TransferMonitorDialog(transfer);
+             inst.setModal(false); 
+             inst.setVisible(true);
+             inst.start();
+             
+             int max=1000*1024; 
+             int dif=50*1024;
+             int step=1024; 
+             
+             transfer.startTask("TransferTask",max); 
+             transfer.setTotalSources(max/dif); 
+    
+             String subTask="?";
+    
+             for (int i=0;i<=max;i+=step)
              {
-                 transfer.logPrintf("\n*** CANCELLED ***\n"); 
-                 break; 
-             }
-                
-             if ((i%dif)==0)
-             {
-                 subTask="Transfer #"+i/dif;
-                 transfer.startSubTask(subTask, dif); 
-                 transfer.logPrintf("--- New Transfer:%s ---\n -> nr="+i/dif+"\n",subTask);  
+                 if (transfer.isCancelled())
+                 {
+                     transfer.logPrintf("\n*** CANCELLED ***\n"); 
+                     break; 
+                 }
+                    
+                 if ((i%dif)==0)
+                 {
+                     subTask="Transfer #"+i/dif;
+                     transfer.startSubTask(subTask, dif); 
+                     transfer.logPrintf("--- New Transfer:%s ---\n -> nr="+i/dif+"\n",subTask);  
+                 }
+                 
+                 transfer.updateTaskDone(i);
+                 transfer.updateSourcesDone(i/dif); 
+                 transfer.updateSubTaskDone(subTask,i%dif); 
+                 
+                 try
+                {
+                    Thread.sleep(50);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                } 
              }
              
-             transfer.updateTaskDone(i);
-             transfer.updateSourcesDone(i/dif); 
-             transfer.updateSubTaskDone(subTask,i%dif); 
-             
-             try
-            {
-                Thread.sleep(50);
-            }
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            } 
+             transfer.endTask(null); 
          }
-         
-         transfer.endTask(null); 
-         
+         catch (Exception e)
+         {
+             e.printStackTrace();
+         }
      }
 }

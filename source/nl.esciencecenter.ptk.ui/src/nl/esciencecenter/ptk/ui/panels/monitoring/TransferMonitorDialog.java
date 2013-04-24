@@ -197,7 +197,7 @@ public class TransferMonitorDialog extends javax.swing.JDialog implements Action
     /** Restart the update task */ 
     public synchronized void start()
     {
-        String title="Transfering:"+vfsTransferInfo.getSource()+" to "+vfsTransferInfo.getDestination().getHostname()
+        String title="Transfering:"+vfsTransferInfo.getSource()+" to "+vfsTransferInfo.getDestination().getHost()
                 ;//+":"+vfsTransferInfo.getStatus(); 
             
         this.setTitle(title);

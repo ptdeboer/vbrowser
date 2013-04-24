@@ -120,8 +120,8 @@ public class TransferMonitorPanel extends JPanel
         String title="?";
         // darn null pointers: 
         if ((this.vfsTransferInfo.getSource()!=null) && (this.vfsTransferInfo.getDestination()!=null))
-            title="Transfering:"+(this.vfsTransferInfo.getSource().getBasename())
-                 +" to "+vfsTransferInfo.getDestination().getHostname()
+            title="Transfering:"+(this.vfsTransferInfo.getSource().getPath())
+                 +" to "+vfsTransferInfo.getDestination().getHost()
                  +" (method="+vfsTransferInfo.getActionType()+")"; 
         	 
         
