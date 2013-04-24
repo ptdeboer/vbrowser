@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Level;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -70,9 +70,9 @@ public class FSUtil
 
     private void init()
     {
-        this.userHome = new VRI("file", null, 0, Global.getGlobalUserHome());
-        this.workingDir=new VRI("file", null, 0, Global.getGlobalUserHome());
-        this.tmpDir=new VRI("file", null, 0, Global.getGlobalTempDir());
+        this.userHome = new VRI("file", null, 0, GlobalProperties.getGlobalUserHome());
+        this.workingDir=new VRI("file", null, 0, GlobalProperties.getGlobalUserHome());
+        this.tmpDir=new VRI("file", null, 0, GlobalProperties.getGlobalTempDir());
     }
    
     /**
@@ -331,6 +331,11 @@ public class FSUtil
     public LocalFSNode getWorkingDir()
     {
         return this.newLocalFSNode(this.workingDir.getPath());
+    }
+    
+    public VRI getUserHome()
+    {
+        return userHome;
     }
     
     public LocalFSNode getUserHomeDir()

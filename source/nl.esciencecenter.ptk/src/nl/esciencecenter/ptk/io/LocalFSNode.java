@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.net.VRI;
 
@@ -50,7 +50,7 @@ public class LocalFSNode extends FSNode
 	{
 	    super((VRI)null);
 	    // vri not set, use GlobalUserHome to resolve path:
-	    VRI vri=Global.getGlobalUserHomeVRI().resolve(path);
+	    VRI vri=GlobalProperties.getGlobalUserHomeVRI().resolve(path);
 	    init(vri);
 	}
 	

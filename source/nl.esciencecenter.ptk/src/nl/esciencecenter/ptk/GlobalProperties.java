@@ -30,7 +30,7 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 /** 
  * Global properties and other runtime configurations. 
  */
-public class Global
+public class GlobalProperties
 {
 	/** Java property name for architecture: For example: "i386" or "i586" */ 
     public static final String PROP_JAVA_OS_ARCH = "os.arch";
@@ -63,8 +63,8 @@ public class Global
     public static final String MAC_OSX= "Mac OS X";
     
     private static ClassLogger logger;
-    
-    // extra non system properties:
+
+    /** Private copy for non system properties */ 
     private static Properties globalProperties=new Properties(); 
 
     static
@@ -75,13 +75,18 @@ public class Global
     	// ---
 
         // Default logger. 
-    	logger=ClassLogger.getLogger(Global.class); 
+    	logger=ClassLogger.getLogger(GlobalProperties.class); 
     	logger.infoPrintf(">>> Global Init <<<\n"); 
     }
 
+    /** 
+     * Dummy method. 
+     * Call this method to initialize class loading. 
+     * See static{...} 
+     */
     public static void init()
     {
-        // Dummy init. Initializes Class. See static{...}
+        ;//
     }
 
 	public static Object getProperty(String name)
@@ -184,27 +189,33 @@ public class Global
 
     public static boolean isWindows()
     {
-      return StringUtil.equalsIgnoreCase(Global.getOsName(),WINDOWS);
+      return StringUtil.equalsIgnoreCase(GlobalProperties.getOsName(),WINDOWS);
     }
 
     public static boolean isLinux()
     {
-      return StringUtil.equalsIgnoreCase(Global.getOsName(),LINUX);
+      return StringUtil.equalsIgnoreCase(GlobalProperties.getOsName(),LINUX);
     }
     
-    /** Explicit Mac Os <strong>X</strong> */ 
+    /** 
+     * Explicit Mac Os<strong>X</strong>.
+     */ 
     public static boolean isMacOSX()
     {
-      return StringUtil.equalsIgnoreCase(Global.getOsName(),MAC_OSX);
+      return StringUtil.equalsIgnoreCase(GlobalProperties.getOsName(),MAC_OSX);
     }
     
-    /** Explicit Mac Os, but <strong>not</strong> X */    
+    /** 
+     * Explicit Mac Os, but <strong>not</strong> 'Os X'. 
+     */    
     public static boolean isMacOS()
     {
-      return StringUtil.equalsIgnoreCase(Global.getOsName(),MAC_OS);
+      return StringUtil.equalsIgnoreCase(GlobalProperties.getOsName(),MAC_OS);
     }
     
-    /** is MacOS or MacOS X */ 
+    /** 
+     * Returns true for MacOS or MacOS X
+     */ 
     public static boolean isMac()
     {
     	return (isMacOS() || isMacOSX()); 
