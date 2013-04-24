@@ -144,12 +144,6 @@
         </antcall>
 
         <antcall target="build-component">
-            <param name="name" value="nl.esciencecenter.vbrowser.vb2.ui"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
-        </antcall>
-
-        <antcall target="build-component">
             <param name="name" value="nl.nlesc.vlet.gui.utils"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
