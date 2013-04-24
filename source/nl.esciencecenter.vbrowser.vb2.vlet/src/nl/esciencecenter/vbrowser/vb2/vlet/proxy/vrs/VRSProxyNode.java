@@ -21,6 +21,7 @@
 package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
 
 
+import java.net.URISyntaxException;
 import java.util.Map;
 
 import nl.esciencecenter.ptk.data.LongHolder;
@@ -53,7 +54,7 @@ public class VRSProxyNode extends ProxyNode
 
     private VNode vnode;
 
-    public VRSProxyNode(VRSProxyFactory vrsProxyFactory, VNode vnode,VRI locator) throws ProxyException
+    public VRSProxyNode(VRSProxyFactory vrsProxyFactory, VNode vnode,VRI locator) throws ProxyException, URISyntaxException
     {
         super(locator);
         this.vnode=vnode; 
@@ -88,7 +89,7 @@ public class VRSProxyNode extends ProxyNode
             if (parent==null)
                 return null; 
            
-            return new VRSProxyNode(factory,parent,parent.getVRL());
+            return new VRSProxyNode(factory,parent,new VRI(parent.getVRL().toURI()));
         }
         catch (Exception e)
         {
@@ -167,7 +168,7 @@ public class VRSProxyNode extends ProxyNode
     {
         try
         {
-            return new VRSProxyNode(factory,node,node.getVRL());
+            return new VRSProxyNode(factory,node,new VRI(node.getVRL().toURI()));
         }
         catch (Exception e)
         {

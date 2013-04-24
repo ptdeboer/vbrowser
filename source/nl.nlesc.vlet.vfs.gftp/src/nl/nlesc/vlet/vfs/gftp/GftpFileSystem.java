@@ -44,6 +44,7 @@ import java.util.Hashtable;
 import java.util.TimeZone;
 import java.util.Vector;
 
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -1003,7 +1004,7 @@ public class GftpFileSystem extends FileSystemNode
         if (nameIsPath)
             newpath = newName;
         else
-            newpath = VRL.dirname(filepath) + VRL.SEP_CHAR + newName;
+            newpath = URIFactory.dirname(filepath) + URIFactory.SEP_CHAR + newName;
 
         try
         {
@@ -1043,8 +1044,8 @@ public class GftpFileSystem extends FileSystemNode
             // Returns no information nor throws exceptions !!!:
             // this.fileInfo.setName(newName);
 
-            String parentDir = VRL.dirname(path);
-            String name = VRL.basename(path);
+            String parentDir = URIFactory.dirname(path);
+            String name = URIFactory.basename(path);
 
             synchronized (serverMutex)
             {
@@ -1194,7 +1195,7 @@ public class GftpFileSystem extends FileSystemNode
     {
         logger.debugPrintf("createDir:%s\n",dirpath);
 
-        String parentDir=VRL.dirname(dirpath); 
+        String parentDir=URIFactory.dirname(dirpath); 
         
         // Check/Create parent first: 
         MlsxEntry parentEntry = mlst(parentDir);
@@ -1728,8 +1729,8 @@ public class GftpFileSystem extends FileSystemNode
         // System.err.println("fakeMlst:"+filepath);
         boolean isRoot = false;
 
-        String name = VRL.basename(filepath);
-        String dirname = VRL.dirname(filepath);
+        String name = URIFactory.basename(filepath);
+        String dirname = URIFactory.dirname(filepath);
 
         // root directory hack: stat "." directory of 'parent' directory "/";
 
@@ -1894,7 +1895,7 @@ public class GftpFileSystem extends FileSystemNode
 
         String typestr = MlsxEntry.TYPE_FILE;
         // make sure LAST part of name is returned !
-        String fname = VRL.basename(finfo.getName());
+        String fname = URIFactory.basename(finfo.getName());
 
         if (finfo.isDirectory() == true)
             typestr = MlsxEntry.TYPE_DIR;
@@ -2174,7 +2175,7 @@ public class GftpFileSystem extends FileSystemNode
         // Use '..' to get to parent dir. Is root ("/") save.
 
         // String fakepath = dirPath + VRL.sepChar + ".."; // cd ..
-        String parentpath = VRL.dirname(dirPath);
+        String parentpath = URIFactory.dirname(dirPath);
 
         // Fetch:'..' which on unix filesystems is the Parent!
         MlsxEntry entry = mlst(parentpath);

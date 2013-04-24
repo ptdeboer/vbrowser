@@ -732,12 +732,13 @@ public class VomsUtil
             // Search paths.
             // All files are read, newer definition replace old.
             searchPaths = new String[]
-            { "/etc/grid-security/vomsdir/voms.xml", // system wide
+                { 
+                    "/etc/grid-security/vomsdir/voms.xml", // system wide
                     "vomsdir/voms.xml", // Relative! installation
-                    VletConfig.getUserHomeLocation().append(".globus/vomsdir/voms.xml").getPath(), // $HOME/.globus
-                    VletConfig.getUserHomeLocation().append(".vletrc/vomsdir/voms.xml").getPath(), // vletrc
+                    VletConfig.getUserHomeLocation().appendPath(".globus/vomsdir/voms.xml").getPath(), // $HOME/.globus
+                    VletConfig.getUserHomeLocation().appendPath(".vletrc/vomsdir/voms.xml").getPath(), // vletrc
                     null // null = default location.
-            };
+                };
         }
         catch (Exception e)
         {

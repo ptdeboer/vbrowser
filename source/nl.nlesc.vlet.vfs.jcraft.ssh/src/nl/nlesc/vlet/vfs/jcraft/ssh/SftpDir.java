@@ -23,6 +23,7 @@ package nl.nlesc.vlet.vfs.jcraft.ssh;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.nlesc.vlet.data.VAttribute;
@@ -67,7 +68,7 @@ public class SftpDir extends VDir implements VUnixFileAttributes
             }
             else
             {
-              String filepath=this.getPath()+VRL.SEP_CHAR+childs[i];
+              String filepath=this.getPath()+URIFactory.SEP_CHAR+childs[i];
               nodes.add(server.getPath(filepath)); 
             }
         }

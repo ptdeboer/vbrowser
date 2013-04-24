@@ -34,6 +34,7 @@ import java.io.OutputStream;
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.SecretHolder;
 import nl.esciencecenter.ptk.io.IOUtil;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.data.VAttribute;
@@ -1081,7 +1082,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         String newPath = null;
 
         if (nameIsPath == false)
-            newPath = VRL.dirname(path) + VRL.SEP_CHAR + newName;
+            newPath = URIFactory.dirname(path) + URIFactory.SEP_CHAR + newName;
         else
             newPath = newName;
 
@@ -1646,12 +1647,12 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
 
     public String getDefaultKnownHostsFile()
     {
-        return getDefaultSSHDir() + VRL.SEP_CHAR_STR+JCraftClient.SSH_KNOWN_HOSTS;
+        return getDefaultSSHDir() + URIFactory.SEP_CHAR_STR+JCraftClient.SSH_KNOWN_HOSTS;
     }
 
     public String getDefaultSSHDir()
     {
-        return vrsContext.getLocalUserHome() + VRL.SEP_CHAR_STR + JCraftClient.SSH_CONFIG_SIBDUR;
+        return vrsContext.getLocalUserHome() + URIFactory.SEP_CHAR_STR + JCraftClient.SSH_CONFIG_SIBDUR;
     }
 
     void setFinalUserSubject(VRSContext newContext) throws VlAuthenticationException

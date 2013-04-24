@@ -24,6 +24,7 @@ import java.util.List;
 
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.glite.lfc.internal.FileDesc;
@@ -263,7 +264,7 @@ public class LFCDir extends VDir
         {
 //            newPath = resolvePath(newPath);//this returns the same path    
             thisPath = new VRL(getPath());
-            newPath = resolvePathString(thisPath.getParent().getPath()+VRL.SEP_CHAR+newName);    
+            newPath = resolvePathString(thisPath.getParent().getPath()+URIFactory.SEP_CHAR+newName);    
         }
         
         return lfcClient.mv(getPath(), newPath);

@@ -23,6 +23,7 @@ package nl.nlesc.vlet.vfs.gftp;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.VlException;
@@ -157,7 +158,7 @@ public class GftpDir extends VDir
         {
             MlsxEntry entry = ((MlsxEntry) o);
             String name = entry.getFileName();
-            name = VRL.basename(name);
+            name = URIFactory.basename(name);
             // Debug("fileOnfo=" + fileInfo);
 
             String remotePath = path + "/" + name;

@@ -354,15 +354,7 @@ public class OctopusFS extends FileSystemNode
         
         if (renameFullAbsolutePath==false)
         {
-            // resolve against parent: 
-            try
-            {
-                newVRL=baseVRL.getParent().resolvePath(newName);
-            }
-            catch (VRISyntaxException e)
-            {
-                throw new VlException(e.getMessage(),e); 
-            } 
+            newVRL=baseVRL.getParent().resolvePath(newName);
         }
         else
         {

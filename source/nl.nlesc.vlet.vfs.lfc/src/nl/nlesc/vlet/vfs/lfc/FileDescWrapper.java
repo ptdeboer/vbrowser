@@ -20,12 +20,12 @@
 
 package nl.nlesc.vlet.vfs.lfc;
 
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.glite.lfc.internal.FileDesc;
 import nl.nlesc.glite.lfc.internal.ReplicaDesc;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class FileDescWrapper
 {
@@ -82,7 +82,7 @@ public class FileDescWrapper
     public void setNameAndPath(String path)
     {
         this.lfnPath = path;
-        this.fileBasename=VRL.basename(path); // PTdB: use VRL methods 
+        this.fileBasename=URIFactory.basename(path); // PTdB: use VRL methods 
     }
 
     /** Returns LNF path that was used to create this File Description ! */ 

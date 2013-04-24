@@ -282,7 +282,7 @@ public class JPedalPDFViewer extends ViewerPlugin implements HyperLinkListener,
 
 		try
 		{
-			String uristr=vrl.toURIString();
+			String uristr=vrl.toURI().toString();
 			loadFile(uristr);
 		}
 		catch (Exception e)

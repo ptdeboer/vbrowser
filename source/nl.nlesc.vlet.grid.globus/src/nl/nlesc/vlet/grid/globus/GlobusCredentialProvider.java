@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -42,7 +43,6 @@ import nl.nlesc.vlet.net.ssl.CertificateStore;
 import nl.nlesc.vlet.util.grid.GridProxy;
 import nl.nlesc.vlet.util.grid.VGridCredential;
 import nl.nlesc.vlet.util.grid.VGridCredentialProvider;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 import org.globus.common.CoGProperties;
@@ -226,7 +226,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
             return this.defaultUserKeyFile; 
      
         // return normalized path 
-        return VRL.uripath(new DefaultGridProxyModel().getProperties().getUserKeyFile());   
+        return URIFactory.uripath(new DefaultGridProxyModel().getProperties().getUserKeyFile());   
     }
     
     /** Return default directory name which contains userkey and usercert */ 
@@ -236,7 +236,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
             return this.defaultUserCertFile;
         
         // return normalized path 
-        return VRL.uripath(new DefaultGridProxyModel().getProperties().getUserCertFile());   
+        return URIFactory.uripath(new DefaultGridProxyModel().getProperties().getUserCertFile());   
     }
 
     public int getDefaultLifetime()
@@ -434,7 +434,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
             return this.defaultProxyFilename;
         
         // return normalized path 
-        return VRL.uripath(new DefaultGridProxyModel().getProperties().getProxyFile());   
+        return URIFactory.uripath(new DefaultGridProxyModel().getProperties().getProxyFile());   
     }
 
     @Override
