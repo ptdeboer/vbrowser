@@ -86,6 +86,7 @@ import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrl.VRLList;
+import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
 
 /** 
@@ -1111,7 +1112,7 @@ public class LFCClient
 
     public VRL createVRL(String path) throws VRLSyntaxException
     {
-        return lfcServerNode.getVRL().resolvePathToVRL(path);
+        return lfcServerNode.getVRL().resolvePath(path);
     }
     
     /**
@@ -1737,7 +1738,7 @@ public class LFCClient
             String sePath = vopath + "/" + lfcname + "_" + createNewUniqueFileID();
 
             // replica VRL
-            VRL srmFileVrl = seVOLoc.copyWithNewPathToVRL(sePath);
+            VRL srmFileVrl = seVOLoc.replacePath(sePath);
 
             logger.infoPrintf("Creating new SRM Replica URI:%s\n", srmFileVrl);
 
@@ -2509,7 +2510,7 @@ public class LFCClient
     public boolean checkTransferLocation(VRL remoteLocation, StringHolder explanation,
             boolean source2target)
     {
-        String scheme = VRL.resolveScheme(remoteLocation.getScheme()); 
+        String scheme = VRLUtil.resolveScheme(remoteLocation.getScheme()); 
         
         explanation.value = "LFC Supports 3rd party transfers for scheme:" + scheme;
         debug("Checking 3rd party transfer for:" + remoteLocation);

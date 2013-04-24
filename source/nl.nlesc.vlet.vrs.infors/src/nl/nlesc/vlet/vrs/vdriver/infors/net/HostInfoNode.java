@@ -131,7 +131,7 @@ public class HostInfoNode extends CompositeServiceInfoNode<VNode>
                 {
                     if (info.isValidConnection())
                     {
-                        VRL subVrl=this.getVRL().resolvePathToVRL(""+info.port);
+                        VRL subVrl=this.getVRL().resolvePath(""+info.port);
                         String scheme=info.getProtocol();   
                         
                         VRL targetVrl=new VRL(scheme,null,host,info.port,"/");

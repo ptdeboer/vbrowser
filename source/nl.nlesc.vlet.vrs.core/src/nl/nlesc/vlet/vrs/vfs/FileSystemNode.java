@@ -77,7 +77,7 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
      */
     public String resolvePathString(String path) throws VlException
     {
-        return getVRL().resolvePathToVRL(path).getPath(); 
+        return getVRL().resolvePath(path).getPath(); 
     }
    
     /**
@@ -86,7 +86,7 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
      */
     public VRL resolvePath(String path) throws VlException
     {
-        return getLocation().resolvePathToVRL(path);
+        return getLocation().resolvePath(path);
     }
     
 	// implementations are encourage to override this method for speed

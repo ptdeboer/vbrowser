@@ -503,7 +503,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
 
         int ref = this.childRefCounter++; // .childNodes.indexOf(node);
 
-        VRL newRef = this.getLocation().appendPathToVRL("v" + StringUtil.toZeroPaddedNumber(ref, 3));
+        VRL newRef = this.getLocation().appendPath("v" + StringUtil.toZeroPaddedNumber(ref, 3));
 
         //debug("addSubNode():newRef=" + newRef);
         node.setLogicalLocation(newRef);

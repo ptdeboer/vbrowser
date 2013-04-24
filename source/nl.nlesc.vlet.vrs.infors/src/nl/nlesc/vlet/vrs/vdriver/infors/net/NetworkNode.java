@@ -279,7 +279,7 @@ public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEdi
         }
 
         // use IP string a unique part in VRL:
-        VRL vrl = this.getVRL().resolvePathToVRL(ipstr);
+        VRL vrl = this.getVRL().resolvePath(ipstr);
 
         HostInfoNode node = new HostInfoNode(this, vrl);
         // info("New node:"+node);

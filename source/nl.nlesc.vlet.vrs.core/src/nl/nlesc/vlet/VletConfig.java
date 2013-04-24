@@ -1189,7 +1189,7 @@ public class VletConfig
         {
             try
             {
-                vrls.add(getBaseLocation().resolve(caPaths[i])); 
+                vrls.add(getBaseLocation().resolveSibling(caPaths[i])); 
             }
             catch (Exception e)
             {

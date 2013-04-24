@@ -45,7 +45,7 @@ public class GlobusInfoSystem extends CompositeServiceInfoNode<VNode> implements
 	@Override
 	public VRL resolve(String path) throws VRLSyntaxException
 	{
-	    return this.getVRL().resolve(path);
+	    return this.getVRL().resolveSibling(path);
     }
 	 
 	@Override

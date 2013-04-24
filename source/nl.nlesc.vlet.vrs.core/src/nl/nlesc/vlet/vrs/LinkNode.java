@@ -104,7 +104,7 @@ public class LinkNode extends LogicalResourceNode
             }
         }
         // Let Parent resolve child VRL to get actual logical path !
-        VRL linkLoc = parentNode.getVRL().resolvePathToVRL(name);
+        VRL linkLoc = parentNode.getVRL().resolvePath(name);
         LinkNode lnode = LinkNode.createLinkNode(context, linkLoc, targetVRL);
         lnode.saveAtLocation(linkLoc);
 

@@ -65,7 +65,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
 
     protected GftpFile(GftpFileSystem server, String path, MlsxEntry entry) throws VlException
     {
-        super(server, server.getServerVRL().copyWithNewPathToVRL(path));
+        super(server, server.getServerVRL().replacePath(path));
         init(server, path, entry);
         // keep private copy of filesystemserver:
         this.gftpServer = server;

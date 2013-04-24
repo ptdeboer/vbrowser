@@ -558,7 +558,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
             }
 
             // append reference:
-            VRL linkPath = this.getLocation().appendPathToVRL(ref);
+            VRL linkPath = this.getLocation().appendPath(ref);
             vlnode.setLogicalLocation(linkPath);
         }
     }
@@ -603,7 +603,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
             }
 
             // append reference:
-            VRL linkPath = this.getLocation().appendPathToVRL(ref);
+            VRL linkPath = this.getLocation().appendPath(ref);
             gnode.setLogicalLocation(linkPath);
             // do NOT Set parent:
             // gnode.setParent(this);
@@ -769,7 +769,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
             // Debug("new node name="+newNameWithExt);
             // creat new empty file !
             dir.createFile(newNameWithExt);
-            return dir.getVRL().appendPathToVRL(newNameWithExt);
+            return dir.getVRL().appendPath(newNameWithExt);
         }
 
     }

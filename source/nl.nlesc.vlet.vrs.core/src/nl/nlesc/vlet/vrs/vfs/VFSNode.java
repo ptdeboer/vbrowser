@@ -188,7 +188,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      */
     public VRL resolvePath(String subPath) throws VlException
     {
-        return getVRL().resolvePathToVRL(subPath); 
+        return getVRL().resolvePath(subPath); 
     }  
    
     /**
@@ -243,7 +243,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     public VFSNode getPath(String path) throws VlException
     {
         // resolve absolute or relative path: 
-        VRL loc=getLocation().resolvePathToVRL(path); 
+        VRL loc=getLocation().resolvePath(path); 
         VNode node=vrsContext.openLocation(loc);
         
         if (node instanceof VFSNode)

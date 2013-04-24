@@ -123,7 +123,7 @@ public class TestVFSClient extends TestCase
 
     public void testMkdir() throws VlException
     {
-        VDir subDir = vfsClient.mkdir(testDir.getVRL().appendPathToVRL("/aap/noot/mies"), false);
+        VDir subDir = vfsClient.mkdir(testDir.getVRL().appendPath("/aap/noot/mies"), false);
         Assert.assertTrue("New subdirectory doesn't exists:" + subDir, subDir.exists());
 
         Message("Created:" + subDir);

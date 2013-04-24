@@ -162,7 +162,7 @@ public final class VFSClient extends VRSClient
         
         // check relative locations against current working dir. 
             
-        return getWorkingDir().resolveToVRL(relLoc);  
+        return getWorkingDir().resolveSibling(relLoc);  
     }
 
     /** Returns remote File or Directory specified by the location*/ 

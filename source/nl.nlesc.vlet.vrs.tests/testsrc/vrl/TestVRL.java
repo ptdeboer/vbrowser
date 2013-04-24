@@ -205,18 +205,18 @@ public class TestVRL
         // Check relative PATH 
         relvrl = new VRL("subdir");
         VRL parent = new VRL("gftp://hostname/parentpath");
-        VRL loc2 = parent.resolvePathToVRL(relvrl);
+        VRL loc2 = parent.resolvePath(relvrl);
         Assert.assertEquals("resolved VRL turned out wrong", "gftp://hostname/parentpath/subdir", loc2.toString());
 
         // Check relative PATH from (html) FILE 
         
         relvrl = new VRL("subdir");
         parent = new VRL("gftp://hostname/parentpath/base.html");
-        loc2 = parent.resolveToVRL(relvrl);
+        loc2 = parent.resolveSibling(relvrl);
         Assert.assertEquals("resolved VRL turned out wrong", "gftp://hostname/parentpath/subdir", loc2.toString());
 
         // index
-        relvrl = parent.resolve("#index");
+        relvrl = parent.resolveSibling("#index");
         Assert.assertEquals("resolved VRL turned out wrong", "gftp://hostname/parentpath/base.html#index", relvrl
                 .toString());
     }
@@ -230,44 +230,44 @@ public class TestVRL
 
         VRL parent = new VRL("file:///C:");
         VRL relvrl = new VRL("subdir");
-        VRL resolved = parent.resolveToVRL(relvrl);
+        VRL resolved = parent.resolveSibling(relvrl);
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file:/C:/subdir", resolved.toString());
 
         parent = new VRL("file://WinHost/C:");
         relvrl = new VRL("subdir");
-        resolved = parent.resolveToVRL(relvrl);
+        resolved = parent.resolveSibling(relvrl);
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file://WinHost/C:/subdir", resolved.toString());
 
         parent = new VRL("file:/C:");
         relvrl = new VRL("subdir");
-        resolved = parent.resolveToVRL(relvrl);
+        resolved = parent.resolveSibling(relvrl);
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file:/C:/subdir", resolved.toString());
 
         parent = VRL.createDosVRL("file:///C:\\");
         relvrl = VRL.createDosVRL(".\\subdir");
-        resolved = parent.resolveToVRL(relvrl);
+        resolved = parent.resolveSibling(relvrl);
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file:/C:/subdir", resolved.toString());
 
         parent = VRL.createDosVRL("file:///C:\\Windos XP\\Stuffdir\\");
         relvrl = VRL.createDosVRL(".\\subdir\\subsubdir");
-        resolved = parent.resolvePathToVRL(relvrl);
+        resolved = parent.resolvePath(relvrl);
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file:/C:/Windos XP/Stuffdir/subdir/subsubdir",
                 resolved.toString());
 
         parent = VRL.createDosVRL("file:/C:\\Windos XP\\Stuffdir\\");
         relvrl = VRL.createDosVRL(".\\subdir\\subsubdir");
-        resolved = parent.resolvePathToVRL(relvrl);
+        resolved = parent.resolvePath(relvrl);
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file:/C:/Windos XP/Stuffdir/subdir/subsubdir",
                 resolved.toString());
 
         parent = VRL.createDosVRL("file:///C:\\subdir\\");
-        resolved = parent.resolvePathToVRL("subsubdir");
+        resolved = parent.resolvePath("subsubdir");
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file:/C:/subdir/subsubdir", resolved.toString());
 
-        resolved = parent.resolvePathToVRL("../twindir");
+        resolved = parent.resolvePath("../twindir");
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file:/C:/twindir", resolved.toString());
 
-        resolved = parent.resolvePathToVRL("./../twindir2");
+        resolved = parent.resolvePath("./../twindir2");
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file:/C:/twindir2", resolved.toString());
 
         // TODO:
@@ -467,7 +467,7 @@ public class TestVRL
         // 
 
         // resolve absolute path:
-        VRL newvrl = vrl.resolvePathToVRL("/etc");
+        VRL newvrl = vrl.resolvePath("/etc");
         // allow both change of localhost names:
         String host = newvrl.getHostname();
 
@@ -476,7 +476,7 @@ public class TestVRL
             Assert.assertEquals("new absolute VRL does not match", "file:///etc", newvrl.toString());
 
         // resolve absolute path:
-        newvrl = vrl.resolvePathToVRL("etc");
+        newvrl = vrl.resolvePath("etc");
         // must be "file:///etc"
         Assert.assertEquals("new absolute VRL does not match", newvrl.toString(), "file:/home/etc");
     }
@@ -535,7 +535,7 @@ public class TestVRL
         // starting a path without an "/" creates wrong VRLs
 
         String relPath = "relative";
-        VRL newvrl = path.copyWithNewPathToVRL(relPath);
+        VRL newvrl = path.replacePath(relPath);
 
         // between host:port and relpath there must be an extra slash !
         Assert.assertEquals("Extra slash isn't inserted.", newvrl.toString(), prefix + "/" + relPath);
@@ -568,7 +568,7 @@ public class TestVRL
         // starting a path without an "/" creates wrong VRLs
 
         String relPath = "relative";
-        VRL newvrl = ref1.copyWithNewPathToVRL(relPath);
+        VRL newvrl = ref1.replacePath(relPath);
 
         // duplicate path should insert extra slash (or else it isn't a path);
         Assert.assertEquals("Relative path is kept relative.", newvrl.toString(), "scheme:relative?hello");

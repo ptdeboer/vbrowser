@@ -549,7 +549,7 @@ public class VRSContext implements Serializable
      */
     public void blockHost(String hostname)
     {
-        if (VRL.isLocalHostname(hostname))
+        if (VRLUtil.isLocalHostname(hostname))
             hostname = VRS.LOCALHOST;
 
         hostAccessList.put(hostname, new Boolean(false));
@@ -567,7 +567,7 @@ public class VRSContext implements Serializable
      */
     public void allowHost(String hostname)
     {
-        if (VRL.isLocalHostname(hostname))
+        if (VRLUtil.isLocalHostname(hostname))
             hostname = VRS.LOCALHOST;
 
         // store alias for faster lookup:
@@ -598,7 +598,7 @@ public class VRSContext implements Serializable
      */
     public boolean isAllowedHost(String hostname)
     {
-        if (VRL.isLocalHostname(hostname))
+        if (VRLUtil.isLocalHostname(hostname))
             hostname = VRS.LOCALHOST;
 
         boolean hasEntry = this.hostAccessList.containsKey(hostname);

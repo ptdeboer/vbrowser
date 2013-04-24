@@ -154,7 +154,7 @@ public class SRMFileSystem extends FileSystemNode
 
     public static boolean isGFTP(VRL location)
     {
-        String scheme = VRL.resolveScheme(location.getScheme());
+        String scheme = VRLUtil.resolveScheme(location.getScheme());
 
         if (StringUtil.equalsIgnoreCase(scheme, VRS.GFTP_SCHEME))
             return true;
@@ -164,7 +164,7 @@ public class SRMFileSystem extends FileSystemNode
 
     public static boolean isSRM(VRL location)
     {
-        String scheme = VRL.resolveScheme(location.getScheme()); 
+        String scheme = VRLUtil.resolveScheme(location.getScheme()); 
         
 
         if (StringUtil.equalsIgnoreCase(scheme, VRS.SRM_SCHEME))

@@ -34,8 +34,6 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.VRSContext;
 
 /**
  * Virtual Resource Locator Class. 
@@ -51,59 +49,6 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     static
     {
         logger=ClassLogger.getLogger(VRL.class);
-    }
-    
-    /**
-     * Static method to check for empty or localhost names 
-     * and aliases (127.0.0.1) 
-     */ 
-    public static boolean isLocalHostname(String host)
-    {
-        if (host==null)
-            return true;
-            
-        if (host.compareTo("")==0)
-            return true;
-        
-        if (host.compareTo(VRS.LOCALHOST)==0)
-            return true;
-        
-        if (host.compareTo("127.0.0.1")==0)
-            return true; 
-        
-        if (host.compareTo(GlobalProperties.getHostname())==0)
-            return true; 
-        
-        return false;
-    }
-    
-    /**
-     * Compares filepaths and return subpath of childPath relative to its parenPath. 
-     * If the childPath is not subdirectory of the parentPath, null is returned. 
-     */ 
-    public static String relativePath(String parentPath, String childPath)
-    {
-        if ((childPath==null) || (parentPath==null))
-            return null; 
-        
-        if (childPath.startsWith(parentPath)==false) 
-            return null;
-        
-        // use NORMALIZED paths ! 
-        parentPath=URIFactory.uripath(parentPath);
-        
-        childPath=URIFactory.uripath(childPath); 
-        
-        String relpath=childPath.substring(parentPath.length(),childPath.length());
-        // strip path seperator 
-        if (relpath.startsWith("/")) 
-            relpath=relpath.substring(1);
-        return relpath; 
-    }
-
-    public static String resolveScheme(String scheme)
-    {
-        return VRSContext.getDefault().resolveScheme(scheme);
     }
     
     public static VRL createVRL(URIFactory factory, boolean duplicateFactory)
@@ -128,7 +73,6 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     
     protected VRL()
     {
-        
     }
     
     protected VRL(URIFactory factory)
@@ -239,12 +183,26 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         return duplicate();
     }
 
+    /**
+     * Compares this VRL with other VRL based on normalized String representations. 
+     */
     @Override
     public int compareTo(VRL other)
     {   
         return StringUtil.compare(this.toNormalizedString(), other.toNormalizedString(),false);
     }
     
+    public int compareToObject(Object other)
+    {   
+        if ((other instanceof VRL)==false)
+            return -1; 
+            
+        return compareTo((VRL)other);
+    }
+    
+    /**
+     * Returns hash code of normalized URI String. 
+     */
     @Override
     public int hashCode()
     {
@@ -282,6 +240,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         return uriFactory.toNormalizedString(); 
     }
     
+    /** Calls toURI().toURL() */ 
     public java.net.URL toURL() throws MalformedURLException
     {
         try
@@ -475,14 +434,8 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     // ========================================================================
     // Resolvers 
     // ========================================================================
-    
-    // alternate method to cast Exception to VRLSyntaxException
-    public VRL resolveToVRL(VRL relLoc) throws VRLSyntaxException
-    {
-        return this.resolve(relLoc); 
-    }
-    
-    public VRL resolve(VRL relLoc) throws VRLSyntaxException
+
+    public VRL resolveSibling(VRL relLoc) throws VRLSyntaxException
     {
         try
         {
@@ -494,7 +447,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         }
     }
     
-    public VRL resolve(String path) throws VRLSyntaxException
+    public VRL resolveSibling(String path) throws VRLSyntaxException
     {
         try
         {
@@ -572,7 +525,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         return false; 
     }
 
-    public VRL resolvePathToVRL(VRL relvrl) throws VRLSyntaxException
+    public VRL resolvePath(VRL relvrl) throws VRLSyntaxException
     {
         // ambigious: 
         if (relvrl.uriFactory.isAbsolute())
@@ -584,8 +537,6 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     // =============================
     // Extra VRL interface methods. 
     // =============================
-
-
 
     public String getExtension()
     {
@@ -629,32 +580,6 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     {
        return uriFactory.getPathElements(); 
     }
-        
-    /**
-     * Append Path, addes URI Seperator char "/" between path elements.  
-     * Used append() for plain string appends or this one for filesystems paths. 
-     */ 
-    public VRL appendPathToVRL(String path)
-    {
-        return this.appendPath(path);
-    }
-    
-    // alternate method to cast Exception to VRLSyntaxException
-    public VRL resolveToVRL(String relLoc) throws VRLSyntaxException
-    {
-        return resolve(relLoc);        
-    }
-    
-    // alternate method to cast Exception to VRLSyntaxException
-    public VRL resolvePathToVRL(String path) throws VRLSyntaxException
-    {
-        return resolvePath(path);        
-    }
-    
-    public VRL copyWithNewPathToVRL(String path)
-    {
-        return this.replacePath(path); 
-    }
 
     public boolean hasExtension(String ext, boolean matchCase)
     {
@@ -676,6 +601,13 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         return otherScheme.equals(getScheme()); 
     }
 
+    /** 
+     * Create URI, ignore exceptions. 
+     * Use this method if it is shure the URI is valid. 
+     * Exceptions are nested into Errors. 
+     * 
+     * @return URI representation of this VRL.
+     */
     public URI toURINoException()
     {
         try
@@ -684,7 +616,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         }
         catch (Exception e)
         {
-            return null; 
+            throw new Error(e.getMessage(),e); 
         }
     }
 
@@ -711,7 +643,6 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     {
         return (StringUtil.isEmpty(getFragment()) == false);
     }
-
 
     
 }

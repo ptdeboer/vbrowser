@@ -442,7 +442,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     public VRL getAliasTarget() throws VlException
     {
         // return as VRL
-        return getVRL().copyWithNewPathToVRL(getSymbolicLinkTarget());
+        return getVRL().replacePath(getSymbolicLinkTarget());
     }
 
     /**

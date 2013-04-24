@@ -49,7 +49,7 @@ public class VONode extends CompositeServiceInfoNode<VNode> implements VComposit
     
     public static VONode createVOGroup(VOGroupsNode groupsParentNode, String vo) throws VRLSyntaxException
     {
-        VRL vrl=groupsParentNode.getVRL().appendPathToVRL(vo); 
+        VRL vrl=groupsParentNode.getVRL().appendPath(vo); 
          
         VONode vogrp=new VONode(groupsParentNode.getVRSContext(),vrl);
         vogrp.vo=vo; 

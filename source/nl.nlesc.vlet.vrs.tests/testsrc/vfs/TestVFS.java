@@ -452,7 +452,7 @@ public class TestVFS extends VTestCase
     {
         verbose(1, "Remote testdir=" + getRemoteTestDir());
 
-        VRL filevrl = getRemoteTestDir().getVRL().appendPathToVRL(nextFilename("testFileB"));
+        VRL filevrl = getRemoteTestDir().getVRL().appendPath(nextFilename("testFileB"));
 
         // use fullpath:
         VFile newFile = getRemoteTestDir().createFile(filevrl.getPath());
@@ -2699,7 +2699,7 @@ public class TestVFS extends VTestCase
 
         new FileWriter(file1).setContents(contents);
         VRL sourceVRL = file1.getVRL();
-        VRL targetVRL = targetDir.appendPathToVRL(targetFilename);
+        VRL targetVRL = targetDir.appendPath(targetFilename);
         // create new VFile object, but do not really create file on filesystem
         // !
         VFile newTargetFile = dir2.getFileSystem().newFile(targetVRL);

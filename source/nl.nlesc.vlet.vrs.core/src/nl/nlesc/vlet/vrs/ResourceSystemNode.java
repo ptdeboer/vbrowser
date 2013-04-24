@@ -96,7 +96,7 @@ public abstract class ResourceSystemNode extends VCompositeNode implements VReso
      */
     public VRL resolve(String path) throws VRLSyntaxException
     {
-        return this.getVRL().resolve("/").resolvePath(path);
+        return this.getVRL().resolveSibling("/").resolvePath(path);
     }
     
     /** Default implementation is to browse the remote server home  */ 

@@ -230,7 +230,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
 
         infoPrintf(" - got # %d Storage Areas for vo:%s\n", sas.size(), vo);
 
-        VRL logVrl = logicalParent.appendPathToVRL("StorageElements (" + vo + ")");
+        VRL logVrl = logicalParent.appendPath("StorageElements (" + vo + ")");
         ResourceFolder resF = new ResourceFolder(vrsContext, logVrl);
 
         resF.setName(logVrl.getBasename());
@@ -267,7 +267,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
                 // set.put(attr);
 
                 InfoNode seNode = InfoNode.createServerInfoNode(vrsContext,
-                        logVrl.appendPathToVRL(sa.getHostname()), 
+                        logVrl.appendPath(sa.getHostname()), 
                         seLoc,
                         false);
                 
@@ -312,7 +312,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         BdiiService bdii = getBdiiService();
         ArrayList<ServiceInfo> lfcs = bdii.getLFCsforVO(vo);
 
-        VRL logVrl = logicalParent.appendPathToVRL("Logical File Catalogs (" + vo + ")");
+        VRL logVrl = logicalParent.appendPath("Logical File Catalogs (" + vo + ")");
         ResourceFolder resF = new ResourceFolder(vrsContext, logVrl);
         resF.setName(logVrl.getBasename());
 
@@ -346,7 +346,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
                 // attr = new VAttribute("serviceVersion", "?");
                 // set.put(attr);
 
-                InfoNode seNode = InfoNode.createServerInfoNode(vrsContext, logVrl.appendPathToVRL(lfcLoc.getHostname()),
+                InfoNode seNode = InfoNode.createServerInfoNode(vrsContext, logVrl.appendPath(lfcLoc.getHostname()),
                         lfcLoc, false);
                 seNode.setName("LFC " + lfcLoc.getHostname());
                 seNode.setInfoAttributes(set);
@@ -366,7 +366,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         BdiiService bdii = getBdiiService();
         ArrayList<ServiceInfo> wmss = bdii.getWMSServiceInfos(vo);
 
-        VRL logVrl = logicalParent.appendPathToVRL("WMS Services (" + vo + ")");
+        VRL logVrl = logicalParent.appendPath("WMS Services (" + vo + ")");
         ResourceFolder resF = new ResourceFolder(vrsContext, logVrl);
         resF.setName(logVrl.getBasename());
 
@@ -400,7 +400,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
                 // set.put(attr);
                 set = wms.getInfoAttributes();
 
-                InfoNode seNode = InfoNode.createServerInfoNode(vrsContext, logVrl.appendPathToVRL(loc.getHostname()), loc,
+                InfoNode seNode = InfoNode.createServerInfoNode(vrsContext, logVrl.appendPath(loc.getHostname()), loc,
                         false);
                 seNode.setInfoAttributes(set);
                 seNode.setName("WMS " + loc.getHostname());
@@ -425,7 +425,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         BdiiService bdii = getBdiiService();  
         ArrayList<ServiceInfo> lbss = bdii.getLBServiceInfosForVO(vo);
 
-        VRL logVrl = logicalParent.appendPathToVRL("LB Services (" + vo + ")");
+        VRL logVrl = logicalParent.appendPath("LB Services (" + vo + ")");
         ResourceFolder resF = new ResourceFolder(vrsContext, logVrl);
         resF.setName(logVrl.getBasename());
 
@@ -459,7 +459,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
                 // set.put(attr);
                 set = lbs.getInfoAttributes();
 
-                InfoNode seNode = InfoNode.createServerInfoNode(vrsContext, logVrl.appendPathToVRL(loc.getHostname()), loc,
+                InfoNode seNode = InfoNode.createServerInfoNode(vrsContext, logVrl.appendPath(loc.getHostname()), loc,
                         false);
                 seNode.setInfoAttributes(set);
                 seNode.setName("LB " + loc.getHostname());

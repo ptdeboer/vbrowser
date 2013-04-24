@@ -421,7 +421,7 @@ public final class VRSTransferManager
         			if ((newName==null) || (newName.value==null))
         				throw new ResourceAlreadyExistsException("New name can not be NULL");
                 
-        			VRL newFileVrl=new VRL(targetFile.getVRL().getParent().appendPathToVRL(newName.value)); 
+        			VRL newFileVrl=new VRL(targetFile.getVRL().getParent().appendPath(newName.value)); 
         			targetFile=targetFile.getFileSystem().newFile(newFileVrl);
         			break; 
         		}
@@ -474,7 +474,7 @@ public final class VRSTransferManager
             		if ((newName==null) || (newName.value==null))
             			throw new ResourceAlreadyExistsException("New name can not be NULL");
                 
-            		VRL newDirVrl=targetDir.getVRL().getParent().appendPathToVRL(newName.value); 
+            		VRL newDirVrl=targetDir.getVRL().getParent().appendPath(newName.value); 
             		targetDir=targetDir.getFileSystem().newDir(newDirVrl);
             		break; 
             	}
@@ -1047,7 +1047,7 @@ public final class VRSTransferManager
             }
         }
 	    
-	    return targetDirVrl.appendPathToVRL(optNewName); 
+	    return targetDirVrl.appendPath(optNewName); 
 	}
 	
 //	/**
@@ -1231,7 +1231,7 @@ public final class VRSTransferManager
 				continue; // first element = sourceDir! ; 
 
 			// get relative path starting from source directory path: 
-			String relPath=VRL.relativePath(sourceDir.getPath(),node.getPath());
+			String relPath=VRLUtil.isSubPath(sourceDir.getPath(),node.getPath());
 			// full path VRL of directory or file: 
 			VRL targetPath=targetDir.resolvePath(relPath);
 

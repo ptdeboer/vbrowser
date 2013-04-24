@@ -55,7 +55,7 @@ public class GftpDir extends VDir
      */
     GftpDir(GftpFileSystem server, String path, MlsxEntry entry) throws VlException
     {
-        super(server, server.getServerVRL().copyWithNewPathToVRL(path));
+        super(server, server.getServerVRL().replacePath(path));
         init(server, path, entry);
     }
 
