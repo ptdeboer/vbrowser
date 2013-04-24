@@ -46,12 +46,15 @@ public interface UI
      */ 
     int askYesNoCancel(String title,String message);
 
-    /** Ask for password, passphrase or other 'secret' String */ 
+    /** 
+     * Ask for password, passphrase or other 'secret' String 
+     */ 
     boolean askAuthentication(String message, SecretHolder secretHolder);
     
     /**
      * Simple formatted Input Dialog. Method is wrapper for JOptionPane ! 
      * See  JOptionPane.showConfirmDialog() for options.
+     * 
      * @return JOptionPane.OK_OPTION if successful. 
      *         Parameter inputFields can contain modified (Swing) objects.  
      */ 
