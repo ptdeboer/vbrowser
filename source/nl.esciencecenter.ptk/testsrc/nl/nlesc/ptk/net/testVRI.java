@@ -25,6 +25,7 @@ import java.net.URISyntaxException;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.util.StringUtil;
 
@@ -495,11 +496,11 @@ public class testVRI extends TestCase
                 // fragment seperator
                 VRI vri2;
                 if ((c == '#') || (c == '?') || (c == '&'))
-                    vri2 = new VRI("aap://noot/" + VRI.encode("" + c));
+                    vri2 = new VRI("aap://noot/" + URIFactory.encode("" + c));
                 else
                     vri2 = new VRI("aap://noot/" + c);
 
-                VRI vri3 = new VRI("aap://noot/" + VRI.encode("" + c));
+                VRI vri3 = new VRI("aap://noot/" + URIFactory.encode("" + c));
 
                 Assert.assertEquals("encoded URI does not match VRI", uri.toString(), vri.toURIString());
                 Assert.assertEquals("Decoded VRI path does not match. ", "/" + c, vri.getPath());
