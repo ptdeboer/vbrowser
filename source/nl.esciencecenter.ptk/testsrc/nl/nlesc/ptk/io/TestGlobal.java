@@ -24,7 +24,7 @@ import java.io.File;
 
 import junit.framework.Assert;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 
 import org.junit.Test;
 
@@ -38,17 +38,17 @@ public class TestGlobal
 	{
 		printf("--- TestGlobal ---\n");
 		
-		printf(" - user name =%s\n",assertNotEmpty(Global.getGlobalUserName()));
-		printf(" - user home =%s\n",assertNotEmpty(Global.getGlobalUserHome()));
-		printf(" - tmp dir   =%s\n",assertNotEmpty(Global.getGlobalTempDir()));
-		printf(" - hostname  =%s\n",assertNotEmpty(Global.getHostname()));
+		printf(" - user name =%s\n",assertNotEmpty(GlobalProperties.getGlobalUserName()));
+		printf(" - user home =%s\n",assertNotEmpty(GlobalProperties.getGlobalUserHome()));
+		printf(" - tmp dir   =%s\n",assertNotEmpty(GlobalProperties.getGlobalTempDir()));
+		printf(" - hostname  =%s\n",assertNotEmpty(GlobalProperties.getHostname()));
 		//
-		printf(" - OS info   = %s/%s/%s\n",Global.getOsArch(),Global.getOsName(),Global.getOsVersion()); 
-		printf(" - isWindows = %s\n",Global.isWindows());  
-		printf(" - isLinux   = %s\n",Global.isLinux());	
-		printf(" - isMacOS   = %s\n",Global.isMacOS());
-		printf(" - isMacOSX  = %s\n",Global.isMacOSX());
-		printf(" - isMac     = %s\n",Global.isMac());
+		printf(" - OS info   = %s/%s/%s\n",GlobalProperties.getOsArch(),GlobalProperties.getOsName(),GlobalProperties.getOsVersion()); 
+		printf(" - isWindows = %s\n",GlobalProperties.isWindows());  
+		printf(" - isLinux   = %s\n",GlobalProperties.isLinux());	
+		printf(" - isMacOS   = %s\n",GlobalProperties.isMacOS());
+		printf(" - isMacOSX  = %s\n",GlobalProperties.isMacOSX());
+		printf(" - isMac     = %s\n",GlobalProperties.isMac());
 	        
 		//assertNotEmpty(""); 
 	}
@@ -56,7 +56,7 @@ public class TestGlobal
     @Test 
     public void testTempDir()
     {
-    	String tmpDir = Global.getGlobalTempDir(); 
+    	String tmpDir = GlobalProperties.getGlobalTempDir(); 
     	
     	Assert.assertNotNull("getGlobalTempDir() must return a value",tmpDir); 
     	

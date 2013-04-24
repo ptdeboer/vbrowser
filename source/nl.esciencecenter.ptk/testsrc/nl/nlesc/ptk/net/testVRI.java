@@ -23,7 +23,7 @@ package nl.nlesc.ptk.net;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -359,7 +359,7 @@ public class testVRI extends TestCase
         localVrl = new VRI("file", null, "/etc");
         Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
 
-        localVrl = new VRI("file", Global.getHostname(), "/etc");
+        localVrl = new VRI("file", GlobalProperties.getHostname(), "/etc");
         Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
     }
 

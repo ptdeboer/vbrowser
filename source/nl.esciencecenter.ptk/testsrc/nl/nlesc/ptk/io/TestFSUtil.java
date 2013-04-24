@@ -27,7 +27,7 @@ import junit.framework.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import nl.esciencecenter.ptk.Global;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.io.LocalFSNode;
@@ -49,7 +49,7 @@ public class TestFSUtil
 			FSUtil fs = FSUtil.getDefault(); 
 	    
 			// setup also tests basic methods ! 
-			testDir=fs.newLocalFSNode(Global.getGlobalTempDir()+"/testfsutil/"); 
+			testDir=fs.newLocalFSNode(GlobalProperties.getGlobalTempDir()+"/testfsutil/"); 
 
 			Assert.assertNotNull("Local test directory is null",testDir);
 
