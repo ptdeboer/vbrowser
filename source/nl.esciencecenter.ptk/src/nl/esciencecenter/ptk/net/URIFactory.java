@@ -25,14 +25,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import nl.esciencecenter.ptk.GlobalProperties;
-
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.URLUTF8Encoder;
 
 /**
  * URI Factory. Most methods are shadowed from URI so it can also be used as URI Proxy object.
  * Use this factory to chain a sequence of URI modification methods.
+ * 
+ * Use toURI() to create the resulting URI. 
  * 
  * @author Piter T. de Boer
  */
@@ -42,7 +42,7 @@ public class URIFactory
     public final static char SEP_CHAR = '/';
 
     /** Windows backslash or '\\' */
-    public final static char ANTI_SEP_CHAR = '\\';
+    public final static char DOS_SEP_CHAR = '\\';
 
     /** Seperator character but as String ( "/" ) */
     public final static String SEP_CHAR_STR = "" + SEP_CHAR;
@@ -276,7 +276,7 @@ public class URIFactory
 
     /**
      * Returns the dirname part of the URI compatible path ! (parent directory
-     * path) of path. Note: use VRI.uripath to sanitize and normalize a path!
+     * path) of path. Note: use URI.uripath to sanitize and normalize a path!
      * <p>
      * Special cases:
      * <ul>
@@ -358,6 +358,7 @@ public class URIFactory
     private String fragment;
 
     // === Field guards === //
+
     private boolean hasAuthority = false;
 
     private boolean isReference;
@@ -369,17 +370,17 @@ public class URIFactory
 
     protected URIFactory()
     {
-
+        ; // null 
     }
 
-    public URIFactory(final String vristr) throws URISyntaxException
+    public URIFactory(final String uristr) throws URISyntaxException
     {
-        init(vristr);
+        init(uristr);
     }
 
-    public URIFactory(String scheme, String host, int port, String path)
+    public URIFactory(String scheme, String schemeSpecificPart)
     {
-        init(scheme, null, host, port, path, null, null);
+        init(scheme, null, null, -1, schemeSpecificPart, null, null);
     }
 
     public URIFactory(String scheme, String host, String path)
@@ -387,14 +388,15 @@ public class URIFactory
         init(scheme, null, host, -1, path, null, null);
     }
 
-    public URIFactory(String scheme, String host, String path, String fragment)
+    public URIFactory(String scheme, String host, int port, String path)
     {
-        init(scheme, null, host, -1, path, null, fragment);
+        init(scheme, null, host, port, path, null, null);
     }
 
-    public URIFactory(String scheme, String user, String host, int port, String path, String query, String fragment)
+
+    public URIFactory(String scheme, String userInfo, String host, int port, String path, String query, String fragment)
     {
-        init(scheme, user, host, port, path, query, fragment);
+        init(scheme, userInfo, host, port, path, query, fragment);
     }
 
     public URIFactory(final URL url) throws URISyntaxException
@@ -402,9 +404,9 @@ public class URIFactory
         init(url.toURI());
     }
 
-    public URIFactory(final URIFactory vri)
+    public URIFactory(final URIFactory uri)
     {
-        this.copyFrom(vri);
+        this.copyFrom(uri);
     }
 
     /**
@@ -700,15 +702,6 @@ public class URIFactory
         return pathOrReference;
     }
 
-    /**
-     * Returns path with explicit "/" at the end. 
-     * This is mandatory for some Globus implementations
-     */
-    public String getDirPath()
-    {
-        return this.getPath() + "/";
-    }
-
     public String getHostname()
     {
         return hostname;
@@ -771,80 +764,14 @@ public class URIFactory
         return extension(getPath());
     }
 
-    public boolean hasExtension(String ext, boolean matchCase)
-    {
-        String vriext = this.getExtension();
-        if (vriext == null)
-            return false;
-
-        if (matchCase == false)
-            return vriext.equalsIgnoreCase(ext);
-
-        return vriext.equals(ext);
-    }
-
     public String getQuery()
     {
         return this.query;
     }
 
-    public String[] getQueryParts()
-    {
-        if (getQuery() == null)
-            return null;
-
-        return this.getQuery().split(ATTRIBUTE_SEPERATOR);
-    }
-
     public String getUserinfo()
     {
         return this.userInfo;
-    }
-
-    /** Returns username part from userinfo if it as one */
-    public String getUsername()
-    {
-        String info = this.userInfo;
-
-        if (info == null)
-            return null;
-
-        // strip password:
-        String parts[] = info.split(":");
-
-        if ((parts == null) || (parts.length == 0))
-            return info;
-
-        if (parts[0].length() == 0)
-            return null;
-
-        return parts[0];
-    }
-
-    /**
-     * Returns password part (if specified !) from userInfo string
-     * 
-     * @deprecated It is NOT safe to use clear text password in any URI!
-     */
-    public String getPassword()
-    {
-        String info = userInfo;
-
-        if (info == null)
-            return null;
-
-        String parts[] = info.split(":");
-
-        if ((parts == null) || (parts.length < 2))
-            return null;
-
-        return parts[1];
-    }
-
-    /** Calls toURI().toString() */
-    public String toURIString() throws URISyntaxException
-    {
-        return this.toURI().toString();
     }
 
     public URIFactory changeUserinfo(String user)
@@ -857,19 +784,6 @@ public class URIFactory
     public String getDirname()
     {
         return dirname(this.pathOrReference);
-    }
-
-    /**
-     * Returns granparent dirname. Calls dirname on dirname result
-     */
-    public String getDirdirname()
-    {
-        return dirname(dirname(getPath()));
-    }
-
-    public boolean hasHostname(String host)
-    {
-        return StringUtil.equals(hostname, host);
     }
 
     /**
@@ -887,46 +801,6 @@ public class URIFactory
             path = path.substring(1);
 
         return path.split(SEP_CHAR_STR);
-    }
-
-    /**
-     * Compares host to empty hostname, localhost, and actual fully qualified
-     * hostname. Don not rely on this method. Use actual network interface. This
-     * is just an indication.
-     */
-    public boolean isLocalLocation()
-    {
-        String host = this.getHostname();
-        if (StringUtil.isEmpty(host))
-            return true;
-
-        if (StringUtil.compare(host, "localhost", true) == 0)
-            return true;
-
-        // ipv4:
-        if (StringUtil.compare(host, "127.0.0.1", true) == 0)
-            return true;
-
-        // ipv6:
-        if (StringUtil.compare(host, "::1", true) == 0)
-            return true;
-
-        if (StringUtil.compare(host, GlobalProperties.getHostname(), true) == 0)
-            return true;
-
-        return false;
-    }
-
-    /** Returns true if this VRL has a non empty fragment part ('?...') in it. */
-    public boolean hasQuery()
-    {
-        return (StringUtil.isEmpty(getQuery()) == false);
-    }
-
-    /** Returns true if this VRL has a non empty fragment part ('#...') in it. */
-    public boolean hasFragment()
-    {
-        return (StringUtil.isEmpty(getFragment()) == false);
     }
 
     // ========================================================================
@@ -999,7 +873,7 @@ public class URIFactory
         {
             newpath = oldpath + dirname;
         }
-        else if (dirname.charAt(0) == ANTI_SEP_CHAR)
+        else if (dirname.charAt(0) == DOS_SEP_CHAR)
         {
             newpath = oldpath + SEP_CHAR + dirname.substring(1);
         }
@@ -1024,7 +898,7 @@ public class URIFactory
      * 
      * @throws URISyntaxException
      */
-    public URIFactory resolve(String reluri) throws URISyntaxException
+    public URIFactory resolveSibling(String reluri) throws URISyntaxException
     {
         if ((reluri == null) || (reluri == ""))
             return this;
@@ -1066,50 +940,49 @@ public class URIFactory
     {
         // add dummy html, and use URI 'resolve' (which expects .html file)
         URIFactory fac = appendPath("dummy.html");
-        fac.resolve(URIFactory.uripath(relpath, false)); // resolves encoded
-                                                         // path!
+
+        // resolves encoded path!
+        fac.resolveSibling(URIFactory.uripath(relpath, false)); 
 
         return fac;
     }
 
+    public URIFactory getParent()
+    {
+        URIFactory fac = duplicate();
+        fac.pathOrReference=dirname(this.pathOrReference);
+        return fac;
+    }
+    
     // ========================================================================
     // URI Formatter methods
     // ========================================================================
 
     public URI toURI() throws URISyntaxException
     {
-        try
+        if (this.hasAuthority())
         {
-            if (this.hasAuthority())
-            {
-                return new URI(this.scheme, this.userInfo, this.hostname, this.port, this.getPath(), this.query,
-                        this.fragment);
+            return new URI(this.scheme, this.userInfo, this.hostname, this.port, this.getPath(), this.query,
+                    this.fragment);
 
-            }
-            else
-            {
-                // create Reference URI
-                return new URI(this.scheme, null, null, -1, this.getReference(), this.query, this.fragment);
-
-            }
-            // else
-            // {
-            // return new URI(encode(this.toString()));
-            // }
         }
-        catch (URISyntaxException e)
+        else
         {
-            throw e; // new URISyntaxException(e);
+            // create Reference URI
+            return new URI(this.scheme, null, null, -1, this.getReference(), this.query, this.fragment);
         }
     }
 
+    /** 
+     * calls toURI().toURL() 
+     */ 
     public URL toURL() throws MalformedURLException, URISyntaxException
     {
         return toURI().toURL();
     }
 
     /**
-     * Explicitly encode URI. Does not check if fields are already encoded.
+     * Explicit encode URI. 
      */
     public URI toEncodedURI() throws URISyntaxException
     {
@@ -1122,10 +995,10 @@ public class URIFactory
     }
 
     /**
-     * This method returns the DECODED URI string. For an URI compatible string
+     * This method returns the <em>Decoded</em> URI string. For an URI compatible string
      * (with %XX encoding) use toURI().toString() or toURIString() !
      * 
-     * @return normalized and decoded VRI String.
+     * @return normalized and decoded URI String.
      */
     public String toNormalizedString()
     {
@@ -1165,8 +1038,4 @@ public class URIFactory
         return str;
     }
 
-    public StringBuilder toString(StringBuilder sb)
-    {
-        return sb.append(toString());
-    }
 }
