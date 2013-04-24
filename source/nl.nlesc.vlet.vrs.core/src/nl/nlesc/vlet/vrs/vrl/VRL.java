@@ -570,7 +570,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
 
     /** 
      * Create URI, ignore exceptions. 
-     * Use this method if it is shure the URI is valid. 
+     * Use this method if it is sure the URI is valid. 
      * Exceptions are nested into Errors. 
      * 
      * @return URI representation of this VRL.
