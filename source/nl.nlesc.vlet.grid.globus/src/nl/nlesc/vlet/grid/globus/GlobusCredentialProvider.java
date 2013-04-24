@@ -36,13 +36,13 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlAuthenticationException;
 import nl.nlesc.vlet.exception.VlInternalError;
+import nl.nlesc.vlet.grid.proxy.GridProxy;
+import nl.nlesc.vlet.grid.proxy.VGridCredential;
+import nl.nlesc.vlet.grid.proxy.VGridCredentialProvider;
 import nl.nlesc.vlet.grid.voms.VO;
 import nl.nlesc.vlet.grid.voms.VomsProxyCredential;
 import nl.nlesc.vlet.grid.voms.VomsUtil;
 import nl.nlesc.vlet.net.ssl.CertificateStore;
-import nl.nlesc.vlet.util.grid.GridProxy;
-import nl.nlesc.vlet.util.grid.VGridCredential;
-import nl.nlesc.vlet.util.grid.VGridCredentialProvider;
 
 
 import org.globus.common.CoGProperties;

@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.nlesc.vlet.util.grid;
+package nl.nlesc.vlet.grid.proxy;
 
 import java.security.PrivateKey;
 import java.util.List;

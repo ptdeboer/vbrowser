@@ -25,9 +25,9 @@ import java.security.cert.Certificate;
 
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.util.grid.GridProxy;
-import nl.nlesc.vlet.util.grid.VGridCredential;
-import nl.nlesc.vlet.util.grid.VGridCredentialProvider;
+import nl.nlesc.vlet.grid.proxy.GridProxy;
+import nl.nlesc.vlet.grid.proxy.VGridCredential;
+import nl.nlesc.vlet.grid.proxy.VGridCredentialProvider;
 
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.ietf.jgss.GSSCredential;

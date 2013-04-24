@@ -38,12 +38,12 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.exception.VlCredentialException;
 import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.grid.voms.VO;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.dialog.SimpleDialog;
-import nl.nlesc.vlet.util.grid.GridProxy;
 import nl.nlesc.vlet.vrs.VRSContext;
 
 /**

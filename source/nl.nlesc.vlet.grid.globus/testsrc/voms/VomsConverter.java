@@ -24,10 +24,10 @@ package voms;
 import java.util.Enumeration;
 
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
+import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.grid.voms.VO;
 import nl.nlesc.vlet.grid.voms.VomsProxyCredential;
 import nl.nlesc.vlet.grid.voms.VomsProxyCredential.VomsInfo;
-import nl.nlesc.vlet.util.grid.GridProxy;
 
 import org.globus.gsi.GlobusCredential;
 

@@ -61,7 +61,7 @@ import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.exception.VlInterruptedException;
 import nl.nlesc.vlet.exception.VlServerException;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
-import nl.nlesc.vlet.util.grid.GridProxy;
+import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;

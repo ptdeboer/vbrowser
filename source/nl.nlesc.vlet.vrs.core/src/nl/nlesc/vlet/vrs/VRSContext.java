@@ -35,7 +35,7 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.error.InitializationError;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.util.grid.GridProxy;
+import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.events.ResourceEventListener;
 import nl.nlesc.vlet.vrs.events.ResourceEventNotifier;

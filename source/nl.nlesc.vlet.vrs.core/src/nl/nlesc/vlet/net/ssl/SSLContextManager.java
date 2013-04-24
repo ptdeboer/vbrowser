@@ -43,7 +43,7 @@ import javax.net.ssl.X509TrustManager;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.util.grid.GridProxy;
+import nl.nlesc.vlet.grid.proxy.GridProxy;
 
 /** 
  * Creates GLite SSLv3 Context and SocketFactory need to access OGSA/GSI servers. 

@@ -33,8 +33,8 @@ import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VlAuthenticationException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlUnknownCAException;
-import nl.nlesc.vlet.util.grid.GridProxy;
-import nl.nlesc.vlet.util.grid.VGridCredential;
+import nl.nlesc.vlet.grid.proxy.GridProxy;
+import nl.nlesc.vlet.grid.proxy.VGridCredential;
 import nl.nlesc.vlet.vrs.VRSContext;
 
 public class GlobusUtil

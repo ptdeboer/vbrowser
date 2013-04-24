@@ -44,10 +44,10 @@ import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.grid.globus.GlobusCredentialWrapper;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
+import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.grid.voms.VO;
 import nl.nlesc.vlet.grid.voms.VOServer;
 import nl.nlesc.vlet.grid.voms.VomsProxyCredential.VomsInfo;
-import nl.nlesc.vlet.util.grid.GridProxy;
 
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1OctetString;

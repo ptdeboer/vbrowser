@@ -1,7 +1,7 @@
 package test;
 
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.util.grid.GridProxy;
+import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
