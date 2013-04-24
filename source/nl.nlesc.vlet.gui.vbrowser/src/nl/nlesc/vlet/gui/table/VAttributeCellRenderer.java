@@ -30,8 +30,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentable;
-import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
+import nl.esciencecenter.ptk.ui.presentation.UIPresentable;
+import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.data.VAttributeType;

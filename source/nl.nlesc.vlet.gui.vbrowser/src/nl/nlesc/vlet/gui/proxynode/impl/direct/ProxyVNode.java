@@ -28,10 +28,10 @@ import javax.swing.Icon;
 
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
+import nl.esciencecenter.ptk.ui.presentation.UIPresentable;
+import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentable;
-import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;

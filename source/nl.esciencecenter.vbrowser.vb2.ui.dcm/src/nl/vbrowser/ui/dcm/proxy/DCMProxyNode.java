@@ -29,7 +29,7 @@ import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.net.VRI;
-import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
+import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;

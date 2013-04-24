@@ -32,7 +32,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
+import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.data.VAttributeType;

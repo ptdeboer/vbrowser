@@ -32,7 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.presentation.Presentation;
-import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
+import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;

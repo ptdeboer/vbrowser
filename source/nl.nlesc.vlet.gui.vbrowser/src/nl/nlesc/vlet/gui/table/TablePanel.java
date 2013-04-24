@@ -36,9 +36,9 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.ui.presentation.UIPresentable;
+import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentable;
-import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.MasterBrowser;

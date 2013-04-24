@@ -22,8 +22,8 @@ package nl.esciencecenter.vbrowser.vb2.ui.proxy.anyfile;
 
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.presentation.Presentation;
-import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentable;
-import nl.esciencecenter.vbrowser.vb2.ui.presentation.UIPresentation;
+import nl.esciencecenter.ptk.ui.presentation.UIPresentable;
+import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.IAttributes;
 
