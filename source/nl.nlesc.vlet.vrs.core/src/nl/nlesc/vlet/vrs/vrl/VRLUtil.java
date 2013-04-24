@@ -28,6 +28,8 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.nlesc.vlet.data.VAttribute;
+import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 
@@ -266,6 +268,32 @@ public class VRLUtil
     public static String resolveScheme(String scheme)
     {
         return VRSContext.getDefault().resolveScheme(scheme);
+    }
+
+    public static VAttributeSet getQueryAttributes(VRL vrl)
+    {
+       String qstr=vrl.uriFactory.getQuery();
+    
+       // no query 
+       if (qstr==null) 
+           return null;
+    
+       // split in '&' parts 
+       String stats[]=vrl.getQueryParts();        
+       // empty list 
+       if ((stats==null) || (stats.length<=0))
+           return null; 
+    
+       VAttributeSet aset=new VAttributeSet(); 
+    
+       for (String stat:stats)
+       {
+           VAttribute attr=VAttribute.createFromAssignment(stat);
+           //Debug("+ adding attribute="+attr); 
+           if (attr!=null)
+               aset.put(attr); 
+       }
+       return aset; 
     }
 
 }

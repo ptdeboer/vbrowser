@@ -40,6 +40,7 @@ import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
 
 
@@ -106,7 +107,7 @@ public class LFCFSFactory extends VFSFactory
 
         VAttributeSet attrs = null;
         if (loc!=null)
-            attrs=loc.getQueryAttributes(); 
+            attrs=VRLUtil.getQueryAttributes(loc);
         
         // strip old attributes and match default 
         info.matchTemplate(LFCFSConfig.createDefaultServerAttributes(context,attrs),true);

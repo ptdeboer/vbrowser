@@ -46,6 +46,7 @@ import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrl.VRLList;
+import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
 
 
@@ -98,7 +99,7 @@ public class LFCFileSystem extends FileSystemNode
         super(context, info);
         
         //Update check server info: 
-        LFCFSConfig.updateURIAttributes(info,location.getQueryAttributes()); 
+        LFCFSConfig.updateURIAttributes(info,VRLUtil.getQueryAttributes(location)); 
         info.store(); 
        
         this.lfcClient = new LFCClient(this, info.getHostname(), info

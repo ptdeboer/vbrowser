@@ -31,8 +31,6 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.object.Duplicatable;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 
 /**
@@ -331,32 +329,6 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     
     // VRS interface: 
 
-    public VAttributeSet getQueryAttributes()
-    {
-       String qstr=uriFactory.getQuery();
-       
-       // no query 
-       if (qstr==null) 
-           return null;
-       
-       // split in '&' parts 
-       String stats[]=getQueryParts();        
-       // empty list 
-       if ((stats==null) || (stats.length<=0))
-           return null; 
-       
-       VAttributeSet aset=new VAttributeSet(); 
-       
-       for (String stat:stats)
-       {
-           VAttribute attr=VAttribute.createFromAssignment(stat);
-           //Debug("+ adding attribute="+attr); 
-           if (attr!=null)
-               aset.put(attr); 
-       }
-       return aset; 
-    }
-    
     public boolean hasHostname(String otherHostname)
     {
         return StringUtil.equals(this.uriFactory.getHostname(), otherHostname); 
