@@ -20,6 +20,8 @@
 
 package nl.esciencecenter.ptk.task;
 
+import java.net.URI;
+
 import nl.esciencecenter.ptk.net.VRI;
 
 /** 
@@ -33,9 +35,9 @@ public class TransferMonitor extends MonitorAdaptor
     
     private int transferId=0; 
     
-    private VRI source;
+    private URI source;
 
-    private VRI dest;
+    private URI dest;
 
     private String actionStr;
 
@@ -43,7 +45,7 @@ public class TransferMonitor extends MonitorAdaptor
 
     private int totalSources;
 
-    public TransferMonitor(String action, VRI sourceVri, VRI destVri)
+    public TransferMonitor(String action, URI sourceVri, URI destVri)
     {
         this.transferId=transferCounter++; 
         this.actionStr=action; 
@@ -56,12 +58,12 @@ public class TransferMonitor extends MonitorAdaptor
         return ""+transferId; 
     }
     
-    public VRI getDestination()
+    public URI getDestination()
     {
         return dest;
     }
 
-    public VRI getSource()
+    public URI getSource()
     {
         return source;
     }

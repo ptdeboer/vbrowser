@@ -67,281 +67,6 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
     // =======================================================================
     // Class Methods
     // =======================================================================
-
-    public static String uripath(String orgpath) 
-    {
-        return uripath(orgpath,true); 
-    }
-   
-    public static String uripath(String orgpath,boolean makeAbsolute)
-    {
-    	// use local File Seperator to normalize path.
-        return uripath(orgpath,makeAbsolute,java.io.File.separatorChar); 
-    }
-    
-    /**
-     * Produce URI compatible path and do other normalizations. 
-     * <ul>
-     * <li> Flip <code>localSepChar</code> to (URI compatible) forward slashes 
-     * <li> changes DOS paths into absolute DOS paths:  for example: 'c:'  into '/c:/'
-     * <li> prefixes all paths with '/' to make it absolute , unless makeAbsolute=false
-     * </ul> 
-     * 
-     * @param orgpath      : original path. 
-     * @param makeAbsolute : prefix optional relative paths with '/' to make them absolute. 
-     * @param localSepChar : seperator char to 'flip' to URI seperator char '/'   
-     */
-    
-    public static String uripath(String orgpath,boolean makeAbsolute,char localSepChar)
-    {
-        if (orgpath==null) 
-          return ""; // default path="";  
-       
-        if (orgpath.length()==0) 
-          return ""; // default path="";
-
-        //
-        // Ia) If platform seperator char if '\', replace with URI seperator '/'.
-        //
-        
-        String newpath=orgpath;
-        // For now convert ALL backslashes: 
-        newpath=orgpath.replace('\\',SEP_CHAR); 
-     
-        //
-        // Ib) strip optional double slashes "c:\subdir\/path" =>  "c:/subdir//path" =>  c:/subdir/path
-        //
-         
-        newpath=newpath.replaceAll(SEP_CHAR+"+",SEP_CHAR_STR);
-      
-        //
-        // II) Convert relative path to absolute by inserting '/' 
-        //     c:/subdir/path => /c:/subdir/path
-      
-      if (makeAbsolute==true)
-      {
-          if (newpath.charAt(0)!=SEP_CHAR)
-          {
-              newpath=SEP_CHAR+newpath;
-          }
-      }
-
-      // 
-      // III) Windows conversion 
-      // "C:" => /C:/" is always absolute ! 
-      
-      // Canonical paths vs. Absolute paths:
-      /* Yet another windows relative path hack: 
-       * Windows interprets  "C:..."  also as relative
-       * if the current directory on "C:" is 'C:/windows', the path 
-       * "C:subdir" will result in "C:/windows/subdir"
-       *   
-       * Add extra '/' to make it absolute C:/ 
-       * Note that java (under windows) accepts paths like  '/c:/dir'  ! 
-       */
-      
-      //newpath=newpath.replaceAll("(/[a-zA-Z]:)([^/])","\1/\2"); 
-
-      //
-      // IIIa insert '/' if path starts with "C:" or "[a-zA-Z]:"
-      // IIIb convert "/c:path => /c:/path"
-      
-      String dosPrefixRE="[/]*[a-zA-Z]:.*";
-      
-      // detect DOS path: 
-      if ( (newpath.length()>=2)  && (newpath.matches(dosPrefixRE)) )
-      {
-          // prefix with  '/' to normalize absolute DOS path :  
-             if (newpath.charAt(0)!='/')
-                 newpath="/"+newpath;
-             
-             // insert  "/" between ":" and path: 
-          // "/C:<path>" => "/C:/<path>"
-          if ((newpath.length()>=4) && (newpath.charAt(2)==':') && (newpath.charAt(3)!=SEP_CHAR))
-          {
-              newpath="/"+newpath.charAt(1)+":/"+newpath.substring(3);
-          }
-      }
-     
-      // convert: "/C:" => "/C:/"  
-      if ((newpath.length()==3) && (newpath.charAt(2)==':'))
-      {
-          newpath=newpath+SEP_CHAR;
-      }
-      else if ((newpath.length()==4) && (newpath.charAt(3)==SEP_CHAR))
-      {
-          // keep "/C:/..." 
-      }
-      else if ((newpath.length()>1)&&(newpath.charAt(newpath.length()-1)==SEP_CHAR))
-      {
-          // Strip last '/' if it isn't an absolute (Windows) drive path path
-          // like example: '/C:/'   
-
-          newpath=newpath.substring(0,newpath.length()-1);
-      }
-      
-      // finally: now strip multiple slashes '/' to normalise the path
-      newpath=newpath.replaceAll("/+","/");
-      
-      //Debug("uri path="+newpath);   
-      return newpath; 
-    }
-    
-    public static String stripExtension(String name)
-    {
-        if (name==null)
-            return null;
-        
-        int index=name.length(); 
-        index--;
-        
-        // scan last part of path 
-        
-        while ((index>=0) && (name.charAt(index)!='.'))
-        {
-            index--; 
-        }
-        
-        // index now points to '.'  char or is -1; (before beginning of the name)
-         
-        if (index<0)
-                return name; // no dot => NO extension ! 
-        
-        return name.substring(0,index);
-    }
-    
-    public static String extension(String name)
-    {
-        if (name==null)
-            return null;
-        
-        int index=name.length(); 
-        index--;
-        
-        // scan last part of path 
-        
-        while ((index>=0) && (name.charAt(index)!='.'))
-        {
-            index--; 
-        }
-        
-        // index now points to '.'  char or is -1; (before beginning of the name)
-        index++; // skip '.'; 
-        
-        return name.substring(index,name.length());
-    }
-    
-    public static String encode(String string)
-    {
-        String encoded=URLUTF8Encoder.encode(string);
-        return encoded;  
-    }
-    
-    /** Returns basename part (last part) of path String. */ 
-    public static String basename(String path)
-    {
-        // default cases: null,empty and root path: 
-        
-        if (path==null)
-            return null;
-        
-        if (path.equalsIgnoreCase(""))  
-                return "";
-
-        int index=0; 
-        int strlen=path.length(); 
-        
-        index=strlen-1;// start at end of string  
-
-        if (path.equalsIgnoreCase(SEP_CHAR_STR))
-                return SEP_CHAR_STR;
-        
-        // special case, path ENDS with '/' which must be ignored
-        
-        if (path.charAt(index)==SEP_CHAR)
-        {
-            index--; 
-            strlen--; 
-        }
-        
-        while ((index>=0) && (path.charAt(index)!=SEP_CHAR))
-        {
-            index--; 
-        }
-        
-        index++;
-        
-        // index points to character after '/' or is zero
-        return path.substring(index,strlen);
-    }
-    
-    /**
-     * Returns the dirname part of the URI compatible path ! 
-     * (parent directory path) of path.
-     * Note: use VRI.uripath to sanitize and normalize a path! 
-     * <p>
-     * Special cases:
-     * <ul>
-     * <li>dirname of null is null 
-     * <li>dirname of the empty string "" is ""
-     * <li>The dirname of "/" = "/"
-     * </ul>     
-     * @see basename
-     */
-    public static String dirname(String path)
-    {
-        // null path 
-        if (path==null) 
-            return null; 
-        
-        int index=0; 
-        int strlen=path.length(); 
-        
-        index=strlen-1;// start at end of string  
- 
-        // Empty and root path: 
-        
-        // relative path, cannot return dirname 
-        if (path.equalsIgnoreCase("")) 
-            return "";
-        
-        // root path of root is root itself 
-        if (path.equalsIgnoreCase(SEP_CHAR_STR))      
-            return SEP_CHAR_STR;
-        
-               
-        // special case, path ENDS with '/' which must be ignored
-        if (path.charAt(index)==SEP_CHAR)
-        {
-            index--; 
-            strlen--; 
-        }
-
-        // move backwards to first seperator 
-        while ((index>=0) && (path.charAt(index)!=SEP_CHAR))
-        {
-            index--; 
-        }
-        
-        if (index==0)
-        {
-            // first char (path[0]) == '/' => special case root dir encountered:
-            return SEP_CHAR_STR; 
-        }
-        else if (index<0)
-        {
-            //  no seperator found: this means this is a RELATIVE path with no parent dirname !  
-            return ""; 
-        }
-        
-        // index points to character '/'. 
-        
-        return path.substring(0,index);
-    }
-
-    // =======================================================================
-    // Instance
-    // =======================================================================
   
     private String scheme;
     
@@ -428,7 +153,7 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
                 // class do the parsing ! 
                 // to be save encode the uriStr!
               
-                URI uri=new URI(encode(vristr));
+                URI uri=new URI(URIFactory.encode(vristr));
                 init(uri); // use URI initializer
                 return; 
             }
@@ -603,7 +328,7 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
         // Sanitize path, but keep relative paths or reference paths intact
         // if there is no authority ! 
         // ====
-        newpath=uripath(newpath,hasAuthority); 
+        newpath=URIFactory.uripath(newpath,hasAuthority); 
         
 
         // store duplicates (or null) ! 
@@ -635,7 +360,7 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
     private void setPath(String path,boolean makeAbsolute)
     {
         // decode and normalize path 
-        this.pathOrReference=uripath(path,makeAbsolute);
+        this.pathOrReference=URIFactory.uripath(path,makeAbsolute);
     }
     
     // ========================================================================
@@ -680,7 +405,7 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
     
     public String getBasename()
     {
-        return basename(pathOrReference);   
+        return URIFactory.basename(pathOrReference);   
     }
 
     /** 
@@ -689,12 +414,12 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
      */
     public String getBasename(boolean withExtension)
     {
-        String name=basename(getPath());
+        String name=URIFactory.basename(getPath());
         
         if (withExtension==true)
             return name;           
         else
-            return stripExtension(name);
+            return URIFactory.stripExtension(name);
     }
     
     public String getPath()
@@ -832,7 +557,7 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
     public VRI getParent()
     {
         VRI loc = duplicate();
-        loc.pathOrReference=dirname(this.pathOrReference);
+        loc.pathOrReference=URIFactory.dirname(this.pathOrReference);
         return loc; 
     }
     
@@ -849,7 +574,7 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
     /** Get last part of filename starting from a '.' but ignore fragment and/or query part ! */ 
     public String getExtension()
     {
-        return extension(getPath());
+        return URIFactory.extension(getPath());
     }
 
     public boolean hasExtension(String ext, boolean matchCase)
@@ -1013,7 +738,7 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
             if ((c0=='#') || (c0=='?'))
                 encodedPath=reluri; 
             else
-                encodedPath=encode(uripath(reluri,false));
+                encodedPath=URIFactory.encode(URIFactory.uripath(reluri,false));
             uri = toURI().resolve(encodedPath); // *encoded* URI 
         }
         catch (URISyntaxException e)
@@ -1074,7 +799,7 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
     { 
         // add dummy html, and use URI 'resolve' (which expects .html file)
         VRI kludge=this.appendPath("dummy.html"); 
-        return kludge.resolve(VRI.uripath(relpath,false)); // resolves encoded path!
+        return kludge.resolve(URIFactory.uripath(relpath,false)); // resolves encoded path!
     }
  
     /** 
@@ -1132,7 +857,13 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
      */
     public URI toEncodedURI() throws URISyntaxException
     {
-        return new URI(scheme,userInfo,hostname, port,encode(pathOrReference),encode(query),encode(fragment)); 
+        return new URI(scheme,
+                userInfo,
+                hostname, 
+                port,
+                URIFactory.encode(pathOrReference),
+                URIFactory.encode(query),
+                URIFactory.encode(fragment)); 
     }
     
     public URL toURL() throws MalformedURLException
@@ -1181,7 +912,7 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
     /** Returns dirname part of path */ 
     public String getDirname()
     {
-        return dirname(this.pathOrReference);  
+        return URIFactory.dirname(this.pathOrReference);  
     }
     
     /** 
@@ -1189,7 +920,7 @@ public class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, Serial
      */ 
     public String getDirdirname()
     {
-        return dirname(dirname(getPath())); 
+        return URIFactory.dirname(URIFactory.dirname(getPath())); 
     }
     
     public int compareToObject(Object val)

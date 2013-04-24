@@ -23,6 +23,7 @@ package nl.esciencecenter.ptk;
 import java.net.InetAddress;
 import java.util.Properties;
 
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -126,7 +127,7 @@ public class GlobalProperties
 		if (val==null)
 			return null; 
 		
-		return VRI.uripath(val,true); 
+		return URIFactory.uripath(val,true); 
 	}
 	
     public static VRI getGlobalUserHomeVRI()
@@ -141,7 +142,7 @@ public class GlobalProperties
 		if (val==null)
 			return null;  
 		
-		return VRI.uripath(val.toString(),true); 
+		return URIFactory.uripath(val.toString(),true); 
 	}
 	
 	/**
