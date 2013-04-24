@@ -25,7 +25,6 @@ import java.net.URISyntaxException;
 
 import javax.swing.JFrame;
 
-import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.task.TransferMonitor;
 import nl.esciencecenter.ptk.ui.panels.monitoring.TransferMonitorPanel;
 

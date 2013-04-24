@@ -24,7 +24,6 @@ import java.net.InetAddress;
 import java.util.Properties;
 
 import nl.esciencecenter.ptk.net.URIFactory;
-import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
@@ -129,11 +128,6 @@ public class GlobalProperties
 		
 		return URIFactory.uripath(val,true); 
 	}
-	
-    public static VRI getGlobalUserHomeVRI()
-    {
-        return new VRI("file",null,0,getGlobalUserHome()); 
-    }
     
 	public static String getGlobalTempDir() 
 	{

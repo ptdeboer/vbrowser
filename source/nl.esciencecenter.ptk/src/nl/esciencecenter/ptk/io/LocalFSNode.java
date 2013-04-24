@@ -26,10 +26,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import nl.esciencecenter.ptk.GlobalProperties;
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
-import nl.esciencecenter.ptk.net.VRI;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /** 
  * Local file implementation of FSNode.  
@@ -41,26 +39,26 @@ public class LocalFSNode extends FSNode
 	// === constructors === 
 	public LocalFSNode(java.io.File file)
 	{
-	    super(new VRI(file.toURI())); 
-	    init(getVRI()); 
+	    super(file.toURI()); 
+	    init(getURI()); 
 	}
 	
 	// === constructors === 
-	protected LocalFSNode(String path) throws VRISyntaxException
+	protected LocalFSNode(String path) throws URISyntaxException
 	{
-	    super((VRI)null);
+	    super((URI)null);
 	    // vri not set, use GlobalUserHome to resolve path:
-	    VRI vri=GlobalProperties.getGlobalUserHomeVRI().resolve(path);
+	    URI vri=FSUtil.getDefault().resolvePathURI(path);
 	    init(vri);
 	}
 	
-	private void init(VRI vri)
+	private void init(URI vri)
 	{
-	    setVRI(vri); 
+	    setURI(vri); 
 		this._file=new java.io.File(vri.getPath());   
 	}
 	
-	public LocalFSNode(VRI loc) 
+	public LocalFSNode(URI loc) 
 	{
 		super(loc); 
 		init(loc); 

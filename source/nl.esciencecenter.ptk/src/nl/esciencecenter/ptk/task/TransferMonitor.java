@@ -22,8 +22,6 @@ package nl.esciencecenter.ptk.task;
 
 import java.net.URI;
 
-import nl.esciencecenter.ptk.net.VRI;
-
 /** 
  * Transfer Specific Monitor. 
  * 

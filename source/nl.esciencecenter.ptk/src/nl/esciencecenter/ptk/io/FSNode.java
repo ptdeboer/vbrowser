@@ -28,8 +28,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
-import nl.esciencecenter.ptk.net.VRI;
+import nl.esciencecenter.ptk.net.URIFactory;
 
 /** 
  * Abstract FileSystem Node of local or remote Filesystem. 
@@ -48,39 +47,29 @@ public abstract class FSNode
     // 
     // ===
     
-    private VRI vri;
+    private URI uri;
 
     public FSNode(URI uri)
     {
-        this.vri=new VRI(uri); 
+        this.uri=uri; 
     }
 
-    protected void setVRI(VRI vri)
+    protected void setURI(URI URI)
     {
-    	this.vri=vri; 
-    }
-    
-    public FSNode(VRI uri)
-    {
-        this.vri=uri; 
+    	this.uri=URI; 
     }
 
-    public URI getURI() throws URISyntaxException
+    public URI getURI() 
     {
-        return vri.toURI(); 
+        return uri;
     }
 
     public URL getURL() throws MalformedURLException 
     {
-        return vri.toURL(); 
+        return uri.toURL(); 
     }
     
-    public VRI getVRI()
-    {
-        return vri;  
-    }
-
-    public FSNode getNode(String relpath) throws VRISyntaxException, Exception
+    public FSNode getNode(String relpath) throws URISyntaxException, Exception
     {
         return newFile(resolvePath(relpath));  
     } 
@@ -93,46 +82,36 @@ public abstract class FSNode
     {
        return false; 
     }
-
-    public String[] getPathElements() 
-	{
-		return vri.getPath().split("/"); 
-	}		
     
     /** Returns absolute (normalized) URI path indepenend of local file systems paths */ 
     public String getPath()
     {
-    	return vri.getPath(); 
+    	return uri.getPath(); 
     }
     
 	public String getBasename() 
 	{
-		return vri.getBasename(); 
+		return URIFactory.basename(uri.getPath());  
 	}
 
 	public String getExtension()
 	{
-	    return vri.getExtension(); 
-	}
-	
-	public boolean hasExtension(String ext,boolean matchCase)
-	{
-	    return this.vri.hasExtension(ext,matchCase); 
+	    return URIFactory.extension(uri.getPath());  
 	}
 	
 	public String getDirname() 
 	{
-		return vri.getDirname(); 
+		return URIFactory.dirname(uri.getPath());  
 	}
 	
     public String getHostname()
     {
-    	return vri.getHostname(); 
+    	return uri.getHost(); 
     }
     
     public int getPort()
     {
-    	return vri.getPort(); 
+    	return uri.getPort(); 
     }
 
     // =======================================================================
@@ -163,14 +142,14 @@ public abstract class FSNode
 		return file;
 	}
 	
-	public String resolvePath(String relPath) throws VRISyntaxException
+	public String resolvePath(String relPath) throws URISyntaxException
 	{
-		return resolvePathVRI(relPath).getPath();
+		return resolvePathURI(relPath).getPath();
 	}
 	
-	public VRI resolvePathVRI(String relPath) throws VRISyntaxException
+	public URI resolvePathURI(String relPath) throws URISyntaxException
 	{
-		return vri.resolvePath(relPath);
+		return new URIFactory(uri).resolvePath(relPath).toURI();
 	}
 
 	public boolean create() throws IOException 
@@ -187,7 +166,7 @@ public abstract class FSNode
 	
 	public String toString()
 	{
-	    return "(FSNode)"+this.getVRI().toString(); 
+	    return "(FSNode)"+this.getURI().toString(); 
 	}
 	
     // =======================================================================

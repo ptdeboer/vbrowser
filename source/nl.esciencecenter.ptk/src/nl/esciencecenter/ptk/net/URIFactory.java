@@ -52,8 +52,7 @@ public class URIFactory
     public final static char FRAGMENT_CHAR = '#';
 
     /**
-     * Default URI attribute separator '&amp;' in URL:
-     * http://../?ArgumentA=1&amp;ArgumentB=2"
+     * Default URI attribute separator '&amp;' in URL: http://../?ArgumentA=1&amp;ArgumentB=2"
      */
     public static final String ATTRIBUTE_SEPERATOR = "&";
 
@@ -362,6 +361,8 @@ public class URIFactory
     private boolean hasAuthority = false;
 
     private boolean isReference;
+
+
 
     public URIFactory(URI uri)
     {
@@ -769,12 +770,12 @@ public class URIFactory
         return this.query;
     }
 
-    public String getUserinfo()
+    public String getUserInfo()
     {
         return this.userInfo;
     }
 
-    public URIFactory changeUserinfo(String user)
+    public URIFactory changeUserInfo(String user)
     {
         userInfo = user;
         return this;

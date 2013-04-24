@@ -24,11 +24,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 
 import nl.esciencecenter.ptk.GlobalProperties;
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
-import nl.esciencecenter.ptk.net.VRI;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
@@ -59,9 +60,9 @@ public class FSUtil
     // Instance
     // ========================================================================
     
-    private VRI userHome;
-    private VRI workingDir; 
-    private VRI tmpDir; 
+    private URI userHome;
+    private URI workingDir; 
+    private URI tmpDir; 
     
     public FSUtil()
     {
@@ -70,26 +71,33 @@ public class FSUtil
 
     private void init()
     {
-        this.userHome = new VRI("file", null, 0, GlobalProperties.getGlobalUserHome());
-        this.workingDir=new VRI("file", null, 0, GlobalProperties.getGlobalUserHome());
-        this.tmpDir=new VRI("file", null, 0, GlobalProperties.getGlobalTempDir());
+        try
+        {
+            this.userHome = new URI("file", null, null, 0, GlobalProperties.getGlobalUserHome(), null, null);
+            this.workingDir=new URI("file", null, null, 0, GlobalProperties.getGlobalUserHome(), null, null);
+            this.tmpDir=new URI("file", null, null, 0, GlobalProperties.getGlobalTempDir(), null, null);
+        }
+        catch (URISyntaxException e)
+        {
+            e.printStackTrace();
+        }
     }
    
     /**
      * Check syntax and decode optional (relative) URL or path to an absolute
      * normalized path. When an exception occured (syntax error) the path is
      * returned "as is" !
-     * Use resolve(path) for VRI.
+     * Use resolvePathURI(path) for URI.
      */
     public String resolvePath(String path)
     {
         try
         {
-            VRI vri=resolve(path); this.workingDir.resolve(path);
-            vri.getPath(); 
+            return resolvePathURI(path).getPath(); 
         }
-        catch (VRISyntaxException e)
+        catch (URISyntaxException e)
         {
+
             logger.logException(Level.WARNING,e,"Couldn't resolve path:%s\n",path); 
         } 
         
@@ -97,9 +105,9 @@ public class FSUtil
         return path;
     }
     
-    public VRI resolve(String path) throws VRISyntaxException
+    public URI resolvePathURI(String path) throws URISyntaxException
     {
-        return this.workingDir.resolve(path);
+        return new URIFactory(workingDir).resolvePath(path).toURI();
     }
     
     public boolean existsPath(String path)
@@ -333,7 +341,7 @@ public class FSUtil
         return this.newLocalFSNode(this.workingDir.getPath());
     }
     
-    public VRI getUserHome()
+    public URI getUserHome()
     {
         return userHome;
     }
@@ -343,18 +351,18 @@ public class FSUtil
         return this.newLocalFSNode(this.userHome.getPath());
     }
     
-    public VRI getUserHomeVRI()
+    public URI getUserHomeURI()
     {
         return userHome;
     }
     
-    public void setWorkingDir(VRI newWorkingDir)
+    public void setWorkingDir(URI newWorkingDir)
     {
         // check for local ? 
         this.workingDir=newWorkingDir;
     }
     
-    public VRI getWorkingDirVRI()
+    public URI getWorkingDirVRI()
     {
         return workingDir;
     }
@@ -367,16 +375,12 @@ public class FSUtil
      * @return - new Local Directory object. 
      * @throws IOException 
      */
-    public LocalFSNode newLocalDir(VRI vri,boolean create) throws IOException
+    public LocalFSNode newLocalDir(URI vri,boolean create) throws IOException
     {
         LocalFSNode dir=this.newLocalFSNode(vri.getPath());
         if ((dir.exists()==false) && (create)) 
             dir.mkdir(); 
         return dir; 
-    }
-
-   
-
-   
+    }   
     
 }
