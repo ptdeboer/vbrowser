@@ -37,10 +37,9 @@ public class SelectionComboBox extends JComboBox
         init();
     }
 
-    public SelectionComboBox(String name, String[] vals)
+    public SelectionComboBox(String[] vals)
     {
         super();
-        setName(name);
         setValues(vals);
     }
 
@@ -95,9 +94,8 @@ public class SelectionComboBox extends JComboBox
 
     public void setEditable(boolean flag)
     {
-        this.setEditable(flag);
+        super.setEditable(flag);
     }
-
 
     /**
      * Selectable => drop down option is 'selectable'. optionsEditable = drop
