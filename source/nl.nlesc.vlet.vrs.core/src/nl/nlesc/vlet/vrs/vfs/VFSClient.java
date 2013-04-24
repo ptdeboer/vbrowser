@@ -20,7 +20,6 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;

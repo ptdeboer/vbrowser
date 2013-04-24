@@ -21,7 +21,6 @@
 package nl.nlesc.vlet.vrs;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeSet;

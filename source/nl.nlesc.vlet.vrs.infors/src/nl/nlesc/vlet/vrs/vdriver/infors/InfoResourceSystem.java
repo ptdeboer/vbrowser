@@ -20,7 +20,6 @@
 
 package nl.nlesc.vlet.vrs.vdriver.infors;
 
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;

@@ -34,7 +34,6 @@ import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.FileSystem;
 import nl.esciencecenter.octopus.files.PathAttributesPair;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;

@@ -50,7 +50,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
-import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.gui.UIGlobal;

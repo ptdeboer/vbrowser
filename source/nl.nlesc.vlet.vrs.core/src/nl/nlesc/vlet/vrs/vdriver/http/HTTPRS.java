@@ -25,7 +25,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Proxy;
 
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;

@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;
@@ -66,7 +65,7 @@ public class VRSClient
      * 
      * @throws VRISyntaxException
      */
-    public static VRL resolve(VRL baseVRL, String relativeVRL) throws VRLSyntaxException, VRISyntaxException
+    public static VRL resolve(VRL baseVRL, String relativeVRL) throws VRLSyntaxException
     {
         return new VRL(baseVRL.resolvePath(relativeVRL));
     }

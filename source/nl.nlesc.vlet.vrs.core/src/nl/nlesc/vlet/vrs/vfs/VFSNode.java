@@ -51,7 +51,6 @@ import java.io.IOException;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;

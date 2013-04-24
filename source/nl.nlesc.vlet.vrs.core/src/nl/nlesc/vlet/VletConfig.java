@@ -28,16 +28,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 
-
 import nl.esciencecenter.ptk.GlobalProperties;
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
+
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;

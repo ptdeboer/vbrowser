@@ -37,7 +37,6 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import nl.esciencecenter.ptk.net.VRI;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlIOException;

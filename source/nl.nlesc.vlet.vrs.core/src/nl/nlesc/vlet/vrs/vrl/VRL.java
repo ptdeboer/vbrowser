@@ -308,7 +308,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
      */
     public String getUsername()
     {
-        String info = uriFactory.getUserinfo();
+        String info = uriFactory.getUserInfo();
 
         if (info == null)
             return null;
@@ -332,7 +332,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
      */
     public String getPassword()
     {
-        String info = uriFactory.getUserinfo();
+        String info = uriFactory.getUserInfo();
 
         if (info == null)
             return null;
@@ -469,7 +469,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
 
     public String getUserinfo()
     {
-       return this.uriFactory.getUserinfo(); 
+       return this.uriFactory.getUserInfo(); 
     }
     
     // ========================================================================

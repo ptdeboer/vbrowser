@@ -20,7 +20,6 @@
 
 package nl.nlesc.vlet.gui.lobo.resfs;
 
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VNode;
