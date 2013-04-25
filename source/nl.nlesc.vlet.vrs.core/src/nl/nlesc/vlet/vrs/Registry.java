@@ -212,11 +212,14 @@ public final class Registry // todo: change to vrs protected class.
             registerVRSDriverClassNoError(currentLoader, HTTPFactory.class.getCanonicalName());
             registerVRSDriverClassNoError(currentLoader, HTTPSFactory.class.getCanonicalName());
             registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.vdriver.infors.InfoRSFactory");
-            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory");
-            // registerVRSDriverClassNoError(currentLoader,"nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory");
-
-            // === Others: ===
-            registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.jcraft.ssh.SftpFSFactory");
+            
+            // auto configuration of octopus vs local adaptors. 
+            boolean result=registerVRSDriverClassNoError(currentLoader,"nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory");
+            if (result==false)
+            {
+                registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory");
+                registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.jcraft.ssh.SftpFSFactory");
+            }
 
             // Globus is a plugin. 
             registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.globusrs.GlobusRSFactory");
@@ -488,8 +491,7 @@ public final class Registry // todo: change to vrs protected class.
      */
     private synchronized boolean registerVRSDriverClassNoError(ClassLoader classLoader, String classname)
     {
-        // Experimental VFS plugin Class Loader
-
+        
         try
         {
             return registerVRSDriverClass(classLoader, classname);
@@ -501,7 +503,7 @@ public final class Registry // todo: change to vrs protected class.
         }
         catch (ClassNotFoundException e)
         {
-            logger.logException(ClassLogger.ERROR, e, "ClassNotFound exception for:%s\n", classname);
+            logger.logException(ClassLogger.WARN, e, "ClassNotFound exception for:%s\n", classname);
         }
         catch (SecurityException e)
         {
@@ -519,7 +521,7 @@ public final class Registry // todo: change to vrs protected class.
         }
         catch (InstantiationException e)
         {
-            logger.logException(ClassLogger.ERROR, e, "InstanttionException (no public constructor?) for class:%s\n",
+            logger.logException(ClassLogger.ERROR, e, "InstantiationException (no public constructor?) for class:%s\n",
                     classname);
         }
         catch (Throwable t)

@@ -472,15 +472,28 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
 
     }
 
-    private VDir getRootResourceDir(boolean autoinit) throws VlException
+    /** 
+     * Find VDir or return null if can't get it.
+     * @throws VlException 
+     */  
+    private VDir getRootResourceDir(boolean autoinit) throws VlException 
     {
         VRL loc = getMyVleLocation();
         // private client;
 
         VFSClient vfs = new VFSClient(vrsContext);
 
-        if ((vfs.existsDir(loc) == false) && (autoinit == false))
-            return null;
+        try
+        {
+            if ((vfs.existsDir(loc) == false) && (autoinit == false))
+                return null;
+        }
+        catch (Exception e)
+        {
+            logger.logException(ClassLogger.ERROR, e,  "Error checking MyVle root directory:%s\n", loc);
+            return null; 
+        }
+    
 
         VDir dir = null;
 
