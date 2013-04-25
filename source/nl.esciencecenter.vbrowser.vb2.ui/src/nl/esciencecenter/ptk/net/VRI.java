@@ -20,6 +20,7 @@
 
 package nl.esciencecenter.ptk.net;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -613,6 +614,4 @@ public final class VRI implements Cloneable,Comparable<VRI>, Duplicatable<VRI>, 
     {
         return (StringUtil.isEmpty(getFragment()) == false);
     }
-
-    
 }
