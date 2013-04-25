@@ -20,6 +20,7 @@
 
 package nl.esciencecenter.ptk.net;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,8 +37,10 @@ import nl.esciencecenter.ptk.util.URLUTF8Encoder;
  * 
  * @author Piter T. de Boer
  */
-public class URIFactory
+public class URIFactory implements Serializable // because it can be embedded in a URI like class. 
 {
+    private static final long serialVersionUID = 6425053125412658256L;
+
     /** Path seperator character for URIs = '/' */
     public final static char SEP_CHAR = '/';
 
@@ -349,7 +352,9 @@ public class URIFactory
 
     private String userInfo;
 
-    /** Contains path or scheme specific part without authorization,etc */
+    /** 
+     * Contains path <em>or</em> scheme specific part without authorization,etc 
+     */
     private String pathOrReference;
 
     private String query;
@@ -360,9 +365,7 @@ public class URIFactory
 
     private boolean hasAuthority = false;
 
-    private boolean isReference;
-
-
+    private boolean isReference = false; 
 
     public URIFactory(URI uri)
     {
