@@ -22,22 +22,19 @@ package nl.nlesc.vlet.bootstrap;
 
 
 /** 
- * Wrapper class to bootstrap the VBrowser. 
- * The main method calls the BootStrap class 
- * with the configuration needed to start the VBrowser. 
- * Use this class as the main class in the manifest to create a 
- * self executing jar to start the VBrowser. 
- * Only the Bootstrapper class has to be present in the jar file. 
- * The rest is added automagically. 
- * 
- * @author Piter T. de Boer/Piter.NL
+ * Wrapper class to bootstrap a stand alone VLTerm Applications. 
+ *
+ * @author Piter T. de Boer
  */
 public class startVLTerm 
 {
 	public static void main(String[] args) 
     {
-		Bootstrapper boot=new Bootstrapper();
-		
+	    Bootstrapper.BootOptions opts=new Bootstrapper.BootOptions(); 
+        opts.toolPrefix="vlet";
+        
+        Bootstrapper boot=new Bootstrapper(opts);
+        
 		try 
 		{
             boot.launch("nl.nlesc.vlet.util.vlterm.VLTerm",args);

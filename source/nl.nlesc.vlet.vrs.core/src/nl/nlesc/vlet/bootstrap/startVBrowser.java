@@ -36,7 +36,10 @@ public class startVBrowser
 {
 	public static void main(String[] args) 
     {
-		Bootstrapper boot=new Bootstrapper();
+	    Bootstrapper.BootOptions opts=new Bootstrapper.BootOptions(); 
+	    opts.toolPrefix="vlet";
+	    
+		Bootstrapper boot=new Bootstrapper(opts);
 		
 		try 
 		{
