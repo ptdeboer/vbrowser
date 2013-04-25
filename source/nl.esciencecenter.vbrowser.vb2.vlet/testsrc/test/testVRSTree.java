@@ -60,7 +60,7 @@ public class testVRSTree
     		BrowserInterface browser = platform.createBrowser();
     		//browser.setRoot(root); 
     		
-    		ProxyNodeDataSource dataSource = new ProxyNodeDataSource (fac,root); 
+    		ProxyNodeDataSource dataSource = new ProxyNodeDataSource (root); 
     		UIViewModel uIModel=UIViewModel.createTreeViewModel(); 
     		
     		tree=new ResourceTree(null,dataSource);
