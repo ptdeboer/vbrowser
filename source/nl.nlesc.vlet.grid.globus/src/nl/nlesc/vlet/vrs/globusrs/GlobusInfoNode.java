@@ -20,6 +20,8 @@
 
 package nl.nlesc.vlet.vrs.globusrs;
 
+import nl.esciencecenter.ptk.data.StringList;
+import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -49,12 +51,25 @@ public class GlobusInfoNode extends VNode
 		return "GlobusInfo";
 	}
 	
-	//
-	//public String getIconURL(int prefSize)
-    //{
-	//	return ;
-    //}
-    //
+	public String[] getAttributeNames()
+	{
+	    StringList list=new StringList(super.getAttributeNames());
+	    list.add("globus.version");
+	    return list.toArray(); 
+	}
 
+    public VAttribute getAttribute(String name) throws VlException
+    {
+        if (name.equals("globus.version"))
+        {
+            return new VAttribute(name,"4.1");
+        }
+        else
+        {
+            return super.getAttribute(name);
+        }
+        
+    }
+	
 }
 
