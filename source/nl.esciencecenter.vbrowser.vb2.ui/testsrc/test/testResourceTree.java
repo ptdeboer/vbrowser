@@ -54,7 +54,7 @@ public class testResourceTree
     		ResourceTree tree;
     		ProxyFactory fac = DummyProxyFactory.getDefault(); 
     		ProxyNode root = fac.openLocation("proxy:///"); 
-    		ProxyNodeDataSource dataSource = new ProxyNodeDataSource (fac,root); 
+    		ProxyNodeDataSource dataSource = new ProxyNodeDataSource (root); 
     		tree=new ResourceTree(new DummyBrowserInterface(platform),dataSource);
     		//tree=new ResourceTree(null,dataSource);
     	        		

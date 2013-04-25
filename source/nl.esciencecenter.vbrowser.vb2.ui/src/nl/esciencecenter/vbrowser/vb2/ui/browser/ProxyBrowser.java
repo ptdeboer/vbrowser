@@ -179,7 +179,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     public void setRoot(ProxyNode root, boolean update)
     {
         this.rootNode = root;
-        ProxyNodeDataSource dataSource = new ProxyNodeDataSource(root.getProxyFactory(), root);
+        ProxyNodeDataSource dataSource = new ProxyNodeDataSource(root);
         this.browserFrame.getResourceTree().setDataSource(dataSource, update);
         IconsPanel iconsPnl = browserFrame.getIconsPanel();
         if (iconsPnl!=null)

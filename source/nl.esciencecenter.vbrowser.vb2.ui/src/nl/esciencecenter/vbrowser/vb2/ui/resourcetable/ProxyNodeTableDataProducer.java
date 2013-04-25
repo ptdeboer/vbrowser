@@ -62,7 +62,7 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 	public ProxyNodeTableDataProducer(ProxyNode pnode,
 			ResourceTableModel resourceTableModel) 
 	{
-		this.dataSource=new ProxyNodeDataSource(pnode.getProxyFactory(),pnode); 
+		this.dataSource=new ProxyNodeDataSource(pnode); 
 		this.tableModel=resourceTableModel; 
 		this.uiModel=UIViewModel.createTableModel();
 	}

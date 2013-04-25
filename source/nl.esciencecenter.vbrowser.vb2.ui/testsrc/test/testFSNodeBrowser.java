@@ -33,7 +33,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.anyfile.AnyFileProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.dummy.DummyProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.tree.ResourceTree;
 
-public class testAnyFileBrowser 
+public class testFSNodeBrowser 
 {
 
 	public static void main(String args[])

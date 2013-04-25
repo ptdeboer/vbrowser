@@ -156,6 +156,19 @@ public class VRIListTransferable implements Transferable
         return false;
     }
 
-   
+    public String toString()
+    {
+        String str="{vriList:["; 
+        
+        for (int i=0;i<vris.size();i++)
+        {
+            str+=vris.get(i);
+            if (i+1<vris.size())
+                str+=",";
+        }
+        
+        return str+"]}";
+                
+    }
 
 }

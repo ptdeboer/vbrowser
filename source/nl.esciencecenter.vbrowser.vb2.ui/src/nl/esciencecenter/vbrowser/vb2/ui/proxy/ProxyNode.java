@@ -459,15 +459,11 @@ public abstract class ProxyNode
     // public interface 
     // ========================================================================
 
-    public abstract ProxyFactory getProxyFactory(); 
+    protected abstract ProxyFactory getProxyFactory(); 
 	
 	// ========================================================================
     // Protected implementation interface ! 
     // ========================================================================
-
-	// ====
-	// Core Resource Attributes
-	// ====
     
 	protected abstract String doGetName() throws ProxyException; 
     

@@ -34,7 +34,6 @@ import javax.swing.TransferHandler;
 
 import nl.esciencecenter.ptk.net.VRI;
 import nl.esciencecenter.ptk.ui.fonts.FontInfo;
-import nl.esciencecenter.vbrowser.vb2.ui.dnd.DnDUtil;
 import nl.esciencecenter.vbrowser.vb2.ui.dnd.ViewNodeDropTarget;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewContainerEventAdapter;
@@ -42,11 +41,8 @@ import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeComponent;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeContainer;
 
-;
-
 /** 
- * Rewrite 
- * @author piter
+ * Icon Item. Combines Icon with a label. 
  */
 public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
 {
