@@ -495,7 +495,7 @@ public class Bootstrapper
         return props;
     }
 
-    public File getDirectory(String dirstr) throws Exception
+    public File getDirectory(String dirstr, boolean mustExist) throws Exception
     {
         // if dir is a remote url, FILE will complain:
 
@@ -505,21 +505,37 @@ public class Bootstrapper
 
         if (!dir.exists() || !dir.isDirectory() || !dir.canRead())
         {
-            JOptionPane.showMessageDialog(null, 
+            if (mustExist)
+            {
+                JOptionPane.showMessageDialog(null, 
                     "Cannot find directory:'" + dirstr + "' "
                     + "Installation might be corrupt or misconfigured.", 
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
             
-            throw new Exception("BootrapException:Directory does not exist or is unreadable: " + dirstr);
+                throw new Exception("BootrapException:Directory does not exist or is unreadable: " + dirstr);
+            }
+            else
+            {
+                errorPrintf("***Error: Can't find directory:%s\n",dirstr); 
+            }
         }
+        
         try
         {
             return dir.getCanonicalFile();
         }
         catch (IOException e)
         {
-            throw new Exception("IOException:" + "Failed to get the canonical path of of " + dir);
+            if (mustExist)
+            {
+                throw new Exception("IOException: Failed to get the canonical path of of " + dir);
+            }
+            else
+            {
+                errorPrintf("***Error: getCanonicalFile() Failed for directory:%s\n",dir); 
+                return null; 
+            }
         }
     }
 
@@ -547,9 +563,9 @@ public class Bootstrapper
     {
         debugPrintf(" > [%2d] Scanning directory for jar files: %s\n", dirLevel, libDir);
 
-        File dir = getDirectory(libDir);
+        File dir = getDirectory(libDir,true);
 
-        if (!dir.exists() || !dir.isDirectory() || !dir.canRead())
+        if ( (dir==null) || (dir.exists()==false)  || (dir.isDirectory()==false) || (dir.canRead()==false))
         {
             // ignore faulty configurations.
             errorPrintf(" > [%2d] ***Error: lib directory does not exists or is unreadable:%s\n", dirLevel, dir);
