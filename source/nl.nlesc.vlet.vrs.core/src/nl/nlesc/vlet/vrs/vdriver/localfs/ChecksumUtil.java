@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.nlesc.vlet.util;
+package nl.nlesc.vlet.vrs.vdriver.localfs;
 
 import java.io.IOException;
 import java.io.InputStream;
