@@ -398,18 +398,21 @@ public class ActionMenu extends JPopupMenu
 	{
 		if (actionMenuMatcher==null)
 		{
-			Vector<ActionMenuMapping> mappings = UIGlobal.getRegistry().getActionMappings(); 
+		    // All action moved to viewers: 
+			// Vector<ActionMenuMapping> mappings = UIGlobal.getRegistry().getActionMappings(); 
 			Vector<ActionMenuMapping> guiMappings=ViewerRegistry.getRegistry().collectActionMappings();
+			Vector<ActionMenuMapping> mappings = new Vector<ActionMenuMapping>(); 
 			
 			if (guiMappings!=null)
+			{
+			    // Filter? 
 				mappings.addAll(guiMappings); 
-			
+			}
 			actionMenuMatcher=new ActionMenuMatcher(mappings);
 		}
 		
 		return actionMenuMatcher; 
 	}
-
 
 	@SuppressWarnings("deprecation")
     static ProxyNode getPNodeFrom(VComponent vcomp)
@@ -521,7 +524,6 @@ public class ActionMenu extends JPopupMenu
         	
             mitem.setToolTipText("Paste:"+selectionStr);
         }
-
         
         {
             JMenu pasteMenu=new JMenu();
@@ -538,17 +540,6 @@ public class ActionMenu extends JPopupMenu
             if (bc.haveSingleClipboardSelection())
             {
                 mitem.setToolTipText("Paste as VLink:"+selectionStr);
-            }
-            // RFT SCHEDULE
-            {
-                mitem=new JMenuItem(); 
-
-                mitem.setText("Reliable File Transfer (Paste Here)"); 
-                mitem.setActionCommand(ActionCommandType.RFT_COPY_TRANSFER.toString()); 
-                mitem.addActionListener(new PopupListener(bc, vcomp));
-                mitem.setToolTipText(Messages.TT_SCHEDULE_RFT_COPY); 
-                mitem.setEnabled(bc.haveClipboardSelection());
-                pasteMenu.add(mitem); 
             }
             // add selection
             {

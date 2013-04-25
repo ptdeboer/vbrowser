@@ -591,5 +591,31 @@ public class ViewerRegistry
         }
         return mappings;
     }
-
+    
+//
+//    /** Collect actionmappings from registered services */
+//    public Vector<ActionMenuMapping> getActionMappings()
+//    {
+//        Vector<ActionMenuMapping> mappings = new Vector<ActionMenuMapping>();
+//
+//        synchronized (registeredServices)
+//        {
+//            for (VRSFactory vrs : getRegisteredServices())
+//            {
+//                Vector<ActionMenuMapping> maps = vrs.getActionMenuMappings();
+//
+//                if (maps != null)
+//                {
+//                    for (ActionMenuMapping map : maps)
+//                    {
+//                        map.setVRS(vrs); // update parent VRS !
+//                        mappings.add(map);
+//                    }
+//                }
+//            }
+//        }
+//
+//        return mappings;
+//    }
+    
 }

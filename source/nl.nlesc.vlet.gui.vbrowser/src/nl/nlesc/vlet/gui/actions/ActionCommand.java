@@ -50,7 +50,7 @@ public class ActionCommand  //implements javax.swing.Action//
     /** Create VRS Dynamic Action Command */ 
     public static ActionCommand createDynamicActionCommand(VRSFactory vrs,String methodName)
     {
-        ActionCommand cmd=new ActionCommand(ActionCommandType.DYNAMIC_ACTION);
+        ActionCommand cmd=new ActionCommand(ActionCommandType.DYNAMIC_VRS_ACTION);
         cmd.setDynamicMethodName(methodName); 
         cmd.setVRS(vrs); 
         return cmd;

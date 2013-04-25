@@ -37,13 +37,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.task.ActionTask;
-import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.esciencecenter.ptk.ui.panels.monitoring.TaskMonitorDialog;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.data.VAttribute;
@@ -82,13 +78,9 @@ import nl.nlesc.vlet.gui.viewers.ViewerEvent;
 import nl.nlesc.vlet.gui.viewers.ViewerManager;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry;
-import nl.nlesc.vlet.vrs.VRSFactory;
 import nl.nlesc.vlet.vrs.events.EventType;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
-import nl.nlesc.vlet.vrs.tasks.VRSTaskWatcher;
 import nl.nlesc.vlet.vrs.vrl.VRL;
-
-
 import nl.uva.vlet.util.vlterm.VLTerm;
 
 /**
@@ -458,11 +450,11 @@ public class BrowserController implements WindowListener, GridProxyListener,
 	                this.performOpenLocation(UIGlobal.getJGridStartLocation());
 	               //performCogUtilConfigureCerts();
 	               break;
-    			case DYNAMIC_ACTION:
+    			case DYNAMIC_VRS_ACTION:
 				{
 					ActionContext selContext = this.createSelectionContext(vcomp); 
 					// perform action in this node with optional copy selection:
-					performDynamicAction(actionCommand,selContext,vcomp); 
+					performDynamicVRSAction(actionCommand,selContext,vcomp); 
 					break;
 				}
 				case DYNAMIC_VIEWER_ACTION:
@@ -550,7 +542,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 				    UIPlatform.getPlatform().getWindowRegistry().showAll();
 					break; 
 				}
-				case PROXYDIALOG:
+				case SHOW_PROXYDIALOG:
 					performProxyDialog();
 					break;
 				case DEBUG_SHOW_TASKS:
@@ -2526,78 +2518,56 @@ public class BrowserController implements WindowListener, GridProxyListener,
 		return selContext; 
 	}
 
-	public void performDynamicAction(final ActionCommand actionCommand, final ActionContext actionContext, final VComponent vcomp)
+	public void performDynamicVRSAction(final ActionCommand actionCommand, final ActionContext actionContext, final VComponent vcomp)
 	{
-		final VRSFactory vrs=actionCommand.getVRS();
-		//final String iviewerClassName=actionCommand.getViewerClassName(); 
-
-		final String methodName=actionCommand.getDynamicActionName();
-		//final String menuMethodName=actionCommand.getActionMessage(); 
-		
-		logger.infoPrintf("performDynamicAction:PerformActionCommand:%s\n",methodName);
-		logger.infoPrintf("performDynamicAction:Selection context = %s\n",actionContext);
-
-		if (vrs==null) 
-		{
-		    logger.errorPrintf("VRS not defined for action command:%s\n",actionCommand); 
-			return;
-		}
-
-		final BrowserController bc=this; 
-
-		ActionTask dynamicAction=new ActionTask(bc,"Performing action:"+methodName)
-		{
-			public void doTask() throws VlException
-			{
-				// get task monitor of already started task ! 
-				ITaskMonitor monitor = this.getTaskMonitor(); 
-				
-				try
-				{
-					vrs.performAction(monitor,UIGlobal.getVRSContext(), methodName, actionContext);
-				}
-				catch (VlException e)
-				{
-					//monitor.setException(e); 
-					bc.handle(e); 
-				}
-			}
-
-			@Override
-			public void stopTask()
-			{
-			}
-		};
-
-		dynamicAction.startTask();
-		TaskMonitorDialog.showTaskMonitorDialog(this.getFrame(), dynamicAction,1000); 
+//		final VRSFactory vrs=actionCommand.getVRS();
+//		//final String iviewerClassName=actionCommand.getViewerClassName(); 
+//
+//		final String methodName=actionCommand.getDynamicActionName();
+//		//final String menuMethodName=actionCommand.getActionMessage(); 
+//		
+//		logger.infoPrintf("performDynamicAction:PerformActionCommand:%s\n",methodName);
+//		logger.infoPrintf("performDynamicAction:Selection context = %s\n",actionContext);
+//
+//		if (vrs==null) 
+//		{
+//		    logger.errorPrintf("VRS not defined for action command:%s\n",actionCommand); 
+//			return;
+//		}
+//
+//		final BrowserController bc=this; 
+//
+//		ActionTask dynamicAction=new ActionTask(bc,"Performing action:"+methodName)
+//		{
+//			public void doTask() throws VlException
+//			{
+//				// get task monitor of already started task ! 
+//				ITaskMonitor monitor = this.getTaskMonitor(); 
+//				
+//				try
+//				{
+//					vrs.performAction(monitor,UIGlobal.getVRSContext(), methodName, actionContext);
+//				}
+//				catch (VlException e)
+//				{
+//					//monitor.setException(e); 
+//					bc.handle(e); 
+//				}
+//			}
+//
+//			@Override
+//			public void stopTask()
+//			{
+//			}
+//		};
+//
+//		dynamicAction.startTask();
+//		TaskMonitorDialog.showTaskMonitorDialog(this.getFrame(), dynamicAction,1000); 
 	}
 
     public void performDynamicViewerAction(final ActionCommand actionCommand, final ActionContext actionContext) throws VlException
 	{
-//		String iviewerClassName=actionCommand.getViewerClassName(); 
-//		String methodName=actionCommand.getDynamicActionName();
-//	
-//		Global.infoPrintln(this, "PerformActionCommand = "+methodName);
-//		Global.infoPrintln(this, "ViewerClass          = "+iviewerClassName);
-//		Global.infoPrintln(this, "Selection context    = "+actionContext);
-//
-//		if (iviewerClassName==null) 
-//		{
-//			throw new VlException("ViewerException","Viewer not defined for action command:"+actionCommand); 
-//		}
-//	    // could be null! 
-//        VRL baseLocation=actionContext.getSource(); 
-//
-//        ViewContext context=new ViewContext(this); // default, start embedded, etc.  
-//        context.setStartStandalone(true); 
-//        context.setStartedAsDefaultAction(false); 
-//        context.setStartupLocation(baseLocation); 
-//        
-//		ViewerPlugin viewer = this.getViewer(iviewerClassName); 
-//	    ViewerManager viewerManager=new ViewerManager(this,viewer); 
-//	    viewer.setViewContext(context);  
-//	    viewerManager.startForAction(methodName,actionContext); 
+        // Start viewer with an ActionContext !
 	    performStartStandaloneViewer(actionCommand,actionContext);
 	}
 	
@@ -2776,7 +2746,6 @@ public class BrowserController implements WindowListener, GridProxyListener,
     public void unregisterTask(ActionTask actionTask)
     {
         UIGlobal.getTaskWatcher().unregisterTask(actionTask); 
-        
     }
 
     @Override

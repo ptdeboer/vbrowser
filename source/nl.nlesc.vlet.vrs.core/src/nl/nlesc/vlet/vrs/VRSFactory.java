@@ -20,18 +20,11 @@
 
 package nl.nlesc.vlet.vrs;
 
-import java.util.Vector;
-
-import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.actions.ActionContext;
-import nl.nlesc.vlet.actions.ActionMenuMapping;
-import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vrl.VRL;
-
 
 /**
  * The VRSFactory class produces instances of VResourceSystem handlers
@@ -46,10 +39,10 @@ import nl.nlesc.vlet.vrs.vrl.VRL;
  */ 
 public abstract class VRSFactory
 {
-    //   =======================================================================
-    //   Instance: Note that a VRS Class is a singleton class, 
-    //   it procudes one instance per Registry!  
-    //   =======================================================================
+    //=======================================================================
+    // Instance: Note that a VRS Class is a singleton class, 
+    // it procudes one instance per Registry!  
+    //=======================================================================
 
     protected static VRSFactory instance;
 
@@ -59,9 +52,9 @@ public abstract class VRSFactory
         return instance; 
     }
 
-    //    =======================================================================
-    //  Instance members  
-    //  =======================================================================
+    //=======================================================================
+    // Instance  
+    //=======================================================================
 
     /** Enforce public constructor for subclasses ! */ 
     public VRSFactory()
@@ -119,27 +112,6 @@ public abstract class VRSFactory
         return openResourceSystem(context,location).openLocation(location); 
     }
     
-    /** 
-     * Return Action Menu Mappings for this VRS implementation. 
-     */ 
-    public Vector<ActionMenuMapping> getActionMenuMappings()
-    {
-        return null; 
-    }
-
-    /**
-     * The method is called by the VBrowser when one of the Actions defined int he ActionMenuMapping matches. 
-     * @param ITaskMonitor intactive Task Monitor.
-     * @param VRSContext to use to perform the action. 
-     * @param methodName the method to perform. 
-     * @param actionContext menu selection context which matched the menu mapping. 
-     */ 
-    public void performAction(ITaskMonitor monitor,VRSContext vrsContext, String methodName, ActionContext actionContext) 
-           throws VlException
-    {
-        throw new NotImplementedException("Service "+this.getName()+" doesn't support action:"+methodName);        
-    }
-
     public String getVersion()
     {
         String vrsInfo="VRS"; 
@@ -212,7 +184,9 @@ public abstract class VRSFactory
     // ========================================================================
 
 
-    /** Returns name of service, for example GridFTP */   
+    /** 
+     * Returns logical name of service, for example GridFTP
+     */   
     abstract public String getName();
 
     /** 
@@ -250,6 +224,5 @@ public abstract class VRSFactory
 	 * @throws VlException 
 	 */
 	abstract public VResourceSystem createNewResourceSystem(VRSContext context,ServerInfo info, VRL location) throws VlException; 
-
 
 }

@@ -26,9 +26,9 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.actions.ActionContext;
-import nl.nlesc.vlet.actions.ActionMenuConstants;
-import nl.nlesc.vlet.actions.ActionMenuMapping;
+//import nl.nlesc.vlet.actions.ActionContext;
+//import nl.nlesc.vlet.actions.ActionMenuConstants;
+//import nl.nlesc.vlet.actions.ActionMenuMapping;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.data.VAttributeSet;
@@ -144,86 +144,86 @@ public class LFCFSFactory extends VFSFactory
 	}
 
 	
-    @Override
-    public Vector<ActionMenuMapping> getActionMenuMappings()
-    {
-        Vector<ActionMenuMapping> mappings=new Vector<ActionMenuMapping>(); 
-        String[] fileTypes={"File"};
-        String[] dirTypes={"Dir"};
-        String[] bothTypes={"File","Dir"};
-        
-        // LFC File mappings:
-        ActionMenuMapping mapping;    
-        // single selection action: 
-//        ActionMenuMapping mapping;        
-//        mapping=new ActionMenuMapping("singleUnregisterAll","Unregister LFN and Replicas","lfc");        
-//        mapping.addTypeSchemeMapping(bothTypes,schemes); 
+//    @Override
+//    public Vector<ActionMenuMapping> getActionMenuMappings()
+//    {
+//        Vector<ActionMenuMapping> mappings=new Vector<ActionMenuMapping>(); 
+//        String[] fileTypes={"File"};
+//        String[] dirTypes={"Dir"};
+//        String[] bothTypes={"File","Dir"};
+//        
+//        // LFC File mappings:
+//        ActionMenuMapping mapping;    
+//        // single selection action: 
+////        ActionMenuMapping mapping;        
+////        mapping=new ActionMenuMapping("singleUnregisterAll","Unregister LFN and Replicas","lfc");        
+////        mapping.addTypeSchemeMapping(bothTypes,schemes); 
+////        mappings.add(mapping);
+////        
+////        // for multi selection for only when source of action is LFC ! 
+////        mapping=new ActionMenuMapping("selectionUnregisterAll","Unregister LFN and Replicas","lfc");        
+////        mapping.addResourceMapping(bothTypes, schemes, bothTypes, schemes, ActionMenuConstants.SELECTION_ONE_OR_MORE);
+////        mappings.add(mapping);        
+//        
+//        // single selection action: 
+//        mapping=new ActionMenuMapping("singleDelete","Delete file (including replicas)","lfc");
+//        mapping.addResourceMapping(fileTypes,schemes,null,null,ActionMenuConstants.SELECTION_NONE);        
 //        mappings.add(mapping);
 //        
+//        // single selection action: 
+//        mapping=new ActionMenuMapping("singleForceDelete","Force delete file and unregister all","lfc");
+//        mapping.addResourceMapping(fileTypes,schemes,null,null,ActionMenuConstants.SELECTION_NONE);        
+//        mappings.add(mapping);
+//        
+//        mapping=new ActionMenuMapping("singleDelete","Delete directory contents (including replicas)","lfc");
+//        mapping.addResourceMapping(dirTypes,schemes,null,null,ActionMenuConstants.SELECTION_NONE);        
+//        mappings.add(mapping);
+//        
+//        mapping=new ActionMenuMapping("singleForceDelete","Force delete directory and all contents","lfc");
+//        mapping.addResourceMapping(dirTypes,schemes,null,null,ActionMenuConstants.SELECTION_NONE);        
+//        mappings.add(mapping);
+//
 //        // for multi selection for only when source of action is LFC ! 
-//        mapping=new ActionMenuMapping("selectionUnregisterAll","Unregister LFN and Replicas","lfc");        
-//        mapping.addResourceMapping(bothTypes, schemes, bothTypes, schemes, ActionMenuConstants.SELECTION_ONE_OR_MORE);
-//        mappings.add(mapping);        
-        
-        // single selection action: 
-        mapping=new ActionMenuMapping("singleDelete","Delete file (including replicas)","lfc");
-        mapping.addResourceMapping(fileTypes,schemes,null,null,ActionMenuConstants.SELECTION_NONE);        
-        mappings.add(mapping);
-        
-        // single selection action: 
-        mapping=new ActionMenuMapping("singleForceDelete","Force delete file and unregister all","lfc");
-        mapping.addResourceMapping(fileTypes,schemes,null,null,ActionMenuConstants.SELECTION_NONE);        
-        mappings.add(mapping);
-        
-        mapping=new ActionMenuMapping("singleDelete","Delete directory contents (including replicas)","lfc");
-        mapping.addResourceMapping(dirTypes,schemes,null,null,ActionMenuConstants.SELECTION_NONE);        
-        mappings.add(mapping);
-        
-        mapping=new ActionMenuMapping("singleForceDelete","Force delete directory and all contents","lfc");
-        mapping.addResourceMapping(dirTypes,schemes,null,null,ActionMenuConstants.SELECTION_NONE);        
-        mappings.add(mapping);
-
-        // for multi selection for only when source of action is LFC ! 
-        mapping=new ActionMenuMapping("selectionDelete","Delete selection (contents including replicas)","lfc");
-        mapping.addResourceMapping(null, null, bothTypes, schemes,  ActionMenuConstants.SELECTION_ONE_OR_MORE);
-        mappings.add(mapping);
-        
-        mapping=new ActionMenuMapping("selectionForceDelete","Force delete selection and unregister all","lfc");
-        mapping.addResourceMapping(null, null, bothTypes, schemes,  ActionMenuConstants.SELECTION_ONE_OR_MORE);
-        mappings.add(mapping);
-        
-        // trigger paste as alias if current selection or clipboard hold a LFC File or Directory. 
-        
-        mapping=new ActionMenuMapping("pasteAsLink","Paste as (LFC) Link");
-        mapping.addResourceMapping(bothTypes, 
-                                   schemes, 
-                                   bothTypes, 
-                                   schemes, 
-                                   ActionMenuConstants.SELECTION_TYPE_CLIPBOARD | ActionMenuConstants.SELECTION_ONE_OR_MORE);
-	    // Skip mapping For Now: Do NOT encourage users to create links !!
-        //mappings.add(mapping);
-        
-        // ===
-        // Replica to Preferred !
-        // === 
-        
-        // single click action for one 'File' type(s) and LFC schemes but block selections ! 
-        mapping=new ActionMenuMapping("singleReplicateToPref","Replicate file to Preferred SEs","replicas");
-        mapping.addResourceMapping(fileTypes,schemes,null,null,ActionMenuConstants.SELECTION_NONE); 
-        mappings.add(mapping);
-     
-        // pattern which matches a multi FILE selection in the VBrowser: 
-        mapping=new ActionMenuMapping("selectionReplicateToPref","Replicate selected files to preferred SEs","replicas");
-        mapping.addSelectionTypeSchemeMapping(fileTypes,schemes); 
-        mappings.add(mapping);
-
-        // pattern which matches directories selection(s) in the VBrowser: 
-        mapping=new ActionMenuMapping("recursiveReplicateToPref","Replicate directory (recursive!) to preferred SEs","replicas");
-        mapping.addTypeSchemeMapping(dirTypes,schemes); 
-        mappings.add(mapping);
-        
-        return mappings; 
-    }
+//        mapping=new ActionMenuMapping("selectionDelete","Delete selection (contents including replicas)","lfc");
+//        mapping.addResourceMapping(null, null, bothTypes, schemes,  ActionMenuConstants.SELECTION_ONE_OR_MORE);
+//        mappings.add(mapping);
+//        
+//        mapping=new ActionMenuMapping("selectionForceDelete","Force delete selection and unregister all","lfc");
+//        mapping.addResourceMapping(null, null, bothTypes, schemes,  ActionMenuConstants.SELECTION_ONE_OR_MORE);
+//        mappings.add(mapping);
+//        
+//        // trigger paste as alias if current selection or clipboard hold a LFC File or Directory. 
+//        
+//        mapping=new ActionMenuMapping("pasteAsLink","Paste as (LFC) Link");
+//        mapping.addResourceMapping(bothTypes, 
+//                                   schemes, 
+//                                   bothTypes, 
+//                                   schemes, 
+//                                   ActionMenuConstants.SELECTION_TYPE_CLIPBOARD | ActionMenuConstants.SELECTION_ONE_OR_MORE);
+//	    // Skip mapping For Now: Do NOT encourage users to create links !!
+//        //mappings.add(mapping);
+//        
+//        // ===
+//        // Replica to Preferred !
+//        // === 
+//        
+//        // single click action for one 'File' type(s) and LFC schemes but block selections ! 
+//        mapping=new ActionMenuMapping("singleReplicateToPref","Replicate file to Preferred SEs","replicas");
+//        mapping.addResourceMapping(fileTypes,schemes,null,null,ActionMenuConstants.SELECTION_NONE); 
+//        mappings.add(mapping);
+//     
+//        // pattern which matches a multi FILE selection in the VBrowser: 
+//        mapping=new ActionMenuMapping("selectionReplicateToPref","Replicate selected files to preferred SEs","replicas");
+//        mapping.addSelectionTypeSchemeMapping(fileTypes,schemes); 
+//        mappings.add(mapping);
+//
+//        // pattern which matches directories selection(s) in the VBrowser: 
+//        mapping=new ActionMenuMapping("recursiveReplicateToPref","Replicate directory (recursive!) to preferred SEs","replicas");
+//        mapping.addTypeSchemeMapping(dirTypes,schemes); 
+//        mappings.add(mapping);
+//        
+//        return mappings; 
+//    }
      
 	  
     protected LFCFileSystem getLFCFS(VRSContext context,VRL source) throws VlException
@@ -238,81 +238,81 @@ public class LFCFSFactory extends VFSFactory
     }
  
 
-    @Override
-    public void performAction(ITaskMonitor monitor,VRSContext vrsContext, String methodName, ActionContext actionContext) throws VlException
-    {
-    	// The Actual Selection do perform the action with ! 
-    	VRL selections[]=actionContext.getSelections();
-    	
-    	// ===
-    	// The source is NOT part of the selection. It is the origin
-    	// of the Action Click in the VBrowser. 
-    	// ===
-    	VRL source=actionContext.getSource(); 
-         
-    	if(methodName==null)
-             return;
-           
-         // todo: check if VRLs are on the same server 
-         if (methodName.compareTo("singleDelete") == 0)
-         {
-        	  
-             LFCFileSystem server = getLFCFS(vrsContext,source); // (LFCFileSystem) super.getFileSystem(vrsContext,source); //getLFCFS(vrsContext,source); 
-             server.recurseDelete(monitor,source,false); 
-         }
-         else if (methodName.compareTo("singleForceDelete") == 0)
-         {
-             LFCFileSystem server = getLFCFS(vrsContext,source);
-             server.recurseDelete(monitor,source,true);
-         }
-         // todo: check if VRLs really are on the same server 
-         else if (methodName.compareTo("selectionDelete") == 0)
-         {
-             LFCFileSystem server = getLFCFS(vrsContext,selections[0]); 
-             server.recurseDelete(monitor,selections,false);  
-         }
-         // todo: check if VRLs really are on the same server 
-         else if (methodName.compareTo("selectionForceDelete") == 0)
-         {
-             LFCFileSystem server = getLFCFS(vrsContext,selections[0]); 
-             server.recurseDelete(monitor,selections,true);  
-         }
-         // todo: check if VRLs really are on the same server 
-         else if (methodName.compareTo("pasteAsLink") == 0)
-         {
-             // paste selection into destination (=source of paste action) 
-             LFCFileSystem server = getLFCFS(vrsContext,source); 
-             server.pastAsLink(monitor,source,selections);  
-         }
-         // todo: check if VRLs really are on the same server 
-         else if (methodName.compareTo("singleReplicateToPref") == 0)
-         {
-             // paste selection into destination (=source of paste action) 
-             LFCFileSystem server = getLFCFS(vrsContext,source); 
-             VRL vrls[]=new VRL[1]; 
-             vrls[0]=source; // one source only !
-             server.replicateToPreferred(monitor,vrls);  
-         }
-         // todo: check if VRLs really are on the same server 
-         else if (methodName.compareTo("recursiveReplicateToPref") == 0)
-         {
-             // paste selection into destination (=source of paste action) 
-             LFCFileSystem server = getLFCFS(vrsContext,source); 
-             server.recursiveReplicateToPreferred(monitor,source);  
-         }
-         // todo: check if VRLs really are on the same server 
-         else if (methodName.compareTo("selectionReplicateToPref") == 0)
-         {
-             // paste selection into destination (=source of paste action) 
-        	 // Warning: Source can either be parent directory (canvas click) or file which was right-clicked on 
-             LFCFileSystem server = getLFCFS(vrsContext,source); 
-             server.replicateToPreferred(monitor,selections);
-         }
-         else
-         {
-             // todo: 
-             //Global.warnPrintf(this,"Unknown LFC Action:%s\n",methodName); 
-         }
-      }
+//    @Override
+//    public void performAction(ITaskMonitor monitor,VRSContext vrsContext, String methodName, ActionContext actionContext) throws VlException
+//    {
+//    	// The Actual Selection do perform the action with ! 
+//    	VRL selections[]=actionContext.getSelections();
+//    	
+//    	// ===
+//    	// The source is NOT part of the selection. It is the origin
+//    	// of the Action Click in the VBrowser. 
+//    	// ===
+//    	VRL source=actionContext.getSource(); 
+//         
+//    	if(methodName==null)
+//             return;
+//           
+//         // todo: check if VRLs are on the same server 
+//         if (methodName.compareTo("singleDelete") == 0)
+//         {
+//        	  
+//             LFCFileSystem server = getLFCFS(vrsContext,source); // (LFCFileSystem) super.getFileSystem(vrsContext,source); //getLFCFS(vrsContext,source); 
+//             server.recurseDelete(monitor,source,false); 
+//         }
+//         else if (methodName.compareTo("singleForceDelete") == 0)
+//         {
+//             LFCFileSystem server = getLFCFS(vrsContext,source);
+//             server.recurseDelete(monitor,source,true);
+//         }
+//         // todo: check if VRLs really are on the same server 
+//         else if (methodName.compareTo("selectionDelete") == 0)
+//         {
+//             LFCFileSystem server = getLFCFS(vrsContext,selections[0]); 
+//             server.recurseDelete(monitor,selections,false);  
+//         }
+//         // todo: check if VRLs really are on the same server 
+//         else if (methodName.compareTo("selectionForceDelete") == 0)
+//         {
+//             LFCFileSystem server = getLFCFS(vrsContext,selections[0]); 
+//             server.recurseDelete(monitor,selections,true);  
+//         }
+//         // todo: check if VRLs really are on the same server 
+//         else if (methodName.compareTo("pasteAsLink") == 0)
+//         {
+//             // paste selection into destination (=source of paste action) 
+//             LFCFileSystem server = getLFCFS(vrsContext,source); 
+//             server.pastAsLink(monitor,source,selections);  
+//         }
+//         // todo: check if VRLs really are on the same server 
+//         else if (methodName.compareTo("singleReplicateToPref") == 0)
+//         {
+//             // paste selection into destination (=source of paste action) 
+//             LFCFileSystem server = getLFCFS(vrsContext,source); 
+//             VRL vrls[]=new VRL[1]; 
+//             vrls[0]=source; // one source only !
+//             server.replicateToPreferred(monitor,vrls);  
+//         }
+//         // todo: check if VRLs really are on the same server 
+//         else if (methodName.compareTo("recursiveReplicateToPref") == 0)
+//         {
+//             // paste selection into destination (=source of paste action) 
+//             LFCFileSystem server = getLFCFS(vrsContext,source); 
+//             server.recursiveReplicateToPreferred(monitor,source);  
+//         }
+//         // todo: check if VRLs really are on the same server 
+//         else if (methodName.compareTo("selectionReplicateToPref") == 0)
+//         {
+//             // paste selection into destination (=source of paste action) 
+//        	 // Warning: Source can either be parent directory (canvas click) or file which was right-clicked on 
+//             LFCFileSystem server = getLFCFS(vrsContext,source); 
+//             server.replicateToPreferred(monitor,selections);
+//         }
+//         else
+//         {
+//             // todo: 
+//             //Global.warnPrintf(this,"Unknown LFC Action:%s\n",methodName); 
+//         }
+//      }
 
 }

@@ -348,7 +348,7 @@ public class VBrowser extends javax.swing.JFrame
                                     specialToolbar.add(credentialButton);
                                     // credentialButton.setText("GC");
 
-                                    credentialButton.setActionCommand(ActionCommandType.PROXYDIALOG.toString());
+                                    credentialButton.setActionCommand(ActionCommandType.SHOW_PROXYDIALOG.toString());
                                     credentialButton.addActionListener(bcActionListener);
 
                                     credentialButton.setIcon(loadIcon("menu/keys_notok.png"));
@@ -576,7 +576,7 @@ public class VBrowser extends javax.swing.JFrame
                     proxyMenu.add(proxyDialogMenuItem);
                     proxyDialogMenuItem.setText("Init Proxy Dialog");
                     proxyDialogMenuItem.setMnemonic(KeyEvent.VK_P);
-                    proxyDialogMenuItem.setActionCommand(ActionCommandType.PROXYDIALOG.toString());
+                    proxyDialogMenuItem.setActionCommand(ActionCommandType.SHOW_PROXYDIALOG.toString());
                     proxyDialogMenuItem.addActionListener(bcActionListener);
                 }
             }

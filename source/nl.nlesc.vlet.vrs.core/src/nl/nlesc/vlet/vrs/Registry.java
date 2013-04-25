@@ -35,7 +35,6 @@ import nl.esciencecenter.ptk.ui.UI;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.actions.ActionMenuMapping;
 import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.exception.VlInternalError;
 import nl.nlesc.vlet.exception.VlServiceMismatchException;
@@ -810,30 +809,7 @@ public final class Registry // todo: change to vrs protected class.
         return this.getRegisteredServices();
     }
 
-    /** Collect actionmappings from registered services */
-    public Vector<ActionMenuMapping> getActionMappings()
-    {
-        Vector<ActionMenuMapping> mappings = new Vector<ActionMenuMapping>();
 
-        synchronized (registeredServices)
-        {
-            for (VRSFactory vrs : getRegisteredServices())
-            {
-                Vector<ActionMenuMapping> maps = vrs.getActionMenuMappings();
-
-                if (maps != null)
-                {
-                    for (ActionMenuMapping map : maps)
-                    {
-                        map.setVRS(vrs); // update parent VRS !
-                        mappings.add(map);
-                    }
-                }
-            }
-        }
-
-        return mappings;
-    }
 
     public synchronized void reset()
     {
