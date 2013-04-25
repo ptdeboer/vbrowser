@@ -218,7 +218,7 @@ public final class Registry // todo: change to vrs protected class.
             if (result==false)
             {
                 registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory");
-                registerVRSDriverClassNoError(currentLoader,"nl.nlesc.vlet.vfs.jcraft.ssh.SftpFSFactory");
+                registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vfs.jcraft.ssh.SftpFSFactory");
             }
 
             // Globus is a plugin. 
@@ -233,7 +233,7 @@ public final class Registry // todo: change to vrs protected class.
 
         // check for additional driver
         str = GlobalProperties.getStringProperty(VletConfig.PROP_VDRIVERS);
-        logger.infoPrintf("Extra vdrivers %s=%s", VletConfig.PROP_VDRIVERS, str);
+        logger.infoPrintf("Extra vdrivers %s='%s'\n", VletConfig.PROP_VDRIVERS, str);
 
         if ((str == null) || (str.compareTo("") == 0))
         {
@@ -412,7 +412,7 @@ public final class Registry // todo: change to vrs protected class.
         // update scheme cache:
         this.updateDefaultSchemes();
 
-        logger.infoPrintf("Added VRSFactory class:%s\n", factoryClass.getName());
+        logger.infoPrintf("Registry: Register VRSFactory class:%s\n", factoryClass.getName());
         return true;
     }
 
@@ -472,9 +472,11 @@ public final class Registry // todo: change to vrs protected class.
         Class<?> cls = classLoader.loadClass(classname);
         // runtime check:
         if (VRSFactory.class.isAssignableFrom(cls) == false)
+        {
             throw new nl.nlesc.vlet.exception.VlInitializationException("Class is not a VRSFactory:"
                     + cls.getCanonicalName());
-
+        }
+        
         logger.debugPrintf("Registering class:+%s\n", cls.getName());
 
         return this.registerVRSDriverClass((Class<? extends VRSFactory>) cls);
@@ -503,7 +505,7 @@ public final class Registry // todo: change to vrs protected class.
         }
         catch (ClassNotFoundException e)
         {
-            logger.logException(ClassLogger.WARN, e, "ClassNotFound exception for:%s\n", classname);
+            logger.logException(ClassLogger.ERROR, e, "ClassNotFound exception for:%s\n", classname);
         }
         catch (SecurityException e)
         {
