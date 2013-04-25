@@ -388,57 +388,33 @@ public class VletConfig
             else if (arg.equalsIgnoreCase("-debug"))
             {
                 logger.setLevelToDebug();
-                parsed = true;
-            }
-            else if (arg.equalsIgnoreCase("-warn"))
-            {
-                logger.setLevelToWarn(); 
+                ClassLogger.getRootLogger().setLevelToDebug(); 
                 parsed = true;
             }
             else if (arg.equalsIgnoreCase("-info"))
             {
                 logger.setLevelToInfo();
-                //Global.setDebug(true);
+                ClassLogger.getRootLogger().setLevelToInfo();
                 parsed = true;
             }
-            else if (arg.startsWith("-loglevel="))
+            else if (arg.equalsIgnoreCase("-warn"))
             {
-                String levelstr=arg.substring("-loglevel=".length());
-
-                if (levelstr.compareToIgnoreCase("NONE")==0)
-                {
-                    logger.setLevelToNone(); 
-                    parsed = true;
-                }
-                else if (levelstr.compareToIgnoreCase("FATAL")==0)
-                {
-                    logger.setLevelToFatal();  
-                    parsed = true;
-                }
-                else if (levelstr.compareToIgnoreCase("ERROR")==0)
-                {
-                    logger.setLevelToError(); 
-                    parsed = true;
-                }
-                else if (levelstr.compareToIgnoreCase("WARN")==0)
-                {
-                    logger.setLevelToWarn(); 
-                    parsed = true;
-                }
-                else if (levelstr.compareToIgnoreCase("INFO")==0)
-                {
-                    logger.setLevelToInfo();
-                    parsed = true;
-                }
-                else if (levelstr.compareToIgnoreCase("DEBUG")==0)
-                {
-                    logger.setLevelToDebug();
-                    parsed = true;
-                }
-                else
-                    ; //Global.errorPrintf(Global.class,"unrecognized log level=%s\n",arg); 
+                logger.setLevelToWarn(); 
+                ClassLogger.getRootLogger().setLevelToWarn();
+                parsed = true;
             }
-
+            else if (arg.equalsIgnoreCase("-error"))
+            {
+                logger.setLevelToWarn(); 
+                ClassLogger.getRootLogger().setLevelToError();
+                parsed = true;
+            }
+            else if (arg.equalsIgnoreCase("-fatal"))
+            {
+                logger.setLevelToWarn(); 
+                ClassLogger.getRootLogger().setLevelToFatal();
+                parsed = true;
+            }
             if (parsed==false)
                 remainingArgs.add(arg); 
         }
