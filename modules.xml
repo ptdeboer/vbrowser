@@ -65,6 +65,12 @@
         </antcall>
 
         <antcall target="build-component">
+            <param name="name" value="nl.esciencecenter.vbrowser.vrs"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+        <antcall target="build-component">
             <param name="name" value="nl.nlesc.vlet.vrs.core"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
