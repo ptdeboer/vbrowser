@@ -25,9 +25,9 @@ import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.nlesc.vlet.data.VAttribute;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
-import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -51,9 +51,9 @@ public class OctopusDir extends VDir
      * Get file attributes, if file does not exists
      * @param update
      * @return
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public FileAttributes getAttrs(boolean update) throws VlException
+    public FileAttributes getAttrs(boolean update) throws VrsException
     {
         try
         {
@@ -66,12 +66,12 @@ public class OctopusDir extends VDir
         catch (OctopusIOException e)
         {
             // Check for File Not Found Here !
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         } 
     }
     	
 	@Override
-	public boolean create(boolean force) throws VlException
+	public boolean create(boolean force) throws VrsException
 	{
 	    boolean exists=exists(); 
 	        
@@ -93,13 +93,13 @@ public class OctopusDir extends VDir
         }
         catch (OctopusIOException e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         } 
 		return true; // no exception -> true; 
 	}
 	
 	@Override
-	public boolean exists() throws VlException
+	public boolean exists() throws VrsException
 	{
 	    try
         {
@@ -115,12 +115,12 @@ public class OctopusDir extends VDir
         }
         catch (OctopusIOException e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
 	}
 	
 	@Override
-	public VFSNode[] list() throws VlException 
+	public VFSNode[] list() throws VrsException 
 	{
 	    //return this.getFS().listNodes(octoPath); 
         return getFileSystem().listNodesAndAttrs(octoPath); 
@@ -133,14 +133,14 @@ public class OctopusDir extends VDir
 	}
 	
 	public VRL rename(String newName, boolean renameFullPath)
-            throws VlException
+            throws VrsException
     {
         VRL vrl=getFileSystem().rename(octoPath,true,newName,renameFullPath);
         this.fileAttrs=null; // clear cached attributes!
         return vrl; 
     }
 
-    public boolean delete(boolean recurse) throws VlException
+    public boolean delete(boolean recurse) throws VrsException
     {
         if (recurse)
         {
@@ -159,7 +159,7 @@ public class OctopusDir extends VDir
         }
         catch (OctopusIOException e)
         {
-            throw new VlException(e.getMessage(),e);  
+            throw new VrsException(e.getMessage(),e);  
         } 
     }
     
@@ -173,7 +173,7 @@ public class OctopusDir extends VDir
         return list.toArray(); 
     }
     
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         if ("octoDir".equals(name))
             return new VAttribute (name,true); 
@@ -182,30 +182,30 @@ public class OctopusDir extends VDir
     }
     
 	@Override
-	public long getModificationTime() throws VlException
+	public long getModificationTime() throws VrsException
 	{
 	    return getFileSystem().getModificationTime(getAttrs(false),System.currentTimeMillis());
 	}
 	
 	@Override
-	public String getPermissionsString() throws VlException
+	public String getPermissionsString() throws VrsException
 	{
 	    return getFileSystem().createPermissionsString(getAttrs(false),true); 
     }
 	   
 	@Override
-	public boolean isReadable() throws VlException 
+	public boolean isReadable() throws VrsException 
 	{
 	    return getFileSystem().isReadable(getAttrs(false),true);
 	}
 
 	@Override
-	public boolean isWritable() throws VlException
+	public boolean isWritable() throws VrsException
 	{
 		return this.getFileSystem().isWritable(getAttrs(false),false); 
 	}
 
-	public long getNrOfNodes() throws VlException
+	public long getNrOfNodes() throws VrsException
 	{
 		// count number of nodes. Faster implementation is recommended. 
 		VFSNode[] files = this.list();

@@ -48,8 +48,8 @@ import nl.esciencecenter.octopus.files.RelativePath;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -57,7 +57,7 @@ import nl.nlesc.vlet.vrs.vrl.VRL;
 public class OctopusClient
 {
 
-    public static OctopusClient createFor(VRSContext context, ServerInfo info, VRL location) throws VlException
+    public static OctopusClient createFor(VRSContext context, ServerInfo info, VRL location) throws VrsException
     {
         // check shared clients here. 
         try
@@ -84,7 +84,7 @@ public class OctopusClient
         }
         catch (Exception e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
     }
 
@@ -299,12 +299,12 @@ public class OctopusClient
         engine.files().delete(octoAbsolutePath) ;; // (octoAbsolutePath,options);  
     }
 
-    public AbsolutePath rename(AbsolutePath oldAbsolutePath, AbsolutePath newAbsolutePath) throws VlException, OctopusIOException
+    public AbsolutePath rename(AbsolutePath oldAbsolutePath, AbsolutePath newAbsolutePath) throws VrsException, OctopusIOException
     {
         // Move must here be a rename on the same filesystem!
 
         if (checkSameFilesystem(oldAbsolutePath,newAbsolutePath)==false)
-            throw new VlException("Cannot rename file when new file is on other file system:"+oldAbsolutePath+"=>"+newAbsolutePath); 
+            throw new VrsException("Cannot rename file when new file is on other file system:"+oldAbsolutePath+"=>"+newAbsolutePath); 
         
         AbsolutePath actualAbsolutePath=engine.files().move(oldAbsolutePath, newAbsolutePath);
         return actualAbsolutePath;

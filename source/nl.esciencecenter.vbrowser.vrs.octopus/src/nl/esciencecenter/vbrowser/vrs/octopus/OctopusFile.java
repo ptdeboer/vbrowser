@@ -29,9 +29,9 @@ import nl.esciencecenter.octopus.exceptions.OctopusIOException;
 import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.ptk.data.StringList;
-import nl.nlesc.vlet.data.VAttribute;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
-import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -55,9 +55,9 @@ public class OctopusFile extends VFile
      * Get file attributes, if file does not exists
      * @param update
      * @return
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public FileAttributes getAttrs(boolean update) throws VlException
+    public FileAttributes getAttrs(boolean update) throws VrsException
     {
         try
         {
@@ -70,11 +70,11 @@ public class OctopusFile extends VFile
         catch (OctopusIOException e)
         {
             // Check for File Not Found Here !
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         } 
     }
     
-    public boolean sync() throws VlException
+    public boolean sync() throws VrsException
     {
         // Caching: do not sync non-existing files 
         if (this.fileAttrs==null) 
@@ -85,7 +85,7 @@ public class OctopusFile extends VFile
         return (this.fileAttrs!=null); 
     }
     
-    public boolean create(boolean ignoreExisting) throws VlException
+    public boolean create(boolean ignoreExisting) throws VrsException
 	{
         // existing attributes -> file exist. 
         if (exists()==true) 
@@ -108,7 +108,7 @@ public class OctopusFile extends VFile
         }
         catch (OctopusIOException e)
         {
-           throw new VlException(e.getMessage(),e); 
+           throw new VrsException(e.getMessage(),e); 
         }
 	}
 	
@@ -122,7 +122,7 @@ public class OctopusFile extends VFile
         return list.toArray(); 
     }
     
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         if ("octoFile".equals(name))
             return new VAttribute (name,true); 
@@ -137,20 +137,20 @@ public class OctopusFile extends VFile
         {
             return getFS().getLength(getAttrs(false),-1);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             throw new IOException(e.getMessage(),e); 
         } 
 	}
 
 	@Override
-	public long getModificationTime() throws VlException
+	public long getModificationTime() throws VrsException
 	{
 	    return getFS().getModificationTime(getAttrs(false),System.currentTimeMillis());
 	}
 
 	@Override
-	public boolean isReadable() throws VlException 
+	public boolean isReadable() throws VrsException 
 	{
 	    try
         {
@@ -158,12 +158,12 @@ public class OctopusFile extends VFile
         }
         catch (AttributeNotSupportedException e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
 	}
 
 	@Override
-	public boolean isWritable() throws VlException
+	public boolean isWritable() throws VrsException
 	{
 	    return getFS().isWritable(getAttrs(false),false); 
 	}
@@ -179,14 +179,14 @@ public class OctopusFile extends VFile
 	}
 
 	public VRL rename(String newName, boolean renameFullPath)
-		throws VlException
+		throws VrsException
 	{
 	    VRL vrl=getFS().rename(octoPath,false,newName,renameFullPath);
 	    this.fileAttrs=null; // clear cached attributes!
 	    return vrl; 
 	}
 
-	public boolean delete() throws VlException
+	public boolean delete() throws VrsException
 	{
 		try
         {
@@ -197,12 +197,12 @@ public class OctopusFile extends VFile
         }
         catch (OctopusIOException e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         } 
 	}		
 
 	@Override
-	public boolean exists() throws VlException
+	public boolean exists() throws VrsException
 	{
 	    try
         {
@@ -220,15 +220,15 @@ public class OctopusFile extends VFile
         }
 	    catch (AttributeNotSupportedException e)
 	    {
-	        throw new VlException(e.getMessage(),e); 
+	        throw new VrsException(e.getMessage(),e); 
 	    }
         catch (OctopusIOException e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
 	}
 
-	public String getPermissionsString() throws VlException
+	public String getPermissionsString() throws VrsException
     {
 	    return getFS().createPermissionsString(getAttrs(false),false); 
     }
@@ -237,14 +237,14 @@ public class OctopusFile extends VFile
 	// Protected implementation 
 	// === 
 	
-    protected void uploadFrom(VFSTransfer transferInfo, VFile localSource) throws VlException 
+    protected void uploadFrom(VFSTransfer transferInfo, VFile localSource) throws VrsException 
     {
         // localSource is a file on the local filesystem. 
         super.uploadFrom(transferInfo,localSource);          
     }
 
     protected void downloadTo(VFSTransfer transfer,VFile targetLocalFile)
-    	throws VlException
+    	throws VrsException
     {
         // copy contents into local file:
         super.downloadTo(transfer, targetLocalFile); 

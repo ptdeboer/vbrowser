@@ -21,10 +21,10 @@
 package nl.esciencecenter.vbrowser.vrs.octopus;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -56,7 +56,7 @@ public class OctopusFSFactory extends VFSFactory
 
 	@Override
 	public VFileSystem openFileSystem(VRSContext context, VRL location)
-			throws VlException 
+			throws VrsException 
 	{
 		// Delegate implementation to super method. 
 		// Super method checks if there isn't already a filesystem object created
@@ -65,7 +65,7 @@ public class OctopusFSFactory extends VFSFactory
 		return fs; 
 	}
 	
-	public OctopusFS createNewFileSystem(VRSContext context,ServerInfo info, VRL location) throws VlException
+	public OctopusFS createNewFileSystem(VRSContext context,ServerInfo info, VRL location) throws VrsException
 	{
 		// Create new FileSystem instance. 
 		// Use VRSContext for user context dependend specific settings. 
@@ -92,7 +92,7 @@ public class OctopusFSFactory extends VFSFactory
 	}
 		
 	// See super method 
-	public ServerInfo updateServerInfo(VRSContext context,ServerInfo info, VRL loc) throws VlException
+	public ServerInfo updateServerInfo(VRSContext context,ServerInfo info, VRL loc) throws VrsException
 	{
 		// Update server configuration information. 
 		// This method should check (Server/Resource) properties and optional update them. 
