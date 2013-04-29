@@ -18,14 +18,28 @@
  */
 // source: 
 
-package nl.nlesc.vlet.data.xml;
+package nl.nlesc.vlet.vrs.data.xml;
 
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.vrs.VNode;
+import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
-public interface VPersistance 
+public abstract class XMLtoNodeFactory
 {
-	String getPersistantType(); 
+	private VRSContext vrsContext;
+
+	public XMLtoNodeFactory(VRSContext context)
+	{
+		this.vrsContext=context; 
+	}
 	
-	VAttributeSet getPersistantAttributes() throws VlException; 
+	public VRSContext getContext()
+	{
+		return this.vrsContext; 
+	}
+	
+	/** Create node of the Given type */
+	public abstract VNode createNode(VNode parent,String type,VAttributeSet attributes) throws VrsException; 
+	
 }

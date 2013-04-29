@@ -18,28 +18,15 @@
  */
 // source: 
 
-package nl.nlesc.vlet.data.xml;
+package nl.nlesc.vlet.vrs.data.xml;
 
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.vrs.VNode;
-import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.VComposite;
 
-public abstract class XMLtoNodeFactory
+/**
+ * Composite Interface.
+ * Is used to detect whether Persistance object are Composite as well.   
+ */ 
+public interface VCompositePersistance extends VPersistance,VComposite
 {
-	private VRSContext vrsContext;
 
-	public XMLtoNodeFactory(VRSContext context)
-	{
-		this.vrsContext=context; 
-	}
-	
-	public VRSContext getContext()
-	{
-		return this.vrsContext; 
-	}
-	
-	/** Create node of the Given type */
-	public abstract VNode createNode(VNode parent,String type,VAttributeSet attributes) throws VlException; 
-	
 }

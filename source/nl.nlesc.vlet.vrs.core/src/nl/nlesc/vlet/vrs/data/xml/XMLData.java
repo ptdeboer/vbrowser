@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.nlesc.vlet.data.xml;
+package nl.nlesc.vlet.vrs.data.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,13 +40,13 @@ import javax.xml.transform.stream.StreamResult;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.data.VAttributeType;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlXMLDataException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.exception.XMLDataParseException;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VNode;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
+import nl.nlesc.vlet.vrs.data.VAttributeType;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -144,7 +144,7 @@ public class XMLData
     }
 
     /** Creates new DOM Document */
-    public Document createDefaultDocument() throws VlXMLDataException
+    public Document createDefaultDocument() throws XMLDataParseException
     {
         try
         {
@@ -156,7 +156,7 @@ public class XMLData
         }
         catch (ParserConfigurationException e)
         {
-            throw new VlXMLDataException(e.getMessage(), e);
+            throw new XMLDataParseException(e.getMessage(), e);
         }
     }
 
@@ -265,7 +265,7 @@ public class XMLData
     /**
      * Create complete DOM Document from VAttributeSet.
      */
-    public Document createXMLDocumentFrom(VAttributeSet attrSet) throws VlXMLDataException
+    public Document createXMLDocumentFrom(VAttributeSet attrSet) throws XMLDataParseException
     {
         Document domDoc = createDefaultDocument();
         Node node = createXMLNode(domDoc, attrSet);
@@ -277,7 +277,7 @@ public class XMLData
      * VAtttributeSet factory method. Parses the whole string. Assumes one XML
      * document string containing one VAttribute Set.
      */
-    public VAttributeSet parseVAttributeSet(String xmlString) throws VlXMLDataException
+    public VAttributeSet parseVAttributeSet(String xmlString) throws XMLDataParseException
     {
         try
         {
@@ -285,7 +285,7 @@ public class XMLData
         }
         catch (UnsupportedEncodingException e)
         {
-            throw new VlXMLDataException(e.getMessage(), e);
+            throw new XMLDataParseException(e.getMessage(), e);
         }
     }
 
@@ -293,7 +293,7 @@ public class XMLData
      * VAtttributeSet factory method. Reads the whole xml text from the
      * InputStream. Assumes one XML document containing one VAttribute Set.
      */
-    public VAttributeSet parseVAttributeSet(InputStream xmlStream) throws VlXMLDataException
+    public VAttributeSet parseVAttributeSet(InputStream xmlStream) throws XMLDataParseException
     {
         try
         {
@@ -312,7 +312,7 @@ public class XMLData
             logger.debugPrintf("Document hastotal nr. of sets:%d\n", nrOfSets);
 
             if (nrOfSets <= 0)
-                throw new VlXMLDataException("XML String doesn't contain any VAttribute Set");
+                throw new XMLDataParseException("XML String doesn't contain any VAttribute Set");
 
             if (nrOfSets > 1)
                 logger.warnPrintf("Warning: XML AttributeSet contains more then one 1 set\n");
@@ -323,7 +323,7 @@ public class XMLData
         }
         catch (Exception e)
         {
-            throw new VlXMLDataException(e.getMessage(), e);
+            throw new XMLDataParseException(e.getMessage(), e);
         }
     }
 
@@ -334,7 +334,7 @@ public class XMLData
      * @param collectionTag
      */
     public ArrayList<VAttributeSet> parseVAttributeSets(InputStream xmlStream, String collectionTag)
-            throws VlXMLDataException
+            throws XMLDataParseException
     {
         ArrayList<VAttributeSet> list = new ArrayList<VAttributeSet>();
 
@@ -374,7 +374,7 @@ public class XMLData
             logger.debugPrintf("Document hastotal nr. of sets:%d\n", nrOfSets);
 
             if (nrOfSets <= 0)
-                throw new VlXMLDataException("XML String doesn't contain any VAttribute Set");
+                throw new XMLDataParseException("XML String doesn't contain any VAttribute Set");
 
             for (int i = 0; i < nrOfSets; i++)
             {
@@ -388,7 +388,7 @@ public class XMLData
         }
         catch (Exception e)
         {
-            throw new VlXMLDataException(e.getMessage(), e);
+            throw new XMLDataParseException(e.getMessage(), e);
         }
     }
 
@@ -491,7 +491,7 @@ public class XMLData
         return this.encoding;
     }
 
-    public String createXMLString(Document doc) throws VlXMLDataException
+    public String createXMLString(Document doc) throws XMLDataParseException
     {
         java.io.StringWriter sw = new java.io.StringWriter();
         StreamResult sr = new StreamResult(sw);
@@ -500,7 +500,7 @@ public class XMLData
         return xml;
     }
 
-    private void writeXML(Document doc, StreamResult sr) throws VlXMLDataException
+    private void writeXML(Document doc, StreamResult sr) throws XMLDataParseException
     {
         if (doc == null)
             throw new NullPointerException("Received NULL Document");
@@ -525,21 +525,21 @@ public class XMLData
         catch (TransformerException e)
         {
             // Global.errorPrintStacktrace(e);
-            throw new VlXMLDataException(e.getMessage(), e);
+            throw new XMLDataParseException(e.getMessage(), e);
         }
         catch (Exception e)
         {
             // Global.errorPrintStacktrace(e);
-            throw new VlXMLDataException(e.getMessage(), e);
+            throw new XMLDataParseException(e.getMessage(), e);
         }
         catch (Throwable e)
         {
             // Global.errorPrintStacktrace(e);
-            throw new VlXMLDataException(e.getMessage(), e);
+            throw new XMLDataParseException(e.getMessage(), e);
         }
     }
 
-    public void writeAsXML(OutputStream outp, VAttributeSet attrSet, String comments) throws VlXMLDataException
+    public void writeAsXML(OutputStream outp, VAttributeSet attrSet, String comments) throws XMLDataParseException
     {
         logger.debugPrintf("writeAsXML(): attrSet=%s\n", attrSet);
 
@@ -553,7 +553,7 @@ public class XMLData
 
     /** Write Iterable Collection of VAttributeSets */
     public void writeAsXML(OutputStream outp, String configName, Iterable<VAttributeSet> attrSets, String comments)
-            throws VlXMLDataException
+            throws XMLDataParseException
     {
         logger.debugPrintf("writeAsXML(): attrSets\n");
 
@@ -565,7 +565,7 @@ public class XMLData
         this.writeXML(domDoc, sr);
     }
 
-    public void writeAsXML(OutputStream outp, VPersistance rootNode, String comments) throws DOMException, VlException
+    public void writeAsXML(OutputStream outp, VPersistance rootNode, String comments) throws DOMException, VrsException
     {
         logger.debugPrintf("writeAsXML(): Persistance Node=%s\n", rootNode);
 
@@ -585,9 +585,9 @@ public class XMLData
     /**
      * Does a depth first tree walk and create an Dom Tree
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public Node createXMLTree(Document domDoc, VPersistance rootNode) throws VlException
+    public Node createXMLTree(Document domDoc, VPersistance rootNode) throws VrsException
     {
         {
             // current node :
@@ -631,7 +631,7 @@ public class XMLData
                             }
                         }
                 }
-                catch (VlException e)
+                catch (VrsException e)
                 {
                     logger.logException(ClassLogger.ERROR, this, e, "Failed to create XML Tree\n");
                 }
@@ -641,7 +641,7 @@ public class XMLData
         }
     }
 
-    public VNode parsePersistantNodeTree(XMLtoNodeFactory nodeFactory, InputStream stream) throws VlException
+    public VNode parsePersistantNodeTree(XMLtoNodeFactory nodeFactory, InputStream stream) throws VrsException
     {
 
         try
@@ -660,7 +660,7 @@ public class XMLData
 
             if (first == null)
             {
-                throw new VlXMLDataException("InputStream doesn't contain any nodes of type:"
+                throw new XMLDataParseException("InputStream doesn't contain any nodes of type:"
                         + getPersistanteNodeElementName());
             }
 
@@ -668,19 +668,19 @@ public class XMLData
         }
         catch (ParserConfigurationException e)
         {
-            throw new VlXMLDataException("ParserConfigurationException.\n" + e.getMessage(), e);
+            throw new XMLDataParseException("ParserConfigurationException.\n" + e.getMessage(), e);
         }
         catch (SAXException e)
         {
-            throw new VlXMLDataException("SAXException\n." + e.getMessage(), e);
+            throw new XMLDataParseException("SAXException\n." + e.getMessage(), e);
         }
         catch (IOException e)
         {
-            throw new VlXMLDataException("IOException.\n" + e.getMessage(), e);
+            throw new XMLDataParseException("IOException.\n" + e.getMessage(), e);
         }
     }
 
-    public VNode parsePersistantNodeTree(VNode _parent, XMLtoNodeFactory nodeFactory, Element start) throws VlException
+    public VNode parsePersistantNodeTree(VNode _parent, XMLtoNodeFactory nodeFactory, Element start) throws VrsException
     {
         logger.debugPrintf(" parseXMLNodeTree:%s\n", start.getNodeName());
 
@@ -702,7 +702,7 @@ public class XMLData
         logger.debugPrintf(" - create VNode: %s\n", newNode);
 
         if (newNode == null)
-            throw new VlXMLDataException("Node Factory returned NULL node for type:" + persistantType);
+            throw new XMLDataParseException("Node Factory returned NULL node for type:" + persistantType);
 
         // scan childs, filter for persistant node types
         Vector<Element> childs = getChildElements(start, this.getPersistanteNodeElementName());
@@ -710,7 +710,7 @@ public class XMLData
         if ((childs != null) && (childs.size() > 0))
         {
             if ((newNode instanceof VComposite) == false)
-                throw new VlXMLDataException("Persistant Node has childs but is NOT of Composite type:" + newNode);
+                throw new XMLDataParseException("Persistant Node has childs but is NOT of Composite type:" + newNode);
 
             for (Element child : childs)
             {

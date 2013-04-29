@@ -18,15 +18,14 @@
  */
 // source: 
 
-package nl.nlesc.vlet.data.xml;
+package nl.nlesc.vlet.vrs.data.xml;
 
-import nl.nlesc.vlet.vrs.VComposite;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
-/**
- * Composite Interface.
- * Is used to detect whether Persistance object are Composite as well.   
- */ 
-public interface VCompositePersistance extends VPersistance,VComposite
+public interface VPersistance 
 {
-
+	String getPersistantType(); 
+	
+	VAttributeSet getPersistantAttributes() throws VrsException; 
 }

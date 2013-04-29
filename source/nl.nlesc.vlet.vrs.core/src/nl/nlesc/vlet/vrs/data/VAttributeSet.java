@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.nlesc.vlet.data;
+package nl.nlesc.vlet.vrs.data;
 
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -33,9 +33,9 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.object.Duplicatable;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.xml.XMLData;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlXMLDataException;
+import nl.nlesc.vlet.exception.XMLDataParseException;
+import nl.nlesc.vlet.vrs.data.xml.XMLData;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -151,7 +151,7 @@ public class VAttributeSet extends HashMapList<String,VAttribute>
      *  As key value, the STRING representation of the Key object
      *  is used. 
      *  As value the VAttribute factory createFrom(object) is used.
-     *  @see nl.nlesc.vlet.data.VAttribute#createFrom(String, Object) 
+     *  @see nl.nlesc.vlet.vrs.data.VAttribute#createFrom(String, Object) 
      */
     private void init(Map<? extends Object,? extends Object> map)
     {
@@ -442,7 +442,7 @@ public class VAttributeSet extends HashMapList<String,VAttribute>
     /**
      * as XML file. 
      */
-    public void storeAsXML(OutputStream outp, String comments) throws VlXMLDataException
+    public void storeAsXML(OutputStream outp, String comments) throws XMLDataParseException
     {
         XMLData xmlData=new XMLData();
         xmlData.writeAsXML(outp,this,comments); 
