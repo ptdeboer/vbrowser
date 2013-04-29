@@ -20,17 +20,18 @@
 
 package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
 
-import nl.esciencecenter.ptk.net.VRI;
+import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
+import nl.esciencecenter.vbrowser.vrs.net.VRL;
+
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VRSFactory;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /** 
@@ -71,11 +72,11 @@ public class VRSProxyFactory extends ProxyFactory
         this.vrsClient=new VRSClient(vrsContext); 
     }
     
-	public VRSProxyNode openLocation(VRL vrl) throws ProxyException
+	public VRSProxyNode _openLocation(nl.nlesc.vlet.vrs.vrl.VRL vrl) throws ProxyException
 	{
 		try 
 		{
-			return (VRSProxyNode)openLocation(new VRI(vrl.toURI()));
+			return (VRSProxyNode)openLocation(new VRL(vrl.toURI()));
 		}
 		catch (Exception e) 
 		{
@@ -85,7 +86,7 @@ public class VRSProxyFactory extends ProxyFactory
 	
 	// actual open location: 
 	
-    public VRSProxyNode doOpenLocation(VRI locator) throws ProxyException
+    public VRSProxyNode doOpenLocation(VRL locator) throws ProxyException
     {
     	logger.infoPrintf(">>> doOpenLocation():%s <<<\n",locator);
     	
@@ -100,9 +101,9 @@ public class VRSProxyFactory extends ProxyFactory
         }
     }
     
-	private VRL createVRL(VRI locator)
+	private nl.nlesc.vlet.vrs.vrl.VRL createVRL(VRL locator)
     {
-	    return new VRL(locator.getScheme(),
+	    return new nl.nlesc.vlet.vrs.vrl.VRL(locator.getScheme(),
 	            locator.getUserinfo(),
 	            locator.getHostname(),
 	            locator.getPort(),
@@ -112,14 +113,21 @@ public class VRSProxyFactory extends ProxyFactory
     }
 
     @Override
-	public boolean canOpen(VRI locator) 
+	public boolean canOpen(VRL locator,StringHolder reason) 
 	{
 		// internal scheme!
 		if (StringUtil.equals("myvle",locator.getScheme())) 
+		{
+		    reason.value="Internal 'MyVle' object"; 
 			return true; 
-			
+		}	
 		VRSFactory vrs = this.vrsContext.getRegistry().getVRSFactoryForScheme(locator.getScheme()); 
-		return (vrs!=null); 
+
+		if (vrs!=null)
+		    return true; 
+		
+		reason.value="Unknown scheme:"+locator.getScheme(); 
+		return false; 
 	}
 
 

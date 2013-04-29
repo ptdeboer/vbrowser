@@ -22,25 +22,22 @@ package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
 
 
 import java.net.URISyntaxException;
-import java.util.Map;
 
 import nl.esciencecenter.ptk.data.LongHolder;
-import nl.esciencecenter.ptk.exceptions.VRISyntaxException;
-import nl.esciencecenter.ptk.net.VRI;
-import nl.esciencecenter.ptk.presentation.IPresentable;
-import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.ui.presentation.UIPresentable;
 import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeType;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.net.VRL;
 import nl.nlesc.vlet.gui.presentation.VRSPresentation;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VNode;
-import nl.nlesc.vlet.vrs.vrl.VRL;
+
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeType;
 import nl.nlesc.vlet.vrs.vrms.LogicalResourceNode;
 import nl.nlesc.vlet.vrs.vrms.VResourceLink;
 
@@ -50,20 +47,22 @@ import nl.nlesc.vlet.vrs.vrms.VResourceLink;
  */
 public class VRSProxyNode extends ProxyNode
 {
-    private VRSProxyFactory factory;
-
     private VNode vnode;
 
-    public VRSProxyNode(VRSProxyFactory vrsProxyFactory, VNode vnode,VRI locator) throws ProxyException, URISyntaxException
+    public VRSProxyNode(VRSProxyFactory vrsProxyFactory, VNode vnode,VRL locator) throws ProxyException, URISyntaxException
     {
-        super(locator);
+        super(vrsProxyFactory,locator);
         this.vnode=vnode; 
-        this.factory=vrsProxyFactory;
+    }
+    
+    protected VRSProxyFactory factory()
+    {
+        return (VRSProxyFactory)this.getProxyFactory(); 
     }
 
-    protected void doPrefetch() throws ProxyException
+    protected void doPrefetchAttributes() throws ProxyException
     {
-        super.doPrefetch(); 
+        super.doPrefetchAttributes(); 
         
        
         if (vnode instanceof VResourceLink)
@@ -89,7 +88,7 @@ public class VRSProxyNode extends ProxyNode
             if (parent==null)
                 return null; 
            
-            return new VRSProxyNode(factory,parent,new VRI(parent.getVRL().toURI()));
+            return new VRSProxyNode(this.getProxyFactory(),parent,new VRL(parent.getVRL().toURI()));
         }
         catch (Exception e)
         {
@@ -119,7 +118,7 @@ public class VRSProxyNode extends ProxyNode
         	}
         	
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
         	throw createProxyException("Couldn't get childs of:"+locator,e); 
         }
@@ -133,16 +132,16 @@ public class VRSProxyNode extends ProxyNode
     	if ((vnode instanceof VResourceLink)==false)
     		return this; 
     	
-    	VRL vrl;
+    	nl.nlesc.vlet.vrs.vrl.VRL vrl;
     	
 		try 
 		{
 			vrl = ((VResourceLink)vnode).getTargetLocation();
-	    	VRSProxyNode node = factory.openLocation(vrl); 
+	    	VRSProxyNode node = factory()._openLocation(vrl); 
 	    	debug("Resolved to:"+node);
 	    	return node; 
 		}
-		catch (VlException e) 
+		catch (VrsException e) 
 		{
 			throw createProxyException("Failed to resolve node:"+this.vnode,e); 
 		}
@@ -168,7 +167,7 @@ public class VRSProxyNode extends ProxyNode
     {
         try
         {
-            return new VRSProxyNode(factory,node,new VRI(node.getVRL().toURI()));
+            return new VRSProxyNode(factory(),node,new VRL(node.getVRL().toURI()));
         }
         catch (Exception e)
         {
@@ -192,7 +191,7 @@ public class VRSProxyNode extends ProxyNode
 	@Override
 	public VRSProxyFactory getProxyFactory()
 	{
-		return this.factory; 
+		return (VRSProxyFactory)super.getProxyFactory();  
 	}
 	
 	protected boolean isResourceLink()
@@ -228,7 +227,7 @@ public class VRSProxyNode extends ProxyNode
         {
 	        mimeType=vnode.getMimeType(); 
         }
-        catch (VlException e) 
+        catch (VrsException e) 
         {
             throw new ProxyException("Couldn't determine mime type of:"+vnode,e); 
         } 
@@ -254,7 +253,7 @@ public class VRSProxyNode extends ProxyNode
             {
                 isComposite=lnode.getTargetIsComposite(true);
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 throw createProxyException("Error checking LogicalResourceNode:"+lnode,e); 
             }
@@ -302,7 +301,7 @@ public class VRSProxyNode extends ProxyNode
         {
             return this.vnode.getResourceStatus();
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             throw createProxyException("Couldn't get status of:"+vnode,e);  
         }
@@ -354,7 +353,7 @@ public class VRSProxyNode extends ProxyNode
             vattrs = vnode.getAttributes(convertAttrNames(names,false));
             return convert(vattrs);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             throw new ProxyException("Couldn't get attributes\n",e); 
         } 
@@ -398,9 +397,9 @@ public class VRSProxyNode extends ProxyNode
             case VRL:
                 try
                 {
-                    return new Attribute(name,new VRI(vattr.getStringValue()));
+                    return new Attribute(name,new VRL(vattr.getStringValue()));
                 }
-                catch (VRISyntaxException e)
+                catch (VRLSyntaxException e)
                 {
                     return new Attribute(name,vattr.getStringValue());
                 } 
