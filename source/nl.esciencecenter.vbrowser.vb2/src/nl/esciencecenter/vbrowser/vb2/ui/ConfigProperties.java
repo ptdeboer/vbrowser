@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.esciencecenter.vbrowser.vrs.data;
+package nl.esciencecenter.vbrowser.vb2.ui;
 
 import java.util.Properties;
 
