@@ -29,10 +29,10 @@ import org.globus.gsi.bc.BouncyCastleOpenSSLKey;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.ietf.jgss.GSSCredential;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlAuthenticationException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlUnknownCAException;
+import nl.nlesc.vlet.exception.AuthenticationException;
+import nl.nlesc.vlet.exception.UnknownCAException;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.grid.proxy.VGridCredential;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -59,7 +59,7 @@ public class GlobusUtil
      * Returns nested VlException which provides extra information, if recognized. 
      * Returns NULL of no usefull exception can be returned.
      */ 
-    public static VlException checkException(String message, Throwable cause)
+    public static VrsException checkException(String message, Throwable cause)
     {
         Throwable originalCause=cause; 
         Throwable prevCause=null; 
@@ -83,7 +83,7 @@ public class GlobusUtil
             if (cause instanceof org.globus.gsi.gssapi.GlobusGSSException)
             {
                 if ((msgstr!=null) && (msgstr.contains("unknown ca")))
-                    return new VlUnknownCAException(message+"\nReason=Unknown CA.\n"
+                    return new UnknownCAException(message+"\nReason=Unknown CA.\n"
                             +"Update your system certificates or copy the CA root certificate(s) to '"+VletConfig.getUserConfigDir()+"/certificates'."
                             ,originalCause); 
             }
@@ -204,7 +204,7 @@ public class GlobusUtil
         return userKey; 
     }
 
-    public static GlobusGSSCredentialImpl createGSSCredential(GlobusCredential globusCred) throws VlAuthenticationException
+    public static GlobusGSSCredentialImpl createGSSCredential(GlobusCredential globusCred) throws AuthenticationException
     {
         return GlobusCredentialProvider.createGSSCredential(globusCred); 
     }

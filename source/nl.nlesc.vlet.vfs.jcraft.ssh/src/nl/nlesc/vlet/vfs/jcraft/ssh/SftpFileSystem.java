@@ -20,12 +20,12 @@
 
 package nl.nlesc.vlet.vfs.jcraft.ssh;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ACCESS_TIME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_GID;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LENGTH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_MODIFICATION_TIME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_UID;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ACCESS_TIME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_GID;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_LENGTH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_MODIFICATION_TIME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_UID;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,18 +37,18 @@ import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeType;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
-import nl.nlesc.vlet.exception.VlAuthenticationException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.AuthenticationException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vfs.jcraft.ssh.SSHChannel.SSHChannelOptions;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeType;
 import nl.nlesc.vlet.vrs.io.VShellChannelCreator;
 import nl.nlesc.vlet.vrs.net.VOutgoingTunnelCreator;
 import nl.nlesc.vlet.vrs.vfs.FileSystemNode;
@@ -309,7 +309,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     // =======================================================================
 
     
-    private void init(ServerInfo info) throws VlException
+    private void init(ServerInfo info) throws VrsException
     {
         logger.debugPrintf(">>> init for: %s@%s:%d\n", info.getUsername(), getHostname(), getPort());
 
@@ -352,7 +352,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         this.connect();
     }
 
-    public SftpFileSystem(VRSContext context, ServerInfo info, VRL location) throws VlException
+    public SftpFileSystem(VRSContext context, ServerInfo info, VRL location) throws VrsException
     {
         super(context, info);
         init(info);
@@ -398,7 +398,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     // =======================================================================
     // === synchronized methods ===
     // =======================================================================
-    public VFSNode openLocation(VRL vrl) throws VlException
+    public VFSNode openLocation(VRL vrl) throws VrsException
     {
         // No Exceptions: store ServerInfo !
 
@@ -417,7 +417,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         return getPath(path);
     }
 
-    public VFSNode getPath(String path) throws VlException
+    public VFSNode getPath(String path) throws VrsException
     {
         String user = getUsername();
         int port = getPort();
@@ -515,7 +515,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
             {
                 disconnect();
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 logger.logException(ClassLogger.INFO, e, "Exception during disconnect().\n");
             }
@@ -529,7 +529,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     }
 
     
-    public String[] list(String path) throws VlException
+    public String[] list(String path) throws VrsException
     {
         logger.debugPrintf("listing:%s\n", path);
 
@@ -582,7 +582,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         }
     }
 
-    public boolean existsPath(String path, boolean checkDir) throws VlException
+    public boolean existsPath(String path, boolean checkDir) throws VrsException
     {
         try
         {
@@ -655,7 +655,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         }
     }
 
-    public void uploadFile(VFSTransfer transfer, String localfilepath, String remotefilepath) throws VlException
+    public void uploadFile(VFSTransfer transfer, String localfilepath, String remotefilepath) throws VrsException
     {
         try
         {
@@ -674,7 +674,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
 
     }
 
-    public void downloadFile(VFSTransfer transfer, String remotefilepath, String localfilepath) throws VlException
+    public void downloadFile(VFSTransfer transfer, String remotefilepath, String localfilepath) throws VrsException
     {
         try
         {
@@ -692,7 +692,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         }
     }
 
-    public VDir createDir(String dirpath, boolean ignoreExisting) throws VlException
+    public VDir createDir(String dirpath, boolean ignoreExisting) throws VrsException
     {
         // check existing!
         SftpATTRS attrs = null;
@@ -740,7 +740,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         }
     }
 
-    public VFile createFile(String filepath, boolean force) throws VlException
+    public VFile createFile(String filepath, boolean force) throws VrsException
     {
         SftpATTRS attrs = null;
         // checkAndCreateParentDir(VRL.dirname(filepath),force);
@@ -806,12 +806,12 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         }
     }
 
-    public SftpATTRS getSftpAttrs(String filepath) throws VlException
+    public SftpATTRS getSftpAttrs(String filepath) throws VrsException
     {
         return getSftpAttrs(filepath, false);
     }
 
-    public boolean delete(String path, boolean isDir) throws VlException
+    public boolean delete(String path, boolean isDir) throws VrsException
     {
         try
         {
@@ -837,7 +837,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         }
     }
 
-    public SftpATTRS getSftpAttrs(String path, boolean resolveLink) throws VlException
+    public SftpATTRS getSftpAttrs(String path, boolean resolveLink) throws VrsException
     {
         try
         {
@@ -870,7 +870,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         }
     }
 
-    private ChannelSftp createNewFTPChannel() throws VlException
+    private ChannelSftp createNewFTPChannel() throws VrsException
     {
         try
         {
@@ -886,7 +886,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         }
     }
 
-    public void setSftpAttrs(String path, boolean isDir, SftpATTRS attrs) throws VlException
+    public void setSftpAttrs(String path, boolean isDir, SftpATTRS attrs) throws VrsException
     {
         try
         {
@@ -912,7 +912,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         }
     }
 
-    public InputStream createInputStream(String path) throws VlException
+    public InputStream createInputStream(String path) throws VrsException
     {
         try
         {
@@ -996,7 +996,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
      */
 
     public void writeBytes(String path, long fileOffset, byte[] buffer, int bufferOffset, int nrBytes)
-            throws VlException
+            throws VrsException
     {
         OutputStream outps;
 
@@ -1046,7 +1046,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         }
     }
 
-    public OutputStream createOutputStream(String path, boolean append) throws VlException
+    public OutputStream createOutputStream(String path, boolean append) throws VrsException
     {
         try
         {
@@ -1076,7 +1076,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
 
     }
 
-    public String rename(String path, String newName, boolean nameIsPath) throws VlException
+    public String rename(String path, String newName, boolean nameIsPath) throws VrsException
     {
 
         String newPath = null;
@@ -1125,15 +1125,15 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     // =======================================================================
 
     /** Convert Exceptions to something more human readable */
-    private VlException convertException(Exception e)
+    private VrsException convertException(Exception e)
     {
         return convertException(e, null);
     }
 
-    private VlException convertException(Exception e, String optMessage)
+    private VrsException convertException(Exception e, String optMessage)
     {
-        if (e instanceof VlException)
-            return (VlException) e; // keep my own;
+        if (e instanceof VrsException)
+            return (VrsException) e; // keep my own;
 
         // extra message:
         String message = "";
@@ -1146,12 +1146,12 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         if (emsg.startsWith("Auth fail"))
         {
             message += "Authentication failure\n" + "\n("+emsg+")\n";
-            return new nl.nlesc.vlet.exception.VlAuthenticationException(message, e);
+            return new nl.nlesc.vlet.exception.AuthenticationException(message, e);
         }
         else if (emsg.startsWith("Auth cancel"))
         {
             message += "Authentication cancelled\n" + "\n("+emsg+")\n";
-            return new nl.nlesc.vlet.exception.VlAuthenticationException(message, e);
+            return new nl.nlesc.vlet.exception.AuthenticationException(message, e);
         }
         else if (e instanceof SftpException)
         {
@@ -1164,20 +1164,20 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
             // logger.messagePrintln(this,"sftp error="+getJschErrorString(ex.id));
 
             if (ex.id == 1)
-                return new VlIOException(message + "End of file error.\n"+reason, e);
+                return new NestedIOException(message + "End of file error.\n"+reason, e);
 
             if (ex.id == 2) // SftpException reason 2=no such file !
                 return new ResourceNotFoundException(message + "StfpException:" + reason, e);
 
             if (ex.id == 3)
                 // don't know whether it is read or write
-                return new VlAuthenticationException("AccessDenied:"+ message + reason, e);
+                return new AuthenticationException("AccessDenied:"+ message + reason, e);
 
-            return new VlIOException("SFTP Exception:"+ message + reason, e);
+            return new NestedIOException("SFTP Exception:"+ message + reason, e);
         }
         else
         {
-            return new VlException( message + e.getMessage(), e);
+            return new VrsException( message + e.getMessage(), e);
         }
     }
 
@@ -1191,7 +1191,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         return this.serverID;
     }
 
-    public boolean isWritable(String path) throws VlException
+    public boolean isWritable(String path) throws VrsException
     {
         // check user writable:
         SftpATTRS attrs = getSftpAttrs(path);
@@ -1200,7 +1200,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         return ((mod & 0200) > 0);
     }
 
-    public boolean isReadable(String path) throws VlException
+    public boolean isReadable(String path) throws VrsException
     {
         // check user readable:
         SftpATTRS attrs = getSftpAttrs(path);
@@ -1210,7 +1210,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
 
     }
 
-    public boolean isLink(String path) throws VlException
+    public boolean isLink(String path) throws VrsException
     {
         SftpATTRS attrs = getSftpAttrs(path);
 
@@ -1237,7 +1237,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         return defaultHome;
     }
 
-    public VAttribute[][] getACL(String path, boolean isDir) throws VlException
+    public VAttribute[][] getACL(String path, boolean isDir) throws VrsException
     {
         SftpATTRS attrs = getSftpAttrs(path);
         // sftp support unix styl file permissions
@@ -1246,17 +1246,17 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
 
     }
 
-    public void setACL(String path, VAttribute[][] acl, boolean isDir) throws VlException
+    public void setACL(String path, VAttribute[][] acl, boolean isDir) throws VrsException
     {
         int mode = VFS.convertACL2FileMode(acl, isDir);
 
         if (mode < 0)
-            throw new VlException("Error converting ACL list");
+            throw new VrsException("Error converting ACL list");
 
         setPermissions(path, isDir, mode);
     }
 
-    private void setPermissions(String path, boolean isDir, int mode) throws VlException
+    private void setPermissions(String path, boolean isDir, int mode) throws VrsException
     {
         // SftpATTRS attrs=new SftpATTRS();
         SftpATTRS attrs = getSftpAttrs(path);
@@ -1265,14 +1265,14 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         setSftpAttrs(path, isDir, attrs);
     }
 
-    public int getOwnerID(String path) throws VlException
+    public int getOwnerID(String path) throws VrsException
     {
         // SftpATTRS attrs=new SftpATTRS();
         SftpATTRS attrs = getSftpAttrs(path);
         return attrs.getUId();
     }
 
-    public int getGroupID(String path) throws VlException
+    public int getGroupID(String path) throws VrsException
     {
         // SftpATTRS attrs=new SftpATTRS();
         SftpATTRS attrs = getSftpAttrs(path);
@@ -1282,7 +1282,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     SftpATTRS attrs = null;
 
     public VAttribute getAttribute(VFSNode node, SftpATTRS attrs, String name, boolean isDir, boolean update)
-            throws VlException
+            throws VrsException
     {
 
         // Optimization: only update if a SftpAttribute AND an update is
@@ -1328,7 +1328,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         return null;
     }
 
-    public VAttribute[] getAttributes(VFSNode node, SftpATTRS holder, String[] names, boolean isDir) throws VlException
+    public VAttribute[] getAttributes(VFSNode node, SftpATTRS holder, String[] names, boolean isDir) throws VrsException
     {
         if (names == null)
             return null;
@@ -1344,17 +1344,17 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
 
     }
 
-    public String getPermissionsString(SftpATTRS attrs, boolean isDir) throws VlException
+    public String getPermissionsString(SftpATTRS attrs, boolean isDir) throws VrsException
     {
         return attrs.getPermissionsString();
     }
 
-    public int getUnixMode(SftpATTRS attrs, boolean isDir) throws VlException
+    public int getUnixMode(SftpATTRS attrs, boolean isDir) throws VrsException
     {
         return attrs.getPermissions();
     }
 
-    public int getPermissions(SftpATTRS attrs) throws VlException
+    public int getPermissions(SftpATTRS attrs) throws VrsException
     {
         return attrs.getPermissions();
     }
@@ -1378,7 +1378,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     // VServer interface
     // =======================================================================
 
-    public void connect() throws VlException
+    public void connect() throws VrsException
     {
         ServerInfo info = this.getServerInfo();
 
@@ -1530,14 +1530,14 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     }
     
     
-    private void initSftpChannel() throws VlException
+    private void initSftpChannel() throws VrsException
     {
         // channel.setExtOutputStream(new OutputLog());
         // channel.setOutputStream(new OutputLog());
         this.sftpChannel = createNewFTPChannel();
     }
 
-    private void checkState() throws VlException
+    private void checkState() throws VrsException
     {
         try
         {
@@ -1587,7 +1587,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         return new String[]{JCraftClient.SSH_DEFAULT_ID_RSA};
     }
 
-    public void disconnect() throws VlException
+    public void disconnect() throws VrsException
     {
         synchronized (serverMutex)
         {
@@ -1655,7 +1655,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         return vrsContext.getLocalUserHome() + URIFactory.SEP_CHAR_STR + JCraftClient.SSH_CONFIG_SIBDUR;
     }
 
-    void setFinalUserSubject(VRSContext newContext) throws VlAuthenticationException
+    void setFinalUserSubject(VRSContext newContext) throws AuthenticationException
     {
         String newSubject = newContext.getGridProxy().getSubject();
 
@@ -1664,7 +1664,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
             if (this.userSubject.compareTo(newSubject) != 0)
             {
                 // OOPSY!! 
-                throw new nl.nlesc.vlet.exception.VlAuthenticationException(
+                throw new nl.nlesc.vlet.exception.AuthenticationException(
                         "Illegal User. Current server is not authenticated for new user:" + newSubject);
             }
         }
@@ -1684,13 +1684,13 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     }
 
     @Override
-    public VDir newDir(VRL path) throws VlException
+    public VDir newDir(VRL path) throws VrsException
     {
         return new SftpDir(this, path);
     }
 
     @Override
-    public VFile newFile(VRL path) throws VlException
+    public VFile newFile(VRL path) throws VrsException
     {
         return new SftpFile(this, path);
     }
@@ -1698,9 +1698,9 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     /**
      * Create localPort which connected to remoteHost:remotePort
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public void createOutgoingTunnel(int localPort, String remoteHost, int remotePort) throws VlException
+    public void createOutgoingTunnel(int localPort, String remoteHost, int remotePort) throws VrsException
     {
         try
         {
@@ -1717,9 +1717,9 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     /**
      * Create localPort which connected to remoteHost:remotePort
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public void createIncomingTunnel(int remotePort, String localHost, int localPort) throws VlException
+    public void createIncomingTunnel(int remotePort, String localHost, int localPort) throws VrsException
     {
         try
         {
@@ -1735,9 +1735,9 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     }
 
     /** Creates a new outgoing SSH tunnel and return the local tunnel port. */
-    public int createOutgoingTunnel(String remoteHost, int remotePort) throws VlException
+    public int createOutgoingTunnel(String remoteHost, int remotePort) throws VrsException
     {
-        VlException lastEx = null;
+        VrsException lastEx = null;
 
         for (int i = 0; i < 32; i++)
         {
@@ -1750,7 +1750,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
                 jcraftClient.registerUsedLocalPort(lport);
                 return lport;
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 lastEx = e;
                 logger.logException(ClassLogger.ERROR, e, "Failed to create new local tunnel port:%d\n", lport);
@@ -1760,7 +1760,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         if (lastEx != null)
             throw lastEx;
 
-        throw new VlException("Failed to create new local tunnel port");
+        throw new VrsException("Failed to create new local tunnel port");
     }
 
    

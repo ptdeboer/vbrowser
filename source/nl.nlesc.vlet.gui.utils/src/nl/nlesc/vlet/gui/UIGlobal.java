@@ -34,9 +34,9 @@ import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.ui.UI;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.util.MimeTypes;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlInternalError;
+import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.dialog.SimpleDialog;
@@ -196,7 +196,7 @@ public class UIGlobal
 		return iconProvider; 
 	}
 
-	public static VRL getVirtualRootLocation() throws VlException
+	public static VRL getVirtualRootLocation() throws VrsException
 	{
 		return getVRSContext().getVirtualRootLocation(); 
 	}
@@ -224,23 +224,23 @@ public class UIGlobal
 		SwingUtilities.invokeLater(task); 
 	}
 
-	public static void assertNotGuiThread(String msg) throws VlInternalError
+	public static void assertNotGuiThread(String msg) throws InternalError
 	{
 		assertGuiThread(false,msg);
 	}
 	
-	public static void assertGuiThread(String msg) throws VlInternalError
+	public static void assertGuiThread(String msg) throws InternalError
 	{
 		assertGuiThread(true,msg); 
 	}
 
-	public static void assertGuiThread(boolean mustBeGuiThread,String msg) throws VlInternalError
+	public static void assertGuiThread(boolean mustBeGuiThread,String msg) throws InternalError
 	{
         // still happens when trying to read/acces link targets of linknodes 
         if (mustBeGuiThread!=UIGlobal.isGuiThread())
         {
             UILogger.infoPrintf(UIGlobal.class,"\n>>>\n    *** Swing GUI Event Assertion Error *** !!!\n>>>\n");
-            throw new  VlInternalError("Internal Error. Cannot perform this "
+            throw new  InternalError("Internal Error. Cannot perform this "
             						+(mustBeGuiThread?"during":"outside")+"during the Swing GUI Event thread.\n"+msg);
         }
 	}

@@ -51,12 +51,12 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
-import nl.nlesc.vlet.exception.ResourceException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
+import nl.nlesc.vlet.exception.VrsResourceException;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -376,9 +376,9 @@ public class TextViewer extends InternalViewer implements ActionListener,
 
 	/**
 	 * @param location
-	 * @throws VlException 
+	 * @throws VrsException 
 	 */
-	public void updateLocation(VRL location) throws VlException
+	public void updateLocation(VRL location) throws VrsException
 	{
 		if (location==null)
 			return; 
@@ -386,10 +386,10 @@ public class TextViewer extends InternalViewer implements ActionListener,
 		reload(location); 
 	}
 	
-	protected void reload(final VRL location) throws ResourceException
+	protected void reload(final VRL location) throws VrsResourceException
 	{
 	    if (isSaving())
-            throw new nl.nlesc.vlet.exception.ResourceException("Still waiting for previous save to finished!");
+            throw new nl.nlesc.vlet.exception.VrsResourceException("Still waiting for previous save to finished!");
 	   
 	    loadTask=new ActionTask(null,"Load Contents of:"+this)
 	    {
@@ -453,7 +453,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
 			    if ((vrls==null) || (vrls.length<=0)) 
 			    {
 			        // Use Exception dialog as Warning Dialog 
-			        throw new VlIOException("Warning:File doesn't have any replicas.\n"
+			        throw new NestedIOException("Warning:File doesn't have any replicas.\n"
 			                + "You can start editing this file and when saving this file a new replica will be created.");
 			        
 			    }
@@ -522,7 +522,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
 	}
 
 	@Override
-	public void startViewer(VRL location, String optMethodName, ActionContext actionContext) throws VlException
+	public void startViewer(VRL location, String optMethodName, ActionContext actionContext) throws VrsException
 	{
 	    setVRL(location);
 
@@ -571,12 +571,12 @@ public class TextViewer extends InternalViewer implements ActionListener,
 			{
 				if (isSaving())
 				{
-					handle(new nl.nlesc.vlet.exception.ResourceException("Still waiting for previous save to finished!"));
+					handle(new nl.nlesc.vlet.exception.VrsResourceException("Still waiting for previous save to finished!"));
 					return; 
 				}	
 				reload(getVRL());
 			}
-			catch (VlException ex)
+			catch (VrsException ex)
 			{
 				handle(ex);
 			}
@@ -609,7 +609,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
 			{
 				save();
 			}
-			catch (VlException ex)
+			catch (VrsException ex)
 			{
 				this.handle(ex); 
 			} 
@@ -679,12 +679,12 @@ public class TextViewer extends InternalViewer implements ActionListener,
 		}
 	}
 	
-	protected void save() throws VlException
+	protected void save() throws VrsException
 	{
 		final String textToSave=this.textArea.getText(); 
 		
 		if (isSaving())
-			throw new nl.nlesc.vlet.exception.ResourceException("Still waiting for previous save to finished!");
+			throw new nl.nlesc.vlet.exception.VrsResourceException("Still waiting for previous save to finished!");
 		
 		saveTask=new ActionTask(null,"Save Contents of:"+this)
 		{
@@ -845,7 +845,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
 	    }
 	}
 	
-	protected void handle(VlException ex)
+	protected void handle(VrsException ex)
 	{
 		ExceptionForm.show(ex);
 	}
@@ -864,7 +864,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
 			viewStandAlone(new VRL("file:/home/ptdeboer/vlterm/utf81.txt")); // file:///etc/passwd"));
 			// viewStandAlone(null);
 		}
-		catch (VlException e)
+		catch (VrsException e)
 		{
 			System.out.println("***Error: Exception:" + e);
 			e.printStackTrace();
@@ -879,7 +879,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
 		{
 			tv.startAsStandAloneApplication(loc); 
 		}
-		catch (VlException e)
+		catch (VrsException e)
 		{
 			System.out.println("***Error: Exception:" + e);
 			e.printStackTrace();
@@ -937,7 +937,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
 		return mappings; 
 	}
 	
-	public void doMethod(String methodName, ActionContext actionContext) throws VlException
+	public void doMethod(String methodName, ActionContext actionContext) throws VrsException
 	{
 		if (actionContext.getSource()!=null)
 		{

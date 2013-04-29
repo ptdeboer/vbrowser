@@ -20,16 +20,16 @@
 
 package vfs;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_EXISTS;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LENGTH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LOCATION;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_MIMETYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_NAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PATH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PORT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SCHEME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_EXISTS;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_LENGTH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_LOCATION;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_MIMETYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_NAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -48,10 +48,9 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 
-import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
-import nl.nlesc.vlet.exception.ResourceException;
+import nl.nlesc.vlet.exception.VrsResourceException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.ResourceWriteAccessDeniedException;
 import nl.nlesc.vlet.util.bdii.BdiiService;
@@ -60,6 +59,7 @@ import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VCommentable;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 import nl.nlesc.vlet.vrs.io.VRandomReadable;
 import nl.nlesc.vlet.vrs.io.RandomReader;
@@ -3169,7 +3169,7 @@ public class TestVFS extends VTestCase
             debug("Caugh expected Exception:" + e);
             // Global.debugPrintStacktrace(e);
         }
-        catch (ResourceException e)
+        catch (VrsResourceException e)
         {
             debug("Caugh expected Exception:" + e);
             Assert.fail("createDir(): Although a resource execption is better then any other,"

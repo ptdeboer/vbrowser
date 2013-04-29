@@ -20,9 +20,9 @@
 
 package nl.nlesc.vlet.vfs.gftp;
 
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 
-public class GftpException extends VlIOException
+public class GftpException extends NestedIOException
 {
     private static final long serialVersionUID = -57064076580488986L;
 

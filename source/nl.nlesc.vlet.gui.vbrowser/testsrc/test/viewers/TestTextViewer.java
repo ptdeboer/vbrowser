@@ -20,8 +20,8 @@
 
 package test.viewers;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.viewers.HexViewer;
 import nl.nlesc.vlet.gui.viewers.TextViewer;
 import nl.nlesc.vlet.gui.viewers.ViewContext;
@@ -46,7 +46,7 @@ public class TestTextViewer
         {
             e.printStackTrace();
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();

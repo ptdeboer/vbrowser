@@ -23,7 +23,7 @@ package nl.nlesc.vlet.vrs.vfs.skelfs;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vfs.FileSystemNode;
@@ -52,7 +52,7 @@ public class SkelFS extends FileSystemNode
     }
 
     @Override
-    public VDir newDir(VRL path) throws VlException
+    public VDir newDir(VRL path) throws VrsException
     {
         // VDir factory method:
         // new VDir object: path doesn't have to exist, just create the (VDir)
@@ -61,7 +61,7 @@ public class SkelFS extends FileSystemNode
     }
 
     @Override
-    public VFile newFile(VRL path) throws VlException
+    public VFile newFile(VRL path) throws VrsException
     {
         // VFile factory method:
         // new VFile object: path doesn't have to exist, just create the (VFile)
@@ -70,7 +70,7 @@ public class SkelFS extends FileSystemNode
     }
 
     @Override
-    public SkelDir getDir(VRL path) throws VlException
+    public SkelDir getDir(VRL path) throws VrsException
     {
         // Open filepath and return new VDir object.
         // (remote) directory must exist.
@@ -84,7 +84,7 @@ public class SkelFS extends FileSystemNode
     }
 
     @Override
-    public SkelFile getFile(VRL path) throws VlException
+    public SkelFile getFile(VRL path) throws VrsException
     {
         // Open filepath and return new VFile object.
         // (remote) file must exist.
@@ -97,13 +97,13 @@ public class SkelFS extends FileSystemNode
         return file;
     }
 
-    public void connect() throws VlException
+    public void connect() throws VrsException
     {
         // connect if not connected yet, or ignore if not applicable.
         // multiple connect() calls are possible. Ignore if this happens.
     }
 
-    public void disconnect() throws VlException
+    public void disconnect() throws VrsException
     {
         // disconnect if applicable or ignore.
         // multiple disconnect() are allow. Ignore if this happens.
@@ -115,7 +115,7 @@ public class SkelFS extends FileSystemNode
     }
 
     @Override
-    public VFSNode openLocation(VRL vrl) throws VlException
+    public VFSNode openLocation(VRL vrl) throws VrsException
     {
         // Master 'openLocation' which connects to remote resource.
         if (isFile(vrl.getPath()))

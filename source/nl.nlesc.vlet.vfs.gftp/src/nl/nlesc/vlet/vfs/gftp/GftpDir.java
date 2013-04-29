@@ -25,8 +25,8 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -51,20 +51,20 @@ public class GftpDir extends VDir
 
     /**
      * @param client
-     * @throws VlException
+     * @throws VrsException
      */
-    GftpDir(GftpFileSystem server, String path, MlsxEntry entry) throws VlException
+    GftpDir(GftpFileSystem server, String path, MlsxEntry entry) throws VrsException
     {
         super(server, server.getServerVRL().replacePath(path));
         init(server, path, entry);
     }
 
-    GftpDir(GftpFileSystem server, String path) throws VlException
+    GftpDir(GftpFileSystem server, String path) throws VrsException
     {
         this(server, path, null);
     }
 
-    private void init(GftpFileSystem server, String path, MlsxEntry entry) throws VlException
+    private void init(GftpFileSystem server, String path, MlsxEntry entry) throws VrsException
     {
         this._entry = entry;
         this.server = server;
@@ -76,7 +76,7 @@ public class GftpDir extends VDir
         return server.existsDir(this.getPath());
     }
 
-    public boolean create(boolean force) throws VlException
+    public boolean create(boolean force) throws VrsException
     {
         VDir dir = this.server.createDir(getPath(), force);
         updateEntry();
@@ -86,40 +86,40 @@ public class GftpDir extends VDir
     /**
      * Reload MLST entry
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    private MlsxEntry updateEntry() throws VlException
+    private MlsxEntry updateEntry() throws VrsException
     {
         this._entry = this.server.mlst(getPath());
         return _entry;
     }
 
     @Override
-    public boolean isReadable() throws VlException
+    public boolean isReadable() throws VrsException
     {
         return GftpFileSystem._isReadable(getMlsxEntry());
     }
 
     @Override
-    public boolean isAccessable() throws VlException
+    public boolean isAccessable() throws VrsException
     {
         return GftpFileSystem._isAccessable(getMlsxEntry());
     }
 
     @Override
-    public boolean isWritable() throws VlException
+    public boolean isWritable() throws VrsException
     {
         return GftpFileSystem._isWritable(getMlsxEntry());
     }
 
     @Override
-    public VRL rename(String newName, boolean nameIsPath) throws VlException
+    public VRL rename(String newName, boolean nameIsPath) throws VrsException
     {
         String path = server.rename(this.getPath(), newName, nameIsPath);
         return this.resolvePath(path);
     }
 
-    public VDir getParentDir() throws VlException
+    public VDir getParentDir() throws VrsException
     {
         return server.getParentDir(this.getPath());
     }
@@ -133,7 +133,7 @@ public class GftpDir extends VDir
             if (list != null)
                 return list.length;
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             ;
         }
@@ -141,7 +141,7 @@ public class GftpDir extends VDir
         return 0;
     }
 
-    public VFSNode[] list() throws VlException
+    public VFSNode[] list() throws VrsException
     {
         Vector<?> list = null;
 
@@ -191,7 +191,7 @@ public class GftpDir extends VDir
         return nodeArray;
     }
 
-    public boolean delete(boolean recurse) throws VlException
+    public boolean delete(boolean recurse) throws VrsException
     {
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting (GFTP) directory:" + this.getPath(), 1);
 
@@ -203,19 +203,19 @@ public class GftpDir extends VDir
     }
 
     /** Check if directory has child */
-    public boolean existsFile(String name) throws VlException
+    public boolean existsFile(String name) throws VrsException
     {
         String newPath = resolvePathString(name);
         return server.existsFile(newPath);
     }
 
-    public boolean existsDir(String dirName) throws VlException
+    public boolean existsDir(String dirName) throws VrsException
     {
         String newPath = resolvePathString(dirName);
         return server.existsDir(newPath);
     }
 
-    public long getModificationTime() throws VlException
+    public long getModificationTime() throws VrsException
     {
         // doesnot work for directories: return
         // server.getModificationTime(this.getPath());
@@ -233,7 +233,7 @@ public class GftpDir extends VDir
     }
 
     @Override
-    public VAttribute[] getAttributes(String names[]) throws VlException
+    public VAttribute[] getAttributes(String names[]) throws VrsException
     {
         if (names == null)
             return null;
@@ -252,7 +252,7 @@ public class GftpDir extends VDir
     }
 
     @Override
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         return getAttribute(this.getMlsxEntry(), name);
     }
@@ -264,9 +264,9 @@ public class GftpDir extends VDir
      * @param name
      * @param update
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    public VAttribute getAttribute(MlsxEntry entry, String name) throws VlException
+    public VAttribute getAttribute(MlsxEntry entry, String name) throws VrsException
     {
         // is possible due to optimization:
 
@@ -284,7 +284,7 @@ public class GftpDir extends VDir
         return super.getAttribute(name);
     }
 
-    public MlsxEntry getMlsxEntry() throws VlException
+    public MlsxEntry getMlsxEntry() throws VrsException
     {
         if (_entry == null)
             _entry = updateEntry();

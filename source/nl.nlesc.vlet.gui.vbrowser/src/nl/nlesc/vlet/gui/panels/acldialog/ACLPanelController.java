@@ -32,10 +32,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import nl.esciencecenter.ptk.GlobalProperties;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 
 public class ACLPanelController implements ActionListener, WindowListener
 {
@@ -100,7 +100,7 @@ public class ACLPanelController implements ActionListener, WindowListener
             this.aclPanel.getModel().setACL(acl);
             this.aclPanel.getTable().initColumns(); 
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             handle(e); 
         }
@@ -120,7 +120,7 @@ public class ACLPanelController implements ActionListener, WindowListener
             
             reread();
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
            handle(e); 
         }
@@ -202,7 +202,7 @@ public class ACLPanelController implements ActionListener, WindowListener
             aclPanel.getModel().addACLRecord(record); 
             
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
            handle(e); 
         } 
@@ -210,7 +210,7 @@ public class ACLPanelController implements ActionListener, WindowListener
         //add record:
     }
 
-    private void handle(VlException e)
+    private void handle(VrsException e)
     {
         aclPanel.handle(e); 
     }

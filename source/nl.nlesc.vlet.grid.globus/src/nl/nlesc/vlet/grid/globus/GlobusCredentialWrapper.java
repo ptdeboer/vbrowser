@@ -31,8 +31,8 @@ import java.util.ArrayList;
 
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.grid.proxy.VGridCredential;
 import nl.nlesc.vlet.grid.proxy.VGridCredentialProvider;
@@ -131,7 +131,7 @@ public class GlobusCredentialWrapper implements VGridCredential
     }
 
     @Override
-    public boolean saveCredentialTo(String path) throws VlException
+    public boolean saveCredentialTo(String path) throws VrsException
     {
         try
         {
@@ -162,7 +162,7 @@ public class GlobusCredentialWrapper implements VGridCredential
         }
         catch (IOException e)
         {
-            throw new VlIOException("Couldn't write credential file to:" + path, e);
+            throw new NestedIOException("Couldn't write credential file to:" + path, e);
         }
     }
 
@@ -257,13 +257,13 @@ public class GlobusCredentialWrapper implements VGridCredential
     }
 
     @Override
-    public Certificate[] getProxyCertificateChain() throws VlException
+    public Certificate[] getProxyCertificateChain() throws VrsException
     {
         return this.credential.getCertificateChain();
     }
 
     @Override
-    public PrivateKey getProxyPrivateKey() throws VlException
+    public PrivateKey getProxyPrivateKey() throws VrsException
     {
         return this.credential.getPrivateKey();
     }

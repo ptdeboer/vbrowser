@@ -28,9 +28,9 @@ import java.util.Vector;
 import java.util.regex.Pattern;
 
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
@@ -142,7 +142,7 @@ public class ViewerX509 extends ViewerPlugin implements CertPanelListener
     
     
     @Override
-    public void startViewer(VRL location) throws VlException
+    public void startViewer(VRL location) throws VrsException
     {
         startViewer(location,null,null);
     }
@@ -163,7 +163,7 @@ public class ViewerX509 extends ViewerPlugin implements CertPanelListener
     }   
     
     @Override
-    public void updateLocation(VRL loc) throws VlException
+    public void updateLocation(VRL loc) throws VrsException
     {
         askCertificate(loc,true);
     }

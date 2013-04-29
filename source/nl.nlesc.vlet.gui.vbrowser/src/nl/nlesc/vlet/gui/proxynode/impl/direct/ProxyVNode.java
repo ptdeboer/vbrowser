@@ -32,17 +32,15 @@ import nl.esciencecenter.ptk.ui.presentation.UIPresentable;
 import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
-import nl.nlesc.vlet.exception.ResourceException;
+import nl.nlesc.vlet.exception.VrsResourceException;
 import nl.nlesc.vlet.exception.ResourceLinkIsBorkenException;
 import nl.nlesc.vlet.exception.ResourceNotEditableException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlInternalError;
+import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.gui.Messages;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -56,6 +54,8 @@ import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRenamable;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.util.VRSSort;
 import nl.nlesc.vlet.vrs.vfs.VACL;
@@ -379,7 +379,7 @@ public final class ProxyVNode extends ProxyNode
        vnode = null;
    }
    
-   static void assertNotGuiThread(VRL loc) throws VlInternalError
+   static void assertNotGuiThread(VRL loc) throws InternalError
    {
     	UIGlobal.assertNotGuiThread("Cannot perform this action during gui event thread. Must open location first:"+loc); 
    }
@@ -439,7 +439,7 @@ public final class ProxyVNode extends ProxyNode
         	//this.getMimeType(); // updates cache:
         	
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             logger.logException(ClassLogger.ERROR,e,"Error while prefetching Attributes from:%s\n",vnode);  
         }
@@ -496,7 +496,7 @@ public final class ProxyVNode extends ProxyNode
             cache.storeAttribute(attr);
             return mimeStr;
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             logger.logException(ClassLogger.ERROR,e,"Error getting mimetype from:%s\n",vnode); 
             return null;
@@ -558,9 +558,9 @@ public final class ProxyVNode extends ProxyNode
      * Get childs from node or the linktarget. 
      * This method resolves link nodes 
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    public ProxyVNode[] getChilds(ViewFilter viewFilter) throws VlException
+    public ProxyVNode[] getChilds(ViewFilter viewFilter) throws VrsException
     {
     	synchronized (getChildsMutex)
     	{
@@ -578,7 +578,7 @@ public final class ProxyVNode extends ProxyNode
     			exitBusy();
     			return nodes; 
     		}
-    		catch (VlException ex1)
+    		catch (VrsException ex1)
     		{
     		    logger.logException(ClassLogger.WARN,ex1,"_getChilds() got exception=%s\n",ex1); 
     			t=ex1; 
@@ -595,10 +595,10 @@ public final class ProxyVNode extends ProxyNode
     		
 			cache.setHasGetChildsException(true);
 			
-			if (t instanceof VlException)
-				throw (VlException)t; 
+			if (t instanceof VrsException)
+				throw (VrsException)t; 
 		
-			throw new VlInternalError(t.getMessage(),t); 
+			throw new InternalError(t.getMessage(),t); 
     	}
     }
     
@@ -606,9 +606,9 @@ public final class ProxyVNode extends ProxyNode
      * Get childs from node or the linktarget. 
      * This method resolves link nodes 
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    private ProxyVNode[] _getChilds(ViewFilter viewFilter) throws VlException
+    private ProxyVNode[] _getChilds(ViewFilter viewFilter) throws VrsException
     {
     	  
     	// Enter O) 
@@ -781,7 +781,7 @@ public final class ProxyVNode extends ProxyNode
                     filtered[index++]=node; 
                 }
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 filtered[index++]=node; 
                 logger.debugPrintf("ProxyTNode","isHidden() returned: Exception:%s\n",e); 
@@ -797,7 +797,7 @@ public final class ProxyVNode extends ProxyNode
         
     }
     
-    public boolean isHidden() throws VlException
+    public boolean isHidden() throws VrsException
     {
         if (cache.isHidden==null)
         {
@@ -814,7 +814,7 @@ public final class ProxyVNode extends ProxyNode
         return cache.isHidden; 
     }
     
-    public int getNrOfChilds(ViewFilter filter) throws VlException
+    public int getNrOfChilds(ViewFilter filter) throws VrsException
     {
         ProxyVNode childs[] = this.getChilds(filter);
         
@@ -856,7 +856,7 @@ public final class ProxyVNode extends ProxyNode
 	        	if (lnode!=null)	
 	        		result=lnode.getTargetIsComposite(true); 
 			}
-			catch (VlException e)
+			catch (VrsException e)
 			{
 				logger.infoPrintf("Could not load link node:%s,Exception=%s\n",this,e); 
 				
@@ -875,7 +875,7 @@ public final class ProxyVNode extends ProxyNode
      * Private helper method to invalidize this ProxyTNode and fire an delete
      * Event
      */
-    public void disposeAndFireNodeDeleted() throws VlException
+    public void disposeAndFireNodeDeleted() throws VrsException
     {
         if (cache == null)
         {
@@ -904,7 +904,7 @@ public final class ProxyVNode extends ProxyNode
         fireChildAdded(this,node); 
     }
     
-    public ProxyVNode getParent() throws VlException
+    public ProxyVNode getParent() throws VrsException
     {
         if (cache.getProxyNodeParent() == null)
         {
@@ -947,9 +947,9 @@ public final class ProxyVNode extends ProxyNode
      * 
      * @param attrNames
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    public VAttribute[] getAttributes(final String[] attrNames) throws VlException
+    public VAttribute[] getAttributes(final String[] attrNames) throws VrsException
     {
         VAttribute attrs[] = new VAttribute[attrNames.length];
         
@@ -1037,7 +1037,7 @@ public final class ProxyVNode extends ProxyNode
      *            try to find icon with this size. Return bigger icon if
      *            preferred size is not found !
      * @return the prefed Icon, size, might not match.
-     * @throws VlException
+     * @throws VrsException
      */
     public Icon getDefaultIcon(int prefSize,boolean selected)
     {
@@ -1087,7 +1087,7 @@ public final class ProxyVNode extends ProxyNode
         	{
 				iconNode=this.loadResourceLink();
 			} 
-        	catch (VlException e) 
+        	catch (VrsException e) 
 			{
 				logger.infoPrintf("***Warning: Couldn't load resourceLink:%s\n",this);
 				// use default icon 
@@ -1102,7 +1102,7 @@ public final class ProxyVNode extends ProxyNode
         return iconurl; 
     }
    
-    public ProxyVNode create(String resourceType, String name) throws VlException
+    public ProxyVNode create(String resourceType, String name) throws VrsException
     {
         
         VComposite vcomp=null;
@@ -1240,9 +1240,9 @@ public final class ProxyVNode extends ProxyNode
      * this node will load the ResourceNode and return it. 
      * Once a ResourceLink (VLink) is loaded it is equivalent
      * with a LogicalResourceNode.  
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public LogicalResourceNode loadResourceLink() throws VlException 
+    public LogicalResourceNode loadResourceLink() throws VrsException 
     {
     	LogicalResourceNode lnode = null;
         
@@ -1277,7 +1277,7 @@ public final class ProxyVNode extends ProxyNode
      * Resolves a LinkNode, ResourceLocation or a .vlink resource and 
      * returns the TARGET ProxyNode
      */
-    public ProxyVNode getTargetPNode() throws VlException
+    public ProxyVNode getTargetPNode() throws VrsException
     {
     	// Global.printMethodCallEntry(3); 
     	
@@ -1340,7 +1340,7 @@ public final class ProxyVNode extends ProxyNode
         return pnode;
     }
     
-    public VRL getTargetVRL() throws VlException
+    public VRL getTargetVRL() throws VrsException
     {
         if (this.isResourceLink()==false)
             return null; 
@@ -1354,7 +1354,7 @@ public final class ProxyVNode extends ProxyNode
 //        return lnode.getTargetMimeType();
 //    }
 //    
-    private boolean exists() throws VlException
+    private boolean exists() throws VrsException
     {
         if (vnode instanceof VFSNode)
             return ((VFSNode)vnode).exists();
@@ -1413,7 +1413,7 @@ public final class ProxyVNode extends ProxyNode
                 }
                 
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 // this is not the place for exception handling:
                 UILogger.logException(this,ClassLogger.ERROR,e,"Couldn't resolve target of:%s\n",this); 
@@ -1423,7 +1423,7 @@ public final class ProxyVNode extends ProxyNode
         return this.cache.resourceTypes;
     }
     
-    public VAttribute[][] getACL() throws VlException
+    public VAttribute[][] getACL() throws VrsException
     {
         if (vnode instanceof VACL) 
             return ((VACL)vnode).getACL();
@@ -1443,7 +1443,7 @@ public final class ProxyVNode extends ProxyNode
          return attrs;*/
     }
     
-    public void setACL(VAttribute[][] acl) throws VlException
+    public void setACL(VAttribute[][] acl) throws VrsException
     {
         if (vnode instanceof VACL)
         {
@@ -1454,7 +1454,7 @@ public final class ProxyVNode extends ProxyNode
         throw new NotImplementedException("Resource doesn't support ACLs");
     }
     
-    public VAttribute[] getACLEntities() throws VlException
+    public VAttribute[] getACLEntities() throws VrsException
     {
         if (vnode instanceof VACL) 
             return ((VACL)vnode).getACLEntities();
@@ -1462,7 +1462,7 @@ public final class ProxyVNode extends ProxyNode
         throw new NotImplementedException("Resource doesn't support ACLs");
     }
     
-    public VAttribute[] createACLRecord(VAttribute entity, boolean writeThrough) throws VlException
+    public VAttribute[] createACLRecord(VAttribute entity, boolean writeThrough) throws VrsException
     {
         if (vnode instanceof VACL) 
             return ((VACL)vnode).createACLRecord(entity,writeThrough); 
@@ -1470,7 +1470,7 @@ public final class ProxyVNode extends ProxyNode
         throw new NotImplementedException("Resource doesn't support ACLs");
     }
     
-    public void transfer(VRL source, VRL dest) throws VlException
+    public void transfer(VRL source, VRL dest) throws VrsException
     {
     }
 
@@ -1541,7 +1541,7 @@ public final class ProxyVNode extends ProxyNode
                 return; // still exists... 
             
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             // do nothing, node was not in cache/invalid location:
         }
@@ -1585,7 +1585,7 @@ public final class ProxyVNode extends ProxyNode
 
     private VRL aliasVrl; 
     
-	public boolean delete(boolean recursiveDelete) throws VlException
+	public boolean delete(boolean recursiveDelete) throws VrsException
 	{
 		logger.debugPrintf("delete:%s (recursive=%s)\n",this,""+recursiveDelete);  
 		
@@ -1615,7 +1615,7 @@ public final class ProxyVNode extends ProxyNode
 					}
 					else
 					{
-						throw new ResourceException("Node is not deletable:"+vnode); 
+						throw new VrsResourceException("Node is not deletable:"+vnode); 
 					}
 				}
 			}
@@ -1640,7 +1640,7 @@ public final class ProxyVNode extends ProxyNode
 	    // logger.infoPrintf("Finalizing:%s\n",this); 
 	}
 
-	public VRL renameTo(String name,boolean nameIsPath) throws VlException
+	public VRL renameTo(String name,boolean nameIsPath) throws VrsException
 	{
 		VRL oldLocation = vnode.getVRL().duplicate(); 
 		
@@ -1663,7 +1663,7 @@ public final class ProxyVNode extends ProxyNode
 		return newLocation; 
 	}
 	
-	public void setAttributes(VAttribute attrs[],boolean refresh) throws VlException
+	public void setAttributes(VAttribute attrs[],boolean refresh) throws VrsException
 	{
 	    
 		if (vnode instanceof VEditable) 
@@ -1690,7 +1690,7 @@ public final class ProxyVNode extends ProxyNode
 	}
 		
     /** Create in this Composite node a new LinkNode to the specified pnode */
-    public void createLinkTo(ProxyNode pnode) throws VlException
+    public void createLinkTo(ProxyNode pnode) throws VrsException
     {
         VRL parentLoc = this.getVRL();
         LogicalResourceNode lnode = null;
@@ -1727,7 +1727,7 @@ public final class ProxyVNode extends ProxyNode
         lnode.save();
         
         if (lnode.getVRL()==null)
-            throw new VlInternalError("Internal Error: New create LinkNode has NULL VRL when creating a link to:"+pnode);
+            throw new InternalError("Internal Error: New create LinkNode has NULL VRL when creating a link to:"+pnode);
         
             //refetch logiccal VRL, this might have changed ! 
         fireChildAdded(getVRL(),lnode.getVRL());
@@ -1861,7 +1861,7 @@ public final class ProxyVNode extends ProxyNode
                 }
                 
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 logger.logException(ClassLogger.WARN,e,"Could resolve link\n");
             }                
@@ -1871,7 +1871,7 @@ public final class ProxyVNode extends ProxyNode
     }
 
 	@Override
-	public boolean isEditable() throws VlException 
+	public boolean isEditable() throws VrsException 
 	{
 		if (this.vnode instanceof VEditable)
 		{
@@ -1929,7 +1929,7 @@ public final class ProxyVNode extends ProxyNode
      *            try to find icon with this size. Return bigger icon if
      *            preferred size is not found !
      * @return the prefed Icon, size, might not match.
-     * @throws VlException
+     * @throws VrsException
      */
     public Icon createDefaultIcon(VNode _vnode,int size,boolean greyOut)
     {
@@ -2018,7 +2018,7 @@ public final class ProxyVNode extends ProxyNode
             {
                 mimeType=_vnode.getMimeType();
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 logger.warnPrintf("Could not get Mimetype of:%s\n",_vnode); 
                 logger.warnPrintf("Exception =%s\n",e); 

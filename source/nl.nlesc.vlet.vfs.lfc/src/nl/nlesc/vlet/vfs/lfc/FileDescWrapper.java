@@ -24,8 +24,8 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.glite.lfc.internal.FileDesc;
 import nl.nlesc.glite.lfc.internal.ReplicaDesc;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 
 public class FileDescWrapper
 {

@@ -20,9 +20,9 @@
 
 package nl.nlesc.vlet.vfs.lfc;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.glite.lfc.LFCException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 
 /**
  * Mapping of LFC error codes to VlExceptions.  
@@ -107,9 +107,9 @@ public class LFCExceptionWapper
 //	}
 
 	
-	public static VlException getVlException(int code,LFCException e)
+	public static VrsException getVlException(int code,LFCException e)
 	{
-		VlException ex=null;
+		VrsException ex=null;
 		String msgstr=e.getMessage(); 
 		
 		// cast some Posix based LFCExceptions into known VlExceptions: 
@@ -119,38 +119,38 @@ public class LFCExceptionWapper
 				ex=new nl.nlesc.vlet.exception.ResourceNotFoundException(msgstr,e); // No such file or directory 
 				break; 
 			case 4:
-				ex=new nl.nlesc.vlet.exception.VlInterruptedException(msgstr,e); // Interrupted proces 
+				ex=new nl.nlesc.vlet.exception.NestedInterruptedException(msgstr,e); // Interrupted proces 
 				break; 
 			case 5:
-				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e);  // I/O Error 
+				ex=new nl.nlesc.vlet.exception.NestedIOException(msgstr,e);  // I/O Error 
 				break; 
 			case 6:
-				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e);  // No such device or address 
+				ex=new nl.nlesc.vlet.exception.NestedIOException(msgstr,e);  // No such device or address 
 				break; 
 			case 9:
-				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // Bad File number
+				ex=new nl.nlesc.vlet.exception.NestedIOException(msgstr,e); // Bad File number
 				break;
             case 11:
-                ex=new nl.nlesc.vlet.exception.VlIOException("LFCException: Bacon not ready. Try again",e);  // Try again ? 
+                ex=new nl.nlesc.vlet.exception.NestedIOException("LFCException: Bacon not ready. Try again",e);  // Try again ? 
                 break;
             case 13:
                 ex=new nl.nlesc.vlet.exception.ResourceAccessDeniedException(msgstr,e); // Permission denied
                 break;
 			case 15: 
-				ex=new nl.nlesc.vlet.exception.VlIOException("Lego Block device required\n."+msgstr,e);
+				ex=new nl.nlesc.vlet.exception.NestedIOException("Lego Block device required\n."+msgstr,e);
 				break; 
 			case 16:
-				ex=new nl.nlesc.vlet.exception.VlIOException("Device or resource busy.\n"+msgstr,e);
+				ex=new nl.nlesc.vlet.exception.NestedIOException("Device or resource busy.\n"+msgstr,e);
 				break; 
 			case 17: 
 				ex=new nl.nlesc.vlet.exception.ResourceAlreadyExistsException(
 						"File/Directory exists or Directory is not empty.\n"+msgstr,e);
 				break; 
 			case 18: 
-				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // Cross-device link
+				ex=new nl.nlesc.vlet.exception.NestedIOException(msgstr,e); // Cross-device link
 				break; 
 			case 19: 
-				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e) ; // No such device
+				ex=new nl.nlesc.vlet.exception.NestedIOException(msgstr,e) ; // No such device
 				break; 
 			case 20: 
 				ex=new nl.nlesc.vlet.exception.ResourceTypeMismatchException(msgstr,e); // Not a directory
@@ -159,37 +159,37 @@ public class LFCExceptionWapper
 				ex=new nl.nlesc.vlet.exception.ResourceTypeMismatchException(msgstr,e); // Is a directory 
 				break;  
 			case 24: 
-				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // Too many open files
+				ex=new nl.nlesc.vlet.exception.NestedIOException(msgstr,e); // Too many open files
 				break;
 			case 25: 
-				ex=new nl.nlesc.vlet.exception.VlException("LFCException: Not a typewriter? o.O.\n"+msgstr,e);
+				ex=new nl.esciencecenter.vbrowser.vrs.exceptions.VrsException("LFCException: Not a typewriter? o.O.\n"+msgstr,e);
 				break; 
 			case 26: 
-				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // Text file busy
+				ex=new nl.nlesc.vlet.exception.NestedIOException(msgstr,e); // Text file busy
 				break; 
 			case 27: 
 				ex=new nl.nlesc.vlet.exception.ResourceToBigException(msgstr,e); // File to large
 				break; 
 			case 28: 
-				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // No space left on device 
+				ex=new nl.nlesc.vlet.exception.NestedIOException(msgstr,e); // No space left on device 
 				break; 
 			case 29:  
-				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // Illegal Seek ? 
+				ex=new nl.nlesc.vlet.exception.NestedIOException(msgstr,e); // Illegal Seek ? 
 				break; 
 			case 30: 
-				ex=new nl.nlesc.vlet.exception.ResourceException("Read-only file system.\n"+msgstr,e);
+				ex=new nl.nlesc.vlet.exception.VrsResourceException("Read-only file system.\n"+msgstr,e);
 				break; 
 			case 31: 
-				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // too many links
+				ex=new nl.nlesc.vlet.exception.NestedIOException(msgstr,e); // too many links
 				break; 
 			case 32:
-				ex=new nl.nlesc.vlet.exception.VlIOException(msgstr,e); // broken pipe
+				ex=new nl.nlesc.vlet.exception.NestedIOException(msgstr,e); // broken pipe
 				break;
 			case 34: 
-				ex=new nl.nlesc.vlet.exception.VlException("Math result not representable (or you can't understand it).\n"+msgstr,e);
+				ex=new nl.esciencecenter.vbrowser.vrs.exceptions.VrsException("Math result not representable (or you can't understand it).\n"+msgstr,e);
 				break;
 			default:
-				ex=new VlIOException("LFCException\n."+e.getMessage(),e); 
+				ex=new NestedIOException("LFCException\n."+e.getMessage(),e); 
 				break;
 		}
 		return ex; 

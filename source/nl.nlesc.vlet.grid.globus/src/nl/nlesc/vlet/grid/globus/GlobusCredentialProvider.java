@@ -34,8 +34,8 @@ import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlAuthenticationException;
-import nl.nlesc.vlet.exception.VlInternalError;
+import nl.nlesc.vlet.exception.AuthenticationException;
+import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.grid.proxy.VGridCredential;
 import nl.nlesc.vlet.grid.proxy.VGridCredentialProvider;
@@ -169,7 +169,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         }
         catch (GlobusCredentialException e)
         {
-            throw new VlAuthenticationException(e.getMessage(),e); 
+            throw new AuthenticationException(e.getMessage(),e); 
         }
     }
 
@@ -214,7 +214,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
     public VGridCredential createFromObject(Object globusCredential) throws Exception
     {
         if ((globusCredential instanceof GlobusCredential)==false)
-            throw new VlInternalError("Object is not of GlobusCredential Type!");
+            throw new InternalError("Object is not of GlobusCredential Type!");
             
         return new GlobusCredentialWrapper(this, (GlobusCredential)globusCredential); 
     }
@@ -382,7 +382,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         return new GlobusCredentialWrapper(this,credential); 
     }
 
-    public static GlobusGSSCredentialImpl createGSSCredential(GlobusCredential globusCred) throws VlAuthenticationException
+    public static GlobusGSSCredentialImpl createGSSCredential(GlobusCredential globusCred) throws AuthenticationException
     {
         GlobusGSSCredentialImpl cred;
         
@@ -395,7 +395,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         }
         catch (GSSException e)
         {
-            throw new VlAuthenticationException(
+            throw new AuthenticationException(
                     "Couldn't create GSS Credential(s).\n"+e.getMessage(),e);
         }
     }

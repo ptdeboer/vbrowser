@@ -33,9 +33,9 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.vhtml.VHTMLEditorPane;
 import nl.nlesc.vlet.net.ssl.SslUtil;
@@ -127,9 +127,9 @@ public class VHTMLViewer extends InternalViewer  implements HyperlinkListener
 
     /**
      * @param location
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public void updateLocation(final VRL location) throws VlException
+    public void updateLocation(final VRL location) throws VrsException
     {
         if (location == null)
         {
@@ -148,7 +148,7 @@ public class VHTMLViewer extends InternalViewer  implements HyperlinkListener
         }
         catch (Exception e1)
         {
-            throw new VlException("SSLException:"+e1.getMessage(),e1);
+            throw new VrsException("SSLException:"+e1.getMessage(),e1);
         } 
         
     	// ARRGGG
@@ -172,7 +172,7 @@ public class VHTMLViewer extends InternalViewer  implements HyperlinkListener
             }
             catch (IOException e)
             {
-                handle(new VlIOException(e));  
+                handle(new NestedIOException(e));  
             }
         }
         
@@ -192,7 +192,7 @@ public class VHTMLViewer extends InternalViewer  implements HyperlinkListener
         {
             tv.startAsStandAloneApplication(loc); 
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             System.out.println("***Error: Exception:" + e);
             e.printStackTrace();
@@ -206,7 +206,7 @@ public class VHTMLViewer extends InternalViewer  implements HyperlinkListener
     }
 
     @Override
-    public void startViewer(VRL loc) throws VlException
+    public void startViewer(VRL loc) throws VrsException
     {
         updateLocation(loc);
     }

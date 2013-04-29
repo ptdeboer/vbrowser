@@ -21,10 +21,10 @@
 package nl.nlesc.vlet.vrs.vfs.skelfs;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -50,7 +50,7 @@ public class SkelFSFactory extends VFSFactory
     // ========================================================================
 
     @Override
-    public VFileSystem openFileSystem(VRSContext context, VRL location) throws VlException
+    public VFileSystem openFileSystem(VRSContext context, VRL location) throws VrsException
     {
         // Delegate implementation to super method.
         // Super method checks if there isn't already a filesystem object
@@ -88,7 +88,7 @@ public class SkelFSFactory extends VFSFactory
     }
 
     // See super method
-    public ServerInfo updateServerInfo(VRSContext context, ServerInfo info, VRL loc) throws VlException
+    public ServerInfo updateServerInfo(VRSContext context, ServerInfo info, VRL loc) throws VrsException
     {
         // Update server configuration information.
         // This method should check (Server/Resource) properties and optional

@@ -31,7 +31,7 @@ import nl.esciencecenter.ptk.data.SecretHolder;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.io.VShellChannel;
 
@@ -66,7 +66,7 @@ public class SSHChannel implements VShellChannel
         //logger.setLevelToDebug(); 
     }
     
-    public static SSHChannel createSSHChannel(VRSContext context,String user,String host,int port, SSHChannelOptions options) throws VlException
+    public static SSHChannel createSSHChannel(VRSContext context,String user,String host,int port, SSHChannelOptions options) throws VrsException
     {
         return new SSHChannel(context,user,host,port,options); 
     }
@@ -154,7 +154,7 @@ public class SSHChannel implements VShellChannel
 
     private JCraftClient jcraftClient; 
     
-    public SSHChannel(VRSContext context, String user, String host,int port,SSHChannelOptions options) throws VlException
+    public SSHChannel(VRSContext context, String user, String host,int port,SSHChannelOptions options) throws VrsException
     {
         this.vrsContext=context; 
         this.user=user; 
@@ -171,7 +171,7 @@ public class SSHChannel implements VShellChannel
         }
         catch (JSchException e1)
         {
-            throw new VlException("Could get/create JCraftClient",e1); 
+            throw new VrsException("Could get/create JCraftClient",e1); 
         } 
         
         try

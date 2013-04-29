@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vfs.jcraft.ssh;
 
-import nl.nlesc.vlet.exception.VlInterruptedException;
+import nl.nlesc.vlet.exception.NestedInterruptedException;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 
 import com.jcraft.jsch.SftpProgressMonitor;
@@ -57,7 +57,7 @@ public class SftpTransferMonitor implements SftpProgressMonitor
         
         if (transfer.isCancelled())
         {
-            transfer.setException(new VlInterruptedException("SFTP has been Cancelled!"));
+            transfer.setException(new NestedInterruptedException("SFTP has been Cancelled!"));
             return false; //abort
         }
         return true; // continue

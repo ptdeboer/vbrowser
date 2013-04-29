@@ -25,11 +25,11 @@ import java.io.OutputStream;
 
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.glite.lfc.LFCException;
 import nl.nlesc.glite.lfc.LFCServer;
 import nl.nlesc.glite.lfc.internal.FileDesc;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vfs.VChecksum;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VReplicatable;

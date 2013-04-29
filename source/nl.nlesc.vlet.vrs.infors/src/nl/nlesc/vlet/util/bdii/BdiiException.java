@@ -20,9 +20,9 @@
 
 package nl.nlesc.vlet.util.bdii;
 
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 
-public class BdiiException extends VlIOException
+public class BdiiException extends NestedIOException
 {
     private static final long serialVersionUID = 4909976444566127514L;
 

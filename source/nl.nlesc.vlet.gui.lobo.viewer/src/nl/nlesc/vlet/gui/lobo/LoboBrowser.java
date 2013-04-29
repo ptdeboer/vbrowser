@@ -25,11 +25,11 @@ import java.awt.Dimension;
 import java.net.MalformedURLException;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.net.ssl.SslUtil;
@@ -178,7 +178,7 @@ public class LoboBrowser extends ViewerPlugin
 	}
 	
 	@Override
-	public void updateLocation(VRL vrl) throws VlException
+	public void updateLocation(VRL vrl) throws VrsException
 	{
         debugPrintf("Update location:%s\n",vrl);
         
@@ -192,7 +192,7 @@ public class LoboBrowser extends ViewerPlugin
         }
         catch (Exception e1)
         {
-            throw new VlIOException("SSLException:"+e1.getMessage(),e1);
+            throw new NestedIOException("SSLException:"+e1.getMessage(),e1);
         } 
         
 		try
@@ -235,7 +235,7 @@ public class LoboBrowser extends ViewerPlugin
         {
             tv.startAsStandAloneApplication(loc);
         } 
-        catch (VlException e)
+        catch (VrsException e)
         {
             ClassLogger.getLogger(LoboBrowser.class).logException(ClassLogger.ERROR,e,"Exception:%s\n",e);
         }
@@ -270,7 +270,7 @@ public class LoboBrowser extends ViewerPlugin
     
    
     
-    protected VNode getVNode(VRL vrl) throws VlException
+    protected VNode getVNode(VRL vrl) throws VrsException
     {
         return super.getVNode(vrl); 
     }
@@ -280,7 +280,7 @@ public class LoboBrowser extends ViewerPlugin
      * When user starts this viewer from the 'tools' menu, this method is called also
      */
     public void doMethod(String methodName, ActionContext actionContext)
-            throws VlException
+            throws VrsException
     {
         debugPrintf("doMethod:%s\n",methodName); 
     }

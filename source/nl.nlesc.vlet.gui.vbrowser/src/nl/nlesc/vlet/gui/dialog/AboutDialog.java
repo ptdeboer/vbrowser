@@ -40,7 +40,7 @@ import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.task.ActionTask;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.HyperLinkListener;
 import nl.nlesc.vlet.gui.Messages;
 import nl.nlesc.vlet.gui.UIGlobal;
@@ -297,7 +297,7 @@ public class AboutDialog extends javax.swing.JDialog implements ActionListener, 
             boolean stop=false; 
             
             @Override
-            protected void doTask() throws VlException
+            protected void doTask() throws VrsException
             {
                 // must use booleanholder 
                 final BooleanHolder scrollToTop=new BooleanHolder(true);  

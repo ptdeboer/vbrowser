@@ -26,9 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -69,14 +69,14 @@ public class ServiceInfo
 
     }
 
-    public ServiceInfo(ServiceInfoType type, String protocol, String host, int port) throws VlException
+    public ServiceInfo(ServiceInfoType type, String protocol, String host, int port) throws VrsException
     {
         this.serviceType = type;
 
         this.protocol = protocol;
         if (host == null)
         {
-            throw new VlException("Host can't be null. Info details: \n \t Type: " + type + "\n \t protocol: "
+            throw new VrsException("Host can't be null. Info details: \n \t Type: " + type + "\n \t protocol: "
                     + protocol + "\n \t port: " + port);
         }
         this.hostname = host;

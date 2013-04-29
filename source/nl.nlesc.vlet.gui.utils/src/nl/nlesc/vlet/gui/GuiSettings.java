@@ -42,8 +42,8 @@ import javax.swing.UIManager;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.font.FontInfo;
 import nl.nlesc.vlet.gui.font.FontUtil;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -134,7 +134,7 @@ public class GuiSettings
         {
             props = VletConfig.staticLoadProperties(loc);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             UILogger.logException(this,ClassLogger.WARN, e, "Warning. Error when loading guisettings:%s\n", loc);
         }
@@ -212,7 +212,7 @@ public class GuiSettings
      * only appear in the property set if: the property was defined in the user
      * settings file, or it has been changed by the preferences menu
      * 
-     * @throws VlException
+     * @throws VrsException
      */
     private void save() throws Exception
     {

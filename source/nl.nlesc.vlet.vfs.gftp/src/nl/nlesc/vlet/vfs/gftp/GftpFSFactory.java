@@ -22,21 +22,21 @@ package nl.nlesc.vlet.vfs.gftp;
 
 
 import static nl.nlesc.vlet.VletConfig.ATTR_PASSIVE_MODE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ALLOW_3RD_PARTY;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_GROUP;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_OWNER;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PORT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_UNIQUE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ALLOW_3RD_PARTY;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_GROUP;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_OWNER;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_UNIQUE;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -94,7 +94,7 @@ public class GftpFSFactory extends VFSFactory
 
     @Override
     public ServerInfo updateServerInfo(VRSContext context,ServerInfo info, VRL location)
-        throws VlException 
+        throws VrsException 
     {
         super.updateServerInfo(context,info,location); 
 
@@ -135,7 +135,7 @@ public class GftpFSFactory extends VFSFactory
 
     @Override
     public GftpFileSystem createNewFileSystem(VRSContext context, ServerInfo info,VRL location)
-            throws VlException 
+            throws VrsException 
     {
     	return new GftpFileSystem(context,info,location);
     }

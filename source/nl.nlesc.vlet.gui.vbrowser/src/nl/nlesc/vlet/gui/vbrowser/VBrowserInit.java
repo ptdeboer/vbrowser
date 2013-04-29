@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.gui.vbrowser;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UIPlatform;
 import nl.nlesc.vlet.gui.aboutrs.AboutRSFactory;
@@ -30,7 +30,7 @@ import nl.nlesc.vlet.gui.proxynode.impl.direct.ProxyVNodeFactory;
 public class VBrowserInit
 {
 
-    public static UIPlatform initPlatform() throws VlException
+    public static UIPlatform initPlatform() throws VrsException
     {
         // todo: better platform initialization. 
         // current order to initialize: 

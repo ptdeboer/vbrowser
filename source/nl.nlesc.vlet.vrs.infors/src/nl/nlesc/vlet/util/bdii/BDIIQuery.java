@@ -43,10 +43,10 @@ import javax.naming.directory.SearchResult;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlServerException;
+import nl.nlesc.vlet.exception.ServerCommunicationException;
 import nl.nlesc.vlet.util.bdii.info.glue.GlueConstants;
 import nl.nlesc.vlet.util.bdii.info.glue.GlueObject;
 
@@ -126,9 +126,9 @@ public class BDIIQuery
      * @param optVersion
      *            optional, service version (Examples with wildcards:2.* )
      * @return the glue service as a GlueObject object.
-     * @throws VlException
+     * @throws VrsException
      */
-    public ArrayList<GlueObject> getServices(String VO, String serviceType, String optVersion) throws VlException
+    public ArrayList<GlueObject> getServices(String VO, String serviceType, String optVersion) throws VrsException
     {
         return getServices(VO, null, serviceType, optVersion);
     }
@@ -149,10 +149,10 @@ public class BDIIQuery
      * @param optVersion
      *            optional, service version (Examples with wildcards:2.* )
      * @return the glue service as a GlueObject object
-     * @throws VlException
+     * @throws VrsException
      */
     public ArrayList<GlueObject> getServices(String VO, String optHost, String serviceType, String optVersion)
-            throws VlException
+            throws VrsException
     {
         String type = GlueConstants.SERVICE;
 
@@ -199,9 +199,9 @@ public class BDIIQuery
      *            =dteam)(GlueServiceType=srm*)(GlueServiceVersion=*)(
      *            GlueServiceEndpoint=***)) )
      * @return the result
-     * @throws VlException
+     * @throws VrsException
      */
-    private ArrayList<GlueObject> queryGlueObjects(String type, String query) throws VlException
+    private ArrayList<GlueObject> queryGlueObjects(String type, String query) throws VrsException
     {
         ArrayList<GlueObject> glueObjects = null;
 
@@ -229,7 +229,7 @@ public class BDIIQuery
 
         catch (NamingException e)
         {
-            throw new VlException(e);
+            throw new VrsException(e);
         }
 
         return glueObjects;
@@ -242,9 +242,9 @@ public class BDIIQuery
      *            the search phrase
      * @return an array list of SearchResult objects.
      * @throws BdiiException
-     * @throws VlServerException
+     * @throws ServerCommunicationException
      */
-    private ArrayList<SearchResult> query(final String searchPhrase) throws BdiiException, VlServerException
+    private ArrayList<SearchResult> query(final String searchPhrase) throws BdiiException, ServerCommunicationException
     {
         boolean hasError = false;
         ArrayList<SearchResult> resultsList = new ArrayList<SearchResult>();
@@ -291,9 +291,9 @@ public class BDIIQuery
                 Throwable cause = e.getCause();
 
                 if (cause instanceof java.net.UnknownHostException)
-                    throw new VlServerException("Couldn't resolve ldap service:" + bdiiUri, cause);
+                    throw new ServerCommunicationException("Couldn't resolve ldap service:" + bdiiUri, cause);
                 else
-                    throw new VlServerException("Error contacting service:" + bdiiUri, e);
+                    throw new ServerCommunicationException("Error contacting service:" + bdiiUri, e);
             }
             catch (NamingException e)
             {
@@ -316,9 +316,9 @@ public class BDIIQuery
      *            the Glue Object that contains the correct GlueForeignKey
      * @return the GlueSite that matches the GlueForeignKey contained in the
      *         Glue Objects
-     * @throws VlException
+     * @throws VrsException
      */
-    public ArrayList<GlueObject> getSitesForGlueObjects(ArrayList<GlueObject> glueObject) throws VlException
+    public ArrayList<GlueObject> getSitesForGlueObjects(ArrayList<GlueObject> glueObject) throws VrsException
     {
         StringList attributes = new StringList();
         String key = null;
@@ -372,9 +372,9 @@ public class BDIIQuery
      *            or any other value N)
      * @return the GlueSites that match the have the values contained in the
      *         keyValues.
-     * @throws VlException
+     * @throws VrsException
      */
-    private ArrayList<GlueObject> getSites(String keyType, StringList keyValues) throws VlException
+    private ArrayList<GlueObject> getSites(String keyType, StringList keyValues) throws VrsException
     {
         String glueType = GlueConstants.SITE;
         StringBuffer searchPhrase = new StringBuffer();
@@ -424,9 +424,9 @@ public class BDIIQuery
      * @param vo
      *            the VO's name
      * @return the SE that belong to this VO
-     * @throws VlException
+     * @throws VrsException
      */
-    public ArrayList<GlueObject> getStorageElements(String vo) throws VlException
+    public ArrayList<GlueObject> getStorageElements(String vo) throws VrsException
     {
         StringList seUids = null;
         if (seUIDCahche == null)
@@ -450,9 +450,9 @@ public class BDIIQuery
      * @param vo
      *            the VO's name
      * @return the list of the SE Uids name
-     * @throws VlException
+     * @throws VrsException
      */
-    public StringList getSEUids(String vo) throws VlException
+    public StringList getSEUids(String vo) throws VrsException
     {
         if (seUidList == null)
         {
@@ -483,9 +483,9 @@ public class BDIIQuery
      *            the values (e.g. GlueSEUniqueID=gb-se-emc.erasmusmc.nl,
      *            GlueSEUniqueID=tbn18.nikhef.nl, ....etc)
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    private ArrayList<GlueObject> getVoInfos(String vo, String keyType, StringList keyValues) throws VlException
+    private ArrayList<GlueObject> getVoInfos(String vo, String keyType, StringList keyValues) throws VrsException
     {
         StringBuffer searchPhrase = new StringBuffer();
 
@@ -529,9 +529,9 @@ public class BDIIQuery
      *            the values (e.g. GlueSEUniqueID=gb-se-emc.erasmusmc.nl,
      *            GlueSEUniqueID=tbn18.nikhef.nl, ....etc)
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    private ArrayList<GlueObject> getStorageAreas(String vo, String keyType, StringList keyValues) throws VlException
+    private ArrayList<GlueObject> getStorageAreas(String vo, String keyType, StringList keyValues) throws VrsException
     {
         StringBuffer searchPhrase = new StringBuffer();
 
@@ -797,9 +797,9 @@ public class BDIIQuery
      * @param keyValues
      *            the values (e.g. tbn18.nikhef.nl,gb-se-amc.amc.nl,... )
      * @return the SE
-     * @throws VlException
+     * @throws VrsException
      */
-    private ArrayList<GlueObject> getStorageElemnts(String keyType, StringList keyValues) throws VlException
+    private ArrayList<GlueObject> getStorageElemnts(String keyType, StringList keyValues) throws VrsException
     {
         String type = GlueConstants.SE;
 
@@ -825,9 +825,9 @@ public class BDIIQuery
      *            the VOs name
      * @return a map containing the path allowed to read/write for this SE.The
      *         key is the SE hostname
-     * @throws VlException
+     * @throws VrsException
      */
-    public Map<String, String> getVoInfoPaths(String vo) throws VlException
+    public Map<String, String> getVoInfoPaths(String vo) throws VrsException
     {
         // StringList keyList = new StringList();
         // keyList.add(GlueConstants.SE_UNIQUE_ID + "=" + seUid);
@@ -841,7 +841,7 @@ public class BDIIQuery
         return extractVOPaths(saOrVOinfos);
     }
 
-    public Map<String, String> getSAPaths(String vo, StringList missingHostnames) throws VlException
+    public Map<String, String> getSAPaths(String vo, StringList missingHostnames) throws VrsException
     {
         ArrayList<GlueObject> saOrVOinfos = getStorageAreas(vo, GlueConstants.CHUNK_KEY, missingHostnames);
 
@@ -864,9 +864,9 @@ public class BDIIQuery
      * @param vo
      *            the VO's name
      * @return the LB Glue Objects
-     * @throws VlException
+     * @throws VrsException
      */
-    public ArrayList<GlueObject> getLBServices(String vo) throws VlException
+    public ArrayList<GlueObject> getLBServices(String vo) throws VrsException
     {
         return getServices(vo, GlueConstants.LB_SERVER, "*");
     }
@@ -877,9 +877,9 @@ public class BDIIQuery
      * @param vo
      *            the VO's name
      * @return the WMS Glue Objects
-     * @throws VlException
+     * @throws VrsException
      */
-    public ArrayList<GlueObject> getWMProxy(String VO) throws VlException
+    public ArrayList<GlueObject> getWMProxy(String VO) throws VrsException
     {
         return getServices(VO, GlueConstants.WMPROXY, "*");
     }
@@ -890,9 +890,9 @@ public class BDIIQuery
      * @param VO
      *            the VO's name
      * @return the CE Glue Objects
-     * @throws VlException
+     * @throws VrsException
      */
-    public ArrayList<GlueObject> getComputingElements(String VO) throws VlException
+    public ArrayList<GlueObject> getComputingElements(String VO) throws VrsException
     {
         String searchPhrase;
         String glueType = GlueConstants.CE;
@@ -918,9 +918,9 @@ public class BDIIQuery
      *            the values (e.g. GlueForeignKey:
      *            GlueSiteUniqueID=NIKHEF-ELPROD,... )
      * @return the LB services.
-     * @throws VlException
+     * @throws VrsException
      */
-    private ArrayList<GlueObject> getLBServices(String keyType, StringList keyValues) throws VlException
+    private ArrayList<GlueObject> getLBServices(String keyType, StringList keyValues) throws VrsException
     {
         String glueType = GlueConstants.SERVICE;
         String searchPhrase = "(&(objectClass=" + glueType + ")";
@@ -945,9 +945,9 @@ public class BDIIQuery
      * @param vo
      *            , the VO name
      * @return the LB services
-     * @throws VlException
+     * @throws VrsException
      */
-    public ArrayList<GlueObject> guessLBServices(String vo) throws VlException
+    public ArrayList<GlueObject> guessLBServices(String vo) throws VrsException
     {
         // First get the wms
         ArrayList<GlueObject> wms = getWMProxy(vo);
@@ -963,9 +963,9 @@ public class BDIIQuery
      * @param hostname
      *            , the hostname
      * @return the LB services
-     * @throws VlException
+     * @throws VrsException
      */
-    public ArrayList<GlueObject> guessLBServicesForWMSHostname(String hostname) throws VlException
+    public ArrayList<GlueObject> guessLBServicesForWMSHostname(String hostname) throws VrsException
     {
         ArrayList<GlueObject> wms = getServices(null, hostname, GlueConstants.WMPROXY, "*");
 
@@ -1011,9 +1011,9 @@ public class BDIIQuery
      * @param optHostname
      *            The host name (Optional, can be null or a wildcard )
      * @return the result
-     * @throws VlException
+     * @throws VrsException
      */
-    public ArrayList<GlueObject> getSAforVoAndHost(String vo, String optHostname) throws VlException
+    public ArrayList<GlueObject> getSAforVoAndHost(String vo, String optHostname) throws VrsException
     {
         String type = GlueConstants.SA;
 
@@ -1048,9 +1048,9 @@ public class BDIIQuery
      * @param ceUID
      *            , the CE UID (e.g. stremsel.nikhef.nl)
      * @return the GlueObject representing the CE
-     * @throws VlException
+     * @throws VrsException
      */
-    public GlueObject getComputingElementsByUID(String ceUID) throws VlException
+    public GlueObject getComputingElementsByUID(String ceUID) throws VrsException
     {
         String glueType = GlueConstants.CE;
         StringBuffer searchPhrase = new StringBuffer();
@@ -1075,9 +1075,9 @@ public class BDIIQuery
      * @param seUID
      *            , the SE UID (e.g. tbn18.nikhef.nl)
      * @return the GlueObject representing the SE
-     * @throws VlException
+     * @throws VrsException
      */
-    public GlueObject getSEByUID(String seUID) throws VlException
+    public GlueObject getSEByUID(String seUID) throws VrsException
     {
         String glueType = GlueConstants.SE;
         StringBuffer searchPhrase = new StringBuffer();

@@ -21,12 +21,12 @@
 package nl.nlesc.vlet.vfs.lfc;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlConfigurationError;
+import nl.nlesc.vlet.exception.ConfigurationError;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class LFCFSConfig
 {
@@ -89,7 +89,7 @@ public class LFCFSConfig
             return this.attrValue; 
         }
         
-        public static ReplicaSelectionMode createFromAttributeValue(String valstr) throws VlConfigurationError
+        public static ReplicaSelectionMode createFromAttributeValue(String valstr) throws ConfigurationError
         {
             for (ReplicaSelectionMode mode:ReplicaSelectionMode.values())
             {
@@ -97,7 +97,7 @@ public class LFCFSConfig
                     return mode; 
             }
             
-            throw new nl.nlesc.vlet.exception.VlConfigurationError("Invalid Replica Selection Mode:"+valstr);
+            throw new nl.nlesc.vlet.exception.ConfigurationError("Invalid Replica Selection Mode:"+valstr);
         }
     }
     
@@ -121,7 +121,7 @@ public class LFCFSConfig
             return this.attrValue;  
         }
         
-        public static ReplicaCreationMode createFromAttributeValue(String valstr) throws VlConfigurationError
+        public static ReplicaCreationMode createFromAttributeValue(String valstr) throws ConfigurationError
         {
             for (ReplicaCreationMode mode:ReplicaCreationMode.values())
             {
@@ -129,7 +129,7 @@ public class LFCFSConfig
                     return mode; 
             }
             
-            throw new nl.nlesc.vlet.exception.VlConfigurationError("Invalid Replica Creation Mode:"+valstr);  
+            throw new nl.nlesc.vlet.exception.ConfigurationError("Invalid Replica Creation Mode:"+valstr);  
         }
     }
 
@@ -286,12 +286,12 @@ public class LFCFSConfig
         }
     }
 
-    public static ReplicaSelectionMode string2ReplicaSelectionMode(String value) throws VlConfigurationError
+    public static ReplicaSelectionMode string2ReplicaSelectionMode(String value) throws ConfigurationError
     {
         return ReplicaSelectionMode.createFromAttributeValue(value); 
     }
     
-    public static ReplicaCreationMode string2ReplicaCreationMode(String value) throws VlConfigurationError
+    public static ReplicaCreationMode string2ReplicaCreationMode(String value) throws ConfigurationError
     {
         return ReplicaCreationMode.createFromAttributeValue(value); 
     }
@@ -314,7 +314,7 @@ public class LFCFSConfig
                     return false;  
             }
         }
-        catch (VlConfigurationError e)
+        catch (ConfigurationError e)
         {
             // e.printStackTrace();
         }
@@ -331,7 +331,7 @@ public class LFCFSConfig
                     return false;  
             }
         }
-        catch (VlConfigurationError e)
+        catch (ConfigurationError e)
         {
             // e.printStackTrace();
         } 

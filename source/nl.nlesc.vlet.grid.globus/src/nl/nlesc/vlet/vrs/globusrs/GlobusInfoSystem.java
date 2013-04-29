@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.vrs.globusrs;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VResourceSystem;
@@ -49,7 +49,7 @@ public class GlobusInfoSystem extends CompositeServiceInfoNode<VNode> implements
     }
 	 
 	@Override
-	public VNode openLocation(VRL vrl) throws VlException 
+	public VNode openLocation(VRL vrl) throws VrsException 
 	{
 		GlobusInfoNode node=GlobusInfoNode.createNode(this.getVRSContext(),vrl); 
 		return node; 
@@ -57,12 +57,12 @@ public class GlobusInfoSystem extends CompositeServiceInfoNode<VNode> implements
 
 
 	@Override
-	public void connect() throws VlException 
+	public void connect() throws VrsException 
 	{//dummy
 	}
 
 	@Override
-	public void disconnect() throws VlException 
+	public void disconnect() throws VrsException 
 	{//dummy
 	}
 

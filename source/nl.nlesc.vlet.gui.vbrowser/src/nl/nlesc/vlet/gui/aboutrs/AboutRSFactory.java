@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.gui.aboutrs;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
@@ -65,7 +65,7 @@ public class AboutRSFactory extends VRSFactory
 
     @Override
     public VResourceSystem createNewResourceSystem(VRSContext context, ServerInfo info,VRL location)
-            throws VlException
+            throws VrsException
     {
         if (aboutRS==null)
             aboutRS=new AboutRS(context,location);

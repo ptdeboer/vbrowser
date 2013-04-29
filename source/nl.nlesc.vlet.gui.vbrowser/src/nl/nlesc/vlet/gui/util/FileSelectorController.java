@@ -25,7 +25,7 @@ import javax.swing.JPopupMenu;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskSource;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
@@ -104,7 +104,7 @@ public class FileSelectorController implements MasterBrowser, ITaskSource
 		{
 
 			@Override
-			protected void doTask() throws VlException
+			protected void doTask() throws VrsException
 			{
 				ProxyNode node;
 				
@@ -125,7 +125,7 @@ public class FileSelectorController implements MasterBrowser, ITaskSource
 		openTask.startTask(); 
 	}
 
-	public void setRootNode(ProxyNode node) throws VlException 
+	public void setRootNode(ProxyNode node) throws VrsException 
 	{
 		this.fileSelector.resourceTree.setRootNode(node); 
 	}
@@ -140,7 +140,7 @@ public class FileSelectorController implements MasterBrowser, ITaskSource
 		// ignore 
 	}
 	
-	public void refresh() throws VlException
+	public void refresh() throws VrsException
 	{
 		if(selectionNode!=null)
 		{
@@ -153,7 +153,7 @@ public class FileSelectorController implements MasterBrowser, ITaskSource
 		  // go background: 
 	     ActionTask refreshTask=new ActionTask(this,"refresh")
 	     {
-	     	public void doTask() throws VlException
+	     	public void doTask() throws VrsException
 	     	{
 	     		node.refresh(); 
 	     	}

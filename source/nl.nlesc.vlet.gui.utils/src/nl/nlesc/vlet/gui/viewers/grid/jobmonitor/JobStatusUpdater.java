@@ -24,12 +24,12 @@ package nl.nlesc.vlet.gui.viewers.grid.jobmonitor;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyResourceEventListener;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.events.EventType;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -70,7 +70,7 @@ public class JobStatusUpdater implements ProxyResourceEventListener
         this.updateTask=new ActionTask(null,"JobStatusUpdater.updateTask()")
         {
             @Override
-            protected void doTask() throws VlException
+            protected void doTask() throws VrsException
             {
                 bgUpdate(fullUpdate); 
             }
@@ -95,7 +95,7 @@ public class JobStatusUpdater implements ProxyResourceEventListener
         this.updateAttrsTask=new ActionTask(null,"JobStatusUpdater.doUpdateAttributes()")
         {
             @Override
-            protected void doTask() throws VlException
+            protected void doTask() throws VrsException
             {
                 bgUpdate(false,attributeNames); 
             }
@@ -186,7 +186,7 @@ public class JobStatusUpdater implements ProxyResourceEventListener
         
     }
 
-	public VRL getJobVrl(String jobid) throws VlException 
+	public VRL getJobVrl(String jobid) throws VrsException 
 	{
 		return getJobUtil().getJobVRL(jobid);
 	}

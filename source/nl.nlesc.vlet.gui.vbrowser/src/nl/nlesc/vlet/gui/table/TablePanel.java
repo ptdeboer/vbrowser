@@ -39,8 +39,7 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.ui.presentation.UIPresentable;
 import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -54,6 +53,7 @@ import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.VContainer;
 import nl.nlesc.vlet.gui.view.ViewFilter;
 import nl.nlesc.vlet.gui.view.ViewModel;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -290,7 +290,7 @@ public class TablePanel extends JTable implements VContainer,UIPresentable
     //
     // ========================================================================
    
-    public void populateWith(ProxyNode pnode) throws VlException 
+    public void populateWith(ProxyNode pnode) throws VrsException 
     {
         if ((dataProducer instanceof NodeTableProducer)==false)
         {
@@ -556,7 +556,7 @@ public class TablePanel extends JTable implements VContainer,UIPresentable
     }
     
     /** Insert new column after specified 'headerName' 
-     * @throws VlException */
+     * @throws VrsException */
     public void insertColumn(String headerName, String newName)
     {
         // get order of header as currently viewed ! 

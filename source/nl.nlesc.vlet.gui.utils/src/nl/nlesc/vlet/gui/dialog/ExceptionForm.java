@@ -35,8 +35,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -98,9 +98,9 @@ public class ExceptionForm extends javax.swing.JDialog implements ActionListener
 
 	public static void main(String args[])
 	{
-	    VlException e1=VlException.create("Original Exception","This is the original Exception",null);
-	    VlException e2=VlException.create("Nested Exception","This is the longer Nested Exception were the message text, if to big to fit into one line"+
-	            "will be wrapped around. The dailog should also be big enough to show all text. Newline:\n This is a new line.",e1);
+	    VrsException e1=VrsException.create("This is the original Exception",null,"Original Exception");
+	    VrsException e2=VrsException.create("This is the longer Nested Exception were the message text, if to big to fit into one line"+
+	            "will be wrapped around. The dailog should also be big enough to show all text. Newline:\n This is a new line.",e1,"Nested Exception");
 	    show(e2);
 	}
 	
@@ -150,9 +150,9 @@ public class ExceptionForm extends javax.swing.JDialog implements ActionListener
 		String name=e.getClass().getSimpleName();
 		
 		// Depricated: VlException have names, should use class names
-		if (e instanceof VlException)
+		if (e instanceof VrsException)
 		{
-			name=((VlException)e).getName(); 
+			name=((VrsException)e).getName(); 
 			// other VlExceptions ? 
 		}
 		
@@ -171,7 +171,7 @@ public class ExceptionForm extends javax.swing.JDialog implements ActionListener
 
         // === Debug Text: 
         // get the whole bubs:
-        setDebugText(VlException.getChainedStackTraceText(e));  
+        setDebugText(VrsException.getChainedStackTraceText(e));  
         
         // update to the max!
         // Dimension pref=this.errorText.getPreferredSize();

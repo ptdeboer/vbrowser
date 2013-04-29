@@ -20,23 +20,23 @@
 
 package nl.nlesc.vlet.gui.viewers.grid.jobmonitor;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ERROR_TEXT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_INDEX;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_JOBID;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_JOB_STATUS_INFORMATION;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LOCATION;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_STATUS;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ERROR_TEXT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_INDEX;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_JOBID;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_JOB_STATUS_INFORMATION;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_LOCATION;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_STATUS;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTableModel;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class JobStatusDataModel extends ResourceTableModel
@@ -177,7 +177,7 @@ public class JobStatusDataModel extends ResourceTableModel
         this.updateTask=new ActionTask(null,"JobMonitorUpdateTask")
             {
                 @Override
-                protected void doTask() throws VlException
+                protected void doTask() throws VrsException
                 {
                     
                 }

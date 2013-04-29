@@ -24,8 +24,8 @@ import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
-import nl.nlesc.vlet.data.VAttributeType;
 import nl.nlesc.vlet.gui.util.Messages;
+import nl.nlesc.vlet.vrs.data.VAttributeType;
 
 public class AttrIntField extends AttrParameterField
 {

@@ -21,9 +21,9 @@
 package nl.nlesc.vlet.gui.panels.acldialog;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTableModel;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class ACLDataModel extends ResourceTableModel
 {

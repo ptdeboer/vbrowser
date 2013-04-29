@@ -26,11 +26,11 @@ import javax.swing.table.AbstractTableModel;
 
 import nl.esciencecenter.ptk.util.QSort;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.view.ViewModel;
 import nl.nlesc.vlet.gui.view.ViewNode;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 

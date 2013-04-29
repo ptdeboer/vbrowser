@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.gui.proxyvrs;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.error.InitializationError;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
@@ -96,7 +96,7 @@ public class ProxyVRSClient
     // VRS 
     // ========================================================================
     
-    public VRL getVirtualRootLocation() throws VlException
+    public VRL getVirtualRootLocation() throws VrsException
     {
         return context.getVirtualRootLocation();
     }

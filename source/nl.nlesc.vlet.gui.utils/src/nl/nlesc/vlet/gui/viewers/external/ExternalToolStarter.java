@@ -32,7 +32,7 @@ import javax.swing.border.BevelBorder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -107,12 +107,12 @@ public class ExternalToolStarter extends ViewerPlugin implements ActionListener
     }
 
     @Override
-    public void updateLocation(VRL loc) throws VlException
+    public void updateLocation(VRL loc) throws VrsException
     {
         openVRL(loc);
     }
 
-    public void openVRL(VRL loc) throws VlException
+    public void openVRL(VRL loc) throws VrsException
     {   
         VNode node=this.getVNode(loc);
         String mimeType=node.getMimeType(); 
@@ -136,7 +136,7 @@ public class ExternalToolStarter extends ViewerPlugin implements ActionListener
         {
             tv.startAsStandAloneApplication(new VRL("file:/etc/passwd"));
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             System.err.println("***Error: Exception:"+e); 
             e.printStackTrace();

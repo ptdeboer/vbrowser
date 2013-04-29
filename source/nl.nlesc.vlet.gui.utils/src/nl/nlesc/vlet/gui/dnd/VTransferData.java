@@ -30,8 +30,8 @@ import java.util.Scanner;
 import java.util.Vector;
 
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.data.ResourceRef;
@@ -174,7 +174,7 @@ public class VTransferData
                 {
                     vLocs.add(new VRL(scanner.nextLine()));
                 }
-                catch (VlException e)
+                catch (VrsException e)
                 {
                     UILogger.errorPrintf(VTransferData.class,"***Error: Exception:%s\n",e); 
                     // continue; 

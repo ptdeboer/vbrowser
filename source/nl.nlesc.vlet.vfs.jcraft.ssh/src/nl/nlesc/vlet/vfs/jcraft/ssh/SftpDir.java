@@ -26,8 +26,8 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -49,7 +49,7 @@ public class SftpDir extends VDir implements VUnixFileAttributes
     }
     
     @Override
-    public VFSNode[] list() throws VlException
+    public VFSNode[] list() throws VrsException
     {
         String childs[]=this.server.list(this.getPath());
        
@@ -76,49 +76,49 @@ public class SftpDir extends VDir implements VUnixFileAttributes
         return VFSNode.returnAsArray(nodes); 
     }
 
-    public boolean create(boolean ignoreExisting) throws VlException
+    public boolean create(boolean ignoreExisting) throws VrsException
     {
     	VDir dir=this.server.createDir(this.getPath(),ignoreExisting);
     	return (dir!=null); 
     }
     
     @Override
-    public boolean exists() throws VlException
+    public boolean exists() throws VrsException
     {
     	return server.existsPath(this.getPath(),true);
     }
 
     @Override
-    public boolean isReadable() throws VlException
+    public boolean isReadable() throws VrsException
     {
         return server.isReadable(getPath());  
     }
 
     @Override
-    public boolean isWritable() throws VlException
+    public boolean isWritable() throws VrsException
     {
         return server.isWritable(getPath());  
     }
 
     
     @Override
-    public boolean isSymbolicLink() throws VlException
+    public boolean isSymbolicLink() throws VrsException
     {
         return server.isLink(getPath()); 
     }
 
     @Override
-    public String getSymbolicLinkTarget() throws VlException
+    public String getSymbolicLinkTarget() throws VrsException
     {
     	return server.getLinkTarget(getPath()); 
     }
     
-    public long getNrOfNodes() throws VlException
+    public long getNrOfNodes() throws VrsException
     {
         return getNodes().length; 
     }
 
-    public boolean delete(boolean recurse) throws VlException
+    public boolean delete(boolean recurse) throws VrsException
     {
     	ITaskMonitor  monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting (SFTP) directory:"+this.getPath(),1); 
 
@@ -134,19 +134,19 @@ public class SftpDir extends VDir implements VUnixFileAttributes
             return false; 
     }
     
-    public VRL rename(String newName, boolean nameIsPath) throws VlException
+    public VRL rename(String newName, boolean nameIsPath) throws VrsException
     {
         String newpath=server.rename(getPath(),newName,nameIsPath); 
         return this.resolvePath(newpath); 
     }
     
     @Override
-    public VAttribute[][] getACL() throws VlException
+    public VAttribute[][] getACL() throws VrsException
     {
         return server.getACL(getPath(),true); 
     }
     @Override
-    public void setACL(VAttribute acl[][]) throws VlException
+    public void setACL(VAttribute acl[][]) throws VrsException
     {
         server.setACL(getPath(),acl,true); 
     }
@@ -160,7 +160,7 @@ public class SftpDir extends VDir implements VUnixFileAttributes
     }
    
     
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         if (name==null) 
             return null;
@@ -179,7 +179,7 @@ public class SftpDir extends VDir implements VUnixFileAttributes
         return super.getAttribute(name); 
     }
     
-    public VAttribute[] getAttributes(String names[]) throws VlException
+    public VAttribute[] getAttributes(String names[]) throws VrsException
     {
         if (names==null) 
             return null; 
@@ -199,17 +199,17 @@ public class SftpDir extends VDir implements VUnixFileAttributes
     }
     
     @Override
-    public long getModificationTime() throws VlException
+    public long getModificationTime() throws VrsException
     {
         return this.server.getModificationTime(getSftpAttributes()); 
     }
 
-	public void setMode(int mode) throws VlException
+	public void setMode(int mode) throws VrsException
 	{
 		;
 	}
 	
-    private SftpATTRS getSftpAttributes() throws VlException
+    private SftpATTRS getSftpAttributes() throws VrsException
     {
         if (_attrs==null)
         {
@@ -218,28 +218,28 @@ public class SftpDir extends VDir implements VUnixFileAttributes
         return _attrs; 
     }
     
-    public String getPermissionsString() throws VlException
+    public String getPermissionsString() throws VrsException
     {
         return server.getPermissionsString(getSftpAttributes(),false); 
     }
 
-    public int getMode() throws VlException
+    public int getMode() throws VrsException
     {
          return server.getPermissions(getSftpAttributes()); 
     }
     
     
-    public String getGid() throws VlException
+    public String getGid() throws VrsException
     {
         return ""+getSftpAttributes().getGId();  
     }
 
-    public String getUid() throws VlException
+    public String getUid() throws VrsException
     {
         return ""+getSftpAttributes().getUId();  
     }
     
-    public boolean sync() throws VlException 
+    public boolean sync() throws VrsException 
     {
         // just nullify attributes. Will be fetched again. Nothing to be written. 
         this._attrs=null;

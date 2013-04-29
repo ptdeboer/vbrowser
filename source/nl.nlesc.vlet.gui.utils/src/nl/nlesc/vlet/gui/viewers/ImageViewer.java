@@ -36,10 +36,10 @@ import javax.swing.JViewport;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.ui.image.ImagePane;
 import nl.esciencecenter.ptk.ui.image.ImagePane.ImageWaiter;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
-import nl.nlesc.vlet.exception.ResourceException;
-import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.exception.VrsResourceException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -139,7 +139,7 @@ public class ImageViewer extends InternalViewer
         {
             tv.startAsStandAloneApplication(loc);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             System.out.println("***Error: Exception:" + e);
             e.printStackTrace();
@@ -172,12 +172,12 @@ public class ImageViewer extends InternalViewer
     }
 
     @Override
-    public void startViewer(VRL loc) throws VlException
+    public void startViewer(VRL loc) throws VrsException
     {
         updateLocation(loc);
     }
 
-    public void updateLocation(VRL location) throws VlException
+    public void updateLocation(VRL location) throws VrsException
     {
         // debug("update location;"+location);
 
@@ -203,7 +203,7 @@ public class ImageViewer extends InternalViewer
         }
         catch (Exception e)
         {
-            throw new VlException(e);
+            throw new VrsException(e);
         }
         finally
         {
@@ -222,7 +222,7 @@ public class ImageViewer extends InternalViewer
         try {inps.close();} catch (Exception e) {;} 
         
         if (image==null)
-            throw new ResourceException("Image loader returned NULL for:"+location); 
+            throw new VrsResourceException("Image loader returned NULL for:"+location); 
         
         imagePane.setImage(image,wait);
     }
@@ -251,7 +251,7 @@ public class ImageViewer extends InternalViewer
         return mappings;
     }
 
-    public void doMethod(String methodName, ActionContext actionContext) throws VlException
+    public void doMethod(String methodName, ActionContext actionContext) throws VrsException
     {
 
         if (actionContext.getSource() != null)
@@ -516,7 +516,7 @@ public class ImageViewer extends InternalViewer
 
             // viewStandAlone(null);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             System.out.println("***Error: Exception:" + e);
             e.printStackTrace();

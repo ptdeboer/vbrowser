@@ -27,7 +27,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import nl.nlesc.vlet.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 
 public class ResourceTableCellRenderer extends DefaultTableCellRenderer 
 {

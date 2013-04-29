@@ -48,6 +48,7 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.glite.lbl.srm.SRMClient;
 import nl.nlesc.glite.lbl.srm.SRMClientV1;
 import nl.nlesc.glite.lbl.srm.SRMClientV2;
@@ -57,8 +58,7 @@ import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.util.bdii.BdiiUtil;
@@ -193,13 +193,13 @@ public class SRMFileSystem extends FileSystemNode
     // Spiros: Dead variable
     // private String srmVersionInfo;
 
-    public SRMFileSystem(VRSContext context, ServerInfo info, VRL vrl) throws VlException
+    public SRMFileSystem(VRSContext context, ServerInfo info, VRL vrl) throws VrsException
     {
         super(context, info);
         connect(false); 
     }
     
-    public SRMFileSystem(VRSContext context, ServerInfo info, VRL vrl, boolean connect) throws VlException
+    public SRMFileSystem(VRSContext context, ServerInfo info, VRL vrl, boolean connect) throws VrsException
     {
         super(context, info);
         // get socket timeout:
@@ -209,7 +209,7 @@ public class SRMFileSystem extends FileSystemNode
     }
 
     @Override
-    public VFSNode openLocation(VRL loc) throws VlException
+    public VFSNode openLocation(VRL loc) throws VrsException
     {
         connect(false);
         VFSNode node = getPath(loc);
@@ -217,14 +217,14 @@ public class SRMFileSystem extends FileSystemNode
         return node;
     }
 
-    public void connect() throws VlException
+    public void connect() throws VrsException
     {
         connect(false);
     }
     
    // private static Object globalSRMConnectMutex=new Object(); 
     
-    public void connect(boolean closeFirst) throws VlException
+    public void connect(boolean closeFirst) throws VrsException
     {
         logger.infoPrintf("Connecting (closeFirst=%s):%s\n",closeFirst,this);
         
@@ -241,7 +241,7 @@ public class SRMFileSystem extends FileSystemNode
         String host=getHostname(); 
         
         if (prox.isValid() == false)
-            throw new nl.nlesc.vlet.exception.VlAuthenticationException("Invalid grid proxy");
+            throw new nl.nlesc.vlet.exception.AuthenticationException("Invalid grid proxy");
         try
         {
             // check SRM V2 Client:
@@ -301,12 +301,12 @@ public class SRMFileSystem extends FileSystemNode
         return false;
     }
 
-    private String getDefaultVOHome() throws VlException
+    private String getDefaultVOHome() throws VrsException
     {
         String vo = this.getVRSContext().getVO();
         // get storage area path suitable for writing by this VO.
         if (StringUtil.isEmpty(vo))
-            throw new nl.nlesc.vlet.exception.VlAuthenticationException(
+            throw new nl.nlesc.vlet.exception.AuthenticationException(
                     "No VO specified in current context. Please enable VO authentication. ");
 
         String voPath = getSAPathFor(this.getServerVRL(), vo);
@@ -314,7 +314,7 @@ public class SRMFileSystem extends FileSystemNode
         return voPath;
     }
 
-    private String getSAPathFor(VRL saVRL, String vo) throws VlException
+    private String getSAPathFor(VRL saVRL, String vo) throws VrsException
     {
         ArrayList<StorageArea> sa = BdiiUtil.getBdiiService(getVRSContext()).getVOStorageAreas(vo, saVRL.getHostname(), false);
 
@@ -343,7 +343,7 @@ public class SRMFileSystem extends FileSystemNode
     }
 
     @Override
-    public VFile createFile(VRL pathVRL, boolean force) throws VlException
+    public VFile createFile(VRL pathVRL, boolean force) throws VrsException
     {
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("createFile:" + this, -1);
 
@@ -366,18 +366,18 @@ public class SRMFileSystem extends FileSystemNode
         }
         catch (IOException e)
         {
-            throw new VlIOException("Couldn't create file:"+pathVRL,e);
+            throw new NestedIOException("Couldn't create file:"+pathVRL,e);
         }
 
     }
 
     // @Override
-    public VDir createDir(VRL vrl, boolean force) throws VlException
+    public VDir createDir(VRL vrl, boolean force) throws VrsException
     {
         return createDir(vrl.getPath(), force);
     }
 
-    public VDir createDir(String name, boolean force) throws VlException
+    public VDir createDir(String name, boolean force) throws VrsException
     {
         debug("createDir: " + name + " " + force);
 
@@ -392,18 +392,18 @@ public class SRMFileSystem extends FileSystemNode
     }
 
     @Override
-    public VDir newDir(VRL dirVrl) throws VlException
+    public VDir newDir(VRL dirVrl) throws VrsException
     {
         return new SRMDir(this, dirVrl);
     }
 
     @Override
-    public VFile newFile(VRL fileVrl) throws VlException
+    public VFile newFile(VRL fileVrl) throws VrsException
     {
         return new SRMFile(this, fileVrl.getPath());
     }
 
-    public VFSNode getPath(VRL pathVrl) throws VlException
+    public VFSNode getPath(VRL pathVrl) throws VrsException
     {
         logger.debugPrintf("SRMFileSystem:getPath():%s\n",pathVrl); 
         
@@ -427,7 +427,7 @@ public class SRMFileSystem extends FileSystemNode
 
         if (detail == null)
         {
-            throw new nl.nlesc.vlet.exception.ResourceException("Query failed. Result is NULL for:" + path);
+            throw new nl.nlesc.vlet.exception.VrsResourceException("Query failed. Result is NULL for:" + path);
         }
 
         // New SRM at RuG return NULL Type !
@@ -461,7 +461,7 @@ public class SRMFileSystem extends FileSystemNode
     }
     
     
-    public TMetaDataPathDetail queryPath(String path) throws VlException
+    public TMetaDataPathDetail queryPath(String path) throws VrsException
     {
         ArrayList<TMetaDataPathDetail> details = queryPaths(new String[] { path });
 
@@ -472,7 +472,7 @@ public class SRMFileSystem extends FileSystemNode
     }
 
     /** Master method to query a set of paths */
-    public ArrayList<TMetaDataPathDetail> queryPaths(String paths[]) throws VlException
+    public ArrayList<TMetaDataPathDetail> queryPaths(String paths[]) throws VrsException
     {
         try
         {
@@ -503,14 +503,14 @@ public class SRMFileSystem extends FileSystemNode
     }
 
     // List Single Path
-    public VFSNode[] list(String path) throws VlException
+    public VFSNode[] list(String path) throws VrsException
     {
         return listPaths(new String[] { path }, true,-1,-1);
     }
 
     
     // List Single Path
-    public VFSNode[] list(String path,int offset,int count) throws VlException
+    public VFSNode[] list(String path,int offset,int count) throws VrsException
     {
         return listPaths(new String[] { path }, true,offset,count); 
     }
@@ -523,7 +523,7 @@ public class SRMFileSystem extends FileSystemNode
      * 
      * Method merges different paths.
      */
-    public VFSNode[] listPaths(String[] paths, boolean fullDetails,int offset,int count) throws VlException
+    public VFSNode[] listPaths(String[] paths, boolean fullDetails,int offset,int count) throws VrsException
     {
         debug("listPaths:" + flatten(paths));
 
@@ -723,7 +723,7 @@ public class SRMFileSystem extends FileSystemNode
         return false;
     }
 
-    public VFile doActiveTransfer(ITaskMonitor monitor, VRL sourceLocation, SRMFile targetFile) throws VlException
+    public VFile doActiveTransfer(ITaskMonitor monitor, VRL sourceLocation, SRMFile targetFile) throws VrsException
     {
 
         VFSClient vfs = getVFSClient();
@@ -772,12 +772,12 @@ public class SRMFileSystem extends FileSystemNode
 
     }
 
-    public void thirdPartyCopy(VRL[] source, VRL[] destination) throws VlException
+    public void thirdPartyCopy(VRL[] source, VRL[] destination) throws VrsException
     {
 
         if (source.length != destination.length)
         {
-            throw new VlException("Source and destination VRL arrays must have the same length. Source length="
+            throw new VrsException("Source and destination VRL arrays must have the same length. Source length="
                     + source.length + ", Desination length=" + destination.length);
         }
         org.apache.axis.types.URI[] arrayOfSourceSURLs = new org.apache.axis.types.URI[source.length];
@@ -824,7 +824,7 @@ public class SRMFileSystem extends FileSystemNode
 
     }
 
-    public VFile doTransfer(ITaskMonitor monitor, SRMFile sourceFile, VRL targetLocation) throws VlException
+    public VFile doTransfer(ITaskMonitor monitor, SRMFile sourceFile, VRL targetLocation) throws VrsException
     {
 
         // should be gftp
@@ -890,7 +890,7 @@ public class SRMFileSystem extends FileSystemNode
      * of Result ! (TURL) Use targetFile as actual (logical) target.
      */
     public VFile doTransportTransfer(ITaskMonitor monitor, VRL transportSourceVRL, SRMFile targetFile)
-            throws VlException
+            throws VrsException
     {
         VFSClient vfs = getVFSClient();
 
@@ -1022,7 +1022,7 @@ public class SRMFileSystem extends FileSystemNode
         // handle 3rd party transfer to:"+targetTransferVRL);
     }
 
-    public boolean pathExists(String path) throws VlException
+    public boolean pathExists(String path) throws VrsException
     {
         try
         {
@@ -1032,7 +1032,7 @@ public class SRMFileSystem extends FileSystemNode
 
             return true;
         }
-        catch (VlException ex)
+        catch (VrsException ex)
         {
             // filter resource not found exceptions
             if (ex instanceof ResourceNotFoundException)
@@ -1109,13 +1109,13 @@ public class SRMFileSystem extends FileSystemNode
         return mode;
     }
 
-    public InputStream createInputStream(ITaskMonitor monitor, String path) throws VlException
+    public InputStream createInputStream(ITaskMonitor monitor, String path) throws VrsException
     {
         VRL tsvrl = getTransportVRL(monitor, path);
         return getVFSClient().openInputStream(tsvrl);
     }
 
-    public VRL getTransportVRL(ITaskMonitor monitor, String path) throws VlException
+    public VRL getTransportVRL(ITaskMonitor monitor, String path) throws VrsException
     {
         // use new bulk mode:
         VRL vrls[] = getTransportVRLs(monitor, new String[] { path });
@@ -1124,9 +1124,9 @@ public class SRMFileSystem extends FileSystemNode
         return vrls[0];
     }
 
-    public VRL[] getTransportVRLs(ITaskMonitor monitor, String[] filePaths) throws VlException
+    public VRL[] getTransportVRLs(ITaskMonitor monitor, String[] filePaths) throws VrsException
     {
-        VlException orgEx;
+        VrsException orgEx;
 
         URI[] surls;
 
@@ -1191,7 +1191,7 @@ public class SRMFileSystem extends FileSystemNode
         return vrls;
     }
 
-    public boolean mkdir(String fullpath, boolean force) throws VlException
+    public boolean mkdir(String fullpath, boolean force) throws VrsException
     {
         try
         {
@@ -1258,7 +1258,7 @@ public class SRMFileSystem extends FileSystemNode
         }
     }
 
-    public boolean rmdir(String path, boolean recurse) throws VlException
+    public boolean rmdir(String path, boolean recurse) throws VrsException
     {
         try
         {
@@ -1270,7 +1270,7 @@ public class SRMFileSystem extends FileSystemNode
         }
     }
 
-    public boolean deleteFile(String path) throws VlException
+    public boolean deleteFile(String path) throws VrsException
     {
         try
         {
@@ -1286,7 +1286,7 @@ public class SRMFileSystem extends FileSystemNode
         }
     }
 
-    public SRMPutRequest createPutRequest(ITaskMonitor monitor, String path, boolean overwrite) throws VlException
+    public SRMPutRequest createPutRequest(ITaskMonitor monitor, String path, boolean overwrite) throws VrsException
     {
 
         URI surl;
@@ -1335,7 +1335,7 @@ public class SRMFileSystem extends FileSystemNode
     }
 
     public SRMOutputStream createNewOutputStream(ITaskMonitor monitor, String path, boolean overwrite)
-            throws VlException
+            throws VrsException
     {
         SRMOutputStream result = null;
 
@@ -1343,7 +1343,7 @@ public class SRMFileSystem extends FileSystemNode
         {
             result = createNewOutputStreamImpl(monitor, path, overwrite);
         }
-        catch (VlException ex)
+        catch (VrsException ex)
         {
             if ((ex instanceof ResourceAlreadyExistsException) && (overwrite) && getPath(path).isFile())
             {
@@ -1367,11 +1367,11 @@ public class SRMFileSystem extends FileSystemNode
      * 
      * @param path
      * @return
-     * @throws VlException
+     * @throws VrsException
      *             , ResourceAlreadyExistsException if path already exists
      */
     public SRMOutputStream createNewOutputStreamImpl(ITaskMonitor monitor, String path, boolean overwrite)
-            throws VlException
+            throws VrsException
     {
         debug(" - openOutputStream():" + path);
 
@@ -1386,7 +1386,7 @@ public class SRMFileSystem extends FileSystemNode
     }
 
     /** Create SRMOutputStream from (GFTP) transfer VRL */
-    private SRMOutputStream createSrmOutputStream(SRMPutRequest putreq) throws VlException
+    private SRMOutputStream createSrmOutputStream(SRMPutRequest putreq) throws VrsException
     {
 
         debug("getToken: " + putreq.getToken());
@@ -1430,7 +1430,7 @@ public class SRMFileSystem extends FileSystemNode
 
     }
 
-    public VRL mv(String path, String newPath) throws VlException
+    public VRL mv(String path, String newPath) throws VrsException
     {
 
         try
@@ -1456,7 +1456,7 @@ public class SRMFileSystem extends FileSystemNode
     //
     // =====================================================
 
-    public void setUnixMode(VRL location, TMetaDataPathDetail srmDetails, int mode) throws VlException
+    public void setUnixMode(VRL location, TMetaDataPathDetail srmDetails, int mode) throws VrsException
     {
         try
         {
@@ -1472,7 +1472,7 @@ public class SRMFileSystem extends FileSystemNode
         }
     }
 
-    public VlException convertException(String message, Exception cause)
+    public VrsException convertException(String message, Exception cause)
     {
         logger.debugPrintf(message + " ex: %s\n", cause);
 
@@ -1507,7 +1507,7 @@ public class SRMFileSystem extends FileSystemNode
             {
                 return new ResourceAlreadyExistsException(message, cause);
             }
-            return new VlIOException(message+"\n"+ex.getMessage(), ex);
+            return new NestedIOException(message+"\n"+ex.getMessage(), ex);
         }
 
         String errorstr = cause.getMessage();
@@ -1518,20 +1518,20 @@ public class SRMFileSystem extends FileSystemNode
         if ((errorstr.contains("Connection refused")) || (errorstr.contains("No route to host")))
 
         {
-            return new nl.nlesc.vlet.exception.VlConnectionException(message + "\n" + "Connection error. Server might be down or not reachable:"
+            return new nl.nlesc.vlet.exception.ConnectionException(message + "\n" + "Connection error. Server might be down or not reachable:"
                     + this.getHostname() + "\n" + "Reason:" + cause.getMessage(), cause);
         }
 
        
         
         // Check Standard Globus Exceptions:
-        VlException globusEx = GlobusUtil.checkException(message, cause);
+        VrsException globusEx = GlobusUtil.checkException(message, cause);
 
         if (globusEx != null)
             return globusEx;
 
         // default:
-        return new VlIOException("SRMException:"+message, cause);
+        return new NestedIOException("SRMException:"+message, cause);
     }
 
     // ============================================================ //
@@ -1562,7 +1562,7 @@ public class SRMFileSystem extends FileSystemNode
         return new StringList(strs).toString("\"","\n");
     }
 
-    public String getBackendType() throws VlException
+    public String getBackendType() throws VrsException
     {
         try
         {
@@ -1574,7 +1574,7 @@ public class SRMFileSystem extends FileSystemNode
         }
     }
 
-    public String getBackendVersion() throws VlException
+    public String getBackendVersion() throws VrsException
     {
         try
         {
@@ -1586,7 +1586,7 @@ public class SRMFileSystem extends FileSystemNode
         }
     }
 
-    protected SRMClientV1 getSRMV1Client() throws VlException
+    protected SRMClientV1 getSRMV1Client() throws VrsException
     {
         try
         {

@@ -22,7 +22,7 @@ package nl.nlesc.vlet.gui;
 
 import java.awt.event.MouseEvent;
 
-import nl.nlesc.vlet.data.VAttributeType;
+import nl.nlesc.vlet.vrs.data.VAttributeType;
 
 /**
  * Enum class of the PERSISTENT property gui names&types 

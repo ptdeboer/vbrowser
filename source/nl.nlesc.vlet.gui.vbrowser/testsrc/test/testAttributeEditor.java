@@ -21,12 +21,12 @@
 package test;
 
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.panels.attribute.AttributeEditorForm;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
@@ -46,7 +46,7 @@ public class testAttributeEditor
         {
             lfcInfo=VRSContext.getDefault().getServerInfoFor(new VRL("lfn://lfc.grid.sara.nl:5010/"),true); 
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             e.printStackTrace();
         }

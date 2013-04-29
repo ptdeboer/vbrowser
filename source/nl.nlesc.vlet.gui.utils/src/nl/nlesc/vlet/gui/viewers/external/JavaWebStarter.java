@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.border.BevelBorder;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.vrs.vdriver.localfs.LocalProcess;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -108,12 +108,12 @@ public class JavaWebStarter extends ViewerPlugin implements ActionListener
     }
 
     @Override
-    public void updateLocation(VRL loc) throws VlException
+    public void updateLocation(VRL loc) throws VrsException
     {
         openVRL(loc);
     }
 
-    public void openVRL(VRL loc) throws VlException
+    public void openVRL(VRL loc) throws VrsException
     {
         debug("starting:"+loc);
         

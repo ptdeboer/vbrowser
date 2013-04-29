@@ -46,10 +46,10 @@ import javax.swing.JToolBar;
 
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.HyperLinkListener;
 import nl.nlesc.vlet.gui.viewers.ViewerEvent;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
@@ -267,7 +267,7 @@ public class JPedalPDFViewer extends ViewerPlugin implements HyperLinkListener,
 
 	/**
 	 * @param location
-	 * @throws VlException 
+	 * @throws VrsException 
 	 */
 	public void updateLocation(VRL vrl) 
 	{
@@ -321,7 +321,7 @@ public class JPedalPDFViewer extends ViewerPlugin implements HyperLinkListener,
 		    tv.addHyperLinkListener(tv);
 			tv.startAsStandAloneApplication(loc);
 		}
-		catch (VlException e)
+		catch (VrsException e)
 		{
 			System.out.println("***Error: Exception:" + e);
 			e.printStackTrace();
@@ -581,7 +581,7 @@ public class JPedalPDFViewer extends ViewerPlugin implements HyperLinkListener,
 			 viewStandAlone(new VRL("file://localhost/home/ptdeboer/vfs2/test21Nov05_results.feat/report.html"));
 			 **/
 		}
-		catch (VlException e)
+		catch (VrsException e)
 		{
 			System.out.println("***Error: Exception:" + e);
 			e.printStackTrace();
@@ -610,7 +610,7 @@ public class JPedalPDFViewer extends ViewerPlugin implements HyperLinkListener,
 		return mappings; 
 	}
 	
-	public void doMethod(String methodName, ActionContext actionContext) throws VlException
+	public void doMethod(String methodName, ActionContext actionContext) throws VrsException
 	{
 		if (actionContext.getSource()!=null)
 			this.updateLocation(actionContext.getSource());

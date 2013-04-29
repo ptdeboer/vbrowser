@@ -23,7 +23,7 @@ package nl.nlesc.vlet.gui.lobo;
 import java.net.URL;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -55,7 +55,7 @@ public class LoboPanelController implements org.lobobrowser.ua.NavigationListene
     void handle(String msg,Throwable e)
     {
         logger.logException(ClassLogger.ERROR,e,"%s\n",msg); 
-        ExceptionForm.show(new VlException("Lobo Error:"+msg+"\n"+e.getMessage(),e));
+        ExceptionForm.show(new VrsException("Lobo Error:"+msg+"\n"+e.getMessage(),e));
     }
 
     public boolean isStandalone()
@@ -149,7 +149,7 @@ public class LoboPanelController implements org.lobobrowser.ua.NavigationListene
          }
      }
 
-     private boolean redirect(URL url,boolean openNew,boolean fireFollowEvents) throws VlException
+     private boolean redirect(URL url,boolean openNew,boolean fireFollowEvents) throws VrsException
      {
         boolean handled=loboBrowser.handleLink(new VRL(url),openNew); 
         
@@ -164,7 +164,7 @@ public class LoboPanelController implements org.lobobrowser.ua.NavigationListene
         return false;
      }
 
-    public boolean handleLink(VRL vrl, boolean standalone) throws VlException
+    public boolean handleLink(VRL vrl, boolean standalone) throws VrsException
     {
         return this.loboBrowser.handleLink(vrl,standalone); 
     }

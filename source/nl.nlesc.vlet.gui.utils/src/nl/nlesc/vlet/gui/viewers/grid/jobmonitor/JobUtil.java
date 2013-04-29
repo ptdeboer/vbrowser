@@ -24,14 +24,14 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import nl.nlesc.vlet.data.VAttribute;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vjs.VJob;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -95,7 +95,7 @@ public class JobUtil
         this.vrsClient=new VRSClient(context); 
     }
 
-    public String getStatus(String jobid, boolean fullUpdate) throws VlException
+    public String getStatus(String jobid, boolean fullUpdate) throws VrsException
     {
         VJob job=getJob(jobid); 
         if (job==null)
@@ -110,13 +110,13 @@ public class JobUtil
         return stat; 
     }
  
-    public String[] getJobAttributeNames(String jobId)  throws VlException
+    public String[] getJobAttributeNames(String jobId)  throws VrsException
     {
         VJob job=getJob(jobId); 
         return job.getAttributeNames(); 
     }
      
-    protected VJob getJob(String jobid) throws VlException
+    protected VJob getJob(String jobid) throws VrsException
     {  
         if (useCache)
         {
@@ -152,12 +152,12 @@ public class JobUtil
         return job; 
     }
 
-	public String[] getJobAttrNames(String id) throws VlException
+	public String[] getJobAttrNames(String id) throws VrsException
     {
         return getJob(id).getJobAttributeNames(); 
     }
 
-    public VAttribute[] getAttributes(String id, String[] attrNames) throws VlException
+    public VAttribute[] getAttributes(String id, String[] attrNames) throws VrsException
     {
         return getJob(id).getAttributes(attrNames);
     }
@@ -168,7 +168,7 @@ public class JobUtil
     }
 
     // return actual Job VRL. 
-	public VRL getJobVRL(String id) throws VlException 
+	public VRL getJobVRL(String id) throws VrsException 
 	{
 		VJob job = getJob(id);
 		if (job==null)

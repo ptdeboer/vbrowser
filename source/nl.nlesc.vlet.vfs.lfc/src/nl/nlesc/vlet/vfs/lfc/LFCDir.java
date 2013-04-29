@@ -27,12 +27,12 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.glite.lfc.internal.FileDesc;
-import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VCommentable;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -56,7 +56,7 @@ public class LFCDir extends VDir
     }
 
     public LFCDir(LFCFileSystem lfcServer, FileDescWrapper wrapper)
-            throws VlException
+            throws VrsException
     {
         super(lfcServer, (VRL) null);
         this.lfcClient = lfcServer.getLFCClient();
@@ -67,7 +67,7 @@ public class LFCDir extends VDir
         this.setLocation(vrl);
     }
 
-    public boolean create(boolean ignoreExisting) throws VlException
+    public boolean create(boolean ignoreExisting) throws VrsException
     {
         debug("Will create: " + this);
         FileDesc dir = lfcClient.mkdir(this.getPath(), ignoreExisting);
@@ -88,7 +88,7 @@ public class LFCDir extends VDir
         return attrNames.toArray();
     }
 
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         VAttribute attr = null;
 
@@ -104,7 +104,7 @@ public class LFCDir extends VDir
         
     }
 
-    public VAttribute[] getAttributes(String names[]) throws VlException
+    public VAttribute[] getAttributes(String names[]) throws VrsException
     {
         // do smart caching/checkig
         return super.getAttributes(names);
@@ -112,7 +112,7 @@ public class LFCDir extends VDir
 
     @Override
     public VDir createDir(String name, boolean ignoreExisting)
-            throws VlException
+            throws VrsException
     {
         name = resolvePathString(name);
 
@@ -124,7 +124,7 @@ public class LFCDir extends VDir
 
     @Override
     public VFile createFile(String name, boolean ignoreExisting)
-            throws VlException
+            throws VrsException
     {
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Create file:"+this,1);
         
@@ -143,7 +143,7 @@ public class LFCDir extends VDir
         {
             lfcClient.registerEntry(name);
         }
-        catch (VlException ex)
+        catch (VrsException ex)
         {
             if (ex instanceof ResourceAlreadyExistsException && ignoreExisting)
             {
@@ -161,7 +161,7 @@ public class LFCDir extends VDir
     }
 
     @Override
-    public boolean existsDir(String fileName) throws VlException
+    public boolean existsDir(String fileName) throws VrsException
     {
         // check relative vs absolute path names
         fileName = resolvePathString(fileName);
@@ -175,7 +175,7 @@ public class LFCDir extends VDir
     }
 
     @Override
-    public boolean existsFile(String fileName) throws VlException
+    public boolean existsFile(String fileName) throws VrsException
     {
         fileName = resolvePathString(fileName);
 
@@ -195,7 +195,7 @@ public class LFCDir extends VDir
     }
 
     @Override
-    public VFSNode[] list() throws VlException
+    public VFSNode[] list() throws VrsException
     {
         //Global.infoPrintln(this, "list():"+this); 
         
@@ -209,7 +209,7 @@ public class LFCDir extends VDir
     }
 
     @Override
-    public boolean exists() throws VlException
+    public boolean exists() throws VrsException
     {
         BooleanHolder isDir = new BooleanHolder();
         if (lfcClient.exists(getPath(), isDir) == false)
@@ -218,32 +218,32 @@ public class LFCDir extends VDir
     }
 
     @Override
-    public long getModificationTime() throws VlException
+    public long getModificationTime() throws VrsException
     {
         return getWrapperDesc().getFileDesc().getCDate().getTime();
     }
 
     @Override
-    public String getPermissionsString() throws VlException
+    public String getPermissionsString() throws VrsException
     {
         // return permissions string as-is.
         return getWrapperDesc().getFileDesc().getPermissions();
     }
 
     @Override
-    public boolean isReadable() throws VlException
+    public boolean isReadable() throws VrsException
     {
         return getWrapperDesc().isReadableByUser();
 
     }
 
     @Override
-    public boolean isWritable() throws VlException
+    public boolean isWritable() throws VrsException
     {
         return getWrapperDesc().isWritableByUser();
     }
 
-    public long getNrOfNodes() throws VlException
+    public long getNrOfNodes() throws VrsException
     {
 //        if (fileDisc.getNumOfNodes() == -1)
 //        {
@@ -254,7 +254,7 @@ public class LFCDir extends VDir
     }
 
     public VRL rename(String newName, boolean renameFullPath)
-            throws VlException
+            throws VrsException
     {
         String newPath = null;
         VRL thisPath = null;
@@ -270,20 +270,20 @@ public class LFCDir extends VDir
         return lfcClient.mv(getPath(), newPath);
     }
 
-    public boolean delete(boolean recurse) throws VlException
+    public boolean delete(boolean recurse) throws VrsException
     {
         ITaskMonitor minitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Delete:"+this,1);
         return lfcClient.rmDir(minitor,this, recurse, false);
     }
     
-    public boolean forceDelete() throws VlException
+    public boolean forceDelete() throws VrsException
     {
         ITaskMonitor minitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("ForceDelete:"+this,1);
         return lfcClient.rmDir(minitor,this, true,true);
     }
     
     @Override
-    public String getSymbolicLinkTarget() throws VlException
+    public String getSymbolicLinkTarget() throws VrsException
     {
         // do not query remote server if this isn't a link: 
         if (getWrapperDesc().getFileDesc().isSymbolicLink()==false)
@@ -294,28 +294,28 @@ public class LFCDir extends VDir
     }
 
     @Override
-    public boolean isSymbolicLink() throws VlException
+    public boolean isSymbolicLink() throws VrsException
     {
         return getWrapperDesc().getFileDesc().isSymbolicLink();
     }
 
-    public String getGUID() throws VlException
+    public String getGUID() throws VrsException
     {
         return getWrapperDesc().getFileDesc().getGuid(); 
     }
 
-    public int getMode() throws VlException
+    public int getMode() throws VrsException
     {
         return getWrapperDesc().getFileDesc().getFileMode();
     }
 
-    public void setMode(int mode) throws VlException
+    public void setMode(int mode) throws VrsException
     {
         lfcClient.setMode(this.getPath(), mode);
         this.fileDisc = null;
     }
 
-    public FileDescWrapper getWrapperDesc() throws VlException
+    public FileDescWrapper getWrapperDesc() throws VrsException
     {
         if (fileDisc==null)
             fileDisc = this.lfcClient.queryPath(getPath(),true); // normal stat
@@ -323,24 +323,24 @@ public class LFCDir extends VDir
         return this.fileDisc;
     }
     
-    public FileDesc getFileDesc() throws VlException
+    public FileDesc getFileDesc() throws VrsException
     {
         return this.getWrapperDesc().getFileDesc(); 
     }
     
-    public String getComment() throws VlException
+    public String getComment() throws VrsException
     {
         return getWrapperDesc().getFileDesc().getComment();
     }
 
-    public void setComment(String comment) throws VlException
+    public void setComment(String comment) throws VrsException
     {
         getWrapperDesc().getFileDesc().setComment(comment);
         lfcClient.setComment(getPath(), comment);        
     }
     
     @Override
-    public String getUid() throws VlException
+    public String getUid() throws VrsException
     {
         // return cached or fetch new:
         FileDesc desc = getFileDesc();
@@ -348,7 +348,7 @@ public class LFCDir extends VDir
         return ""+desc.getUid(); 
     }
     @Override
-    public String getGid() throws VlException
+    public String getGid() throws VrsException
     {
         // return cached or fetch new:
         FileDesc desc = getFileDesc();
@@ -363,7 +363,7 @@ public class LFCDir extends VDir
     }
     
     @Override
-    public void replicateTo(ITaskMonitor monitor, List<String> listSEs) throws VlException
+    public void replicateTo(ITaskMonitor monitor, List<String> listSEs) throws VrsException
     {
         this.getFileSystem().replicateDirectory(monitor,this,listSEs); 
     }

@@ -21,8 +21,8 @@
 package nl.nlesc.vlet.vrs.vdriver.infors.grid;
 
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VCompositeDeletable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -87,7 +87,7 @@ public class VONode extends CompositeServiceInfoNode<VNode> implements VComposit
         return "triperson-128.png";
     }
     
-    public synchronized VNode[] getNodes() throws VlException
+    public synchronized VNode[] getNodes() throws VrsException
     {
         initChilds(); 
         
@@ -109,7 +109,7 @@ public class VONode extends CompositeServiceInfoNode<VNode> implements VComposit
         return nodes; 
     }
     
-    private void initChilds() throws VlException
+    private void initChilds() throws VrsException
     {
         if (lfcLocations==null)
             initLFCs(); 
@@ -129,22 +129,22 @@ public class VONode extends CompositeServiceInfoNode<VNode> implements VComposit
         return null;
     }
 
-    private void initSEs() throws VlException
+    private void initSEs() throws VrsException
     {
         this.seLocations=parentServiceNode.createSEFolderForVO(this.getVRL(),vo); 
     }
 
-    private void initLFCs() throws VlException
+    private void initLFCs() throws VrsException
     {
         this.lfcLocations=parentServiceNode.createLFCFolderForVO(this.getVRL(),vo); 
     }
     
-    private void initWMSs() throws VlException
+    private void initWMSs() throws VrsException
     {
         this.wmsLocations=parentServiceNode.createWMSFolderForVO(this.getVRL(),vo); 
     }
     
-    private void initLBs() throws VlException
+    private void initLBs() throws VrsException
     {
         this.lbLocations=parentServiceNode.createLBFolderForVO(this.getVRL(),vo); 
     }

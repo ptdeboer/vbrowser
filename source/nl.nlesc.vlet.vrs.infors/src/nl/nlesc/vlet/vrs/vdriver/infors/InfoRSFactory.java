@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vdriver.infors;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -62,7 +62,7 @@ public class InfoRSFactory extends VRSFactory
         return schemes;
     }
    
-    public ServerInfo updateServerInfo(VRSContext context,ServerInfo info, VRL loc) throws VlException
+    public ServerInfo updateServerInfo(VRSContext context,ServerInfo info, VRL loc) throws VrsException
     {
         info=super.updateServerInfo(context,info,loc); 
         
@@ -75,7 +75,7 @@ public class InfoRSFactory extends VRSFactory
     
 	@Override
 	public VResourceSystem createNewResourceSystem(VRSContext context,
-			ServerInfo info, VRL location) throws VlException 
+			ServerInfo info, VRL location) throws VrsException 
 	{
 		// should be one singleton instance per Context ! 
 		return new InfoResourceSystem(context); 

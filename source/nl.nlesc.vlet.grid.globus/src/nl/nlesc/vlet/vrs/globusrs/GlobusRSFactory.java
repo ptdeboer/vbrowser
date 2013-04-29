@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.globusrs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -76,7 +76,7 @@ public class GlobusRSFactory extends VRSFactory
 
 	@Override
 	public VResourceSystem createNewResourceSystem(VRSContext context,
-			ServerInfo info, VRL location) throws VlException 
+			ServerInfo info, VRL location) throws VrsException 
 	{
 		return new GlobusInfoSystem(context,location); 
 	}

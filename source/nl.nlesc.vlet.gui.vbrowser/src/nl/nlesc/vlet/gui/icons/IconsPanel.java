@@ -29,9 +29,7 @@ import java.util.Vector;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ActionTask;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -48,6 +46,8 @@ import nl.nlesc.vlet.gui.view.VContainer;
 import nl.nlesc.vlet.gui.view.ViewFilter;
 import nl.nlesc.vlet.gui.view.ViewModel;
 import nl.nlesc.vlet.gui.view.ViewNode;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrl.VRLList;
@@ -174,7 +174,7 @@ public class IconsPanel extends BrowserJPanel implements ProxyResourceEventListe
     	this.iconsLayoutManager.setIconViewType(type);
     }
     
-    public void setRootNode(ProxyNode pnode) throws VlException
+    public void setRootNode(ProxyNode pnode) throws VrsException
     {
         debugPrintf("setRootNode():%s\n",pnode); 
     	
@@ -262,7 +262,7 @@ public class IconsPanel extends BrowserJPanel implements ProxyResourceEventListe
 					ViewNode items[]=ViewNodeFactory.createFrom(null,childs,iconSize); 
 					uiSetIconItems(items); 
 				}
-				catch (VlException e)
+				catch (VrsException e)
 				{
 					finalMaster.notifyTaskException(this,e); 
 					return; 
@@ -591,7 +591,7 @@ public class IconsPanel extends BrowserJPanel implements ProxyResourceEventListe
                     break;
             }
         }
-        catch (VlException e1)
+        catch (VrsException e1)
         {
            handle(e1); 
         }
@@ -636,7 +636,7 @@ public class IconsPanel extends BrowserJPanel implements ProxyResourceEventListe
     
     
 
-    public void refresh() throws VlException
+    public void refresh() throws VrsException
     {
         // just repopulate 
         this.setRootNode(rootNode);
@@ -705,7 +705,7 @@ public class IconsPanel extends BrowserJPanel implements ProxyResourceEventListe
         {
             newNode = ProxyNode.getProxyNodeFactory().openLocation(newLoc,false);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
            handle(e);
            return;

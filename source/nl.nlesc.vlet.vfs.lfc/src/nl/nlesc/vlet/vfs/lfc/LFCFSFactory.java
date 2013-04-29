@@ -25,18 +25,18 @@ import java.util.Vector;
 
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
 //import nl.nlesc.vlet.actions.ActionContext;
 //import nl.nlesc.vlet.actions.ActionMenuConstants;
 //import nl.nlesc.vlet.actions.ActionMenuMapping;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -100,7 +100,7 @@ public class LFCFSFactory extends VFSFactory
 
     @Override
     public ServerInfo updateServerInfo(VRSContext context, ServerInfo info,
-            VRL loc) throws VlException
+            VRL loc) throws VrsException
     {
         // super update: 
         info=super.updateServerInfo(context, info, loc);
@@ -138,7 +138,7 @@ public class LFCFSFactory extends VFSFactory
 
 	@Override
 	public VFileSystem createNewFileSystem(VRSContext context, ServerInfo info,
-			VRL location) throws VlException 
+			VRL location) throws VrsException 
 	{
 		return new LFCFileSystem(context,info,location);  
 	}
@@ -226,7 +226,7 @@ public class LFCFSFactory extends VFSFactory
 //    }
      
 	  
-    protected LFCFileSystem getLFCFS(VRSContext context,VRL source) throws VlException
+    protected LFCFileSystem getLFCFS(VRSContext context,VRL source) throws VrsException
     {
     	  VFileSystem vfs = super.openFileSystem(context,source);
     	  if (vfs instanceof LFCFileSystem)

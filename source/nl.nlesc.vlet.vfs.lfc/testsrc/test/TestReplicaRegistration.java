@@ -1,7 +1,7 @@
 package test;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VReplicatable;
@@ -87,7 +87,7 @@ public class TestReplicaRegistration
 
             }
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             e.printStackTrace();
         }

@@ -30,10 +30,10 @@ import javax.swing.JSeparator;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
 import nl.nlesc.vlet.actions.ActionMenuMatcher;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.Messages;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -163,7 +163,7 @@ public class ActionMenu extends JPopupMenu
             {
                 mimetype=pnode.getTargetMimeType();
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 UILogger.errorPrintf(ActionMenu.class,"Couldn't resolve:%s\n",pnode); 
                 // e.printStackTrace(TermGlobal.debugStream);

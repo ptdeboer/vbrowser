@@ -25,14 +25,14 @@ import java.util.ArrayList;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.io.VResizable;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -56,7 +56,7 @@ public class ReplicaManager
         this.vfsClient=new VFSClient(vrsContext); //private client 
     }
 
-    public StringList getStorageAreasForVo(String vo) throws VlException 
+    public StringList getStorageAreasForVo(String vo) throws VrsException 
     {
         StringList seList=new StringList(); 
         
@@ -77,7 +77,7 @@ public class ReplicaManager
         this.node=null; // clear cached node!
     }
     
-    public VRL[] getReplicaVRLs() throws VlException
+    public VRL[] getReplicaVRLs() throws VrsException
     {
         this.node=getNode(); 
             
@@ -140,7 +140,7 @@ public class ReplicaManager
 //    }
 
     /** Get Default Replica Attributes */ 
-    public VAttributeSet getReplicaAttributes(VRL repVRL, boolean checksumInfo) throws VlException
+    public VAttributeSet getReplicaAttributes(VRL repVRL, boolean checksumInfo) throws VrsException
     {
         StringList attrNames=new StringList(); 
         attrNames.add(VAttributeConstants.ATTR_TRANSPORT_URI);
@@ -157,7 +157,7 @@ public class ReplicaManager
         return getReplicaAttributes(repVRL,attrNames); 
     }
     
-    public VAttributeSet getReplicaAttributes(VRL repVrl,StringList attrs) throws VlException
+    public VAttributeSet getReplicaAttributes(VRL repVrl,StringList attrs) throws VrsException
     {
         VNode repNode=vrsContext.openLocation(repVrl);  
         VAttributeSet attrSet=repNode.getAttributeSet(attrs.toArray());
@@ -171,23 +171,23 @@ public class ReplicaManager
         return attrSet; 
     }
 
-    public void addReplica(ITaskMonitor monitor, String se) throws VlException
+    public void addReplica(ITaskMonitor monitor, String se) throws VrsException
     {
         VReplicatable rep=getRepFile();
         rep.replicateTo(monitor,se); 
     }
 
-    private VReplicatable getRepFile() throws VlException
+    private VReplicatable getRepFile() throws VrsException
     {
         this.node=getNode(); 
         
         if  ((node instanceof VReplicatable)==false)
-            throw new VlException("Resource doesn't have replicas:"+vrl);
+            throw new VrsException("Resource doesn't have replicas:"+vrl);
         
         return (VReplicatable)node;  
     }
     
-    private VFSNode getNode() throws VlException
+    private VFSNode getNode() throws VrsException
     {
         if (this.node==null)
             this.node=vfsClient.getVFSNode(vrl);
@@ -195,13 +195,13 @@ public class ReplicaManager
         return node; 
     }
 
-    public void deleteReplica(ITaskMonitor monitor, String se) throws VlException
+    public void deleteReplica(ITaskMonitor monitor, String se) throws VrsException
     {
         VReplicatable rep=getRepFile();
         rep.deleteReplica(monitor,se); 
     }
     
-    public void unregisterReplica(ITaskMonitor monitor, String se) throws VlException
+    public void unregisterReplica(ITaskMonitor monitor, String se) throws VrsException
     {
         VReplicatable rep=getRepFile();
         VRL reps[]=rep.getReplicas(); 
@@ -231,7 +231,7 @@ public class ReplicaManager
         else if (node instanceof VResizable) 
             ((VResizable)node).setLength(size); 
         else
-            throw new VlIOException("File size can't be set for:"+node.getClass()+":"+node); 
+            throw new NestedIOException("File size can't be set for:"+node.getClass()+":"+node); 
     }
     
 }

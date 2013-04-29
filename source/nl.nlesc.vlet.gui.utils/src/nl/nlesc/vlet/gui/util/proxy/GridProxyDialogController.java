@@ -36,8 +36,8 @@ import javax.swing.Timer;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.VlCredentialException;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.exception.ProxyCredentialException;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.grid.voms.VO;
 import nl.nlesc.vlet.gui.GuiSettings;
@@ -114,7 +114,7 @@ class GridProxyDialogController implements ActionListener, WindowListener, Focus
                    //
                    if (gridProxy.getTimeLeft()<=0) 
                    {
-                	   throw new VlCredentialException(
+                	   throw new ProxyCredentialException(
                 	               "GlobusCredentialException:"
                 			       + "Zero proxy lifetime detected after succesful proxy creation\n"
                 			       + "Are the credentials still valid ?\n"
@@ -123,7 +123,7 @@ class GridProxyDialogController implements ActionListener, WindowListener, Focus
                    }
                    
                }
-               catch (VlException e)
+               catch (VrsException e)
                {
                   this.setException(e); 
                   //Global.debugPrintStacktrace(e);
@@ -174,7 +174,7 @@ class GridProxyDialogController implements ActionListener, WindowListener, Focus
         if (ex!=null)
         {
         	//currently only happens when VOMS server isn't known.  
-        	if ((ex instanceof nl.nlesc.vlet.exception.VlUnknownCAException) && (vo!=null)) 
+        	if ((ex instanceof nl.nlesc.vlet.exception.UnknownCAException) && (vo!=null)) 
         	{
         		// ExceptionForm.show(this.proxyDialog,ex,true);
         		// String msg=ex.getMessage(); 
@@ -210,7 +210,7 @@ class GridProxyDialogController implements ActionListener, WindowListener, Focus
         		if (gridProxy.saveProxy() == false)
         			SimpleDialog.displayError(null,"Could not save proxy");
             }
-            catch (VlException e2)
+            catch (VrsException e2)
             {
                ExceptionForm.show(this.proxyDialog,e2,true);
             }
@@ -230,7 +230,7 @@ class GridProxyDialogController implements ActionListener, WindowListener, Focus
 		{
 			gridProxy.checkImportVomsServerCertificates(voname);
 		}
-		catch (VlException e) 
+		catch (VrsException e) 
 		{
 			e.printStackTrace();
 		}  

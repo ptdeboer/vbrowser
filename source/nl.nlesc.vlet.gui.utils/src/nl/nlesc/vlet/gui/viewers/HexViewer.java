@@ -44,9 +44,9 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.actions.ActionContext;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
@@ -629,7 +629,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 		return "Binary Viewer";
 	}
 	
-	public void startViewer(VRL loc) throws VlException 
+	public void startViewer(VRL loc) throws VrsException 
 	{
 		updateLocation(loc);
 		this.validate();
@@ -650,7 +650,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
         {
 
             @Override
-            protected void doTask() throws VlException
+            protected void doTask() throws VrsException
             {
                 _update(loc); 
             }
@@ -664,7 +664,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
         updateTask.startTask();
 	}
 	
-	private synchronized void _update(final VRL loc) throws VlException
+	private synchronized void _update(final VRL loc) throws VrsException
     {
 		debug("_update:"+loc);
 		
@@ -688,12 +688,12 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
     	    }
     	    catch (IOException e)
     	    {
-    	        throw new VlIOException(e);
+    	        throw new NestedIOException(e);
     	    }
     	}
         else
         {
-            throw new VlIOException("Sorry cannot read yet from:"+vnode); 
+            throw new NestedIOException("Sorry cannot read yet from:"+vnode); 
         }
     }
 	
@@ -718,7 +718,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 	    {
 
             @Override
-            protected void doTask() throws VlException
+            protected void doTask() throws VrsException
             {
                 _moveToOffset(offset); 
             }
@@ -770,7 +770,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 			new FileReader(vfile).read(fileOffset,buffer,0,len);
             this.setViewerTitle("Inspecting:"+getVRL());
 		} 
-		catch (VlException e) 
+		catch (VrsException e) 
 		{
 		    this.setViewerTitle("Error reading:"+getVRL());
 			handle(e);
@@ -786,7 +786,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 		UILogger.debugPrintf(this,"%s\n",msg); 
 	}
 	
-	protected void handle(VlException ex)
+	protected void handle(VrsException ex)
 	{
 		ExceptionForm.show(ex);
 	}
@@ -872,7 +872,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
         this.requestFrameResizeToPreferred();
     }
     
-    public void doMethod(String methodName, ActionContext actionContext) throws VlException
+    public void doMethod(String methodName, ActionContext actionContext) throws VrsException
     {
         if (actionContext.getSource()!=null)
             this.updateLocation(actionContext.getSource());
@@ -930,7 +930,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 				hex.setContents(bytes); 
 			}
 		}
-		catch (VlException e)
+		catch (VrsException e)
 		{
 			System.out.println("***Error: Exception:"+e); 
 			e.printStackTrace();
@@ -946,7 +946,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
         {
             tv.startAsStandAloneApplication(loc);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             System.out.println("***Error: Exception:"+e); 
             e.printStackTrace();

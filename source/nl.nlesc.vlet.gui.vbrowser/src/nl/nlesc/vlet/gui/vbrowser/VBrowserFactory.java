@@ -25,7 +25,7 @@ import java.awt.Point;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.BrowserFactory;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UIGlobal;
@@ -61,7 +61,7 @@ public class VBrowserFactory implements BrowserFactory
     }
     
     // @Override
-    public BrowserController createBrowser(String str) throws VlException
+    public BrowserController createBrowser(String str) throws VrsException
     {
         return createBrowser(new VRL(str));
     }
@@ -86,7 +86,7 @@ public class VBrowserFactory implements BrowserFactory
         {
             rootLoc = UIGlobal.getProxyVRS().getVirtualRootLocation();
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             handle(e); 
         }  
@@ -109,7 +109,7 @@ public class VBrowserFactory implements BrowserFactory
     }
 
 
-    private void handle(VlException e)
+    private void handle(VrsException e)
     {
         ExceptionForm.show(e);
         UILogger.logException(this,ClassLogger.ERROR,e,"Exception:%s\n",e); 

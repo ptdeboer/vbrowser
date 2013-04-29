@@ -38,9 +38,9 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 import nl.nlesc.vlet.actions.ActionContext;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.UILogger;
@@ -159,7 +159,7 @@ public class ViewerManager
 		return viewer.getClass().equals(otherClass);
 	}
 
-	public void startStandAlone(VRL location) throws VlException 
+	public void startStandAlone(VRL location) throws VrsException 
 	{
 		viewer.getViewContext().setStartInStandaloneWindow(true);
 		// start viewer, use external viewer watcher but provide MasterBrowser.
@@ -175,7 +175,7 @@ public class ViewerManager
 
 		ActionTask updateTask = new ActionTask(taskSource, "updateTask for location:" + location)
 		{
-			public void doTask() throws VlException
+			public void doTask() throws VrsException
 			{
 				fviewer.updateLocation(location);
 			}
@@ -229,7 +229,7 @@ public class ViewerManager
 	}
 	
 
-	public void startForLocation(VRL location) throws VlException
+	public void startForLocation(VRL location) throws VrsException
 	{
 	    startFor(location,null,null); 
 	}
@@ -246,9 +246,9 @@ public class ViewerManager
      * background tasks.  
      *   
      * <br>  
-     * @throws VlException */
+     * @throws VrsException */
     final public void startFor(final VRL location,final String optionalMethodName,final ActionContext actionContext)
-            throws VlException
+            throws VrsException
     {
         // === 
         // Pre: Context: Startup environmnet 
@@ -256,7 +256,7 @@ public class ViewerManager
         
         if (this.startTask!=null)
         {
-            throw new nl.nlesc.vlet.exception.VlException("Viewer Exception: Cannot start viewer twice"); 
+            throw new nl.esciencecenter.vbrowser.vrs.exceptions.VrsException("Viewer Exception: Cannot start viewer twice"); 
         }
         
         // check viewer context: 

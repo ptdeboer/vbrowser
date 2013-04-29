@@ -33,9 +33,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeType;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.actions.ActionCommand;
 import nl.nlesc.vlet.gui.actions.ActionCommandType;
@@ -44,6 +41,9 @@ import nl.nlesc.vlet.gui.panels.attribute.AttributeViewer;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.vbrowser.BrowserController;
 import nl.nlesc.vlet.gui.viewers.ViewerEvent;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeType;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**

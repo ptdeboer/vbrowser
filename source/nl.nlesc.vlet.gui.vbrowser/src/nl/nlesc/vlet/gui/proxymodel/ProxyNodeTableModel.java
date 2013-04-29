@@ -20,21 +20,21 @@
 
 package nl.nlesc.vlet.gui.proxymodel;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ICON;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LOCATION;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_NAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ICON;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_LOCATION;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_NAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTableModel;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ProxyNodeTableModel extends ResourceTableModel
@@ -78,7 +78,7 @@ public class ProxyNodeTableModel extends ResourceTableModel
                 {
                     nodes = pnode.getChilds(null);
                 }
-                catch (VlException e)
+                catch (VrsException e)
                 {
                     handle(e); 
                     return; 
@@ -105,7 +105,7 @@ public class ProxyNodeTableModel extends ResourceTableModel
                         attrs = node.getAttributes(hdrs);
                         setValues(vrl.toString(),attrs); 
                     }
-                    catch (VlException e)
+                    catch (VrsException e)
                     {
                         e.printStackTrace();
                     }
@@ -146,7 +146,7 @@ public class ProxyNodeTableModel extends ResourceTableModel
             // should be cached: 
             nodes = pnode.getChilds(null);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             handle(e); 
             return; 
@@ -161,7 +161,7 @@ public class ProxyNodeTableModel extends ResourceTableModel
                 setValues(node.getVRL().toString(),attrs);  
                 
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 handle(e); 
             } 

@@ -24,7 +24,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import nl.esciencecenter.ptk.GlobalProperties;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
@@ -63,7 +63,7 @@ public class ProxyVNodeFactory  implements ProxyNodeFactory
 	private Hashtable<VRL, ProxyVNode> nodeHash = new Hashtable<VRL, ProxyVNode>();
     
 	/** Get from hash or creat new one ProxyTNode */
-    public ProxyVNode openLocation(VRL loc) throws VlException
+    public ProxyVNode openLocation(VRL loc) throws VrsException
     {
         return openLocation(loc, false);
     }
@@ -74,11 +74,11 @@ public class ProxyVNodeFactory  implements ProxyNodeFactory
      * location and stores it in the Cache.
      * Use this method to open new 'VNode'. 
      * 
-     * @throws VlException
+     * @throws VrsException
      */
     
     public ProxyVNode openLocation(VRL loc, boolean resolveLinks)
-       throws VlException
+       throws VrsException
     {
         ProxyVNode pnode = null;
         
@@ -150,8 +150,8 @@ public class ProxyVNodeFactory  implements ProxyNodeFactory
                 {
                 	// remove from hash 
                 	nodeHash.remove(loc);
-                	if (t instanceof VlException)
-                	    throw ((VlException)t); 
+                	if (t instanceof VrsException)
+                	    throw ((VrsException)t); 
                 	
                 	throw new nl.nlesc.vlet.exception.ResourceNotFoundException("Couldn't get node:"+loc
                 	        +"\n"+t.getMessage(),t);
@@ -295,12 +295,12 @@ public class ProxyVNodeFactory  implements ProxyNodeFactory
      * or when nullpointers are encountered.
      * Use this method when as an 'assert' method when an ProxyTNode must be known 
      */  
-    public ProxyVNode assertGetNode(VRL loc) throws VlException 
+    public ProxyVNode assertGetNode(VRL loc) throws VrsException 
     {
     	// this is an 'assert' method: null pointer not allowed. 
     	
     	if (loc==null) 
-    		throw new VlException("assertGetNode(): null pointer"); 
+    		throw new VrsException("assertGetNode(): null pointer"); 
     			
     
     	//WeakProxyTNodeRef ref = nodeHash.get(loc.toString());
@@ -311,7 +311,7 @@ public class ProxyVNodeFactory  implements ProxyNodeFactory
         //	node=ref.get(); 
  
         if (node==null) 
-        	throw new VlException("assertGetNode: Node not in cache:"+loc); 
+        	throw new VrsException("assertGetNode: Node not in cache:"+loc); 
       
         return node; 
     }

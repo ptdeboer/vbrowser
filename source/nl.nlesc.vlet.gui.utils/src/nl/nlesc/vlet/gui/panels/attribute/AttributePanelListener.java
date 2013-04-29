@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.gui.panels.attribute;
 
-import nl.nlesc.vlet.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 
 public interface AttributePanelListener
 {

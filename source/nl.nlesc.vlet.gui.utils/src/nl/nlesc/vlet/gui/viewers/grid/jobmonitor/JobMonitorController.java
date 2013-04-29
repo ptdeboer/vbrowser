@@ -30,8 +30,8 @@ import javax.swing.event.ListDataListener;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -164,7 +164,7 @@ public class JobMonitorController implements ActionListener
 	    	if (mbr!=null)
 	    	    mbr.startNewWindow(vrl);
 	    	else
-	    	    throw new VlException("No master browser found to open location:"+vrl);
+	    	    throw new VrsException("No master browser found to open location:"+vrl);
 	    	
     	}
     	catch (Throwable t)

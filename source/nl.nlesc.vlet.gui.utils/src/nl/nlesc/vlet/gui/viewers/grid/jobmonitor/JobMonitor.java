@@ -33,7 +33,7 @@ import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.gui.widgets.NavigationBar;
@@ -172,7 +172,7 @@ public class JobMonitor extends ViewerPlugin
     }
 
     @Override
-    public void updateLocation(VRL loc) throws VlException
+    public void updateLocation(VRL loc) throws VrsException
     {
         this.controller.updateLocation(loc);
     }

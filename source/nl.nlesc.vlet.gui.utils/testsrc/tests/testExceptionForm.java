@@ -20,10 +20,10 @@
 
 package tests;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.ResourceReadAccessDeniedException;
 import nl.nlesc.vlet.exception.ResourceToBigException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 
 
@@ -38,8 +38,8 @@ public class testExceptionForm
      
            
         // tests asynchronous mainText view 
-        VlException e1=new ResourceReadAccessDeniedException(" Test 1");
-        VlException e2=new ResourceAlreadyExistsException(" Test 2");
+        VrsException e1=new ResourceReadAccessDeniedException(" Test 1");
+        VrsException e2=new ResourceAlreadyExistsException(" Test 2");
             
         ExceptionForm.show(e1);
         ExceptionForm.show(e2);
@@ -50,7 +50,7 @@ public class testExceptionForm
             }
             catch (Exception e)
             {
-                ExceptionForm.show(new VlException("Oooops",e));
+                ExceptionForm.show(new VrsException("Oooops",e));
             }
             
             String str=""; 

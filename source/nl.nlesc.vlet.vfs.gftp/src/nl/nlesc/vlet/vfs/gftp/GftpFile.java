@@ -29,10 +29,10 @@ import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
@@ -63,7 +63,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
      */
     private MlsxEntry _entry = null;
 
-    protected GftpFile(GftpFileSystem server, String path, MlsxEntry entry) throws VlException
+    protected GftpFile(GftpFileSystem server, String path, MlsxEntry entry) throws VrsException
     {
         super(server, server.getServerVRL().replacePath(path));
         init(server, path, entry);
@@ -71,19 +71,19 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         this.gftpServer = server;
     }
 
-    protected GftpFile(GftpFileSystem server, String path) throws VlException
+    protected GftpFile(GftpFileSystem server, String path) throws VrsException
     {
         this(server, path, null);
     }
 
-    private void init(GftpFileSystem server, String path, MlsxEntry entry) throws VlException
+    private void init(GftpFileSystem server, String path, MlsxEntry entry) throws VrsException
     {
         this.gftpServer = server;
         this._entry = entry;
     }
 
     @Override
-    protected void downloadTo(VFSTransfer transfer, VFile targetFile) throws VlException
+    protected void downloadTo(VFSTransfer transfer, VFile targetFile) throws VrsException
     {
         // extra check:
         if (targetFile.isLocal() == false)
@@ -97,14 +97,14 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
 
     /** Globus GridFTP has efficient upload methods */
     @Override
-    public void uploadFrom(VFSTransfer transfer, VFile file) throws VlException
+    public void uploadFrom(VFSTransfer transfer, VFile file) throws VrsException
     {
         //debugPrintf("uploadFrom:'%s' to '%s'\n", file, this);
 
         // Paranoia:
         if (file.isLocal() == false)
         {
-            throw new VlException("Internal error uploadFrom didn't receive a local file:" + file);
+            throw new VrsException("Internal error uploadFrom didn't receive a local file:" + file);
         }
 
         String localpath = file.getPath();
@@ -117,12 +117,12 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         updateMlsxEntry();
     }
 
-    public boolean exists() throws VlException
+    public boolean exists() throws VrsException
     {
         return this.gftpServer.existsFile(this.getPath());
     }
 
-    public boolean isReadable() throws VlException
+    public boolean isReadable() throws VrsException
     {
         // nasty, to check whether directory is readable,
         // we have to know whether we are remote owner, group or nothing !
@@ -132,13 +132,13 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
     }
 
     @Override
-    public boolean isWritable() throws VlException
+    public boolean isWritable() throws VrsException
     {
         return GftpFileSystem._isWritable(getMlsxEntry());
     }
 
     @Override
-    public VRL rename(String newName, boolean nameIsPath) throws VlException
+    public VRL rename(String newName, boolean nameIsPath) throws VrsException
     {
         String path = gftpServer.rename(this.getPath(), newName, nameIsPath);
         return this.resolvePath(path);
@@ -147,12 +147,12 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
     /**
      * returns new GridFTPClient !
      */
-    public VDir getParentDir() throws VlException
+    public VDir getParentDir() throws VrsException
     {
         return gftpServer.getParentDir(this.getPath());
     }
 
-    public boolean delete() throws VlException
+    public boolean delete() throws VrsException
     {
         return gftpServer.delete(false, this.getPath());
     }
@@ -165,13 +165,13 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
             updateMlsxEntry();
             return GftpFileSystem._getLength(getMlsxEntry());
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             throw new IOException(e.getMessage(),e); 
         }
     }
 
-    public long getModificationTime() throws VlException
+    public long getModificationTime() throws VrsException
     {
         updateMlsxEntry();
         return GftpFileSystem._getModificationTime(getMlsxEntry());
@@ -193,7 +193,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         return this.gftpServer;
     }
 
-    public boolean create(boolean force) throws VlException
+    public boolean create(boolean force) throws VrsException
     {
         String filePath = getPath();
         OutputStream outps = null;
@@ -230,11 +230,11 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
             }
 
             if (e instanceof IOException)
-                throw new VlIOException((IOException) e);
-            else if (e instanceof VlException)
-                throw ((VlException) e);
+                throw new NestedIOException((IOException) e);
+            else if (e instanceof VrsException)
+                throw ((VrsException) e);
             else
-                throw new VlException(e);
+                throw new VrsException(e);
         }
 
         // Update !
@@ -250,7 +250,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
             this.create();
             this._entry = null; // clear entry!
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             throw new IOException(e.getMessage(),e); 
         }
@@ -268,7 +268,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
             this.gftpServer.syncWrite(this.getPath(), fileOffset, buffer, bufferOffset, nrBytes);
             this.updateMlsxEntry();
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             throw new IOException(e.getMessage(),e);
         }
@@ -286,7 +286,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
     }
 
     @Override
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         return getAttribute(this.getMlsxEntry(), name);
     }
@@ -295,7 +295,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
     // updated mslxEntry only once when getting multiple attributes
 
     @Override
-    public VAttribute[] getAttributes(String names[]) throws VlException
+    public VAttribute[] getAttributes(String names[]) throws VrsException
     {
         VAttribute attrs[] = new VAttribute[names.length];
 
@@ -317,9 +317,9 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
      * @param name
      * @param update
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    public VAttribute getAttribute(MlsxEntry entry, String name) throws VlException
+    public VAttribute getAttribute(MlsxEntry entry, String name) throws VrsException
     {
         // is possible due to optimization:
 
@@ -337,20 +337,20 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         return super.getAttribute(name);
     }
 
-    protected MlsxEntry updateMlsxEntry() throws VlException
+    protected MlsxEntry updateMlsxEntry() throws VrsException
     {
         _entry = this.gftpServer.mlst(this.getPath());
         return _entry;
     }
 
-    public MlsxEntry getMlsxEntry() throws VlException
+    public MlsxEntry getMlsxEntry() throws VrsException
     {
         if (_entry == null)
             updateMlsxEntry();
         return _entry;
     }
 
-    public boolean canTransferTo(VRL remoteLocation, StringHolder explanation) throws VlException
+    public boolean canTransferTo(VRL remoteLocation, StringHolder explanation) throws VrsException
     {
         String remoteScheme = remoteLocation.getScheme();
 
@@ -368,7 +368,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         }
     }
 
-    public boolean canTransferFrom(VRL remoteLocation, StringHolder explanation) throws VlException
+    public boolean canTransferFrom(VRL remoteLocation, StringHolder explanation) throws VrsException
     {
         String remoteScheme = remoteLocation.getScheme();
 
@@ -386,20 +386,20 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         }
     }
 
-    public VFile activePartyTransferTo(ITaskMonitor monitor, VRL remoteDestination) throws VlException
+    public VFile activePartyTransferTo(ITaskMonitor monitor, VRL remoteDestination) throws VrsException
     {
         //logger.infoPrintf(this, ">>> Performing VThirdPartyTransfer(): %s ==> %s\n", this, remoteDestination);
 
         return this.gftpServer.do3rdPartyTransferToOther(monitor, this, remoteDestination);
     }
 
-    public VFile activePartyTransferFrom(ITaskMonitor monitor, VRL remoteSource) throws VlException
+    public VFile activePartyTransferFrom(ITaskMonitor monitor, VRL remoteSource) throws VrsException
     {
         //logger.infoPrintf(this, ">>> Performing VThirdPartyTransfer(): %s <<= %s\n", this, remoteSource);
         return this.gftpServer.do3rdPartyTransferFromOther(monitor, remoteSource, this);
     }
 
-    public String getChecksum(String algorithm) throws VlException
+    public String getChecksum(String algorithm) throws VrsException
     {
         String[] types = getChecksumTypes();
         
@@ -415,7 +415,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
                 }
                 catch (IOException e)
                 {
-                    throw new VlException(e.getMessage(),e); 
+                    throw new VrsException(e.getMessage(),e); 
                 }
             }
         }

@@ -40,9 +40,6 @@ import javax.swing.SwingUtilities;
 
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.data.VAttributeType;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.font.FontUtil;
@@ -50,6 +47,9 @@ import nl.nlesc.vlet.gui.panels.fields.AttrEnumField;
 import nl.nlesc.vlet.gui.panels.fields.AttrIntField;
 import nl.nlesc.vlet.gui.panels.fields.AttrParameterField;
 import nl.nlesc.vlet.gui.panels.fields.AttrPortField;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
+import nl.nlesc.vlet.vrs.data.VAttributeType;
 
 import com.cloudgarden.layout.AnchorLayout;
 import com.jgoodies.forms.layout.CellConstraints;

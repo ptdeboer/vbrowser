@@ -30,10 +30,10 @@ import java.io.InputStream;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.vfs.VChecksum;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
@@ -83,7 +83,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
     
     @Override
-    public boolean create(boolean force) throws VlException
+    public boolean create(boolean force) throws VrsException
     {
         VFile file = srmfs.createFile(getVRL(), force);
         return (file != null);
@@ -104,7 +104,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
 
     @Override
-    public VAttribute[] getAttributes(String names[]) throws VlException
+    public VAttribute[] getAttributes(String names[]) throws VrsException
     {
         VAttribute[] attrs = new VAttribute[names.length];
 
@@ -121,7 +121,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
 
     @Override
-    public boolean setAttribute(VAttribute attr) throws VlException
+    public boolean setAttribute(VAttribute attr) throws VrsException
     {
         String name = attr.getName();
 
@@ -134,7 +134,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
     
     @Override
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         VAttribute attr = null;
 
@@ -166,7 +166,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
         return attr;
     }
 
-    private String getRetentionPolicy() throws VlException
+    private String getRetentionPolicy() throws VrsException
     {
         fetchFullDetails();
 
@@ -179,7 +179,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
 
     }
 
-    private String getFileStorageType() throws VlException
+    private String getFileStorageType() throws VrsException
     {
        
         fetchFullDetails();
@@ -226,7 +226,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
         return value.longValue();
     }
 
-    private TMetaDataPathDetail fetchFullDetails() throws VlException
+    private TMetaDataPathDetail fetchFullDetails() throws VrsException
     {
         if (srmDetails==null)
         {
@@ -236,7 +236,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
 
     @Override
-    public boolean exists() throws VlException
+    public boolean exists() throws VrsException
     {
     	if (srmfs.pathExists(getPath())==false)
     		return false;
@@ -246,7 +246,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
 
     @Override
-    public boolean isReadable() throws VlException
+    public boolean isReadable() throws VrsException
     {
 
         if (getPermissionsString().charAt(1) == 'R')
@@ -257,7 +257,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
 
     @Override
-    public boolean isWritable() throws VlException
+    public boolean isWritable() throws VrsException
     {
         if (getPermissionsString().charAt(2) == 'W')
         {
@@ -282,7 +282,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
 
     }
 
-    public VRL getTransportVRL() throws VlException
+    public VRL getTransportVRL() throws VrsException
     {
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor(
                 "getInputStream:" + this, -1);
@@ -330,7 +330,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     
     @Override
     public VRL rename(String newName, boolean renameFullPath)
-            throws VlException
+            throws VrsException
     {
         if (renameFullPath)
         {
@@ -341,13 +341,13 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
     
     @Override
-    public boolean delete() throws VlException
+    public boolean delete() throws VrsException
     {
         return this.srmfs.deleteFile(this.getPath());
     }
 
     @Override
-    public long getModificationTime() throws VlException
+    public long getModificationTime() throws VrsException
     {
         // no full details needed since the default details
         // already contain the modification time.
@@ -357,21 +357,21 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
 
     @Override
     public VFile activePartyTransferFrom(ITaskMonitor monitor,
-            VRL remoteSourceLocation) throws VlException
+            VRL remoteSourceLocation) throws VrsException
     {
         return this.srmfs.doActiveTransfer(monitor, remoteSourceLocation, this);
     }
 
     @Override
     public VFile activePartyTransferTo(ITaskMonitor monitor,
-            VRL remoteTargetLocation) throws VlException
+            VRL remoteTargetLocation) throws VrsException
     {
         return this.srmfs.doTransfer(monitor, this, remoteTargetLocation);
     }
 
     @Override
     public boolean canTransferFrom(VRL remoteLocation, StringHolder explanation)
-            throws VlException
+            throws VrsException
     {
         return this.srmfs.checkTransferLocation(remoteLocation,
                 explanation, false);
@@ -379,7 +379,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
 
     @Override
     public boolean canTransferTo(VRL remoteLocation, StringHolder explanation)
-            throws VlException
+            throws VrsException
     {
         return this.srmfs.checkTransferLocation(remoteLocation,
                 explanation, true);
@@ -392,21 +392,21 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
     
     @Override
-    public int getMode() throws VlException
+    public int getMode() throws VrsException
     {
         fetchFullDetails();
         return this.srmfs.getUnixMode(srmDetails);
     }
     
     @Override
-    public void setMode(int mode) throws VlException
+    public void setMode(int mode) throws VrsException
     {
         fetchFullDetails();
         this.srmfs.setUnixMode(getLocation(), this.srmDetails, mode);
     }
 
     @Override
-    public String getChecksum(String algorithm) throws VlException
+    public String getChecksum(String algorithm) throws VrsException
     {
         fetchFullDetails();
         String checksum = null;
@@ -435,7 +435,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
 
     @Override
-    public String[] getChecksumTypes() throws VlException
+    public String[] getChecksumTypes() throws VrsException
     {
         fetchFullDetails();
         

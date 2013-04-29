@@ -27,7 +27,7 @@ import java.io.UnsupportedEncodingException;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.Messages;
 import nl.nlesc.vlet.gui.viewers.ViewerInfo;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry;

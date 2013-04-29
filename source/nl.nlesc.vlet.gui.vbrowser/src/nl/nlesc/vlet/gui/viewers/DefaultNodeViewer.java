@@ -27,8 +27,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPopupMenu;
 
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.data.ResourceRef;
@@ -38,6 +37,7 @@ import nl.nlesc.vlet.gui.proxyvrs.ProxyNodeFactory;
 import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.VContainer;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
@@ -134,7 +134,7 @@ public class DefaultNodeViewer extends ViewerPlugin implements VComponent
             // update Swing during the GUI event thread ! 
             this.requestFrameResize(aPanel.getPreferredSize()); 
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             handle(e); 
             
@@ -152,7 +152,7 @@ public class DefaultNodeViewer extends ViewerPlugin implements VComponent
             viewStandAlone(new VRL("file:///etc/passwd"));
             viewStandAlone(null);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             System.out.println("***Error: Exception:" + e);
             e.printStackTrace();
@@ -160,7 +160,7 @@ public class DefaultNodeViewer extends ViewerPlugin implements VComponent
 
     }
 
-    public static void viewStandAlone(VRL loc) throws VlException
+    public static void viewStandAlone(VRL loc) throws VrsException
     {
         DefaultNodeViewer nv=new DefaultNodeViewer();
         nv.startAsStandAloneApplication(loc); 

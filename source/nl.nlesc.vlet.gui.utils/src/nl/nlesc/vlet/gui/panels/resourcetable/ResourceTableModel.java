@@ -30,9 +30,9 @@ import javax.swing.table.AbstractTableModel;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.gui.view.ViewNode;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 
 public class ResourceTableModel extends AbstractTableModel implements Iterable<ResourceTableModel.RowData>  

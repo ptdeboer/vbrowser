@@ -30,16 +30,16 @@ import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.glite.lfc.internal.FileDesc;
 import nl.nlesc.glite.lfc.internal.ReplicaDesc;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.exception.ResourceLinkIsBorkenException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlInternalError;
+import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.vrs.VCommentable;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.util.VRSStreamUtil;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
@@ -61,7 +61,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     private LFCClient lfcClient;
 
     public LFCFile(LFCFileSystem lfcServer, FileDescWrapper wrapper)
-            throws VlException
+            throws VrsException
     {
         super(lfcServer, (VRL) null);
         this.setWrapperDesc(wrapper);
@@ -95,7 +95,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
 
     // LFC Creat is register new entry;
     @Override
-    public boolean create(boolean force) throws VlException
+    public boolean create(boolean force) throws VrsException
     {
         String fileName = getPath();
         FileDescWrapper desc = lfcClient.registerEntry(fileName);
@@ -109,7 +109,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         return false;
     }
 
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         VAttribute attr = null;
 
@@ -177,12 +177,12 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         return (LFCFileSystem) super.getFileSystem();
     }
 
-    public String getPermissionsString() throws VlException
+    public String getPermissionsString() throws VrsException
     {
         return this.getWrapperDesc().getFileDesc().getPermissions();
     }
 
-    public VAttribute[] getAttributes(String names[]) throws VlException
+    public VAttribute[] getAttributes(String names[]) throws VrsException
     {
         // do smart caching/checking/stripping names,etc.
         return super.getAttributes(names);
@@ -207,14 +207,14 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
             FileDesc desc = getFileDesc();
             return desc.getFileSize();
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             throw new IOException(e.getMessage(),e); 
         }
     }
     
     @Override
-    public String getUid() throws VlException
+    public String getUid() throws VrsException
     {
         // return cached or fetch new:
         FileDesc desc = getFileDesc();
@@ -222,7 +222,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         return ""+desc.getUid(); 
     }
     @Override
-    public String getGid() throws VlException
+    public String getGid() throws VrsException
     {
         // return cached or fetch new:
         FileDesc desc = getFileDesc();
@@ -231,7 +231,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
 
     @Override
-    public boolean exists() throws VlException
+    public boolean exists() throws VrsException
     {
         BooleanHolder isDir = new BooleanHolder();
         if (!lfcClient.exists(getPath(), isDir))
@@ -243,19 +243,19 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
 
     @Override
-    public long getModificationTime() throws VlException
+    public long getModificationTime() throws VrsException
     {
         return getWrapperDesc().getFileDesc().getCDate().getTime();
     }
 
     @Override
-    public boolean isReadable() throws VlException
+    public boolean isReadable() throws VrsException
     {
         return getWrapperDesc().isReadableByUser();
     }
 
     @Override
-    public boolean isWritable() throws VlException
+    public boolean isWritable() throws VrsException
     {
         return getWrapperDesc().isWritableByUser();
     }
@@ -269,7 +269,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         {
             return lfcClient.getInputStream(monitor, this);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             throw new IOException(e.getMessage(),e);
         }
@@ -284,7 +284,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         {
             return lfcClient.createOutputStream(monitor, this);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             throw new IOException(e.getMessage(),e);
         }
@@ -292,7 +292,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
 
     public VRL rename(String newName, boolean renameFullPath)
-            throws VlException
+            throws VrsException
     {
         if (renameFullPath)
         {
@@ -302,7 +302,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
                 + newName);
     }
 
-    public boolean delete() throws VlException
+    public boolean delete() throws VrsException
     {
         debug("delete:" + this);
         // check if executed during actiontask or create new Task Monitor:
@@ -321,7 +321,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         }
     }
     
-    public boolean forceDelete() throws VlException
+    public boolean forceDelete() throws VrsException
     {
         debug("forceDelete:" + this);
         // check if executed during actiontask or create new Task Monitor:
@@ -331,7 +331,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
 
     @Override
-    public String getSymbolicLinkTarget() throws VlException
+    public String getSymbolicLinkTarget() throws VrsException
     {
         // do not query remote server if this isn't a link:
         if (isSymbolicLink() == false)
@@ -360,7 +360,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
 
     @Override
-    public boolean isSymbolicLink() throws VlException
+    public boolean isSymbolicLink() throws VrsException
     {
         debug("isSymbolicLink:" + this);
 
@@ -375,7 +375,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         else
         {
             // getWrapperDesc() should now auto-load description !
-            throw new VlInternalError("File description not loaded yet:" + this);
+            throw new InternalError("File description not loaded yet:" + this);
         }
         // ===
         // Not done: wrapperDesc should now have correct information !
@@ -422,12 +422,12 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
      * Warning: An LGCG "alias" is implemented as an LFC "symbolic link" !
      * 
      */
-    public boolean isAlias() throws VlException
+    public boolean isAlias() throws VrsException
     {
         return isSymbolicLink();
     }
 
-    public VRL addAlias(VRL newAlias) throws VlException
+    public VRL addAlias(VRL newAlias) throws VrsException
     {
         ILFCLocation lfcloc = lfcClient.createSymLink(this, newAlias);
         // return possible updated VRL
@@ -439,7 +439,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
      * "linked-to" path and NOT the GUID. Use getGuid() to get the Guid of the
      * file or link.
      */
-    public VRL getAliasTarget() throws VlException
+    public VRL getAliasTarget() throws VrsException
     {
         // return as VRL
         return getVRL().replacePath(getSymbolicLinkTarget());
@@ -454,7 +454,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
      *             if the GUID can not be resolved.
      */
     // Override
-    public String getGUID() throws VlException
+    public String getGUID() throws VrsException
     {
         debug("getGuid()" + this);
 
@@ -523,12 +523,12 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     // Unix File Mode Interface
     // ===
 
-    public int getMode() throws VlException
+    public int getMode() throws VrsException
     {
         return getWrapperDesc().getFileDesc().getFileMode();
     }
 
-    public void setMode(int mode) throws VlException
+    public void setMode(int mode) throws VrsException
     {
         lfcClient.setMode(this.getPath(), mode);
         this.wrapperDesc = null;
@@ -542,7 +542,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         this.wrapperDesc = wrapperDesc;
     }
 
-    public FileDescWrapper getWrapperDesc() throws VlException
+    public FileDescWrapper getWrapperDesc() throws VrsException
     {
         // if this is a new file, or the Description hasn't been fetched
         // get it now:
@@ -559,12 +559,12 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         return wrapperDesc;
     }
 
-    public FileDesc getFileDesc() throws VlException
+    public FileDesc getFileDesc() throws VrsException
     {
         return getWrapperDesc().getFileDesc();
     }
 
-    public ReplicaDesc[] getReplicaDescriptions() throws VlException
+    public ReplicaDesc[] getReplicaDescriptions() throws VrsException
     {
         FileDescWrapper wrap = getWrapperDesc();
 
@@ -591,7 +591,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
 
     public VRL getSelectedReplicaVRL(ITaskMonitor monitor, int tryNr)
-            throws VlException
+            throws VrsException
     {
         ReplicaDesc[] replicaDesc = getReplicaDescriptions();
         
@@ -611,12 +611,12 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
      * Replica file itself doesn't exists yet. !
      */
     public VFile generateNewReplicaInSE(ITaskMonitor monitor, int tryNr)
-            throws VlException
+            throws VrsException
     {
         return this.lfcClient.generateNewReplica(monitor, getBasename(), tryNr);
     }
 
-    public VRL[] getReplicas() throws VlException
+    public VRL[] getReplicas() throws VrsException
     {
         ReplicaDesc[] descs = this.getReplicaDescriptions();
         VRL vrls[] = new VRL[descs.length];
@@ -633,7 +633,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
 
     @Override
     public VFile activePartyTransferFrom(ITaskMonitor monitor,
-            VRL remoteSourceLocation) throws VlException
+            VRL remoteSourceLocation) throws VrsException
     {
 
         return this.lfcClient.doTransfer(monitor, remoteSourceLocation, this);
@@ -641,14 +641,14 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
 
     @Override
     public VFile activePartyTransferTo(ITaskMonitor monitor,
-            VRL remoteTargetLocation) throws VlException
+            VRL remoteTargetLocation) throws VrsException
     {
         return this.lfcClient.doTransfer(monitor, this, remoteTargetLocation);
     }
 
     @Override
     public boolean canTransferFrom(VRL remoteLocation, StringHolder explanation)
-            throws VlException
+            throws VrsException
     {
         return this.lfcClient.checkTransferLocation(remoteLocation,
                 explanation, false);
@@ -656,7 +656,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
 
     @Override
     public boolean canTransferTo(VRL remoteLocation, StringHolder explanation)
-            throws VlException
+            throws VrsException
     {
         return this.lfcClient.checkTransferLocation(remoteLocation,
                 explanation, true);
@@ -678,7 +678,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
 
     // @Override
-    public VRL getLogicalVRL() throws VlException
+    public VRL getLogicalVRL() throws VrsException
     {
         // resolve GUID to LFN:
         if (VRS.isGUID(getScheme()))
@@ -694,7 +694,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     /**
      * Return list of links to this file, including the original LFN itself !
      */
-    public ArrayList<String> getLinkPathsTo() throws VlException
+    public ArrayList<String> getLinkPathsTo() throws VrsException
     {
         return this.lfcClient.getLinksTo(this);
     }
@@ -702,7 +702,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     /**
      * Return list of links to this file, including the original LFN itself !
      */
-    public VRL[] getLinksTo() throws VlException
+    public VRL[] getLinksTo() throws VrsException
     {
         ArrayList<String> paths = lfcClient.getLinksTo(this);
 
@@ -726,7 +726,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
 
     @Override
-    public boolean registerReplicas(VRL[] vrls) throws VlException
+    public boolean registerReplicas(VRL[] vrls) throws VrsException
     {
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor(
                 "registerReplicas", -1);
@@ -734,14 +734,14 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
 
     @Override
-    public boolean unregisterReplicas(VRL[] vrls) throws VlException
+    public boolean unregisterReplicas(VRL[] vrls) throws VrsException
     {
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor(
                 "unregisterReplicas", -1);
         return this.lfcClient.unregisterReplicas(monitor, this, vrls);
     }
 
-    public String getComment() throws VlException
+    public String getComment() throws VrsException
     {
 
         String comment = null;
@@ -763,7 +763,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         return comment;
     }
 
-    public void setComment(String comment) throws VlException
+    public void setComment(String comment) throws VrsException
     {
         // if comment is the same don't set it agin
         // if (!comment.equals(wrapperDesc.getFileDesc().getComment()))
@@ -776,7 +776,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
 
     @Override
     public VRL replicateTo(ITaskMonitor monitor, String storageElement)
-            throws VlException
+            throws VrsException
     {
         if (monitor == null)
             monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor(
@@ -792,7 +792,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
 
     @Override
     public boolean deleteReplica(ITaskMonitor monitor, String storageElement)
-            throws VlException
+            throws VrsException
     {
         if (monitor == null)
             monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor(
@@ -803,7 +803,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
 
     public ReplicaDesc getReplicaDescription(String storageElement)
-            throws VlException
+            throws VrsException
     {
         ReplicaDesc[] reps = this.getReplicaDescriptions();
 
@@ -818,13 +818,13 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
 
     // checksum depends on srm
     // @Override
-    public String getChecksum(String algorithm) throws VlException
+    public String getChecksum(String algorithm) throws VrsException
     {
         return wrapperDesc.getFileDesc().getChkSumValue();
     }
 
     // @Override
-    public String[] getChecksumTypes() throws VlException
+    public String[] getChecksumTypes() throws VrsException
     {
         return new String[] { wrapperDesc.getFileDesc().getChkSumType() };
     }
@@ -836,7 +836,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
 
     /** Explicitly set the File Size. This will NOT effect the Replicas ! */ 
-    public void updateFileSize(long newSize) throws VlException
+    public void updateFileSize(long newSize) throws VrsException
     {
         this.lfcClient.setFileSize(this,newSize); 
         this.wrapperDesc.clearMetaData();
@@ -845,7 +845,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
  
     /** @Override */
-    protected void downloadTo(VFSTransfer transfer,VFile targetLocalFile) throws VlException
+    protected void downloadTo(VFSTransfer transfer,VFile targetLocalFile) throws VrsException
     {
         try
         {
@@ -867,7 +867,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         }
         catch (IOException e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
     }    
 

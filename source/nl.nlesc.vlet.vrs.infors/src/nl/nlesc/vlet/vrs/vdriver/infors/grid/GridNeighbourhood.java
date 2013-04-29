@@ -23,12 +23,12 @@ package nl.nlesc.vlet.vrs.vdriver.infors.grid;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
 import nl.nlesc.vlet.vrs.vdriver.infors.InfoConstants;
 import nl.nlesc.vlet.vrs.vdriver.infors.net.NetworkNode;
@@ -99,7 +99,7 @@ public class GridNeighbourhood extends CompositeServiceInfoNode<VNode>
         return list.toArray();
     }
 
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         ConfigManager cmgr = this.vrsContext.getConfigManager(); 
         
@@ -123,7 +123,7 @@ public class GridNeighbourhood extends CompositeServiceInfoNode<VNode>
         return super.getAttribute(name);
     }
 
-    public boolean setAttribute(VAttribute attr) throws VlException
+    public boolean setAttribute(VAttribute attr) throws VrsException
     {
         ConfigManager cmgr = this.vrsContext.getConfigManager(); 
         
@@ -155,7 +155,7 @@ public class GridNeighbourhood extends CompositeServiceInfoNode<VNode>
         this.fireRefresh();
     }
     
-	public VRL getDescriptionLocation() throws VlException
+	public VRL getDescriptionLocation() throws VrsException
 	{
 		return null; 
 	}
@@ -167,7 +167,7 @@ public class GridNeighbourhood extends CompositeServiceInfoNode<VNode>
     }
 
     public VNode createNode(String type, String name, boolean force)
-        throws VlException
+        throws VrsException
     {
         if (StringUtil.equals(type,InfoConstants.NETWORK_INFO))
         {
@@ -177,7 +177,7 @@ public class GridNeighbourhood extends CompositeServiceInfoNode<VNode>
         throw new nl.nlesc.vlet.exception.ResourceTypeNotSupportedException("Cannot create resource of type:"+type);
     }
 
-    private NetworkNode createNetworkNode(String name) throws VlException
+    private NetworkNode createNetworkNode(String name) throws VrsException
     {
         if ((name==null) || (name.equals("")))
             name="New Network"; 

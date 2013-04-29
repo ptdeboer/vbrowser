@@ -45,9 +45,9 @@ import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -310,9 +310,9 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 
 	/**
 	 * @param location
-	 * @throws VlException 
+	 * @throws VrsException 
 	 */
-	public void updateLocation(VRL location) throws VlException
+	public void updateLocation(VRL location) throws VrsException
 	{
 		if (location==null)
 			return; 
@@ -344,7 +344,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 		}
 		catch (Exception e)
 		{
-		    throw new VlException(e);
+		    throw new VrsException(e);
 		}
 		finally
 		{
@@ -366,7 +366,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 	}
 
 	@Override
-	public void startViewer(VRL loc) throws VlException
+	public void startViewer(VRL loc) throws VrsException
 	{
 		updateLocation(loc);
 	}
@@ -407,7 +407,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 			{
 				updateLocation(getVRL());
 			}
-			catch (VlException ex)
+			catch (VrsException ex)
 			{
 				handle(ex);
 			}
@@ -431,7 +431,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 			{
 				save();
 			}
-			catch (VlException ex)
+			catch (VrsException ex)
 
 			{
 				this.handle(ex); 
@@ -460,7 +460,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 		this.jythonExecutor.execute(this.getVRL()); 
 	}
 
-	private void save() throws VlException
+	private void save() throws VrsException
 	{
 		// saveContents(this.textArea.getText());
 	}
@@ -534,7 +534,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 		}
 	}
 
-	protected void handle(VlException ex)
+	protected void handle(VrsException ex)
 	{
 		ExceptionForm.show(ex);
 	}
@@ -568,7 +568,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 		{
 			tv.startAsStandAloneApplication(loc); 
 		}
-		catch (VlException e)
+		catch (VrsException e)
 		{
 			System.out.println("***Error: Exception:" + e);
 			e.printStackTrace();

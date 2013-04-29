@@ -20,7 +20,7 @@
 
 package tests;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.viewers.x509viewer.ViewerX509;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -37,7 +37,7 @@ public class TestCertViewer
             //tv.setViewStandalone(true);
             tv.startAsStandAloneApplication(vrl); 
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             System.out.println("***Error: Exception:" + e);
             e.printStackTrace();

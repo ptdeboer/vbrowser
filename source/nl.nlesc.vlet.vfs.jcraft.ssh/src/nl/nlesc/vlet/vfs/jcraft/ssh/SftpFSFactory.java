@@ -20,18 +20,18 @@
 
 package nl.nlesc.vlet.vfs.jcraft.ssh;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ACCESS_TIME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_GID;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_UID;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ACCESS_TIME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_GID;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_UID;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlInternalError;
+import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
@@ -139,7 +139,7 @@ public class SftpFSFactory extends VFSFactory
     }
     
     @Override
-    public VFileSystem openFileSystem(VRSContext context, VRL location) throws VlException
+    public VFileSystem openFileSystem(VRSContext context, VRL location) throws VrsException
     {
      // Enter critical region to avoid multithreaded duplication
         // of server objects 
@@ -158,7 +158,7 @@ public class SftpFSFactory extends VFSFactory
             server=createNewFileSystem(context,info,location);
             
             if (server.getServerID().equals(serverid)==false)
-                throw new VlInternalError("Server IDs don't match!. "+serverid+" <==> "+server.getServerID()); 
+                throw new InternalError("Server IDs don't match!. "+serverid+" <==> "+server.getServerID()); 
             
             // server.setID(serverid);
             //
@@ -173,7 +173,7 @@ public class SftpFSFactory extends VFSFactory
     
 	@Override
 	public SftpFileSystem createNewFileSystem(VRSContext context, ServerInfo info,
-			VRL loc) throws VlException 
+			VRL loc) throws VrsException 
 	{
         debugPrintf("ServerInfo host:port =%s\n",info.getHostname()+":"+info.getPort());
         debugPrintf("ServerInfo username  =%s\n",info.getUsername()); 

@@ -42,26 +42,24 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.glite.lfc.LFCConfig;
 import nl.nlesc.glite.lfc.LFCException;
 import nl.nlesc.glite.lfc.LFCServer;
 import nl.nlesc.glite.lfc.internal.FileDesc;
 import nl.nlesc.glite.lfc.internal.ReplicaDesc;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
-import nl.nlesc.vlet.exception.ResourceException;
+import nl.nlesc.vlet.exception.NestedIOException;
+import nl.nlesc.vlet.exception.VrsResourceException;
 import nl.nlesc.vlet.exception.ResourceLinkIsBorkenException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
 import nl.nlesc.vlet.exception.ResourceWriteAccessDeniedException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.exception.VlInternalError;
-import nl.nlesc.vlet.exception.VlInterruptedException;
+import nl.nlesc.vlet.exception.InternalError;
+import nl.nlesc.vlet.exception.NestedInterruptedException;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
 import nl.nlesc.vlet.util.bdii.BdiiException;
 import nl.nlesc.vlet.util.bdii.BdiiService;
@@ -75,6 +73,8 @@ import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VResourceSystem;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.io.VStreamAccessable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
@@ -143,7 +143,7 @@ public class LFCClient
 
     private URI sshTunnelUri = null;
 
-    public LFCClient(String uriStr) throws VlException
+    public LFCClient(String uriStr) throws VrsException
     {
         try
         {
@@ -163,7 +163,7 @@ public class LFCClient
         init();
     }
 
-    public LFCClient(LFCFileSystem node, String host, int port) throws VlException
+    public LFCClient(LFCFileSystem node, String host, int port) throws VrsException
     {
         this.lfcServerNode = node;
 
@@ -188,7 +188,7 @@ public class LFCClient
         init();
     }
 
-    private void init() throws VlException
+    private void init() throws VrsException
     {
         //initShhTunnel();
     }
@@ -232,7 +232,7 @@ public class LFCClient
         logger.infoPrintf(msg + "\n");
     }
 
-    public void connect() throws VlException
+    public void connect() throws VrsException
     {
 
         if (!isConnected())
@@ -249,7 +249,7 @@ public class LFCClient
         }
     }
 
-    public void connect(boolean closeFirst) throws VlException
+    public void connect(boolean closeFirst) throws VrsException
     {
         // if (server != null)
         // {
@@ -271,7 +271,7 @@ public class LFCClient
 
     }
 
-    public void disconnect() throws VlException
+    public void disconnect() throws VrsException
     {
         // nothing to disconnect. For each connection a new LFCServer is created. 
         if (isConnected())
@@ -301,14 +301,14 @@ public class LFCClient
         return this.lfcServerNode.getServerInfo().getProperty(name);
     }
 
-    public VFSNode openLocation(VRL loc) throws VlException
+    public VFSNode openLocation(VRL loc) throws VrsException
     {
         logger.debugPrintf("--- Open location:%s\n", loc);
         connect(false);
 
         if (getVRSContext().getGridProxy().isValid() == false)
         {
-            throw new nl.nlesc.vlet.exception.VlAuthenticationException("Invalid Grid Proxy. Please create one first");
+            throw new nl.nlesc.vlet.exception.AuthenticationException("Invalid Grid Proxy. Please create one first");
         }
 
         if (loc.hasScheme(VRS.GUID_SCHEME))
@@ -321,7 +321,7 @@ public class LFCClient
         }
     }
 
-    public VFSNode getPath(String path) throws VlException
+    public VFSNode getPath(String path) throws VrsException
     {
         LFCServer server = createServer();
         VFSNode node=getPath(path, server);
@@ -329,7 +329,7 @@ public class LFCClient
         return node; 
     }
 
-    public VFSNode getFileByGUID(String guid) throws VlException
+    public VFSNode getFileByGUID(String guid) throws VrsException
     {
         LFCServer server = createServer();
         VFSNode node=getFileByGuid(guid, server);
@@ -337,7 +337,7 @@ public class LFCClient
         return node; 
     }
 
-    protected VFSNode getPath(String path, LFCServer server) throws VlException
+    protected VFSNode getPath(String path, LFCServer server) throws VrsException
     {
         FileDescWrapper wrapper = null;
         if (path.startsWith("/~"))
@@ -375,13 +375,13 @@ public class LFCClient
             {
                 logger.errorPrintf("Error:%s\n", t);
                 t.printStackTrace();
-                throw new VlInternalError(t); // wrap
+                throw new InternalError(t); // wrap
             }
         }
 
     }
 
-    protected LFCFile getFileByGuid(String guid, LFCServer server) throws VlException
+    protected LFCFile getFileByGuid(String guid, LFCServer server) throws VrsException
     {
         if (guid == null)
             throw new NullPointerException("GUID parameter can not be null");
@@ -407,9 +407,9 @@ public class LFCClient
             file.setGUIDVRL(new VRL(VRS.GUID_SCHEME + ":" + guid));
             return file;
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
-            throw new ResourceException("LFC Exception: Couldn't fetch file with guid='" + guid + "'", e);
+            throw new VrsResourceException("LFC Exception: Couldn't fetch file with guid='" + guid + "'", e);
         }
         catch (LFCException e)
         {
@@ -435,7 +435,7 @@ public class LFCClient
      * Returns file description. This might contain a symbolic link if
      * resolveLinks==false;
      */
-    public FileDescWrapper queryPath(String path, boolean resolveLinks) throws VlException
+    public FileDescWrapper queryPath(String path, boolean resolveLinks) throws VrsException
     {
         LFCServer server = createServer();
         return queryPath(server, path,resolveLinks);
@@ -449,7 +449,7 @@ public class LFCClient
      * 
      * Updated code by PtdB.
      */
-    private FileDescWrapper queryPath(LFCServer server,String path, boolean resolveLink) throws VlException
+    private FileDescWrapper queryPath(LFCServer server,String path, boolean resolveLink) throws VrsException
     {
         info("queryPath (resolveLinks=" + resolveLink + "):" + path + "");
         //
@@ -525,10 +525,10 @@ public class LFCClient
     // server object to avoid concurrency problems !
     // (Geclipse and Javagat do it this way either)
 
-    private VlException convertException(String message, LFCException e)
+    private VrsException convertException(String message, LFCException e)
     {
         // Filter out standard GlobusExceptions:
-        VlException globusEx = GlobusUtil.checkException(message, e.getCause());
+        VrsException globusEx = GlobusUtil.checkException(message, e.getCause());
         if (globusEx != null)
             return globusEx;
 
@@ -538,7 +538,7 @@ public class LFCClient
     // do not cache: 
     // private LFCServer _server=null; 
     
-    private LFCServer createServer() throws VlException
+    private LFCServer createServer() throws VrsException
     {
         // 
         // Just create new Server.
@@ -586,7 +586,7 @@ public class LFCClient
         }
     }
 
-    private ILFCLocation[] list(ILFCLocation lfcLoc, LFCServer server) throws VlException
+    private ILFCLocation[] list(ILFCLocation lfcLoc, LFCServer server) throws VrsException
     {
         String path = lfcLoc.getPath();
         ILFCLocation nodeArr[] = null;
@@ -646,14 +646,14 @@ public class LFCClient
         }
         catch (LFCException e)
         {
-            throw new VlException(e);
+            throw new VrsException(e);
         }
 
         return nodeArr;
 
     }
 
-    public ILFCLocation[] list(ILFCLocation path) throws VlException
+    public ILFCLocation[] list(ILFCLocation path) throws VrsException
     {
         LFCServer server = createServer();
         ILFCLocation[] result=list(path, server);
@@ -661,7 +661,7 @@ public class LFCClient
         return result; 
     }
 
-    public VFSNode[] listNodes(ILFCLocation path) throws VlException
+    public VFSNode[] listNodes(ILFCLocation path) throws VrsException
     {
         LFCServer server = createServer();
         ILFCLocation locs[] = list(path, server);
@@ -692,12 +692,12 @@ public class LFCClient
         return lfcServerNode.getContext();
     }
 
-    public VRL createPathVRL(String path) throws VlException
+    public VRL createPathVRL(String path) throws VrsException
     {
         return new VRL(VRS.LFN_SCHEME, getHostname(), getPort(), path);
     }
 
-    public FileDesc mkdir(String path, boolean ignoreExisting) throws VlException
+    public FileDesc mkdir(String path, boolean ignoreExisting) throws VrsException
     {
         LFCServer server = createServer();
 
@@ -708,7 +708,7 @@ public class LFCClient
         }
         catch (LFCException e)
         {
-            VlException ex = LFCExceptionWapper.getVlException(e.getErrorCode(), e);
+            VrsException ex = LFCExceptionWapper.getVlException(e.getErrorCode(), e);
             if (ex instanceof ResourceAlreadyExistsException && ignoreExisting)
             {
                 try
@@ -729,17 +729,17 @@ public class LFCClient
         return fileDesc;
     }
 
-    private String getHostname() throws VlException
+    private String getHostname() throws VrsException
     {
         return serverUri.getHost();
     }
 
-    private int getPort() throws VlException
+    private int getPort() throws VrsException
     {
         return serverUri.getPort();
     }
 
-    public boolean exists(String path, BooleanHolder isDir) throws VlException
+    public boolean exists(String path, BooleanHolder isDir) throws VrsException
     {
         LFCServer server = createServer();
         boolean val=exists(server,path,isDir); 
@@ -747,7 +747,7 @@ public class LFCClient
         return val; 
     }
     
-    public boolean exists(LFCServer server,String path, BooleanHolder isDir) throws VlException
+    public boolean exists(LFCServer server,String path, BooleanHolder isDir) throws VrsException
     {
         try
         {
@@ -760,7 +760,7 @@ public class LFCClient
         {
             boolean isBorkenLink = false;
 
-            VlException ex = LFCExceptionWapper.getVlException(e.getErrorCode(), e);
+            VrsException ex = LFCExceptionWapper.getVlException(e.getErrorCode(), e);
 
             if (ex instanceof ResourceNotFoundException)
             {
@@ -778,14 +778,14 @@ public class LFCClient
      * Return list of replicas or a zero sized array if there are no replicas.
      * Never returns NULL. PTdB: changed method to use GUID.
      */
-    private ReplicaDesc[] listReplicasByGuid(String guid, LFCServer server) throws VlException
+    private ReplicaDesc[] listReplicasByGuid(String guid, LFCServer server) throws VrsException
     {
 
         logger.debugPrintf(">>> listReplicasByGuid:%s\n", guid);
 
         // Assertion !
         if (StringUtil.isEmpty(guid))
-            throw new VlInternalError("Empty GUID provided in method: listReplicas:" + this);
+            throw new InternalError("Empty GUID provided in method: listReplicas:" + this);
 
         ArrayList<ReplicaDesc> replicas;
         ReplicaDesc[] replicaDesc;
@@ -829,7 +829,7 @@ public class LFCClient
      * Return list of replicas or a zero sized array if there are no replicas.
      * Never returns NULL
      */
-    public ReplicaDesc[] listReplicasByGuid(String guid) throws VlException
+    public ReplicaDesc[] listReplicasByGuid(String guid) throws VrsException
     {
         LFCServer server = createServer();
         ReplicaDesc reps[]= listReplicasByGuid(guid, server);
@@ -859,14 +859,14 @@ public class LFCClient
      * of matched replicas. If tryNr is higher then the nr of matched replicas,
      * the modulo of that value will be used.
      */
-    public VRL replicaSelection(ITaskMonitor monitor, ReplicaDesc[] replicas, int tryNr) throws VlException
+    public VRL replicaSelection(ITaskMonitor monitor, ReplicaDesc[] replicas, int tryNr) throws VrsException
     {
         ReplicaSelectionMode selMode = this.lfcServerNode.getReplicaSelectionMode();
 
         if ((replicas == null) || (replicas.length <= 0))
         {
             monitor.logPrintf("*** Error: can not select replica from empty list\n");
-            throw new nl.nlesc.vlet.exception.ResourceException("LFC file has no replicas");
+            throw new nl.nlesc.vlet.exception.VrsResourceException("LFC file has no replicas");
         }
         int numReplicas=replicas.length; 
         
@@ -954,7 +954,7 @@ public class LFCClient
 
     }
 
-    public InputStream getInputStream(ITaskMonitor monitor, LFCFile path) throws VlException
+    public InputStream getInputStream(ITaskMonitor monitor, LFCFile path) throws VrsException
     {
         int numTries = this.lfcServerNode.getReplicasNrOfTries();
         String errorText = ""; // cumulative error text
@@ -1017,7 +1017,7 @@ public class LFCClient
                 "Couln't get valid replica to read from\nEncountered Errors:\n" + errorText, lastException);
     }
 
-    protected void checkReplicaLength(LFCFile lfcFile, VFile replicaFile) throws VlException
+    protected void checkReplicaLength(LFCFile lfcFile, VFile replicaFile) throws VrsException
     {
         try
         {
@@ -1028,7 +1028,7 @@ public class LFCClient
             if (lfcLen != repLen)
             {
                 if (this.lfcServerNode.hasStrictReplicaPolicy())
-                    throw new VlIOException("IOError: LFC File length doesn't match Replica length:" + lfcLen + "<>"
+                    throw new NestedIOException("IOError: LFC File length doesn't match Replica length:" + lfcLen + "<>"
                             + repLen + " for path:" + lfcFile.getPath());
                 else
                     logger.errorPrintf("IOError: LFC File length doesn't match Replica length:" + lfcLen + "<>" + repLen
@@ -1037,7 +1037,7 @@ public class LFCClient
         }
         catch (IOException e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
     }
 
@@ -1050,8 +1050,8 @@ public class LFCClient
         String indentStr="  "; 
         
         String exName = "";
-        if (e instanceof VlException)
-            exName = ((VlException) e).getName();
+        if (e instanceof VrsException)
+            exName = ((VrsException) e).getName();
         String text = "*** Exception:" + e.getClass().getSimpleName() + ":" + exName + "\n"
                       +" - replica=" + replicaVRL + "\n"
                       +e.getMessage();
@@ -1060,7 +1060,7 @@ public class LFCClient
         return text;
     }
 
-    protected VFSNode getVFSNodeFrom(VRL replicaVRL) throws VlException
+    protected VFSNode getVFSNodeFrom(VRL replicaVRL) throws VrsException
     {
         // ===
         // Important: Make sure the SRM VRL points to the right V2.2 interface !
@@ -1090,7 +1090,7 @@ public class LFCClient
     }
 
     // can be used as a rename. Full pathnames are needed. 
-    public VRL mv(String oldPath, String newPath) throws VlException
+    public VRL mv(String oldPath, String newPath) throws VrsException
     {
         LFCServer server = createServer();
         try
@@ -1120,7 +1120,7 @@ public class LFCClient
      * Removed replicas as well. 
      */ 
     private boolean recurseDelete(ITaskMonitor monitor, LFCServer server, ILFCLocation path, boolean forceDelete)
-            throws VlException
+            throws VrsException
     {
         // monitor can be optional! 
         if (monitor == null)
@@ -1155,7 +1155,7 @@ public class LFCClient
             {
                 // Save cancel >>>here<<<
                 if (monitor.isCancelled())
-                    throw new VlInterruptedException("Deep delete cancelled!");
+                    throw new NestedInterruptedException("Deep delete cancelled!");
 
                 recurseDelete(monitor, server, ((ILFCLocation) node), forceDelete);
             }
@@ -1184,7 +1184,7 @@ public class LFCClient
     }
 
     private void deleteReplicas(ITaskMonitor monitor, LFCServer server, ILFCLocation path, boolean forceDelete)
-            throws VlException
+            throws VrsException
     {
         Vector<ReplicaDesc> deletedReplicas = new Vector<ReplicaDesc>();
         ReplicaDesc[] replicas = null;
@@ -1207,7 +1207,7 @@ public class LFCClient
 
         // Save cancel >>>here<<<
         if (monitor.isCancelled())
-            throw new VlInterruptedException("Recursive delete cancelled!");
+            throw new NestedInterruptedException("Recursive delete cancelled!");
 
         // ==============================
         // Delete Replicas: Removed from SE and unregister from LFC
@@ -1363,16 +1363,16 @@ public class LFCClient
      * @param storageElement hostname of storageElement 
      * @return true replica at specified storageElement could be deleted, 
      *         false if LFCFile has no replica at specified storageElement.  
-     * @throws VlException
+     * @throws VrsException
      */
-    public boolean deleteReplica(ITaskMonitor monitor, LFCFile file, String storageElement) throws VlException
+    public boolean deleteReplica(ITaskMonitor monitor, LFCFile file, String storageElement) throws VrsException
     {
         ReplicaDesc rep = file.getReplicaDescription(storageElement);
         if (rep == null)
             throw new ResourceNotFoundException("Couldn't find replica at storage element:" + storageElement);
 
         if (monitor.isCancelled())
-            throw new VlInterruptedException("Interrupted");
+            throw new NestedInterruptedException("Interrupted");
 
         String sfn = rep.getSfn();
         monitor.logPrintf("LFC: Deleting replica:\n - " + sfn + "\n");
@@ -1380,7 +1380,7 @@ public class LFCClient
         VFSNode node = this.getVFSNodeFrom(repVrl);
 
         if (monitor.isCancelled())
-            throw new VlInterruptedException("Interrupted");
+            throw new NestedInterruptedException("Interrupted");
 
         boolean result = false;
 
@@ -1405,7 +1405,7 @@ public class LFCClient
         {
             result = true; // not found -> is already deleted!
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             // extra check. SRM doesn't always correct Exception
             if (node.exists() == true)
@@ -1416,7 +1416,7 @@ public class LFCClient
         }
 
         if (result == false)
-            throw new VlException("Failed to delete:" + node);
+            throw new VrsException("Failed to delete:" + node);
 
         file.unregisterReplicas(new VRL[] { repVrl });
         return result;
@@ -1445,9 +1445,9 @@ public class LFCClient
      * @param path
      * @return
      * @throws ResourceNotFoundException
-     * @throws VlException
+     * @throws VrsException
      */
-    public boolean recurseDelete(ITaskMonitor monitor, ILFCLocation path, boolean forceDelete) throws VlException
+    public boolean recurseDelete(ITaskMonitor monitor, ILFCLocation path, boolean forceDelete) throws VrsException
     {
         LFCServer server = createServer();
         return recurseDelete(monitor, server, path, forceDelete);
@@ -1461,7 +1461,7 @@ public class LFCClient
      * @throws BdiiException
      */
     public VRL selectSALocationForWriting(ITaskMonitor monitor, Map<String, StorageArea> voStorageAreas, int tryNr)
-            throws VlException
+            throws VrsException
     {
 
         logger.debugPrintf("--- getSEVOLocationForWriting try #%d\n", tryNr);
@@ -1566,17 +1566,17 @@ public class LFCClient
      * Note: since Map&lt;,...&gt; is case SENSITIVE the hostnames are
      * normalized to LOWER case.
      */
-    public Map<String, StorageArea> getVOStorageAreas() throws VlException
+    public Map<String, StorageArea> getVOStorageAreas() throws VrsException
     {
         if (this.getVRSContext().getGridProxy().isVOEnabled() == false)
-            throw new nl.nlesc.vlet.exception.VlAuthenticationException(
+            throw new nl.nlesc.vlet.exception.AuthenticationException(
                     "No VO enabled Grid Proxy. Please create VO enabled Grid Proxy.");
 
         String vo = this.getVRSContext().getVO();
 
         // empty vo ? Can result to trouble ...
         if (StringUtil.isEmpty(vo))
-            throw new nl.nlesc.vlet.exception.VlAuthenticationException("No VO specified. Cannot locate storage areas.");
+            throw new nl.nlesc.vlet.exception.AuthenticationException("No VO specified. Cannot locate storage areas.");
 
         // check if SAs are already fetched for the current VO:
         if (StringUtil.equals(cachedVO, vo))
@@ -1646,7 +1646,7 @@ public class LFCClient
         return seVRL.getPath() + "/" + generatedSubDirname + "/" + timeDateSubdir;
     }
 
-    public FileDescWrapper registerEntry(String lfn) throws VlException
+    public FileDescWrapper registerEntry(String lfn) throws VrsException
     {
         LFCServer server = createServer();
         return registerEntry(lfn, server);
@@ -1656,7 +1656,7 @@ public class LFCClient
      * Create a new "Generated" file in a Storage Element which can be used as
      * Replica. This file is NOT an LFC file !
      */
-    public VFile generateNewReplica(ITaskMonitor monitor, String lfname, int tryNr) throws VlException
+    public VFile generateNewReplica(ITaskMonitor monitor, String lfname, int tryNr) throws VrsException
     {
         return generateNewReplica(monitor, null, lfname, tryNr);
     }
@@ -1674,7 +1674,7 @@ public class LFCClient
      * @param tryNr if optStorateElement == null, use tryNr as replica selection parameter.  
      */
     public VFile generateNewReplica(ITaskMonitor monitor, String optStorageElement, String lfcname, int tryNr)
-            throws VlException
+            throws VrsException
     {
         debug("generateNewReplicaInSelectedSE:" + lfcname);
 
@@ -1788,7 +1788,7 @@ public class LFCClient
      * @param updateMetaData
      */
     public void addReplica(ITaskMonitor monitor, LFCFile file, VFile replica, boolean updateReplicaMetaData)
-            throws VlException
+            throws VrsException
     {
         this.addReplica(monitor, file, replica.getVRL());
 
@@ -1798,7 +1798,7 @@ public class LFCClient
         }
     }
 
-    public void updateReplicaMetaData(ITaskMonitor monitor, LFCFile file, VFile replica) throws VlException
+    public void updateReplicaMetaData(ITaskMonitor monitor, LFCFile file, VFile replica) throws VrsException
     {
         long size; 
         try
@@ -1808,7 +1808,7 @@ public class LFCClient
         }
         catch (IOException e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
         
         debug(" --- Replica size is " + size + " bytes");
@@ -1818,7 +1818,7 @@ public class LFCClient
     }
 
     /** Add Replica VRL. Does not update Meta Data */
-    public void addReplica(ITaskMonitor monitor, LFCFile lfcFile, VRL replicaVRL) throws VlException
+    public void addReplica(ITaskMonitor monitor, LFCFile lfcFile, VRL replicaVRL) throws VrsException
     {
         LFCServer server = createServer();
         addReplica(monitor, lfcFile, replicaVRL, server);
@@ -1830,7 +1830,7 @@ public class LFCClient
      * registered.
      */
     private boolean addReplica(ITaskMonitor monitor, LFCFile lfcFile, VRL replicaVRL, LFCServer server)
-            throws VlException
+            throws VrsException
     {
         lfcFile.clearCachedReplicas();
 
@@ -1839,7 +1839,7 @@ public class LFCClient
         // ========================================
 
         URI replicaURI = toReplicaURI(replicaVRL); 
-        VlException lastEx = null;
+        VrsException lastEx = null;
         boolean registerFile = false;
         FileDescWrapper wrapp = null;
 
@@ -1859,7 +1859,7 @@ public class LFCClient
         // new entry
         catch (LFCException e)
         {
-            VlException ex = LFCExceptionWapper.getVlException(e.getErrorCode(), e);
+            VrsException ex = LFCExceptionWapper.getVlException(e.getErrorCode(), e);
             // if (ex instanceof ResourceNotFoundException)
             // {
             // registerEntry(lfn, server);
@@ -1870,7 +1870,7 @@ public class LFCClient
                 throw ex;
             }
         }
-        catch (VlException ex)
+        catch (VrsException ex)
         {
             if ((ex instanceof ResourceNotFoundException) == false)
             {
@@ -1895,7 +1895,7 @@ public class LFCClient
         }
     }
 
-    private URI toReplicaURI(VRL vrl) throws VlException 
+    private URI toReplicaURI(VRL vrl) throws VrsException 
     {
         try
         {
@@ -1904,7 +1904,7 @@ public class LFCClient
         }
         catch (Exception e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
     }
 
@@ -1926,7 +1926,7 @@ public class LFCClient
         }
     }
 
-    private FileDescWrapper registerEntry(String lfn, LFCServer server) throws VlException
+    private FileDescWrapper registerEntry(String lfn, LFCServer server) throws VrsException
     {
         debug(">>> registerEntry:" + lfn);
 
@@ -1945,7 +1945,7 @@ public class LFCClient
 
             // throw new LFCExceptionWapper("Failed to register " + path
             // + " to the catalogue", e);
-            VlException ex = LFCExceptionWapper.getVlException(e.getErrorCode(), e);
+            VrsException ex = LFCExceptionWapper.getVlException(e.getErrorCode(), e);
             if (ex instanceof ResourceTypeMismatchException)
             {
                 throw new ResourceCreationFailedException(ex.getMessage());
@@ -1991,7 +1991,7 @@ public class LFCClient
     //
     // }
 
-    public void deleteFromSE(VNode node, boolean recurse) throws VlException
+    public void deleteFromSE(VNode node, boolean recurse) throws VrsException
     {
         // first check VFSNodes:
         if (node instanceof VFile)
@@ -2093,13 +2093,13 @@ public class LFCClient
         return newVRL;
     }
 
-    private BdiiService getBdiiService() throws VlException
+    private BdiiService getBdiiService() throws VrsException
     {
         // will auto create one:
         return BdiiUtil.getBdiiService(getVRSContext()); 
     }
 
-    OutputStream createOutputStream(ITaskMonitor monitor, LFCFile file) throws VlException
+    OutputStream createOutputStream(ITaskMonitor monitor, LFCFile file) throws VrsException
     {
         logger.debugPrintf("createOutputStream to LFCFile:%s\n", file);
 
@@ -2108,7 +2108,7 @@ public class LFCClient
         {
             replicas = file.getReplicaDescriptions(); // this.listReplicas(file);
         }
-        catch (VlException ex)
+        catch (VrsException ex)
         {
             if (!(ex instanceof ResourceNotFoundException))
             {
@@ -2200,7 +2200,7 @@ public class LFCClient
         }
         catch (IOException e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
 
         // if (seFile instanceof VStreamWritable)
@@ -2293,7 +2293,7 @@ public class LFCClient
     // removed
     // without checking and deleting the contents !
     private boolean rmDir(ITaskMonitor monitor, LFCServer server, ILFCLocation path, boolean recurse, boolean force)
-            throws VlException
+            throws VrsException
     {
         // delete replicas
         if (recurse)
@@ -2306,14 +2306,14 @@ public class LFCClient
         }
     }
 
-    public boolean rmDir(ITaskMonitor monitor, ILFCLocation path, boolean recurse, boolean force) throws VlException
+    public boolean rmDir(ITaskMonitor monitor, ILFCLocation path, boolean recurse, boolean force) throws VrsException
     {
         LFCServer server = createServer();
         return rmDir(monitor, server, path, recurse, force);
     }
 
     private boolean unregister(ITaskMonitor monitor, ILFCLocation lfn, boolean recursive, LFCServer server)
-            throws VlException
+            throws VrsException
     {
         FileDescWrapper desc = lfn.getWrapperDesc();
 
@@ -2360,7 +2360,7 @@ public class LFCClient
         }
         catch (LFCException e)
         {
-            VlException ex = LFCExceptionWapper.getVlException(e.getErrorCode(), e);
+            VrsException ex = LFCExceptionWapper.getVlException(e.getErrorCode(), e);
 
             if (ex instanceof ResourceAlreadyExistsException && recursive)
             {
@@ -2368,7 +2368,7 @@ public class LFCClient
 
                 if (nodes == null || nodes.length <= 0)
                 {
-                    throw new VlIOException("LFC Inconcistancy error: LFC service for " + path + " lists " + nodes.length
+                    throw new NestedIOException("LFC Inconcistancy error: LFC service for " + path + " lists " + nodes.length
                             + " nodes but num of childern is: " + desc.getFileDesc().getULink());
                 }
 
@@ -2389,7 +2389,7 @@ public class LFCClient
         return true;
     }
 
-    public boolean unregister(ITaskMonitor monitor, ILFCLocation path, boolean recursive) throws VlException
+    public boolean unregister(ITaskMonitor monitor, ILFCLocation path, boolean recursive) throws VrsException
     {
         LFCServer server = createServer();
         boolean val=unregister(monitor, path, recursive, server);
@@ -2400,9 +2400,9 @@ public class LFCClient
     /**
      * Resolve Link: returns NULL if there is no link target
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public String getLinkTarget(String path) throws VlException
+    public String getLinkTarget(String path) throws VrsException
     {
         LFCServer server=createServer(); 
 
@@ -2425,7 +2425,7 @@ public class LFCClient
     }
 
     /** Update LFC Record */
-    public void setFileSize(LFCFile file, long size) throws VlException
+    public void setFileSize(LFCFile file, long size) throws VrsException
     {
         FileDesc desc = file.getWrapperDesc().getFileDesc();
         LFCServer server = createServer();
@@ -2434,7 +2434,7 @@ public class LFCClient
         dispose(server); 
     }
 
-    private void setFileSize(FileDesc desc, long size, LFCServer server) throws VlException
+    private void setFileSize(FileDesc desc, long size, LFCServer server) throws VrsException
     {
         try
         {
@@ -2483,7 +2483,7 @@ public class LFCClient
     // return size;
     // }
    
-    public LFCFile createSymLink(ILFCLocation orgPath, VRL newPath) throws VlException
+    public LFCFile createSymLink(ILFCLocation orgPath, VRL newPath) throws VrsException
     {
         LFCServer server = this.createServer();
 
@@ -2530,7 +2530,7 @@ public class LFCClient
         return false;
     }
 
-    public VFile doTransfer(ITaskMonitor monitor, LFCFile sourceFile, VRL remoteTargetLocation) throws VlException
+    public VFile doTransfer(ITaskMonitor monitor, LFCFile sourceFile, VRL remoteTargetLocation) throws VrsException
     {
 
         VFile targetFile = this.getVFSClient().newFile(remoteTargetLocation);
@@ -2550,7 +2550,7 @@ public class LFCClient
     /**
      * Handle transfer from source Location to target LFC File
      */
-    public VFile doTransfer(ITaskMonitor monitor, VRL remoteSourceLocation, LFCFile targetFile) throws VlException
+    public VFile doTransfer(ITaskMonitor monitor, VRL remoteSourceLocation, LFCFile targetFile) throws VrsException
     {
 
         VFile sourceFile = this.getVFSClient().newFile(remoteSourceLocation);
@@ -2643,7 +2643,7 @@ public class LFCClient
         // remoteSourceLocation);
     }
 
-    private VFile doLFC2LFCTransfer(ITaskMonitor monitor, LFCFile sourceFile, LFCFile targetFile) throws VlException
+    private VFile doLFC2LFCTransfer(ITaskMonitor monitor, LFCFile sourceFile, LFCFile targetFile) throws VrsException
     {
         int numReadTries = this.lfcServerNode.getReplicasNrOfTries();
         // should work: get replica from source LFCFile and transfer to remote
@@ -2660,9 +2660,9 @@ public class LFCClient
      * 
      * @throws ResourceTypeNotSupportedException
      * @throws ResourceCreationFailedException
-     * @throws VlInterruptedException
+     * @throws NestedInterruptedException
      */
-    protected VFile doReplicaTransfer(ITaskMonitor monitor, LFCFile sourceFile, VFile targetFile,int numReplicaReadTries) throws VlException
+    protected VFile doReplicaTransfer(ITaskMonitor monitor, LFCFile sourceFile, VFile targetFile,int numReplicaReadTries) throws VrsException
     {
         // VRL sourceVRL=sourceFile.getVRL();
         // VRL targetVRL=targetFile.getVRL();
@@ -2674,7 +2674,7 @@ public class LFCClient
         for (int trynr = 0; trynr < numReplicaReadTries; trynr++)
         {
             if (monitor.isCancelled())
-                throw new nl.nlesc.vlet.exception.VlInterruptedException("Transfer interrupted");
+                throw new nl.nlesc.vlet.exception.NestedInterruptedException("Transfer interrupted");
 
             VRL replicaVRL = null;
             
@@ -2732,10 +2732,10 @@ public class LFCClient
                 lastEx);
     }
 
-    public boolean registerReplicas(ITaskMonitor monitor, LFCFile file, VRL[] vrls) throws VlException
+    public boolean registerReplicas(ITaskMonitor monitor, LFCFile file, VRL[] vrls) throws VrsException
     {
         boolean success = true;
-        VlException lastEx = null;
+        VrsException lastEx = null;
 
         for (VRL vrl : vrls)
         {
@@ -2753,14 +2753,14 @@ public class LFCClient
         return success;
     }
 
-    public boolean unregisterReplicas(ITaskMonitor monitor, LFCFile file, VRL[] vrls) throws VlException
+    public boolean unregisterReplicas(ITaskMonitor monitor, LFCFile file, VRL[] vrls) throws VrsException
     {
         LFCServer server = createServer();
         return unregisterReplicas(server, monitor, file, vrls);
     }
 
     protected boolean unregisterReplicas(LFCServer server, ITaskMonitor monitor, LFCFile file, VRL[] vrls)
-            throws VlException
+            throws VrsException
     {
 
         // ReplicaDesc[] repDescs = file.getReplicaDescriptions();
@@ -2784,7 +2784,7 @@ public class LFCClient
             }
             catch (URISyntaxException e)
             {
-                throw new VlException(e.getMessage(),e); 
+                throw new VrsException(e.getMessage(),e); 
             }
             catch (LFCException e)
             {
@@ -2803,9 +2803,9 @@ public class LFCClient
      * Return Logical VRL of file using it's GUID
      * 
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    public VRL getLFNVRL(LFCFile file) throws VlException
+    public VRL getLFNVRL(LFCFile file) throws VrsException
     {
         ArrayList<String> links = this.getLinksTo(file);
 
@@ -2819,7 +2819,7 @@ public class LFCClient
                 + file);
     }
 
-    public ArrayList<String> getLinksTo(LFCFile file) throws VlException
+    public ArrayList<String> getLinksTo(LFCFile file) throws VrsException
     {
         LFCServer server = createServer();
         String guid = file.getGUID();
@@ -2840,12 +2840,12 @@ public class LFCClient
         }
     }
 
-    private String getDefaultVOHome() throws VlException
+    private String getDefaultVOHome() throws VrsException
     {
         String vo = this.getVRSContext().getVO();
         // get storage area path suitable for writing by this VO.
         if (StringUtil.isEmpty(vo))
-            throw new nl.nlesc.vlet.exception.VlAuthenticationException(
+            throw new nl.nlesc.vlet.exception.AuthenticationException(
                     "No VO specified in current context. Please enable VO authentication. ");
 
         return "/grid/"+vo; 
@@ -2857,7 +2857,7 @@ public class LFCClient
 //        return voPath;
     }
 
-    protected void setComment(String path, String comment) throws VlException
+    protected void setComment(String path, String comment) throws VrsException
     {
         LFCServer server = createServer();
         try
@@ -2870,7 +2870,7 @@ public class LFCClient
         }
     }
 
-    public String getComment(String path) throws VlException
+    public String getComment(String path) throws VrsException
     {
 
         LFCServer server = createServer();
@@ -2895,20 +2895,20 @@ public class LFCClient
     /**
      * Replicate files to list of PreferredSEs
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public void replicate(ITaskMonitor monitor, VRL[] vrls, List<String> listSEs) throws VlException
+    public void replicate(ITaskMonitor monitor, VRL[] vrls, List<String> listSEs) throws VrsException
     {
         // empty selection,etc;
         if ((listSEs == null) || (listSEs.size() <= 0))
         {
-            throw new VlIOException("LFCException: No Preferred Storage Elements specified for replication");
+            throw new NestedIOException("LFCException: No Preferred Storage Elements specified for replication");
         }
 
         // empty selection,etc;
         if (vrls == null)
         {
-            throw new VlIOException("LFCException: No files selected (vrrss==null) for replication");
+            throw new NestedIOException("LFCException: No files selected (vrrss==null) for replication");
         }
 
         int numSEs = listSEs.size();
@@ -2941,7 +2941,7 @@ public class LFCClient
         for (VRL vrl : vrls)
         {
             if (monitor.isCancelled())
-                throw new VlInterruptedException("Interrupted");
+                throw new NestedInterruptedException("Interrupted");
 
             monitor.logPrintf("LFC: Updating replicas: (" + vrl.getHostname() + ") " + vrl.getBasename() + "\n");
 
@@ -2962,7 +2962,7 @@ public class LFCClient
             for (ReplicaDesc rep : reps)
             {
                 if (monitor.isCancelled())
-                    throw new VlInterruptedException("Interrupted");
+                    throw new NestedInterruptedException("Interrupted");
 
                 boolean verified = false;
                 String se = rep.getHost();
@@ -2997,7 +2997,7 @@ public class LFCClient
             for (String se : listSEs)
             {
                 if (monitor.isCancelled())
-                    throw new VlInterruptedException("Interrupted");
+                    throw new NestedInterruptedException("Interrupted");
 
                 if (currentSEs.contains(se))
                 {
@@ -3031,11 +3031,11 @@ public class LFCClient
      * Will only throw exceptions if unknown conditions occured. File not found
      * exceptions will result in a returned value of FALSE.
      * 
-     * @throws VlException
+     * @throws VrsException
      * 
      */
     public boolean verifyReplica(ITaskMonitor monitor, LFCFile file, String storageElement, boolean delete)
-            throws VlException
+            throws VrsException
     {
         String repSfn = null;
         long lfcSize = -1;
@@ -3063,12 +3063,12 @@ public class LFCClient
         catch (Exception e)
         {
             // pre stage: LFC error: cannot determine replica status:
-            throw new nl.nlesc.vlet.exception.VlServerException("Verify error: Couldn't check information about"
+            throw new nl.nlesc.vlet.exception.ServerCommunicationException("Verify error: Couldn't check information about"
                     + "lfc file:" + file + ". Status Unknown.", e);
         }
         monitor.updateSubTaskDone(null,1);
         if (monitor.isCancelled())
-            throw new VlInterruptedException("Interrupted");
+            throw new NestedInterruptedException("Interrupted");
 
         // =====================
         // continue with replica
@@ -3108,7 +3108,7 @@ public class LFCClient
 
         monitor.updateSubTaskDone(null,2);
         if (monitor.isCancelled())
-            throw new VlInterruptedException("Interrupted");
+            throw new NestedInterruptedException("Interrupted");
 
         // file exists: check length:
         try
@@ -3129,7 +3129,7 @@ public class LFCClient
         }
         catch (IOException e)
         {
-            throw new VlException(e.getMessage(),e);
+            throw new VrsException(e.getMessage(),e);
         }
         // ====
         // Check Checksum ?
@@ -3147,15 +3147,15 @@ public class LFCClient
      * @param monitor TaskMonitor
      * @param file the LFCFile to replicate, Must have at least one replica. 
      * @param storageElemen the StorageElement to replica to. 
-     * @throws VlInterruptedException
+     * @throws NestedInterruptedException
      */
     public VFile replicateFile(ITaskMonitor monitor, LFCFile file, String storageElement)
-            throws ResourceCreationFailedException, VlInterruptedException
+            throws ResourceCreationFailedException, NestedInterruptedException
     {
         int numReplicaTries = this.lfcServerNode.getReplicasNrOfTries();
         
         if (monitor.isCancelled())
-            throw new VlInterruptedException("Interrupted");
+            throw new NestedInterruptedException("Interrupted");
 
         try
         {
@@ -3190,19 +3190,19 @@ public class LFCClient
         }
     }
 
-    public void replicateDirectory(ITaskMonitor monitor, LFCDir dir, List<String> listSEs) throws VlException
+    public void replicateDirectory(ITaskMonitor monitor, LFCDir dir, List<String> listSEs) throws VrsException
     {
 
         // empty selection,etc;
         if ((listSEs == null) || (listSEs.size() <= 0))
         {
-            throw new VlIOException("LFCException: No Preferred Storage Elements specified for replication");
+            throw new NestedIOException("LFCException: No Preferred Storage Elements specified for replication");
         }
 
         // empty selection,etc;
         if (dir == null)
         {
-            throw new VlIOException("LFCException: No Directory selected (directory==null) for replication");
+            throw new NestedIOException("LFCException: No Directory selected (directory==null) for replication");
         }
 
         LongHolder totalSize = new LongHolder();
@@ -3218,7 +3218,7 @@ public class LFCClient
         }
         catch (Exception e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
         
         monitor.endSubTask("Scanning directory:" + dir);
@@ -3245,7 +3245,7 @@ public class LFCClient
         this.lfcConfig = config;
     }
 
-    public void setMode(String path, int mode) throws VlException
+    public void setMode(String path, int mode) throws VrsException
     {
         LFCServer server = createServer();
 
@@ -3265,7 +3265,7 @@ public class LFCClient
 
     }
 
-    public boolean recurseDelete(LFCFile lfcFile, boolean forceDelete) throws VlException
+    public boolean recurseDelete(LFCFile lfcFile, boolean forceDelete) throws VrsException
     {
         return this.recurseDelete(null,lfcFile,forceDelete); 
     }

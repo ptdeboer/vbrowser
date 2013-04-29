@@ -23,7 +23,7 @@ package nl.nlesc.vlet.gui;
 import javax.swing.JPopupMenu;
 
 import nl.esciencecenter.ptk.task.ITaskSource;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.dnd.DropAction;
 import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.ViewModel;

@@ -30,11 +30,11 @@ import gov.lbl.srm.v22.stubs.TStatusCode;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.glite.lbl.srm.SRMException;
 import nl.nlesc.glite.lbl.srm.status.SRMPutRequest;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
-import nl.nlesc.vlet.exception.VlException;
 
 /**
  * Code copied from geclipse, but modified to fit the VRS/VFS interface. ---
@@ -119,7 +119,7 @@ public class SRMOutputStream extends OutputStream
 			{
 				renameTempFile(this.finalFilepath);
 			}
-			catch (VlException e) 
+			catch (VrsException e) 
 			{
 				IOException ex = new IOException(e.getMessage());
 				ex.initCause(e);
@@ -130,7 +130,7 @@ public class SRMOutputStream extends OutputStream
 		replaceFileAfterClose = false;
 	}
 
-	private void renameTempFile(String finalFilepath) throws VlException 
+	private void renameTempFile(String finalFilepath) throws VrsException 
 	{
 		// if previous doesn' t exist it doesn have to be deleted
 		try

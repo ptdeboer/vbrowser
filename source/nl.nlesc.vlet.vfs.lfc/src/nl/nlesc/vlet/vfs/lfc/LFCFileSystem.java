@@ -26,19 +26,19 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.glite.lfc.LFCConfig;
-import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlConfigurationError;
-import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.exception.ConfigurationError;
 import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.ServiceInfo;
 import nl.nlesc.vlet.vfs.lfc.LFCFSConfig.ReplicaCreationMode;
 import nl.nlesc.vlet.vfs.lfc.LFCFSConfig.ReplicaSelectionMode;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vfs.FileSystemNode;
 import nl.nlesc.vlet.vrs.vfs.VDir;
@@ -94,7 +94,7 @@ public class LFCFileSystem extends FileSystemNode
     private LFCClient lfcClient;
 
     public LFCFileSystem(VRSContext context, ServerInfo info,VRL location)
-            throws VlException
+            throws VrsException
     {
         super(context, info);
         
@@ -111,17 +111,17 @@ public class LFCFileSystem extends FileSystemNode
     }
 
     @Override
-    public VFSNode openLocation(VRL loc) throws VlException
+    public VFSNode openLocation(VRL loc) throws VrsException
     {
         return this.lfcClient.openLocation(loc);
     }
 
-    public void connect() throws VlException
+    public void connect() throws VrsException
     {
         this.lfcClient.connect();
     }
 
-    public void disconnect() throws VlException
+    public void disconnect() throws VrsException
     {
         this.lfcClient.disconnect();
     }
@@ -264,7 +264,7 @@ public class LFCFileSystem extends FileSystemNode
 //
 //    }
 
-    public void recurseDelete(ITaskMonitor monitor, VRL sel,boolean force) throws VlException
+    public void recurseDelete(ITaskMonitor monitor, VRL sel,boolean force) throws VrsException
     {
         VFSNode node = lfcClient.getPath(sel.getPath());
         
@@ -273,14 +273,14 @@ public class LFCFileSystem extends FileSystemNode
             this.getVRSContext().fireEvent(ResourceEvent.createDeletedEvent(sel));
     }
     
-    public void recurseDelete(ITaskMonitor monitor,VRL[] selections,boolean force) throws VlException
+    public void recurseDelete(ITaskMonitor monitor,VRL[] selections,boolean force) throws VrsException
     {
         for (VRL vrl : selections)
             recurseDelete(monitor,vrl,force);
     }
 
     @Override
-    public LFCDir newDir(VRL dirVrl) throws VlException
+    public LFCDir newDir(VRL dirVrl) throws VrsException
     {
         FileDescWrapper wrapp = new FileDescWrapper();
         wrapp.setNameAndPath(dirVrl.getPath());
@@ -288,7 +288,7 @@ public class LFCFileSystem extends FileSystemNode
     }
 
     @Override
-    public LFCFile newFile(VRL fileVrl) throws VlException
+    public LFCFile newFile(VRL fileVrl) throws VrsException
     {
         FileDescWrapper wrapp = new FileDescWrapper();
         wrapp.setNameAndPath(fileVrl.getPath());
@@ -296,7 +296,7 @@ public class LFCFileSystem extends FileSystemNode
     }
 
     @Override // Overridden for performance and type preservation (LFCFile) 
-    public LFCFile getFile(VRL fileVrl) throws VlException
+    public LFCFile getFile(VRL fileVrl) throws VrsException
     {
         FileDescWrapper wrapp = new FileDescWrapper();
         wrapp.setNameAndPath(fileVrl.getPath());
@@ -310,7 +310,7 @@ public class LFCFileSystem extends FileSystemNode
     }
     
     @Override // Overridden for performance and type preservation (LFCDir) 
-    public LFCDir getDir(VRL dirVrl) throws VlException
+    public LFCDir getDir(VRL dirVrl) throws VrsException
     {
         // create object only!
         LFCDir dir=new LFCDir(this, dirVrl); 
@@ -322,7 +322,7 @@ public class LFCFileSystem extends FileSystemNode
     }
 
     
-    public VDir createDir(VRL dirVrl, boolean ignoreExisting) throws VlException
+    public VDir createDir(VRL dirVrl, boolean ignoreExisting) throws VrsException
     {
         String dirname=dirVrl.getPath(); 
 
@@ -336,7 +336,7 @@ public class LFCFileSystem extends FileSystemNode
         return (VDir) node;
     }
 
-    public VFile createFile(VRL fileVrl, boolean ignoreExisting) throws VlException
+    public VFile createFile(VRL fileVrl, boolean ignoreExisting) throws VrsException
     {
         String fileName = fileVrl.getPath(); 
         lfcClient.registerEntry(fileName);
@@ -348,7 +348,7 @@ public class LFCFileSystem extends FileSystemNode
         return lfcClient;
     }
 
-    public void pastAsLink(ITaskMonitor monitor, VRL pasteDirDestination, VRL[] selections) throws VlException
+    public void pastAsLink(ITaskMonitor monitor, VRL pasteDirDestination, VRL[] selections) throws VrsException
     {
         monitor.logPrintf("Pasting alias into directory:"+pasteDirDestination+"\n"); 
         
@@ -376,25 +376,25 @@ public class LFCFileSystem extends FileSystemNode
         } 
     }
 
-   public ReplicaSelectionMode getReplicaSelectionMode() throws VlConfigurationError 
+   public ReplicaSelectionMode getReplicaSelectionMode() throws ConfigurationError 
    {
       VAttribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_REPLICA_SELECTION_MODE);
 
       if (attr!=null)
           return ReplicaSelectionMode.createFromAttributeValue(attr.getStringValue()); 
       
-      throw new VlConfigurationError("Couldn't get Replica Selection Mode"); 
+      throw new ConfigurationError("Couldn't get Replica Selection Mode"); 
  
     }
    
-   public ReplicaCreationMode getReplicaCreationMode() throws VlConfigurationError 
+   public ReplicaCreationMode getReplicaCreationMode() throws ConfigurationError 
    {
        VAttribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_REPLICA_CREATION_MODE);
 
        if (attr!=null)
            return ReplicaCreationMode.createFromAttributeValue(attr.getStringValue()); 
        
-       throw new VlConfigurationError("Couldn't get Replica Creation mode");  
+       throw new ConfigurationError("Couldn't get Replica Creation mode");  
     }
 
    public int getReplicasNrOfTries() 
@@ -422,35 +422,35 @@ public boolean getUseSimilarReplicaNames()
     return defVal; 
 }
  
- public void replicateToPreferred(ITaskMonitor monitor, VRL[] selections) throws VlException
+ public void replicateToPreferred(ITaskMonitor monitor, VRL[] selections) throws VrsException
  {
      StringList listSEs = this.getPreferredSEHosts(); 
      
      if ((listSEs==null) || (listSEs.size()<=0))
-         throw new nl.nlesc.vlet.exception.VlConfigurationError("No preferred Storage Elements configured.\n"
+         throw new nl.nlesc.vlet.exception.ConfigurationError("No preferred Storage Elements configured.\n"
                  +"Please set listPreferredSEs in your LFC config");
      
      getLFCClient().replicate(monitor,selections,listSEs); 
  }
  
- public void recursiveReplicateToPreferred(ITaskMonitor monitor, VRL dirVRL) throws VlException
+ public void recursiveReplicateToPreferred(ITaskMonitor monitor, VRL dirVRL) throws VrsException
  {
      replicateDirectory(monitor,dirVRL,this.getPreferredSEHosts());
  }
 
- public VFile replicateFile(ITaskMonitor monitor, VRL fileVrl, String storageElement) throws VlException
+ public VFile replicateFile(ITaskMonitor monitor, VRL fileVrl, String storageElement) throws VrsException
  {
 	 LFCFile file=getFile(fileVrl); 
 	 return getLFCClient().replicateFile(monitor, file, storageElement); 
  }
  
- public void replicateDirectory(ITaskMonitor monitor,VRL lfcDir, List<String> listSEs) throws VlException
+ public void replicateDirectory(ITaskMonitor monitor,VRL lfcDir, List<String> listSEs) throws VrsException
  {
      LFCDir dir=getDir(lfcDir);
      replicateDirectory(monitor,dir,listSEs); 
  }
  
- public void replicateDirectory(ITaskMonitor monitor,LFCDir lfcDir, List<String> listSEs) throws VlException
+ public void replicateDirectory(ITaskMonitor monitor,LFCDir lfcDir, List<String> listSEs) throws VrsException
  {
      getLFCClient().replicateDirectory(monitor, lfcDir, listSEs); 
  }

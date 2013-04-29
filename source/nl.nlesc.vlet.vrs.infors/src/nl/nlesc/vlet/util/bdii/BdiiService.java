@@ -32,13 +32,13 @@ import javax.naming.NamingException;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttribute;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.util.bdii.ServiceInfo.ServiceInfoType;
 import nl.nlesc.vlet.util.bdii.info.glue.GlueConstants;
 import nl.nlesc.vlet.util.bdii.info.glue.GlueObject;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 
 /**
@@ -58,7 +58,7 @@ public class BdiiService
         //logger.setLevel(Level.ALL);
     }
 
-    public static BdiiService createService(VRSContext context) throws VlException
+    public static BdiiService createService(VRSContext context) throws VrsException
     {
         ConfigManager conf = context.getConfigManager();
 
@@ -179,7 +179,7 @@ public class BdiiService
      * 
      * @throws URISyntaxException
      */
-    public ArrayList<ServiceInfo> queryServiceInfo(String vo, ServiceInfoType type) throws VlException
+    public ArrayList<ServiceInfo> queryServiceInfo(String vo, ServiceInfoType type) throws VrsException
     {
         switch (type)
         {
@@ -205,7 +205,7 @@ public class BdiiService
     }
 
     /** Returns SRM V2.2 Service for specified hostname or NULL */
-    public ServiceInfo getSRMv22ServiceForHost(String host) throws VlException, NamingException
+    public ServiceInfo getSRMv22ServiceForHost(String host) throws VrsException, NamingException
     {
         logger.debugPrintf("getSRMv22SEforHost:%s\n", host);
 
@@ -232,7 +232,7 @@ public class BdiiService
         return srm;
     }
 
-    public ArrayList<StorageArea> getSRMv22SAsforVO(String vo) throws VlException
+    public ArrayList<StorageArea> getSRMv22SAsforVO(String vo) throws VrsException
     {
         return getVOStorageAreas(vo, null, false);
     }
@@ -243,10 +243,10 @@ public class BdiiService
      * @param vo
      *            the VO's name
      * @return the SA V1.1
-     * @throws VlException
+     * @throws VrsException
      * @throws URISyntaxException
      */
-    public ArrayList<StorageArea> getSRMv11SAsforVO(String vo) throws VlException, URISyntaxException
+    public ArrayList<StorageArea> getSRMv11SAsforVO(String vo) throws VrsException, URISyntaxException
     {
         ArrayList<StorageArea> allSAs = getVOStorageAreas(vo, null, true);
 
@@ -263,7 +263,7 @@ public class BdiiService
         return srmv11;
     }
 
-    public ArrayList<ServiceInfo> getLFCsforVO(String vo) throws VlException
+    public ArrayList<ServiceInfo> getLFCsforVO(String vo) throws VrsException
     {
         // block other queries:
         synchronized (this.cachedVOLFCs)
@@ -290,7 +290,7 @@ public class BdiiService
     }
 
     public ArrayList<StorageArea> getVOStorageAreas(String vo, String optHostname, boolean includeSRMV1)
-            throws VlException
+            throws VrsException
     {
         //todo: cleanup,restructure. 
         
@@ -500,7 +500,7 @@ public class BdiiService
         
     }
 
-    private ServiceInfo createSRMServiceInfo(GlueObject srmService) throws VlException
+    private ServiceInfo createSRMServiceInfo(GlueObject srmService) throws VrsException
     {
         URI endpointURI = getEndpointURI(srmService);
 
@@ -529,7 +529,7 @@ public class BdiiService
         {
             // logger.warnPrintf("Could not create StorageArea form %s \n",
             // endpointURI);
-            throw new VlException("Could not create StorageArea form " + endpointURI);
+            throw new VrsException("Could not create StorageArea form " + endpointURI);
         }
         else
         {
@@ -538,7 +538,7 @@ public class BdiiService
 
     }
 
-    public ArrayList<ServiceInfo> getWMSServiceInfos(String vo) throws VlException
+    public ArrayList<ServiceInfo> getWMSServiceInfos(String vo) throws VrsException
     {
 
         ArrayList<GlueObject> wms = query.getWMProxy(vo);
@@ -577,12 +577,12 @@ public class BdiiService
         return wmsServices;
     }
 
-    public ArrayList<ServiceInfo> getLBServiceInfosForVO(String vo) throws VlException
+    public ArrayList<ServiceInfo> getLBServiceInfosForVO(String vo) throws VrsException
     {
         return this.guessLBServiceInfos(vo);
     }
 
-    public ArrayList<ServiceInfo> getLBServiceInfosForWMSHost(String hostname) throws VlException
+    public ArrayList<ServiceInfo> getLBServiceInfosForWMSHost(String hostname) throws VrsException
     {
         ArrayList<ServiceInfo> infos = this.guessLBServiceInfoForWMS(hostname);
 
@@ -594,7 +594,7 @@ public class BdiiService
      * 
      * @throws URISyntaxException
      */
-    public ServiceInfo getSRMV11ServiceForHost(String hostname) throws VlException, URISyntaxException
+    public ServiceInfo getSRMV11ServiceForHost(String hostname) throws VrsException, URISyntaxException
     {
         ServiceInfo info = this.getFromServiceCache(ServiceInfoType.SRMV11,hostname); 
         if (info!=null)
@@ -627,7 +627,7 @@ public class BdiiService
     // Private/Protected Implementation methods (helper methods for BDII itself)
     // ===============================================================================
 
-    private ArrayList<ServiceInfo> guessLBServiceInfoForWMS(String hostname) throws VlException
+    private ArrayList<ServiceInfo> guessLBServiceInfoForWMS(String hostname) throws VrsException
     {
         ArrayList<GlueObject> lbs = query.guessLBServicesForWMSHostname(hostname);
 
@@ -662,7 +662,7 @@ public class BdiiService
         return lbServices;
     }
 
-    private ArrayList<ServiceInfo> guessLBServiceInfos(String vo) throws VlException
+    private ArrayList<ServiceInfo> guessLBServiceInfos(String vo) throws VrsException
     {
         ArrayList<GlueObject> lbs = this.query.guessLBServices(vo);
 
@@ -787,7 +787,7 @@ public class BdiiService
         return getGlueVattributes(seBackEndInfo, GlueConstants.SERVICE_ATTRIBUTES);
     }
 
-    private java.net.URI getEndpointURI(GlueObject glueService) throws VlException
+    private java.net.URI getEndpointURI(GlueObject glueService) throws VrsException
     {
         String serviceUri = null;
 
@@ -897,7 +897,7 @@ public class BdiiService
     // =======================================================================
 
     // Do actual uncached unsynchronized query;
-    private ServiceInfo _querySRMv22SEForHost(String hostname) throws NamingException, VlException
+    private ServiceInfo _querySRMv22SEForHost(String hostname) throws NamingException, VrsException
     {
         ArrayList<GlueObject> srmServices = query.getServices("*", hostname, "srm*", "2.2*");
 
@@ -919,7 +919,7 @@ public class BdiiService
     }
 
     // Do actual uncached unsynchronized query;
-    private ServiceInfo _querySRMv1SEForHost(String hostname) throws NamingException, VlException, URISyntaxException
+    private ServiceInfo _querySRMv1SEForHost(String hostname) throws NamingException, VrsException, URISyntaxException
     {
         ArrayList<GlueObject> srmServices = query.getServices("*", hostname, "srm*", "1*");
 
@@ -935,7 +935,7 @@ public class BdiiService
     }
 
     // uncached BDII query
-    private ArrayList<ServiceInfo> _queryLFCServicesForVO(String vo) throws NamingException, VlException
+    private ArrayList<ServiceInfo> _queryLFCServicesForVO(String vo) throws NamingException, VrsException
     {
         // query for lcg-file-catalog and skip version !
         ArrayList<GlueObject> services = query.getServices(vo, GlueConstants.FILE_CATALOG, null);

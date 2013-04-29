@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.gui.lobo.resfs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VRSFactory;
@@ -74,7 +74,7 @@ public class ResFS extends VRSFactory
 
 	@Override
 	public VResourceSystem createNewResourceSystem(VRSContext context,
-			ServerInfo info, VRL location) throws VlException 
+			ServerInfo info, VRL location) throws VrsException 
 	{
 		// should be singleton! 
 		return new ResResourceSystem(context,location);

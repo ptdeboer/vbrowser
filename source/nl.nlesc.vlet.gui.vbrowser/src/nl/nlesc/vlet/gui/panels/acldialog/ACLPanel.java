@@ -34,16 +34,16 @@ import javax.swing.JTextPane;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.panels.attribute.AttributePanel;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.vbrowser.BrowserController;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ACLPanel extends JPanel
@@ -190,7 +190,7 @@ public class ACLPanel extends JPanel
         return (ACLDataModel)table.getModel(); 
     }
     
-    public void readACLFrom(ProxyNode node) throws VlException
+    public void readACLFrom(ProxyNode node) throws VrsException
     {
         //Debug("setNode:"+node);
         this.proxyNode=node; 
@@ -224,7 +224,7 @@ public class ACLPanel extends JPanel
         return aclEntities;
     }
    
-    public void handle(VlException e)
+    public void handle(VrsException e)
     {
         if (browserController!=null)
         {
@@ -275,14 +275,14 @@ public class ACLPanel extends JPanel
     // Static Methods
     // ========================================================================
     
-    public static void showEditor(BrowserController bc, VRL loc) throws VlException
+    public static void showEditor(BrowserController bc, VRL loc) throws VrsException
     {
         ProxyNode node; 
         node = ProxyNode.getProxyNodeFactory().openLocation(loc,true);
         showEditor(bc,node); 
     }
     
-    public static void showEditor(BrowserController bc,ProxyNode node) throws VlException
+    public static void showEditor(BrowserController bc,ProxyNode node) throws VrsException
     {   
          JFrame frame=new JFrame(); // bc.getFrame());
          ACLPanel panel=new ACLPanel(bc);

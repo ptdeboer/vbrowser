@@ -22,8 +22,8 @@ package test;
 
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.panels.acldialog.ACLPanel;
 import nl.nlesc.vlet.gui.proxynode.impl.direct.ProxyVNodeFactory;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -46,7 +46,7 @@ public class TestACLPanel
             ProxyVNodeFactory.initPlatform(); 
             ACLPanel.showEditor(null,new VRL(loc));
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             System.out.println("***Error: Exception:"+e); 
             e.printStackTrace();

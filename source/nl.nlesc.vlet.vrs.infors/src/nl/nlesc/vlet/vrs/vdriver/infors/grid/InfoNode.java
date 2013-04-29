@@ -22,13 +22,13 @@ package nl.nlesc.vlet.vrs.vdriver.infors.grid;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.Presentation;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.NotImplementedException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrms.LogicalResourceNode;
 
@@ -45,7 +45,7 @@ public class InfoNode extends LogicalResourceNode
      * extra attributes acquired from target location.
      */
     public static InfoNode createServerInfoNode(VRSContext context, VRL logicalLocation, VRL targetVRL, boolean resolve)
-            throws VlException
+            throws VrsException
     {
         InfoNode lnode = new InfoNode(context, logicalLocation);
         lnode.init(logicalLocation, targetVRL, resolve);
@@ -101,7 +101,7 @@ public class InfoNode extends LogicalResourceNode
         return lnode;
     }
 
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         VAttribute attr = null;
 

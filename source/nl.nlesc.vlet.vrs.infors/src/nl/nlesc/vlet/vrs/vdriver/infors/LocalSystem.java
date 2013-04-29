@@ -27,14 +27,14 @@ import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.vdriver.infors.net.NetworkNode;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
@@ -51,7 +51,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         {
             initChilds();
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             VletConfig.getRootLogger().logException(ClassLogger.ERROR,e,"LocalSystem:Failed to initialize childs:"); 
         } 
@@ -94,7 +94,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
 	      return null; 
 	}
 
-	public VRL getDescriptionLocation() throws VlException
+	public VRL getDescriptionLocation() throws VrsException
 	{
 		return null; 
 	}
@@ -106,7 +106,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
     }
 
     public VNode createNode(String type, String name, boolean force)
-        throws VlException
+        throws VrsException
     {
         if (StringUtil.equals(type,InfoConstants.NETWORK_INFO))
         {
@@ -116,7 +116,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         throw new nl.nlesc.vlet.exception.ResourceTypeNotSupportedException("Cannot create resource of type:"+type);
     }
 
-    private NetworkNode createNetworkNode(String name) throws VlException
+    private NetworkNode createNetworkNode(String name) throws VrsException
     {
         if ((name==null) || (name.equals("")))
             name="New Network"; 
@@ -129,7 +129,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         
     }
     
-    private void initChilds() throws VlException
+    private void initChilds() throws VrsException
     {
     	this.clearChilds(); 
     	
@@ -141,7 +141,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         addFilesystemRoots(); 
     }
 
-    private void addPathNode(VRL targetPath,String logicalname,String iconUrl) throws VlException
+    private void addPathNode(VRL targetPath,String logicalname,String iconUrl) throws VrsException
     {
         VRL childVRL=this.createChildVRL(logicalname);
         LinkNode lnode = LinkNode.createLinkNode(vrsContext,childVRL,targetPath); 
@@ -157,7 +157,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
     }
 
     /** Scan filesystem root and add them to the rootNodes */ 
-    private void addFilesystemRoots() throws VlException
+    private void addFilesystemRoots() throws VrsException
     {
         File roots[]=null; 
 
@@ -221,7 +221,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         return list.toArray(); 
     }
     
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
     	ConfigManager cmgr = this.vrsContext.getConfigManager(); 
     	VAttribute attr=null; 
@@ -255,7 +255,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         return super.getAttribute(name); 
     }
     
-    public boolean setAttribute(VAttribute attr) throws VlException
+    public boolean setAttribute(VAttribute attr) throws VrsException
 	{
 		if (attr==null)
 			return false;
@@ -288,7 +288,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
 		{
 			this.initChilds();
 		}
-		catch (VlException e) 
+		catch (VrsException e) 
 		{
 			VletConfig.getRootLogger().logException(ClassLogger.ERROR,this,e,"refresh(): got exception\n"); 
 		} 

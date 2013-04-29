@@ -20,18 +20,18 @@
 
 package nl.nlesc.vlet.gui.editors;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_DIRNAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ICONURL;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LOCATION;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_NAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PATH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PORT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SCHEME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SHOW_SHORTCUT_ICON;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_URI_FRAGMENT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_URI_QUERY;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_DIRNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ICONURL;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_LOCATION;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_NAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SHOW_SHORTCUT_ICON;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_URI_FRAGMENT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_URI_QUERY;
 
 import java.awt.Component;
 import java.awt.Cursor;
@@ -51,10 +51,7 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.Messages;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -64,6 +61,9 @@ import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -434,7 +434,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
         ActionTask saveTask=new ActionTask(this,"Saving resource attribute for:"+resourceNode)
         	{
 				@Override
-				protected void doTask() throws VlException
+				protected void doTask() throws VrsException
 				{
 					try
 					{
@@ -766,7 +766,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
         {
             this.isLogicalResource=pnode.isLogicalNode();
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             handle(e); 
         }
@@ -896,7 +896,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
         ActionTask updateTask=new ActionTask(this,"Updating attributes from node:"+resourceNode)
             {
                 @Override
-                protected void doTask() throws VlException
+                protected void doTask() throws VrsException
                 {
                     _bgUpdateNode(pnode); 
                 }

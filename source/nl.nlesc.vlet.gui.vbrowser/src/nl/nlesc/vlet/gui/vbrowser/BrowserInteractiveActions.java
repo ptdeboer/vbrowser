@@ -30,10 +30,8 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.ui.panels.monitoring.TaskMonitorDialog;
 import nl.esciencecenter.ptk.ui.panels.monitoring.TransferMonitorDialog;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.Messages;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -52,6 +50,8 @@ import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.ui.ICopyInteractor;
 import nl.nlesc.vlet.vrs.vfs.VFS;
@@ -238,7 +238,7 @@ public class BrowserInteractiveActions
         this.browserController=controller; 
     }
 
-    public boolean interactiveDelete(ProxyNode node,BooleanHolder forceRecurseDelete) throws VlException
+    public boolean interactiveDelete(ProxyNode node,BooleanHolder forceRecurseDelete) throws VrsException
     {
         boolean compositeDelete = false;
 
@@ -306,7 +306,7 @@ public class BrowserInteractiveActions
                     return;
                 }
             }
-            catch (VlException e) 
+            catch (VrsException e) 
             {
                 browserController.handle(e); 
             } 
@@ -314,7 +314,7 @@ public class BrowserInteractiveActions
     }
 
 
-    public boolean interactiveDelete(ResourceRef ref,BooleanHolder forceRecurseDelete) throws VlException 
+    public boolean interactiveDelete(ResourceRef ref,BooleanHolder forceRecurseDelete) throws VrsException 
     {
         ProxyNode node=browserController.getProxyNodeFactory().getFromCache(ref.getVRL());
 
@@ -328,7 +328,7 @@ public class BrowserInteractiveActions
 
     /** Interactive rename, will aks for new name */
 
-    public void interactiveRename(ProxyNode node, String name) throws VlException
+    public void interactiveRename(ProxyNode node, String name) throws VrsException
     {
         String oldName = node.getName();
 
@@ -350,10 +350,10 @@ public class BrowserInteractiveActions
      * Perform rename on underlaying resource
      * 
      * @param nameIsPath
-     * @throws VlException
+     * @throws VrsException
      */
     private void asyncRenameTo(final ProxyNode pnode,final String name, final boolean nameIsPath)
-    throws VlException
+    throws VrsException
     {
         if (name == null)
             return;
@@ -361,7 +361,7 @@ public class BrowserInteractiveActions
         // go background: 
         ActionTask renameTask=new ActionTask(this.browserController,"async RenameTo Task")
         {
-            public void doTask() throws VlException
+            public void doTask() throws VrsException
             {
                 pnode.renameTo(name,nameIsPath);
             }
@@ -390,7 +390,7 @@ public class BrowserInteractiveActions
                 {
                     node.delete(compositeDelete);
                 }
-                catch (VlException e)
+                catch (VrsException e)
                 {
                     browserController.handle(e);
                 }
@@ -468,7 +468,7 @@ public class BrowserInteractiveActions
                 {
                     actualVrl=pnode.getTargetVRL();
                 }
-                catch(VlException e)
+                catch(VrsException e)
                 {
                     handle(e); 
                 }
@@ -479,7 +479,7 @@ public class BrowserInteractiveActions
     }
 
     /** interactive check acces to VRL 
-     * @throws VlException */ 
+     * @throws VrsException */ 
     private boolean _interactiveCheckAuthenticationFor(final VRL location) 
     {
         // ===
@@ -496,7 +496,7 @@ public class BrowserInteractiveActions
         {
             info = vrsContext.getServerInfoFor(location,true);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             handle(e); 
         }
@@ -592,7 +592,7 @@ public class BrowserInteractiveActions
      * Clears all cached attributes. Sent an event that resource listeners
      * should check/refetch their attributes.
      * 
-     * @throws VlException
+     * @throws VrsException
      * 
      */
     public void performRefresh(final ProxyNode node)
@@ -605,7 +605,7 @@ public class BrowserInteractiveActions
         // go background: 
         ActionTask refreshTask=new ActionTask(this.browserController,"Properties Update Task")
         {
-            public void doTask() throws VlException
+            public void doTask() throws VrsException
             {
                 node.refresh(); 
             }
@@ -631,7 +631,7 @@ public class BrowserInteractiveActions
         ActionTask createTask=new ActionTask(browserController,"Create new:"+resourceType)
         {
             @Override
-            protected void doTask() throws VlException
+            protected void doTask() throws VrsException
             {
                 try
                 {
@@ -643,7 +643,7 @@ public class BrowserInteractiveActions
                     interactiveEditProperties(newNode,false); 
 
                 }
-                catch (VlException e)
+                catch (VrsException e)
                 {
                     handle(e);  
                 } 
@@ -875,7 +875,7 @@ public class BrowserInteractiveActions
                 BooleanHolder overWriteExisting,
                 BooleanHolder overWriteAll,
                 BooleanHolder cancelAll)
-        throws VlException 
+        throws VrsException 
     {
         
         // Cleanup ? 

@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.gui.panels.fields;
 
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeType;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeType;
 
 public interface IAttributeField
 {

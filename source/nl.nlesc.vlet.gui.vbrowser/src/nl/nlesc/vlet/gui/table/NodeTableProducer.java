@@ -26,10 +26,8 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.proxymodel.ProxyDataProducer;
@@ -39,6 +37,8 @@ import nl.nlesc.vlet.gui.proxyvrs.ProxyNodeFactory;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyResourceEventListener;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
 import nl.nlesc.vlet.gui.view.ViewNode;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.EventType;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -429,7 +429,7 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
         }
     }
 
-    protected void updateNodeAttributes(ProxyNode node, String attrNames[]) throws VlException
+    protected void updateNodeAttributes(ProxyNode node, String attrNames[]) throws VrsException
     {
         if (attrNames == null)
             return;
@@ -617,7 +617,7 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
                     String attrNames[] = getPresentation().getChildAttributeNames();
                     updateNodeAttributes(node, attrNames);
                 }
-                catch (VlException e)
+                catch (VrsException e)
                 {
                     bc.notifyTaskException(this,e);
                 }

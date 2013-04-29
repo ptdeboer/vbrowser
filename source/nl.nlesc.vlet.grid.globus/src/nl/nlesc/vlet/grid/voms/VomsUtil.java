@@ -37,11 +37,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
-import nl.nlesc.vlet.exception.VlAuthenticationException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.AuthenticationException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.grid.globus.GlobusCredentialWrapper;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
@@ -105,10 +105,10 @@ public class VomsUtil
      * Create VomsProxyCredential from GlobusCredentail using the information
      * provided by the VO.
      * 
-     * @throws VlException
+     * @throws VrsException
      */
     public static VomsProxyCredential createVomsCredential(GlobusCredential globusCred, VO vo, long lifetime)
-            throws VlException
+            throws VrsException
     {
         if (vo == null)
             throw new NullPointerException("VO object can not be null");
@@ -127,34 +127,34 @@ public class VomsUtil
         }
     }
 
-    private static VlException convertException(String message, Exception e)
+    private static VrsException convertException(String message, Exception e)
     {
         // Filter standard Globus exceptions:
 
-        VlException ex = GlobusUtil.checkException(message, e);
+        VrsException ex = GlobusUtil.checkException(message, e);
         if (ex != null)
             return ex;
 
         // Exception nesting:
-        if (e instanceof VlException)
+        if (e instanceof VrsException)
         {
-            return ((VlException) e); // keep my own;
+            return ((VrsException) e); // keep my own;
         }
         else if (e instanceof GeneralSecurityException)
         {
-            return new VlAuthenticationException(message + "\nReason=" + e.getMessage(), e);
+            return new AuthenticationException(message + "\nReason=" + e.getMessage(), e);
         }
         else if (e instanceof GSSException)
         {
-            return new VlAuthenticationException(message + "\nReason=" + e.getMessage(), e);
+            return new AuthenticationException(message + "\nReason=" + e.getMessage(), e);
         }
         else if (e instanceof IOException)
         {
-            return new VlIOException(message + "\nReason=" + e.getMessage(), e);
+            return new NestedIOException(message + "\nReason=" + e.getMessage(), e);
         }
 
         // default:
-        return VlException.create(e.getClass().getSimpleName(), e.getMessage(), e);
+        return VrsException.create(e.getMessage(), e,e.getClass().getSimpleName());
 
     }
 
@@ -170,7 +170,7 @@ public class VomsUtil
      *            optional VO Role
      */
     public static VomsProxyCredential vomsify(GlobusCredential orgCred, VO vo, String optVoGroup, String optVoRole,
-            long lifetimeInSeconds) throws VlException
+            long lifetimeInSeconds) throws VrsException
     {
         if (vo == null)
             throw new NullPointerException("VO object can not be null");
@@ -238,7 +238,7 @@ public class VomsUtil
     // }
 
     public static VomsProxyCredential vomsify(GlobusCredential cred, String voName, long lifeTimeInSeconds)
-            throws VlException
+            throws VrsException
     {
         return vomsify(cred, voName, null, null, lifeTimeInSeconds);
     }
@@ -261,7 +261,7 @@ public class VomsUtil
      *            role, for example "tester"
      */
     public static VomsProxyCredential vomsify(GlobusCredential cred, String voName, String voGroup, String voRole,
-            long lifetimeInSeconds) throws VlException
+            long lifetimeInSeconds) throws VrsException
     {
 
         Exception except = null;
@@ -277,7 +277,7 @@ public class VomsUtil
         }
 
         if (vo == null)
-            throw new VlException("VOMSProxyException: VO not known or configuration missing for vo:" + voName
+            throw new VrsException("VOMSProxyException: VO not known or configuration missing for vo:" + voName
                     + "\nPlease add VO server information to voms.xml", except);
 
         // String voRole=getVORole(voCommand);
@@ -426,7 +426,7 @@ public class VomsUtil
             {
                 prox = GridProxy.loadFrom(proxyFile);
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 if (verboseLevel > 1)
                 {
@@ -528,7 +528,7 @@ public class VomsUtil
      *            "/etc/grid-security/vomsdir/voms.xml".
      * @param voName
      *            the name of the Virtual Organisation.
-     * @throws VlException
+     * @throws VrsException
      */
     public static VO readFromXML(String vomsFilename, String voName) throws Exception
     {
@@ -656,7 +656,7 @@ public class VomsUtil
         catch (ParserConfigurationException e)
         {
             logger.warnPrintf("Parse error when reading from file:%s\n", vomsFilename);
-            throw new VlException("VomsUtil: Couldn't parse:" + vomsFilename, e);
+            throw new VrsException("VomsUtil: Couldn't parse:" + vomsFilename, e);
         }
         catch (java.io.FileNotFoundException e)
         {
@@ -671,7 +671,7 @@ public class VomsUtil
         catch (SAXException e)
         {
             logger.warnPrintf("SAXException: Couldn't parse VOMS file:%s\n", vomsFilename);
-            throw new VlException("VomsUtil: SAXException, couldn't parse:" + vomsFilename, e);
+            throw new VrsException("VomsUtil: SAXException, couldn't parse:" + vomsFilename, e);
         }
         // others:
         catch (Exception e)
@@ -696,7 +696,7 @@ public class VomsUtil
      * that file is the 'vomsdir' which also must contain the server certificate
      * specified as 'cert' in the voms.xml file.
      * 
-     * @throws VlException
+     * @throws VrsException
      */
     public static VO getVO(String voCommand) throws Exception
     {
@@ -742,10 +742,10 @@ public class VomsUtil
         }
         catch (Exception e)
         {
-            throw new VlException("Failed to initialize search paths", e);
+            throw new VrsException("Failed to initialize search paths", e);
         }
 
-        VlException except = null;
+        VrsException except = null;
 
         for (String path : searchPaths)
         {
@@ -772,7 +772,7 @@ public class VomsUtil
                 logger.infoPrintf("File does not exists:%s\n", path);
                 vo = null;
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 except = e;
                 logger.logException(ClassLogger.ERROR, e, "Failed to read path:%s\n", path);

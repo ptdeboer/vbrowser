@@ -27,10 +27,10 @@ import javax.swing.JSeparator;
 
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.panels.resourcetable.TablePopupMenu;
 import nl.nlesc.vlet.gui.viewers.grid.replicaviewer.ReplicaDataModel.ReplicaStatus;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 
 public class ReplicaPopupMenu extends TablePopupMenu
 {

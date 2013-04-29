@@ -20,28 +20,28 @@
 
 package nl.nlesc.vlet.gui.viewers.grid.replicaviewer;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_CHECKSUM;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_CHECKSUM_TYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_CHECKSUM_TYPES;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ERROR_TEXT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_INDEX;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LENGTH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LOCATION;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PATH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_STATUS;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_STORAGE_ELEMENT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM_TYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM_TYPES;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ERROR_TEXT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_INDEX;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_LENGTH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_LOCATION;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_STATUS;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_STORAGE_ELEMENT;
 
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTableModel;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ReplicaDataModel extends ResourceTableModel

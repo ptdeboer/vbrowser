@@ -35,10 +35,10 @@ import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuConstants;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.vrs.io.VShellChannel;
 import nl.nlesc.vlet.vrs.io.VShellChannelCreator;
@@ -59,7 +59,7 @@ public class VLTermStarter extends ViewerPlugin implements ActionListener
         {
             tv.startAsStandAloneApplication(loc); 
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             System.out.println("***Error: Exception:" + e);
             e.printStackTrace();
@@ -77,7 +77,7 @@ public class VLTermStarter extends ViewerPlugin implements ActionListener
 
             viewStandAlone(loc); 
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             System.out.println("***Error: Exception:" + e);
             e.printStackTrace();
@@ -148,7 +148,7 @@ public class VLTermStarter extends ViewerPlugin implements ActionListener
 	        
 	}
 
-	public void startViewer(VRL location, String optMethodName, ActionContext actionContext) throws VlException
+	public void startViewer(VRL location, String optMethodName, ActionContext actionContext) throws VrsException
     {
         setVRL(location);
 
@@ -162,7 +162,7 @@ public class VLTermStarter extends ViewerPlugin implements ActionListener
     }
 	
 	@Override
-	public void updateLocation(VRL loc) throws VlException 
+	public void updateLocation(VRL loc) throws VrsException 
 	{
 		startVLTerm(loc); 
 	}
@@ -242,7 +242,7 @@ public class VLTermStarter extends ViewerPlugin implements ActionListener
 	
 	/** Perform Dynamic Action Method */
     public void doMethod(String methodName, ActionContext actionContext)
-            throws VlException
+            throws VrsException
     {
     	// already handled by first openLocation. This Method will be called
     	// after the VLTermStarter already started for this location. 

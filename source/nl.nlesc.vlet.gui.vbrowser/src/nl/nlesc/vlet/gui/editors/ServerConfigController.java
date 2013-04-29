@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.gui.editors;
 
-import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.gui.panels.attribute.AttributePanelListener;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 
 
 /** Dedicated Controller for the Sever Configuration Panel */ 

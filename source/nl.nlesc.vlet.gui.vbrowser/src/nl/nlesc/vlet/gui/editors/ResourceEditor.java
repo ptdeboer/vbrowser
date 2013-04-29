@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.gui.editors;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PORT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -46,8 +46,6 @@ import javax.swing.border.BevelBorder;
 import javax.swing.event.ChangeListener;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UIPlatform;
 import nl.nlesc.vlet.gui.panels.attribute.AttributePanel;
@@ -57,6 +55,8 @@ import nl.nlesc.vlet.gui.panels.fields.AttrPortField;
 import nl.nlesc.vlet.gui.panels.fields.AttrSchemeField;
 import nl.nlesc.vlet.gui.panels.fields.IAttributeField;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;

@@ -20,8 +20,8 @@
 
 package tests;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.viewers.VHTMLViewer;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -37,7 +37,7 @@ public class testHTMLViewer
             VHTMLViewer.viewStandAlone(new VRL("http://www.piter.nl/index.html")); 
             VHTMLViewer.viewStandAlone(new VRL("http://www.vl-e.nl")); 
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
                 System.out.println("***Error: Exception:" + e);
                 e.printStackTrace();

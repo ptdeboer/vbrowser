@@ -24,7 +24,7 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import nl.esciencecenter.ptk.GlobalProperties;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFile;
@@ -46,9 +46,9 @@ public class TestVFSClient extends TestCase
     /**
      * Sets up the tests fixture. (Called before every tests case method.)
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    protected synchronized void setUp() throws VlException
+    protected synchronized void setUp() throws VrsException
     {
         if (vfsClient == null)
             vfsClient = new VFSClient();
@@ -69,9 +69,9 @@ public class TestVFSClient extends TestCase
     /**
      * Tears down the tests fixture. (Called after every tests case method.)
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    protected void tearDown() throws VlException
+    protected void tearDown() throws VrsException
     {
 
     }
@@ -94,7 +94,7 @@ public class TestVFSClient extends TestCase
     }
 
     // check /tmp dir and relative access into /tmp dir
-    public void testTempDir() throws VlException
+    public void testTempDir() throws VrsException
     {
         VDir tmpdir = vfsClient.getTempDir();
 
@@ -121,7 +121,7 @@ public class TestVFSClient extends TestCase
 
     }
 
-    public void testMkdir() throws VlException
+    public void testMkdir() throws VrsException
     {
         VDir subDir = vfsClient.mkdir(testDir.getVRL().appendPath("/aap/noot/mies"), false);
         Assert.assertTrue("New subdirectory doesn't exists:" + subDir, subDir.exists());
@@ -131,7 +131,7 @@ public class TestVFSClient extends TestCase
     }
 
     // Check user home VRL 
-    public void testHomeDir() throws VlException
+    public void testHomeDir() throws VrsException
     {
         VRL homeVrl = vfsClient.getUserHomeLocation();
         

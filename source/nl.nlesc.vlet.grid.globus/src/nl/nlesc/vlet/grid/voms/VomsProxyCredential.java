@@ -33,8 +33,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.exception.VlServerException;
+import nl.nlesc.vlet.exception.ServerCommunicationException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.grid.voms.VO;
 
 import org.bouncycastle.asn1.ASN1InputStream;
@@ -235,14 +235,14 @@ public class VomsProxyCredential
         {
             // Wrap as nested VL Exception and provide better
             // information:
-            throw new VlIOException("Communication Error. Adres or port is wrong or server is not reachable:" + hostid,
+            throw new NestedIOException("Communication Error. Adres or port is wrong or server is not reachable:" + hostid,
                     e);
         }
         catch (java.net.ConnectException e)
         {
             // Wrap as nested VL Exception and provide better
             // information:
-            throw new VlIOException("Connection Error. Adres or port is wrong or server is not reachable:" + hostid, e);
+            throw new NestedIOException("Connection Error. Adres or port is wrong or server is not reachable:" + hostid, e);
         }
         catch (java.net.SocketException e)
         {
@@ -250,7 +250,7 @@ public class VomsProxyCredential
             // Wrap as nested VL Exception and provide better
             // information:
             // when authentication fails, the socket is closed also.
-            throw new VlIOException(
+            throw new NestedIOException(
                     "Communication Error. Either SSL authentication failed or the adres or port is wrong (server not reachable):"
                             + hostid, e);
         }
@@ -262,7 +262,7 @@ public class VomsProxyCredential
         if (in == null)
         {
             // VlException
-            throw new VlIOException("Couldn't read from socket:" + socket.getInetAddress() + ":" + socket.getPort());
+            throw new NestedIOException("Couldn't read from socket:" + socket.getInetAddress() + ":" + socket.getPort());
 
         }
         String msg = new String("<?xml version=\"1.0\" encoding = \"US-ASCII\"?>" + "<voms>" + "<command>" + command
@@ -298,7 +298,7 @@ public class VomsProxyCredential
             errorPrintf("empty or null voms_server_answer\n");
 
             // P.T. de Boer: Do error checking !
-            throw new VlIOException("NULL reply from socket (command=" + command + "):" + socket.getInetAddress() + ":"
+            throw new NestedIOException("NULL reply from socket (command=" + command + "):" + socket.getInetAddress() + ":"
                     + socket.getPort());
         }
         // String answer = buff.readLine();
@@ -318,7 +318,7 @@ public class VomsProxyCredential
             // This is NOT a warning: myLogger.warn("VOMS server returned an
             // error => " + errormsg);
             // throw error:
-            throw new VlServerException("Error when communicating with:" + hostid + ".\nError=" + errormsg);
+            throw new ServerCommunicationException("Error when communicating with:" + hostid + ".\nError=" + errormsg);
         }
 
         String encoded;
@@ -329,7 +329,7 @@ public class VomsProxyCredential
         catch (IndexOutOfBoundsException e)
         {
             // P.T. de Boer. This is an error as well: Nest Exception:
-            throw new VlServerException("Message Error. Could not find encoded voms proxy in server answer.", e);
+            throw new ServerCommunicationException("Message Error. Could not find encoded voms proxy in server answer.", e);
         }
 
         // System.out.println(" succes " + encoded);
@@ -351,7 +351,7 @@ public class VomsProxyCredential
         catch (Exception e)
         {
             // P.T. de Boer nested VlException
-            throw new VlIOException("VomsProxyCredential Exception: Couldn't decode server answer\n" + encoded, e);
+            throw new NestedIOException("VomsProxyCredential Exception: Couldn't decode server answer\n" + encoded, e);
         }
     }
 

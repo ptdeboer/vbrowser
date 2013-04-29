@@ -32,11 +32,11 @@ import javax.swing.table.TableCellRenderer;
 
 import nl.esciencecenter.ptk.ui.presentation.UIPresentable;
 import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeType;
 import nl.nlesc.vlet.gui.Messages;
 import nl.nlesc.vlet.gui.icons.LabelIcon;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeType;
 
 public class VAttributeCellRenderer implements TableCellRenderer
 {

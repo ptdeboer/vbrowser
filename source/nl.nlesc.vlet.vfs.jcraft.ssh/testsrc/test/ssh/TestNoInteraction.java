@@ -5,8 +5,8 @@ import java.net.URL;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.crypt.Secret;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vfs.VFS;
@@ -31,7 +31,7 @@ public class TestNoInteraction
         VFS.exit();
     }
 
-    public static void testNoUI() throws VlException
+    public static void testNoUI() throws VrsException
     {
 
         try

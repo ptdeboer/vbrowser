@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import nl.esciencecenter.ptk.data.IntegerHolder;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.NodeFilter;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VDir;
@@ -76,13 +76,13 @@ public class SRMDir extends VDir implements VUnixFileMode
         this.setLocation(parsedVrl);
     }
 
-    public boolean create(boolean force) throws VlException
+    public boolean create(boolean force) throws VrsException
     {
         VDir dir = srmfs.createDir(getPath(), force);
         return (dir != null);
     }
 
-    public VFile getFile(String name) throws VlException
+    public VFile getFile(String name) throws VrsException
     {
         VFSNode node = this.srmfs.getPath(this.getPath() + "/" + name);
 
@@ -92,7 +92,7 @@ public class SRMDir extends VDir implements VUnixFileMode
         throw new nl.nlesc.vlet.exception.ResourceTypeMismatchException("Path is not a file:" + node);
     }
 
-    public VDir getDir(String name) throws VlException
+    public VDir getDir(String name) throws VrsException
     {
         VFSNode node = this.srmfs.getPath(this.getPath() + "/" + name);
 
@@ -103,7 +103,7 @@ public class SRMDir extends VDir implements VUnixFileMode
     }
 
     @Override
-    public VFSNode[] list() throws VlException
+    public VFSNode[] list() throws VrsException
     {
         if (this.dirQuery!=null)
         {
@@ -120,7 +120,7 @@ public class SRMDir extends VDir implements VUnixFileMode
     }
     
     // override core method of VDir 
-    public VFSNode[] list(NodeFilter filter,int offset,int maxNodes,IntegerHolder totalNumNodes) throws VlException
+    public VFSNode[] list(NodeFilter filter,int offset,int maxNodes,IntegerHolder totalNumNodes) throws VrsException
     {
         // use incremental listing ! 
         VFSNode[] nodes = this.srmfs.list(this.getPath(),offset,maxNodes);
@@ -137,7 +137,7 @@ public class SRMDir extends VDir implements VUnixFileMode
     }
 
     @Override
-    public boolean exists() throws VlException
+    public boolean exists() throws VrsException
     {
         if (srmfs.pathExists(getPath()) == false)
             return false;
@@ -148,7 +148,7 @@ public class SRMDir extends VDir implements VUnixFileMode
     }
 
     @Override
-    public boolean isReadable() throws VlException
+    public boolean isReadable() throws VrsException
     {
         if (getPermissionsString().toLowerCase().charAt(1) == 'r')
         {
@@ -158,7 +158,7 @@ public class SRMDir extends VDir implements VUnixFileMode
     }
 
     @Override
-    public boolean isWritable() throws VlException
+    public boolean isWritable() throws VrsException
     {
         if (getPermissionsString().toLowerCase().charAt(1) == 'w')
         {
@@ -167,14 +167,14 @@ public class SRMDir extends VDir implements VUnixFileMode
         return true;
     }
 
-    public boolean delete(boolean recurse) throws VlException
+    public boolean delete(boolean recurse) throws VrsException
     {
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting (SRM) directory:" + this.getPath(), 1);
         monitor.logPrintf("Deleting SRM Directory:" + this + "\n");
         return srmfs.rmdir(getPath(), recurse);
     }
 
-    public long getNrOfNodes() throws VlException
+    public long getNrOfNodes() throws VrsException
     {
         VFSNode[] nodes = getNodes();
         if (nodes == null)
@@ -183,7 +183,7 @@ public class SRMDir extends VDir implements VUnixFileMode
         return nodes.length;
     }
 
-    public VRL rename(String newName, boolean renameFullPath) throws VlException
+    public VRL rename(String newName, boolean renameFullPath) throws VrsException
     {
         String newPath = null;
 
@@ -196,14 +196,14 @@ public class SRMDir extends VDir implements VUnixFileMode
     }
 
     @Override
-    public long getModificationTime() throws VlException
+    public long getModificationTime() throws VrsException
     {
         // is included in the simple query
         return this.srmfs.createModTime(srmDetails);
 
     }
 
-    private TMetaDataPathDetail fetchFullDetails() throws VlException
+    private TMetaDataPathDetail fetchFullDetails() throws VrsException
     {
         // check if full details have been fetched. If not fetch them.
         if (srmDetails == null)
@@ -218,7 +218,7 @@ public class SRMDir extends VDir implements VUnixFileMode
     // Upload and Storage Methods
     // ==
 
-    public OutputStream createFileOutputStream(String fileName, boolean force) throws VlException
+    public OutputStream createFileOutputStream(String fileName, boolean force) throws VrsException
     {
         String srmFilePath = resolvePathString(fileName);
         ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("createFileOutputStream:" + srmFilePath, -1);
@@ -238,7 +238,7 @@ public class SRMDir extends VDir implements VUnixFileMode
     }
 
     // bulk method to fetch all transport VRLs at once;
-    public VRL[] getTransportVRLsForChildren() throws VlException
+    public VRL[] getTransportVRLsForChildren() throws VrsException
     {
         // list full details:
         VFSNode[] nodesArray = list(); 
@@ -264,13 +264,13 @@ public class SRMDir extends VDir implements VUnixFileMode
         return tVrls;
     }
 
-    public int getMode() throws VlException
+    public int getMode() throws VrsException
     {
         fetchFullDetails();
         return this.srmfs.getUnixMode(srmDetails);
     }
 
-    public void setMode(int mode) throws VlException
+    public void setMode(int mode) throws VrsException
     {
         fetchFullDetails();
         this.srmfs.setUnixMode(getLocation(), this.srmDetails, mode);

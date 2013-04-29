@@ -24,7 +24,7 @@ import java.security.PrivateKey;
 import java.security.cert.Certificate;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.grid.proxy.VGridCredential;
 import nl.nlesc.vlet.grid.proxy.VGridCredentialProvider;
@@ -72,7 +72,7 @@ public class GSSCredentialWrapper implements VGridCredential
     }
 
     @Override
-    public boolean saveCredentialTo(String path) throws VlException
+    public boolean saveCredentialTo(String path) throws VrsException
     {
         throw new nl.nlesc.vlet.exception.NotImplementedException("Can't save a GSS Credential"); 
     }
@@ -138,14 +138,14 @@ public class GSSCredentialWrapper implements VGridCredential
 
 
     @Override
-    public Certificate[] getProxyCertificateChain() throws VlException
+    public Certificate[] getProxyCertificateChain() throws VrsException
     {
         return null;
     }
 
 
     @Override
-    public PrivateKey getProxyPrivateKey() throws VlException
+    public PrivateKey getProxyPrivateKey() throws VrsException
     {
         return null;
     }

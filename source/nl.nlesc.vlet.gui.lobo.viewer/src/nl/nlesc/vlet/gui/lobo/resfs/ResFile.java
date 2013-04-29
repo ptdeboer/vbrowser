@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.io.VRandomReadable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
@@ -77,19 +77,19 @@ public class ResFile extends VNode implements VRandomReadable,VStreamReadable
     }
 	
 
-	public OutputStream getOutputStream() throws VlException
+	public OutputStream getOutputStream() throws VrsException
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public boolean renameTo(String newName, boolean renameFullPath)
-			throws VlException
+			throws VrsException
 	{
 		return false;
 	}
 
-	public boolean delete() throws VlException
+	public boolean delete() throws VrsException
 	{
 		return false;
 	}

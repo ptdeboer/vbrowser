@@ -45,8 +45,8 @@ import javax.swing.tree.TreeSelectionModel;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.data.ResourceRef;
@@ -121,7 +121,7 @@ public class ResourceTree extends JTree implements VContainer
      */
 
     public void setRootNode(ProxyNode rootNode, VRL viewedLocation)
-            throws VlException
+            throws VrsException
     {
         if (rootNode != null)
             // first set new root: 
@@ -270,7 +270,7 @@ public class ResourceTree extends JTree implements VContainer
 
     /** Set New Root Resource */
 
-    public void setRootNode(ProxyNode pnode) throws VlException
+    public void setRootNode(ProxyNode pnode) throws VrsException
     {
         logger.debugPrintf(">>> New Root Node:%s\n",pnode); 
     	
@@ -516,11 +516,11 @@ public class ResourceTree extends JTree implements VContainer
      * Set selection of ResourceTee, if node NOT found, update rootNode if resourceTree
      * @param node
      * @param newroot    ; set this node as root is not found in tree
-     * @throws VlException 
-     * @throws VlException 
+     * @throws VrsException 
+     * @throws VrsException 
      */
     public void updateSelection(ProxyNode pnode, boolean newRoot)
-            throws VlException
+            throws VrsException
     {
         logger.debugPrintf("UpdateSelection (I) (newRoot=%s):%s\n",newRoot,pnode);  
         
@@ -553,7 +553,7 @@ public class ResourceTree extends JTree implements VContainer
             {
                 this.setRootNode(pnode);
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 UILogger.logException(this,ClassLogger.ERROR,e,"Exeption when updating Root Node:%s\n",pnode); 
             }

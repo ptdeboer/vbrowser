@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.vrs.vdriver.infors;
 
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlInternalError;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -45,14 +45,14 @@ public abstract class CompositeServiceInfoNode<T extends VNode> extends LogicalF
     
     public boolean save() {return false;} 
     
-    public VRL getStorageLocation() throws VlException
+    public VRL getStorageLocation() throws VrsException
     {
         return null; // doesn't have one
     }
 
-    public void setLogicalLocation(VRL newRef) throws VlException
+    public void setLogicalLocation(VRL newRef) throws VrsException
     {
-        throw new VlInternalError("Can not set logical location of this node:"+this);  
+        throw new InternalError("Can not set logical location of this node:"+this);  
     }    
 
 }

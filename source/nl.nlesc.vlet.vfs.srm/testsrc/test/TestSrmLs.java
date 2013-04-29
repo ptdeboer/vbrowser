@@ -1,8 +1,8 @@
 package test;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.glite.lbl.srm.SRMClientV2;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -86,7 +86,7 @@ public class TestSrmLs
                 {
                     testLS(vfs, dirVrl);
                 }
-                catch (VlException e)
+                catch (VrsException e)
                 {
                     e.printStackTrace();
                 }
@@ -98,7 +98,7 @@ public class TestSrmLs
 
     }
 
-    private static void testLS(final VFSClient vfs, final VRL dirVrl) throws VlException
+    private static void testLS(final VFSClient vfs, final VRL dirVrl) throws VrsException
     {
         VFSNode[] nodes = vfs.list(dirVrl);
         System.out.printf(" - num nodes=%d\n", nodes.length);

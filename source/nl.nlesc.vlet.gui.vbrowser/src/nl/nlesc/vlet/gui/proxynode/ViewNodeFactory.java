@@ -22,7 +22,7 @@ package nl.nlesc.vlet.gui.proxynode;
 
 import java.util.List;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.view.ViewModel;
 import nl.nlesc.vlet.gui.view.ViewNode;
@@ -80,7 +80,7 @@ public class ViewNodeFactory
             {
                 viewNode.setTargetVrl(pnode.getTargetVRL());
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                // Global.warnPrintln(this,"Couldn't prefetch LinkTarget:"+pnode);
               //  Global.warnPrintln(this,"Exception="+e); 

@@ -36,10 +36,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
-import nl.nlesc.vlet.data.*;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.gui.panels.attribute.AttributePanel;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.data.*;
 import nl.nlesc.vlet.vrs.vrl.*;
 
 

@@ -35,9 +35,9 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.panels.list.StatusStringListField;
 import nl.nlesc.vlet.gui.panels.list.StatusStringListModel;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
@@ -207,7 +207,7 @@ public class ReplicaEditor extends ViewerPlugin
 
     /** Perform Dynamic Action Method */
     public void doMethod(String methodName, ActionContext actionContext)
-            throws VlException
+            throws VrsException
     {
         this.controller.doMethod(methodName,actionContext); 
     }

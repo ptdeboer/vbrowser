@@ -21,10 +21,10 @@
 package nl.nlesc.vlet.vrs.globusrs;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class GlobusInfoNode extends VNode
@@ -58,7 +58,7 @@ public class GlobusInfoNode extends VNode
 	    return list.toArray(); 
 	}
 
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         if (name.equals("globus.version"))
         {

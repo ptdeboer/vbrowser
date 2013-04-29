@@ -26,7 +26,7 @@ import java.util.Set;
 
 
 import nl.esciencecenter.ptk.GlobalProperties;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -255,14 +255,14 @@ public class TestSettings
             test_srb_location = new VRL(
                     "srb://piter.de.boer.vlenl@srb.grid.sara.nl:50000/VLENL/home/piter.de.boer.vlenl/testSRB?srb.defaultResource=vleGridStore");
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             e.printStackTrace();
         }
 
     }
 
-    public static ServerInfo getServerInfoFor(VRL location, boolean create) throws VlException
+    public static ServerInfo getServerInfoFor(VRL location, boolean create) throws VrsException
     {
         return VRSContext.getDefault().getServerInfoFor(location, create);
     }

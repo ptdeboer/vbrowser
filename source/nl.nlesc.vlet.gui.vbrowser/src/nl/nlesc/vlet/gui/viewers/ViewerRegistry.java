@@ -25,9 +25,9 @@ import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.HashMapList;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.util.PluginLoader;
@@ -367,7 +367,7 @@ public class ViewerRegistry
                 } // for node:nodes 
  
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 logger.logException(ClassLogger.ERROR,e,"Error reading viewersdir:%s\n",dir);
             }
@@ -509,10 +509,11 @@ public class ViewerRegistry
 
     private void showError(String className, Throwable e)
     {
-        VlException vle = VlException.create("" + e.getClass().getCanonicalName(), 
+        VrsException vle = VrsException.create(
                 "Couldn't load viewer:" + className + "\n"
                 + "Exception=" + e.getClass().getCanonicalName() + "\n" 
-                + "Reason=" + e.getMessage(), e);
+                + "Reason=" + e.getMessage(), e,
+                e.getClass().getCanonicalName());
 
         nl.nlesc.vlet.gui.dialog.ExceptionForm.show(vle);
     }

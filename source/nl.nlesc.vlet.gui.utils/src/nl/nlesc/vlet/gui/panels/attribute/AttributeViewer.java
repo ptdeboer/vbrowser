@@ -36,8 +36,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
-import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.gui.GuiSettings;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;

@@ -36,11 +36,9 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.ui.panels.monitoring.TaskMonitorDialog;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.actions.ActionContext;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.editors.ResourceEditor;
@@ -52,6 +50,8 @@ import nl.nlesc.vlet.gui.vbrowser.VBrowserFactory;
 import nl.nlesc.vlet.gui.widgets.NavigationBar;
 import nl.nlesc.vlet.gui.widgets.NavigationBar.NavigationAction;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ReplicaController implements ActionListener, ListSelectionListener, ListDataListener
@@ -274,7 +274,7 @@ public class ReplicaController implements ActionListener, ListSelectionListener,
                     {
                         replicaUtil.unregisterReplica(monitor, se);
                     }
-                    catch (VlException e)
+                    catch (VrsException e)
                     {
                         monitor.logPrintf("***Exception:" + e + "\n");
                     }
@@ -298,7 +298,7 @@ public class ReplicaController implements ActionListener, ListSelectionListener,
                     {
                         replicaUtil.addReplica(monitor, se);
                     }
-                    catch (VlException e)
+                    catch (VrsException e)
                     {
                         monitor.logPrintf("***Exception:" + e + "\n");
                     }
@@ -319,7 +319,7 @@ public class ReplicaController implements ActionListener, ListSelectionListener,
                     {
                         replicaUtil.deleteReplica(monitor, se);
                     }
-                    catch (VlException e)
+                    catch (VrsException e)
                     {
                         monitor.logPrintf("***Exception:" + e + "\n");
                     }
@@ -786,7 +786,7 @@ public class ReplicaController implements ActionListener, ListSelectionListener,
                                 VAttributeSet newAttrs = replicaUtil.getReplicaAttributes(vrl, attrs);
                                 model.setReplicaAttributes(vrl, newAttrs);
                             }
-                            catch (VlException e)
+                            catch (VrsException e)
                             {
                                 model.setReplicaException(vrl, e);
                                 handle(e);
@@ -833,7 +833,7 @@ public class ReplicaController implements ActionListener, ListSelectionListener,
                                                                             // new
                                                                             // window
                 }
-                catch (VlException e)
+                catch (VrsException e)
                 {
                     handle(e);
                 }
@@ -862,7 +862,7 @@ public class ReplicaController implements ActionListener, ListSelectionListener,
                     ProxyNode pnode = ProxyNode.getProxyNodeFactory().openLocation(repVrl);
                     ResourceEditor.editAttributes(pnode);
                 }
-                catch (VlException e)
+                catch (VrsException e)
                 {
                     handle(e);
                 }

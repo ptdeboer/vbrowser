@@ -1,6 +1,6 @@
 package test;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
 import nl.nlesc.vlet.vfs.srm.SRMFileSystem;
 import nl.nlesc.vlet.vrs.VRS;
@@ -39,7 +39,7 @@ public class TestSrmSaraCountLs
 		System.out.println(" === END === \n");
 	}
 
-    private static void testCountLS(SRMFileSystem srmFs, VRL dirVrl, int offset, int count) throws VlException
+    private static void testCountLS(SRMFileSystem srmFs, VRL dirVrl, int offset, int count) throws VrsException
     {
         
         VFSNode[] nodes = srmFs.list(dirVrl.getPath(),offset,count); 

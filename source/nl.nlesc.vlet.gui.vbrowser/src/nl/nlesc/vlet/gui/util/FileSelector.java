@@ -34,7 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.tree.ResourceTree;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -207,7 +207,7 @@ public class FileSelector extends javax.swing.JDialog
                     System.out.println("REFRESH");
                     controller.refresh();
                 }
-                catch (VlException e1)
+                catch (VrsException e1)
                 {
                     e1.printStackTrace();
                 }

@@ -27,15 +27,15 @@ import javax.swing.Icon;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.data.ResourceRef;
 import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRenamable;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.events.ResourceEventListener;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -63,7 +63,7 @@ public abstract class ProxyNode
         ProxyVRSClient.getInstance().fireEvent(event);
     }
 
-    public static ProxyNode getVirtualRoot() throws VlException
+    public static ProxyNode getVirtualRoot() throws VrsException
     {
         ProxyVRSClient proxyVrs=ProxyVRSClient.getInstance();
         VRL vrl=proxyVrs.getVirtualRootLocation(); 
@@ -216,7 +216,7 @@ public abstract class ProxyNode
     }
 
     /** Creat in this container a new LinkNode to the specified VRL */
-    public void createLinkTo(VRL target) throws VlException
+    public void createLinkTo(VRL target) throws VrsException
     {
         // need info:
         // ProxyNode
@@ -224,18 +224,18 @@ public abstract class ProxyNode
         // createLinkTo(pnode);
     }
 
-    public VAttribute[] getAttributes() throws VlException
+    public VAttribute[] getAttributes() throws VrsException
     {
         return getAttributes(getAttributeNames());
     }
 
     /** get Ordened Attribute set in the specified order */
-    public VAttributeSet getAttributeSet(String[] names) throws VlException
+    public VAttributeSet getAttributeSet(String[] names) throws VrsException
     {
         return new VAttributeSet(getAttributes(names));
     }
 
-    public VAttributeSet getAttributeSet() throws VlException
+    public VAttributeSet getAttributeSet() throws VrsException
     {
         return new VAttributeSet(getAttributes());
     }
@@ -243,7 +243,7 @@ public abstract class ProxyNode
     /**
      * @deprecated NOT efficient way to get child node.
      */
-    public ProxyNode getChild(String basename) throws VlException
+    public ProxyNode getChild(String basename) throws VrsException
     {
         ProxyNode childs[] = this.getChilds(null);
         if (childs == null)
@@ -267,7 +267,7 @@ public abstract class ProxyNode
      * If this node represents a Resource Link, return the mimetype of the
      * target resource.
      */
-    public String getTargetMimeType() throws VlException
+    public String getTargetMimeType() throws VrsException
     {
         VAttribute attr = this.getAttribute(VAttributeConstants.ATTR_TARGET_MIMETYPE);
         if (attr != null)
@@ -275,7 +275,7 @@ public abstract class ProxyNode
         return null;
     }
 
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         VAttribute attrs[] = getAttributes(new String[]
         { name });
@@ -299,7 +299,7 @@ public abstract class ProxyNode
     /** 
      * Tries to resolve logical parent location.
      */ 
-    public VRL getParentLocation() throws VlException
+    public VRL getParentLocation() throws VrsException
     {
         ProxyNode parent=getParent(); 
         VRL vrl=null;
@@ -330,15 +330,15 @@ public abstract class ProxyNode
      * represent a vlink (or.vrsx) file, it is NOT a LogicalNode only when
      * loaded it is a LogicalNode (like MyVle and ResourceFolders).
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    abstract public boolean isLogicalNode() throws VlException;
+    abstract public boolean isLogicalNode() throws VrsException;
 
     /**
      * Whether this ProxyNode represents a Resource Link for example a Server
      * Description or a VLink.
      * 
-     * @throws VlException
+     * @throws VrsException
      */
     abstract public boolean isResourceLink();
 
@@ -346,7 +346,7 @@ public abstract class ProxyNode
      * If this node represents a Resource Link, resolve the target and return
      * the new ProxyNode
      */
-    abstract public ProxyNode getTargetPNode() throws VlException;
+    abstract public ProxyNode getTargetPNode() throws VrsException;
 
     /**
      * Java reflection method to check the VRS Class of the wrapped VNode
@@ -356,9 +356,9 @@ public abstract class ProxyNode
     /**
      * Returns Target VRL if node is a ResourceLink. Null otherwise.
      */
-    abstract public VRL getTargetVRL() throws VlException;
+    abstract public VRL getTargetVRL() throws VrsException;
 
-    abstract public void createLinkTo(ProxyNode pnode) throws VlException;
+    abstract public void createLinkTo(ProxyNode pnode) throws VrsException;
 
     // ===
     // Resource Attribute Interface
@@ -377,38 +377,38 @@ public abstract class ProxyNode
 
     abstract public String[] getAttributeNames();
 
-    abstract public String getIconURL(int size) throws VlException;
+    abstract public String getIconURL(int size) throws VrsException;
 
-    abstract public VAttribute[] getAttributes(String[] attrNames) throws VlException;
+    abstract public VAttribute[] getAttributes(String[] attrNames) throws VrsException;
 
-    abstract public void setAttributes(VAttribute[] attrs, boolean refresh) throws VlException;
+    abstract public void setAttributes(VAttribute[] attrs, boolean refresh) throws VrsException;
 
     abstract public UIPresentation getPresentation();
 
-    abstract public VAttribute[][] getACL() throws VlException;
+    abstract public VAttribute[][] getACL() throws VrsException;
 
-    abstract public void setACL(VAttribute[][] acl) throws VlException;
+    abstract public void setACL(VAttribute[][] acl) throws VrsException;
 
-    abstract public VAttribute[] getACLEntities() throws VlException;
+    abstract public VAttribute[] getACLEntities() throws VrsException;
 
-    abstract public VAttribute[] createACLRecord(VAttribute entityAttr, boolean writeThrough) throws VlException;
+    abstract public VAttribute[] createACLRecord(VAttribute entityAttr, boolean writeThrough) throws VrsException;
 
     //
     // Logical Tree Stucture + Composite Modification Methods:
     //
 
-    abstract public VRL renameTo(String name, boolean nameIsPath) throws VlException;
+    abstract public VRL renameTo(String name, boolean nameIsPath) throws VrsException;
 
-    abstract public ProxyNode getParent() throws VlException;
+    abstract public ProxyNode getParent() throws VrsException;
 
-    abstract public ProxyNode[] getChilds(nl.nlesc.vlet.gui.view.ViewFilter filter) throws VlException;
+    abstract public ProxyNode[] getChilds(nl.nlesc.vlet.gui.view.ViewFilter filter) throws VrsException;
 
     // abstract public int getNrOfChilds(nl.uva.vlet.gui.view.ViewFilter filter)
     // throws VlException;
 
-    abstract public boolean delete(boolean compositeDelete) throws VlException;
+    abstract public boolean delete(boolean compositeDelete) throws VrsException;
 
-    abstract public ProxyNode create(String resourceType, String newName) throws VlException;
+    abstract public ProxyNode create(String resourceType, String newName) throws VrsException;
 
     //
     // Misc
@@ -427,6 +427,6 @@ public abstract class ProxyNode
     // abstract public boolean locationEquals(VRL loc, boolean
     // checkLinkTargets);
 
-    abstract public boolean isEditable() throws VlException;
+    abstract public boolean isEditable() throws VrsException;
 
 }

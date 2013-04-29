@@ -44,12 +44,12 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.gui.HyperLinkListener;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -162,9 +162,9 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
     /**
      * Returns URL of viewed location
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    final public URL getURL() throws VlException
+    final public URL getURL() throws VrsException
     {
         try
         {
@@ -318,7 +318,7 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
     // ========================================================================
 
     /** Perform Dynamic Action Method */
-    public void doMethod(String methodName, ActionContext actionContext) throws VlException
+    public void doMethod(String methodName, ActionContext actionContext) throws VrsException
     {
         throw new nl.nlesc.vlet.exception.NotImplementedException("Action method not implemented by Viewer:" + methodName);
     }
@@ -372,13 +372,13 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
     }
 
     /** Returns VNode of viewedlocation */
-    protected VNode getVNode() throws VlException
+    protected VNode getVNode() throws VrsException
     {
         return getVNode(this.location);
     }
 
     /** Returns VNode specified location */
-    protected VNode getVNode(VRL vrl) throws VlException
+    protected VNode getVNode(VRL vrl) throws VrsException
     {
         // use shared UI environment:
         return UIGlobal.getVRSContext().openLocation(vrl);
@@ -467,14 +467,14 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
     }
 
     /** Returns mimetype of viewed resource */
-    public String getMimeType() throws VlException
+    public String getMimeType() throws VrsException
     {
         VNode node = getVNode();
         return node.getMimeType();
     }
 
     /** Returns inputstream to viewed resource */
-    public InputStream getInputStream() throws VlException
+    public InputStream getInputStream() throws VrsException
     {
         try
         {
@@ -487,12 +487,12 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
         }
         catch (IOException e)
         {
-            throw new VlIOException(e); 
+            throw new NestedIOException(e); 
         }
     }
 
     /** returns outputstream to viewed resource */
-    public OutputStream getOutputStream() throws VlException
+    public OutputStream getOutputStream() throws VrsException
     {
         try
         {
@@ -505,7 +505,7 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
         }
         catch (IOException e)
         {
-            throw new VlIOException(e); 
+            throw new NestedIOException(e); 
         }
     }
 
@@ -605,7 +605,7 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
      * 
      * @see #updateLocation(VRL)
      */
-    public void updateLocation(String loc) throws VlException
+    public void updateLocation(String loc) throws VrsException
     {
         updateLocation(new VRL(loc));
     }
@@ -622,7 +622,7 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
      * 
      * @see #startViewer(VRL, String, ActionContext)
      */
-    public void startViewer(VRL location) throws VlException
+    public void startViewer(VRL location) throws VrsException
     {
         startViewer(location, null, null);
     }
@@ -657,9 +657,9 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
      * @param actionContext
      *            - optional Dynamic Action Context if applicable.
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public void startViewer(VRL location, String optMethodName, ActionContext actionContext) throws VlException
+    public void startViewer(VRL location, String optMethodName, ActionContext actionContext) throws VrsException
     {
         setVRL(location);
 
@@ -710,7 +710,7 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
      * Tester method to start this viewer in a standalone context.
      * Implementation might change. Creates a JFrame and embeds this viewer.
      */
-    public void startAsStandAloneApplication(VRL location) throws VlException
+    public void startAsStandAloneApplication(VRL location) throws VrsException
     {
         if (getViewContext() == null)
         {
@@ -812,9 +812,9 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
      * updateLocation()
      * 
      * @param loc
-     * @throws VlException
+     * @throws VrsException
      */
-    public boolean handleLink(VRL loc, boolean openNew) throws VlException
+    public boolean handleLink(VRL loc, boolean openNew) throws VrsException
     {
         VNode node = getVNode(loc);
         // check for me:
@@ -904,7 +904,7 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
      * thread, so updates to Swing Event must be done using the
      * SwintgUtil.invokeLater() methods.
      */
-    public abstract void updateLocation(VRL loc) throws VlException;
+    public abstract void updateLocation(VRL loc) throws VrsException;
 
     /**
      * When this method is called the viewer should stop all background actions

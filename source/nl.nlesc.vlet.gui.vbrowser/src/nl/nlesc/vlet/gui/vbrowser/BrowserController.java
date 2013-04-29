@@ -40,12 +40,10 @@ import javax.swing.SwingUtilities;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.actions.ActionContext;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlInternalError;
+import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.grid.proxy.GridProxyListener;
 import nl.nlesc.vlet.gui.GuiPropertyName;
@@ -78,6 +76,8 @@ import nl.nlesc.vlet.gui.viewers.ViewerEvent;
 import nl.nlesc.vlet.gui.viewers.ViewerManager;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.EventType;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -294,7 +294,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 			VRL vrl=new VRL(locStr); 
 			if (vrl.isAbsolute()==false)
 			{
-				handle(new VlException("Invalid Location: Not a valid VRL:"+vrl));
+				handle(new VrsException("Invalid Location: Not a valid VRL:"+vrl));
 				return;
 				//does not work: 
 				// vrl=new VRL("http://www.google.com/search?q="+vrl.toURIString());  
@@ -302,7 +302,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 			performOpenLocation(vrl);
 
 		}
-		catch (VlException e)
+		catch (VrsException e)
 		{
 			handle(e);
 		}  
@@ -409,7 +409,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 			
 			if (performNode==null)
 			{
-			    handle(new VlInternalError("Node not in cache:"+vcomp.getResourceRef())); 
+			    handle(new InternalError("Node not in cache:"+vcomp.getResourceRef())); 
 			}
 			   
 		}
@@ -835,7 +835,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 						break;
 					}
 				}
-				catch (VlException ex)
+				catch (VrsException ex)
 				{
 					asyncHandle(ex);
 				}
@@ -894,7 +894,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 
 		ActionTask createTask=new ActionTask(this,"Creating new "+resourceType+":"+name)
 		{
-			public void doTask() throws VlException
+			public void doTask() throws VrsException
 			{
 				performNode.create(resourceType,name);
 			}
@@ -919,7 +919,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 		{
 			nl.nlesc.vlet.gui.panels.acldialog.ACLPanel.showEditor(this,node);
 		}
-		catch (VlException e)
+		catch (VrsException e)
 		{
 			handle(e); 
 		} 
@@ -1091,7 +1091,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
                     // Async -> Async ! 
                     asyncOpenLocation(parentLoc);
                 }
-                catch (VlException e)
+                catch (VrsException e)
                 {
                     handle(e);
                 }
@@ -1154,7 +1154,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 				this.asyncOpenLocation(target, addToHistory,true);
 				return; 
 			}
-			catch (VlException e)
+			catch (VrsException e)
 			{
 				handle(e); 
 				return; 
@@ -1209,7 +1209,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 				composite=true;
 			}
 		}
-		catch (VlException e)
+		catch (VrsException e)
 		{
 			handle(e);
 			return; // do not continue...
@@ -1259,7 +1259,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 				{
 					startItemViewer(viewer,targetLocation,false); 
 				}
-				catch (VlException e)
+				catch (VrsException e)
 				{
 					this.handle(e); 
 				}
@@ -1298,7 +1298,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 				vbrowser.resourceTree.updateSelection(orgNode, true);
 			}
 		}
-		catch (VlException e)
+		catch (VrsException e)
 		{
 			handle(e);
 		}
@@ -1318,7 +1318,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 
 
 
-	private void startItemViewer(ViewerPlugin viewer, VRL location,boolean startStandalone) throws VlException
+	private void startItemViewer(ViewerPlugin viewer, VRL location,boolean startStandalone) throws VrsException
 	{
 		// spawn external viewer: 
 		if ((viewer.getAlwaysStartStandalone()==true) || (startStandalone==true))
@@ -1413,7 +1413,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 		UILogger.errorPrintf(this,str); 
 	}
 
-    private ProxyNode openLocation(VRL location) throws VlException 
+    private ProxyNode openLocation(VRL location) throws VrsException 
     {
         ProxyNode node=null; 
         //setBusy(true);
@@ -1441,7 +1441,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
                     context.setStartedAsDefaultAction(true); 
                     performViewNode(node,context,false);
                 }
-                catch (VlException e)
+                catch (VrsException e)
                 {
                     handle(e); 
                 }
@@ -1620,7 +1620,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 			{
 				vbrowser.resourceTree.updateSelection(node,false); 
 			}
-			catch (VlException e)
+			catch (VrsException e)
 			{
 				handle(e);
 			}
@@ -1666,9 +1666,9 @@ public class BrowserController implements WindowListener, GridProxyListener,
 	/**
 	 * Refreshes all resources and windows
 	 * 
-	 * @throws VlException
+	 * @throws VrsException
 	 */
-	private void performRefreshAll() throws VlException
+	private void performRefreshAll() throws VrsException
 	{
 		if (viewedNode!=null) 
 		{
@@ -1810,7 +1810,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 		{
 			this.vbrowser.tablePanel.populateWith(pnode);
 		}
-		catch (VlException e)
+		catch (VrsException e)
 		{
 			handle(e); 
 		}
@@ -1829,7 +1829,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 			vbrowser.iconsScrollPane.setToolTipText(pnode.getVRL().toString());
 			vbrowser.iconsPanel.setRootNode(pnode);
 		}
-		catch (VlException e)
+		catch (VrsException e)
 		{
 			handle(e);
 		}
@@ -2565,13 +2565,13 @@ public class BrowserController implements WindowListener, GridProxyListener,
 //		TaskMonitorDialog.showTaskMonitorDialog(this.getFrame(), dynamicAction,1000); 
 	}
 
-    public void performDynamicViewerAction(final ActionCommand actionCommand, final ActionContext actionContext) throws VlException
+    public void performDynamicViewerAction(final ActionCommand actionCommand, final ActionContext actionContext) throws VrsException
 	{
         // Start viewer with an ActionContext !
 	    performStartStandaloneViewer(actionCommand,actionContext);
 	}
 	
-	public void performStartStandaloneViewer(final ActionCommand actionCommand, final ActionContext actionContext) throws VlException
+	public void performStartStandaloneViewer(final ActionCommand actionCommand, final ActionContext actionContext) throws VrsException
     {
         String iviewerClassName=actionCommand.getViewerClassName(); 
         // can be null! 
@@ -2585,7 +2585,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 
         if (iviewerClassName==null) 
         {
-            throw new VlException("ViewerException: Viewer not defined for action command:"+actionCommand); 
+            throw new VrsException("ViewerException: Viewer not defined for action command:"+actionCommand); 
         }
 
         ViewContext context=new ViewContext(this); // default, start embedded, etc.  
@@ -2608,7 +2608,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
      * Clears all cached attributes. Sent an event that resource listeners
      * should check/refetch their attributes.
      * 
-     * @throws VlException
+     * @throws VrsException
      * 
      */
     public void asyncRefresh(final ProxyNode node)
@@ -2616,7 +2616,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
         // go background: 
         ActionTask refreshTask=new ActionTask(this,"Properties Update Task")
         {
-        	public void doTask() throws VlException
+        	public void doTask() throws VrsException
         	{
         		node.refresh(); 
         	}
@@ -2635,7 +2635,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
     	return this.interactiveActionHandler.interactiveCheckAuthenticationFor(vrl); 
 	}
     
-	private ProxyNode getVirtualRootNode() throws VlException
+	private ProxyNode getVirtualRootNode() throws VrsException
 	{
 		return ProxyNode.getVirtualRoot(); 
 	}
@@ -2702,7 +2702,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
         {
             this.asyncOpenLocation(UIGlobal.getVirtualRootLocation(),false,false);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             handle(e); 
         }

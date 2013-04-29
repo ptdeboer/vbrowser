@@ -3,7 +3,7 @@ package nl.nlesc.vlet.util.bdii;
 import java.util.HashMap;
 import java.util.Map;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VRSContext;
 
 public class BdiiUtil
@@ -13,9 +13,9 @@ public class BdiiUtil
     /**
      * Creates or return already created BDII Service for this context. 
      * @retun Always create a BdiiService Object. 
-     * @throws VlException
+     * @throws VrsException
      */
-    public static BdiiService getBdiiService(VRSContext vrsContext) throws VlException
+    public static BdiiService getBdiiService(VRSContext vrsContext) throws VrsException
     {
         // auto update !
         java.net.URI uri = vrsContext.getConfigManager().getBdiiServiceURI();

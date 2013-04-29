@@ -20,15 +20,15 @@
 
 package nl.nlesc.vlet.gui.proxyvrs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** Abstract interface for ProxyNode factories */
 public interface ProxyNodeFactory
 {
-    public abstract ProxyNode openLocation(VRL loc) throws VlException ; 
+    public abstract ProxyNode openLocation(VRL loc) throws VrsException ; 
   
-    public abstract ProxyNode openLocation(VRL loc, boolean resolveLinks) throws VlException ;
+    public abstract ProxyNode openLocation(VRL loc, boolean resolveLinks) throws VrsException ;
     
     /**
      * @deprecated Caching will not be visible in the future

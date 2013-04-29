@@ -21,8 +21,8 @@
 package nl.nlesc.vlet.gui;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -90,7 +90,7 @@ public class startVBrowser
             }
       	}
     }
-    catch (VlException e)
+    catch (VrsException e)
     {
         UILogger.logException(null,ClassLogger.ERROR,e,"***Error: Exception:%s\n",e); 
         ExceptionForm.show(e); 

@@ -22,8 +22,8 @@ package nl.nlesc.vlet.gui.lobo;
 
 import java.net.MalformedURLException;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 import org.lobobrowser.clientlet.ClientletResponse;
@@ -106,7 +106,7 @@ public class LoboBrowserPanel extends BrowserPanel
             }
             
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             controller.handle("Couldn't handle url:"+url,e);
         }

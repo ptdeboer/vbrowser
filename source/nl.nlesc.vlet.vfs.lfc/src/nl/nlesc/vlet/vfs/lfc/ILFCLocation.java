@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vfs.lfc;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** Shared method between LFCFile and LFCDirectory */ 
@@ -30,11 +30,11 @@ public interface ILFCLocation
     
     boolean isDir(); 
     
-    boolean isSymbolicLink() throws VlException;
+    boolean isSymbolicLink() throws VrsException;
     
     String getPath();
 
-    FileDescWrapper getWrapperDesc() throws VlException;
+    FileDescWrapper getWrapperDesc() throws VrsException;
 
     String getName();
 
@@ -44,9 +44,9 @@ public interface ILFCLocation
      * Return this file GUID or the GUID from the link target
      * if this file is a symbolic link. 
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    String getGUID() throws VlException;
+    String getGUID() throws VrsException;
 
  
 }

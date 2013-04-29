@@ -2,7 +2,7 @@ package test;
 
 import java.util.ArrayList;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vfs.srm.SRMDir;
@@ -79,7 +79,7 @@ public class BenchmarkSRM
         {
             Sas = BdiiUtil.getBdiiService(context).getSRMv22SAsforVO(context.getVO());
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             e.printStackTrace();
         }
@@ -146,7 +146,7 @@ public class BenchmarkSRM
                 message(((i * 100.0) / Sas.size()) + " Done");
 
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 e.printStackTrace();
                 results.append(e.getMessage()+"\n");
@@ -172,7 +172,7 @@ public class BenchmarkSRM
         message(title.toString()+"\n"+results.toString());
     }
 
-    private static SRMFile[] createTestFiles(int numOfBulkFiles, VDir testDir) throws VlException
+    private static SRMFile[] createTestFiles(int numOfBulkFiles, VDir testDir) throws VrsException
     {
         SRMFile[] bulkFiles = new SRMFile[numOfBulkFiles];
         for (int j = 0; j < numOfBulkFiles; j++)
@@ -184,7 +184,7 @@ public class BenchmarkSRM
         return bulkFiles;
     }
 
-    private static SRMDir createTestDir(SRMFileSystem srmFS, VRL testLoc) throws VlException
+    private static SRMDir createTestDir(SRMFileSystem srmFS, VRL testLoc) throws VrsException
     {
         SRMDir testDir = (SRMDir) srmFS.newDir(testLoc.appendPath("spiros_test_delete_me").getPath());
         if (!testDir.exists())
@@ -213,7 +213,7 @@ public class BenchmarkSRM
             srmFS.thirdPartyCopy(sourceVrls, destVrls);
             time = System.currentTimeMillis() - start;
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             message("Failed to copy files from: " + bulkFiles[0].getHostname() + " to " + destDir.getHostname());
             // e.printStackTrace();
@@ -222,7 +222,7 @@ public class BenchmarkSRM
         return time;
     }
 
-    private static double testOverhead(int numOfBulkFiles, VDir testDir, SRMFile[] bulkFiles) throws VlException
+    private static double testOverhead(int numOfBulkFiles, VDir testDir, SRMFile[] bulkFiles) throws VrsException
     {
         long start = 0;
         long overhead = 0;
@@ -238,7 +238,7 @@ public class BenchmarkSRM
         return (overheadSum / (double) numOfBulkFiles);
     }
 
-    private static boolean supportsACL(VNode node, int[] testModes) throws VlException
+    private static boolean supportsACL(VNode node, int[] testModes) throws VrsException
     {
         if (node instanceof VUnixFileMode)
         {
@@ -300,7 +300,7 @@ public class BenchmarkSRM
         return true;
     }
 
-    private static String[] getChecksumTypes(SRMFile chFile) throws VlException
+    private static String[] getChecksumTypes(SRMFile chFile) throws VrsException
     {
         String[] types = null;
         types = chFile.getChecksumTypes();
@@ -311,7 +311,7 @@ public class BenchmarkSRM
         return types;
     }
 
-    private static String getBackendVersion(SRMFileSystem srmFS) throws VlException
+    private static String getBackendVersion(SRMFileSystem srmFS) throws VrsException
     {
         String version = null;
         version = srmFS.getBackendVersion();
@@ -323,7 +323,7 @@ public class BenchmarkSRM
         System.err.println("" + msg);
     }
 
-    private static String getBackendType(SRMFileSystem srmFS) throws VlException
+    private static String getBackendType(SRMFileSystem srmFS) throws VrsException
     {
         String type = null;
         type = srmFS.getBackendType();

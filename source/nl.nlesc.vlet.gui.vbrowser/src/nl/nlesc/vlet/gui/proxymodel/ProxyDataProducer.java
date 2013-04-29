@@ -26,7 +26,7 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNodeFactory;
@@ -91,7 +91,7 @@ public abstract class ProxyDataProducer
 			private boolean mustStop=false; 
 			
 			@Override
-			protected void doTask() throws VlException
+			protected void doTask() throws VrsException
 			{
 				ProxyNode parent=nodeFactory.openLocation(parentVrl);
 
@@ -107,7 +107,7 @@ public abstract class ProxyDataProducer
 				    ProxyNode nodes[] = parent.getChilds(getViewFilter());
 	                updateChildNodesFor(parent,nodes,false); 
 				}
-				catch (VlException ex)
+				catch (VrsException ex)
 				{
 				    if (taskSource!=null)       
 				        taskSource.notifyTaskException(this,ex); 
@@ -172,7 +172,7 @@ public abstract class ProxyDataProducer
 			
 			
 			@Override
-			protected void doTask() throws VlException
+			protected void doTask() throws VrsException
 			{
 				ProxyNode parent=nodeFactory.openLocation(parentLoc);
 				

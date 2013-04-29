@@ -22,8 +22,8 @@ package nl.nlesc.vlet.gui.viewers;
 
 import java.awt.Component;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.actions.ActionContext;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -40,9 +40,9 @@ public interface IMimeViewer
 
     public void setVRL(VRL location);  
     
-    public abstract void startViewer(VRL location, String optionalMethodName, ActionContext actionContext) throws VlException;
+    public abstract void startViewer(VRL location, String optionalMethodName, ActionContext actionContext) throws VrsException;
     
-    public abstract void updateLocation(VRL loc) throws VlException;
+    public abstract void updateLocation(VRL loc) throws VrsException;
     
     public abstract void stopViewer();
     
@@ -60,7 +60,7 @@ public interface IMimeViewer
      * @param optionalMethodName
      * @param actionContext
      */
-    public void doMethod(String optionalMethodName, ActionContext actionContext) throws VlException;
+    public void doMethod(String optionalMethodName, ActionContext actionContext) throws VrsException;
 
     /**
      * Return Swing/AWT Component of this viewer which will be embedded 

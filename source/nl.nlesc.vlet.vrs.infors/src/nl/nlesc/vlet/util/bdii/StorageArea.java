@@ -23,7 +23,7 @@ package nl.nlesc.vlet.util.bdii;
 import java.util.ArrayList;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.util.bdii.ServiceInfo.ServiceInfoType;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -54,14 +54,14 @@ public class StorageArea
     /**
      * Create StorageArea with one Storage Service
      * 
-     * @throws VlException
+     * @throws VrsException
      */
     protected StorageArea(String vo, ServiceInfoType type, String protocol, String host, int port, String path)
-            throws VlException
+            throws VrsException
     {
         if (host == null)
         {
-            throw new VlException("Host can't be null. Info details: \n \t VO: " + vo + " \n \t Type: " + type
+            throw new VrsException("Host can't be null. Info details: \n \t VO: " + vo + " \n \t Type: " + type
                     + "\n \t protocol: " + protocol + "\n \t port: " + port);
         }
         this.seHostname = host;
@@ -101,16 +101,16 @@ public class StorageArea
      *            VO for which this StorageAread applies.
      * @param saPath
      *            actual storage area path.
-     * @throws VlException
+     * @throws VrsException
      */
-    public StorageArea(ServiceInfo srmInfo, String VO, String saPath) throws VlException
+    public StorageArea(ServiceInfo srmInfo, String VO, String saPath) throws VrsException
     {
         this.seHostname = srmInfo.getHost();
         this.vo = VO;
 
         if (StringUtil.isEmpty(saPath))
         {
-            throw new VlException("saPath is Null!!!!");
+            throw new VrsException("saPath is Null!!!!");
         }
 
         this.storagePath = saPath;
@@ -211,9 +211,9 @@ public class StorageArea
      * Create StorageArea with one SRM V2.2 Storage Service from Storage Area
      * Location which is writable for the specified VO
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public static StorageArea createSRM22StorageArea(VRL saLocationVrl, String vo) throws VlException
+    public static StorageArea createSRM22StorageArea(VRL saLocationVrl, String vo) throws VrsException
     {
         StorageArea sa = new StorageArea(vo, ServiceInfoType.SRMV22, saLocationVrl.getScheme(), saLocationVrl
                 .getHostname(), saLocationVrl.getPort(), saLocationVrl.getPath());

@@ -27,15 +27,15 @@ import java.net.UnknownHostException;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.NotImplementedException;
-import nl.nlesc.vlet.exception.VlConnectionException;
-import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.exception.ConnectionException;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -60,7 +60,7 @@ public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEdi
         {
             this.setAddress("127.0.0.0/0");
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             VletConfig.getRootLogger().logException(ClassLogger.ERROR,e,"Exception:%s\n",e);
         }
@@ -105,7 +105,7 @@ public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEdi
         return names.toArray();
     }
 
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         VAttribute attr = super.getAttribute(name);
         return attr;
@@ -149,7 +149,7 @@ public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEdi
         return 0;
     }
 
-    public boolean setAttribute(VAttribute attr) throws VlException
+    public boolean setAttribute(VAttribute attr) throws VrsException
     {
         if (attr.getName().equals(ATTR_NETWORK_ADRESS))
         {
@@ -161,7 +161,7 @@ public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEdi
         }
     }
 
-    public boolean setAddress(String addrStr) throws VlException
+    public boolean setAddress(String addrStr) throws VrsException
     {
         this.childNodes.clear();
         this.rescan = true;
@@ -194,14 +194,14 @@ public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEdi
             }
             catch (UnknownHostException e)
             {
-                throw new VlConnectionException("Not a valid IP Address of resolvable host:" + addrStr,e);
+                throw new ConnectionException("Not a valid IP Address of resolvable host:" + addrStr,e);
             }
         }
 
         return super.setAttribute(attr, true); // store in super
     }
 
-    public VNode[] getNodes() throws VlException
+    public VNode[] getNodes() throws VrsException
     {
         if (rescan == true)
         {
@@ -210,7 +210,7 @@ public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEdi
         return _getNodes();
     }
 
-    private void scanNodes() throws VlException
+    private void scanNodes() throws VrsException
     {
         // use childNodes as mutex !
         synchronized (this.childNodes)
@@ -249,14 +249,14 @@ public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEdi
             }
             catch (UnknownHostException e)
             {
-                throw new VlConnectionException("Network Address Error", e);
+                throw new ConnectionException("Network Address Error", e);
             }
 
             rescan = false;
         }
     }
 
-    private void resolveAndAddNode(byte[] ip, boolean scan) throws VlException
+    private void resolveAndAddNode(byte[] ip, boolean scan) throws VrsException
     {
         String ipstr = NetUtil.ip2string(ip);
         // info("Checking host:"+ipstr);

@@ -26,13 +26,10 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.util.bdii.BdiiService;
 import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.ServiceInfo;
@@ -40,6 +37,9 @@ import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
 import nl.nlesc.vlet.vrs.vdriver.infors.InfoConstants;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -81,7 +81,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         return list.toArray();
     }
 
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         if (name.equals(InfoConstants.ATTR_CONFIGURED_VOS))
         {
@@ -91,7 +91,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         return super.getAttribute(name);
     }
 
-    public synchronized VONode[] getNodes() throws VlException
+    public synchronized VONode[] getNodes() throws VrsException
     {
         // Alway update:
         updateVOGroups();
@@ -99,7 +99,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         return this._getNodes();
     }
 
-    protected VONode[] _getNodes() throws VlException
+    protected VONode[] _getNodes() throws VrsException
     {
         if ((childNodes == null) || (childNodes.size() <= 0))
             return null;
@@ -221,7 +221,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         return null;
     }
 
-    public synchronized ResourceFolder createSEFolderForVO(VRL logicalParent, String vo) throws VlException
+    public synchronized ResourceFolder createSEFolderForVO(VRL logicalParent, String vo) throws VrsException
     {
         infoPrintf("createSEFolderForVO(): For vo:%s\n", vo);
         
@@ -307,7 +307,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         return pres;
     }
 
-    public synchronized ResourceFolder createLFCFolderForVO(VRL logicalParent, String vo) throws VlException
+    public synchronized ResourceFolder createLFCFolderForVO(VRL logicalParent, String vo) throws VrsException
     {
         BdiiService bdii = getBdiiService();
         ArrayList<ServiceInfo> lfcs = bdii.getLFCsforVO(vo);
@@ -361,7 +361,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         return resF;
     }
 
-    public ResourceFolder createWMSFolderForVO(VRL logicalParent, String vo) throws VlException
+    public ResourceFolder createWMSFolderForVO(VRL logicalParent, String vo) throws VrsException
     {
         BdiiService bdii = getBdiiService();
         ArrayList<ServiceInfo> wmss = bdii.getWMSServiceInfos(vo);
@@ -415,12 +415,12 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         return resF;
     }
 
-    protected BdiiService getBdiiService() throws VlException
+    protected BdiiService getBdiiService() throws VrsException
     {
         return BdiiUtil.getBdiiService(this.vrsContext); 
     }
     
-    public ResourceFolder createLBFolderForVO(VRL logicalParent, String vo) throws VlException
+    public ResourceFolder createLBFolderForVO(VRL logicalParent, String vo) throws VrsException
     {
         BdiiService bdii = getBdiiService();  
         ArrayList<ServiceInfo> lbss = bdii.getLBServiceInfosForVO(vo);

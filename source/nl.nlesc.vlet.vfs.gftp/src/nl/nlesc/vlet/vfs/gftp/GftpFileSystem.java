@@ -21,14 +21,14 @@
 package nl.nlesc.vlet.vfs.gftp;
 
 import static nl.nlesc.vlet.VletConfig.ATTR_PASSIVE_MODE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ALLOW_3RD_PARTY;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_CREATION_TIME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_GROUP;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LENGTH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_MODIFICATION_TIME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_OWNER;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_UNIQUE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ALLOW_3RD_PARTY;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_CREATION_TIME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_GROUP;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_LENGTH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_MODIFICATION_TIME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_OWNER;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_UNIQUE;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,23 +48,23 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeType;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
-import nl.nlesc.vlet.exception.VlAuthenticationException;
-import nl.nlesc.vlet.exception.VlConnectionException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.exception.VlInterruptedException;
-import nl.nlesc.vlet.exception.VlServerException;
+import nl.nlesc.vlet.exception.AuthenticationException;
+import nl.nlesc.vlet.exception.ConnectionException;
+import nl.nlesc.vlet.exception.NestedInterruptedException;
+import nl.nlesc.vlet.exception.ServerCommunicationException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeType;
 import nl.nlesc.vlet.vrs.vfs.FileSystemNode;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFS;
@@ -191,7 +191,7 @@ public class GftpFileSystem extends FileSystemNode
     static private Object staticServerMutex = new Object();
 
     public static GftpFileSystem getOrCreateServerFor(VRSContext context,
-            VRL loc) throws VlException
+            VRL loc) throws VrsException
     {
         GftpFileSystem server = null;
 
@@ -242,8 +242,8 @@ public class GftpFileSystem extends FileSystemNode
             // must remove faulty server:
             context.removeServerInstance(server); // synchronized remove
 
-            if (e instanceof VlException)
-                throw ((VlException) e);
+            if (e instanceof VrsException)
+                throw ((VrsException) e);
             else
                 throw new GftpException(e.getClass().getName(), e);
         }
@@ -280,7 +280,7 @@ public class GftpFileSystem extends FileSystemNode
    // private URI sshTunnelUri;
     
     GftpFileSystem(VRSContext context, ServerInfo info, VRL location)
-        throws VlException
+        throws VrsException
     {
         super(context, info);
         init(info.getHostname(), info.getPort());
@@ -293,7 +293,7 @@ public class GftpFileSystem extends FileSystemNode
      * the method.
      * 
      */
-    public GridFTPClient createGFTPClient() throws VlException
+    public GridFTPClient createGFTPClient() throws VrsException
     {
         // load CA certs (trusted) from resources classpath
         // proxy created with Grid -proxy-init cmd
@@ -369,17 +369,17 @@ public class GftpFileSystem extends FileSystemNode
         }
         catch (UnknownHostException e)
         {
-            throw new VlConnectionException("Unknown hostname or server:"
+            throw new ConnectionException("Unknown hostname or server:"
                     + e.getMessage(), e);
         }
         catch (ServerException e)
         {
-            throw new VlServerException(e.getMessage(), e);
+            throw new ServerCommunicationException(e.getMessage(), e);
 
         }
         catch (ConnectException e)
         {
-            throw new VlConnectionException(
+            throw new ConnectionException(
                     "Connection error when connecting to:" + this
                             + ".\nReason=" + e.getMessage(), e);
         }
@@ -387,12 +387,12 @@ public class GftpFileSystem extends FileSystemNode
         {
             /// Globus/Authentication: 
             
-            VlException globusEx=GlobusUtil.checkException("Couldn't connect to:"+this,e);
+            VrsException globusEx=GlobusUtil.checkException("Couldn't connect to:"+this,e);
             
             if (globusEx!=null)
                 throw globusEx; 
             
-            throw new VlServerException("Coudln't connect to:"+this+"\nReason="+e.getMessage(), e);
+            throw new ServerCommunicationException("Coudln't connect to:"+this+"\nReason="+e.getMessage(), e);
         }
 
         return newClient;
@@ -405,13 +405,13 @@ public class GftpFileSystem extends FileSystemNode
     // These methods interface with the Globus GridFTPFS client.
     //
 
-    private void init(String hostname, int port) throws VlException
+    private void init(String hostname, int port) throws VrsException
     {
         this.hostname = hostname;
 
         if ((hostname == null) || (hostname.compareTo("") == 0))
         {
-            throw new VlServerException("Hostname is not specified");
+            throw new ServerCommunicationException("Hostname is not specified");
         }
 
         if (port <= 0)
@@ -447,7 +447,7 @@ public class GftpFileSystem extends FileSystemNode
 //        }
 //    }
     
-    public void connect() throws VlException
+    public void connect() throws VrsException
     {
         logger.infoPrintf("Connecting to:%s\n",this); 
         
@@ -471,13 +471,13 @@ public class GftpFileSystem extends FileSystemNode
             }
             catch (ServerException e)
             {
-                throw new nl.nlesc.vlet.exception.VlServerException(
+                throw new nl.nlesc.vlet.exception.ServerCommunicationException(
                         "GridFTPFS Server Exception:"
                                 + e.getMessage(), e);
             }
             catch (IOException e)
             {
-                throw new nl.nlesc.vlet.exception.VlIOException(
+                throw new nl.nlesc.vlet.exception.NestedIOException(
                         "GridFTPFS IO Exception:" + e.getMessage(), e);
             }
 
@@ -548,10 +548,10 @@ public class GftpFileSystem extends FileSystemNode
      * @throws IOException
      * @throws ServerException
      * @throws ClientException
-     * @throws VlException
+     * @throws VrsException
      */
     private void setCheckMode2(boolean _binMode,
-            boolean updatePassiveMode) throws VlException
+            boolean updatePassiveMode) throws VrsException
     {
         long id = Thread.currentThread().getId();
 
@@ -561,7 +561,7 @@ public class GftpFileSystem extends FileSystemNode
         if (client == null)
         {
             //debug("setCheckMode: client= null!!!");
-            throw new VlServerException("Server not connected:"
+            throw new ServerCommunicationException("Server not connected:"
                     + this);
         }
 
@@ -637,7 +637,7 @@ public class GftpFileSystem extends FileSystemNode
         }
     }
 
-    public void disconnect() throws VlException
+    public void disconnect() throws VrsException
     {
         logger.infoPrintf("disconnecting:%s\n",this); 
         
@@ -667,7 +667,7 @@ public class GftpFileSystem extends FileSystemNode
             {
                 disconnect();
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 logger.logException(ClassLogger.WARN,e,"Exception when disconnecting:%s\n",this); 
             }
@@ -680,7 +680,7 @@ public class GftpFileSystem extends FileSystemNode
                 // reset exception after succesful connect. 
                 this.serverException = false;
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 logger.logException(ClassLogger.ERROR,e,"Could not reconnect GFTP Server:%s\n",this); 
             }
@@ -777,7 +777,7 @@ public class GftpFileSystem extends FileSystemNode
      */
     public void uploadFile(VFSTransfer transfer,
             String localfilepath, String remotefilepath)
-            throws VlException
+            throws VrsException
     {
         logger.debugPrintf("updloadFile(): %s -> %s\n",localfilepath,remotefilepath);
 
@@ -827,7 +827,7 @@ public class GftpFileSystem extends FileSystemNode
                 catch (InterruptedException e)
                 {
                     logger.logException(ClassLogger.ERROR,e,"Interrrupted!\n") ; 
-                    throw new VlInterruptedException("Interrupted!");
+                    throw new NestedInterruptedException("Interrupted!");
                 }
 
                 // Gftp does not provide transfer count:
@@ -855,17 +855,17 @@ public class GftpFileSystem extends FileSystemNode
         catch (ServerException e)
         {
             this.serverException = true;
-            throw new nl.nlesc.vlet.exception.VlServerException(
+            throw new nl.nlesc.vlet.exception.ServerCommunicationException(
                     "GridFTPFS Server Exception:" + e.getMessage(), e);
         }
         catch (IOException e)
         {
-            throw new VlIOException("GridFTPFS Server Exception:"
+            throw new NestedIOException("GridFTPFS Server Exception:"
                     + e.getMessage(), e);
         }
         catch (ClientException e)
         {
-            throw new VlIOException("GridFTPFS Client Exception:"
+            throw new NestedIOException("GridFTPFS Client Exception:"
                     + e.getMessage(), e);
         }
 
@@ -877,7 +877,7 @@ public class GftpFileSystem extends FileSystemNode
      */
     public void downloadFile(VFSTransfer transfer,
             String remotefilepath, String toLocalfilepath)
-            throws VlException
+            throws VrsException
     {
         logger.debugPrintf("downloadFile():%s: from '%s' to '%s'\n",this,remotefilepath,toLocalfilepath);
         
@@ -948,7 +948,7 @@ public class GftpFileSystem extends FileSystemNode
                 if (transfer.isCancelled() == true)
                 {
                     // stop ?
-                    transferState.transferError(new VlInterruptedException(
+                    transferState.transferError(new NestedInterruptedException(
                                     "InterruptedException"));
                 }
             }
@@ -976,26 +976,26 @@ public class GftpFileSystem extends FileSystemNode
         {
             logger.logException(ClassLogger.DEBUG,e,"ServerException:%s\n",e); 
             this.serverException = true;
-            throw new nl.nlesc.vlet.exception.VlServerException(
+            throw new nl.nlesc.vlet.exception.ServerCommunicationException(
                     "GridFTP:ServerException:" + e.getMessage(), e);
         }
         catch (IOException e)
         {
             logger.logException(ClassLogger.DEBUG,e,"IOException:%s\n",e); 
-            throw new VlIOException("GridFTP:IOException:"
+            throw new NestedIOException("GridFTP:IOException:"
                     + e.getMessage(), e);
         }
         catch (ClientException e)
         {
             logger.logException(ClassLogger.DEBUG,e,"ClientException:%s\n",e); 
-            throw new VlIOException("GridFTP:ClientException:"
+            throw new NestedIOException("GridFTP:ClientException:"
                     + e.getMessage(), e);
         }
 
     }
 
     public String rename(String filepath, String newName,
-            boolean nameIsPath) throws VlException
+            boolean nameIsPath) throws VrsException
     {
         logger.debugPrintf("rename:%s->%s\n",filepath,newName);
 
@@ -1035,7 +1035,7 @@ public class GftpFileSystem extends FileSystemNode
     }
 
     public boolean delete(boolean isDir, String path)
-            throws VlException
+            throws VrsException
     {
         logger.debugPrintf("delete:%s\n",path);
 
@@ -1075,7 +1075,7 @@ public class GftpFileSystem extends FileSystemNode
         }
     }
 
-    public long getModificationTime(String path) throws VlException
+    public long getModificationTime(String path) throws VrsException
     {
         //debug("getModificationTime:" + path);
 
@@ -1121,7 +1121,7 @@ public class GftpFileSystem extends FileSystemNode
 
     private static GSSCredential getValidGSSCredential(
             VRSContext context) throws GlobusCredentialException,
-            GSSException, VlAuthenticationException
+            GSSException, AuthenticationException
     {
         //debug("getGlobusCredentials");
 
@@ -1129,13 +1129,13 @@ public class GftpFileSystem extends FileSystemNode
 
         if (proxy==null)
         {
-            throw new nl.nlesc.vlet.exception.VlAuthenticationException(
+            throw new nl.nlesc.vlet.exception.AuthenticationException(
                     "NULL grid credential (Not set for this context)");
         }
         
         if (proxy.isValid() == false)
         {
-            throw new nl.nlesc.vlet.exception.VlAuthenticationException(
+            throw new nl.nlesc.vlet.exception.AuthenticationException(
                     "No valid grid credential found");
         }
 
@@ -1148,7 +1148,7 @@ public class GftpFileSystem extends FileSystemNode
             return cred;
         }
 
-        throw new VlAuthenticationException(
+        throw new AuthenticationException(
                 "Couldn't find proper GSI credentials (no proxy?)");
 
         // return null;
@@ -1191,7 +1191,7 @@ public class GftpFileSystem extends FileSystemNode
 
     
     public VDir createDir(String dirpath, boolean force)
-            throws VlException
+            throws VrsException
     {
         logger.debugPrintf("createDir:%s\n",dirpath);
 
@@ -1259,17 +1259,17 @@ public class GftpFileSystem extends FileSystemNode
         {
             this.serverException = true;
 
-            throw new VlServerException("GFTP ServerException\n"
+            throw new ServerCommunicationException("GFTP ServerException\n"
                     + e.getMessage(), e);
         }
         catch (IOException e)
         {
-            throw new VlIOException("GFTP IOException\n"
+            throw new NestedIOException("GFTP IOException\n"
                     + e.getMessage(), e);
         }
     }
 
-    public VFSNode openLocation(VRL loc) throws VlException
+    public VFSNode openLocation(VRL loc) throws VrsException
     {
         logger.debugPrintf("openLocation:%s\n",loc); 
         
@@ -1336,12 +1336,12 @@ public class GftpFileSystem extends FileSystemNode
         }
     }
 
-    public Vector<?> mlsd(String dirpath) throws VlException
+    public Vector<?> mlsd(String dirpath) throws VrsException
     {
         // new feature: Blind As A Bat !
         if (useBlindMode() == true)
         {
-            throw new nl.nlesc.vlet.exception.VlServerException(
+            throw new nl.nlesc.vlet.exception.ServerCommunicationException(
                     "Remote Server Doesn't suport listing of directories()");
         }
 
@@ -1394,7 +1394,7 @@ public class GftpFileSystem extends FileSystemNode
 
     /** GridFTP V1.0 compatible list commando which mimics mlsd */
     private Vector<MlsxEntry> fakeMlsd(String path)
-            throws VlException
+            throws VrsException
     {
         logger.debugPrintf("fakeMlsd:%s\n",path);
         GridFTPClient myclient=null; 
@@ -1622,14 +1622,14 @@ public class GftpFileSystem extends FileSystemNode
      * the same file speeding up transfer. This protocol is used in parallel
      * (striped) transfer mode. This has not been tested.
      * 
-     * @throws VlException
+     * @throws VrsException
      * @throws IOException
      * @throws ClientException
      * @throws ServerException
-     * @throws VlException
+     * @throws VrsException
      */
     public void syncWrite(String filepath, long fileOffset,
-            byte buffer[], int off, int len) throws VlException
+            byte buffer[], int off, int len) throws VrsException
     {
         MarkerListener markerListener = new GftpMarkerListener(); // new
                                                                     // GftpMarker();
@@ -1661,23 +1661,23 @@ public class GftpFileSystem extends FileSystemNode
         catch (ServerException e)
         {
             this.serverException = true;
-            throw new VlServerException("GridFTPFS Server Exception:"
+            throw new ServerCommunicationException("GridFTPFS Server Exception:"
                     + e.getMessage(), e);
         }
         catch (IOException e)
         {
-            throw new VlIOException("GridFTPFS Server Exception:"
+            throw new NestedIOException("GridFTPFS Server Exception:"
                     + e.getMessage(), e);
         }
         catch (ClientException e)
         {
-            throw new VlIOException("GridFTPFS Client Exception:"
+            throw new NestedIOException("GridFTPFS Client Exception:"
                     + e.getMessage(), e);
         }
     }
 
     /** Returns Mlsx Entry of (remote) filepath */
-    public MlsxEntry mlst(String filepath) throws VlException
+    public MlsxEntry mlst(String filepath) throws VrsException
     {
         if (this.protocol_v1 == true)
             return fakeMlst(filepath);
@@ -1723,7 +1723,7 @@ public class GftpFileSystem extends FileSystemNode
      * V1.0 compatible 'mlst' method Tries to get the FileInfo and converts it
      * to a MlsxEntry object.
      */
-    private MlsxEntry fakeMlst(String filepath) throws VlException
+    private MlsxEntry fakeMlst(String filepath) throws VrsException
     {
         logger.debugPrintf("fakeMlst:%s\n",filepath);
         // System.err.println("fakeMlst:"+filepath);
@@ -1936,7 +1936,7 @@ public class GftpFileSystem extends FileSystemNode
         return entry;
     }
 
-    public long getSize(String path) throws VlException
+    public long getSize(String path) throws VrsException
     {
         long size = 0;
 
@@ -1952,7 +1952,7 @@ public class GftpFileSystem extends FileSystemNode
         catch (Exception e)
         {
             this.serverException = true;
-            throw new VlServerException("Couldn't get size of file ("+this.getHostname()+"):"+path
+            throw new ServerCommunicationException("Couldn't get size of file ("+this.getHostname()+"):"+path
                     +"\nError:" + e.getMessage(), 
                     e);
         }
@@ -1971,7 +1971,7 @@ public class GftpFileSystem extends FileSystemNode
             if (file != null)
                 return true;
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             logger.logException(ClassLogger.WARN,e,"existsFile exception\n");
         }
@@ -2000,7 +2000,7 @@ public class GftpFileSystem extends FileSystemNode
 
             // debug("existsDir Returning:" + retval);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             logger.logException(ClassLogger.WARN,e,"existsDir Exception\n");
         }
@@ -2021,7 +2021,7 @@ public class GftpFileSystem extends FileSystemNode
     /** Create remote file, by putting zero bytes in new file */
 
     public VFile createFile(String path, boolean force)
-            throws VlException
+            throws VrsException
     {
         String fullPath=resolvePathString(path); 
         
@@ -2095,12 +2095,12 @@ public class GftpFileSystem extends FileSystemNode
 
     
     @Override
-    public GftpFile getFile(VRL vrl) throws VlException
+    public GftpFile getFile(VRL vrl) throws VrsException
     {
         return getFile(vrl.getPath());
     }
     
-    public GftpFile getFile(String filepath) throws VlException
+    public GftpFile getFile(String filepath) throws VrsException
     {
 
         MlsxEntry entry = mlst(filepath);
@@ -2111,7 +2111,7 @@ public class GftpFileSystem extends FileSystemNode
         return new GftpFile(this, filepath, entry);
     }
 
-    public VFSNode getChild(String filepath) throws VlException
+    public VFSNode getChild(String filepath) throws VrsException
     {
         MlsxEntry entry = mlst(filepath);
 
@@ -2128,7 +2128,7 @@ public class GftpFileSystem extends FileSystemNode
         }
     }
 
-    public boolean isFile(String filepath) throws VlException
+    public boolean isFile(String filepath) throws VrsException
     {
 
         MlsxEntry entry = mlst(filepath);
@@ -2139,7 +2139,7 @@ public class GftpFileSystem extends FileSystemNode
         return true;
     }
 
-    public boolean isDir(String filepath) throws VlException
+    public boolean isDir(String filepath) throws VrsException
     {
 
         MlsxEntry entry = mlst(filepath);
@@ -2151,12 +2151,12 @@ public class GftpFileSystem extends FileSystemNode
     }
     
     @Override
-    public GftpDir getDir(VRL vrl) throws VlException
+    public GftpDir getDir(VRL vrl) throws VrsException
     {
         return getDir(vrl.getPath());
     }
     
-    public GftpDir getDir(String dirpath) throws VlException
+    public GftpDir getDir(String dirpath) throws VrsException
     {
         MlsxEntry entry = mlst(dirpath);
 
@@ -2170,7 +2170,7 @@ public class GftpFileSystem extends FileSystemNode
 
     }
 
-    public GftpDir getParentDir(String dirPath) throws VlException
+    public GftpDir getParentDir(String dirPath) throws VrsException
     {
         // Use '..' to get to parent dir. Is root ("/") save.
 
@@ -2198,7 +2198,7 @@ public class GftpFileSystem extends FileSystemNode
         {
             this.disconnect();
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             logger.logException(ClassLogger.WARN,e,"Exception during disconnect()\n"); 
         } 
@@ -2210,18 +2210,18 @@ public class GftpFileSystem extends FileSystemNode
 
     private IOException convertToIOException(Throwable e)
     {
-        VlException vlex=this.convertException(e); 
+        VrsException vlex=this.convertException(e); 
         return new IOException(vlex.getMessage(),vlex); 
     }
     
-    private VlException convertException(Throwable e)
+    private VrsException convertException(Throwable e)
     {
         logger.logException(ClassLogger.DEBUG,e,"Converting Exception:%s",e); 
         
         String ename = e.getClass().getName();
 
-        if (e instanceof VlException)
-            ename = ((VlException) e).getName();
+        if (e instanceof VrsException)
+            ename = ((VrsException) e).getName();
 
         String errtxt = e.getMessage();
 
@@ -2245,7 +2245,7 @@ public class GftpFileSystem extends FileSystemNode
 
             // important: set status to Error so a reconnect will happen!
             serverException = true;
-            return new VlServerException(errtxt, e);
+            return new ServerCommunicationException(errtxt, e);
         }
         else if (e instanceof ClientException)
         {
@@ -2261,9 +2261,9 @@ public class GftpFileSystem extends FileSystemNode
             return new GftpException("IOException:" + ename, errtxt, e);
         }
         // pass my own:
-        else if (e instanceof VlException)
+        else if (e instanceof VrsException)
         {
-            return (VlException) e;
+            return (VrsException) e;
         }
         else
         {
@@ -2689,7 +2689,7 @@ public class GftpFileSystem extends FileSystemNode
      * 
      */
     public static VAttribute getAttribute(MlsxEntry entry, String name)
-            throws VlException
+            throws VrsException
     {
 
         if (name.compareTo(ATTR_PERMISSIONS_STRING) == 0)
@@ -2803,19 +2803,19 @@ public class GftpFileSystem extends FileSystemNode
     
 
     @Override
-    public VDir newDir(VRL dirVrl) throws VlException 
+    public VDir newDir(VRL dirVrl) throws VrsException 
     {
         return new GftpDir(this,dirVrl.getPath()); 
     }
 
     @Override
-    public VFile newFile(VRL filePath) throws VlException 
+    public VFile newFile(VRL filePath) throws VrsException 
     {
         return new GftpFile(this,filePath.getPath());
     }
 
     public VFile do3rdPartyTransferToOther(ITaskMonitor monitor,GftpFile fromGftpFile, VRL toTargetLocation) 
-           throws VlException 
+           throws VrsException 
     {
         GftpFileSystem targetServer = GftpFileSystem.getOrCreateServerFor(this.vrsContext,toTargetLocation); 
     
@@ -2828,7 +2828,7 @@ public class GftpFileSystem extends FileSystemNode
     }
 
     public VFile do3rdPartyTransferFromOther(ITaskMonitor monitor,VRL fromRemoteSource, GftpFile toGftpFile) 
-           throws VlException
+           throws VrsException
     {
         GftpFileSystem sourceServer = GftpFileSystem.getOrCreateServerFor(this.vrsContext,fromRemoteSource); 
         
@@ -2848,11 +2848,11 @@ public class GftpFileSystem extends FileSystemNode
      * @param targetServer   target GFTP FileSystem 
      * @param targetVrl      target VRL of file
      * @return new Target VFile object 
-     * @throws VlException 
+     * @throws VrsException 
      */
     public VFile doActive3rdPartyTransfer(ITaskMonitor monitor,GftpFileSystem sourceServer,VRL sourceVrl, 
             GftpFileSystem targetServer,VRL targetVrl) 
-            throws VlException
+            throws VrsException
     {
  
         String formatstr="GFTP: Performing 3rd party transfer:%s:%d => %s:%d\n";
@@ -2934,7 +2934,7 @@ public class GftpFileSystem extends FileSystemNode
         ActionTask monitorTask=null; 
         //privateSourceClient.setLocalNoDataChannelAuthentication();
         //privateTargetClient.setLocalNoDataChannelAuthentication();
-        VlException transferEx=null; 
+        VrsException transferEx=null; 
         try
         {
             // Todo: remote file stats ! (just use 1 for now) 
@@ -2975,7 +2975,7 @@ public class GftpFileSystem extends FileSystemNode
         {
             logger.logException(ClassLogger.ERROR,e,"Exception during 3rd party transfer\n"); 
             monitor.logPrintf("*** Error: Exception during 3rd party transfer:"+e+"\n");
-            VlException vle = convertException(e);
+            VrsException vle = convertException(e);
             monitor.setException(vle);
             // keep exception. 
             transferEx=vle; 
@@ -3015,7 +3015,7 @@ public class GftpFileSystem extends FileSystemNode
         {
             privateClient = targetServer.createGFTPClient();
         }
-        catch (VlException e1)
+        catch (VrsException e1)
         {
             logger.logException(ClassLogger.ERROR,e1,"Failed to start background monitor for third party transfer to:%s\n",targetVrl); 
             return null;  
@@ -3026,7 +3026,7 @@ public class GftpFileSystem extends FileSystemNode
             boolean mustStop=false; 
            
             @Override
-            protected void doTask() throws VlException
+            protected void doTask() throws VrsException
             {
                 int numTries=10; 
                 
@@ -3098,9 +3098,9 @@ public class GftpFileSystem extends FileSystemNode
      * @param length
      * @param file
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    public String getChecksum(String algorithm,long offset,long length, String file) throws VlException
+    public String getChecksum(String algorithm,long offset,long length, String file) throws VrsException
     {
         
         if (algorithm==null || algorithm.equalsIgnoreCase(""))
@@ -3116,11 +3116,11 @@ public class GftpFileSystem extends FileSystemNode
         }
         catch (ServerException e)
         {
-            throw new VlServerException(e.getMessage(), e);
+            throw new ServerCommunicationException(e.getMessage(), e);
         }
         catch (IOException e)
         {
-            throw new VlIOException(e);
+            throw new NestedIOException(e);
         }
     }
 }

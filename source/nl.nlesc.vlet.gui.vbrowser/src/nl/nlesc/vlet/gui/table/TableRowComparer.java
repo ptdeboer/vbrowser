@@ -21,8 +21,8 @@
 package nl.nlesc.vlet.gui.table;
 
 import nl.esciencecenter.ptk.util.Comparer;
-import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.gui.table.VRSTableModel.RowObject;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 
 public class TableRowComparer implements Comparer<RowObject>
 {

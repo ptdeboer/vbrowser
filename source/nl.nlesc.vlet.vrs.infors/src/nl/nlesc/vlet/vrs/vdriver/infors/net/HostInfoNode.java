@@ -21,8 +21,8 @@
 package nl.nlesc.vlet.vrs.vdriver.infors.net;
 
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
 import nl.nlesc.vlet.vrs.vdriver.infors.InfoConstants;
@@ -98,7 +98,7 @@ public class HostInfoNode extends CompositeServiceInfoNode<VNode>
         return InfoConstants.HOST_INFO_NODE; 
     }
     
-    public VNode[] getNodes() throws VlException
+    public VNode[] getNodes() throws VrsException
     {
         if (rescan==true)
         {

@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -40,12 +40,12 @@ public class SkelFile extends VFile
         super(fs, vrl);
     }
 
-    public SkelFile(SkelFS skelfs, String path) throws VlException
+    public SkelFile(SkelFS skelfs, String path) throws VrsException
     {
         this(skelfs, skelfs.resolvePath(path));
     }
 
-    public boolean create(boolean ignoreExisting) throws VlException
+    public boolean create(boolean ignoreExisting) throws VrsException
     {
         return getFS().createFile(getPath(), ignoreExisting);
     }
@@ -57,19 +57,19 @@ public class SkelFile extends VFile
     }
 
     @Override
-    public long getModificationTime() throws VlException
+    public long getModificationTime() throws VrsException
     {
         return getFS().getModificationTime(this.getPath());
     }
 
     @Override
-    public boolean isReadable() throws VlException
+    public boolean isReadable() throws VrsException
     {
         return this.getFS().hasReadAccess(this.getPath());
     }
 
     @Override
-    public boolean isWritable() throws VlException
+    public boolean isWritable() throws VrsException
     {
         return this.getFS().hasWriteAccess(this.getPath());
     }
@@ -84,18 +84,18 @@ public class SkelFile extends VFile
         return this.getFS().createNewOutputstream(getPath());
     }
 
-    public VRL rename(String newName, boolean renameFullPath) throws VlException
+    public VRL rename(String newName, boolean renameFullPath) throws VrsException
     {
         return this.getFS().rename(getPath(), newName, renameFullPath);
     }
 
-    public boolean delete() throws VlException
+    public boolean delete() throws VrsException
     {
         return this.getFS().delete(this.getPath(), true, false);
     }
 
     @Override
-    public boolean exists() throws VlException
+    public boolean exists() throws VrsException
     {
         return this.getFS().exists(this.getPath(), false);
     }
@@ -105,14 +105,14 @@ public class SkelFile extends VFile
     // Override the following methods if this File implementation
     // can do them faster
     // ===
-    protected void uploadFrom(VFSTransfer transferInfo, VFile localSource) throws VlException
+    protected void uploadFrom(VFSTransfer transferInfo, VFile localSource) throws VrsException
     {
         // localSource is a file on the local filesystem.
         super.uploadFrom(transferInfo, localSource);
 
     }
 
-    protected void downloadTo(VFSTransfer transfer, VFile targetLocalFile) throws VlException
+    protected void downloadTo(VFSTransfer transfer, VFile targetLocalFile) throws VrsException
     {
         // copy contents into local file:
         super.downloadTo(transfer, targetLocalFile);
