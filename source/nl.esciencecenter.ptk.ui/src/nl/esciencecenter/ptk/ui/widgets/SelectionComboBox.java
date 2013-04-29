@@ -84,14 +84,6 @@ public class SelectionComboBox extends JComboBox
         return super.getName();
     }
 
-    public String getValue()
-    {
-        Object obj = this.getSelectedItem();
-        if (obj != null)
-            return obj.toString();
-        return null;
-    }
-
     public void updateFrom(String value)
     {
         this.setValue(value);
@@ -112,7 +104,7 @@ public class SelectionComboBox extends JComboBox
         this.setEditable(optionsEditable);
     }
     
-    public String getSelectedItemString()
+    public String getSelectedItem()
     {
         Object obj=super.getSelectedItem();
         if (obj==null)
