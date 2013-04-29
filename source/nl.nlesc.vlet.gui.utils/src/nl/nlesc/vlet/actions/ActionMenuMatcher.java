@@ -22,7 +22,7 @@ package nl.nlesc.vlet.actions;
 
 import java.util.Vector;
 
-import nl.esciencecenter.ptk.data.IndexedHashtable;
+import nl.esciencecenter.ptk.data.HashMapList;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -63,7 +63,7 @@ public class ActionMenuMatcher
      * Action Patterns which allows this action. Action is matched if any of the
      * resourcePatterns match.
      */
-    private IndexedHashtable<String, Vector<ResourceMappingPatterns>> resourceTypePatterns = new IndexedHashtable<String, Vector<ResourceMappingPatterns>>();
+    private HashMapList<String, Vector<ResourceMappingPatterns>> resourceTypePatterns = new HashMapList<String, Vector<ResourceMappingPatterns>>();
 
     private Vector<ResourceMappingPatterns> resourceSelectionPatterns = new Vector<ResourceMappingPatterns>();
 

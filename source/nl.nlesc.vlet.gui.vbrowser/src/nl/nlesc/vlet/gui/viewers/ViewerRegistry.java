@@ -23,7 +23,7 @@ package nl.nlesc.vlet.gui.viewers;
 import java.util.Properties;
 import java.util.Vector;
 
-import nl.esciencecenter.ptk.data.IndexedHashtable;
+import nl.esciencecenter.ptk.data.HashMapList;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
@@ -250,7 +250,7 @@ public class ViewerRegistry
     // === Instance Stuff ===
     // =======================================================================
     /** Hastable registers per mimetype a list of viewers */
-    private IndexedHashtable<String, ViewerList> registeredViewers = new IndexedHashtable<String, ViewerList>();
+    private HashMapList<String, ViewerList> registeredViewers = new HashMapList<String, ViewerList>();
 
     private PluginLoader pluginLoader;
 
