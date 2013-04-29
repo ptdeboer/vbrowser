@@ -20,27 +20,22 @@
 
 package nl.nlesc.vlet.exception;
 
-public class VlInterruptedException extends VlInternalError
+
+/**
+ * Server problem.
+ */
+public class ServerCommunicationException extends NestedIOException // VlException
 {
-    private static final long serialVersionUID = -8949394855257743405L;
+    private static final long serialVersionUID = -7642588247123924146L;
 
-    public VlInterruptedException(String message)
+    public ServerCommunicationException(String message)
     {
-        super(ExceptionStrings.VLINTERRUPTEDEXCEPTION, message);
+        super(ExceptionStrings.SERVER_EXCEPTION,message,null);
+    }
+    
+    public ServerCommunicationException(String message,Throwable e)
+    {
+        super(ExceptionStrings.SERVER_EXCEPTION,message,e);  
     }
 
-    /**
-     * Create VlException: CrendentialException which keeps original System
-     * Exception
-     */
-    public VlInterruptedException(String message, Exception e)
-    {
-        super(ExceptionStrings.VLINTERRUPTEDEXCEPTION, message, e);
-    }
-
-    /** For Exception Chaining */
-    public VlInterruptedException(InterruptedException e)
-    {
-        super(ExceptionStrings.VLINTERRUPTEDEXCEPTION, e.getMessage(), e);
-    }
 }

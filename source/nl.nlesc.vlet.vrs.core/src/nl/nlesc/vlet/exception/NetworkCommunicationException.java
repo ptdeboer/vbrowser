@@ -20,15 +20,24 @@
 
 package nl.nlesc.vlet.exception;
 
-import java.io.IOException;
 
-public class WritePermissionDeniedException extends IOException
+public class NetworkCommunicationException extends NestedIOException 
 {
-    private static final long serialVersionUID = 1653743750981452426L;
-
-    public WritePermissionDeniedException(String s,Throwable cause) 
-    {
-        super(s,cause);
-    }
+    private static final long serialVersionUID = 4058564395522741076L;
     
+    public NetworkCommunicationException(String message)
+    {
+        super("Network Exception", message,null);
+    }
+
+    public NetworkCommunicationException(Throwable e)
+    {
+        super("Network Exception", e.getMessage(), e);
+    }
+
+    protected NetworkCommunicationException(String name, String message, Throwable e)
+    {
+        super(name,message,e);
+    }
+
 }

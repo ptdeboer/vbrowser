@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.exception;
 
-public class ResourceDeletionFailedException extends ResourceException
+public class ResourceDeletionFailedException extends VrsResourceException
 {
     private static final long serialVersionUID = -5697916428807131886L;
 

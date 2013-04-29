@@ -24,21 +24,17 @@ package nl.nlesc.vlet.exception;
  * Service Implementation can throw this when an interface method is 
  * not (yet) implemented. 
  */
-public class NotImplementedException extends VlInternalError // VlException
+public class NotImplementedException extends InternalError // VlException
 {
     private static final long serialVersionUID = 7894288947696995846L;
-
-    public NotImplementedException()
-    {
-        super(ExceptionStrings.METHOD_NOT_IMPLEMENTED);  
-    }
     
     public NotImplementedException(String message)
     {
-        super(ExceptionStrings.METHOD_NOT_IMPLEMENTED,message); 
+        super(message,null,ExceptionStrings.METHOD_NOT_IMPLEMENTED);
     }
+    
     public NotImplementedException(String message,Exception e)
     {
-        super(ExceptionStrings.METHOD_NOT_IMPLEMENTED,message,e); 
+        super(message,e,ExceptionStrings.METHOD_NOT_IMPLEMENTED);
     }
 }

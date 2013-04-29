@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.exception;
 
-public class ResourceNotEditableException extends ResourceException
+public class ResourceNotEditableException extends VrsResourceException
 {
     private static final long serialVersionUID = -6546720746289422778L;
 

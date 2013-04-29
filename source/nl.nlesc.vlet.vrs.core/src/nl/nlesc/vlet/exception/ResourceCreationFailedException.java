@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.exception;
 
-public class ResourceCreationFailedException extends ResourceException
+public class ResourceCreationFailedException extends VrsResourceException
 {
     private static final long serialVersionUID = -2011249376460824842L;
 

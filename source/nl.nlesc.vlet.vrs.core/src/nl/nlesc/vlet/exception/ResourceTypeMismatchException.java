@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.exception;
 
-public class ResourceTypeMismatchException extends ResourceException
+public class ResourceTypeMismatchException extends VrsResourceException
 {
     private static final long serialVersionUID = -3699997598346607422L;
 

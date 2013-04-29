@@ -20,25 +20,12 @@
 
 package nl.nlesc.vlet.exception;
 
-/**
- * Service Implementation can throw this when an interface method is not (yet) 
- * implemented. 
- */
-public class VlInitializationException extends VlInternalError 
+public class VrsServiceTypeMismatchException extends InternalError
 {
-	private static final long serialVersionUID = -4486738847955149984L;
-	
-	public VlInitializationException()
-    {
-        super(ExceptionStrings.INITIALIZATION_EXCEPTION);  
-    }
-    
-    public VlInitializationException(String message)
-    {
-        super(ExceptionStrings.INITIALIZATION_EXCEPTION,message); 
-    }
-    public VlInitializationException(String message,Exception e)
-    {
-        super(ExceptionStrings.INITIALIZATION_EXCEPTION,message,e); 
-    }
+	private static final long serialVersionUID = 776601693066415709L;
+
+	public VrsServiceTypeMismatchException(String message)
+	{
+		super(message,null,"VRS Service Mismatch");
+	}
 }

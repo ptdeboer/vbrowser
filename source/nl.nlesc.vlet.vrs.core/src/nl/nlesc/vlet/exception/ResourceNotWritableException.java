@@ -20,20 +20,15 @@
 
 package nl.nlesc.vlet.exception;
 
-import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import java.io.IOException;
 
-public class VlInvokeException extends VrsException
+public class ResourceNotWritableException extends IOException
 {
-    private static final long serialVersionUID = 5777029355097666508L;
+    private static final long serialVersionUID = 1653743750981452426L;
 
-    public VlInvokeException(String message)
+    public ResourceNotWritableException(String s,Throwable cause) 
     {
-        super("Invoke Exception", message);
+        super(s,cause);
     }
-
-    public VlInvokeException(String message, Throwable t)
-    {
-        super("Invoke Exception", message, t);
-    }
-
+    
 }

@@ -23,17 +23,14 @@ package nl.nlesc.vlet.exception;
 /**
  * Exception is thrown when a scheme is requested which is not supported. 
  */
-public class VlUnsupportedSchemeException extends VlInternalError // VlException
+public class VrsUnsupportedSchemeException extends InternalError // VlException
 {
     private static final long serialVersionUID = -2353773667783748083L;
 
-    public VlUnsupportedSchemeException(String message)
+    public VrsUnsupportedSchemeException(String message)
     {
-        super(ExceptionStrings.SERVICE_TYPE_MISMATCH_EXCEPTION,message);
+        super(message,null,ExceptionStrings.SCHEME_TYPE_NOT_SUPPORTED);
     }
     
-    public VlUnsupportedSchemeException(String message,Throwable e)
-    {
-        super(ExceptionStrings.SERVICE_TYPE_MISMATCH_EXCEPTION,message,e); 
-    }
+
 }

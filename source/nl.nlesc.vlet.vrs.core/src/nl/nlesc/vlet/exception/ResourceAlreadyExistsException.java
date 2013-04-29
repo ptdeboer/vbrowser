@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.exception;
 
-public class ResourceAlreadyExistsException extends ResourceException
+public class ResourceAlreadyExistsException extends VrsResourceException
 {
     private static final long serialVersionUID = -4749406987489027971L;
 

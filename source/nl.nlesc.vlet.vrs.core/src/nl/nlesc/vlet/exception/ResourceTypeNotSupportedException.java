@@ -23,7 +23,7 @@ package nl.nlesc.vlet.exception;
 /**
  * Resource type not supported.
  */
-public class ResourceTypeNotSupportedException extends ResourceException // VlException
+public class ResourceTypeNotSupportedException extends VrsResourceException // VlException
 {
     private static final long serialVersionUID = 5258586546115247787L;
 

@@ -21,25 +21,20 @@
 package nl.nlesc.vlet.exception;
 
 /**
- * Credential Exception.
- * Might trigger re-authentication in for example VBrowser. 
+ * XML Parsing Error. 
  */
-public class VlCredentialException extends VlAuthenticationException
+public class XMLDataParseException extends InternalError
 {
-    private static final long serialVersionUID = -9218600987549414855L;
+	private static final long serialVersionUID = -5796344121311466193L;
 
-    public VlCredentialException(String message)
+	public XMLDataParseException(String message)
     {
-        super("Invalid Credential.", message);
+        super(message,null,"XML Parsing Error");
     }
 
-    /**
-     * Create VlException: CrendentialException which keeps original System
-     * Exception
-     */
-    public VlCredentialException(String message, Throwable e)
+    public XMLDataParseException(String message, Throwable cause)
     {
-        super("Invalid Credential.", message, e);
+        super(message,cause,"XML Parsiong Error");
     }
 
 }

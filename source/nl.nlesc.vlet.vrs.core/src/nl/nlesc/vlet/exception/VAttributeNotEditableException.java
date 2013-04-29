@@ -26,13 +26,9 @@ public class VAttributeNotEditableException extends VrsException
 {
     private static final long serialVersionUID = -5716888731202918685L;
 
-    public VAttributeNotEditableException()
-    {
-        super(ExceptionStrings.ATTRIBUTE_NOT_EDITABLE);
-    }
 
     public VAttributeNotEditableException(String message)
     {
-        super(ExceptionStrings.ATTRIBUTE_NOT_EDITABLE, message);
+        super(message,null,ExceptionStrings.ATTRIBUTE_NOT_EDITABLE);
     }
 }

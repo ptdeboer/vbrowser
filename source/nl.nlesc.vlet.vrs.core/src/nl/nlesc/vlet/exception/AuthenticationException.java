@@ -27,18 +27,20 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
  * 
  *         Grid Credential Exception(s)
  */
-public class VlAuthenticationException extends VrsException
+public class AuthenticationException extends VrsException
 {
+    private static final long serialVersionUID = -7234344441074734646L;
+
     /**
      * Credential Exceptions
      */
-    public class VlPasswordException extends VlAuthenticationException
+    public class VlPasswordException extends AuthenticationException
     {
         private static final long serialVersionUID = -9218600987549414855L;
     
         public VlPasswordException(String message)
         {
-            super("Invalid Password Exception", message);
+            super(message,null,"Invalid Password.");
         }
     
         /**
@@ -47,34 +49,24 @@ public class VlAuthenticationException extends VrsException
          */
         public VlPasswordException(String message, Exception e)
         {
-            super("Invalid Password Exception", message, e);
+            super(message,e,"Invalid Password.");
         }
-    
     }
 
-    private static final long serialVersionUID = -3432982318417803312L;
-
-    public VlAuthenticationException(String message)
+    public AuthenticationException(String message)
     {
-        super(ExceptionStrings.INVALID_AUTHENTICATION_EXCEPTION, message);
+        super(message,null,ExceptionStrings.INVALID_AUTHENTICATION_EXCEPTION);
     }
 
-    /**
-     * Create VlException: CrendentialException which keeps original System
-     * Exception
-     */
-    public VlAuthenticationException(String message, Exception e)
+    public AuthenticationException(String message, Throwable e)
     {
-        super(ExceptionStrings.INVALID_AUTHENTICATION_EXCEPTION, message, e);
+        super(message,e,ExceptionStrings.INVALID_AUTHENTICATION_EXCEPTION);
     }
 
-    protected VlAuthenticationException(String name, String message, Throwable e)
+    public AuthenticationException(String message, Throwable e,String name)
     {
-        super(name, message, e);
+        super(message,e,name);
     }
 
-    protected VlAuthenticationException(String name, String message)
-    {
-        super(name, message);
-    }
+  
 }

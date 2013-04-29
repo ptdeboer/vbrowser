@@ -20,43 +20,27 @@
 
 package nl.nlesc.vlet.exception;
 
-import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-
-/**
- * Super class for Program Errors or other internal errors
- */
-public class VlInternalError extends VrsException
+public class ConnectionException extends NetworkCommunicationException
 {
-    private static final long serialVersionUID = -8673540323173565403L;
+    private static final long serialVersionUID = 8489684930456309265L;
 
-    public VlInternalError(String message)
+    public ConnectionException(String message)
     {
-        super(ExceptionStrings.VLINTERNALERROR, message);
+        super(ExceptionStrings.VLCONNECTIONEXCEPTION, message,null);
     }
 
     /**
      * Create VlException: CrendentialException which keeps original System
      * Exception
      */
-
-    public VlInternalError(String message, Throwable e)
+    public ConnectionException(String message, Throwable lastex)
     {
-        super(ExceptionStrings.VLINTERNALERROR, message, e);
+        super(ExceptionStrings.VLCONNECTIONEXCEPTION, message, lastex);
     }
 
-    public VlInternalError(Throwable e)
+    public ConnectionException(Throwable e)
     {
-        super(ExceptionStrings.VLINTERNALERROR, e.getMessage(), e);
-    }
-
-    protected VlInternalError(String name, String message)
-    {
-        super(name, message);
-    }
-
-    protected VlInternalError(String name, String message, Throwable e)
-    {
-        super(name, message, e);
+        super(ExceptionStrings.VLCONNECTIONEXCEPTION, e.getMessage(), e);
     }
 
 }

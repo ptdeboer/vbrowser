@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.exception;
 
-public class ResourceNotFoundException extends ResourceException
+public class ResourceNotFoundException extends VrsResourceException
 {
     private static final long serialVersionUID = -4451313345246528097L;
 

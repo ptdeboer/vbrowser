@@ -21,21 +21,24 @@
 package nl.nlesc.vlet.exception;
 
 /**
- * Unknown CA Exception: Triggers CA loading/configuration in VBrowser ! 
+ * Credential Exceptions
  */
-public class VlUnknownCAException extends VlAuthenticationException
+public class KeyStorePasswordException extends AuthenticationException
 {
-    private static final long serialVersionUID = -3432982318417803312L;
+    private static final long serialVersionUID = -9218600987549414855L;
 
-    public VlUnknownCAException(String message)
+    public KeyStorePasswordException(String message)
     {
-        super("Unkown CA Exception",message);
+        super(message,null,"Invalid Password Exception");
     }
 
-    /** Create VlException:  CrendentialException which keeps original System Exception */
-    public VlUnknownCAException(String message, Throwable e)
+    /**
+     * Create VlException: CrendentialException which keeps original System
+     * Exception
+     */
+    public KeyStorePasswordException(String message, Exception e)
     {
-        super("Unknown CA Exception",message,e);  
+        super(message,e,"Invalid Password Exception");
     }
 
 }

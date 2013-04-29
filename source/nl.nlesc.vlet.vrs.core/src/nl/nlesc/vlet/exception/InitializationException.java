@@ -20,28 +20,27 @@
 
 package nl.nlesc.vlet.exception;
 
-public class ResourceException extends VlIOException
+/**
+ * Internal initialization problems. 
+ */
+public class InitializationException extends InternalError 
 {
-    private static final long serialVersionUID = 8599481352396538655L;
-
-    public ResourceException(String msg)
+	private static final long serialVersionUID = -4486738847955149984L;
+    
+    public InitializationException(String message)
     {
-        super("ResourceException", msg,null);
+        super(message,null,ExceptionStrings.INITIALIZATION_EXCEPTION); 
     }
 
-    public ResourceException(String message, Throwable cause)
+    public InitializationException(String message, Throwable e)
     {
-        super("ResourceException", message, cause);
+        super(message,e,ExceptionStrings.INITIALIZATION_EXCEPTION); 
     }
 
-    protected ResourceException(String name, String message)
+    public InitializationException(String message, Throwable e, String error)
     {
-        super(name, message,null);
+        super(message,e,error);
     }
 
-    protected ResourceException(String name, String message, Throwable cause)
-    {
-        super(name, message, cause);
-    }
-
+    
 }

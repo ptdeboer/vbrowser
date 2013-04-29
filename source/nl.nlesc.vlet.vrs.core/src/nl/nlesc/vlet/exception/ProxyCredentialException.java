@@ -20,27 +20,26 @@
 
 package nl.nlesc.vlet.exception;
 
-public class VlConnectionException extends VlNetworkException
+/**
+ * Credential Exception.
+ * Might trigger re-authentication in for example VBrowser. 
+ */
+public class ProxyCredentialException extends AuthenticationException
 {
-    private static final long serialVersionUID = 8489684930456309265L;
+    private static final long serialVersionUID = -9218600987549414855L;
 
-    public VlConnectionException(String message)
+    public ProxyCredentialException(String message)
     {
-        super(ExceptionStrings.VLCONNECTIONEXCEPTION, message,null);
+        super(message,null,"Invalid Credential.");
     }
 
     /**
      * Create VlException: CrendentialException which keeps original System
      * Exception
      */
-    public VlConnectionException(String message, Throwable lastex)
+    public ProxyCredentialException(String message, Throwable e)
     {
-        super(ExceptionStrings.VLCONNECTIONEXCEPTION, message, lastex);
-    }
-
-    public VlConnectionException(Throwable e)
-    {
-        super(ExceptionStrings.VLCONNECTIONEXCEPTION, e.getMessage(), e);
+        super(message,e,"Invalid Credential.");
     }
 
 }

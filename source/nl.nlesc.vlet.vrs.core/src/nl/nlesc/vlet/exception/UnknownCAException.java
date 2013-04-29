@@ -20,12 +20,19 @@
 
 package nl.nlesc.vlet.exception;
 
-public class VlServiceMismatchException extends VlInternalError
+/**
+ * Unknown CA Exception: Triggers CA loading/configuration in VBrowser ! 
+ */
+public class UnknownCAException extends AuthenticationException
 {
-	private static final long serialVersionUID = 776601693066415709L;
+    private static final long serialVersionUID = -3432982318417803312L;
 
-	public VlServiceMismatchException(String message)
-	{
-		super("Service Mismatch.", message);
-	}
+    /** 
+     * This Exception is detected by the VBrowser and trigger the CA Import certificate dialog. 
+     */
+    public UnknownCAException(String message, Throwable e)
+    {
+        super(message,e,"Unknown CA Exception");
+    }
+
 }

@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.exception;
 
-public class ResourceToBigException extends ResourceException
+public class ResourceToBigException extends VrsResourceException
 {
     private static final long serialVersionUID = 4212619986099429089L;
 

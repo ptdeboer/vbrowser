@@ -20,28 +20,13 @@
 
 package nl.nlesc.vlet.exception;
 
-public class VlURISyntaxException extends VlInternalError
+public class ConfigurationError extends InternalError
 {
-    private static final long serialVersionUID = 857296791130965746L;
+    private static final long serialVersionUID = -7424220445698013896L;
 
-    public VlURISyntaxException(Throwable e)
+    public ConfigurationError(String message)
     {
-        super(ExceptionStrings.URISYNTAXEXCEPTION, e.getMessage(), e);
-    }
-
-    public VlURISyntaxException(String msg)
-    {
-        super(ExceptionStrings.URISYNTAXEXCEPTION, msg);
-    }
-
-    public VlURISyntaxException(String message, Throwable e)
-    {
-        super(ExceptionStrings.URISYNTAXEXCEPTION, message, e);
-    }
-
-    protected VlURISyntaxException(String name, String message, Throwable cause)
-    {
-        super(name,message,cause); 
+        super(message,null,"Configuration Error");
     }
 
 }

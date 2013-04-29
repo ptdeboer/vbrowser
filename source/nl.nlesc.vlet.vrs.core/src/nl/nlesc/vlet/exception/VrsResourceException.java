@@ -20,25 +20,29 @@
 
 package nl.nlesc.vlet.exception;
 
-/**
- * Server problem.
- */
-public class VlServerException extends VlIOException // VlException
+
+public class VrsResourceException extends NestedIOException
 {
-    private static final long serialVersionUID = -7642588247123924146L;
+    private static final long serialVersionUID = 8599481352396538655L;
 
-    public VlServerException(String message)
+    public VrsResourceException(String msg)
     {
-        super(ExceptionStrings.SERVER_EXCEPTION,message,null);
-    }
-    
-    public VlServerException(String message,Throwable e)
-    {
-        super(ExceptionStrings.SERVER_EXCEPTION,message,e);  
+        super("ResourceException", msg,null);
     }
 
-    protected VlServerException(String name, String msg, Exception e)
+    public VrsResourceException(String message, Throwable cause)
     {
-        super(name,msg,e); 
+        super("ResourceException", message, cause);
     }
+
+    protected VrsResourceException(String name, String message)
+    {
+        super(name, message,null);
+    }
+
+    protected VrsResourceException(String name, String message, Throwable cause)
+    {
+        super(name, message, cause);
+    }
+
 }

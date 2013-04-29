@@ -20,18 +20,38 @@
 
 package nl.nlesc.vlet.exception;
 
-public class VlConfigurationError extends VlInternalError
-{
-    private static final long serialVersionUID = -7424220445698013896L;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
-    public VlConfigurationError(String message, Exception e)
+/**
+ * Super class for Program Errors or other internal errors
+ */
+public class InternalError extends VrsException
+{
+    private static final long serialVersionUID = -8673540323173565403L;
+
+    public InternalError(String message)
     {
-        super("Configuration Error", message, e);
+        super(message,null,ExceptionStrings.VLINTERNALERROR);
     }
 
-    public VlConfigurationError(String message)
+    /**
+     * Create VlException: CrendentialException which keeps original System
+     * Exception
+     */
+
+    public InternalError(String message, Throwable e)
     {
-        super("Configuration Error", message);
+        super(message,e,ExceptionStrings.VLINTERNALERROR);
+    }
+
+    public InternalError(Throwable e)
+    {
+        super(e.getMessage(),e,ExceptionStrings.VLINTERNALERROR);
+    }
+
+    protected InternalError(String message, Throwable e,String name)
+    {
+        super(message,e,name);
     }
 
 }

@@ -20,28 +20,31 @@
 
 package nl.nlesc.vlet.exception;
 
-public class VlNetworkException extends VlIOException 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+
+public class NestedIOException extends VrsException
 {
-    private static final long serialVersionUID = 4058564395522741076L;
-    
-    public VlNetworkException(String message)
+    private static final long serialVersionUID = 857296791130965746L;
+
+
+    public NestedIOException(String message)
     {
-        super("Network Exception", message,null);
+        super(message,null,ExceptionStrings.VLIOEXCEPTION);
     }
 
-    public VlNetworkException(String message, Throwable lastex)
+    public NestedIOException(String message, Throwable err)
     {
-        super("Network Exception", message, lastex);
+        super(message,err,ExceptionStrings.VLIOEXCEPTION);
     }
 
-    public VlNetworkException(Throwable e)
+    public NestedIOException(Throwable e)
     {
-        super("Network Exception", e.getMessage(), e);
+        super(e.getMessage(),e,ExceptionStrings.VLIOEXCEPTION);
     }
 
-    protected VlNetworkException(String name, String message, Throwable e)
+    protected NestedIOException(String name, String message, Throwable cause)
     {
-        super(name,message,e);
+        super(message, cause, name);
     }
 
 }

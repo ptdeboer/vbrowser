@@ -20,25 +20,20 @@
 
 package nl.nlesc.vlet.exception;
 
-/**
- * Credential Exceptions
- */
-public class VlPasswordException extends VlAuthenticationException
+
+public class NestedInterruptedException extends InternalError
 {
-    private static final long serialVersionUID = -9218600987549414855L;
+    private static final long serialVersionUID = -8949394855257743405L;
 
-    public VlPasswordException(String message)
+    public NestedInterruptedException(String message)
     {
-        super("Invalid Password Exception", message);
+        super(message,null,ExceptionStrings.VLINTERRUPTEDEXCEPTION);
     }
-
-    /**
-     * Create VlException: CrendentialException which keeps original System
-     * Exception
-     */
-    public VlPasswordException(String message, Exception e)
+    
+    public NestedInterruptedException(String message, Exception e)
     {
-        super("Invalid Password Exception", message, e);
+        super(message,e,ExceptionStrings.VLINTERRUPTEDEXCEPTION);
     }
+    
 
 }
