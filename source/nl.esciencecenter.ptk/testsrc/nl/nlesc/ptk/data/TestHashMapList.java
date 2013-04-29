@@ -1,17 +1,17 @@
 package nl.nlesc.ptk.data;
 
 import junit.framework.Assert;
-import nl.esciencecenter.ptk.data.IndexedHashtable;
+import nl.esciencecenter.ptk.data.HashMapList;
 
 import org.junit.Test;
 
-public class TestIndexedHashtable
+public class TestHashMapList
 {
 
     @Test
     public void testIndex()
     {
-        IndexedHashtable<String,String> hash=new IndexedHashtable<String,String>(); 
+        HashMapList<String,String> hash=new HashMapList<String,String>(); 
         
         int n=1000;
         String keys[]=new String[n];
