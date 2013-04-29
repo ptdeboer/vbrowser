@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 import nl.esciencecenter.ptk.util.SortUtil;
-import nl.esciencecenter.ptk.util.StringUtil;
+
 
 /** 
  * Helper class for StringLists. 
@@ -36,11 +36,9 @@ import nl.esciencecenter.ptk.util.StringUtil;
  * <p> 
  * Note: ArrayList is an not synchronized.  
  */ 
-
 public class StringList extends ArrayList<String> implements Cloneable, Serializable 
 {
-    // 
-    private static final long serialVersionUID = 4174370138730654047L;
+    private static final long serialVersionUID = -2559548865729284189L;
 
     /**
      * Factory method to merge two arrays. 
@@ -305,7 +303,7 @@ public class StringList extends ArrayList<String> implements Cloneable, Serializ
         }
     }
     
-    // downcast of indexOf:
+    // downcast of contains:
     public boolean contains(String str)
     {
         return super.contains(str); 
@@ -383,11 +381,6 @@ public class StringList extends ArrayList<String> implements Cloneable, Serializ
             }
         }
     }
-   
-//    public int find(String key)
-//    {
-//        return super.indexOf(key); 
-//    }
 
     /** 
      * Add elements from otherList if not already in this list. 
@@ -495,25 +488,11 @@ public class StringList extends ArrayList<String> implements Cloneable, Serializ
         return this.size()-otherList.size(); 
     }
 
-    
-    /**
-     * Removes all superfluous white space from String values. 
-     * If this list was created from a comma seperated string list, 
-     * but the list contains spaces, this method removes them.
-     * 
-     * @see StringUtil#stripWhiteSpace(String) 
-     * @return whether any whitespace was removed. 
-     */
-    public void stripWhiteSpace()
-    {
-        for (int i=0;i<this.size();i++)
-            this.set(i,StringUtil.stripWhiteSpace(get(i))); 
-    }
-
     /**
      * Adds all values of this list to a linkedHashSet. 
-     * No performance optimalization has been done.  
-     * @return
+     * The LinkedHashSet keeps the order of this list.
+     *  
+     * @returns LinkedHashSet containing the String List keeping the values in the same order. 
      */
     public Set<String> toSet()
     {
@@ -523,7 +502,5 @@ public class StringList extends ArrayList<String> implements Cloneable, Serializ
             set.add(this.get(i)); 
         return set; 
     }
-
-
 
 }
