@@ -524,6 +524,8 @@ public class Presentation
      */
     public String[] getChildAttributeNames()
     {
+        if (childAttributeNames==null)
+            return null; 
         return childAttributeNames.toArray();
     }
 
