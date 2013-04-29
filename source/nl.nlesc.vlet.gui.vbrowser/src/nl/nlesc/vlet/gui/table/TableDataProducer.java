@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.gui.table;
 
-import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
+import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.view.ViewNode;
 

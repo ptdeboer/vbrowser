@@ -32,8 +32,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.presentation.Presentation;
-import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;

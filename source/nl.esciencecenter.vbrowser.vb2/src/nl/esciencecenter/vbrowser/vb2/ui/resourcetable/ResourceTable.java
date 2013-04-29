@@ -37,7 +37,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserInterface;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
@@ -47,6 +46,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.object.UIDisposable;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 
 /** 
  * Generic Resource Table. 

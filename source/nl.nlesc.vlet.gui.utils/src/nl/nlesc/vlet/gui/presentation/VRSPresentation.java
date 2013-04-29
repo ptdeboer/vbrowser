@@ -43,7 +43,7 @@ import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SOURCE_HOSTNAME;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SOURCE_URL;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_STATUS;
 
-import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
+import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.vfs.VFS;

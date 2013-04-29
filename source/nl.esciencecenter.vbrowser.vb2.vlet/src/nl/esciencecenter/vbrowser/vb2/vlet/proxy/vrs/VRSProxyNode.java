@@ -24,13 +24,13 @@ package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
 import java.net.URISyntaxException;
 
 import nl.esciencecenter.ptk.data.LongHolder;
-import nl.esciencecenter.ptk.ui.presentation.UIPresentable;
-import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentable;
+import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.presentation.VRSPresentation;
 import nl.nlesc.vlet.vrs.VComposite;

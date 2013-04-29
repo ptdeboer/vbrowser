@@ -37,8 +37,8 @@ import javax.swing.table.TableModel;
 
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.vrs.data.VAttribute;
 
