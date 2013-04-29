@@ -762,7 +762,7 @@ public class AttributePanel extends JPanel
         if (attributes==null)
             return null; 
 
-        return attributes.toArray(); 
+        return attributes.toArray(new VAttribute[]{}); 
     }
 
     public VAttribute getAttribute(String name)
