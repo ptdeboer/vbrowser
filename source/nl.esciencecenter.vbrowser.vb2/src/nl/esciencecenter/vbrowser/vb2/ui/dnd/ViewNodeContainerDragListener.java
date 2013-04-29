@@ -32,7 +32,7 @@ import javax.swing.TransferHandler;
 
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeComponent;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeContainer;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * Drag Gesture listener for ViewNodeComponents. 

@@ -43,10 +43,10 @@ import javax.swing.UIManager;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.gui.font.FontInfo;
 import nl.nlesc.vlet.gui.font.FontUtil;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Gui Settings. Contains Global settings for the UI Environment.

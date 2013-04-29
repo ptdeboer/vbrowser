@@ -22,9 +22,9 @@ package nl.nlesc.vlet.vrs.events;
 
 import java.io.Serializable;
 
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * VRS Events.

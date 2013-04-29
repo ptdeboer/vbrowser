@@ -32,6 +32,7 @@ import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
@@ -52,7 +53,6 @@ import nl.nlesc.vlet.vrs.ui.ICopyInteractor;
 import nl.nlesc.vlet.vrs.ui.ICopyInteractor.InteractiveAction;
 import nl.nlesc.vlet.vrs.util.VRSStreamUtil;
 import nl.nlesc.vlet.vrs.vdriver.http.HTTPNode;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 import nl.nlesc.vlet.vrs.vrms.VLogicalResource;
 

@@ -22,9 +22,9 @@ package test;
 
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.gui.lobo.LoboBrowser;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class startStandalone
 {

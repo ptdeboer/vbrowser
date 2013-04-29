@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.vrs.vfs;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /** 
  * Interface for VFile resources which can list the links

@@ -27,9 +27,9 @@ import java.util.Map;
 
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeSet;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Info object describing BDII Service Element.

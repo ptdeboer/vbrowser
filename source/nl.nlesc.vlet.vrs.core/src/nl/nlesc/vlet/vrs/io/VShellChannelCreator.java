@@ -22,7 +22,7 @@ package nl.nlesc.vlet.vrs.io;
 
 import java.io.IOException;
 
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public interface VShellChannelCreator
 {

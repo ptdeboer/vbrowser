@@ -20,12 +20,12 @@
 
 package nl.nlesc.vlet.gui.aboutrs;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.exception.VRLSyntaxException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VResourceSystem;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class AboutRS implements VResourceSystem
 {

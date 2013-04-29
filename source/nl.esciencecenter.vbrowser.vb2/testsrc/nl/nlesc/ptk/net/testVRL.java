@@ -27,7 +27,7 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 
 import junit.framework.Assert;

@@ -28,6 +28,7 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.glite.lfc.internal.FileDesc;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.vrs.VCommentable;
@@ -40,7 +41,6 @@ import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VReplicatableDirectory;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileMode;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 public class LFCDir extends VDir 

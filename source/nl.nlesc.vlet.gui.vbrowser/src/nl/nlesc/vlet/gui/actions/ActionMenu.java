@@ -31,6 +31,7 @@ import javax.swing.JSeparator;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
 import nl.nlesc.vlet.actions.ActionMenuMatcher;
@@ -46,7 +47,6 @@ import nl.nlesc.vlet.gui.view.VContainer;
 import nl.nlesc.vlet.gui.viewers.ViewerInfo;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry;
 import nl.nlesc.vlet.vrs.VRSFactory;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 

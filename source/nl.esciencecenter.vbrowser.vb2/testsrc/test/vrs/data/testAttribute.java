@@ -31,8 +31,7 @@ import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
-
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * jUnit test created to test the refactoring of Attribute. 

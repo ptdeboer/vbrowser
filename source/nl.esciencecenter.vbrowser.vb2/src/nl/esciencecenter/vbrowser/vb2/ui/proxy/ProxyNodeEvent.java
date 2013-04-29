@@ -20,7 +20,7 @@
 
 package nl.esciencecenter.vbrowser.vb2.ui.proxy;
 
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 
 public class ProxyNodeEvent

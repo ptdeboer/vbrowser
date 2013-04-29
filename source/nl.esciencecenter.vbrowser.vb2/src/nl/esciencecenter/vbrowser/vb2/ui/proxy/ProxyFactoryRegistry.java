@@ -25,7 +25,7 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.dummy.DummyProxyFactory;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * Registry for ProxyFactories to multiple sources

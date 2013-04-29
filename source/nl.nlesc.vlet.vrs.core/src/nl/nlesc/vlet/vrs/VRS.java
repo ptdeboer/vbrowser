@@ -23,7 +23,7 @@ package nl.nlesc.vlet.vrs;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * Virtual Resource System (VRS) Global class. 

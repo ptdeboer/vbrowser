@@ -47,10 +47,10 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.exception.KeyStorePasswordException;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Custom CertificateStore class for X509Certificates.  

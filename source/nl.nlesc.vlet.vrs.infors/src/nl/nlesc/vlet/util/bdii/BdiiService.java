@@ -32,8 +32,8 @@ import javax.naming.NamingException;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.util.bdii.ServiceInfo.ServiceInfoType;
 import nl.nlesc.vlet.util.bdii.info.glue.GlueConstants;
 import nl.nlesc.vlet.util.bdii.info.glue.GlueObject;
@@ -913,7 +913,7 @@ public class BdiiService
         }
         catch (URISyntaxException e)
         {
-            throw new nl.nlesc.vlet.exception.VRLSyntaxException("URI Syntax error:" + srmEndpoint, e);
+            throw new nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException("URI Syntax error:" + srmEndpoint, e);
         }
         return ServiceInfo.createFrom(endpointURI, ServiceInfoType.SRMV22);
     }
@@ -974,7 +974,7 @@ public class BdiiService
             }
             catch (URISyntaxException e)
             {
-                throw new nl.nlesc.vlet.exception.VRLSyntaxException("URI Syntax error:" + endP, e);
+                throw new nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException("URI Syntax error:" + endP, e);
             }
         }
 

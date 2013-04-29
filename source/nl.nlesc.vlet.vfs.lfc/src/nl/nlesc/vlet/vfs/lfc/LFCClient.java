@@ -42,7 +42,9 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.glite.lfc.LFCConfig;
 import nl.nlesc.glite.lfc.LFCException;
 import nl.nlesc.glite.lfc.LFCServer;
@@ -57,7 +59,6 @@ import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
 import nl.nlesc.vlet.exception.ResourceWriteAccessDeniedException;
-import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.exception.NestedInterruptedException;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
@@ -84,7 +85,6 @@ import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrl.VRLList;
 import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
@@ -182,7 +182,7 @@ public class LFCClient
         }
         catch (URISyntaxException e)
         {
-            throw new nl.nlesc.vlet.exception.VRLSyntaxException(e);
+            throw new nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException(e);
         }
 
         init();

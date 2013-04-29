@@ -21,6 +21,7 @@
 package nl.nlesc.vlet.gui.lobo.resfs;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VRSFactory;
@@ -29,7 +30,6 @@ import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** * 
  * Specifies a resource that will be obtained from a module

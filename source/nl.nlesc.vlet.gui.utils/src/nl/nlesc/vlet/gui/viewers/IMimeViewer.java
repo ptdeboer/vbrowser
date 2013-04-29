@@ -23,8 +23,8 @@ package nl.nlesc.vlet.gui.viewers;
 import java.awt.Component;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.actions.ActionContext;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Interface extraction from the ViewerPanel class to allow

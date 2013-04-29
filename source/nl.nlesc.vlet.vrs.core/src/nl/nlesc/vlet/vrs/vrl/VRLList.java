@@ -24,7 +24,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import nl.esciencecenter.ptk.net.URIFactory;
-import nl.nlesc.vlet.exception.VRLSyntaxException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * VRLList.

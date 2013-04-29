@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.gui.proxyvrs;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /** Abstract interface for ProxyNode factories */
 public interface ProxyNodeFactory

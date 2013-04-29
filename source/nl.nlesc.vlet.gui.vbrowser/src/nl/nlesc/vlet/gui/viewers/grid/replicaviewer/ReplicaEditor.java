@@ -36,6 +36,7 @@ import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
 import nl.nlesc.vlet.gui.panels.list.StatusStringListField;
@@ -44,7 +45,6 @@ import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.gui.widgets.NavigationBar;
 import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;

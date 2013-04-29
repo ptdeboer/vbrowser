@@ -21,8 +21,8 @@
 package tests;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.viewers.x509viewer.ViewerX509;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class TestCertViewer
 {

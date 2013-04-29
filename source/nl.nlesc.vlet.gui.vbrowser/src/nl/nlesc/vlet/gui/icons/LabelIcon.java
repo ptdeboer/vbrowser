@@ -29,6 +29,7 @@ import java.awt.event.FocusListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.actions.KeyMappings;
 import nl.nlesc.vlet.gui.data.ResourceRef;
@@ -38,7 +39,6 @@ import nl.nlesc.vlet.gui.icons.IconViewType.Orientation;
 import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.VContainer;
 import nl.nlesc.vlet.gui.view.ViewNode;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Extended class of the JLabel 

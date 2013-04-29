@@ -33,10 +33,10 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.object.Duplicatable;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.VRLSyntaxException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.XMLDataParseException;
 import nl.nlesc.vlet.vrs.data.xml.XMLData;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  *  A VAttributeSet is implemented as an LinkedHashMap with extra

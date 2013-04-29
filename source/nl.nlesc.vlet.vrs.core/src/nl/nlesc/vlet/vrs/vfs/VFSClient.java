@@ -21,15 +21,15 @@
 package nl.nlesc.vlet.vrs.vfs;
 
 import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
-import nl.nlesc.vlet.exception.VRLSyntaxException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * VFSClient class is a client interface to the Virtual File System classes and methods.

@@ -20,6 +20,7 @@
 
 package nl.esciencecenter.vbrowser.vrs.exceptions;
 
+
 public class VRLSyntaxException extends VrsException
 {
     private static final long serialVersionUID = 3938340227693163772L;

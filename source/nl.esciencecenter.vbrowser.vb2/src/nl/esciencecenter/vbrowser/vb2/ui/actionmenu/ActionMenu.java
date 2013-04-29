@@ -31,7 +31,7 @@ import javax.swing.JSeparator;
 
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeContainer;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public class ActionMenu extends JPopupMenu
 { 

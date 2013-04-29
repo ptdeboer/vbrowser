@@ -21,8 +21,8 @@
 package vfs;
 
 import test.TestSettings;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Test Local case

@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.gui.viewers;
 
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /** 
  * Viewer event are events origination from Viewer classes to notify

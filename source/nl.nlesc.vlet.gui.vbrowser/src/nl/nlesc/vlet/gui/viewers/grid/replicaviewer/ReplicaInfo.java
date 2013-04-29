@@ -20,11 +20,11 @@
 
 package nl.nlesc.vlet.gui.viewers.grid.replicaviewer;
 
-import nl.nlesc.vlet.exception.VRLSyntaxException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.viewers.grid.replicaviewer.ReplicaDataModel.ReplicaStatus;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.data.VAttributeSet;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ReplicaInfo
 {

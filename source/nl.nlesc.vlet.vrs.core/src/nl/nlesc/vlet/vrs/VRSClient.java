@@ -24,15 +24,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.exception.VRLSyntaxException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.io.VInputStreamProducer;
 import nl.nlesc.vlet.vrs.io.VOutputStreamProducer;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
 import nl.nlesc.vlet.vrs.vfs.VRSTransferManager;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * VRSClient is the main client class to the VRS services. It provides methods

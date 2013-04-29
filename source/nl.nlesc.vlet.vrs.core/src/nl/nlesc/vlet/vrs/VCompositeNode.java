@@ -22,11 +22,11 @@ package nl.nlesc.vlet.vrs;
 
 import nl.esciencecenter.ptk.data.IntegerHolder;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.error.ParameterError;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Super Class of all "Composite" Nodes. Extends VNode class by adding 

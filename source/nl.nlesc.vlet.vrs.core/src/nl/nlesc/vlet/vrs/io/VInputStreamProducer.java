@@ -23,7 +23,7 @@ package nl.nlesc.vlet.vrs.io;
 import java.io.InputStream;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /** 
  * Interface for ResourceSystems which can create InputStreams. 

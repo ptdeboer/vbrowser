@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.vrs.vrms;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * Separate Link interface for resource links or Resource Nodes.

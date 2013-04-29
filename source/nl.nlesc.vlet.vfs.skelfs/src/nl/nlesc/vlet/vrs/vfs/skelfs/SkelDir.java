@@ -21,9 +21,9 @@
 package nl.nlesc.vlet.vrs.vfs.skelfs;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Minimal implementation of the VDir class.

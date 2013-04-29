@@ -24,10 +24,10 @@ import javax.swing.JPopupMenu;
 
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.dnd.DropAction;
 import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.ViewModel;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 /** 

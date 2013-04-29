@@ -21,12 +21,12 @@
 package test;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.viewers.grid.replicaviewer.ReplicaController;
 import nl.nlesc.vlet.gui.viewers.grid.replicaviewer.ReplicaDataModel;
 import nl.nlesc.vlet.gui.viewers.grid.replicaviewer.ReplicaEditor;
 import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class TestReplicaEditor
 {

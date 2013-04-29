@@ -32,14 +32,12 @@ import nl.esciencecenter.ptk.data.HashMapList;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 
 /**
- *  An AttributeSet is implemented as an OrdenedHashtable with extra
+ *  An AttributeSet is implemented as an LinkedHashMap with extra
  *  set manipulation methods.
- *  Note that the order of the entries in the Hashtable is now kept since 
- *  this class is a subclass of OrdenedHashtable (custom data type).
  *  <p>
  *  About the set() methods:<br>
  *  The set methods only add a new value (using put) to the Hashtable if 

@@ -3,6 +3,7 @@ package test;
 import java.util.ArrayList;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vfs.srm.SRMDir;
@@ -15,7 +16,6 @@ import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vfs.FileWriter;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileMode;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class BenchmarkSRM
 {

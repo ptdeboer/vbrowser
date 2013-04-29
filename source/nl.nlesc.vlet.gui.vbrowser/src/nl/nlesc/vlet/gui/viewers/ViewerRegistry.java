@@ -26,6 +26,7 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.data.HashMapList;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
 import nl.nlesc.vlet.gui.UIGlobal;
@@ -36,7 +37,6 @@ import nl.nlesc.vlet.vrs.VRSFactory;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * The Viewer Registry.<br>

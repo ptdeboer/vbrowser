@@ -21,8 +21,8 @@
 package nl.nlesc.vlet.vrs.ui;
 
 import nl.esciencecenter.ptk.data.StringHolder;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Interface to ask what to do when copying/transferring files

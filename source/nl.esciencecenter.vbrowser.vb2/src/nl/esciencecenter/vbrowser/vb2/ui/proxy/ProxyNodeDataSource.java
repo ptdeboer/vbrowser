@@ -26,7 +26,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.model.ExtendedDataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * DataSource which produces ViewItems from ProxyItems. 

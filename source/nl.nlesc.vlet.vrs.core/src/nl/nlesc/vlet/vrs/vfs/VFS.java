@@ -24,13 +24,13 @@ import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VResourceSystem;
 import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * The Virtual File System Global Class.

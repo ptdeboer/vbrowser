@@ -34,10 +34,10 @@ import javax.swing.border.BevelBorder;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.gui.widgets.NavigationBar;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * Simple Job Status viewer. 

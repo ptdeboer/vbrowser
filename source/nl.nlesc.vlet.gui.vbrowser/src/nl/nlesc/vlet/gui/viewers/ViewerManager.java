@@ -39,6 +39,7 @@ import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.gui.GuiSettings;
@@ -47,7 +48,6 @@ import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.viewers.IMimeViewer;
 import nl.nlesc.vlet.gui.viewers.ViewContext;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 

@@ -35,6 +35,7 @@ import nl.esciencecenter.ptk.ui.UI;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.exception.VrsServiceTypeMismatchException;
@@ -45,7 +46,6 @@ import nl.nlesc.vlet.vrs.events.ResourceEventNotifier;
 import nl.nlesc.vlet.vrs.vdriver.http.HTTPFactory;
 import nl.nlesc.vlet.vrs.vdriver.http.HTTPSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrl.VRLStreamHandlerFactory;
 import nl.nlesc.vlet.vrs.vrms.MyVLe;
 

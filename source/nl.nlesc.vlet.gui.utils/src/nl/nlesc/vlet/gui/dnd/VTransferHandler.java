@@ -32,7 +32,8 @@ import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.VRLSyntaxException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -41,7 +42,6 @@ import nl.nlesc.vlet.gui.util.Messages;
 import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.VContainer;
 import nl.nlesc.vlet.gui.widgets.IconTextField;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * TransferHandler for both Resource Components (Component/

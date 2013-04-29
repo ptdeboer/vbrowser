@@ -51,6 +51,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
@@ -61,7 +62,6 @@ import nl.nlesc.vlet.vfs.jcraft.ssh.SSHChannel.SSHChannelOptions;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.io.VShellChannel;
 import nl.nlesc.vlet.vrs.vdriver.localfs.BASHChannel;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class VLTerm extends JFrame implements  Runnable
 {

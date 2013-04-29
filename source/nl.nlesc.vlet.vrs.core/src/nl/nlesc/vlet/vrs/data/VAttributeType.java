@@ -22,7 +22,7 @@ package nl.nlesc.vlet.vrs.data;
 
 import java.util.Date;
 
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /** 
  * Basic Attribute Types.  

@@ -40,10 +40,10 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * The VNode class, the super class of all resource nodes in the VRS package. It

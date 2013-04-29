@@ -28,7 +28,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * ResourceTreeNode holds the childs in the ResourceTree. 

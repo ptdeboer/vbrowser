@@ -24,9 +24,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VResourceSystem;
 import nl.nlesc.vlet.vrs.io.VStreamProducer;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * VFileSystem is a factory class for VFSNodes. 

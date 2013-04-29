@@ -21,9 +21,9 @@
 package tests;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.gui.viewers.VHTMLViewer;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class testHTMLViewer
 {

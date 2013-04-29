@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.gui;
 
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public interface BrowserFactory
 {

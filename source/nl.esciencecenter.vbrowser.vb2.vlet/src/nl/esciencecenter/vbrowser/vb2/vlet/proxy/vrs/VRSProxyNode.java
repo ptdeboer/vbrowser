@@ -31,7 +31,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.presentation.VRSPresentation;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VNode;
@@ -132,7 +132,7 @@ public class VRSProxyNode extends ProxyNode
     	if ((vnode instanceof VResourceLink)==false)
     		return this; 
     	
-    	nl.nlesc.vlet.vrs.vrl.VRL vrl;
+    	nl.esciencecenter.vbrowser.vrs.vrl.VRL vrl;
     	
 		try 
 		{

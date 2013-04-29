@@ -31,6 +31,7 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.glite.lfc.internal.FileDesc;
 import nl.nlesc.glite.lfc.internal.ReplicaDesc;
 import nl.nlesc.vlet.exception.ResourceLinkIsBorkenException;
@@ -50,7 +51,6 @@ import nl.nlesc.vlet.vrs.vfs.VLinkListable;
 import nl.nlesc.vlet.vrs.vfs.VLogicalFileAlias;
 import nl.nlesc.vlet.vrs.vfs.VReplicatable;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
 public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttributes,

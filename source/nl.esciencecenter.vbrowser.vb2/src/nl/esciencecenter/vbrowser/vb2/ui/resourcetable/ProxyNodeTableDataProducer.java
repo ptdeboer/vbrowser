@@ -32,7 +32,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTableModel.RowDat
 import nl.esciencecenter.vbrowser.vb2.ui.tasks.UITask;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public class ProxyNodeTableDataProducer implements TableDataProducer 
 {

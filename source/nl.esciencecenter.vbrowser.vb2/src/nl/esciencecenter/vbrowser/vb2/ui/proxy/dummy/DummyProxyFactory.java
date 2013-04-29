@@ -23,7 +23,7 @@ package nl.esciencecenter.vbrowser.vb2.ui.proxy.dummy;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public class DummyProxyFactory extends ProxyFactory
 {

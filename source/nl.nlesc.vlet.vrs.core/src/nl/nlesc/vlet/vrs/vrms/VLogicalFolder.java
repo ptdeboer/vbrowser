@@ -21,9 +21,9 @@
 package nl.nlesc.vlet.vrs.vrms;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VNode;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public interface VLogicalFolder extends VComposite, VLogicalResource
 {

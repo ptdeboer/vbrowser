@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.vrs.vjs;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /** GLite JDL compatible job submitter interface */ 
 public interface VJDLSubmitter

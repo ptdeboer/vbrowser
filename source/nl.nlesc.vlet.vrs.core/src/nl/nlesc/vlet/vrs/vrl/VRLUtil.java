@@ -28,6 +28,7 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.data.VAttribute;
@@ -272,7 +273,7 @@ public class VRLUtil
 
     public static VAttributeSet getQueryAttributes(VRL vrl)
     {
-       String qstr=vrl.uriFactory.getQuery();
+       String qstr=vrl.getQuery();
     
        // no query 
        if (qstr==null) 

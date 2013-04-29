@@ -53,6 +53,7 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.NestedIOException;
@@ -63,7 +64,6 @@ import nl.nlesc.vlet.vrs.VRenamable;
 import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Super class of VDir and VFile. 

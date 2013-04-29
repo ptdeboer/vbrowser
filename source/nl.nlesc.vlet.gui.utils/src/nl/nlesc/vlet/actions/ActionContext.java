@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.actions;
 
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * ActionContext holds the context of the Menu Action when the user right- (or

@@ -35,8 +35,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.tree.ResourceTree;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Class that extend the JDIalog class. It can open a save or open dialog. User

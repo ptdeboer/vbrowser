@@ -35,6 +35,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.panels.attribute.AttributePanel;
@@ -44,7 +45,6 @@ import nl.nlesc.vlet.gui.vbrowser.BrowserController;
 import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.data.VAttributeSet;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ACLPanel extends JPanel
 {

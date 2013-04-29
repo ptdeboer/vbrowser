@@ -29,8 +29,7 @@ import nl.esciencecenter.ptk.object.Duplicatable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * This class provides a high level interface to resource Attributes.
@@ -90,14 +89,7 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
             case STRING:
                 return strValue;
             case VRI: 
-                try
-                {
-                    return new VRL(strValue);
-                }
-                catch (VRLSyntaxException e)
-                {
-                    throw new Exception("Couldn't create VRI object.",e); 
-                }
+                return new VRL(strValue);
             case ENUM:
                 return strValue; 
             case DATETIME:
@@ -792,9 +784,10 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
 	 * Return as VRI. 
 	 * Autocasts value to VRI object if possible. 
 	 * Return null otherwise.  
+	 * @throws nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException 
 	 * @throws VRLSyntaxException 
 	 */
-    public VRL getVRI() throws VRLSyntaxException
+    public VRL getVRI() throws nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException 
     {
         if (value==null)
             return null; 

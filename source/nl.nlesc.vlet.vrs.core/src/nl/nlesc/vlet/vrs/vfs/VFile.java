@@ -23,9 +23,9 @@ package nl.nlesc.vlet.vrs.vfs;
 import java.io.IOException;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.io.VSize;
 import nl.nlesc.vlet.vrs.io.VStreamAccessable;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * The Virtual File Interface. An abstract representation of a File.

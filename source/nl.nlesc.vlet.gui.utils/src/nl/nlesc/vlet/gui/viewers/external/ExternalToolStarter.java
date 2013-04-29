@@ -33,9 +33,9 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.vrs.VNode;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** Wrapper plugin for external tools */ 
 public class ExternalToolStarter extends ViewerPlugin implements ActionListener

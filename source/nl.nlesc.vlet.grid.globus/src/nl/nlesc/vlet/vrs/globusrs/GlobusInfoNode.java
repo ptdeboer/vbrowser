@@ -22,10 +22,10 @@ package nl.nlesc.vlet.vrs.globusrs;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class GlobusInfoNode extends VNode
 {

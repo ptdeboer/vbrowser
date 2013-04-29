@@ -25,7 +25,7 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
@@ -72,11 +72,11 @@ public class VRSProxyFactory extends ProxyFactory
         this.vrsClient=new VRSClient(vrsContext); 
     }
     
-	public VRSProxyNode _openLocation(nl.nlesc.vlet.vrs.vrl.VRL vrl) throws ProxyException
+	public VRSProxyNode _openLocation(VRL vrl) throws ProxyException
 	{
 		try 
 		{
-			return (VRSProxyNode)openLocation(new VRL(vrl.toURI()));
+			return (VRSProxyNode)openLocation(vrl);
 		}
 		catch (Exception e) 
 		{
@@ -101,9 +101,9 @@ public class VRSProxyFactory extends ProxyFactory
         }
     }
     
-	private nl.nlesc.vlet.vrs.vrl.VRL createVRL(VRL locator)
+	private nl.esciencecenter.vbrowser.vrs.vrl.VRL createVRL(VRL locator)
     {
-	    return new nl.nlesc.vlet.vrs.vrl.VRL(locator.getScheme(),
+	    return new nl.esciencecenter.vbrowser.vrs.vrl.VRL(locator.getScheme(),
 	            locator.getUserinfo(),
 	            locator.getHostname(),
 	            locator.getPort(),

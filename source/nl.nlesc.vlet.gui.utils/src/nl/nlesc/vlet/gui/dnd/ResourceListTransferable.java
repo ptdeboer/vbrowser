@@ -26,11 +26,11 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.util.Vector;
 
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.data.ResourceRef;
 import nl.nlesc.vlet.vrs.Registry;
 import nl.nlesc.vlet.vrs.vfs.VFS;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * 	List of ResourceTransferables !  

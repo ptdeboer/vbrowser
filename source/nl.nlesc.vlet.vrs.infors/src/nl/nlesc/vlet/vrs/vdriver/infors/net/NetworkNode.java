@@ -28,6 +28,7 @@ import java.net.UnknownHostException;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.ConnectionException;
@@ -37,7 +38,6 @@ import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEditable
 {

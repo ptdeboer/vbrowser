@@ -36,6 +36,7 @@ import javax.swing.border.BevelBorder;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.actions.ActionMenuConstants;
 import nl.nlesc.vlet.actions.ActionMenuMapping;
@@ -46,7 +47,6 @@ import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.uva.vlet.util.vlterm.VLTerm;
 
 public class VLTermStarter extends ViewerPlugin implements ActionListener

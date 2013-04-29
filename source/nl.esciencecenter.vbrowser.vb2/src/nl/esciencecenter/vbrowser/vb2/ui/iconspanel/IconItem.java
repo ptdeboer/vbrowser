@@ -39,7 +39,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.model.ViewContainerEventAdapter;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeComponent;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeContainer;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /** 
  * Icon Item. Combines Icon with a label. 

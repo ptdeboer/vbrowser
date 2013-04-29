@@ -25,11 +25,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.ResourceSystemNode;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
  * FileSystemNode is a {@link VFileSystem} adaptor class, which extends the 

@@ -25,7 +25,7 @@ import java.util.Map;
 
 import javax.swing.Icon;
 
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * An ViewNode holds UI stuff like icons and presentation attributes. 

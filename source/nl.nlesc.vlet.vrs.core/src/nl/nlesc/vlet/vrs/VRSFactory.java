@@ -22,9 +22,9 @@ package nl.nlesc.vlet.vrs;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * The VRSFactory class produces instances of VResourceSystem handlers

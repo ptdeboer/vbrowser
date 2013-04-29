@@ -25,9 +25,9 @@ import java.util.Map;
 
 import javax.swing.Icon;
 
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.data.ResourceRef;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Presents a Viewed Resource Node.  

@@ -24,9 +24,9 @@ import java.util.ArrayList;
 
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.util.bdii.ServiceInfo.ServiceInfoType;
 import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Containst Storage Area description for a VO. or example: tbn18.nikhef.nl,gb-se-amc.amc.nl.

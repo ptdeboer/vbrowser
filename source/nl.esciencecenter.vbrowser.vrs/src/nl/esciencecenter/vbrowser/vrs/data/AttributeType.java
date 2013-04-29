@@ -24,6 +24,8 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Date;
 
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+
 /** 
  * Basic Attribute Types.  
  */
@@ -40,7 +42,7 @@ public enum AttributeType
     ENUM("Enum",String.class),
     /** Store date time as unified string */ 
     DATETIME("Time",String.class), 
-    VRI("VRI",nl.esciencecenter.vbrowser.vrs.net.VRL.class)
+    VRI("VRI",VRL.class)
     ;
 	
 	// === // 
@@ -91,7 +93,7 @@ public enum AttributeType
         if (object instanceof Date)
             return AttributeType.DATETIME;
         
-        if (object instanceof nl.esciencecenter.vbrowser.vrs.net.VRL)
+        if (object instanceof VRL)
             return AttributeType.VRI;
         
         if (object instanceof URL)

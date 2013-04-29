@@ -30,8 +30,8 @@ import java.awt.event.InputEvent;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.view.VComponent;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Drag Gesture listnener for the IconsPanel which receives a 

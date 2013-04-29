@@ -23,7 +23,7 @@ package nl.esciencecenter.vbrowser.vb2.ui.model;
 import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEventListener;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 
 /**

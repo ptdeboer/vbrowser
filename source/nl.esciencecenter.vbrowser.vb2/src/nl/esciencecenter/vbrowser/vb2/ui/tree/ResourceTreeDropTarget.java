@@ -30,7 +30,7 @@ import java.util.List;
 
 import nl.esciencecenter.vbrowser.vb2.ui.dnd.DnDData;
 import nl.esciencecenter.vbrowser.vb2.ui.dnd.ViewNodeDropTarget;
-import nl.esciencecenter.vbrowser.vrs.net.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 
 /**

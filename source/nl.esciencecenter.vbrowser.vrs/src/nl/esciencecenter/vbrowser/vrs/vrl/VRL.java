@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.esciencecenter.vbrowser.vrs.net;
+package nl.esciencecenter.vbrowser.vrs.vrl;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;

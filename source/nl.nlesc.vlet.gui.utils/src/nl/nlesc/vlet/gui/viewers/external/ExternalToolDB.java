@@ -24,10 +24,10 @@ import java.util.Vector;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.vrs.vdriver.localfs.LocalExec;
 import nl.nlesc.vlet.vrs.vdriver.localfs.LocalProcess;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 public class ExternalToolDB
 {

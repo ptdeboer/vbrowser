@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.grid.voms;
 
 import nl.esciencecenter.ptk.net.URIFactory;
-import nl.nlesc.vlet.vrs.vrl.VRL;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /** 
  * VO Information Holder class. 

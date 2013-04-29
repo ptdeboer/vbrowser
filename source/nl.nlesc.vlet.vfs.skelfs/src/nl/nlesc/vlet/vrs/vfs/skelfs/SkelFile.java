@@ -25,9 +25,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrs.vfs.VFile;
-import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
  * Example Skeleton VFile.
