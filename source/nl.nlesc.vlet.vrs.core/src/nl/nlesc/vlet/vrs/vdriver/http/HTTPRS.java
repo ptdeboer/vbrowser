@@ -25,9 +25,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Proxy;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -40,7 +40,7 @@ public class HTTPRS implements VResourceSystem, VStreamProducer
     public static final String DEFAULT_HTTPRS_SERVERID = "httprs";
 
     static public synchronized HTTPRS getClientFor(VRSContext context, ServerInfo info, VRL location)
-            throws VlException
+            throws VrsException
     {
         // ===========================================
         // Only One HTTP/HTTPS Resource per Context for all hosts.
@@ -87,12 +87,12 @@ public class HTTPRS implements VResourceSystem, VStreamProducer
     }
 
     // @Override
-    public VNode openLocation(VRL location) throws VlException
+    public VNode openLocation(VRL location) throws VrsException
     {
         return new HTTPNode(this, location);
     }
 
-    public InputStream createInputStream(VRL location) throws VlException
+    public InputStream createInputStream(VRL location) throws VrsException
     {
         try
         {
@@ -100,11 +100,11 @@ public class HTTPRS implements VResourceSystem, VStreamProducer
         }
         catch (IOException e)
         {
-            throw new VlIOException(e); 
+            throw new NestedIOException(e); 
         }
     }
     
-    public OutputStream createOutputStream(VRL location) throws VlException
+    public OutputStream createOutputStream(VRL location) throws VrsException
     {
         try
         {
@@ -112,7 +112,7 @@ public class HTTPRS implements VResourceSystem, VStreamProducer
         }
         catch (IOException e)
         {
-          throw new VlIOException(e); 
+          throw new NestedIOException(e); 
         }
     }
 

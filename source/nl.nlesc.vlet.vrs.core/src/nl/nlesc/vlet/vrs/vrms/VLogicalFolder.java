@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vrms;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -29,14 +29,14 @@ public interface VLogicalFolder extends VComposite, VLogicalResource
 {
 	/** Unlink from internal set, Does not call 'delete' on the VNode bute
 	 * removes it from the internal vector only */ 
-	boolean unlinkNode(VNode node) throws VlException;
+	boolean unlinkNode(VNode node) throws VrsException;
 	
 	/** Unlink nodes from internal set
 	 * Does not call 'delete' on the VNodes but
      * removes it from the internal vector only 
-	 * @throws VlException */ 
-	boolean unlinkNodes(VNode node[]) throws VlException;
+	 * @throws VrsException */ 
+	boolean unlinkNodes(VNode node[]) throws VrsException;
 
 	/** Find a child in this resource matching the VRL */ 
-	public VNode findNode(VRL childVRL,boolean recurse) throws VlException; 
+	public VNode findNode(VRL childVRL,boolean recurse) throws VrsException; 
 }

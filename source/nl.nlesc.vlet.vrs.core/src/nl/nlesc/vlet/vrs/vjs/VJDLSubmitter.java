@@ -20,16 +20,16 @@
 
 package nl.nlesc.vlet.vrs.vjs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** GLite JDL compatible job submitter interface */ 
 public interface VJDLSubmitter
 {
     /** Submits JDL file specified by the VRL */ 
-    public VJob submitJdlFile(VRL jdlFile) throws VlException;  
+    public VJob submitJdlFile(VRL jdlFile) throws VrsException;  
     
     /** Submits JDL String */ 
-    public VJob submitJdlString(String jdlString) throws VlException;  
+    public VJob submitJdlString(String jdlString) throws VrsException;  
     
 }

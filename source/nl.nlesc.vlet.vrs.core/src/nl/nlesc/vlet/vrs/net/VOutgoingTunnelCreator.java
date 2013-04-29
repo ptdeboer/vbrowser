@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.net;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 public interface VOutgoingTunnelCreator
 {
@@ -32,8 +32,8 @@ public interface VOutgoingTunnelCreator
      * @param remoteHost remote host to connect to on the other end of the resource.
      * @param remotePort remote port to connect to on the other end of the resource.
      * @return local port 
-     * @throws VlException
+     * @throws VrsException
      */
-    public int createOutgoingTunnel(String remoteHost, int remotePort) throws VlException; 
+    public int createOutgoingTunnel(String remoteHost, int remotePort) throws VrsException; 
     
 }

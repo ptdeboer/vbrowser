@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
@@ -32,12 +32,12 @@ import nl.nlesc.vlet.vrs.vrl.VRL;
 public interface VGlobalUniqueID
 {
     /** Returns (Global) UUID String of this resource */ 
-    public String getGUID() throws VlException;
+    public String getGUID() throws VrsException;
     
     /**
      * Returns logical VRL of this resource, for example the LFC VRL
      * if this resource was fetched using it's GUID ("guid:...") 
      * but the logical file name VRL is needed ("lfn://.../")  
      */ 
-    public VRL getLogicalVRL() throws VlException; 
+    public VRL getLogicalVRL() throws VrsException; 
 }

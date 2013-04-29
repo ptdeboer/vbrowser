@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import nl.esciencecenter.ptk.io.IOUtil;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.exception.NestedIOException;
 
 public class ResourceReader
 {
@@ -45,7 +45,7 @@ public class ResourceReader
      * @param nrOfBytes - actual number of bytes to read. This method will continue until these number 
      *                     of bytes have been read. 
      */
-    public int streamRead(long offset, byte[] buffer, int bufferOffset, int nrOfBytes) throws VlException
+    public int streamRead(long offset, byte[] buffer, int bufferOffset, int nrOfBytes) throws VrsException
     {
         InputStream istr=null;
         
@@ -63,7 +63,7 @@ public class ResourceReader
         }
         catch (IOException e)
         {
-            throw new VlIOException(e);
+            throw new NestedIOException(e);
         } 
         finally
         {

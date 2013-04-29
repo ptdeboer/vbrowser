@@ -38,7 +38,7 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /** 
  * Extended (SSL) SocketFactory. Takes Default (Java) SSLSocketFactory, but enables it to 
@@ -57,7 +57,7 @@ public class ExtSSLSocketFactory extends SSLSocketFactory
     }
 
     /** Example static method to create a custom SSL v3 socket with "RC4" protocol. */ 
-    public static Socket createSSLV3SocketNoRC4(String host, int port) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, VlException, Exception 
+    public static Socket createSSLV3SocketNoRC4(String host, int port) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, VrsException, Exception 
     {
         // Old Code: 
         String protocol="SSLv3"; 

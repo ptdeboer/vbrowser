@@ -22,12 +22,12 @@ package nl.nlesc.vlet.vrs.vjs;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
@@ -92,14 +92,14 @@ public abstract class VJob extends VCompositeNode implements VEditable
 //		throw new nl.uva.vlet.exception.NotImplementedException("Not implemented: resume:"+this); 
 //	}
 	
-	public boolean sync() throws VlException
+	public boolean sync() throws VrsException
 	{
 		return super.sync();
 	}
 	
 	// === VEdtiable interface ===
 	
-	public boolean setAttributes(VAttribute[] attrs) throws VlException
+	public boolean setAttributes(VAttribute[] attrs) throws VrsException
 	{
 		boolean result=true; 
 		for (VAttribute attr:attrs)
@@ -136,7 +136,7 @@ public abstract class VJob extends VCompositeNode implements VEditable
         return null;
     }
 	
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         // Generic VJob Attributes: 
         if (StringUtil.equals(name, VAttributeConstants.ATTR_STATUS))
@@ -191,7 +191,7 @@ public abstract class VJob extends VCompositeNode implements VEditable
     
     // === VJob Outputs === 
     
-    public boolean hasOutputs() throws VlException
+    public boolean hasOutputs() throws VrsException
     {
     	return false; 
     }
@@ -200,7 +200,7 @@ public abstract class VJob extends VCompositeNode implements VEditable
      * Return job outputs after job has successfully finished. 
      * Only if supported by the implementation.
      */
-    public VRL[] getOuputVRLs() throws VlException
+    public VRL[] getOuputVRLs() throws VrsException
     {
     	return null; 
     }
@@ -215,30 +215,30 @@ public abstract class VJob extends VCompositeNode implements VEditable
 	 * Use the isRunnig(), isTerminated() and hasError() methods for explicit status checking. 
 	 * Current status supported at the VJOb level is {Running,Terminated,Error} 
 	 */
-	public abstract String getResourceStatus() throws VlException; 
+	public abstract String getResourceStatus() throws VrsException; 
 	
 	/** Whether job is currently executing. */  
-	public abstract boolean isRunning() throws VlException; 
+	public abstract boolean isRunning() throws VrsException; 
 	
 	/** 
 	 * Terminated means either successful execution or terminated with error
 	 * or it was cancelled. 
 	 * If hasTerminated==true it has finished or won't be running.  
 	 */ 
-	public abstract boolean hasTerminated() throws VlException;  
+	public abstract boolean hasTerminated() throws VrsException;  
 
 	/**
 	 * Returns whether the job has terminated with an error. 
 	 * If the job is hasn't ran or is still running, this method might 
 	 * return null. 
 	 */  
-	public abstract boolean hasError() throws VlException;  
+	public abstract boolean hasError() throws VrsException;  
 	
 	/**
 	 * Returns error text, return null if no error has been encountered 
 	 * or if job is still running.
 	 */
-	public abstract String getErrorText() throws VlException;  
+	public abstract String getErrorText() throws VrsException;  
 
 	
 }

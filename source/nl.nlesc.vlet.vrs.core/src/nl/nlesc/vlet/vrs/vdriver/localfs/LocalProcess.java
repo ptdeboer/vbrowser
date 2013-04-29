@@ -26,8 +26,8 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 
 import nl.esciencecenter.ptk.task.ActionTask;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.exception.NestedIOException;
 
 /** 
  * Process Information wrapper
@@ -68,7 +68,7 @@ public class LocalProcess
 		this.captureStderr=captureErr; 
 	}
 
-	public void waitFor() throws VlException
+	public void waitFor() throws VrsException
 	{
 		try
 		{
@@ -81,7 +81,7 @@ public class LocalProcess
 		}
 		catch (InterruptedException e)
 		{
-			throw new VlException("InterruptedException",e); 
+			throw new VrsException("InterruptedException",e); 
 		}
 		finally
 		{
@@ -95,17 +95,17 @@ public class LocalProcess
 		this.captureStderr=captureStderr;
 	}
 	
-	public void execute(String[] cmds) throws VlException
+	public void execute(String[] cmds) throws VrsException
 	{
 		execute(cmds,true); 
 	}
 	
-	public void execute(String[] cmds, boolean syncWait) throws VlException
+	public void execute(String[] cmds, boolean syncWait) throws VrsException
 	{
 		setCommands(cmds); 
 	
 		if (commands==null)
-			throw new VlException("Command string is empty !");
+			throw new VrsException("Command string is empty !");
 
 		try
 		{
@@ -113,7 +113,7 @@ public class LocalProcess
 		}
 		catch (IOException e)
 		{
-			throw new VlIOException(e);   
+			throw new NestedIOException(e);   
 		}
 		
 		// check termination directly after execute 
@@ -136,7 +136,7 @@ public class LocalProcess
 	}
 
 	// start streamreaders to read from stderr,stdout. 
-	protected void startStreamWatcher(boolean syncWait) throws VlIOException
+	protected void startStreamWatcher(boolean syncWait) throws NestedIOException
 	{
 		if ((this.captureStderr==false) && (this.captureStdout==false))
 			return; // nothing to be done.  

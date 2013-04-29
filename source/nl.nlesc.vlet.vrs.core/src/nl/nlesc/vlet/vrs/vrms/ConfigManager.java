@@ -36,13 +36,13 @@ import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.MessageStrings;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlInitializationException;
+import nl.nlesc.vlet.exception.InitializationException;
 import nl.nlesc.vlet.net.ssl.CertificateStore;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
@@ -237,7 +237,7 @@ public class ConfigManager
         return false; 
     }
 
-    public VAttribute getAttribute(String name) throws VlInitializationException
+    public VAttribute getAttribute(String name) throws InitializationException
     {
         VAttribute attr=null; 
         
@@ -302,8 +302,8 @@ public class ConfigManager
     
     /** 
      * Return BDII Infos as single comma seperated string 
-     * @throws VlInitializationException */ 
-    public String getBdiiHostInfo() throws VlInitializationException
+     * @throws InitializationException */ 
+    public String getBdiiHostInfo() throws InitializationException
     {
         List<HostPortInfo> infos = this.getBdiiServiceInfos();
         
@@ -330,7 +330,7 @@ public class ConfigManager
             // Persistance Properties Always Reload ! 
             return VletConfig.staticLoadProperties(loc); 
         }   
-        catch (VlException e)
+        catch (VrsException e)
         {
             // handle(e); 
             logger.debugPrintf("Warning. Error when loading persistant properties:%s\n",e);
@@ -351,7 +351,7 @@ public class ConfigManager
     /**
      * Returns list of BDII ServiceInfos.
      */ 
-    public List<HostPortInfo> getBdiiServiceInfos() throws VlInitializationException
+    public List<HostPortInfo> getBdiiServiceInfos() throws InitializationException
     {
         // ====================================================
         // Part (I): Check installation and System defaults !   
@@ -409,13 +409,13 @@ public class ConfigManager
         return infos;
     }
     
-    public URI getBdiiServiceURI() throws VlInitializationException
+    public URI getBdiiServiceURI() throws InitializationException
     {
         List<HostPortInfo> infos = this.getBdiiServiceInfos();
         
         if ((infos==null) || (infos.size()<=0))
         {
-            throw new nl.nlesc.vlet.exception.VlInitializationException("No BDII service information found!");
+            throw new nl.nlesc.vlet.exception.InitializationException("No BDII service information found!");
         }
         
         try
@@ -427,17 +427,17 @@ public class ConfigManager
         }
         catch (URISyntaxException e)
         {
-            throw new nl.nlesc.vlet.exception.VlInitializationException("Syntax Error. Cannot resolve BDII service information",e); 
+            throw new InitializationException("Syntax Error. Cannot resolve BDII service information",e); 
         }
     }        
 
 
-    public String getBdiiHost() throws VlInitializationException
+    public String getBdiiHost() throws InitializationException
     {
         return this.getBdiiServiceURI().getHost(); 
     }
     
-    public int getBdiiPort() throws VlInitializationException 
+    public int getBdiiPort() throws InitializationException 
     {
         return this.getBdiiServiceURI().getPort();  
     }
@@ -776,7 +776,7 @@ public class ConfigManager
 	}
 
 	/** Returns CertificateStore from (defaul) location ~/.vletrc/cacerts */ 
-    public CertificateStore getCertificateStore() throws VlException
+    public CertificateStore getCertificateStore() throws VrsException
     {
         return CertificateStore.getDefault();   
     }

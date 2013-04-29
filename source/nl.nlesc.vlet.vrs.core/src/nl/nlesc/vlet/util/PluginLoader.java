@@ -30,8 +30,8 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
@@ -311,7 +311,7 @@ public class PluginLoader
 	 * Scan local filepath, add jars and optionally add Directory if
 	 * addDirs==true and recurse into subdirectories if recurse==true.
 	 * 
-	 * @throws VlException
+	 * @throws VrsException
 	 */
 	public void addJars(File pluginLoc, Vector<URL> urls, boolean recurse,
 			boolean addDirs)

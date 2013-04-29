@@ -29,11 +29,11 @@ import javax.swing.ImageIcon;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlInternalError;
+import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -110,7 +110,7 @@ public class LocalFilesystem extends FileSystemNode
     }
 
     @Override
-    public VFSNode openLocation(VRL location) throws VlException
+    public VFSNode openLocation(VRL location) throws VrsException
     {
         // cannot handle location other then for localhost,
         // so location MUST be a local file path
@@ -119,12 +119,12 @@ public class LocalFilesystem extends FileSystemNode
     }
 
     @Override
-    public void connect() throws VlException
+    public void connect() throws VrsException
     {
     }
 
     @Override
-    public void disconnect() throws VlException
+    public void disconnect() throws VrsException
     {
     }
 
@@ -165,10 +165,10 @@ public class LocalFilesystem extends FileSystemNode
     }
 
     @Override
-    public VFSNode getPath(String path) throws VlException
+    public VFSNode getPath(String path) throws VrsException
     {
         if (path == null)
-            throw new VlInternalError("Path is NULL");
+            throw new InternalError("Path is NULL");
 
         // System.setSecurityManager(null);
         // resolve ~:
@@ -305,9 +305,9 @@ public class LocalFilesystem extends FileSystemNode
      * 
      * @param file
      */
-    public String getWindowsLinkTarget(File file) throws VlException
+    public String getWindowsLinkTarget(File file) throws VrsException
     {
-        throw new VlException("Not Supported");
+        throw new VrsException("Not Supported");
 
         // try
         // {
@@ -341,9 +341,9 @@ public class LocalFilesystem extends FileSystemNode
     }
 
     /** Get Windows icon of local file */
-    public ImageIcon getWindowsIcon(File file) throws VlException
+    public ImageIcon getWindowsIcon(File file) throws VrsException
     {
-        throw new VlException("Not Supported");
+        throw new VrsException("Not Supported");
 
         // if (Global.isWindows())
         // {
@@ -387,7 +387,7 @@ public class LocalFilesystem extends FileSystemNode
         return hasUxStatCmd;
     }
 
-    public void setMode(String path, int mode) throws VlException
+    public void setMode(String path, int mode) throws VrsException
     {
         if (hasStatCmd())
         {
@@ -406,7 +406,7 @@ public class LocalFilesystem extends FileSystemNode
             return;
     }
 
-    static void checkExitStatus(String[] result) throws VlException
+    static void checkExitStatus(String[] result) throws VrsException
     {
         if ((result != null) && (result.length > 2))
         {
@@ -414,14 +414,14 @@ public class LocalFilesystem extends FileSystemNode
 
             if (status != 0)
             {
-                throw VlException.create("Execution Error", "Exit status=" + status + "\n. stdout=" + result[1]
-                        + "\n. stderr=" + result[2], null);
+                throw VrsException.create("Exit status=" + status + "\n. stdout=" + result[1]
+                        + "\n. stderr=" + result[2], null,"Execution Error");
             }
         }
 
     }
 
-    public String getSoftLinkTarget(String path) throws VlException
+    public String getSoftLinkTarget(String path) throws VrsException
     {
         if (hasStatCmd())
         {
@@ -440,7 +440,7 @@ public class LocalFilesystem extends FileSystemNode
         return null;
     }
 
-    public VDir createDir(String path, boolean force) throws VlException
+    public VDir createDir(String path, boolean force) throws VrsException
     {
         // TBD: not portable using forward slash!
         String fullpath = resolvePathString(path);
@@ -493,12 +493,12 @@ public class LocalFilesystem extends FileSystemNode
     }
 
     @Override
-    public VFile createFile(VRL fileVrl, boolean force) throws VlException
+    public VFile createFile(VRL fileVrl, boolean force) throws VrsException
     {
         return createFile(fileVrl.getPath(), force);
     }
 
-    public VFile createFile(String name, boolean force) throws VlException
+    public VFile createFile(String name, boolean force) throws VrsException
     {
         // URI: use forward slash:
         String loc = resolvePathString(name);
@@ -526,27 +526,27 @@ public class LocalFilesystem extends FileSystemNode
     }
 
     @Override
-    public boolean existsFile(VRL fileVrl) throws VlException
+    public boolean existsFile(VRL fileVrl) throws VrsException
     {
         java.io.File f = new File(fileVrl.getPath());
         return (f.exists() && f.isFile());
     }
 
     @Override
-    public boolean existsDir(VRL fileVrl) throws VlException
+    public boolean existsDir(VRL fileVrl) throws VrsException
     {
         java.io.File f = new File(fileVrl.getPath());
         return (f.exists() && f.isDirectory());
     }
 
     @Override
-    public VDir newDir(VRL dirPath) throws VlException
+    public VDir newDir(VRL dirPath) throws VrsException
     {
         return new LDir(this, dirPath.getPath());
     }
 
     @Override
-    public VFile newFile(VRL fileVrl) throws VlException
+    public VFile newFile(VRL fileVrl) throws VrsException
     {
         return new LFile(this, fileVrl.getPath());
     }
@@ -561,7 +561,7 @@ public class LocalFilesystem extends FileSystemNode
      * Peforms unix 'stat' command or create dummy StatInfo from File defaults.
      * Always returns StatInfo object.
      */
-    public StatInfo stat(File file) throws VlException
+    public StatInfo stat(File file) throws VrsException
     {
         if (hasStatCmd())
         {
@@ -574,7 +574,7 @@ public class LocalFilesystem extends FileSystemNode
     }
 
     /** Perform UX file stat to get file attributes */
-    public StatInfo uxStat(String path) throws VlException
+    public StatInfo uxStat(String path) throws VrsException
     {
         if (hasStatCmd())
         {

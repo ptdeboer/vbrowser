@@ -36,8 +36,8 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.dialog.CaCertDialog;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.net.ssl.CertificateStore.CaCertOptions;
 
 /**
@@ -143,13 +143,13 @@ public class SslUtil
     }
 
     public static SSLSocket openSSLv3Socket(String host, int port) throws KeyStoreException, NoSuchAlgorithmException,
-            CertificateException, VlException, Exception
+            CertificateException, VrsException, Exception
     {
         return openSSLv3Socket(CertificateStore.getDefault().createSSLContext("SSLv3"), host, port, -1);
     }
 
     public static SSLSocket openSSLv3Socket(SSLContext context, String host, int port, int timeout)
-            throws KeyStoreException, NoSuchAlgorithmException, CertificateException, VlException, Exception
+            throws KeyStoreException, NoSuchAlgorithmException, CertificateException, VrsException, Exception
     {
         SSLSocketFactory sslFactory = context.getSocketFactory();
 
@@ -211,7 +211,7 @@ public class SslUtil
      * $VLET_INSTALL/etc/cacerts will be copied to ~/.vletrc and that one will
      * be returned.
      */
-    public static CertificateStore getUserCertificateStore() throws VlException
+    public static CertificateStore getUserCertificateStore() throws VrsException
     {
         return CertificateStore.getDefault();
     }

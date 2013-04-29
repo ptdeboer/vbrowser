@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vdriver.http;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.net.ssl.SslUtil;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
@@ -69,7 +69,7 @@ public class HTTPFactory extends VRSFactory
 
 	@Override
 	public VResourceSystem createNewResourceSystem(VRSContext context, ServerInfo info,VRL location)
-			throws VlException 
+			throws VrsException 
 	{
 		return HTTPRS.getClientFor(context,info,location); 
 	}

@@ -23,9 +23,9 @@ package nl.nlesc.vlet.vrs.vfs;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.NotImplementedException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.io.ResourceWriter;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 
@@ -46,19 +46,19 @@ public class FileWriter extends ResourceWriter
      * 
      * @see VRandomAccessable
      */
-    public void write(long offset, byte buffer[], int bufferOffset, int nrOfBytes) throws VlException
+    public void write(long offset, byte buffer[], int bufferOffset, int nrOfBytes) throws VrsException
     {
         writeBytes(offset,buffer,bufferOffset,nrOfBytes);
     }
     
     /** Write complete buffer to beginning of file */ 
-    public void write(byte buffer[], int bufferOffset,int nrOfBytes) throws VlException
+    public void write(byte buffer[], int bufferOffset,int nrOfBytes) throws VrsException
     {
         write(0,buffer,bufferOffset,nrOfBytes);
     }
 
     /** Write specified number of bytes from buffer to the beginning of the file. */ 
-    public void write(byte buffer[],int nrOfBytes) throws VlException
+    public void write(byte buffer[],int nrOfBytes) throws VrsException
     {
         write(0,buffer,0,nrOfBytes);
     }
@@ -70,9 +70,9 @@ public class FileWriter extends ResourceWriter
      *            - new String Contents
      * @param encoding 
      *            - charset to use
-     * @throws VlException if contents can not be set somehow
+     * @throws VrsException if contents can not be set somehow
      */
-    public void setContents(String contents, String encoding) throws VlException
+    public void setContents(String contents, String encoding) throws VrsException
     {
         byte[] bytes;
 
@@ -84,7 +84,7 @@ public class FileWriter extends ResourceWriter
         }
         catch (UnsupportedEncodingException e)
         {
-            throw (new VlException("Encoding not supported:" + encoding, e));
+            throw (new VrsException("Encoding not supported:" + encoding, e));
         }
     }
 
@@ -93,7 +93,7 @@ public class FileWriter extends ResourceWriter
      * file length will match the byte array lenth thus optionally truncating or
      * extend an existing file.
      */
-    public void setContents(byte bytes[]) throws VlException
+    public void setContents(byte bytes[]) throws VrsException
     {
         this.streamWrite(bytes,0,bytes.length); 
     }
@@ -104,10 +104,10 @@ public class FileWriter extends ResourceWriter
      * 
      * @param contents
      *            -  new Contents String
-     * @throws VlException
+     * @throws VrsException
      * @see #setContents(String contents, String encoding) to specify the coding
      */
-    public void setContents(String contents) throws VlException
+    public void setContents(String contents) throws VrsException
     {
         setContents(contents, "UTF-8");
         return;
@@ -118,7 +118,7 @@ public class FileWriter extends ResourceWriter
     // ===================
     
     /** Actual write method */
-    protected void writeBytes(long offset, byte buffer[], int bufferOffset, int nrOfBytes) throws VlException
+    protected void writeBytes(long offset, byte buffer[], int bufferOffset, int nrOfBytes) throws VrsException
     {
         // writing as a single stream usually is faster:
         if (offset==0) 
@@ -134,7 +134,7 @@ public class FileWriter extends ResourceWriter
             }
             catch (IOException e)
             {
-               throw new VlIOException(e); 
+               throw new NestedIOException(e); 
             }
         }
         else

@@ -34,11 +34,11 @@ import nl.esciencecenter.ptk.ui.SimpelUI;
 import nl.esciencecenter.ptk.ui.UI;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlInternalError;
-import nl.nlesc.vlet.exception.VlServiceMismatchException;
-import nl.nlesc.vlet.exception.VlUnsupportedSchemeException;
+import nl.nlesc.vlet.exception.InternalError;
+import nl.nlesc.vlet.exception.VrsServiceTypeMismatchException;
+import nl.nlesc.vlet.exception.VrsUnsupportedSchemeException;
 import nl.nlesc.vlet.util.PluginLoader;
 import nl.nlesc.vlet.util.PluginLoader.PluginInfo;
 import nl.nlesc.vlet.vrs.events.ResourceEventNotifier;
@@ -405,7 +405,7 @@ public final class Registry // todo: change to vrs protected class.
             {
                 String msg = "Error implementations other then VRSFactory not yet supported:" + o;
                 logger.errorPrintf("%s\n", msg);
-                throw new VlServiceMismatchException(msg);
+                throw new VrsServiceTypeMismatchException(msg);
             }
         }
 
@@ -443,7 +443,7 @@ public final class Registry // todo: change to vrs protected class.
             {
                 String msg = "Error implementations other then VRSFactory not yet supported:" + o;
                 logger.errorPrintf("%s\n", msg);
-                throw new VlServiceMismatchException(msg);
+                throw new VrsServiceTypeMismatchException(msg);
             }
         }
 
@@ -473,7 +473,7 @@ public final class Registry // todo: change to vrs protected class.
         // runtime check:
         if (VRSFactory.class.isAssignableFrom(cls) == false)
         {
-            throw new nl.nlesc.vlet.exception.VlInitializationException("Class is not a VRSFactory:"
+            throw new nl.nlesc.vlet.exception.InitializationException("Class is not a VRSFactory:"
                     + cls.getCanonicalName());
         }
         
@@ -537,7 +537,7 @@ public final class Registry // todo: change to vrs protected class.
     /**
      * Find VRSFActory for the specifed VRL.
      */
-    protected VRSFactory getVRSFactoryFor(VRL loc) throws VlException
+    protected VRSFactory getVRSFactoryFor(VRL loc) throws VrsException
     {
         if (loc == null)
             return null;
@@ -626,13 +626,13 @@ public final class Registry // todo: change to vrs protected class.
      * Is protected, may only be called from a valid VRSContext. use VRSClient
      * or VFSClient to open locations().
      */
-    protected VNode openLocation(VRSContext context, VRL location) throws VlException
+    protected VNode openLocation(VRSContext context, VRL location) throws VrsException
     {
         if (location == null)
-            throw new nl.nlesc.vlet.exception.VlInternalError("Location parameter can not be null");
+            throw new nl.nlesc.vlet.exception.InternalError("Location parameter can not be null");
 
         if (context == null)
-            throw new nl.nlesc.vlet.exception.VlInternalError("VRSContext parameter can not be null");
+            throw new nl.nlesc.vlet.exception.InternalError("VRSContext parameter can not be null");
 
         String scheme = location.getScheme();
 
@@ -642,7 +642,7 @@ public final class Registry // todo: change to vrs protected class.
         VResourceSystem rs = this.openResourceSystem(context, location);
 
         if (rs == null)
-            throw new VlInternalError("Couldn't get/create ResourceSystem for:" + location);
+            throw new InternalError("Couldn't get/create ResourceSystem for:" + location);
 
         return rs.openLocation(location);
     }
@@ -653,7 +653,7 @@ public final class Registry // todo: change to vrs protected class.
      * VRSFactory. For FileSystem schemes this will return a VFileSystem
      * instance.
      */
-    protected VResourceSystem openResourceSystem(VRSContext context, VRL location) throws VlException
+    protected VResourceSystem openResourceSystem(VRSContext context, VRL location) throws VrsException
     {
         logger.debugPrintf("Getting location:%s\n", location);
 
@@ -684,7 +684,7 @@ public final class Registry // todo: change to vrs protected class.
 
         if (scheme == null)
         {
-            throw new VlException("Invalid location. No scheme for:" + location);
+            throw new VrsException("Invalid location. No scheme for:" + location);
         }
 
         if (context.isAllowedScheme(scheme) == false)
@@ -697,13 +697,13 @@ public final class Registry // todo: change to vrs protected class.
 
         if (rsFactory == null)
         {
-            throw new VlUnsupportedSchemeException("No service registered for protocol:" + scheme);
+            throw new VrsUnsupportedSchemeException("No service registered for protocol:" + scheme);
         }
 
         return rsFactory.openResourceSystem(context, location);
     }
 
-    public VFileSystem openFileSystem(VRSContext context, VRL location) throws VlException
+    public VFileSystem openFileSystem(VRSContext context, VRL location) throws VrsException
     {
         VResourceSystem vrs = this.openResourceSystem(context, location);
 

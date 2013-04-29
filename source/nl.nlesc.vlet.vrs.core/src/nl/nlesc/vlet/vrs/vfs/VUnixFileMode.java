@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /** 
  * Interface for VFile implementations which support the Unix file "mode" attributes. 
@@ -46,7 +46,7 @@ public interface VUnixFileMode
 	 * and vice versa. 
 	 * Use Integer.toOctal() to get the octal (string) representation. 
 	 */
-	int getMode() throws VlException; 
+	int getMode() throws VrsException; 
 	
 	/**
 	 * Set Unix File Mode.
@@ -56,6 +56,6 @@ public interface VUnixFileMode
 	 * and vice versa. 
 	 * Use Integer.toOctal() to get the octal (string) representation. 
 	 */
-	void setMode(int mode)throws VlException; 
+	void setMode(int mode)throws VrsException; 
 	
 }

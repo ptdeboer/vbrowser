@@ -20,13 +20,13 @@
 
 package nl.nlesc.vlet.vrs.vjs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /** For suspendable jobs */ 
 public interface VJobSuspendable
 {
-    public void suspend() throws VlException; 
+    public void suspend() throws VrsException; 
     
-    public void resume() throws VlException;
+    public void resume() throws VrsException;
     
 }

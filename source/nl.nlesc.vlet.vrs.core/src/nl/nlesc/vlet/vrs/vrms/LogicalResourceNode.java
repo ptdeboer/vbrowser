@@ -20,21 +20,21 @@
 
 package nl.nlesc.vlet.vrs.vrms;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ICONURL;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_NAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PATH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PORT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SCHEME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SHOW_SHORTCUT_ICON;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_TARGET_IS_COMPOSITE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_TARGET_MIMETYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_URI_FRAGMENT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_URI_QUERY;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_USERNAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_VO_NAME;
 import static nl.nlesc.vlet.vrs.VRS.LINK_TYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ICONURL;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_NAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SHOW_SHORTCUT_ICON;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_TARGET_IS_COMPOSITE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_TARGET_MIMETYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_URI_FRAGMENT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_URI_QUERY;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_USERNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_VO_NAME;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,17 +48,12 @@ import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.data.xml.VPersistance;
-import nl.nlesc.vlet.data.xml.XMLData;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.ResourceNotEditableException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.exception.VlXMLDataException;
+import nl.nlesc.vlet.exception.XMLDataParseException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.ServerInfoRegistry;
@@ -70,6 +65,11 @@ import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VRenamable;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
+import nl.nlesc.vlet.vrs.data.xml.VPersistance;
+import nl.nlesc.vlet.vrs.data.xml.XMLData;
 import nl.nlesc.vlet.vrs.io.VStreamAccessable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
@@ -231,20 +231,20 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         super(context, logicalVRL);
     }
 
-    public LogicalResourceNode(VRSContext context, VAttributeSet attrSet, VRL logicalVRL) throws VlException
+    public LogicalResourceNode(VRSContext context, VAttributeSet attrSet, VRL logicalVRL) throws VrsException
     {
         super(context, logicalVRL);
         this.resourceAttributes = attrSet.duplicate();
     }
 
-    public LogicalResourceNode duplicate() throws VlException
+    public LogicalResourceNode duplicate() throws VrsException
     {
         LogicalResourceNode newNode = new LogicalResourceNode(this.getVRSContext(), this.resourceAttributes, (VRL) null);
         return newNode;
     }
 
     // basic initializer: one for all!
-    protected void init(VRL logicalVRL, VRL targetVRL, boolean resolveLink) throws VlException
+    protected void init(VRL logicalVRL, VRL targetVRL, boolean resolveLink) throws VrsException
     {
         this.setLocation(logicalVRL);
         setResourceVRL(targetVRL);
@@ -311,7 +311,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
      * object
      */
     @Override
-    public VNode getParent() throws VlException
+    public VNode getParent() throws VrsException
     {
         return (VNode) parent;
     }
@@ -337,7 +337,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         return this.isEditable;
     }
 
-    public boolean isDeletable() throws VlException
+    public boolean isDeletable() throws VrsException
     {
         if (storageNode != null)
         {
@@ -469,7 +469,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     }
 
     /** Default save() for subclasses */
-    protected boolean doSave() throws VlException
+    protected boolean doSave() throws VrsException
     {
         // logical node: might be part of MyVLe.
 
@@ -482,7 +482,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
             }
             else if (parent == null)
             {
-                throw new VlIOException("Storage Error.\nBoth description Location as Parent are set to NULL");
+                throw new NestedIOException("Storage Error.\nBoth description Location as Parent are set to NULL");
             }
             else
             {
@@ -524,7 +524,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         }
         catch (IOException e)
         {
-            throw new VlIOException(e);
+            throw new NestedIOException(e);
         }
         finally
         {
@@ -532,7 +532,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         }
     }
 
-    public void writeAsXmlTo(OutputStream outp) throws VlXMLDataException
+    public void writeAsXmlTo(OutputStream outp) throws XMLDataParseException
     {
         String comments = "VL-e Resource description of type:" + this.getType();
         XMLData xmlData = getXMLData();
@@ -634,7 +634,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     }
 
     // interface VEditable
-    public boolean setAttributes(VAttribute[] attrs, boolean store) throws VlException
+    public boolean setAttributes(VAttribute[] attrs, boolean store) throws VrsException
     {
         boolean result = true;
 
@@ -664,7 +664,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     }
 
     // interface VEditable
-    public boolean setAttributes(VAttribute[] attrs) throws VlException
+    public boolean setAttributes(VAttribute[] attrs) throws VrsException
     {
         return setAttributes(attrs, true);
     }
@@ -675,13 +675,13 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     }
 
     // @Override
-    public boolean setAttribute(VAttribute attr) throws VlException
+    public boolean setAttribute(VAttribute attr) throws VrsException
     {
         return setAttribute(attr, true);
     }
 
     // @Override
-    public boolean setAttribute(VAttribute attr, boolean store) throws VlException
+    public boolean setAttribute(VAttribute attr, boolean store) throws VrsException
     {
         debugPrintln("setAttribute:" + attr);
 
@@ -758,12 +758,12 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         resourceAttributes.put(ATTR_NAME, val);
     }
 
-    public boolean renameTo(String newName, boolean nameIsPath) throws VlException
+    public boolean renameTo(String newName, boolean nameIsPath) throws VrsException
     {
         return (rename(newName, nameIsPath) != null);
     }
 
-    public VRL rename(String newName, boolean nameIsPath) throws VlException
+    public VRL rename(String newName, boolean nameIsPath) throws VrsException
     {
         if (this.isEditable == false)
             throw new nl.nlesc.vlet.exception.ResourceNotEditableException("Cannot rename this resource");
@@ -773,12 +773,12 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         return this.getVRL();
     }
 
-    public boolean isRenamable() throws VlException
+    public boolean isRenamable() throws VrsException
     {
         return true;
     }
 
-    public VRL getTargetLocation() throws VlException
+    public VRL getTargetLocation() throws VrsException
     {
         return this.getTargetVRL();
     }
@@ -861,9 +861,9 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
      * 
      * @param resolve
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    public boolean getTargetIsComposite(boolean defaultVal) throws VlException
+    public boolean getTargetIsComposite(boolean defaultVal) throws VrsException
     {
         // config node !
         // check again:
@@ -968,11 +968,11 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     /**
      * Returns Resource Target Location this Logical Resource "points" to.
      * 
-     * @throws VlException
-     * @throws VlException
+     * @throws VrsException
+     * @throws VrsException
      */
 
-    public VRL getTargetVRL() throws VlException
+    public VRL getTargetVRL() throws VrsException
     {
         // before resolving a link, make sure extra Server Properties
         // are stored
@@ -1013,7 +1013,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
      * Factory method to load stored ResourceNode. Currently only .vlink file
      * are supported.
      */
-    public void loadFrom(VNode vnode) throws VlException
+    public void loadFrom(VNode vnode) throws VrsException
     {
         debugPrintln("loading from:" + vnode);
 
@@ -1042,7 +1042,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
                 XMLData data = getXMLData();
                 resourceAttributes = data.parseVAttributeSet(inps);
             }
-            catch (VlXMLDataException ex)
+            catch (XMLDataParseException ex)
             {
                 // except1=ex;
 
@@ -1059,7 +1059,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
             }
             catch (IOException e)
             {
-                throw new VlIOException(e);
+                throw new NestedIOException(e);
             }
         }
 
@@ -1071,7 +1071,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
 
         if ((resourceAttributes == null) && (resourceAttributes.size() == 0))
         {
-            throw new VlIOException("ReadError.\nEmpty resource:" + this);
+            throw new NestedIOException("ReadError.\nEmpty resource:" + this);
         }
 
         // update target attributes (if possible)
@@ -1133,7 +1133,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     }
 
     @Override
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         VAttribute attr = null;
 
@@ -1169,7 +1169,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     }
 
     // @Override
-    public boolean delete() throws VlException
+    public boolean delete() throws VrsException
     {
         if (deleteStorageLocation() == false)
             return false;
@@ -1276,24 +1276,24 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
      * Factory method, resolving resource desciption and return a
      * LogicalResource
      * 
-     * @throws VlException
+     * @throws VrsException
      * 
      */
 
-    public static LogicalResourceNode loadFrom(VRSContext vrsContext, VNode node) throws VlException
+    public static LogicalResourceNode loadFrom(VRSContext vrsContext, VNode node) throws VrsException
     {
         // Use linknode:
         return LinkNode.loadFrom(vrsContext, node);
     }
 
     /** Store Resource node. This method updates the used storage location */
-    public void saveAtLocation(VRL saveLocation) throws VlException
+    public void saveAtLocation(VRL saveLocation) throws VrsException
     {
         _saveTo(saveLocation);
     }
 
     // Actual Save implementation, updates 'storageNode'
-    private void _saveTo(VRL saveLocation) throws VlException
+    private void _saveTo(VRL saveLocation) throws VrsException
     {
         VNode parentNode = this.getVRSContext().openLocation(saveLocation.getParent());
         String baseName = saveLocation.getBasename();
@@ -1327,7 +1327,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
 
             // Assert !
             if (newnode.equals(this) == false)
-                throw new VlException(
+                throw new VrsException(
                         "Internal Error: LogicalResourceNode:save() at ResourceGroup must return same node");
 
             return;
@@ -1375,7 +1375,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         this.isEditable = val;
     }
 
-    public VAttributeSet getPersistantAttributes() throws VlException
+    public VAttributeSet getPersistantAttributes() throws VrsException
     {
         return this.resourceAttributes.duplicate();
     }
@@ -1385,7 +1385,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         return PERSISTANT_TYPE;
     }
 
-    public boolean deleteStorageLocation() throws VlException
+    public boolean deleteStorageLocation() throws VrsException
     {
         if (storageNode != null)
         {
@@ -1428,7 +1428,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
             storeServerInfo(info);
 
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             warnPrintln("*** Warning:Couldn't update Server Attribute for:" + this);
         }
@@ -1533,7 +1533,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
      * 
      * @param info
      */
-    protected void updateAndStoreServerInfo(ServerInfo info) throws VlException
+    protected void updateAndStoreServerInfo(ServerInfo info) throws VrsException
     {
         debugPrintln(">>> Storing Server Type Info");
         // synchronize with VRS Implementation and store.

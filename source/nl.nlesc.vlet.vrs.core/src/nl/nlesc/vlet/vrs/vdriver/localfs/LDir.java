@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vdriver.localfs;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
 
 import java.io.File;
 
@@ -28,11 +28,11 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.nlesc.vlet.data.VAttribute;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceReadAccessDeniedException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -66,10 +66,10 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
     /**
      * Contructs new local LDir reference (Not the directory itself).
      * 
-     * @throws VlException
-     * @throws VlException
+     * @throws VrsException
+     * @throws VrsException
      */
-    private void init(File file) throws VlException
+    private void init(File file) throws VrsException
     {
         // under windows: will return windows path
         String path = file.getAbsolutePath();
@@ -89,7 +89,7 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
         _file = file;
     }
 
-    public LDir(LocalFilesystem local, String path) throws VlException
+    public LDir(LocalFilesystem local, String path) throws VrsException
     {
         // VRL creation is done in init as well
         super(local, new VRL(VRS.FILE_SCHEME + ":///" + URIFactory.uripath(path, true, java.io.File.separatorChar)));
@@ -98,14 +98,14 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
         init(_file);
     }
 
-    public LDir(LocalFilesystem local, java.io.File file) throws VlException
+    public LDir(LocalFilesystem local, java.io.File file) throws VrsException
     {
         super(local, new VRL(file.toURI()));
         this.localfs = local;
         init(file);
     }
 
-    private StatInfo getStat() throws VlException
+    private StatInfo getStat() throws VrsException
     {
         synchronized (_file)
         {
@@ -127,10 +127,10 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
     // *** Instance Attributes ***
 
     /**
-     * @throws VlException
+     * @throws VrsException
      * @see nl.uva.vlet.vfs.localfs.i.VNode#getParent()
      */
-    public VDir getParentDir() throws VlException
+    public VDir getParentDir() throws VrsException
     {
         // Debug("LDir:Getting parent of:"+_file.getPath());
 
@@ -166,7 +166,7 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
         return superNames;
     }
 
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         if (name == null)
             return null;
@@ -199,7 +199,7 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
         return 0;
     }
 
-    public VFSNode[] list() throws VlException
+    public VFSNode[] list() throws VrsException
     {
         String list[] = _file.list();
 
@@ -247,13 +247,13 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
         return _file.canWrite();
     }
 
-    public boolean create(boolean ignoreExisting) throws VlException
+    public boolean create(boolean ignoreExisting) throws VrsException
     {
         VDir dir = this.localfs.createDir(this.path, ignoreExisting);
         return (dir != null);
     }
 
-    public boolean delete(boolean recurse) throws VlException
+    public boolean delete(boolean recurse) throws VrsException
     {
         // Debug("Deleting local directory:"+this);
 
@@ -281,7 +281,7 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
 
     }
 
-    public VRL rename(String newname, boolean nameIsPath) throws VlException
+    public VRL rename(String newname, boolean nameIsPath) throws VrsException
     {
         File newFile = localfs.renameTo(this.getPath(), newname, nameIsPath);
 
@@ -293,7 +293,7 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
         return null;
     }
 
-    public boolean delNode(VNode node) throws VlException
+    public boolean delNode(VNode node) throws VrsException
     {
         return ((VFSNode) node).delete();
     }
@@ -309,7 +309,7 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
         return true;
     }
 
-    public void setMode(int mode) throws VlException
+    public void setMode(int mode) throws VrsException
     {
         this.localfs.setMode(getPath(), mode);
         sync();
@@ -320,13 +320,13 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
     // ===
 
     @Override
-    public boolean isSymbolicLink() throws VlException
+    public boolean isSymbolicLink() throws VrsException
     {
         return this.getStat().isSoftLink();
     }
 
     @Override
-    public String getSymbolicLinkTarget() throws VlException
+    public String getSymbolicLinkTarget() throws VrsException
     {
         if (isSymbolicLink() == false)
         {
@@ -348,27 +348,27 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
         return null;
     }
 
-    public String getGid() throws VlException
+    public String getGid() throws VrsException
     {
         return this.getStat().getGroupName();
     }
 
-    public String getUid() throws VlException
+    public String getUid() throws VrsException
     {
         return this.getStat().getUserName();
     }
 
-    public int getMode() throws VlException
+    public int getMode() throws VrsException
     {
         return this.getStat().getMode();
     }
 
-    public long getModificationTime() throws VlException
+    public long getModificationTime() throws VrsException
     {
         return this.getStat().getModTime();
     }
 
-    public String getPermissionsString() throws VlException
+    public String getPermissionsString() throws VrsException
     {
         return this.getStat().getPermissions();
     }

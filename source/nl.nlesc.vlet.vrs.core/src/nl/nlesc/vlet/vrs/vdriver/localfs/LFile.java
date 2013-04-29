@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vdriver.localfs;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,7 +35,7 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttribute;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.NestedFileNotFoundException;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
@@ -43,10 +43,10 @@ import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.ResourceReadAccessDeniedException;
 import nl.nlesc.vlet.exception.ResourceWriteAccessDeniedException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.exception.WritePermissionDeniedException;
+import nl.nlesc.vlet.exception.NestedIOException;
+import nl.nlesc.vlet.exception.ResourceNotWritableException;
 import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 import nl.nlesc.vlet.vrs.io.VResizable;
 import nl.nlesc.vlet.vrs.io.VStreamAccessable;
@@ -85,9 +85,9 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
      * Public constructor to create new LFile.
      * 
      * @param path
-     * @throws VlException
+     * @throws VrsException
      */
-    public LFile(LocalFilesystem localFS, String path) throws VlException
+    public LFile(LocalFilesystem localFS, String path) throws VrsException
     {
         super(localFS, new VRL("file:///"
                 + URIFactory.uripath(path, true, java.io.File.separatorChar)));
@@ -105,7 +105,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
     }
 
     /** Initiliaze with Java File object */
-    private void init(java.io.File file) throws VlException
+    private void init(java.io.File file) throws VrsException
     {
         logger.debugPrintf("init():new file:%s\n",file); 
         
@@ -126,7 +126,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
     }
 
     /** Construct new LocalFS File object from Java File */
-    public LFile(LocalFilesystem localFS, java.io.File file) throws VlException
+    public LFile(LocalFilesystem localFS, java.io.File file) throws VrsException
     {
         super(localFS, new VRL(file.toURI()));
         this.localfs = localFS;
@@ -149,7 +149,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         return superNames;
     }
 
-    private StatInfo getStat() throws VlException
+    private StatInfo getStat() throws VrsException
     {
         synchronized(_file)
         {
@@ -165,9 +165,9 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
     /**
      * Returns single atttribute triplet
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         // slowdown: logger.debugPrintf("getAttribute '%s' for:%s\n",name,this); 
         
@@ -190,7 +190,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         return null;
     }
 
-    public VDir getParentDir() throws VlException
+    public VDir getParentDir() throws VrsException
     {
         String pstr = _file.getParent();
         VDir dir = new LDir(localfs, pstr);
@@ -198,7 +198,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         return dir;
     }
 
-    public long getSize() throws VlException
+    public long getSize() throws VrsException
     {
         return getStat().getSize(); 
     }
@@ -227,14 +227,14 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         return _file.canWrite();
     }
 
-    public boolean create() throws VlException
+    public boolean create() throws VrsException
     {
         boolean result = create(true);
 
         return result;
     }
 
-    public boolean create(boolean force) throws VlException
+    public boolean create(boolean force) throws VrsException
     {
         try
         {
@@ -293,7 +293,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
     }
 
     public VRL rename(String newname, boolean nameIsPath)
-            throws VlException
+            throws VrsException
     {
         File newFile = localfs.renameTo(this.getPath(), newname, nameIsPath);
 
@@ -312,7 +312,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         //return this.getStat().getSize(); 
     }
 
-    public long getModificationTime() throws VlException
+    public long getModificationTime() throws VrsException
     {
         return this.getStat().getModTime(); 
     }
@@ -360,7 +360,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         catch (FileNotFoundException e)
         {
             if (_file.canWrite() == false)
-                throw new WritePermissionDeniedException(
+                throw new ResourceNotWritableException(
                         "No write permissions for:" + this, e);
             else
                 throw new NestedFileNotFoundException(
@@ -432,7 +432,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
     }
 
     @Override
-    public String getSymbolicLinkTarget() throws VlException
+    public String getSymbolicLinkTarget() throws VrsException
     {
         if (isSymbolicLink() == false)
         {
@@ -451,13 +451,13 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         return null;
     }
 
-    public boolean isSymbolicLink() throws VlException
+    public boolean isSymbolicLink() throws VrsException
     {
         // only Ux style soft links supported. 
         return this.getStat().isUxSofLink(); 
     };
 
-    public void setMode(int mode) throws VlException
+    public void setMode(int mode) throws VrsException
     {
         this.localfs.setMode(getPath(), mode);
     }
@@ -468,7 +468,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         return true; 
     }
     
-    public String getChecksum(String algorithm) throws VlException
+    public String getChecksum(String algorithm) throws VrsException
     {
         String[] types = getChecksumTypes();
         try
@@ -488,7 +488,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         }
         catch (IOException e)
         {
-            throw new VlIOException(e);
+            throw new NestedIOException(e);
         }
 
     }
@@ -498,22 +498,22 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         return new String[] { VChecksum.MD5, VChecksum.ADLER32 };
     }
 
-    public String getGid() throws VlException
+    public String getGid() throws VrsException
     {
         return this.getStat().getGroupName(); 
     }
 
-    public String getUid() throws VlException
+    public String getUid() throws VrsException
     {
         return this.getStat().getUserName(); 
     }
 
-    public int getMode() throws VlException
+    public int getMode() throws VrsException
     {
         return this.getStat().getMode(); 
     }
     
-    public String getPermissionsString() throws VlException
+    public String getPermissionsString() throws VrsException
     {
         return this.getStat().getPermissions();  
     }

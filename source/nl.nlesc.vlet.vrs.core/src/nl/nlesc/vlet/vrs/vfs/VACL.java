@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 
 /**
  * Universal Access Control List interface. 
@@ -94,15 +94,15 @@ public interface VACL
      * ACL list.  
      *  
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    public VAttribute[][] getACL() throws VlException;
+    public VAttribute[][] getACL() throws VrsException;
     
     /** 
      * Set the modified ACL list 
      */ 
     
-    public void setACL(VAttribute[][] acl) throws VlException; 
+    public void setACL(VAttribute[][] acl) throws VrsException; 
     
     /** 
      * Returns list of all possible 'entities' which can
@@ -114,7 +114,7 @@ public interface VACL
      *  
      * @return VAttribute array of possible entities. 
      */
-    public VAttribute[] getACLEntities() throws VlException; 
+    public VAttribute[] getACLEntities() throws VrsException; 
     
     /**
      * Returns a new 'row' or ACLRecord for the entity. 
@@ -124,7 +124,7 @@ public interface VACL
      * @param entity       entity to created the new ACL Record for.  
      * @param writeThrough add the new created entry to the ACL list  
      */
-    public VAttribute[] createACLRecord(VAttribute entity, boolean writeThrough) throws VlException; 
+    public VAttribute[] createACLRecord(VAttribute entity, boolean writeThrough) throws VrsException; 
     
     /**
      * Remove the entity from the ACL list, effectively removing
@@ -132,8 +132,8 @@ public interface VACL
      * (Although this depends on the default permissions of the implementation). 
      * @param entity
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    public boolean deleteACLEntity(VAttribute entity) throws VlException; 
+    public boolean deleteACLEntity(VAttribute entity) throws VrsException; 
     
 }

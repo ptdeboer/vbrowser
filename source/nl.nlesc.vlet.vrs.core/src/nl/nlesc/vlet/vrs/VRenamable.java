@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
@@ -51,9 +51,9 @@ public interface VRenamable
      * @param newName new (base)name or full path.   
      * @param nameIsPath : whether new name specified full path or only the (new) basename. 
      * @return new VRL or similar if the name changed didn't effect the VRL. 
-     * @throws VlException
+     * @throws VrsException
      */
-    public VRL rename(String newName,boolean renameFullPath)  throws VlException;
+    public VRL rename(String newName,boolean renameFullPath)  throws VrsException;
     
     /**
      * Returns true is the resource can be renamed  with the current credentials.
@@ -65,8 +65,8 @@ public interface VRenamable
      * @see VFSNode.isRenamable(); 
      * 
      * @return true if the current user can rename this resource. 
-     * @throws VlException 
+     * @throws VrsException 
      */ 
-    public boolean isRenamable() throws VlException; 
+    public boolean isRenamable() throws VrsException; 
     
 }

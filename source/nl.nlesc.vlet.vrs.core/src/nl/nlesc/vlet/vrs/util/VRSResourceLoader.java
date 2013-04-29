@@ -28,9 +28,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
 import nl.esciencecenter.ptk.util.ResourceLoader;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.NotImplementedException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -58,7 +58,7 @@ public class VRSResourceLoader extends ResourceLoader
             try { inps.close(); } catch (Exception e) { ; } 
             return text; 
         }
-        catch (VlException e1)
+        catch (VrsException e1)
         {
             throw new IOException(e1);
         }  
@@ -112,11 +112,11 @@ public class VRSResourceLoader extends ResourceLoader
         }
         catch (UnsupportedEncodingException e)
         {
-            throw new VlIOException("UnsupportedEncoding!", e);
+            throw new NestedIOException("UnsupportedEncoding!", e);
         }
         catch (IOException e)
         {
-            throw new VlIOException(e);
+            throw new NestedIOException(e);
         }
     }
  

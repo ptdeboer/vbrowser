@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
  * This interface specifies Unix User ID methods.
@@ -31,6 +31,6 @@ public interface VUnixUserMode
      * Returns Unix Style (Symbolic) User Name or ID number if name 
      * can not be resolved. 
      */ 
-    public String getUid() throws VlException; 
+    public String getUid() throws VrsException; 
     
 }

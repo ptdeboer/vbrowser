@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
@@ -44,7 +44,7 @@ public interface VLogicalFileAlias extends VGlobalUniqueID, VSymbolicLink, VLink
     /** 
      * Returns whether this file is an Alias or Not.
      */       
-    public boolean isAlias() throws VlException; 
+    public boolean isAlias() throws VrsException; 
    
     /** 
      * Creates another alias to this File Resource.
@@ -53,9 +53,9 @@ public interface VLogicalFileAlias extends VGlobalUniqueID, VSymbolicLink, VLink
      * only the path information is used to create another
      * logical file path to this resource.
      * 
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public VRL addAlias(VRL newAlias) throws VlException;
+    public VRL addAlias(VRL newAlias) throws VrsException;
     
     /**
      * If this file is an alias, return the alias target
@@ -65,9 +65,9 @@ public interface VLogicalFileAlias extends VGlobalUniqueID, VSymbolicLink, VLink
      * 
      * @see VSymbolicLink#getSymbolicLinkTargetVRL()
      * @return return target VRL or NULL if it has none.  
-     * @throws VlException
+     * @throws VrsException
      */
-    public VRL getAliasTarget() throws VlException; 
+    public VRL getAliasTarget() throws VrsException; 
     
     /**
      * If this file or alias is identifiable by a Unique IDentifier
@@ -75,19 +75,19 @@ public interface VLogicalFileAlias extends VGlobalUniqueID, VSymbolicLink, VLink
      * For LFC Files this will be the GUID.  
      * @return GUID 
      */
-    public String getGUID() throws VlException;
+    public String getGUID() throws VrsException;
     
     /**
      * Returns all links (or aliases) to this file as VRLs. 
      * Also lists the master LFN of this file so the number
      * of links for an LFC file at least '1'.  
-     * @throws VlException */ 
-    public VRL[] getLinksTo() throws VlException; 
+     * @throws VrsException */ 
+    public VRL[] getLinksTo() throws VrsException; 
     
     /**
      * Extra Method to update the registered file size of an LFC File. 
      * This does NOT change the actual file size of the replicas, but 
      * updates size as stored in the meta data catalog. 
      */ 
-    public void updateFileSize(long size) throws VlException; 
+    public void updateFileSize(long size) throws VrsException; 
 }

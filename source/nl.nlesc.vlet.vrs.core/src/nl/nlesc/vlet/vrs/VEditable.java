@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.vrs;
 
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 
 /**
  * This interface provides some methods for nodes or resources which attributes
@@ -37,14 +37,14 @@ public interface VEditable
      * The default implementation for a VFSNode is to check whether
      * it is writable
      */
-    public boolean isEditable() throws VlException;
+    public boolean isEditable() throws VrsException;
     
     /**
      * Sets a list of attributes. Returns true if all attributes could be set.
      */ 
-    public boolean setAttributes(VAttribute[] attrs) throws VlException;
+    public boolean setAttributes(VAttribute[] attrs) throws VrsException;
 
     /** Set single attribute. Return true if attribute was set. */  
-    public boolean setAttribute(VAttribute attr) throws VlException;
+    public boolean setAttribute(VAttribute attr) throws VrsException;
     
 }

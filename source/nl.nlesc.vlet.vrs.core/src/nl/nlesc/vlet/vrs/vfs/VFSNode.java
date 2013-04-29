@@ -20,48 +20,48 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_CHECKSUM;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_CHECKSUM_TYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_CHECKSUM_TYPES;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_EXISTS;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_GID;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ISDIR;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ISFILE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ISHIDDEN;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ISREADABLE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ISSYMBOLICLINK;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ISWRITABLE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LENGTH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_MIMETYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_MODIFICATION_TIME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_NAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_NRCHILDS;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PARENT_DIRNAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PATH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PORT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SCHEME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SYMBOLICLINKTARGET;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_UID;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_USERNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM_TYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM_TYPES;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_EXISTS;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_GID;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ISDIR;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ISFILE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ISHIDDEN;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ISREADABLE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ISSYMBOLICLINK;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ISWRITABLE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_LENGTH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_MIMETYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_MODIFICATION_TIME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_NAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_NRCHILDS;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PARENT_DIRNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SYMBOLICLINKTARGET;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_UID;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_USERNAME;
 
 import java.io.IOException;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRenamable;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -184,9 +184,9 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * Resolve relative or absolute path against this resource. 
      * @throws VRISyntaxException 
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public VRL resolvePath(String subPath) throws VlException
+    public VRL resolvePath(String subPath) throws VrsException
     {
         return getVRL().resolvePath(subPath); 
     }  
@@ -195,7 +195,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * Resolve path against this VRL and return resolved filesystem path as String. 
      * Only matches path elements!
      */
-    public String resolvePathString(String path) throws VlException
+    public String resolvePathString(String path) throws VrsException
     {
         return resolvePath(path).getPath();  
     }
@@ -209,7 +209,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         return getVRL().getBasename(withExtension); 
     }
     
-    public VFSNode getNode(String path) throws VlException
+    public VFSNode getNode(String path) throws VrsException
     {
         return getPath(path); 
     }
@@ -220,13 +220,13 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      *
      * @return true if resource was created or already existed   
      */
-    public boolean create() throws VlException
+    public boolean create() throws VrsException
     {
         return create(true); 
     }
     
     /** Returns root directory of this directory/file system */ 
-    public VDir getRoot() throws VlException
+    public VDir getRoot() throws VrsException
     {
         VNode node=getPath("/"); 
         
@@ -240,7 +240,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * Fetch any VFSNode (VFile or VDir) with the specified absolute
      * or relative path
      */ 
-    public VFSNode getPath(String path) throws VlException
+    public VFSNode getPath(String path) throws VrsException
     {
         // resolve absolute or relative path: 
         VRL loc=getLocation().resolvePath(path); 
@@ -271,9 +271,9 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * or File Aliases (LFC). 
      * Default this method return false. 
      * Note that implementations of links on filesystems might differ!
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public boolean isSymbolicLink() throws VlException
+    public boolean isSymbolicLink() throws VrsException
     {
         return false;
     };
@@ -283,9 +283,9 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * supports it. Use isSymbolicLink() first to check whether this file is a
      * (soft) link or a windows shortcut. 
      * Filesystem implementations might differ how they handle symbolic links.  
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public String getSymbolicLinkTarget() throws VlException
+    public String getSymbolicLinkTarget() throws VrsException
     {
         return null;
     };
@@ -296,9 +296,9 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      *  
      * Filesystem implementations might differ how they handle symbolic links.
      *   
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public VRL getSymbolicLinkTargetVRL() throws VlException
+    public VRL getSymbolicLinkTargetVRL() throws VrsException
     {
         String targetPath=getSymbolicLinkTarget();
         
@@ -333,7 +333,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         {
             isSoftlink=isSymbolicLink();
         }
-        catch (VlException e1)
+        catch (VrsException e1)
         {
             // Could not be determined. Assume not. 
             //Global.debugPrintf(this,"***Error: isSymbolicLink() Exception:%s\n",e1); 
@@ -356,7 +356,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * Returns single File Resource Attribute. 
      * For optimized fetching of Attributes use getAttributes(String names[]) 
      */ 
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         if (name==null) 
             return null; 
@@ -389,7 +389,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
                 }
                 catch (IOException e)
                 {
-                  throw new VlIOException(e); 
+                  throw new NestedIOException(e); 
                 }
             }
             // getLength for VDir not supported
@@ -482,7 +482,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * and used the Unix File Mode to generate the permissions string. 
      * @see nl.nlesc.vlet.vrs.vfs.VUnixFileMode
      */ 
-    public String getPermissionsString() throws VlException
+    public String getPermissionsString() throws VrsException
     {
         if (this instanceof VUnixFileMode)
         {
@@ -505,10 +505,10 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     /**
      * VFSnode implements getParent by calling VFSNode.getParentDir
      * 
-     * @throws VlException
+     * @throws VrsException
      */
 
-    public VDir getParent() throws VlException
+    public VDir getParent() throws VrsException
     {
         VNode vnode=vrsContext.openLocation(getParentLocation()); 
         
@@ -521,9 +521,9 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     /**
      * Returns array whith one parent. 
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public VNode[] getParents() throws VlException
+    public VNode[] getParents() throws VrsException
     {
         VNode parents[] = new VNode[1];
         parents[0] = getParent();
@@ -548,17 +548,17 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * This differs from isWritable as file persmissions are 'editable' 
      * even if the file is not writable. 
      */
-    public boolean isEditable() throws VlException
+    public boolean isEditable() throws VrsException
     {
         return true;
     }
 
-    public boolean isDeletable() throws VlException
+    public boolean isDeletable() throws VrsException
     {
         return true; 
     }
 
-    public boolean setAttributes(VAttribute[] attrs) throws VlException
+    public boolean setAttributes(VAttribute[] attrs) throws VrsException
     {
         boolean result = true;
 
@@ -605,7 +605,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      *  </pre>
      * 
      */
-    public boolean setAttribute(VAttribute attr) throws VlException
+    public boolean setAttribute(VAttribute attr) throws VrsException
     {
         String name = attr.getName();
 
@@ -624,7 +624,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     // VRenamable interface
     //=========================================================================
 
-    public boolean isRenamable() throws VlException
+    public boolean isRenamable() throws VrsException
     {
         return isWritable(); 
     }
@@ -632,7 +632,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     // ========================
     // ACL interface : Under Construction  
     // =========================
-    public void setACL(VAttribute[][] acl) throws VlException
+    public void setACL(VAttribute[][] acl) throws VrsException
     {
         if (this instanceof VUnixFileMode)
         {
@@ -651,7 +651,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * For more details {@linkplain VACL}.  
      * @see VACL 
      */ 
-    public VAttribute[][] getACL() throws VlException
+    public VAttribute[][] getACL() throws VrsException
     {
         if (this instanceof VUnixFileMode)
         {
@@ -674,7 +674,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         }
     }
 
-    public VAttribute[][] getUXACL() throws VlException
+    public VAttribute[][] getUXACL() throws VrsException
     {
         if ((this instanceof VUnixFileMode)==false)
         {
@@ -694,10 +694,10 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      *   
      * @see VFS.convertACL2FileMode
      * 
-     * @throws VlException
+     * @throws VrsException
      */
     public void setUXACL(VAttribute[][] acl)
-                throws VlException
+                throws VrsException
     {
         if ((this instanceof VUnixFileMode)==false)
         {
@@ -708,7 +708,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
             int mode = VFS.convertACL2FileMode(acl, isDir());
 
             if (mode < 0)
-                throw new VlException("Error converting ACL list");
+                throw new VrsException("Error converting ACL list");
             
             ((VUnixFileMode)this).setMode(mode); 
         }
@@ -717,9 +717,9 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     /** 
      * Returns all possible ACL entities (users,groups, etc). 
      * Return null if not supported. 
-     * @throws VlIOException 
+     * @throws NestedIOException 
      */ 
-    public VAttribute[] getACLEntities() throws VlIOException
+    public VAttribute[] getACLEntities() throws NestedIOException
     {
         return null; 
     }
@@ -732,13 +732,13 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * @param writeThrough 
      * @param entity
      */
-    public VAttribute[] createACLRecord(VAttribute entity, boolean writeThrough) throws VlException
+    public VAttribute[] createACLRecord(VAttribute entity, boolean writeThrough) throws VrsException
     {
         throw new NotImplementedException("Create new ACL Record not supported");
     }
 
     /** Delete entry in the ACL list or set permissions to none */ 
-    public boolean deleteACLEntity(VAttribute entity) throws VlException
+    public boolean deleteACLEntity(VAttribute entity) throws VrsException
     {
         throw new NotImplementedException("Entities can't be deleted");
     }
@@ -747,7 +747,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     // Rename
     // ========================================================================
   
-    public boolean renameTo(String newNameOrPath) throws VlException
+    public boolean renameTo(String newNameOrPath) throws VrsException
     {
         boolean fullpath=false;
         
@@ -757,7 +757,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
        return (rename(newNameOrPath,fullpath)!=null);
     }
     
-    public boolean renameTo(String newNameOrPath,boolean nameIsPath) throws VlException
+    public boolean renameTo(String newNameOrPath,boolean nameIsPath) throws VrsException
     {
         boolean fullpath=false;
         
@@ -793,7 +793,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     // Abstract Interface Methods 
     // ========================================================================
 
-    abstract public VRL rename(String newNameOrPath,boolean nameIsPath) throws VlException; 
+    abstract public VRL rename(String newNameOrPath,boolean nameIsPath) throws VrsException; 
 
     /**
      * Create this Resource. 
@@ -806,10 +806,10 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      *    
      * @param ignoreExisting 
      *         Safeguard whether to check if this resource was already created. 
-     * @throws VlException if resource couldn't be created or when ignoreExisting==false and resource already exist.
+     * @throws VrsException if resource couldn't be created or when ignoreExisting==false and resource already exist.
      * 
      */
-    abstract public boolean create(boolean ignoreExisting) throws VlException ; 
+    abstract public boolean create(boolean ignoreExisting) throws VrsException ; 
     
     /**
      * Returns true if the node is a file.
@@ -826,27 +826,27 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     /**
      * Returns true if the this object represents an existing file
      * or directory on the FileSystem. 
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public abstract boolean exists() throws VlException;
+    public abstract boolean exists() throws VrsException;
 
     /**
      * Return time of last modification in milli seconds after 'epoch'
      * epoch = (1-jan-1970 GMT). 
-     * @throws VlException
+     * @throws VrsException
      */
-    public abstract long getModificationTime() throws VlException;
+    public abstract long getModificationTime() throws VrsException;
 
     /**
      * Returns whether the object is readable using current user credentials.
      * <br>
      * For a Directory isReadable means it must have r-x permissions !
      * 
-     * @throws VlException
+     * @throws VrsException
      * @see exists
      * @see isWritable
      */
-    public abstract boolean isReadable() throws VlException;
+    public abstract boolean isReadable() throws VrsException;
 
     /**
      * Returns whether the object is writable using current user credentials.
@@ -856,16 +856,16 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * @see exists
      * @see isReadable
      */
-    public abstract boolean isWritable() throws VlException;
+    public abstract boolean isWritable() throws VrsException;
 
     // === Copy/Move Interface === 
 
-    public abstract VFSNode copyTo(VDir dest) throws VlException;
+    public abstract VFSNode copyTo(VDir dest) throws VrsException;
 
-    public abstract VFSNode copyTo(VDir dest, String newName) throws VlException;
+    public abstract VFSNode copyTo(VDir dest, String newName) throws VrsException;
 
-    public abstract VFSNode moveTo(VDir dest) throws VlException;
+    public abstract VFSNode moveTo(VDir dest) throws VrsException;
 
-    public abstract VFSNode moveTo(VDir dest, String newName) throws VlException; 
+    public abstract VFSNode moveTo(VDir dest, String newName) throws VrsException; 
 
 }

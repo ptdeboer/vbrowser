@@ -23,8 +23,8 @@ package nl.nlesc.vlet.vrs.util;
 import nl.esciencecenter.ptk.util.Comparer;
 import nl.esciencecenter.ptk.util.QSort;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.vrs.VNode;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 
 /**
  * Sort VRSNodes. 

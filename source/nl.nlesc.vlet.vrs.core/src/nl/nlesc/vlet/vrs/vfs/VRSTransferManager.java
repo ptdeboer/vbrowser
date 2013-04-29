@@ -31,19 +31,19 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.exception.VlInterruptedException;
+import nl.nlesc.vlet.exception.NestedInterruptedException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.io.VSize;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
@@ -97,7 +97,7 @@ public final class VRSTransferManager
 
 
 	/** Direct VFile to VFile copy/move */ 
-    protected VFile doCopyMove(VFile source, VFile target, boolean isMove) throws VlException
+    protected VFile doCopyMove(VFile source, VFile target, boolean isMove) throws VrsException
     {
         try
         {
@@ -108,23 +108,23 @@ public final class VRSTransferManager
            // create new object:
            return (VFile)masterCopyMoveTo(transferInfo,source,fs,targetVRL,isMove,null);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             throw e;
         }
         catch (IOException e)
         {
-            throw new VlIOException(e); 
+            throw new NestedIOException(e); 
         }
         catch (Exception e)
         {
-            throw new VlException(e); 
+            throw new VrsException(e); 
         }
     }
 
     /** Generic VFSNode to target Directory copy/move */ 
 	protected VFSNode doCopyMove(VFSNode sourceNode,VDir parentDir, String optNewName, boolean isMove) 
-	            throws VlException
+	            throws VrsException
 	{
 	    try
 	    {
@@ -137,17 +137,17 @@ public final class VRSTransferManager
     		return masterCopyMoveTo(transferInfo,sourceNode,fs,targetVRL,isMove,null);
 
 	    }
-        catch (VlException e)
+        catch (VrsException e)
         {
             throw e;
         }
         catch (IOException e)
         {
-            throw new VlIOException(e); 
+            throw new NestedIOException(e); 
         }
         catch (Exception e)
         {
-            throw new VlException(e); 
+            throw new VrsException(e); 
         }
 	}
 
@@ -324,7 +324,7 @@ public final class VRSTransferManager
 		    else
 		    {
 		        // Exception Chaining: Throwable/Exception to Exception 
-		        Exception ex = new VlIOException(tr.getMessage(),tr); 
+		        Exception ex = new NestedIOException(tr.getMessage(),tr); 
 		        transfer.setException(ex);
 		        transfer.endTask(taskStr); //transfer.setDone();
 		        
@@ -488,7 +488,7 @@ public final class VRSTransferManager
     }
 
     protected VFSNode doCopyMove(VFSNode sourceNode,VRL targetVRL, boolean isMove) 
-            throws VlException
+            throws VrsException
 	{
         try
         {
@@ -499,17 +499,17 @@ public final class VRSTransferManager
     
     		return masterCopyMoveTo(transferInfo,sourceNode,fs,targetVRL,isMove,null);
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             throw e;
         }
         catch (IOException e)
         {
-            throw new VlIOException(e); 
+            throw new NestedIOException(e); 
         }
         catch (Exception e)
         {
-            throw new VlException(e); 
+            throw new VrsException(e); 
         }
     }
 
@@ -642,7 +642,7 @@ public final class VRSTransferManager
 	        final VFileSystem targetFS,
 			final VRL targetVRL, 
 			final boolean isMove, 
-			final ICopyInteractor copyInteractor) throws VlException
+			final ICopyInteractor copyInteractor) throws VrsException
 	{
 	    try
 	    {
@@ -671,17 +671,17 @@ public final class VRSTransferManager
     
     		return transfer; 
 	    }
-	    catch (VlException e)
+	    catch (VrsException e)
 	    {
 	        throw e;
 	    }
 	    catch (IOException e)
 	    {
-	        throw new VlIOException(e); 
+	        throw new NestedIOException(e); 
 	    }
 	    catch (Exception e)
 	    {
-	        throw new VlException(e); 
+	        throw new VrsException(e); 
 	    }
 	}
 
@@ -934,7 +934,7 @@ public final class VRSTransferManager
 	 */ 
 	protected void doStreamCopy(VFSTransfer transfer,
 			VNode sourceNode, 
-			VNode destNode)  throws VlException
+			VNode destNode)  throws VrsException
 	{
 	    try
 	    {
@@ -949,16 +949,16 @@ public final class VRSTransferManager
 	    }
 	    catch (IOException e)
 	    {
-	        throw new VlIOException(e); 
+	        throw new NestedIOException(e); 
         }
 	    catch (Exception e)
         {
-	        throw new VlException(e); 
+	        throw new VrsException(e); 
         }
     }
 
 	protected VFile putAnyNode(VDir dir, VNode sourceNode, String optNewName,
-			boolean isMove)  throws VlException
+			boolean isMove)  throws VrsException
 	{
 		VFSTransfer transfer=new VFSTransfer(null,sourceNode.getResourceType(), sourceNode.getVRL(),dir.getVRL(), isMove);
 		return putAnyNode(transfer,dir,sourceNode,optNewName,isMove); 
@@ -966,7 +966,7 @@ public final class VRSTransferManager
 	
 	/** Copy any node and seem to do what is the right thing */ 
 	protected VFile putAnyNode(VFSTransfer transfer,VDir dir, VNode sourceNode, String optNewName,
-	        boolean isMove)  throws VlException
+	        boolean isMove)  throws VrsException
 	{
 	    if (sourceNode.isComposite()) 
 	    {
@@ -1008,7 +1008,7 @@ public final class VRSTransferManager
 	 * VBrowser used this method as well to check whether a resource already exists, by
 	 * first creating the targetVRL of the new-to-be-created resource.   
 	 */
-	public VRL createTargetVRL(VRL targetDirVrl,VNode node,String optNewName) throws VlException
+	public VRL createTargetVRL(VRL targetDirVrl,VNode node,String optNewName) throws VrsException
 	{
 	    if (StringUtil.isEmpty(optNewName))
         {
@@ -1157,7 +1157,7 @@ public final class VRSTransferManager
 	{
 		if (newTransfer.isCancelled())
 		{
-			throw new VlInterruptedException("Cancelled!"); 
+			throw new NestedInterruptedException("Cancelled!"); 
 		}
 
 		// =======================================
@@ -1225,7 +1225,7 @@ public final class VRSTransferManager
 			VNode node=heap.get(index); 
 
 			if (newTransfer.isCancelled())
-				throw new VlInterruptedException("Cancelled!"); 
+				throw new NestedInterruptedException("Cancelled!"); 
 
 			if ((node==null) || (node.equals(sourceDir)))
 				continue; // first element = sourceDir! ; 
@@ -1350,7 +1350,7 @@ public final class VRSTransferManager
 			    for (VNode node:nodes)
 			    {
     				if (monitor.isCancelled())
-    					throw new nl.nlesc.vlet.exception.VlInterruptedException("Interrupted");
+    					throw new nl.nlesc.vlet.exception.NestedInterruptedException("Interrupted");
     
     				// add to heap: 
     				heap.add(node);
@@ -1539,9 +1539,9 @@ public final class VRSTransferManager
      * Deletes contents of directory, does not delete directory itself. 
      * @param dir - directory to be deleted 
      * @param force - try to delete as much as possible. 
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public void recursiveDeleteDirContents(ITaskMonitor  monitor,VDir dir,boolean force) throws VlException
+    public void recursiveDeleteDirContents(ITaskMonitor  monitor,VDir dir,boolean force) throws VrsException
     {
         defaultRecursiveDeleteDirContents(monitor,dir,force); 
     }
@@ -1549,9 +1549,9 @@ public final class VRSTransferManager
     /** 
      * Default Recursive delete: lists children and performs delete() on child list. 
      * This method does NOT delete the parent node itself !  
-     * @throws VlException 
+     * @throws VrsException 
      */
-    protected boolean defaultRecursiveDeleteDirContents(ITaskMonitor  monitor,VDir dir, boolean force) throws VlException
+    protected boolean defaultRecursiveDeleteDirContents(ITaskMonitor  monitor,VDir dir, boolean force) throws VrsException
     {
         int len=0; 
         VFSNode nodes[]=dir.list(); 

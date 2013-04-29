@@ -20,28 +20,28 @@
 
 package nl.nlesc.vlet.vrs;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ATTRIBUTE_NAMES;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ICONURL;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ISCOMPOSITE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ISEDITABLE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LOCATION;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_MIMETYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_NAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PATH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PORT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_CLASS;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPES;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SCHEME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_URI_FRAGMENT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_URI_QUERY;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ATTRIBUTE_NAMES;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ICONURL;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ISCOMPOSITE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ISEDITABLE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_LOCATION;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_MIMETYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_NAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_CLASS;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPES;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_URI_FRAGMENT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_URI_QUERY;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.ptk.util.ResourceLoader;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -193,12 +193,12 @@ public abstract class VNode // implements IVNode
      * Returns Mime Type based upon file filename/extension. For a more robust
      * method, use MimeTypes.getMagicMimeType().
      * 
-     * @throws VlException
+     * @throws VrsException
      * 
      * @see MimeTypes.getMagicMimeType(byte[])
      * @see MimeTypes.getMimeType(String)
      */
-    public String getMimeType() throws VlException
+    public String getMimeType() throws VrsException
     {
         return MimeTypes.getDefault().getMimeType(this.getPath());
     }
@@ -206,9 +206,9 @@ public abstract class VNode // implements IVNode
     /**
      * Default charset for text resources
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public String getCharSet() throws VlException
+    public String getCharSet() throws VrsException
     {
         return ResourceLoader.CHARSET_UTF8;
     }
@@ -244,9 +244,9 @@ public abstract class VNode // implements IVNode
     /**
      * Get all attributes defined by attributeNames
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public VAttribute[] getAttributes() throws VlException
+    public VAttribute[] getAttributes() throws VrsException
     {
         return getAttributes(getAttributeNames());
     }
@@ -260,9 +260,9 @@ public abstract class VNode // implements IVNode
      * multiple attributes as this method does a getAttribute call per
      * attribute.
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public VAttribute[] getAttributes(String names[]) throws VlException
+    public VAttribute[] getAttributes(String names[]) throws VrsException
     {
         VAttribute[] attrs = new VAttribute[names.length];
 
@@ -281,7 +281,7 @@ public abstract class VNode // implements IVNode
      * Same as getAttributes(), but return the attributes in an (Ordened)
      * Attribute set.
      */
-    public VAttributeSet getAttributeSet(String names[]) throws VlException
+    public VAttributeSet getAttributeSet(String names[]) throws VrsException
     {
         return new VAttributeSet(getAttributes(names));
     }
@@ -294,7 +294,7 @@ public abstract class VNode // implements IVNode
      * example the Resource Type of a VFile which doesn't change during the
      * lifetime of the (VFile) Object as this always must be "File" !
      */
-    public VAttribute getStaticAttribute(String name) throws VlException
+    public VAttribute getStaticAttribute(String name) throws VrsException
     {
         // by prefix values with "", a NULL value will be convert to "NULL".
         if (name.compareTo(ATTR_RESOURCE_TYPE) == 0)
@@ -334,7 +334,7 @@ public abstract class VNode // implements IVNode
      * super.getAttribute first to check whether the superclass provides an
      * attribute name.
      */
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         if (name == null)
             return null;
@@ -444,7 +444,7 @@ public abstract class VNode // implements IVNode
      * of this node. Overide this method to provide a more eficient way to
      * return a VNode that is the (logical) parent of this.
      */
-    public VNode getParent() throws VlException
+    public VNode getParent() throws VrsException
     {
         VRL pvrl = getParentLocation();
 
@@ -473,9 +473,9 @@ public abstract class VNode // implements IVNode
      * Returns one parent if Node is part of a Tree or null if Node has no
      * parents.
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public VNode[] getParents() throws VlException // for Graph
+    public VNode[] getParents() throws VrsException // for Graph
     {
         VNode parent = getParent();
 
@@ -493,7 +493,7 @@ public abstract class VNode // implements IVNode
      * create a deep copy of it's contents and it's children. This default
      * behaviour is different then clone().
      */
-    public VNode duplicate() throws VlException
+    public VNode duplicate() throws VrsException
     {
         throw new nl.nlesc.vlet.exception.NotImplementedException("Duplicate method not implemented");
     }
@@ -506,9 +506,9 @@ public abstract class VNode // implements IVNode
      * not supported.
      * 
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    public String getResourceStatus() throws VlException
+    public String getResourceStatus() throws VrsException
     {
         return null;
     }
@@ -520,10 +520,10 @@ public abstract class VNode // implements IVNode
      * 
      * @return - false : not applicable/not implemented for this resource.<br>
      *         - true : synchronize/refresh is supported and was successful.
-     * @throws VlException
+     * @throws VrsException
      *             Is thrown when resource synchronization couldn't be performed. 
      */
-    public boolean sync() throws VlException
+    public boolean sync() throws VrsException
     {
         return false;
     }

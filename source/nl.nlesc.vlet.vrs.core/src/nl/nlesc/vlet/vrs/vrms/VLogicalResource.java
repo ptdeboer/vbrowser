@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.vrs.vrms;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -50,7 +50,7 @@ public interface VLogicalResource
 	 *  
 	 * ResourceFolder use .vrsx files to store a complete resource group. 
 	 */
-	public VRL getStorageLocation() throws VlException;
+	public VRL getStorageLocation() throws VrsException;
 	 
 	/** 
 	 * Sets the Logical Location VRL.  
@@ -60,7 +60,7 @@ public interface VLogicalResource
 	 * the lifetime of the object and my only be used to update the Logical Node structure
 	 * for example when reading a node or resource group from a file. 
 	 */ 
-	public void setLogicalLocation(VRL newRef) throws VlException;
+	public void setLogicalLocation(VRL newRef) throws VrsException;
 	
 	/**
 	 * Set logical parent node. As Logical Node can move between parents, 

@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vrms;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
@@ -46,7 +46,7 @@ public class ConfigurationNode extends VCompositeNode
 		return CONFIGURATION_TYPE; 
 	}
 	
-	public VNode[] getNodes() throws VlException
+	public VNode[] getNodes() throws VrsException
 	{
 		return null;
 	}

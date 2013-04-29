@@ -23,7 +23,7 @@ package nl.nlesc.vlet.vrs.io;
 import java.io.IOException;
 import java.io.InputStream;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
  * Interface for stream readable resources. 
@@ -36,7 +36,7 @@ public interface VStreamReadable
      * 
      * @see java.io.InputStream
      * @return java.io.InputStream object
-     * @throws VlException
+     * @throws VrsException
      */
     InputStream createInputStream() throws IOException;
 }

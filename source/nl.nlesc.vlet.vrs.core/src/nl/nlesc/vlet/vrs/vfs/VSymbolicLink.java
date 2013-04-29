@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -42,10 +42,10 @@ public interface VSymbolicLink
      * Returns whether this (file) resource is a symbolic link 
      * or not.<br>
      */   
-    boolean isSymbolicLink() throws VlException; 
+    boolean isSymbolicLink() throws VrsException; 
     
     /**
      * Returns SymbolicLink target if it has one.
      */
-    VRL getSymbolicLinkTargetVRL() throws VlException; 
+    VRL getSymbolicLinkTargetVRL() throws VrsException; 
 }

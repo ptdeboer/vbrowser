@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
  * Interface for composite delete methods. 
@@ -34,6 +34,6 @@ public interface VCompositeDeletable extends VDeletable
 	 * If recurse==true delete the whole resource tree, if recurse==false
 	 * this resource will only be deleted when it has no childs.  
 	 */ 
-    public boolean delete(boolean recurse) throws VlException; 
+    public boolean delete(boolean recurse) throws VrsException; 
     
 }

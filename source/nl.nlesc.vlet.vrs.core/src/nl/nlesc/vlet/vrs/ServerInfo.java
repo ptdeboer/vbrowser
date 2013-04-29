@@ -21,12 +21,12 @@
 package nl.nlesc.vlet.vrs;
 
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PORT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SCHEME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_USERNAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_VO_NAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.AUTH_SCHEME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_USERNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_VO_NAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.AUTH_SCHEME;
 //import static nl.uva.vlet.data.VAttributeConstants.ATTR_PASSIVE_MODE;
 
 import nl.esciencecenter.ptk.crypt.Secret;
@@ -34,9 +34,9 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrms.SecretStore;
 import nl.nlesc.vlet.vrs.vrms.SecretStore.SecretCombi;
@@ -1094,7 +1094,7 @@ public class ServerInfo
 
    /** 
     * Update ServerInfo: Remove Attributes if the name is not in the specified name list 
-    * @see nl.nlesc.vlet.data.VAttributeSet#remoteIfNotIn(StringList)
+    * @see nl.nlesc.vlet.vrs.data.VAttributeSet#remoteIfNotIn(StringList)
     */ 
    public void removeAttributesIfNotIn(StringList attrNames)
    {
@@ -1117,7 +1117,7 @@ public class ServerInfo
    /** 
     * Update ServerInfo: Match VAttibutes with template. 
     * Copy fields and (enum) type from template but keep value. 
-    * @see nl.nlesc.vlet.data.VAttributeSet#matchTemplate(VAttributeSet,boolean) 
+    * @see nl.nlesc.vlet.vrs.data.VAttributeSet#matchTemplate(VAttributeSet,boolean) 
     */ 
    public void matchTemplate(VAttributeSet templateSet,boolean removeOthers)
    {

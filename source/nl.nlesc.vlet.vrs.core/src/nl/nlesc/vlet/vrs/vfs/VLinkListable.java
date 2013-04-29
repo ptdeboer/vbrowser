@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
@@ -38,8 +38,8 @@ public interface VLinkListable extends VSymbolicLink
      * Returns a list of all VRLs which logical file name 
      * links to this File.
      * 
-     * @throws VlException 
+     * @throws VrsException 
      */ 
-    public VRL[] getLinksTo() throws VlException; 
+    public VRL[] getLinksTo() throws VrsException; 
     
 }

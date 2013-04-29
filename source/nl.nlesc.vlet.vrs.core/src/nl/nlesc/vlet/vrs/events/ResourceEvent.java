@@ -22,8 +22,8 @@ package nl.nlesc.vlet.vrs.events;
 
 import java.io.Serializable;
 
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**

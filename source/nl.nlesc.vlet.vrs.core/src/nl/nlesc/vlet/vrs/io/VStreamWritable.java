@@ -23,7 +23,7 @@ package nl.nlesc.vlet.vrs.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 
 /**
@@ -39,7 +39,7 @@ public interface VStreamWritable
      *  
      * @see java.io.OutputStream
      * @return java.io.OutputStream object
-     * @throws VlException
+     * @throws VrsException
      */
     public OutputStream createOutputStream() throws IOException; 
     //OutputStream getOutputStream(boolean append) throws VlException;

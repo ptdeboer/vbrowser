@@ -32,9 +32,9 @@ import nl.esciencecenter.ptk.data.HashMapList;
 import nl.esciencecenter.ptk.ui.UI;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.error.InitializationError;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.events.ResourceEventListener;
@@ -82,7 +82,7 @@ public class VRSContext implements Serializable
      * grid services.
      * 
      * @return The Global VRSContext object from VRS.getDefaultVRSContext()
-     * @throws VlException
+     * @throws VrsException
      */
     public static synchronized VRSContext getDefault()
     {
@@ -144,7 +144,7 @@ public class VRSContext implements Serializable
      * Registry and GridProxy if not initialized alreay.
      * <p>
      * 
-     * @throws VlException
+     * @throws VrsException
      */
     public VRSContext()
     {
@@ -156,7 +156,7 @@ public class VRSContext implements Serializable
      * initialization. Use Setters methods to configure the context manually.
      * <p>
      * 
-     * @throws VlException
+     * @throws VrsException
      */
     public VRSContext(boolean initialize)
     {
@@ -217,7 +217,7 @@ public class VRSContext implements Serializable
     /**
      * Return initialized grid proxy as string.
      */
-    public String getProxyAsString() throws VlException
+    public String getProxyAsString() throws VrsException
     {
         return this.getGridProxy().getProxyAsString();
     }
@@ -238,7 +238,7 @@ public class VRSContext implements Serializable
      * Returns Virtual Root VRL of top level Resource Tree. Currently returns
      * the MyVLe object
      */
-    public VRL getVirtualRootLocation() throws VlException
+    public VRL getVirtualRootLocation() throws VrsException
     {
         return getVirtualRoot().getLocation();
     }
@@ -247,7 +247,7 @@ public class VRSContext implements Serializable
      * Returns Virtual Root of top level Resource Tree. Currently returns the
      * MyVLe object but as a VNode.
      */
-    public synchronized VNode getVirtualRoot() throws VlException
+    public synchronized VNode getVirtualRoot() throws VrsException
     {
         // intialize MyVle as default virtual root:
         if (this.virtualRoot == null)
@@ -276,7 +276,7 @@ public class VRSContext implements Serializable
             {
                 myvle = MyVLe.createVLeRoot(this);
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 logger.logException(ClassLogger.ERROR, this, e, "Exception during initialization:%s\n", e);
             }
@@ -303,7 +303,7 @@ public class VRSContext implements Serializable
      * 
      * @see ServerInfoRegistry
      */
-    public ServerInfo getServerInfoFor(VRL loc, boolean autoCreate) throws VlException
+    public ServerInfo getServerInfoFor(VRL loc, boolean autoCreate) throws VrsException
     {
         if (loc == null)
             return null;
@@ -333,9 +333,9 @@ public class VRSContext implements Serializable
      * updateServerInfo(). This is the only public method to call as ServerInfo
      * is context dependent.
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public ServerInfo updateServerInfo(ServerInfo info) throws VlException
+    public ServerInfo updateServerInfo(ServerInfo info) throws VrsException
     {
         if (info == null)
             return null;
@@ -371,9 +371,9 @@ public class VRSContext implements Serializable
      * Perform openLocation using this VRSContext. Replaces static
      * Registry.openLocation();
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public VNode openLocation(VRL vrl) throws VlException
+    public VNode openLocation(VRL vrl) throws VrsException
     {
         return getRegistry().openLocation(this, vrl);
     }
@@ -382,9 +382,9 @@ public class VRSContext implements Serializable
      * Perform openLocation using this VRSContext. Replaces static
      * Registry.openLocation();
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public VNode openLocation(String vrlStr) throws VlException
+    public VNode openLocation(String vrlStr) throws VrsException
     {
         return getRegistry().openLocation(this, new VRL(vrlStr));
     }
@@ -858,12 +858,12 @@ public class VRSContext implements Serializable
         return this.getRegistry().getVRSFactory(vrl.getScheme(), vrl.getHostname());
     }
 
-    public VResourceSystem openResourceSystem(VRL loc) throws VlException
+    public VResourceSystem openResourceSystem(VRL loc) throws VrsException
     {
         return this.getRegistry().openResourceSystem(this, loc);
     }
 
-    public VFileSystem openFileSystem(VRL location) throws VlException
+    public VFileSystem openFileSystem(VRL location) throws VrsException
     {
         return this.getRegistry().openFileSystem(this, location);
     }

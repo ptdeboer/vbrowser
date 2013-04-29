@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vdriver.localfs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
  * Helper class for local execution of script/commands etc. Is Factory class for
@@ -46,7 +46,7 @@ public class LocalExec
      * This method assumes no big output of text. Resulting String array (or
      * array elements) might be null upon error.
      */
-    public static String[] execute(String cmds[]) throws VlException
+    public static String[] execute(String cmds[]) throws VrsException
     {
         // Global.debugPrintf(LocalExec.class, "Executing command:%s\n",
         // cmds[0]);
@@ -121,10 +121,10 @@ public class LocalExec
     }
 
     /**
-     * @throws VlException
+     * @throws VrsException
      * @see LocalExec#execute(String[])
      */
-    static public String[] simpleExecute(String cmds[]) throws VlException
+    static public String[] simpleExecute(String cmds[]) throws VrsException
     {
         return execute(cmds);
     }
@@ -138,7 +138,7 @@ public class LocalExec
      * @param wait
      *            : wait until process completes.
      */
-    public static LocalProcess execute(String cmds[], boolean wait) throws VlException
+    public static LocalProcess execute(String cmds[], boolean wait) throws VrsException
     {
         // Global.debugPrintf(LocalExec.class, "Executing command:%s\n",
         // cmds[0]);

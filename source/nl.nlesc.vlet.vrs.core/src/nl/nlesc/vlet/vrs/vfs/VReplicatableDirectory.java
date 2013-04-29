@@ -23,7 +23,7 @@ package nl.nlesc.vlet.vrs.vfs;
 import java.util.List;
 
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
  * Interface for directories which contents can be replicated. 
@@ -33,6 +33,6 @@ public interface VReplicatableDirectory
     /** 
      * Recursive replicate directory to list of Storage Elements 
      */ 
-    public void replicateTo(ITaskMonitor monitor, List<String> listSEs) throws VlException; 
+    public void replicateTo(ITaskMonitor monitor, List<String> listSEs) throws VrsException; 
 
 }

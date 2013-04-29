@@ -38,7 +38,7 @@ public interface VZeroSizable
     /**
      * Reset file length to zero, but keep permissions and other (meta)data 
      * attributes. 
-     * @throws VlException
+     * @throws VrsException
      */
 	public void setLengthToZero()  throws IOException;
 }

@@ -20,11 +20,11 @@
 
 package nl.nlesc.vlet.vrs.vjs;
 
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
@@ -42,22 +42,22 @@ public abstract class VQueue extends VCompositeNode
 		return VJS.TYPE_VQUEUE; 
 	}
 	
-	public VNode getNode(String name) throws VlException
+	public VNode getNode(String name) throws VrsException
 	{
 		return getJob(name); 
 	}
 	
-	public VNode[] getNodes() throws VlException
+	public VNode[] getNodes() throws VrsException
 	{
 		return getJobs(); 
 	}
 	
-	public boolean hasNode(String name) throws VlException
+	public boolean hasNode(String name) throws VrsException
 	{
 		return hasJob(name);
 	}
 	
-	public boolean hasJob(String name) throws VlException
+	public boolean hasJob(String name) throws VrsException
 	{
 		VJob jobs[]=getJobs();
 		
@@ -78,23 +78,23 @@ public abstract class VQueue extends VCompositeNode
 		return true;
 	}
 
-	public boolean isDeletable() throws VlException
+	public boolean isDeletable() throws VrsException
 	{
 		return false;
 	}	
 	
-	public VAttribute[][] getNodeAttributes(String[] jobNames, String[] attrNames) throws VlException
+	public VAttribute[][] getNodeAttributes(String[] jobNames, String[] attrNames) throws VrsException
 	{
 		return getJobAttributes(jobNames,attrNames); 
 	}
 
-	public VAttribute[][] getNodeAttributes(String[] attrNames) throws VlException
+	public VAttribute[][] getNodeAttributes(String[] attrNames) throws VrsException
 	{
 		return getJobAttributes(attrNames); 
 	}
 	
 	/** Get job by Name */ 
-	public VJob getJob(String name) throws VlException
+	public VJob getJob(String name) throws VrsException
 	{
 		VJob jobs[]=getJobs();
 		
@@ -110,7 +110,7 @@ public abstract class VQueue extends VCompositeNode
 		return null; 
 	}
 	
-	public VJob addNode(VNode node, boolean isMove) throws VlException
+	public VJob addNode(VNode node, boolean isMove) throws VrsException
 	{
 		if ((node instanceof VJob)==false)  
 			throw new nl.nlesc.vlet.exception.ResourceTypeMismatchException("Cannot schedule non VJob types:"+node); 
@@ -118,7 +118,7 @@ public abstract class VQueue extends VCompositeNode
 		return schedule((VJob)node); 
 	}
 
-	public VJob addNode(VNode node, String newName, boolean isMove) throws VlException
+	public VJob addNode(VNode node, String newName, boolean isMove) throws VrsException
 	{
 		if ((node instanceof VJob)==false)  
 			throw new nl.nlesc.vlet.exception.ResourceTypeMismatchException("Cannot schedule non VJob types:"+node); 
@@ -126,7 +126,7 @@ public abstract class VQueue extends VCompositeNode
 		return schedule((VJob)node); 
 	}
 
-	public VJob[] addNodes(VNode[] nodes, boolean isMove) throws VlException
+	public VJob[] addNodes(VNode[] nodes, boolean isMove) throws VrsException
 	{
 		if (nodes==null) 
 			return null; 
@@ -144,24 +144,24 @@ public abstract class VQueue extends VCompositeNode
 		return jobs; 
 	}
 
-	public VJob createNode(String type, String name, boolean force) throws VlException
+	public VJob createNode(String type, String name, boolean force) throws VrsException
 	{
 		throw new nl.nlesc.vlet.exception.NotImplementedException("Cannot create empty job"); 
 	}
 	
 	/** Delete Node = abort job */
-	public boolean delNode(VNode node) throws VlException
+	public boolean delNode(VNode node) throws VrsException
 	{
 		return false;
 	}
 	
 	/** Delete Nodes = abort jobs */
-	public boolean delNodes(VNode[] nodes) throws VlException
+	public boolean delNodes(VNode[] nodes) throws VrsException
 	{
 		return false;
 	}
 
-	public boolean delete(boolean recurse) throws VlException
+	public boolean delete(boolean recurse) throws VrsException
 	{
 		return false;
 	}
@@ -170,11 +170,11 @@ public abstract class VQueue extends VCompositeNode
 	// Abstract interface 
 	//=========================================================================
 	
-	public abstract VAttribute[][] getJobAttributes(String[] attrNames) throws VlException; 
+	public abstract VAttribute[][] getJobAttributes(String[] attrNames) throws VrsException; 
 	
-	public abstract VAttribute[][] getJobAttributes(String[] jobNames, String[] attrNames) throws VlException;
+	public abstract VAttribute[][] getJobAttributes(String[] jobNames, String[] attrNames) throws VrsException;
 	
-	public abstract VJob[] getJobs() throws VlException; 
+	public abstract VJob[] getJobs() throws VrsException; 
 
-	public abstract VJob schedule(VJob job) throws VlException; 
+	public abstract VJob schedule(VJob job) throws VrsException; 
 }

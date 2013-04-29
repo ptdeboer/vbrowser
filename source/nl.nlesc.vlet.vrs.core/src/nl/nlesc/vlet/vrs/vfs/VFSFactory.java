@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VRSFactory;
@@ -61,17 +61,17 @@ public abstract class VFSFactory extends VRSFactory
         return VFS.defaultChildTypes; 
     }
    
-	public VResourceSystem openResourceSystem(VRSContext context,VRL location) throws VlException
+	public VResourceSystem openResourceSystem(VRSContext context,VRL location) throws VrsException
 	{
 		return this.openFileSystem(context, location); 
 	}
 	 
-    public VFSNode openLocation(VRSContext context,String location) throws VlException
+    public VFSNode openLocation(VRSContext context,String location) throws VrsException
     {
         return openLocation(context,new VRL(location)); 
     }
     
-	public VFSNode openLocation(VRSContext context,VRL location) throws VlException 
+	public VFSNode openLocation(VRSContext context,VRL location) throws VrsException 
 	{
 		 return openFileSystem(context,location).openLocation(location); 
 	}
@@ -83,9 +83,9 @@ public abstract class VFSFactory extends VRSFactory
 	 * @param context the VRSContext to use 
 	 * @param location actual location
 	 * @return new or cached VFileSystem instance 
-	 * @throws VlException
+	 * @throws VrsException
 	 */
-	public VFileSystem openFileSystem(VRSContext context, VRL location) throws VlException
+	public VFileSystem openFileSystem(VRSContext context, VRL location) throws VrsException
 	{
 		return (VFileSystem)super.openResourceSystem(context,location); 
 	}
@@ -95,7 +95,7 @@ public abstract class VFSFactory extends VRSFactory
 	// Is implemented by calling createNewFileSystem to 
 	// so the the instance can be downcasted to VFileSystem. 
 	// ---------------------------------------------------------------
-	public VFileSystem createNewResourceSystem(VRSContext context,ServerInfo info, VRL location) throws VlException
+	public VFileSystem createNewResourceSystem(VRSContext context,ServerInfo info, VRL location) throws VrsException
 	{
 		return createNewFileSystem(context,info,location); 
 	}
@@ -109,7 +109,7 @@ public abstract class VFSFactory extends VRSFactory
 	 * Will only be called when a new file system is needed. 
 	 * Instance will be used for similar locations.
 	 */
-	public abstract VFileSystem createNewFileSystem(VRSContext context,ServerInfo info, VRL location) throws VlException; 
+	public abstract VFileSystem createNewFileSystem(VRSContext context,ServerInfo info, VRL location) throws VrsException; 
 		 
 	
 }

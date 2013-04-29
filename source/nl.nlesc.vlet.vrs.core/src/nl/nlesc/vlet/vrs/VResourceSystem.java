@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.vrs;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -53,7 +53,7 @@ public interface VResourceSystem
 	 * Open the location and return the resource from this ResourceSystem specified
 	 * by the VRL. 
 	 */
-	public VNode openLocation(VRL vrl) throws VlException;
+	public VNode openLocation(VRL vrl) throws VrsException;
 	
 	/** 
 	 * Returns VRSContext associated with this ResourceSystem  
@@ -65,14 +65,14 @@ public interface VResourceSystem
 	 * Multiple connect() calls may occur. If already connected ignore 
 	 * any successive invocations.  
 	 */
-	public void connect() throws VlException ;
+	public void connect() throws VrsException ;
 	
 	/** 
 	 * Disconnected and close/cleanup all resources associated with this 
 	 * resource system.
 	 * After this call a connect() may be called. 
 	 */
-    public void disconnect() throws VlException ;
+    public void disconnect() throws VrsException ;
 
     /** 
      * Dispose all resources, object may not be used anymore.

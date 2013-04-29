@@ -23,9 +23,9 @@ package nl.nlesc.vlet.vrs.vfs;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceToBigException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.io.ResourceReader;
 import nl.nlesc.vlet.vrs.io.VRandomReadable;
@@ -50,9 +50,9 @@ public class FileReader extends ResourceReader
      * is to let readBytes to return an array this might have to change to some
      * ByteBuffer placeholder class.
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public byte[] getContents() throws VlException
+    public byte[] getContents() throws VrsException
     {
         long len;
         try
@@ -61,7 +61,7 @@ public class FileReader extends ResourceReader
         }
         catch (IOException e)
         {
-            throw new VlIOException (e); 
+            throw new NestedIOException (e); 
         }
         // 2 GB files cannot be read into memory !
 
@@ -83,7 +83,7 @@ public class FileReader extends ResourceReader
     }
 
     /** Reads first <code>len</cod> bytes into byte array */
-    public byte[] getContents(int len) throws VlException
+    public byte[] getContents(int len) throws VrsException
     {
         byte buffer[] = new byte[len];
 
@@ -94,7 +94,7 @@ public class FileReader extends ResourceReader
         int ret = readBytes(0, buffer,0,len); 
 
         if (ret != len)
-            throw new VlIOException(
+            throw new NestedIOException(
                     "Couldn't read requested number of bytes (read,requested)="
                     + ret + "," + len);
 
@@ -105,9 +105,9 @@ public class FileReader extends ResourceReader
      * Read contents and return as single String. This method will fail if the
      * VFile doesn't implement the VStreamReadable interface !
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public String getContentsAsString(String charSet) throws VlException
+    public String getContentsAsString(String charSet) throws VrsException
     {
         byte contents[] = getContents();
 
@@ -125,7 +125,7 @@ public class FileReader extends ResourceReader
 //            Global.errorPrintf(this,"Exception:%s\n",e);
 //            Global.debugPrintStacktrace(e); 
 
-            throw (new VlException("charSet enconding:'"+charSet+"' not supported", e));
+            throw (new VrsException("charSet enconding:'"+charSet+"' not supported", e));
         }
 
         return str;
@@ -136,9 +136,9 @@ public class FileReader extends ResourceReader
      * to decode the contents. 
      * 
      * @return Contents as String. 
-     * @throws VlException
+     * @throws VrsException
      */
-    public String getContentsAsString() throws VlException
+    public String getContentsAsString() throws VrsException
     {
         return getContentsAsString("UTF-8");
     }
@@ -150,10 +150,10 @@ public class FileReader extends ResourceReader
      * 
      * @param buffer - the buffer to fill
      * @return nr of bytes read. This method keep on reading until all bytes are read.  
-     * @throws VlException
+     * @throws VrsException
      */
     public int read(byte buffer[])
-            throws VlException
+            throws VrsException
     {
         return readBytes(0,buffer,0,buffer.length); 
     }
@@ -169,11 +169,11 @@ public class FileReader extends ResourceReader
      * @param bufferOffset -  offset into buffer 
      * @param buffer - byte buffer to read in
      * @return number of read bytes 
-     * @throws VlException
+     * @throws VrsException
      *             if interface does not support remote read access.
      */
     public int read(long offset, byte buffer[],int bufferOffset,int nrOfBytes)
-            throws VlException
+            throws VrsException
     {
         return readBytes(offset,buffer,bufferOffset,nrOfBytes);
     }
@@ -185,7 +185,7 @@ public class FileReader extends ResourceReader
     
     /** Actual read method */ 
     protected int readBytes(long offset, byte buffer[],int bufferOffset,int nrOfBytes)
-                throws VlException
+                throws VrsException
     {
         boolean forceUseStreamRead=false; //true; // default value  
 
@@ -203,7 +203,7 @@ public class FileReader extends ResourceReader
             }
             catch (IOException e)
             {
-                throw new VlIOException(e);
+                throw new NestedIOException(e);
             }
         }
         // else try StreamReadable interface 

@@ -23,8 +23,8 @@ package nl.nlesc.vlet.vrs.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.exception.NestedIOException;
 
 public class ResourceWriter
 {
@@ -38,7 +38,7 @@ public class ResourceWriter
     /**
      * Write bytes to stream. 
      */
-    public void streamWrite(byte[] buffer,int bufferOffset,int nrOfBytes) throws VlException
+    public void streamWrite(byte[] buffer,int bufferOffset,int nrOfBytes) throws VrsException
     {
         try
         {
@@ -57,7 +57,7 @@ public class ResourceWriter
         }
         catch (IOException e)
         {
-            throw new VlIOException("Failed to write to file:" + this, e);
+            throw new NestedIOException("Failed to write to file:" + this, e);
         }
     }
 

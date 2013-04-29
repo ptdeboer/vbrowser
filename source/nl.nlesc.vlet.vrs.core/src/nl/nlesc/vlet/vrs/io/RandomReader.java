@@ -40,7 +40,7 @@ public class RandomReader implements VRandomReadable
      * <code>fileOffset</code>. Data is stored into the byte array buffer[]
      * starting at bufferOffset.
      * 
-     * @throws VlException
+     * @throws VrsException
      * @see java.io.RandomAccessFile#readBytes
      */
     public int readBytes(long fileOffset, byte[] buffer, int bufferOffset, int nrBytes) throws IOException
@@ -77,7 +77,7 @@ public class RandomReader implements VRandomReadable
      * of the stream is detected, or an exception is thrown.
      * 
      * @param signatureBytes the buffer into which the data is read.
-     * @throws VlException 
+     * @throws VrsException 
      * @exception EOFException
      *                if this file reaches the end before reading all the bytes.
      * @exception IOException
@@ -93,7 +93,7 @@ public class RandomReader implements VRandomReadable
      * Returns the length of this file.
      * 
      * @return the length of this file, measured in bytes.
-     * @throws VlException
+     * @throws VrsException
      * @exception IOException if an I/O error occurs.
      */
     public int length() throws IOException
@@ -131,7 +131,7 @@ public class RandomReader implements VRandomReadable
      * 
      * @return the next byte of data, or <code>-1</code> if the end of the file
      *         has been reached.
-     * @throws VlException
+     * @throws VrsException
      *             if an I/O error occurs. Not thrown if end-of-file has been
      *             reached.
      */
@@ -158,7 +158,7 @@ public class RandomReader implements VRandomReadable
      * @param n
      *            the number of bytes to be skipped.
      * @return the actual number of bytes skipped.
-     * @throws VlException
+     * @throws VrsException
      *             if an I/O error occurs.
      */
     public int skipBytes(int lenToSkip) throws IOException
@@ -204,7 +204,7 @@ public class RandomReader implements VRandomReadable
      * @return the total number of bytes read into the buffer, or
      *         <code>-1</code> if there is no more data because the end of the
      *         file has been reached.
-     * @throws VlException
+     * @throws VrsException
      *             If the first byte cannot be read for any reason other than
      *             end of file, or if the random access file has been closed, or
      *             if some other I/O error occurs.

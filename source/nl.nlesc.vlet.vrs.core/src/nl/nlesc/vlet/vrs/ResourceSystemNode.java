@@ -22,10 +22,10 @@ package nl.nlesc.vlet.vrs;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -100,7 +100,7 @@ public abstract class ResourceSystemNode extends VCompositeNode implements VReso
     }
     
     /** Default implementation is to browse the remote server home  */ 
-    public VNode[] getNodes() throws VlException
+    public VNode[] getNodes() throws VrsException
     {
     	VNode node=this.openLocation(getServerHomeVRL());
     	
@@ -196,7 +196,7 @@ public abstract class ResourceSystemNode extends VCompositeNode implements VReso
 		return list.toArray(); 
 	}
 	
-	public VAttribute getAttribute(String name) throws VlException 
+	public VAttribute getAttribute(String name) throws VrsException 
 	{
 		if  (StringUtil.compare(name, ATTR_SERVERID)==0) 
 		{
@@ -238,7 +238,7 @@ public abstract class ResourceSystemNode extends VCompositeNode implements VReso
 	}
 	
 	//=== Abstract Methods === 
-	abstract public VNode openLocation(VRL vrl) throws VlException;
+	abstract public VNode openLocation(VRL vrl) throws VrsException;
 	
 	// ===
 	// Explicit declarations to allow for 1.5 @Override directive.
@@ -246,8 +246,8 @@ public abstract class ResourceSystemNode extends VCompositeNode implements VReso
 	
     public abstract boolean isConnected(); 
     
-    public abstract void connect() throws VlException;
+    public abstract void connect() throws VrsException;
     
-    public abstract void disconnect() throws VlException; 
+    public abstract void disconnect() throws VrsException; 
     
 }

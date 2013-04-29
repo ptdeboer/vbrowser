@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /** 
  * VCommentable interface for resources which allow annotations. 
@@ -28,8 +28,8 @@ import nl.nlesc.vlet.exception.VlException;
 public interface VCommentable
 {
     /** Set comment or annotation for this resource */ 
-    void setComment(String comment) throws VlException;
+    void setComment(String comment) throws VrsException;
     
     /** Get comment or annotation for this resource */ 
-    String getComment() throws VlException; 
+    String getComment() throws VrsException; 
 }

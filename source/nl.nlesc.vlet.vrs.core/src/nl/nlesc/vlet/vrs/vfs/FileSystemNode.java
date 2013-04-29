@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.ResourceSystemNode;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -47,23 +47,23 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 		super(context, info);
 	}
 	
-	public VFSNode getNode(VRL vrl) throws VlException
+	public VFSNode getNode(VRL vrl) throws VrsException
 	{
 		return this.openLocation(vrl); 
 	}
 	
-	public VFSNode openPath(VRL fileVrl) throws VlException
+	public VFSNode openPath(VRL fileVrl) throws VrsException
 	{
 		return getNode(fileVrl); 
 	}
 	
-	public VFSNode getNode(String path) throws VlException
+	public VFSNode getNode(String path) throws VrsException
 	{
 		return openLocation(resolvePath(path));   
 	}
 	
 
-	public VFSNode getPath(String path) throws VlException
+	public VFSNode getPath(String path) throws VrsException
 	{
 		return getNode(path); 
 	}
@@ -71,11 +71,11 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 	/**
      * Resolve relative or absolute path against this resource. Uses
      * VRL.resolvePaths(this.getPath(),subPath) as default implementation.
-	 * @throws VlException,VRISyntaxException 
+	 * @throws VrsException,VRISyntaxException 
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public String resolvePathString(String path) throws VlException
+    public String resolvePathString(String path) throws VrsException
     {
         return getVRL().resolvePath(path).getPath(); 
     }
@@ -84,13 +84,13 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
      * Resolve path against this VRL and return resolved VRL. 
      * Only match path elements!
      */
-    public VRL resolvePath(String path) throws VlException
+    public VRL resolvePath(String path) throws VrsException
     {
         return getLocation().resolvePath(path);
     }
     
 	// implementations are encourage to override this method for speed
-	public VDir getDir(VRL dirVrl) throws VlException
+	public VDir getDir(VRL dirVrl) throws VrsException
 	{
 		VFSNode node=this.getNode(dirVrl); 
 		
@@ -104,7 +104,7 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 	}
 	
 	// implementations are encourage to override this method for speed
-	public VFile getFile(VRL fileVrl) throws VlException
+	public VFile getFile(VRL fileVrl) throws VrsException
 	{
 		VFSNode node=this.getNode(fileVrl);
 		
@@ -118,15 +118,15 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 	}
 	
 	/** Check whether the (remote) path exists and is actual an directory.*/ 
-	public boolean existsDir(VRL dirVrl) throws VlException
+	public boolean existsDir(VRL dirVrl) throws VrsException
 	{
-	    VlException e1=null; 
+	    VrsException e1=null; 
 	    
 	    try
 	    {
 	        return newDir(dirVrl).exists(); 
 	    }
-	    catch (VlException e)
+	    catch (VrsException e)
 	    {
 	        e1=e; 
 	    }
@@ -139,7 +139,7 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 	        if (newFile(dirVrl).exists())
 	            return false;
 	    }
-	    catch (VlException e)
+	    catch (VrsException e)
 	    {
 	        ; //ignore 
 	    }
@@ -148,13 +148,13 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 	}
 	
 	/** Check wether the (remote) path exists and in an actual file.*/ 
-	public boolean existsFile(VRL fileVrl) throws VlException
+	public boolean existsFile(VRL fileVrl) throws VrsException
 	{
 		return newFile(fileVrl).exists(); 
 	}
 
 	/** Check wether the remote path exists. */ 
-	public boolean existsPath(VRL fileVrl) throws VlException
+	public boolean existsPath(VRL fileVrl) throws VrsException
 	{
 		if (newFile(fileVrl).exists())
 			return true;
@@ -165,7 +165,7 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 		return false; 
 	}
 
-	public InputStream createInputStream(VRL location) throws VlException
+	public InputStream createInputStream(VRL location) throws VrsException
 	{
 		try
         {
@@ -173,11 +173,11 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
         }
 		catch (IOException e)
 		{
-		    throw new VlIOException(e); 
+		    throw new NestedIOException(e); 
         }
 	}
 	
-    public OutputStream createOutputStream(VRL location) throws VlException
+    public OutputStream createOutputStream(VRL location) throws VrsException
 	{
 		try
         {
@@ -185,12 +185,12 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
         }
 		catch (IOException e)
         {
-            throw new VlIOException(e); 
+            throw new NestedIOException(e); 
         }
 	}
 
     /** Create Directory on this filesystem. */ 
-	public VDir createDir(VRL dirVrl, boolean ignoreExisting) throws VlException
+	public VDir createDir(VRL dirVrl, boolean ignoreExisting) throws VrsException
 	{
 		VDir dir=newDir(dirVrl); 
 
@@ -211,7 +211,7 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 	}
 
 	/** Create file on this filesystem */ 
-	public VFile createFile(VRL fileVrl, boolean ignoreExisting) throws VlException
+	public VFile createFile(VRL fileVrl, boolean ignoreExisting) throws VrsException
 	{
 		VFile file=newFile(fileVrl); 
 
@@ -231,12 +231,12 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 		return file;  
 	}
 	 
-	public VFile newFile(String path) throws VlException
+	public VFile newFile(String path) throws VrsException
 	{
 		return newFile(resolvePath(path)); 
 	}
 	
-	public VDir newDir(String path) throws VlException
+	public VDir newDir(String path) throws VrsException
 	{
 		return newDir(resolvePath(path)); 
 	}
@@ -251,15 +251,15 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 	// ==================
 
 	// Explicit declaration from VFileSystem the only method to implement
-	abstract public VFile newFile(VRL fileVrl) throws VlException;
+	abstract public VFile newFile(VRL fileVrl) throws VrsException;
 
 	// Explicit declaration from VFileSystem
-	abstract public VDir newDir(VRL dirVrl) throws VlException;
+	abstract public VDir newDir(VRL dirVrl) throws VrsException;
 	
 	/** 
 	 * Open Location and return VFS Resource. 
 	 * The location must exist.
 	 */
-	public abstract VFSNode openLocation(VRL vrl) throws VlException;
+	public abstract VFSNode openLocation(VRL vrl) throws VrsException;
 
 }

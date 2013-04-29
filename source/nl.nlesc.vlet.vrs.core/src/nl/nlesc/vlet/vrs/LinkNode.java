@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -75,7 +75,7 @@ public class LinkNode extends LogicalResourceNode
         return duplicate();
     }
 
-    public VRL getLinkTarget() throws VlException
+    public VRL getLinkTarget() throws VrsException
     {
         return this.getTargetVRL();
     }
@@ -90,7 +90,7 @@ public class LinkNode extends LogicalResourceNode
      * (logical) child location. s
      */
     public static LinkNode createLinkTo(VRSContext context, VRL parentLocation, String name, VRL targetVRL)
-            throws VlException
+            throws VrsException
     {
         VNode parentNode = context.openLocation(parentLocation);
 
@@ -115,7 +115,7 @@ public class LinkNode extends LogicalResourceNode
      * Creates new LinkNode object with logical location and specified
      * linkTarget. Does not save nor update storage location.
      */
-    public static LinkNode createLinkNode(VRSContext context, VRL logicalLocation, VRL targetVRL) throws VlException
+    public static LinkNode createLinkNode(VRSContext context, VRL logicalLocation, VRL targetVRL) throws VrsException
     {
         return createLinkNode(context, logicalLocation, targetVRL, true);
     }
@@ -127,7 +127,7 @@ public class LinkNode extends LogicalResourceNode
      * storage location.
      */
     public static LinkNode createLinkNode(VRSContext context, VRL logicalLocation, VRL targetVRL, boolean resolve)
-            throws VlException
+            throws VrsException
     {
         LinkNode lnode = new LinkNode(context, logicalLocation);
         lnode.init(logicalLocation, targetVRL, resolve);
@@ -136,7 +136,7 @@ public class LinkNode extends LogicalResourceNode
     }
 
     /** Load ResourceNode but return as LinkNode ! */
-    public static LinkNode loadFrom(VRSContext context, VRL loc) throws VlException
+    public static LinkNode loadFrom(VRSContext context, VRL loc) throws VrsException
     {
         VNode vnode = context.openLocation(loc);
         return loadFrom(context, vnode);
@@ -146,7 +146,7 @@ public class LinkNode extends LogicalResourceNode
      * Factory method to load a stored LogicalResource. Currenltly only .vlink
      * files are supported.
      */
-    public static LinkNode loadFrom(VRSContext context, VNode vnode) throws VlException
+    public static LinkNode loadFrom(VRSContext context, VNode vnode) throws VrsException
     {
         VRL vrl = vnode.getVRL();
         LinkNode node = null;
@@ -174,13 +174,13 @@ public class LinkNode extends LogicalResourceNode
         return node;
     }
 
-    public static LinkNode createServerNode(VRSContext context, VRL logicalVRL, VRL targetVRL) throws VlException
+    public static LinkNode createServerNode(VRSContext context, VRL logicalVRL, VRL targetVRL) throws VrsException
     {
         return LinkNode.createServerNode(context, logicalVRL, targetVRL, false);
     }
 
     public static LinkNode createServerNode(VRSContext context, VRL logicalVRL, VRL targetVRL, boolean resolve)
-            throws VlException
+            throws VrsException
     {
         LinkNode lnode = LinkNode.createLinkNode(context, logicalVRL, targetVRL, resolve);
         lnode.setType(VRS.SERVER_TYPE);
@@ -188,14 +188,14 @@ public class LinkNode extends LogicalResourceNode
     }
 
     public static LinkNode createResourceNode(VRSContext context, VRL logicalVRL, VRL targetVRL, boolean resolve)
-            throws VlException
+            throws VrsException
     {
         LinkNode lnode = LinkNode.createLinkNode(context, logicalVRL, targetVRL, resolve);
         lnode.setType(VRS.RESOURCE_LOCATION_TYPE);
         return lnode;
     }
 
-    public VNode getTargetNode() throws VlException
+    public VNode getTargetNode() throws VrsException
     {
         return this.getVRSContext().openLocation(this.getTargetLocation());
     }

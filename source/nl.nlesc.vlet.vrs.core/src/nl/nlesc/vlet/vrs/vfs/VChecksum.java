@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /** 
  * Interface for (file) resource which support checksums.
@@ -34,8 +34,8 @@ public interface VChecksum
     public static final String ADLER32 = "Adler32";
     
     /** Returns the checksum types supported by this (file) resource */ 
-    String[] getChecksumTypes() throws VlException;
+    String[] getChecksumTypes() throws VrsException;
     
     /** Returns the actual checksum value for the specified algorithm. */ 
-	String getChecksum(String algorithm) throws VlException;
+	String getChecksum(String algorithm) throws VrsException;
 }

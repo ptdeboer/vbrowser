@@ -21,10 +21,10 @@
 package nl.nlesc.vlet.vrs;
 
 import nl.esciencecenter.ptk.data.IntegerHolder;
-import nl.nlesc.vlet.data.VAttribute;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.error.ParameterError;
 import nl.nlesc.vlet.exception.NotImplementedException;
-import nl.nlesc.vlet.exception.VlException;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -42,14 +42,14 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
 	}
 
     @Override
-    public VNode[] getParents() throws VlException
+    public VNode[] getParents() throws VrsException
     {
         VNode parents[]=new VNode[1]; 
         parents[1]=getParent();  
         return parents; 
     }
 
-    public long getNrOfNodes() throws VlException
+    public long getNrOfNodes() throws VrsException
     {
         VNode nodes[] = getNodes();
 
@@ -59,7 +59,7 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
         return 0;
     }
 
-    public VNode getNode(String name) throws VlException
+    public VNode getNode(String name) throws VrsException
     {
         if (name == null)
             return null;
@@ -76,17 +76,17 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
         return null;
     }
     
-    public VNode addNode(VNode node) throws VlException
+    public VNode addNode(VNode node) throws VrsException
     {
         return addNode(node, null, false);
     }
     
-    public VNode addNode(VNode node, boolean isMove) throws VlException
+    public VNode addNode(VNode node, boolean isMove) throws VrsException
     {
         return addNode(node, null, isMove);
     }
 
-    public VNode[] addNodes(VNode[] nodes, boolean isMove) throws VlException
+    public VNode[] addNodes(VNode[] nodes, boolean isMove) throws VrsException
     {
         if (nodes == null)
             return null;
@@ -102,7 +102,7 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
 
     }
 
-    public boolean delNode(VNode node) throws VlException
+    public boolean delNode(VNode node) throws VrsException
     {
         if (node instanceof VDeletable)
             return ((VDeletable) node).delete();
@@ -112,7 +112,7 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
 
     }
 
-    public boolean delNodes(VNode[] nodes) throws VlException
+    public boolean delNodes(VNode[] nodes) throws VrsException
     {
         boolean status = true;
 
@@ -122,7 +122,7 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
         return status;
     }
 
-    public boolean hasNode(String name) throws VlException
+    public boolean hasNode(String name) throws VrsException
     {
         if (getNode(name) != null)
             return true;
@@ -131,7 +131,7 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
     }
 
     public VAttribute[][] getNodeAttributes(String childNames[],
-            String names[]) throws VlException
+            String names[]) throws VrsException
     {
         VNode nodes[] = new VNode[childNames.length];
 
@@ -150,7 +150,7 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
         return attrs;
     }
 
-    public VAttribute[][] getNodeAttributes(String names[]) throws VlException
+    public VAttribute[][] getNodeAttributes(String names[]) throws VrsException
     {
         VNode nodes[] = getNodes();
 
@@ -167,35 +167,35 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
         return attrs;
     }
 
-    public boolean isDeletable() throws VlException
+    public boolean isDeletable() throws VrsException
     {
         return true;
     }
     
-    public boolean delete() throws VlException
+    public boolean delete() throws VrsException
     {
         return delete(false); 
     }
 
     //@Override
-    public boolean isAccessable() throws VlException
+    public boolean isAccessable() throws VrsException
     {
         return true;
     }
     
     public VNode createNode(String type, String name, boolean force)
-            throws VlException
+            throws VrsException
     {
         throw new NotImplementedException("Cannot create child type:" + type);
     }
 
-    public boolean delete(boolean recurse) throws VlException
+    public boolean delete(boolean recurse) throws VrsException
     {
         throw new NotImplementedException("Delete not implemented for Resource:"+this); 
     }
     
     public VNode addNode(VNode node, String newName, boolean isMove)
-            throws VlException
+            throws VrsException
     {
         throw new NotImplementedException("Not Implemented. Can not add node:"+node); 
     }
@@ -213,7 +213,7 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
      * @return subSet of VNode[] array. 
      */
     
-    public VNode[] getNodes(int offset,int maxNodes,IntegerHolder totalNumNodes) throws VlException /// Tree,Graph, Composite etc.
+    public VNode[] getNodes(int offset,int maxNodes,IntegerHolder totalNumNodes) throws VrsException /// Tree,Graph, Composite etc.
     {
     	VNode allNodes[]=getNodes(); 
     	return nodesSubSet(allNodes,offset,maxNodes,totalNumNodes); 

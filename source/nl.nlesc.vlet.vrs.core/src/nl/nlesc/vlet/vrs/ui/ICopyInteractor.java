@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.vrs.ui;
 
 import nl.esciencecenter.ptk.data.StringHolder;
-import nl.nlesc.vlet.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**

@@ -23,13 +23,13 @@ package nl.nlesc.vlet.vrs.vfs;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VResourceSystem;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -324,14 +324,14 @@ public class VFS extends VRS
     // ===
 
     // helper methods:
-    public static int getOptimalReadBufferSizeFor(VNode node) throws VlException
+    public static int getOptimalReadBufferSizeFor(VNode node) throws VrsException
     {
         // todo: Stream optimization !
         return VRS.DEFAULT_STREAM_READ_CHUNK_SIZE;
     }
 
     // helper methods
-    public static int getOptimalWriteBufferSizeFor(VNode node) throws VlException
+    public static int getOptimalWriteBufferSizeFor(VNode node) throws VrsException
     {
         // todo: Stream optimization !
         return VRS.DEFAULT_STREAM_WRITE_CHUNK_SIZE;
@@ -340,16 +340,16 @@ public class VFS extends VRS
     /**
      * Static method to open a new FileSystem given the context and the location
      */
-    public static VFileSystem openFileSystem(VRSContext context, VRL location) throws VlException
+    public static VFileSystem openFileSystem(VRSContext context, VRL location) throws VrsException
     {
         VResourceSystem rs = openResourceSystem(context, location);
 
         if (rs == null)
-            throw new nl.nlesc.vlet.exception.VlServiceMismatchException("Could find filesystem implementation for:"
+            throw new nl.nlesc.vlet.exception.VrsServiceTypeMismatchException("Could find filesystem implementation for:"
                     + location);
 
         if ((rs instanceof VFileSystem) == false)
-            throw new nl.nlesc.vlet.exception.VlServiceMismatchException("Remote Resource is not a File System:"
+            throw new nl.nlesc.vlet.exception.VrsServiceTypeMismatchException("Remote Resource is not a File System:"
                     + location);
 
         return (VFileSystem) rs;
@@ -371,11 +371,11 @@ public class VFS extends VRS
      *            VRSContext
      * @param fileVRL
      *            New or existing File Location
-     * @throws VlException
+     * @throws VrsException
      *             If the remote filesystem couldn't be contacted or another
      *             error occurred.
      */
-    public static VFile newVFile(VRSContext context, VRL fileVRL) throws VlException
+    public static VFile newVFile(VRSContext context, VRL fileVRL) throws VrsException
     {
         VFileSystem vfs = openFileSystem(context, fileVRL);
         return vfs.newFile(fileVRL);
@@ -392,11 +392,11 @@ public class VFS extends VRS
      *            VRSContext
      * @param dirVRL
      *            New or existing Directory Location
-     * @throws VlException
+     * @throws VrsException
      *             If the remote filesystem couldn't be contacted or another
      *             error occurred.
      */
-    public static VDir newVDir(VRSContext context, VRL dirVRL) throws VlException
+    public static VDir newVDir(VRSContext context, VRL dirVRL) throws VrsException
     {
         VFileSystem vfs = openFileSystem(context, dirVRL);
         return vfs.newDir(dirVRL);

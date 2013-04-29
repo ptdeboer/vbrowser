@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -34,6 +34,6 @@ public interface VTransportable
      * The returned transport may have a limited lifetime as the transport VRL may 
      * be created temporalily.
      */  
-   public VRL getTransportVRL() throws VlException; 
+   public VRL getTransportVRL() throws VrsException; 
     
 }

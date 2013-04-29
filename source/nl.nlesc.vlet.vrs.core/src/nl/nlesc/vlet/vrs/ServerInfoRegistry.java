@@ -35,11 +35,11 @@ import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.data.xml.XMLData;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
+import nl.nlesc.vlet.vrs.data.xml.XMLData;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 import nl.nlesc.vlet.vrs.vrms.SecretStore;
@@ -410,7 +410,7 @@ public class ServerInfoRegistry
             {
                 load();
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 logger.logException(ClassLogger.WARN, e, "Couldn't load ServerInfo Registry!\n");
             }
@@ -559,7 +559,7 @@ public class ServerInfoRegistry
      * Currently when MyVLe object is initialized the ServerInfoRegistry will be
      * loaded.
      */
-    protected void load() throws VlException
+    protected void load() throws VrsException
     {
         logger.debugPrintf(">>> load() <<<\n");
 
@@ -589,7 +589,7 @@ public class ServerInfoRegistry
             }
             catch (IOException e)
             {
-                throw new VlIOException(e);
+                throw new NestedIOException(e);
             } 
             catch (Exception e)
             {

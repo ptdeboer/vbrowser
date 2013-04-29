@@ -22,7 +22,7 @@ package nl.nlesc.vlet.vrs.vfs;
 
 import java.io.IOException;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.io.VSize;
 import nl.nlesc.vlet.vrs.io.VStreamAccessable;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -74,9 +74,9 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     
     /**
      * Copy this file to the remote directory. Method will overwrite existing destination file.  
-     * @throws VlException
+     * @throws VrsException
      */
-    final public VFile copyTo(VDir parentDir) throws VlException
+    final public VFile copyTo(VDir parentDir) throws VrsException
     {
       //return (VFile)doCopyMoveTo(parentDir,null,false /*,options*/);
         return (VFile)getTransferManager().doCopyMove(this,parentDir,null,false); 
@@ -84,9 +84,9 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     
     /**
      * Copy this file to the designated TargetFile. 
-     * @throws VlException
+     * @throws VrsException
      */
-    final public VFile copyTo(VFile targetFile) throws VlException
+    final public VFile copyTo(VFile targetFile) throws VrsException
     {
       //return (VFile)doCopyMoveTo(parentDir,null,false /*,options*/);
         return (VFile)getTransferManager().doCopyMove(this,targetFile,false);  
@@ -94,9 +94,9 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
 
     /**
      * Move this file to the designated TargetFile. 
-     * @throws VlException
+     * @throws VrsException
      */
-    final public VFile moveTo(VFile targetFile) throws VlException
+    final public VFile moveTo(VFile targetFile) throws VrsException
     {
         return (VFile)getTransferManager().doCopyMove(this,targetFile,true);  
     }
@@ -104,9 +104,9 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     /**
      * Copy to remote directory. Method will overwrite existing destination file.  
      * Parameter newName is optional new name of remote file.
-     * @throws VlException
+     * @throws VrsException
      */
-    final public VFile copyTo(VDir parentDir,String newName) throws VlException
+    final public VFile copyTo(VDir parentDir,String newName) throws VrsException
     {
         return (VFile)getTransferManager().doCopyMove(this,parentDir,newName,false);
         //return (VFile)doCopyMoveTo(parentDir,newName,false /*,options*/);
@@ -114,9 +114,9 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
 
     /**
      * Move files to remote directory. Will overwrite existing files. 
-     * @throws VlException
+     * @throws VrsException
      */
-    final public VFile moveTo(VDir parentDir) throws VlException
+    final public VFile moveTo(VDir parentDir) throws VrsException
     {
         return (VFile)getTransferManager().doCopyMove(this,parentDir,null,true); 
         //return (VFile)doCopyMoveTo(parentDir, null,true);
@@ -125,9 +125,9 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     /**
      * Move file top remote directory.  Method will overwrite existing destination file.  
      * Parameter newName is optional new name of remote file.
-     * @throws VlException
+     * @throws VrsException
      */
-    final public VFile moveTo(VDir parentDir,String newName) throws VlException
+    final public VFile moveTo(VDir parentDir,String newName) throws VrsException
     {
         return (VFile)getTransferManager().doCopyMove(this,parentDir,newName,true); 
         //return (VFile)doCopyMoveTo(parentDir, newName,true);
@@ -140,9 +140,9 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
      * 
      * @param transferInfo
      * @param localSource   local file to upload from.  
-     * @throws VlException
+     * @throws VrsException
      */
-    protected void uploadFrom(VFSTransfer transferInfo, VFile localSource) throws VlException 
+    protected void uploadFrom(VFSTransfer transferInfo, VFile localSource) throws VrsException 
     {
         // copy contents into this file. 
         getTransferManager().doStreamCopy(transferInfo, localSource,this); 
@@ -160,7 +160,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
      */ 
 
     protected void downloadTo(VFSTransfer transfer,VFile targetLocalFile)
-            throws VlException
+            throws VrsException
     {
         // copy contents into local file:
         getTransferManager().doStreamCopy(transfer,this,targetLocalFile);  
@@ -171,7 +171,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     // ========================================================================
 
     // Explicit inheritance definitions from VFSNode.  
-    abstract public boolean exists() throws VlException; 
+    abstract public boolean exists() throws VrsException; 
 
     // Explicit inheritance definitions from VFSNode.  
     public abstract long getLength() throws IOException;

@@ -23,7 +23,7 @@ package nl.nlesc.vlet.vrs.vfs;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VResourceSystem;
 import nl.nlesc.vlet.vrs.io.VStreamProducer;
 import nl.nlesc.vlet.vrs.vrl.VRL;
@@ -57,22 +57,22 @@ public interface VFileSystem extends VResourceSystem, VStreamProducer
     /** 
      * Resolve relative path or URI part to this FileSystem and return Absolute VRL.
      */ 
-    public VRL resolvePath(String path) throws VlException;
+    public VRL resolvePath(String path) throws VrsException;
     
     // Same as VResourceSystem but returns VFSNode type.  
-    public VFSNode openLocation(VRL vrl) throws VlException;
+    public VFSNode openLocation(VRL vrl) throws VrsException;
     
     /**
      * Open filesystem path and return new VFile object. 
      * The (remote) file must exist.
      */
-    public VFile getFile(VRL fileVRL) throws VlException;
+    public VFile getFile(VRL fileVRL) throws VrsException;
     
     /**
      * Open filesystem path and return new VDir object. 
      * The (remote) directory must exist.
      */
-    public VDir getDir(VRL dirVRL) throws VlException;
+    public VDir getDir(VRL dirVRL) throws VrsException;
   
     /**
      * Generic VFile (object) constructor: Create new VFile object linked to this resource system. 
@@ -80,19 +80,19 @@ public interface VFileSystem extends VResourceSystem, VStreamProducer
      * Use VFile.exists() to check whether it exists or VFile.create() to create the actual
      * file on the (remote) resource. 
      */
-    public VFile newFile(VRL fileVRL) throws VlException;
+    public VFile newFile(VRL fileVRL) throws VrsException;
 
     /**
      * Generic VDir constructor: Create new VDir object linked to this (remote) filesystem. 
      * This object may exist or may not exist on the remote resource,<br>
      * Use openDir() to get an existing directory.  
      */
-    public VDir newDir(VRL dirVRL) throws VlException;
+    public VDir newDir(VRL dirVRL) throws VrsException;
     
     // Explicit declaration from VInputStreamProducer
-    public InputStream createInputStream(VRL location) throws VlException; 
+    public InputStream createInputStream(VRL location) throws VrsException; 
 
     // Explicit declaration from VOutputStreamProducer
-    public OutputStream createOutputStream(VRL location) throws VlException; 
+    public OutputStream createOutputStream(VRL location) throws VrsException; 
 
 }

@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
  * Interface for delete methods. 
@@ -34,9 +34,9 @@ public interface VDeletable
      * if the current permissions won't allow the delete but with
      * the right permission could be deleted. 
      */
-    public boolean isDeletable() throws VlException;
+    public boolean isDeletable() throws VrsException;
 
     /** Delete specified resource.*/ 
-    public boolean delete() throws VlException; 
+    public boolean delete() throws VrsException; 
     
 }

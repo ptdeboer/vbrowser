@@ -39,19 +39,19 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.exception.VlConfigurationError;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
-import nl.nlesc.vlet.exception.VlInitializationException;
+import nl.nlesc.vlet.exception.ConfigurationError;
+import nl.nlesc.vlet.exception.InitializationException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.grid.voms.VO;
 import nl.nlesc.vlet.grid.voms.VOServer;
 import nl.nlesc.vlet.net.ssl.CertificateStore;
 import nl.nlesc.vlet.net.ssl.SSLContextManager;
 import nl.nlesc.vlet.net.ssl.SslUtil;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 
@@ -144,7 +144,7 @@ public class GridProxy
      * @deprecated static proxy creation deprecated. Please specify VRSContext. 
      * See: {@link #loadFrom(VRSContext, String)} 
      */   
-    public static GridProxy loadFrom(String proxyFile) throws VlException
+    public static GridProxy loadFrom(String proxyFile) throws VrsException
     {
         GridProxy proxy=new GridProxy(VRSContext.getDefault());
         
@@ -165,9 +165,9 @@ public class GridProxy
 
     /**
      * Load proxy file using VRSContext and specified filename 
-     * @throws VlException 
+     * @throws VrsException 
      */ 
-    public static GridProxy loadFrom(VRSContext context,String proxyFile) throws VlException
+    public static GridProxy loadFrom(VRSContext context,String proxyFile) throws VrsException
     {
         GridProxy proxy=new GridProxy(context);
 
@@ -242,7 +242,7 @@ public class GridProxy
             // try to read default and update proxy values, if previous proxy exists. 
             loadProxy(); 
         }
-        catch (VlException e)
+        catch (VrsException e)
         {
             logger.logException(ClassLogger.INFO,e,"Couldn't load default Proxy (will use invalid proxy for now)\n"); 
         }
@@ -398,12 +398,12 @@ public class GridProxy
         this.credentialProvider=credential.getProvider();
     }
  
-    public boolean createFromString(String credentialType, String proxyStr) throws VlException
+    public boolean createFromString(String credentialType, String proxyStr) throws VrsException
     {
         VGridCredentialProvider prov = findProvider(credentialType);
         
         if (prov==null)
-            throw new VlException("Can get provider for:"+credentialType); 
+            throw new VrsException("Can get provider for:"+credentialType); 
      
         try
         {
@@ -417,11 +417,11 @@ public class GridProxy
         }
         catch (Exception e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
     }
 
-    public void setGlobusCredential(String globusProxyString) throws VlException
+    public void setGlobusCredential(String globusProxyString) throws VrsException
     {
         this.createFromString(GLOBUS_CREDENTIAL_TYPE,globusProxyString); 
     }
@@ -599,15 +599,15 @@ public class GridProxy
      * 
      * @param passwdstr
      * @return
-     * @throws VlException
+     * @throws VrsException
      */
-    public synchronized boolean createWithPassword(final String passwdstr) throws VlException
+    public synchronized boolean createWithPassword(final String passwdstr) throws VrsException
     {
         VGridCredentialProvider provider;
         
         // Used for testing purposes only: 
         if ((provider=this._getProvider())==null)
-            throw new VlInitializationException("No Credential Provider Registered"); 
+            throw new InitializationException("No Credential Provider Registered"); 
 
         //String vo=provider.getDefaultVOName(); 
     	//checkImportVomsServerCertificates(vo); 
@@ -624,7 +624,7 @@ public class GridProxy
         }
         catch (Exception e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
     }
 
@@ -721,22 +721,22 @@ public class GridProxy
      * Uses the VRSContext which whas supplied to 
      * the constructor to fetch user settings. 
      * @param reload: optimization parameter: check for new certificates, etc. 
-     * @throws VlException
+     * @throws VrsException
      */
-    protected synchronized void loadProxy() throws VlException
+    protected synchronized void loadProxy() throws VrsException
     {
         // load default specifed by provider: 
         VGridCredentialProvider prov = _getProvider(); 
             
         if (prov==null)
-            throw new VlInitializationException("No Credential Provider has been registered"); 
+            throw new InitializationException("No Credential Provider has been registered"); 
        
         String path=prov.getDefaultProxyFilename();
         
         loadProxy(path); 
     }
     
-    protected synchronized boolean loadProxy(String proxypath) throws VlException
+    protected synchronized boolean loadProxy(String proxypath) throws VrsException
     {
         if (VletConfig.isApplet() == true)
         {
@@ -748,7 +748,7 @@ public class GridProxy
         // throw exception: 
         this.credentialProvider=this._getProvider(); 
         if (credentialProvider==null)
-            throw new VlInitializationException("No Credential Provider has been registered"); 
+            throw new InitializationException("No Credential Provider has been registered"); 
         
         try
         {
@@ -761,7 +761,7 @@ public class GridProxy
         }
         catch (Exception e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
         
     }
@@ -795,7 +795,7 @@ public class GridProxy
      * Save current proxy. Note that when running as web applet the save might
      * fail !
      */
-    public boolean saveProxy() throws VlException
+    public boolean saveProxy() throws VrsException
     {
         if (VletConfig.isApplet())
             return false;
@@ -810,17 +810,17 @@ public class GridProxy
         }
         catch (Exception e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
     }
 
     /**
      * Save proxy to local path. 
      */
-    public boolean saveProxyTo(String path) throws VlException
+    public boolean saveProxyTo(String path) throws VrsException
     {
         if (this.credential==null)
-            throw new nl.nlesc.vlet.exception.VlInitializationException("Can not save NULL Credential!");
+            throw new nl.nlesc.vlet.exception.InitializationException("Can not save NULL Credential!");
         
         try
         {
@@ -828,7 +828,7 @@ public class GridProxy
         }
         catch (Exception e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
  
     }
@@ -862,14 +862,14 @@ public class GridProxy
     }
     
     /** Use GlobusCredential as current credential. The GlobusCredential Provider must be registered */ 
-    public boolean setGlobusCredential(Object globusCredential) throws VlException
+    public boolean setGlobusCredential(Object globusCredential) throws VrsException
     {  
         try
         {
             VGridCredentialProvider prov = findProvider(GLOBUS_CREDENTIAL_TYPE);
             
             if (prov==null)
-                throw new VlConfigurationError("No provider registed for Credential type:"+GLOBUS_CREDENTIAL_TYPE);
+                throw new ConfigurationError("No provider registed for Credential type:"+GLOBUS_CREDENTIAL_TYPE);
             
             this.credentialProvider=prov;
             
@@ -880,7 +880,7 @@ public class GridProxy
         }
         catch (Exception e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
     }
     
@@ -1135,9 +1135,9 @@ public class GridProxy
      * Load proxy and return it as String: uses ResourceLoader.DEFAULT_CHARSET
      * (must match setGlobusCredential(String))
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public String getProxyAsString() throws VlException
+    public String getProxyAsString() throws VrsException
     {
         try
         {
@@ -1148,7 +1148,7 @@ public class GridProxy
         }
         catch (Exception e)
         {
-            throw VlException.newChainedException(e);
+            throw VrsException.newChainedException(e);
         }
     }
     
@@ -1247,8 +1247,8 @@ public class GridProxy
     }
     
     /** Return default VO object for current credential provider 
-     * @throws VlException */
-    public VO getDefaultVO() throws VlException
+     * @throws VrsException */
+    public VO getDefaultVO() throws VrsException
     {
     	return findVO(this.getDefaultVOName()); 
     }
@@ -1319,7 +1319,7 @@ public class GridProxy
     /**
      * Convert proxy into password protected keystore including the proxy certificate chain.
      */ 
-    public KeyStore getProxyAsKeystore(String keyAlias,String passwd) throws VlException
+    public KeyStore getProxyAsKeystore(String keyAlias,String passwd) throws VrsException
     {
         if (this.credential==null)
             return null;
@@ -1338,47 +1338,47 @@ public class GridProxy
         }
         catch (Exception e)
         {
-            throw new VlException(e.getMessage(),e); 
+            throw new VrsException(e.getMessage(),e); 
         }
 
     }
 
-	public void load(String path) throws VlException
+	public void load(String path) throws VrsException
 	{
 		// load default specifed by provider: 
         VGridCredentialProvider prov = _getProvider(); 
             
         if (prov==null)
-            throw new VlInitializationException("No Credential Provider has been registered"); 
+            throw new InitializationException("No Credential Provider has been registered"); 
        
         loadProxy(path); 
 	}
 	
 	/** Resolve VO and return VO info. Delegates to registered provider.  */ 
-	public VO findVO(String name) throws VlException
+	public VO findVO(String name) throws VrsException
 	{
 	    try
 	    {
     		VGridCredentialProvider provider;
     		// Used for testing purposes only: 
     		if ((provider=this._getProvider())==null)
-    			throw new VlInitializationException("No Credential Provider Registered"); 
+    			throw new InitializationException("No Credential Provider Registered"); 
     	
     		return provider.getVO(name); 
 	    }
 	    catch(Exception e)
 	    {
-	        throw new VlException(e.getMessage(),e); 
+	        throw new VrsException(e.getMessage(),e); 
 		}
 	}
  
-	public void checkImportVomsServerCertificates() throws VlException
+	public void checkImportVomsServerCertificates() throws VrsException
 	{
 		VGridCredentialProvider provider;
      
 		// Used for testing purposes only: 
 		if ((provider=this._getProvider())==null)
-			throw new VlInitializationException("No Credential Provider Registered"); 
+			throw new InitializationException("No Credential Provider Registered"); 
 
 		String vo=provider.getDefaultVOName(); 
 		checkImportVomsServerCertificates(vo); 
@@ -1388,15 +1388,15 @@ public class GridProxy
 	 * Helper method which contact all VOMS servers for current VO and import
 	 * VOMS server certificate. 	
 	 */
-	public void checkImportVomsServerCertificates(String voName) throws VlException
+	public void checkImportVomsServerCertificates(String voName) throws VrsException
 	{
 		VO vo=findVO(voName);
 		if (vo==null)
-			throw new VlException("Couldn't find any VO information for:"+voName); 
+			throw new VrsException("Couldn't find any VO information for:"+voName); 
 		
 		VOServer[] servers = vo.getServers(); 
 		if (servers==null) 
-			throw new VlException("No VOMS server configuration found for:"+voName); 
+			throw new VrsException("No VOMS server configuration found for:"+voName); 
 		
 		// check servers 
 		for (VOServer serv:servers)
@@ -1417,7 +1417,7 @@ public class GridProxy
 			}
 			catch (Exception e) 
 			{
-				throw new VlIOException(e); 
+				throw new NestedIOException(e); 
 			}
     	}
 		

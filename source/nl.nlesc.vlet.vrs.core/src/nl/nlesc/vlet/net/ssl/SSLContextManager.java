@@ -42,7 +42,7 @@ import javax.net.ssl.X509TrustManager;
 
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
 
 /** 
@@ -182,7 +182,7 @@ public class SSLContextManager
         }
     }
     
-    protected void initCertificateStore() throws VlException
+    protected void initCertificateStore() throws VrsException
     {
         logger.debugPrintf("--- initCertificateStore() ---\n");
 
@@ -388,7 +388,7 @@ public class SSLContextManager
         return Boolean.parseBoolean(value);
     }
 
-    public GridProxy loadProxy() throws VlException
+    public GridProxy loadProxy() throws VrsException
     {
         return GridProxy.loadFrom(this.getProxyFilename());  
     }

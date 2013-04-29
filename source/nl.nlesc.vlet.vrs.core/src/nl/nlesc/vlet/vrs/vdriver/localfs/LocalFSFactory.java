@@ -20,15 +20,15 @@
 
 package nl.nlesc.vlet.vrs.vdriver.localfs;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_GID;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PATH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SCHEME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SYMBOLICLINKTARGET;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_UID;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_GID;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SYMBOLICLINKTARGET;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_UID;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -110,7 +110,7 @@ public class LocalFSFactory extends VFSFactory
         return "LocalFS";
     }
 
-    public ServerInfo updateServerInfo(VRSContext context,ServerInfo info, VRL loc) throws VlException
+    public ServerInfo updateServerInfo(VRSContext context,ServerInfo info, VRL loc) throws VrsException
 	{
     	// defaults: 
     	info=super.updateServerInfo(context, info, loc); 

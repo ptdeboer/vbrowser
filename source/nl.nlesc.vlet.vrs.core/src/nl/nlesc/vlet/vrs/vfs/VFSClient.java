@@ -21,11 +21,11 @@
 package nl.nlesc.vlet.vrs.vfs;
 
 import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -101,13 +101,13 @@ public final class VFSClient extends VRSClient
     }
     
     /** Returns VFSNode pointing to the specified location */ 
-    public  VFSNode openLocation(String location) throws VlException
+    public  VFSNode openLocation(String location) throws VrsException
     {
         return openLocation(resolve(location));
     }
     
     /** Returns VFSNode pointing to the specified location */ 
-    public  VFSNode openLocation(VRL location) throws VlException
+    public  VFSNode openLocation(VRL location) throws VrsException
     {
         if (location.isAbsolute()==false)
             location=resolve(location); 
@@ -115,7 +115,7 @@ public final class VFSClient extends VRSClient
         VNode node=getVRSContext().openLocation(location); 
         
         if (node==null)
-            throw new nl.nlesc.vlet.exception.VlInternalError("Couldn open location. Get NULL object for location:"+location); 
+            throw new nl.nlesc.vlet.exception.InternalError("Couldn open location. Get NULL object for location:"+location); 
          
         if (node instanceof VFSNode) 
             return ((VFSNode)node);
@@ -124,7 +124,7 @@ public final class VFSClient extends VRSClient
     }
     
     /** @see #getFile(VRL) */ 
-    public  VFile getFile(String locStr) throws VlException
+    public  VFile getFile(String locStr) throws VrsException
     {
         return getFile(resolve(locStr)); 
     }
@@ -166,13 +166,13 @@ public final class VFSClient extends VRSClient
     }
 
     /** Returns remote File or Directory specified by the location*/ 
-    public VFSNode getVFSNode(String vrl) throws VlException
+    public VFSNode getVFSNode(String vrl) throws VrsException
     {
         return getVFSNode(resolve(vrl)); 
     }
     
     /** Returns remote File or Directory specified by the location */ 
-    public  VFSNode getVFSNode(VRL location) throws VlException
+    public  VFSNode getVFSNode(VRL location) throws VrsException
     {
         VFSNode node=openLocation(location); 
                 
@@ -187,7 +187,7 @@ public final class VFSClient extends VRSClient
      * and exception is thrown. 
      * Use newFiler() to create an VDir object. 
      */ 
-    public  VFile getFile(VRL location) throws VlException
+    public  VFile getFile(VRL location) throws VrsException
     {
         VFSNode node=openLocation(location); 
 
@@ -213,7 +213,7 @@ public final class VFSClient extends VRSClient
      * Resolve (optional relative) location to current workind directory and return VDir. 
      * The resolved directory location must exist. 
      */  
-    public  VDir getDir(String locStr) throws VlException
+    public  VDir getDir(String locStr) throws VrsException
     {
         return getDir(resolve(locStr)); 
     }
@@ -223,7 +223,7 @@ public final class VFSClient extends VRSClient
      * and exception is thrown. 
      * Use newDir() to create an VDir object. 
      */ 
-    public VDir getDir(VRL location) throws VlException
+    public VDir getDir(VRL location) throws VrsException
     {
         VFSNode node=openLocation(location); 
         
@@ -239,15 +239,15 @@ public final class VFSClient extends VRSClient
      * <p> 
      * Calls VFile.moveTo()
      * @return new VFile node if move succeeded.    
-     * @throws VlException
+     * @throws VrsException
      */
-    public  VFile move(VFile sourceFile, VDir destDir) throws VlException
+    public  VFile move(VFile sourceFile, VDir destDir) throws VrsException
     {
         return (VFile)getTransferManager().doCopyMove(sourceFile,destDir,null,true); 
     }
     
     /** Move VFile to target file. */ 
-    public VFile move(VFile sourceFile,VFile targetFile) throws VlException 
+    public VFile move(VFile sourceFile,VFile targetFile) throws VrsException 
     {
         return (VFile)getTransferManager().doCopyMove(sourceFile,targetFile,true);  
     }
@@ -258,15 +258,15 @@ public final class VFSClient extends VRSClient
      * <p> 
      * Calls VFile.copyTo()
      * @return new VFile node if move succeeded.    
-     * @throws VlException
+     * @throws VrsException
      */
     
-    public VFile copy(VFile vfile, VDir parentDir) throws VlException
+    public VFile copy(VFile vfile, VDir parentDir) throws VrsException
     {
         return (VFile)getTransferManager().doCopyMove(vfile,parentDir,null,false); 
     }
     
-    public VFile copy(VFile file, VFile targetFile) throws VlException
+    public VFile copy(VFile file, VFile targetFile) throws VrsException
     {
         return (VFile)getTransferManager().doCopyMove(file,targetFile,false); 
     }
@@ -276,7 +276,7 @@ public final class VFSClient extends VRSClient
      * New Directory will be created as child of parentDir. 
      * The default implementation will always overwrite existing file(s) 
      */ 
-    public  VDir copy(VDir dir, VDir parentDir) throws VlException
+    public  VDir copy(VDir dir, VDir parentDir) throws VrsException
     {
         return (VDir)getTransferManager().doCopyMove(dir,parentDir,null,false); 
     }
@@ -289,9 +289,9 @@ public final class VFSClient extends VRSClient
      * @param dir  the source directory 
      * @param dest the destination directory which is the parent of the new directory. 
      * @return new directory which is created after the move and is a subdirectory of destDir 
-     * @throws VlException
+     * @throws VrsException
      */
-    public  VDir move(VDir sourceDir, VDir destDir) throws VlException
+    public  VDir move(VDir sourceDir, VDir destDir) throws VrsException
     {
         return (VDir)getTransferManager().doCopyMove(sourceDir,destDir,null,true); 
     }
@@ -304,9 +304,9 @@ public final class VFSClient extends VRSClient
      * @param VRL original file or directory
      * @param pathOrName is new name or complete path 
      * @return true if rename was successful  
-     * @throws VlException
+     * @throws VrsException
      */
-    public  boolean rename(VRL vrl,String pathOrName) throws VlException
+    public  boolean rename(VRL vrl,String pathOrName) throws VrsException
     {
         boolean nameIsPath=false; 
         
@@ -321,9 +321,9 @@ public final class VFSClient extends VRSClient
     /** 
      * Returns true if location is a directory and it exists. 
      * Returns false if location doesn't exists or isn't a directory. 
-     * @throws VlException 
+     * @throws VrsException 
      */ 
-     public boolean existsDir(VRL location) throws VlException
+     public boolean existsDir(VRL location) throws VrsException
      {
          return openFileSystem(location).newDir(location).exists();   
      }
@@ -331,9 +331,9 @@ public final class VFSClient extends VRSClient
      /** 
       * Returns true if location is a directory and it exists. 
       * Returns false if location doesn't exists or an exception occurred.  
-      * @throws VlException 
+      * @throws VrsException 
       */ 
-     public boolean existsDir(String location) throws VlException
+     public boolean existsDir(String location) throws VrsException
      {
          return existsDir(resolve(location)); 
      }
@@ -341,9 +341,9 @@ public final class VFSClient extends VRSClient
     /** 
      * Returns true if location is a File and it exists. 
      * Returns false if location doesn't exists   
-     * @throws VlException 
+     * @throws VrsException 
      */ 
-     public boolean existsFile(VRL location) throws VlException
+     public boolean existsFile(VRL location) throws VrsException
      {
         return newFile(location).exists(); 
      }
@@ -356,15 +356,15 @@ public final class VFSClient extends VRSClient
      * nl.uva.vlet.exception.ResourceNotFoundException because 
      * this method will catch that exception. 
      *  
-     * @throws VlException 
+     * @throws VrsException 
      */ 
-     public boolean existsFile(String location) throws VlException
+     public boolean existsFile(String location) throws VrsException
      {
         return existsFile(resolve(location)); 
      }
      
      /** Returns true if path is either a file or an directory */ 
-     public boolean existsPath(VRL location) throws VlException
+     public boolean existsPath(VRL location) throws VrsException
      {
     	 VFileSystem vfs = openFileSystem(location); 
     	 if (vfs.newFile(location).exists())
@@ -384,7 +384,7 @@ public final class VFSClient extends VRSClient
      * Tries to create the directory. Parent directory must exist. 
      * For full path creation call: mkdirRecursive().
      */ 
-    public VDir mkdir(VRL loc) throws VlException
+    public VDir mkdir(VRL loc) throws VrsException
     {
         return mkdir(loc,true); 
     }
@@ -393,7 +393,7 @@ public final class VFSClient extends VRSClient
      * Tries to create the directory. Parent directory must exist. 
      * For full path creation call: mkdirs().
      */ 
-    public VDir mkdir(String loc) throws VlException
+    public VDir mkdir(String loc) throws VrsException
     {
         return mkdir(resolve(loc),true); 
     }
@@ -405,7 +405,7 @@ public final class VFSClient extends VRSClient
      *  
      * @see #mkdirs(VRL, boolean);  
      */ 
-    public VDir mkdir(VRL loc,boolean ignoreExisting) throws VlException
+    public VDir mkdir(VRL loc,boolean ignoreExisting) throws VrsException
     {
     	VDir dir=openFileSystem(loc).newDir(loc);
     	dir.create(ignoreExisting); 
@@ -416,7 +416,7 @@ public final class VFSClient extends VRSClient
      * Recursive mkdir. Creates full directory path.  
      * @see mkdirs(VRL,boolean) 
      */ 
-    public VDir mkdirs(VRL loc) throws VlException
+    public VDir mkdirs(VRL loc) throws VrsException
     {
 	   return mkdirs(loc,true); 
     }
@@ -429,7 +429,7 @@ public final class VFSClient extends VRSClient
      * @param ignoreExisting if ignoreExisting==false, only create new directory when 
      *        it doesn't exist yet. Throw ResourceException when it does exist. 
      */ 
-    public VDir mkdirs(VRL loc,boolean ignoreExisting) throws VlException
+    public VDir mkdirs(VRL loc,boolean ignoreExisting) throws VrsException
     {
         // check parent:
         VRL parentLoc=loc.getParent();
@@ -475,7 +475,7 @@ public final class VFSClient extends VRSClient
 
    
     /** Get local temp directory. On Unix this is "/tmp" */
-    public VDir getTempDir() throws VlException 
+    public VDir getTempDir() throws VrsException 
     {
         return getDir(tempDirLocation); 
     }
@@ -486,7 +486,7 @@ public final class VFSClient extends VRSClient
      * is in practise unique
      * @see VFSClient#createFile(VRL, boolean)
      */ 
-    public VDir createUniqueTempDir() throws VlException 
+    public VDir createUniqueTempDir() throws VrsException 
     {
         return createUniqueTempDir("vfs-",""); 
     }
@@ -495,7 +495,7 @@ public final class VFSClient extends VRSClient
      * Create unique temporal directory with specified pre- 
      * and post- fixed strings 
      */  
-    public VDir createUniqueTempDir(String prefix,String postfix) throws VlException 
+    public VDir createUniqueTempDir(String prefix,String postfix) throws VrsException 
     {
         return getTempDir().createUniqueDir(prefix,postfix);
     }
@@ -515,7 +515,7 @@ public final class VFSClient extends VRSClient
      *  If ignoreExisting is false, already existing file won't be created. 
      *  In that case an Exception is thrown. 
      */ 
-    public VFile createFile(VRL filepath, boolean ignoreExisting) throws VlException
+    public VFile createFile(VRL filepath, boolean ignoreExisting) throws VrsException
     {
     	VFile file=openFileSystem(filepath).newFile(filepath); 
     	file.create(ignoreExisting);
@@ -525,7 +525,7 @@ public final class VFSClient extends VRSClient
     /**
      * Create full directory path (parent directory may exist or not) 
      */ 
-    public VDir createDir(VRL dirpath, boolean ignoreExisting) throws VlException
+    public VDir createDir(VRL dirpath, boolean ignoreExisting) throws VrsException
     {
     	VDir dir=openFileSystem(dirpath).newDir(dirpath); 
     	dir.create(ignoreExisting); 
@@ -581,7 +581,7 @@ public final class VFSClient extends VRSClient
          getVRSContext().setWorkingDir(vrl);     
      }
      
-     public VFSNode[] list(VRL path) throws VlException
+     public VFSNode[] list(VRL path) throws VrsException
      {
         return getDir(path).list();     
      }
@@ -590,18 +590,18 @@ public final class VFSClient extends VRSClient
       * Create new VFile object. 
       * The location doesn't have to exist, only the actual VFile object is created.  
       */
-     public VFile newFile(VRL location) throws VlException
+     public VFile newFile(VRL location) throws VrsException
      {
         VFileSystem fs=openFileSystem(location);
         VFile file=fs.newFile(location);
         
         if (file==null)
-            throw new nl.nlesc.vlet.exception.VlInternalError("FileSystem method newFile() returned NULL for:"+location);
+            throw new nl.nlesc.vlet.exception.InternalError("FileSystem method newFile() returned NULL for:"+location);
         
         return file; 
      }
      
-     public VFile newFile(String path) throws VRLSyntaxException, VlException
+     public VFile newFile(String path) throws VRLSyntaxException, VrsException
      {
          return newFile(resolve(path)); 
      }
@@ -610,24 +610,24 @@ public final class VFSClient extends VRSClient
       * Create new VDir object. 
       * The location doesn't have to exist, only the actual VDir object is created.  
       */
-     public VDir newDir(VRL location) throws VlException
+     public VDir newDir(VRL location) throws VrsException
      {
          VFileSystem fs=openFileSystem(location);
          VDir dir=fs.newDir(location);
          
          if (dir==null)
-             throw new nl.nlesc.vlet.exception.VlInternalError("FileSystem method newDir() returned NULL for:"+location); 
+             throw new nl.nlesc.vlet.exception.InternalError("FileSystem method newDir() returned NULL for:"+location); 
          
          return dir; 
      }
 
-     public VDir newDir(String path) throws VRLSyntaxException, VlException
+     public VDir newDir(String path) throws VRLSyntaxException, VrsException
      {
          return newDir(resolve(path)); 
      }
      
      /** Returns new FileSystem or throws Exception */ 
-     public VFileSystem openFileSystem(VRL location) throws VlException
+     public VFileSystem openFileSystem(VRL location) throws VrsException
      {
          return getVRSContext().openFileSystem(location);  
      }
@@ -636,7 +636,7 @@ public final class VFSClient extends VRSClient
      * Returns user home location. When running in service or applet mode, this might not always
      * be a user writeable location. 
      */
-    public VDir getUserHome() throws VlException
+    public VDir getUserHome() throws VrsException
     {
         return getDir(getUserHomeLocation()); 
     }

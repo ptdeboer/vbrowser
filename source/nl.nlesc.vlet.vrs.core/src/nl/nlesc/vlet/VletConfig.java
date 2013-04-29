@@ -40,10 +40,10 @@ import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceReadAccessDeniedException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -897,7 +897,7 @@ public class VletConfig
             {
                 vletrcProperties = VletConfig.loadPropertiesFromClasspath("vletrc.prop");
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 logger.warnPrintf("Couldn't load vletrc.prop from classpath.\n");
                 logger.debugPrintf("Exception when load vletrc.prop from classpath:%s\n",e); 
@@ -913,7 +913,7 @@ public class VletConfig
             {
                 vletrcProperties=VletConfig.staticLoadProperties(vletrcLoc); 
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 logger.warnPrintf("Warning. Couldn't load vletrc.prop file from installation directory:%s\n",vletrcLoc);
                 logger.debugPrintf("Exception when load vletrc.prop from installation location:%s\n",e);
@@ -1355,7 +1355,7 @@ public class VletConfig
     }
 
     /** Load properties from this URL */
-    public static Properties loadPropertiesFromURL(URL url) throws VlException
+    public static Properties loadPropertiesFromURL(URL url) throws VrsException
     {
         Properties props = new Properties();
     
@@ -1372,7 +1372,7 @@ public class VletConfig
         }
         catch (IOException e)
         {
-            throw new VlIOException(e.getMessage(), e);
+            throw new NestedIOException(e.getMessage(), e);
         }
         // in the case of applet startup: Not all files are
         // Accessible, wrap exception for graceful exception handling.
@@ -1387,7 +1387,7 @@ public class VletConfig
     /**
      * Load a property file specified on the classpath or URL.
      */
-    public static Properties loadPropertiesFromClasspath(String urlstr) throws VlException
+    public static Properties loadPropertiesFromClasspath(String urlstr) throws VrsException
     {
         // check default classpath:
         URL url = VletConfig.class.getClassLoader().getResource(urlstr);
@@ -1403,7 +1403,7 @@ public class VletConfig
     }
 
     /** Load properties using URL stream readers */
-    public static Properties staticLoadProperties(VRL vrl) throws VlException
+    public static Properties staticLoadProperties(VRL vrl) throws VrsException
     {
         try
         {
@@ -1413,16 +1413,16 @@ public class VletConfig
             props.load(inps);
             return props;
         }
-        catch (Exception e)
+        catch (IOException e)
         {
-            throw VlException.create("Properties Exception", "Couldn't load properties from:" + vrl, e);
+            throw new NestedIOException("Couldn't load properties from:"+vrl,e); 
         }
     }
 
     /**
      * Save properties using URL stream readers. Only works for file:/// URL!
      */
-    public static void staticSaveProperties(VRL vrl, String optComments, Properties props) throws VlException
+    public static void staticSaveProperties(VRL vrl, String optComments, Properties props) throws VrsException
     {
         if (optComments == null)
             optComments = "";
@@ -1440,9 +1440,9 @@ public class VletConfig
                 ;
             }
         }
-        catch (Exception e)
+        catch (IOException e)
         {
-            throw VlException.create("Properties Exception", "Couldn't load properties from:" + vrl, e);
+            throw new NestedIOException("Couldn't save properties to:" + vrl, e);
         }
     }
     

@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
  * VDuplicatable is the Cloneable interface for VRS Resource Objects (VNodes). 
@@ -36,7 +36,7 @@ public interface VDuplicatable<T extends VNode>
 	 * For logicalresource nodes: Do not duplicate the logical resources. 
 	 * For LinkNode, do not update/share the same storage location 
 	 */ 
-    public T duplicate() throws VlException;
+    public T duplicate() throws VrsException;
 	
 	///** Whether a shallow copy is supported */ 
 	//public boolean isShallowDuplicateSupported();

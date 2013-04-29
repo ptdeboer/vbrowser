@@ -45,7 +45,7 @@ public interface VGridCredentialProvider
     public VGridCredential createCredential(String passwdstr)  throws Exception;
     
     /** Convert or create Credential from the source Credential 
-     * @throws VlException */ 
+     * @throws VrsException */ 
     public VGridCredential convertCredential(VGridCredential sourceCred,String type) throws Exception;
     
     /** Convert credential string, for example proxy string, to a credential */ 

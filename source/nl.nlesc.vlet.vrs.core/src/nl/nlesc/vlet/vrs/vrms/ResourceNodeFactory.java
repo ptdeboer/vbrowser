@@ -21,13 +21,13 @@
 package nl.nlesc.vlet.vrs.vrms;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.data.xml.XMLData;
-import nl.nlesc.vlet.data.xml.XMLtoNodeFactory;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
+import nl.nlesc.vlet.vrs.data.xml.XMLData;
+import nl.nlesc.vlet.vrs.data.xml.XMLtoNodeFactory;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
@@ -49,7 +49,7 @@ public class ResourceNodeFactory extends XMLtoNodeFactory
 	}
 
 	@Override
-	public VNode createNode(VNode parent,String type, VAttributeSet attrSet) throws VlException
+	public VNode createNode(VNode parent,String type, VAttributeSet attrSet) throws VrsException
 	{
 		if (type==null)
 			throw new NullPointerException("Type can not be null"); 

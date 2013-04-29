@@ -20,16 +20,16 @@
 
 package nl.nlesc.vlet.vrs.vdriver.http;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_CHARSET;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ICON;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ISVLINK;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_LOCATION;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_MIMETYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_NAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PATH;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_PORT;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_CHARSET;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ICON;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ISVLINK;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_LOCATION;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_MIMETYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_NAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,9 +37,9 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -102,7 +102,7 @@ public class HTTPNode extends VNode implements VStreamAccessable
 
     private HTTPRS httprs;
 
-    private void init(VRL loc) throws VlException 
+    private void init(VRL loc) throws VrsException 
     {
         //Debug("new URL="+loc);
 
@@ -112,7 +112,7 @@ public class HTTPNode extends VNode implements VStreamAccessable
         }
         catch (MalformedURLException e)
         {
-            throw new VRLSyntaxException("invalide URL:"+loc,e);
+            throw new VRLSyntaxException("invalid URL:"+loc,e);
         }
 
         boolean isHTTPS=false; 
@@ -123,7 +123,7 @@ public class HTTPNode extends VNode implements VStreamAccessable
         this.connection=new HTTPConnection(this,isHTTPS);
     }
     
-    public HTTPNode(HTTPRS httprs,VRL loc) throws VlException
+    public HTTPNode(HTTPRS httprs,VRL loc) throws VrsException
     {
         super(httprs.getVRSContext(),loc);
         this.httprs=httprs; 
@@ -133,11 +133,11 @@ public class HTTPNode extends VNode implements VStreamAccessable
     /**
      * Get mimetype as reported by remote Server. 
      * returns url.openConnection().getContentEncoding();
-     * @throws VlIOException 
+     * @throws NestedIOException 
      * 
      */
     @Override
-    public String getCharSet() throws VlException
+    public String getCharSet() throws VrsException
     {
         String str;
         try
@@ -146,7 +146,7 @@ public class HTTPNode extends VNode implements VStreamAccessable
         }
         catch (IOException e)
         {
-            throw new VlIOException(e);
+            throw new NestedIOException(e);
         }
 
         if (str==null)
@@ -198,7 +198,7 @@ public class HTTPNode extends VNode implements VStreamAccessable
      * 
      */
     @Override
-    public String getMimeType() throws VlException
+    public String getMimeType() throws VrsException
     {
         if (mimeType!=null) 
             return mimeType;
@@ -209,7 +209,7 @@ public class HTTPNode extends VNode implements VStreamAccessable
         }
         catch (IOException e)
         {
-            throw new VlIOException(e);
+            throw new NestedIOException(e);
         }
 
         if (str==null) 

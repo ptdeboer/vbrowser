@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vrms;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -35,5 +35,5 @@ public interface VResourceLink
 	/** 
 	 * The Target VRL this Resource Describes or links to.  
 	 */ 
-	public VRL getTargetLocation() throws VlException;
+	public VRL getTargetLocation() throws VrsException;
 }

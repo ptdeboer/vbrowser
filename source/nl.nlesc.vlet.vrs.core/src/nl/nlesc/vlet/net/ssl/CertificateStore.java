@@ -46,10 +46,10 @@ import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlInternalError;
-import nl.nlesc.vlet.exception.VlPasswordException;
+import nl.nlesc.vlet.exception.InternalError;
+import nl.nlesc.vlet.exception.KeyStorePasswordException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -139,7 +139,7 @@ public class CertificateStore
     * Get default keystore: $HOME/.vletrc/cacerts. 
     * Creates a default keystore file if it doesn't exists
     */ 
-   public static synchronized CertificateStore getDefault() throws VlException 
+   public static synchronized CertificateStore getDefault() throws VrsException 
    {
        if (instance==null)
        {
@@ -161,7 +161,7 @@ public class CertificateStore
    }
 
    /** Initialize empty keystore */ 
-   public static KeyStore createKeystore(String passwd) throws VlException 
+   public static KeyStore createKeystore(String passwd) throws VrsException 
    {
        if (passwd==null)
            throw new NullPointerException("Keystore cannot have NULL password.");
@@ -178,12 +178,12 @@ public class CertificateStore
        }
    }
 
-   public static VlException convertException(String message,Throwable t)
+   public static VrsException convertException(String message,Throwable t)
    {
        String sepchar=""; 
        if (message.endsWith("\n")==false)
                sepchar="\n"; 
-       return new VlInternalError(message+sepchar+t.getMessage(),t);
+       return new InternalError(message+sepchar+t.getMessage(),t);
    }
    
    // ============================= //
@@ -236,7 +236,7 @@ public class CertificateStore
         }
     }
     
-    public static CertificateStore loadCertificateStore(String keyStoreLocation,String passthing, boolean autoInitiliaze) throws VlException
+    public static CertificateStore loadCertificateStore(String keyStoreLocation,String passthing, boolean autoInitiliaze) throws VrsException
     {
         CertificateStore certStore=new CertificateStore();
         certStore.loadKeystore(keyStoreLocation,passthing,autoInitiliaze);
@@ -248,7 +248,7 @@ public class CertificateStore
      * Create non persistant interal CertificateStore. Does not load automatically 
      * configured certificates not stores the data in a file. 
      */
-    public static CertificateStore createInternal(String passwd) throws VlException 
+    public static CertificateStore createInternal(String passwd) throws VrsException 
     {
         if (passwd==null)
             throw new NullPointerException("Keystore cannot have NULL password.");
@@ -345,12 +345,12 @@ public class CertificateStore
 	}
 	
 	/** Load or reload keystore */ 
-	public boolean loadKeystore() throws VlException
+	public boolean loadKeystore() throws VrsException
 	{
 	    return this.loadKeystore(this.getKeyStoreLocation(),this.getPassphrase(),true);  
 	}
    
-    protected boolean loadKeystore(String passphrasestr) throws VlException
+    protected boolean loadKeystore(String passphrasestr) throws VrsException
     {
         return this.loadKeystore(this.getKeyStoreLocation(),passphrasestr,true); 
     }
@@ -361,7 +361,7 @@ public class CertificateStore
         return this.keystorePassword; 
     }
     
-    public boolean loadKeystore(String keyStoreLoc,String passphrasestr, boolean autoInitialize) throws VlException
+    public boolean loadKeystore(String keyStoreLoc,String passphrasestr, boolean autoInitialize) throws VrsException
     {
         if (passphrasestr==null)
             throw new NullPointerException("Password can not be null."); 
@@ -447,7 +447,7 @@ public class CertificateStore
                     
                     if (isPasswordException(e1))
                     {
-                        throw new VlPasswordException("Invalid password for keystore. Please update password or remove keystore file:"+usercacertsPath,e1);
+                        throw new KeyStorePasswordException("Invalid password for keystore. Please update password or remove keystore file:"+usercacertsPath,e1);
                     }
                 }
     		}
@@ -563,7 +563,7 @@ public class CertificateStore
      * When certificates have changed, the trust manager must be recreated.
      * Set reload==true to trigger re-initialization. 
      */ 
-	public X509TrustManager getTrustManager(boolean reinit) throws VlException
+	public X509TrustManager getTrustManager(boolean reinit) throws VrsException
 	{
 	    try
 	    {
@@ -590,7 +590,7 @@ public class CertificateStore
 	/**
 	 *  Convenience method to create a custom SSLContext using this certificate store.
 	 */
-	public SSLContext createSSLContext(String sslProtocol) throws VlException
+	public SSLContext createSSLContext(String sslProtocol) throws VrsException
 	{
 	    
 	    String userKeyAlias=getFirstKeyAlias();
@@ -624,7 +624,7 @@ public class CertificateStore
 		return createSSLContext(myKeymanager,sslProtocol);
 	}
 	
-	public SSLContext createSSLContext(KeyManager privateKeyManager,String sslProtocol) throws VlException
+	public SSLContext createSSLContext(KeyManager privateKeyManager,String sslProtocol) throws VrsException
     {
 	    try
 	    {
@@ -656,18 +656,18 @@ public class CertificateStore
 	    // Update HTTPS SSL factory ? 
 	}
 	
-    public void saveKeystore() throws VlException
+    public void saveKeystore() throws VrsException
     {
         saveKeystore(null,null); 
     }
     
     /** Saves keystore to HOME/.vletrc/cacerts */
-    public void saveKeystore(String passwd) throws VlException
+    public void saveKeystore(String passwd) throws VrsException
     {
         saveKeystore(null,passwd); 
     }
     
-    public void saveKeystore(String location, String passwd) throws VlException
+    public void saveKeystore(String location, String passwd) throws VrsException
     {
         if (autosave==false)
         {
@@ -717,7 +717,7 @@ public class CertificateStore
 //		installCert(hostname,port,null,null);
 //	}
  
-	public X509Certificate[] getX509Certificates() throws VlException
+	public X509Certificate[] getX509Certificates() throws VrsException
 	{
 	    return getTrustManager(false).getAcceptedIssuers(); 
 	}
@@ -864,7 +864,7 @@ public class CertificateStore
      * Return first key alias. Typically this is a private user key.
      * Returns NULL if no alias is configured!  
      */ 
-    public String getFirstKeyAlias() throws VlException
+    public String getFirstKeyAlias() throws VrsException
     {
         if (this.userPrivateKeyAlias!=null)
             return userPrivateKeyAlias; 
@@ -899,7 +899,7 @@ public class CertificateStore
         this.userPrivateKeyAlias=alias; 
     }
     
-    public Certificate[] getCertificateChain(String alias) throws VlException
+    public Certificate[] getCertificateChain(String alias) throws VrsException
     {
         synchronized(this._keyStore)
         {
@@ -914,7 +914,7 @@ public class CertificateStore
         }
     }
     
-    public PrivateKey getPrivateKey(String alias) throws VlException 
+    public PrivateKey getPrivateKey(String alias) throws VrsException 
     {
         synchronized(this._keyStore)
         {
@@ -962,12 +962,12 @@ public class CertificateStore
         }
     }
 
-    public void setUserPrivateKey(String alias,PrivateKey privKey, Certificate chain[]) throws VlException
+    public void setUserPrivateKey(String alias,PrivateKey privKey, Certificate chain[]) throws VrsException
     {
         this.addUserPrivateKey(alias, privKey, chain); 
     }
     
-    public void addUserPrivateKey(String alias,PrivateKey privKey, Certificate[] chain) throws VlException
+    public void addUserPrivateKey(String alias,PrivateKey privKey, Certificate[] chain) throws VrsException
     {
         if (alias==null) 
             alias="mykey";
@@ -987,13 +987,13 @@ public class CertificateStore
         this.saveKeystore();
     }
     
-    public void changePassword(String oldpasswd,String newpasswd) throws VlException
+    public void changePassword(String oldpasswd,String newpasswd) throws VrsException
     {
         this.loadKeystore(oldpasswd);
         this.saveKeystore(newpasswd);  
     }
 
-    public KeyManager createPrivateKeyManager(String alias) throws VlException  
+    public KeyManager createPrivateKeyManager(String alias) throws VrsException  
     {
         if (alias==null)
             alias=getFirstKeyAlias(); 
@@ -1005,14 +1005,14 @@ public class CertificateStore
         if (privateKey==null)
         {
             logger.infoPrintf("Private key not found:%s\n",alias); 
-            throw new VlInternalError("Couldn't find private key:"+alias);  
+            throw new InternalError("Couldn't find private key:"+alias);  
         }
         
         // Multiple private keys could be added here! 
         if (certificateChain==null)
         {
             logger.infoPrintf("Private key not found:%s\n",alias); 
-            throw new VlInternalError("Couldn't find Certificate Chain for private key alias:"+alias); 
+            throw new InternalError("Couldn't find Certificate Chain for private key alias:"+alias); 
         }
         
         logger.infoPrintf("Using default user private key:%s\n",alias); 

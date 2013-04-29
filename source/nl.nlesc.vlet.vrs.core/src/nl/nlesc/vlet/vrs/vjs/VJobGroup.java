@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vjs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -45,7 +45,7 @@ public abstract class VJobGroup extends VCompositeNode
 		return VJS.TYPE_VJOBGROUP;
 	}
 
-	public VNode[] getNodes() throws VlException
+	public VNode[] getNodes() throws VrsException
 	{
 		return getJobs(); 
 	}

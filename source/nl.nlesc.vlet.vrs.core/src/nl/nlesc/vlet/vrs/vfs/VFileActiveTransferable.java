@@ -22,7 +22,7 @@ package nl.nlesc.vlet.vrs.vfs;
 
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -53,7 +53,7 @@ public interface VFileActiveTransferable
      * @return true if this method has an optimized way to do the transfer.
      * @see #canTransferFrom(VRL, StringHolder)
      */
-    boolean canTransferTo(VRL remoteLocation, StringHolder explanation) throws VlException;
+    boolean canTransferTo(VRL remoteLocation, StringHolder explanation) throws VrsException;
 
     /**
      * Similar to canTransferTo but with the active and passive parties
@@ -66,7 +66,7 @@ public interface VFileActiveTransferable
      * @return true if this method has an optimized way to do the transfer.
      * @see #canTransferTo(VRL, StringHolder)
      */
-    boolean canTransferFrom(VRL remoteLocation, StringHolder explanation) throws VlException;
+    boolean canTransferFrom(VRL remoteLocation, StringHolder explanation) throws VrsException;
 
     /**
      * Perform Active Transfer. Remote location is new File location.
@@ -80,7 +80,7 @@ public interface VFileActiveTransferable
      *            remote destination file to copy to.
      * @return new created VFile
      */
-    VFile activePartyTransferTo(ITaskMonitor monitor, VRL remoteLocation) throws VlException;
+    VFile activePartyTransferTo(ITaskMonitor monitor, VRL remoteLocation) throws VrsException;
 
     /**
      * Perform Active Transfer. Remote location is source File. Implementation
@@ -101,5 +101,5 @@ public interface VFileActiveTransferable
      *         interface ! Although the implementation might choose to create a
      *         new one.
      */
-    VFile activePartyTransferFrom(ITaskMonitor monitor, VRL remoteLocation) throws VlException;
+    VFile activePartyTransferFrom(ITaskMonitor monitor, VRL remoteLocation) throws VrsException;
 }

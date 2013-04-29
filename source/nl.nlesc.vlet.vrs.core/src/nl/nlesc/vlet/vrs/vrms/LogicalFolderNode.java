@@ -23,14 +23,14 @@ package nl.nlesc.vlet.vrs.vrms;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 
@@ -81,7 +81,7 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
         this.attributes.set(VAttributeConstants.ATTR_ICONURL,iconUrl);  
     }
 	
-	public VAttribute getAttribute(String name) throws VlException
+	public VAttribute getAttribute(String name) throws VrsException
 	{
 	    VAttribute attr=this.attributes.get(name);
 	    
@@ -95,7 +95,7 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
 	}
 	
 	
-	public boolean setAttribute(VAttribute attr) throws VlException
+	public boolean setAttribute(VAttribute attr) throws VrsException
     {
 	    return setAttribute(attr,false); 
     }
@@ -104,7 +104,7 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
 	 * Set attribute if the attribute is already in the AttributeSet. 
 	 * If setIfNoteSet==true the value will always be updated. 
 	 */
-	public boolean setAttribute(VAttribute attr, boolean setIfNotSet) throws VlException
+	public boolean setAttribute(VAttribute attr, boolean setIfNotSet) throws VrsException
 	{
 	    // only set if already specified in attributes; 
 	    if ((setIfNotSet==true) || (this.attributes.containsKey(attr.getName())))
@@ -118,7 +118,7 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
     }
 	
 	// @Override
-    public boolean setAttributes(VAttribute[] attrs) throws VlException
+    public boolean setAttributes(VAttribute[] attrs) throws VrsException
     {
         boolean all=true; 
         for (VAttribute attr:attrs)
@@ -140,7 +140,7 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
         return this.isEditable;  
     }
     
-	public void setLogicalLocation(VRL newRef) throws VlException
+	public void setLogicalLocation(VRL newRef) throws VrsException
 	{
 		this.setLocation(newRef); 
 	}
@@ -156,7 +156,7 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
 	}
 	
 	 
-	public VNode findNode(VRL location,boolean recurse) throws VlException
+	public VNode findNode(VRL location,boolean recurse) throws VrsException
 	{
 	    //debug("Find subnode:"+this+" checking: "+location);
 		
@@ -199,12 +199,12 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
 		return result; 
 	}
 	 
-	public VNode[] getNodes() throws VlException 
+	public VNode[] getNodes() throws VrsException 
 	{
 	    return _getNodes();
 	}
 	
-	protected VNode[] _getNodes() throws VlException
+	protected VNode[] _getNodes() throws VrsException
 	{
 		if ((childNodes==null) || (childNodes.size()<=0))
 			return null; 
@@ -269,10 +269,10 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
 	 * Protected implementation which added the specified node from the internal vector. 
 	 * If the exact node (equals()==true) already exists nothing changes. 
 	 * If a VNode with the SAME VRL already exists, it will be removed!
-	 * @throws VlException 
+	 * @throws VrsException 
 	 * 
 	 */ 
-    protected void addSubNode(T node) throws VlException
+    protected void addSubNode(T node) throws VrsException
     {
         if (node==null)
             return; 
@@ -360,7 +360,7 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
 	
 	public boolean save() {return false;} // by default not persistant! 
 	
-	public VRL getStorageLocation() throws VlException {return null;}  
+	public VRL getStorageLocation() throws VrsException {return null;}  
 
 	// Minimum of Methods ? 
 	abstract public String getResourceType();  

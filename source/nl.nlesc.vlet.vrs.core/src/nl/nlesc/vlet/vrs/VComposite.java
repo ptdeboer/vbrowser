@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.vrs;
 
 import nl.esciencecenter.ptk.data.IntegerHolder;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
  * The Composite interface for VNodes which have 'child nodes' 
@@ -44,23 +44,23 @@ public interface VComposite
      * This method is also used by the VBrowser to check for valid 'drop' targets.
      * Types "File" and "Directory"  can be dropped on "Directory" types since these are the
      * valid ResourceTypes.
-     * @see nl.nlesc.vlet.data.VAttributeConstants#ATTR_RESOURCE_TYPES   
+     * @see nl.nlesc.vlet.vrs.data.VAttributeConstants#ATTR_RESOURCE_TYPES   
      */ 
     public String[] getResourceTypes();
     
     /** 
      * Returns number of child nodes.  
-     * @throws VlException */ 
-    public long getNrOfNodes() throws VlException; /// Tree,Graph, Composite etc.
+     * @throws VrsException */ 
+    public long getNrOfNodes() throws VrsException; /// Tree,Graph, Composite etc.
 
     /**
      * Returns Child Nodes. 
      * <p>
      * <b>implementation note:</b><br>
      * For large Composite nodes, override method {@link #getNodes(int, int, IntegerHolder)} as well.  
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public VNode[] getNodes() throws VlException; /// Tree,Graph, Composite etc.
+    public VNode[] getNodes() throws VrsException; /// Tree,Graph, Composite etc.
 
     /**
      * Returns range of Child Nodes starting at offset upto maxNodes. 
@@ -70,13 +70,13 @@ public interface VComposite
      * to make sure the index of the each returned node matches 
      * the actual stored nodes.  
      *   
-     * @throws VlException */
-    public VNode[] getNodes(int offset,int maxNodes,IntegerHolder totalNumNodes) throws VlException; /// Tree,Graph, Composite etc.
+     * @throws VrsException */
+    public VNode[] getNodes(int offset,int maxNodes,IntegerHolder totalNumNodes) throws VrsException; /// Tree,Graph, Composite etc.
     
     /**
      * Returns Child Node. 
-     * @throws VlException */
-    public VNode getNode(String name) throws VlException; /// Tree,Graph, Composite etc.
+     * @throws VrsException */
+    public VNode getNode(String name) throws VrsException; /// Tree,Graph, Composite etc.
     
     /**
      * Add a node to the underlying Resource.
@@ -88,9 +88,9 @@ public interface VComposite
      * @param node
      * @param isMove
      * @return new created VNode
-     * @throws VlException
+     * @throws VrsException
      */
-    public VNode addNode(VNode node,boolean isMove) throws VlException;
+    public VNode addNode(VNode node,boolean isMove) throws VrsException;
     
     /**
      * Add a node to the underlying Resource with a optional new name. 
@@ -102,9 +102,9 @@ public interface VComposite
      * @param node
      * @param isMove
      * @return new created VNode
-     * @throws VlException
+     * @throws VrsException
      */ 
-    public VNode addNode(VNode node,String newName,boolean isMove) throws VlException;
+    public VNode addNode(VNode node,String newName,boolean isMove) throws VrsException;
     
     /**
      * Add specified nodes to the Resource. A drag and drop from the user interface
@@ -115,7 +115,7 @@ public interface VComposite
      * so the implementation can optimize local movements for example on the 
      * same filesystems. 
      */    
-    public VNode[] addNodes(VNode[] nodes,boolean isMove) throws VlException;
+    public VNode[] addNodes(VNode[] nodes,boolean isMove) throws VrsException;
     
     /** 
      * VRS method to delete specified resource Node.
@@ -124,10 +124,10 @@ public interface VComposite
      * the recommended way is to delete the child node first by calling child.delete() 
      * and the child calls the parent: (this)getParent().delNode(this).
      */ 
-    public boolean delNode(VNode node) throws VlException;
+    public boolean delNode(VNode node) throws VrsException;
     
     /** VRS method to delete specified resource Nodes */
-    public boolean delNodes(VNode[] nodes) throws VlException;
+    public boolean delNodes(VNode[] nodes) throws VrsException;
 
     // Child Methods     
     
@@ -138,9 +138,9 @@ public interface VComposite
      * @param name may be null. The implementation might choose a default name 
      *        or prompt the user. 
      * @param force means to create the child even if it already exists. 
-     * @throws VlException  
+     * @throws VrsException  
      * */
-    public VNode createNode(String type,String name,boolean force) throws VlException;
+    public VNode createNode(String type,String name,boolean force) throws VrsException;
      
     /** 
      * Recursive delete. If recurse==true, then delete all child nodes then delete itself. 
@@ -156,7 +156,7 @@ public interface VComposite
     //public boolean isDeletable() throws VlException;
     
     /** Checks whether this node has a child with the specified name */ 
-    public boolean hasNode(String name) throws VlException;
+    public boolean hasNode(String name) throws VrsException;
   
     /**
      * Override this method if your directory can be accessible
@@ -165,9 +165,9 @@ public interface VComposite
      * be 'read' (list() will fails), but each individual 
      * file may be accessible (mode= --x). 
      *   
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public boolean isAccessable() throws VlException;
+    public boolean isAccessable() throws VrsException;
    
     //public abstract VAttribute[][] getChildAttributes(VNode[] nodesSet, String[] attrNames); 
 }

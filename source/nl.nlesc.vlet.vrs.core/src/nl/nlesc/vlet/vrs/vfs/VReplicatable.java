@@ -21,7 +21,7 @@
 package nl.nlesc.vlet.vrs.vfs;
 
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -32,28 +32,28 @@ public interface VReplicatable
     /**
      * List all replicas. 
      */ 
-	public VRL[] getReplicas() throws VlException;
+	public VRL[] getReplicas() throws VrsException;
 	
 	/**
 	 * Register Replica URIs. 
 	 * This method does not create any replicas and does not do any checking whether VRLs are 
 	 * valid ! 
 	 */
-	public boolean registerReplicas(VRL vrls[]) throws VlException;
+	public boolean registerReplicas(VRL vrls[]) throws VrsException;
 
 	/** 
 	 * Unregister Replicas URIs.
 	 * Does not delete them and does not do any checking, it just removed
 	 * matching VRLs from the LFC registry! 
 	 */
-	public boolean unregisterReplicas(VRL vrls[]) throws VlException; 
+	public boolean unregisterReplicas(VRL vrls[]) throws VrsException; 
 	
 	/**
 	 * Replicate to specified Storage Element, returns new Replica VRL. 
 	 * Implementation should update subTask fields of monitor ! 
 	 */ 
-    public VRL replicateTo(ITaskMonitor monitor, String storageElement) throws VlException;
+    public VRL replicateTo(ITaskMonitor monitor, String storageElement) throws VrsException;
 
     /** Delete Replica and unregister. */ 
-    public boolean deleteReplica(ITaskMonitor monitor, String storageElement) throws VlException; 
+    public boolean deleteReplica(ITaskMonitor monitor, String storageElement) throws VrsException; 
 }

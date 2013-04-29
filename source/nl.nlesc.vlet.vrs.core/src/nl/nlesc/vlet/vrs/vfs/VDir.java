@@ -28,9 +28,9 @@ import java.util.Vector;
 import java.util.regex.Pattern;
 
 import nl.esciencecenter.ptk.data.IntegerHolder;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.NodeFilter;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VCompositeDeletable;
@@ -126,7 +126,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     /**
      * For unix fileystem this means the 'x' bit should be enabled. 
      */
-    public boolean isAccessable() throws VlException
+    public boolean isAccessable() throws VrsException
     {
          return isReadable();
     }
@@ -138,7 +138,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * On unix filesystems this method provides the size of the directory
      * object needed to store the file information.
      */
-    public long getLength() throws VlException 
+    public long getLength() throws VrsException 
     {
         return -1; 
     }
@@ -151,12 +151,12 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * Add (VFS)Node to this directory location. 
      * Node must be of type VFSNode since this method calls addNode(VFSNode...) 
      */  
-    public VFSNode addNode(VNode node,boolean isMove) throws VlException
+    public VFSNode addNode(VNode node,boolean isMove) throws VrsException
     {
         return addNode(node,(String)null,isMove); 
     }
     
-    public VFSNode addNode(VNode node,String optNewName,boolean isMove) throws VlException
+    public VFSNode addNode(VNode node,String optNewName,boolean isMove) throws VrsException
     {
         if (node instanceof VFSNode) 
         {
@@ -180,12 +180,12 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * into a Directory. 
      *  
      */ 
-    public VFile putAnyNode(VNode sourceNode, String optNewName, boolean isMove) throws VlException
+    public VFile putAnyNode(VNode sourceNode, String optNewName, boolean isMove) throws VrsException
     {
         return getTransferManager().putAnyNode(this,sourceNode,optNewName,isMove); 
     }
 
-    public VFSNode addNode(VFSNode node,String optNewName,boolean isMove) throws VlException
+    public VFSNode addNode(VFSNode node,String optNewName,boolean isMove) throws VrsException
     {
         return getTransferManager().doCopyMove(node,this,optNewName,isMove);
     }
@@ -194,7 +194,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * Add multiple (VFS)Nodes to this directory location. 
      * Nodes must be of type VFSNode since this method calls addNodes(VFSNode[]...) 
      */  
-    public VNode[] addNodes(VNode[] nodes,boolean isMove) throws VlException
+    public VNode[] addNodes(VNode[] nodes,boolean isMove) throws VrsException
     {
         if (nodes==null)
             return null;
@@ -220,7 +220,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     }
 
     /** Delete node. Node must be of type VFSNode */ 
-    public boolean delNode(VNode childNode) throws VlException
+    public boolean delNode(VNode childNode) throws VrsException
     {
         if (childNode instanceof VFSNode)
             return ((VFSNode)childNode).delete();
@@ -231,7 +231,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     }
 
     /** Delete nodes. Nodes must be of type VFSNode */ 
-    public boolean delNodes(VNode[] childNodes) throws VlException
+    public boolean delNodes(VNode[] childNodes) throws VrsException
     {
         boolean status=true; 
         
@@ -248,7 +248,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
         return status; 
     }
  
-    public boolean hasNode(String name) throws VlException
+    public boolean hasNode(String name) throws VrsException
     {
         // todo: more efficient method 
         if (existsFile(resolvePathString(name))==true)
@@ -259,7 +259,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
         return false; 
     }
     
-    public VFSNode getNode(String path) throws VlException
+    public VFSNode getNode(String path) throws VrsException
     {
         return vfsSystem.openLocation(resolvePath(path)); 
     }
@@ -268,7 +268,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * VDir implements createChild by calling createFile or createDir,
      * depending on the type.  
      */ 
-    public VFSNode createNode(String type,String name, boolean ignoreExisting) throws VlException
+    public VFSNode createNode(String type,String name, boolean ignoreExisting) throws VrsException
     {
         if (type==null)
         {
@@ -292,12 +292,12 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     /** 
      * Default implementation calls the VDir method list() 
      */ 
-    public VFSNode[] getNodes() throws VlException
+    public VFSNode[] getNodes() throws VrsException
     {
         return list();
     }
     
-    public VNode[] getNodes(int offset,int maxNodes,IntegerHolder totalNumNodes) throws VlException /// Tree,Graph, Composite etc.
+    public VNode[] getNodes(int offset,int maxNodes,IntegerHolder totalNumNodes) throws VrsException /// Tree,Graph, Composite etc.
     {
         return list(offset,maxNodes,totalNumNodes); 
     }
@@ -324,10 +324,10 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * Call VFileSystem.newFile(); 
      * @param path absolute or relative path for new VFile object 
      * @return new VFile object.
-     * @throws VlException 
+     * @throws VrsException 
      * @see VFileSystem#newFile(VRL); 
      */
-    public VFile newFile(String path) throws VlException
+    public VFile newFile(String path) throws VrsException
     {
         return getFileSystem().newFile(resolvePath(path)); 
     }
@@ -338,10 +338,10 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * Call VFileSystem.newDir(); 
      * @param path absolute or relative path for new VDir object 
      * @return new VDir object.
-     * @throws VlException 
+     * @throws VrsException 
      * @see VFileSystem#newFile(VRL); 
      */
-    public VDir newDir(String path) throws VlException
+    public VDir newDir(String path) throws VrsException
     {
         return getFileSystem().newDir(resolvePath(path)); 
     }
@@ -351,7 +351,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * will exist on this filesystem.
      * To get a new VFile object: use newFile()
      */  
-    public VFile createFile(String name) throws VlException
+    public VFile createFile(String name) throws VrsException
     {
         return createFile(resolvePathString(name),true);   
     }
@@ -359,9 +359,9 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     /**
      * Create sub directory in this directory or use full path 
      * to create a new directory.  
-     * @throws VlException
+     * @throws VrsException
      */
-    public VDir createDir(String dirName) throws VlException
+    public VDir createDir(String dirName) throws VrsException
     {
     	VDir dir=getFileSystem().newDir(resolvePath(dirName)); 
     	dir.create(true);
@@ -370,9 +370,9 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      
     /**
      * Copy to specified parent directory location.  
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public final VDir copyTo(VDir parentDir) throws VlException
+    public final VDir copyTo(VDir parentDir) throws VrsException
     {
         return (VDir)getTransferManager().doCopyMove(this,parentDir,null,false); 
     }
@@ -383,9 +383,9 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      *        will be created as subdirectory of this parent. 
      * @param optNewName optional newname. If null basenames 
      *        of source directory will be used.   
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public final VDir copyTo(VDir parentDir,String newName) throws VlException
+    public final VDir copyTo(VDir parentDir,String newName) throws VrsException
     {
         return (VDir)getTransferManager().doCopyMove(this,parentDir,newName,false); 
     }
@@ -394,7 +394,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * Move to specified parent directory.
      * @see #moveTo(VDir, String); 
      */
-    public final VDir moveTo(VDir parentDir) throws VlException
+    public final VDir moveTo(VDir parentDir) throws VrsException
     {
         return (VDir)getTransferManager().doCopyMove(this,parentDir,null,true); 
     }
@@ -406,7 +406,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * @param optNewName - optional newname. If null basename 
      *        of source directory will be used.   
      */
-    public final VDir moveTo(VDir parentDir,String optNewName) throws VlException
+    public final VDir moveTo(VDir parentDir,String optNewName) throws VrsException
     {
         return (VDir)getTransferManager().doCopyMove(this,parentDir,null,true); 
     }
@@ -415,19 +415,19 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * Non-recursive Delete.<br>
      * Calles recursive delete from VComposite with resurse=false.  
      */
-    public boolean delete() throws VlException
+    public boolean delete() throws VrsException
     {
         return delete(false);
     }
     
     /** Deletes file */ 
-    public boolean deleteFile(String name) throws VlException
+    public boolean deleteFile(String name) throws VrsException
     {
         return getFile(name).delete(); 
     }
     
     /** Deleted (sub)directory */ 
-    public boolean deleteDir(String name,boolean recursive) throws VlException
+    public boolean deleteDir(String name,boolean recursive) throws VrsException
     {
         return getDir(name).delete(recursive); 
     }
@@ -436,13 +436,13 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * Get existing subdirectory or if dirname is absolute get the directory using
      * the absolute path.
      */  
-    public VDir getDir(String dirname) throws VlException
+    public VDir getDir(String dirname) throws VrsException
     {
         return vfsSystem.getDir(resolvePath(dirname)); 
     }
 
     /** Get exsiting file in this directory using the relative or absolute path. */   
-    public VFile getFile(String filename) throws VlException
+    public VFile getFile(String filename) throws VrsException
     {
         return vfsSystem.getFile(resolvePath(filename)); 
     }
@@ -456,9 +456,9 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * @param typeFirst  if true return directories first, then files. 
      * @param ignoreCase ignore case when sorting 
      * @return Sorted VFSNode[] array
-     * @throws VlException 
+     * @throws VrsException 
      */
-    public VFSNode[] listSorted(boolean typeFirst,boolean ignoreCase) throws VlException
+    public VFSNode[] listSorted(boolean typeFirst,boolean ignoreCase) throws VrsException
     {
         return sortVNodes(list(),typeFirst,ignoreCase); 
     }
@@ -469,7 +469,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * This method calls {@link #list(NodeFilter, int, int, IntegerHolder)}. 
      * See that method for details.
      */ 
-    public VFSNode[] list(String pattern) throws VlException
+    public VFSNode[] list(String pattern) throws VrsException
     {
         return list(new NodeFilter(pattern,false),0,-1,null); 
     }
@@ -481,7 +481,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * This method calls {@link #list(NodeFilter, int, int, IntegerHolder)}. 
      * See that method for details.
      */ 
-    public VFSNode[] list(String pattern,boolean isRegularExpression) throws VlException
+    public VFSNode[] list(String pattern,boolean isRegularExpression) throws VrsException
     {
          return list(new NodeFilter(pattern,isRegularExpression),0,-1,null); 
     }
@@ -490,7 +490,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * This method calls {@link #list(NodeFilter, int, int, IntegerHolder)}. 
      * See that method for details.
      */
-    public VFSNode[] list(Pattern pattern,int offset,int maxNodes,IntegerHolder totalNumNodes) throws VlException
+    public VFSNode[] list(Pattern pattern,int offset,int maxNodes,IntegerHolder totalNumNodes) throws VrsException
     {
         return list(new NodeFilter(pattern),offset,maxNodes,totalNumNodes); 
     }
@@ -499,7 +499,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * This method calls {@link #list(NodeFilter, int, int, IntegerHolder)}. 
      * See that method for details.
      */ 
-    public VFSNode[] list(int offset,int maxNodes,IntegerHolder totalNumNodes) throws VlException /// Tree,Graph, Composite etc.
+    public VFSNode[] list(int offset,int maxNodes,IntegerHolder totalNumNodes) throws VrsException /// Tree,Graph, Composite etc.
     {
         return list((NodeFilter)null,offset,maxNodes,totalNumNodes); 
     }
@@ -513,9 +513,9 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * @param maxNodes        Maximum size of returned node array
      * @param totalNumNodes   Total number of nodes returned by list(). Value of -1 means not known or not supported!  
      * @return                Subset of list(). 
-     * @throws VlException
+     * @throws VrsException
      */
-    public VFSNode[] list(NodeFilter filter,int offset,int maxNodes,IntegerHolder totalNumNodes) throws VlException
+    public VFSNode[] list(NodeFilter filter,int offset,int maxNodes,IntegerHolder totalNumNodes) throws VrsException
     {
         // use default list() ! 
         VFSNode nodes[] =list();
@@ -538,7 +538,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     // IO
     // ========================================================================
     
-    public VDir createUniqueDir(String prefix, String postfix) throws VlException
+    public VDir createUniqueDir(String prefix, String postfix) throws VrsException
     {
         if (prefix==null) 
             prefix="";
@@ -570,12 +570,12 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * Create new file and return OutputStream to write to.  
      * Call: createNewFileOutputStream()
      */
-    public OutputStream putFile(String fileName) throws VlException 
+    public OutputStream putFile(String fileName) throws VrsException 
     {
         return createFileOutputStream(fileName,true); 
     } 
     
-    public OutputStream putFile(String fileName,boolean force) throws VlException 
+    public OutputStream putFile(String fileName,boolean force) throws VrsException 
     {
         return createFileOutputStream(fileName,force); 
     } 
@@ -586,9 +586,9 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * @param  fileName relative or absolute path to new file.   
      * @param  force overwrite existing or create new file if it doesn't exists. 
      * @return  OutputStream to the new VFile.  
-     * @throws VlException
+     * @throws VrsException
      */
-    public OutputStream createFileOutputStream(String fileName, boolean force) throws VlException
+    public OutputStream createFileOutputStream(String fileName, boolean force) throws VrsException
     {
         try
         {
@@ -597,7 +597,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
         }
         catch (IOException e)
         {
-            throw new VlIOException(e); 
+            throw new NestedIOException(e); 
         }
     }
 
@@ -612,10 +612,10 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      *        
      * @return new created or existing VDir 
      * 
-     * @throws VlException
+     * @throws VrsException
      */
     public VDir createDir(String name, boolean ignoreExisting)
-            throws VlException
+            throws VrsException
     {
          VDir dir=getFileSystem().newDir(resolvePath(name));
          dir.create(ignoreExisting);
@@ -632,7 +632,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      *        already exists.<br>
      *        If ignoreExisting==true, ignore existing file. 
      */
-    public VFile createFile(String fileName, boolean ignoreExisting) throws VlException
+    public VFile createFile(String fileName, boolean ignoreExisting) throws VrsException
     {
     	VFile file=getFileSystem().newFile(resolvePath(fileName));
     	file.create(ignoreExisting);
@@ -648,7 +648,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * Parameter fileName can be an absolute path or relative path starting from this 
      * directory.   
      */ 
-    public boolean existsFile(String fileName) throws VlException
+    public boolean existsFile(String fileName) throws VrsException
     {
         return getFileSystem().newFile(resolvePath(fileName)).exists();  
     }
@@ -658,7 +658,7 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * Parameter dirName can be an absolute path or relative path starting from this 
      * directory.   
      */
-    public boolean existsDir(String dirName) throws VlException
+    public boolean existsDir(String dirName) throws VrsException
     {
         return getFileSystem().newDir(resolvePath(dirName)).exists(); 
     }
@@ -675,9 +675,9 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
      * overriden. 
      * 
      * @return array of VFSNodes using default filtering.  
-     * @throws VlException
+     * @throws VrsException
      */
-    public abstract VFSNode[] list() throws VlException;
+    public abstract VFSNode[] list() throws VrsException;
  
 }
 

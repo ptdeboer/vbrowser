@@ -21,8 +21,8 @@
 package nl.nlesc.vlet.vrs;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -70,7 +70,7 @@ public abstract class VRSFactory
     /**
      * Returns handler object (VNode) specified by the location string.   
      */
-    public VNode openLocation(VRSContext context,String location) throws VlException
+    public VNode openLocation(VRSContext context,String location) throws VrsException
     {
         return openLocation(context,new VRL(location));
     }
@@ -90,7 +90,7 @@ public abstract class VRSFactory
      *                  This parameter might be NULL. 
      * 
      */ 
-    protected ServerInfo updateServerInfo(VRSContext context,ServerInfo info, VRL loc) throws VlException
+    protected ServerInfo updateServerInfo(VRSContext context,ServerInfo info, VRL loc) throws VrsException
     {
         // create defaults: 
         if (info == null)
@@ -107,7 +107,7 @@ public abstract class VRSFactory
         return "VRS:"+this.getName();
     }
 
-    public VNode openLocation(VRSContext context,VRL location) throws VlException 
+    public VNode openLocation(VRSContext context,VRL location) throws VrsException 
     {
         return openResourceSystem(context,location).openLocation(location); 
     }
@@ -155,7 +155,7 @@ public abstract class VRSFactory
 		return createID(info,loc.getScheme(),loc.getHostname(),loc.getPort()); 
 	}
 	
-    public VResourceSystem openResourceSystem(VRSContext context,VRL location) throws VlException
+    public VResourceSystem openResourceSystem(VRSContext context,VRL location) throws VrsException
 	{
 		// Enter critical region to avoid multithreaded duplication
 		// of server objects 
@@ -221,8 +221,8 @@ public abstract class VRSFactory
 	 * Factory method creating a new ResourceSystem instance. 
 	 * Will only be called when a new resource system is needed. 
 	 * Instance will be used for similar locations.  
-	 * @throws VlException 
+	 * @throws VrsException 
 	 */
-	abstract public VResourceSystem createNewResourceSystem(VRSContext context,ServerInfo info, VRL location) throws VlException; 
+	abstract public VResourceSystem createNewResourceSystem(VRSContext context,ServerInfo info, VRL location) throws VrsException; 
 
 }

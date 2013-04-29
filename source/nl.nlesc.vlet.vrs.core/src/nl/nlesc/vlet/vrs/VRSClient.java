@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlIOException;
+import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.io.VInputStreamProducer;
 import nl.nlesc.vlet.vrs.io.VOutputStreamProducer;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
@@ -128,12 +128,12 @@ public class VRSClient
     }
 
     /** Open remote location and return VNode */
-    public VNode openLocation(VRL location) throws VlException
+    public VNode openLocation(VRL location) throws VrsException
     {
         return this.vrsContext.openLocation(location);
     }
 
-    public VNode openLocation(String locationString) throws VlException
+    public VNode openLocation(String locationString) throws VrsException
     {
         return this.vrsContext.openLocation(locationString);
     }
@@ -142,7 +142,7 @@ public class VRSClient
      * Returns VNode associated with remote location. This method is mostly used
      * by the other get() methods so they can check the implementation type
      */
-    public VNode getNode(VRL location) throws VlException
+    public VNode getNode(VRL location) throws VrsException
     {
         return vrsContext.openLocation(location);
     }
@@ -184,11 +184,11 @@ public class VRSClient
     /**
      * Generic InputStream Factory method.
      * 
-     * @throws VlException
+     * @throws VrsException
      *             if stream could not be opened or resource doesn't support
      *             InputStreams.
      */
-    public InputStream openInputStream(VRL loc) throws VlException
+    public InputStream openInputStream(VRL loc) throws VrsException
     {
         try
         {
@@ -207,7 +207,7 @@ public class VRSClient
         }
         catch (IOException e)
         {
-            throw new VlIOException(e);
+            throw new NestedIOException(e);
         }
 
         throw new nl.nlesc.vlet.exception.ResourceTypeMismatchException(
@@ -217,11 +217,11 @@ public class VRSClient
     /**
      * Generic OutputStream Factory method
      * 
-     * @throws VlException
+     * @throws VrsException
      *             if stream could not be opened or resource doesn't support
      *             OutputStreams.
      */
-    public OutputStream openOutputStream(VRL loc) throws VlException
+    public OutputStream openOutputStream(VRL loc) throws VrsException
     {
         try
         {
@@ -241,7 +241,7 @@ public class VRSClient
         }
         catch (IOException e)
         {
-            throw new VlIOException(e);
+            throw new NestedIOException(e);
         }
 
         throw new nl.nlesc.vlet.exception.ResourceTypeMismatchException(
@@ -251,9 +251,9 @@ public class VRSClient
     /**
      * Returns ResourceSystem for the remote location
      * 
-     * @throws VlException
+     * @throws VrsException
      */
-    public VResourceSystem openResourceSystem(VRL loc) throws VlException
+    public VResourceSystem openResourceSystem(VRL loc) throws VrsException
     {
         return vrsContext.openResourceSystem(loc);
     }
@@ -262,7 +262,7 @@ public class VRSClient
      * Generic method to list the contents of a resource. If resource is NOT
      * composite, NULL will be returned.
      */
-    public VNode[] list(VRL theVrl) throws VlException
+    public VNode[] list(VRL theVrl) throws VrsException
     {
         VNode node = this.getNode(theVrl);
 

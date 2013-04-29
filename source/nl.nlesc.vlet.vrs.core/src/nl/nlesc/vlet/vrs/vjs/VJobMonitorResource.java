@@ -20,16 +20,16 @@
 
 package nl.nlesc.vlet.vrs.vjs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VResourceSystem;
 
 public interface VJobMonitorResource extends VResourceSystem
 {
     
-    public VJob getJob(String jobid) throws VlException;
+    public VJob getJob(String jobid) throws VrsException;
     
-    public VJob[] getJobs(String jobids[]) throws VlException;
+    public VJob[] getJobs(String jobids[]) throws VrsException;
 
-    public String getJobStatus(String jobid) throws VlException;
+    public String getJobStatus(String jobid) throws VrsException;
 
 }

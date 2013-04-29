@@ -22,7 +22,7 @@ package nl.nlesc.vlet.vrs;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
@@ -233,9 +233,9 @@ public class VRS
 
 	/** 
 	 * Returns ResourceSystem for the remote location 
-	 * @throws VlException 
+	 * @throws VrsException 
 	 */ 
-	public static VResourceSystem openResourceSystem(VRSContext context,VRL loc) throws VlException
+	public static VResourceSystem openResourceSystem(VRSContext context,VRL loc) throws VrsException
 	{
 	    if (context==null)
 	        throw new NullPointerException("VRSContext is NULL!"); 

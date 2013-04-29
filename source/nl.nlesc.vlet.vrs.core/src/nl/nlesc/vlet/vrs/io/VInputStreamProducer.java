@@ -22,7 +22,7 @@ package nl.nlesc.vlet.vrs.io;
 
 import java.io.InputStream;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /** 
@@ -35,5 +35,5 @@ public interface VInputStreamProducer
 	 * Opens the specified location and gets an InputStream to read from. 
 	 * This method combines openLocation() and getInputStream().
 	 */ 
-	public InputStream createInputStream(VRL location) throws VlException; 
+	public InputStream createInputStream(VRL location) throws VrsException; 
 }

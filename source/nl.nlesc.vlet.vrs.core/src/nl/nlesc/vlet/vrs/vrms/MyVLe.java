@@ -20,9 +20,9 @@
 
 package nl.nlesc.vlet.vrs.vrms;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_NAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_SCHEME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_NAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
 
 import java.io.File;
 import java.util.Vector;
@@ -33,16 +33,15 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
 import nl.nlesc.vlet.exception.ResourceWriteAccessDeniedException;
-import nl.nlesc.vlet.exception.VlException;
-import nl.nlesc.vlet.exception.VlInternalError;
+import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VEditable;
@@ -51,6 +50,7 @@ import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VRSFactory;
 import nl.nlesc.vlet.vrs.VRenamable;
+import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -90,7 +90,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
      * Get "myvle:///" location. This since myvle hasn't got a VRS location
      * factory
      */
-    public static VNode openLocation(VRSContext vrs, VRL location) throws VlException
+    public static VNode openLocation(VRSContext vrs, VRL location) throws VrsException
     {
         // instance currently available in VRSContext ? (move?)
 
@@ -99,7 +99,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
     }
 
     /** Use static method ! */
-    public static MyVLe createVLeRoot(VRSContext vrsContext) throws VlException
+    public static MyVLe createVLeRoot(VRSContext vrsContext) throws VrsException
     {
         // Must by created using correct VRSContext !
         return new MyVLe(vrsContext);
@@ -131,7 +131,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
      * 
      * @param vrsContext
      *            The VRSContext to use.
-     * @throws VlException
+     * @throws VrsException
      */
     private MyVLe(VRSContext context)
     {
@@ -274,7 +274,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         return null;
     }
 
-    public boolean setAttribute(VAttribute attr) throws VlException
+    public boolean setAttribute(VAttribute attr) throws VrsException
     {
         if (attr == null)
             return false;
@@ -314,7 +314,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
     }
 
     // @Override
-    public boolean delete() throws VlException
+    public boolean delete() throws VrsException
     {
         throw new ResourceWriteAccessDeniedException("Can not remove toplevel resource.");
     }
@@ -324,12 +324,12 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         return createResourceTypes();
     }
 
-    public long getNrOfNodes() throws VlException
+    public long getNrOfNodes() throws VrsException
     {
         return rootNodes.size();
     }
 
-    public synchronized VNode[] getNodes() throws VlException
+    public synchronized VNode[] getNodes() throws VrsException
     {
         // if (rootNodes==null)
         // rescan:
@@ -346,7 +346,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         return nodes;
     }
 
-    private synchronized void initChilds() throws VlException
+    private synchronized void initChilds() throws VrsException
     {
         checkReset();
 
@@ -407,7 +407,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         }
     }
 
-    private void readChilds(boolean autoinit) throws VlException
+    private void readChilds(boolean autoinit) throws VrsException
     {
         // readChilds reads Server Info again: clean & update ServerInfo class!
 
@@ -474,9 +474,9 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
 
     /** 
      * Find VDir or return null if can't get it.
-     * @throws VlException 
+     * @throws VrsException 
      */  
-    private VDir getRootResourceDir(boolean autoinit) throws VlException 
+    private VDir getRootResourceDir(boolean autoinit) throws VrsException 
     {
         VRL loc = getMyVleLocation();
         // private client;
@@ -505,7 +505,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
                 dir = vfs.mkdirs(loc);
                 createCustomEnvironment(dir);
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 logger.errorPrintf("Couldn't initialize myvle!:%s\n", loc);
             }
@@ -531,7 +531,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
      */
     int resourceNodeIndex = 0;
 
-    private void addSubNode(VNode node) throws VlException
+    private void addSubNode(VNode node) throws VrsException
     {
         synchronized (rootNodes)
         {
@@ -539,7 +539,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         }
     }
 
-    private void registerNewResourceNode(VLogicalResource vlnode, boolean save) throws VlException
+    private void registerNewResourceNode(VLogicalResource vlnode, boolean save) throws VrsException
     {
         VNode node = (VNode) vlnode;
 
@@ -581,10 +581,10 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
      * 
      * @param lnode
      * @param save
-     * @throws VlException
+     * @throws VrsException
      */
 
-    private void addResourceNode(ResourceFolder gnode, boolean saveNewNode) throws VlException
+    private void addResourceNode(ResourceFolder gnode, boolean saveNewNode) throws VrsException
     {
         if (gnode == null)
             return;
@@ -642,7 +642,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
     }
 
     /** Scan filesystem root and add them to the rootNodes */
-    protected void addFilesystemRoots() throws VlException
+    protected void addFilesystemRoots() throws VrsException
     {
         File roots[] = null;
 
@@ -720,7 +720,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
                     // rootLocations.add(targetLoc);
                 }
             }
-            catch (VlException e)
+            catch (VrsException e)
             {
                 logger.logException(ClassLogger.ERROR, e, "Couldn't add Windows Resource:%s\n", localPath);
             }
@@ -728,7 +728,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
     }
 
     /** Stores new node in the config dir */
-    private void saveNewNode(LogicalResourceNode vlnode) throws VlException
+    private void saveNewNode(LogicalResourceNode vlnode) throws VrsException
     {
         VRL loc = createNewStorageLocation(VRS.VLINK_EXTENSION);
         vlnode.saveAtLocation(loc);
@@ -736,7 +736,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
 
     Object storageCreationMutex = new Object();
 
-    private VRL createNewStorageLocation(String suffix) throws VlException
+    private VRL createNewStorageLocation(String suffix) throws VrsException
     {
         VDir dir = getRootResourceDir(true);
 
@@ -792,7 +792,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
      * type. Will fail isMove==true to avoid deleting of the Dropped Node.
      * 
      */
-    public VNode addNode(VNode sourceNode, String optNewName, boolean isMove) throws VlException
+    public VNode addNode(VNode sourceNode, String optNewName, boolean isMove) throws VrsException
     {
 
         // =========
@@ -818,7 +818,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
                 }
                 catch (Exception e)
                 {
-                    throw new VlException(e); 
+                    throw new VrsException(e); 
                 }
             }
 
@@ -944,7 +944,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         return false;
     }
 
-    public VNode createNode(String type, String name, boolean force) throws VlException
+    public VNode createNode(String type, String name, boolean force) throws VrsException
     {
         // New Link
         if (type.compareTo(VRS.LINK_TYPE) == 0)
@@ -1055,12 +1055,12 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         throw new ResourceTypeNotSupportedException("Resource type not supported:" + type);
     }
 
-    public boolean delete(boolean recurse) throws VlException
+    public boolean delete(boolean recurse) throws VrsException
     {
         return false;
     }
 
-    public boolean hasNode(String name) throws VlException
+    public boolean hasNode(String name) throws VrsException
     {
         for (VNode node : rootNodes)
             if (node.getName().compareTo(name) == 0)
@@ -1069,7 +1069,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         return false;
     }
 
-    public boolean setAttributes(VAttribute[] attrs) throws VlException
+    public boolean setAttributes(VAttribute[] attrs) throws VrsException
     {
         boolean result = true;
 
@@ -1083,22 +1083,22 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
     }
 
     // === MyVLe is never deletable ! ===
-    public boolean isDeletable() throws VlException
+    public boolean isDeletable() throws VrsException
     {
         return false;
     }
 
-    public boolean isEditable() throws VlException
+    public boolean isEditable() throws VrsException
     {
         return true;
     }
 
-    public VNode findNode(VRL childVRL, boolean recurse) throws VlException
+    public VNode findNode(VRL childVRL, boolean recurse) throws VrsException
     {
         return getSubNode(childVRL, recurse);
     }
 
-    protected VNode getSubNode(VRL location, boolean recurse) throws VlException
+    protected VNode getSubNode(VRL location, boolean recurse) throws VrsException
     {
         // Debug("openLocation:"+location);
 
@@ -1168,17 +1168,17 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         return null;
     }
 
-    public boolean isRenamable() throws VlException
+    public boolean isRenamable() throws VrsException
     {
         return true;
     }
 
-    public boolean renameTo(String newName, boolean nameIsPath) throws VlException
+    public boolean renameTo(String newName, boolean nameIsPath) throws VrsException
     {
         return (rename(newName, nameIsPath) != null);
     }
 
-    public VRL rename(String newName, boolean nameIsPath) throws VlException
+    public VRL rename(String newName, boolean nameIsPath) throws VrsException
     {
         vrsContext.setUserProperty("myvle.name", newName);
         return this.getVRL();
@@ -1194,9 +1194,9 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         throw new ResourceTypeMismatchException("MyVle cannot be stored in any parent:" + node);
     }
 
-    public boolean unlinkNodes(VNode[] node) throws VlException
+    public boolean unlinkNodes(VNode[] node) throws VrsException
     {
-        throw new VlInternalError("MyVle cannot unlink: Use delete node");
+        throw new InternalError("MyVle cannot unlink: Use delete node");
     }
 
 }

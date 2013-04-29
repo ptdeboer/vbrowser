@@ -20,9 +20,9 @@
 
 package nl.nlesc.vlet.vrs.vrms;
 
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_ICONURL;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_NAME;
-import static nl.nlesc.vlet.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ICONURL;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_NAME;
+import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,15 +33,10 @@ import java.io.OutputStream;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.nlesc.vlet.data.VAttribute;
-import nl.nlesc.vlet.data.VAttributeConstants;
-import nl.nlesc.vlet.data.VAttributeSet;
-import nl.nlesc.vlet.data.xml.VCompositePersistance;
-import nl.nlesc.vlet.data.xml.XMLData;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.ResourceDeletionFailedException;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.ResourceTypeNotSupportedException;
-import nl.nlesc.vlet.exception.VlException;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VCompositeDeletable;
@@ -54,6 +49,11 @@ import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VRSFactory;
 import nl.nlesc.vlet.vrs.VRenamable;
+import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.nlesc.vlet.vrs.data.VAttributeConstants;
+import nl.nlesc.vlet.vrs.data.VAttributeSet;
+import nl.nlesc.vlet.vrs.data.xml.VCompositePersistance;
+import nl.nlesc.vlet.vrs.data.xml.XMLData;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
@@ -100,7 +100,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         init(attrSet);
     }
 
-    public ResourceFolder duplicate() throws VlException
+    public ResourceFolder duplicate() throws VrsException
     {
         // VlException lastException;
 
@@ -153,7 +153,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
             attributes.put(new VAttribute(name, newValue));
     }
 
-    public VAttribute[] getAttributes() throws VlException
+    public VAttribute[] getAttributes() throws VrsException
     {
         return getAttributes(getAttributeNames());
     }
@@ -169,7 +169,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         return attributeNames;
     }
 
-    public VAttribute getAttribute(String name) throws VlException
+    public VAttribute getAttribute(String name) throws VrsException
     {
         if (name == null)
             return null;
@@ -248,17 +248,17 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         return attributes.getStringValue(ATTR_NAME);
     }
 
-    public String getMimeType() throws VlException
+    public String getMimeType() throws VrsException
     {
         return super.getMimeType(); // should be vlet-resourcefolder-xml
     }
 
-    public boolean setAttribute(VAttribute attr) throws VlException
+    public boolean setAttribute(VAttribute attr) throws VrsException
     {
         return setAttribute(attr, true);
     }
 
-    public boolean setAttribute(VAttribute attr, boolean save) throws VlException
+    public boolean setAttribute(VAttribute attr, boolean save) throws VrsException
     {
         synchronized (attributes)
         {
@@ -271,7 +271,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         return true;
     }
 
-    public boolean setAttributes(VAttribute[] attrs) throws VlException
+    public boolean setAttributes(VAttribute[] attrs) throws VrsException
     {
         synchronized (attributes)
         {
@@ -284,17 +284,17 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         return true;
     }
 
-    public boolean isRenamable() throws VlException
+    public boolean isRenamable() throws VrsException
     {
         return isEditable();
     }
 
-    public boolean renameTo(String newName, boolean nameIsPath) throws VlException
+    public boolean renameTo(String newName, boolean nameIsPath) throws VrsException
     {
         return (rename(newName, nameIsPath) != null);
     }
 
-    public VRL rename(String newName, boolean nameIsPath) throws VlException
+    public VRL rename(String newName, boolean nameIsPath) throws VrsException
     {
         if (isEditable() == false)
             throw new nl.nlesc.vlet.exception.ResourceNotEditableException("Cannot rename this folder: Read Only folder");
@@ -303,7 +303,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         return this.getVRL();
     }
 
-    public VNode addNode(VNode node) throws VlException
+    public VNode addNode(VNode node) throws VrsException
     {
         if (isEditable() == false)
             throw new nl.nlesc.vlet.exception.ResourceNotEditableException(
@@ -312,7 +312,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         return addNode(node, null, false);
     }
 
-    public VNode addNode(VNode node, String newName, boolean isMove) throws VlException
+    public VNode addNode(VNode node, String newName, boolean isMove) throws VrsException
     {
         if (isEditable() == false)
             throw new nl.nlesc.vlet.exception.ResourceNotEditableException(
@@ -382,7 +382,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
      * Sets logical location of this ResourceFolder, but also updates ALL
      * logical location of all of it's children.
      */
-    public void setLogicalLocation(VRL vrl) throws VlException
+    public void setLogicalLocation(VRL vrl) throws VrsException
     {
         this.setLocation(vrl);
 
@@ -392,7 +392,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         }
     }
 
-    public VNode createNode(String type, String name, boolean force) throws VlException
+    public VNode createNode(String type, String name, boolean force) throws VrsException
     {
         //debug("Create new node:(" + type + "):" + name);
         VNode vnode = createSubNode(type, name, force);
@@ -403,7 +403,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
     /**
      * When not stored on a file system, this node must have a VNode parent
      */
-    protected void addSubNode(VNode node) throws VlException
+    protected void addSubNode(VNode node) throws VrsException
     {
         //debug("addSubNode():" + node);
 
@@ -426,12 +426,12 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         save();
     }
 
-    public boolean delete() throws VlException
+    public boolean delete() throws VrsException
     {
         return delete(false);
     }
 
-    public boolean delete(boolean recursive) throws VlException
+    public boolean delete(boolean recursive) throws VrsException
     {
         if (isEditable() == false)
             throw new nl.nlesc.vlet.exception.ResourceNotEditableException("Cannot delete this folder: Read Only folder");
@@ -457,7 +457,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         return true;
     }
 
-    private boolean deleteDiscriptionLocation() throws VlException
+    private boolean deleteDiscriptionLocation() throws VrsException
     {
         if (this.descriptionLocation != null)
         {
@@ -485,7 +485,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
 
     }
 
-    private void setSubNodeLogicalLocation(VLogicalResource node) throws VlException
+    private void setSubNodeLogicalLocation(VLogicalResource node) throws VrsException
     {
         if (this.getLocation() == null)
         {
@@ -510,7 +510,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
     }
 
     /** New implementation of create Node */
-    protected VNode createSubNode(String type, String name, boolean force) throws VlException
+    protected VNode createSubNode(String type, String name, boolean force) throws VrsException
     {
         // New Link
         if (type.compareTo(VRS.LINK_TYPE) == 0)
@@ -601,7 +601,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
      * children resources.<br>
      * Only the root of a ResourceFolder has a description location.
      */
-    public VRL getStorageLocation() throws VlException
+    public VRL getStorageLocation() throws VrsException
     {
         return descriptionLocation;
     }

@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
  * This interface specifies Unix Group ID methods. 
@@ -31,6 +31,6 @@ public interface VUnixGroupMode
      * Returns Unix Style (Symbolic) Group Name or ID number if name 
      * can not be resolved. 
      */ 
-    public String getGid() throws VlException; 
+    public String getGid() throws VrsException; 
     
 }

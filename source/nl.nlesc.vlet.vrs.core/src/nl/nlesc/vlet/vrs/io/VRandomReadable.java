@@ -22,7 +22,7 @@ package nl.nlesc.vlet.vrs.io;
 
 import java.io.IOException;
 
-import nl.nlesc.vlet.exception.VlException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
  * Random Readable interface. 
@@ -34,7 +34,7 @@ public interface VRandomReadable
      * <code>fileOffset</code>. Data is stored into the byte array
      * buffer[] starting at bufferOffset.
      *   
-     * @throws VlException
+     * @throws VrsException
      * @see java.io.RandomAccessFile#readBytes
      */
     public int readBytes(long fileOffset, byte buffer[], int bufferOffset,
