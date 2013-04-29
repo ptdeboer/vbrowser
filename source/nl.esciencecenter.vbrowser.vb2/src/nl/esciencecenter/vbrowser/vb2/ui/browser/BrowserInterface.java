@@ -31,7 +31,7 @@ public interface BrowserInterface
     /** Returns master platform this browser is associated with */ 
     public BrowserPlatform getPlatform(); 
     
-    public void handleException(Throwable exception);
+    public void handleException(String actionText,Throwable exception);
 
 	public JPopupMenu createActionMenuFor(ViewNodeContainer container, ViewNode viewNode,boolean canvasMenu);
 

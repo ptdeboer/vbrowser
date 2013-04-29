@@ -46,8 +46,9 @@ public class DummyBrowserInterface  implements BrowserInterface
     }
 
     @Override
-    public void handleException(Throwable exception)
+    public void handleException(String message,Throwable exception)
     {
+        System.err.printf("%s\n",message);
         exception.printStackTrace(); 
     }
 

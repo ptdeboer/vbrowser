@@ -158,7 +158,7 @@ public class ResourceTreeUpdater implements ProxyNodeEventListener
         }
         catch (ProxyException e)
         {
-            handle(e); 
+            handle("Failed to update ResourceTree RootNode.",e); 
         } 
     }
 
@@ -173,14 +173,14 @@ public class ResourceTreeUpdater implements ProxyNodeEventListener
         }
         catch (ProxyException e)
         {
-            handle(e); 
+            handle("Failed to update child nodes.",e); 
         } 
  
 	}
 
-	private void handle(Throwable e)
+	private void handle(String actionText,Throwable e)
     {
-	    this.tree.getMasterBrowser().handleException(e); 
+	    this.tree.getMasterBrowser().handleException(actionText,e); 
     }
 
     @Override
@@ -277,7 +277,7 @@ public class ResourceTreeUpdater implements ProxyNodeEventListener
         }
         catch (ProxyException e)
         {
-            handle(e); 
+            handle("Couldn't add new nodes.",e); 
         } 
     }
 

@@ -119,9 +119,9 @@ public class IconsPanelUpdater implements ProxyNodeEventListener
 	    return item;
     }
 
-    private void handle(String string, ProxyException e)
+    private void handle(String actionText, ProxyException e)
 	{
-    	this.iconsPanel.getMasterBrowser().handleException(e);
+    	this.iconsPanel.getMasterBrowser().handleException(actionText,e);
 		
 	}
 

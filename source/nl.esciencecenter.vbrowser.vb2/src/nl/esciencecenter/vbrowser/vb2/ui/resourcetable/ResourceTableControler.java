@@ -38,7 +38,7 @@ public class ResourceTableControler
 
 	public void handle(Throwable e) 
 	{
-		browserController.handleException(e);
+		browserController.handleException("Resource Table Error.",e);
 		
 	}
 	

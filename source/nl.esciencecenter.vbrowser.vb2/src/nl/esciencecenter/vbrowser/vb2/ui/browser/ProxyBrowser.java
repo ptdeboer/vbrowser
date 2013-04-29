@@ -47,6 +47,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEvent;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEventNotifier;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTable;
 import nl.esciencecenter.vbrowser.vrs.data.History;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.net.VRL;
 
 /**
@@ -162,7 +163,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     }
 
     @Override
-    public void handleException(Throwable ex)
+    public void handleException(String actionText, Throwable ex)
     {
         logger.logException(ClassLogger.ERROR, ex, "Exception:%s\n", ex);
         // does ui syncrhonisation:
@@ -237,8 +238,9 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
             case REFRESH:
                 meth=ActionMethod.REFRESH;
                 break; 
-            case LOCATION_EDITED: 
             case LOCATION_CHANGED:
+                this.updateLocationFromNavBar(); 
+            case LOCATION_EDITED: 
             default: 
                 logger.errorPrintf("FIXME: NavBar action not implemented:%s\n",navAction); 
         }
@@ -406,7 +408,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
                 }
                 catch (Throwable e)
                 {
-                    handleException(e);
+                    handleException("Couldn't Browse upwards",e);
                 }
             }
         };
@@ -487,6 +489,21 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
             addToHistory(node.getVRI());
     }
     
+    public void updateLocationFromNavBar()
+    {
+        String txt=this.browserFrame.getNavigationBar().getLocationText(); 
+        VRL vrl;
+        try
+        {
+            vrl = new VRL(txt);
+            this.openLocation(vrl, true, false); 
+        }
+        catch (VRLSyntaxException e)
+        {
+            this.handleException("Invalid URI Text:"+txt,e); 
+        } 
+    }
+    
     public void openLocation(final VRL locator,final boolean addToHistory, final boolean newTab)
     {
         logger.debugPrintf(">>> openLocation: %s\n", locator);
@@ -495,7 +512,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
 
         if (factory == null)
         {
-            handleException(new Exception("Cannot find factory for:" + locator));
+            handleException("Couldn't open new location:"+locator,new Exception("Cannot find factory for:" + locator));
             return;
         }
 
@@ -514,7 +531,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
                 }
                 catch (Throwable e)
                 {
-                    handleException(e);
+                    handleException("Couldn't open location:"+locator,e);
                 }
             }
         };
