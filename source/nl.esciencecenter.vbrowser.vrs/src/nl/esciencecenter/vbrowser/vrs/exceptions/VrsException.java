@@ -53,12 +53,12 @@ public class VrsException extends Exception
 
     public static VrsException newChainedException(Throwable exception)
     {
-        return new VrsException(exception.getClass().getSimpleName(), exception.getMessage(), exception);
+        return new VrsException(exception.getMessage(), exception);
     }
 
-    public static VrsException create(String exceptionName, String message, Throwable cause)
+    public static VrsException create(String message, Throwable cause,String exceptionName)
     {
-        return new VrsException(exceptionName, message, cause);
+        return new VrsException(message, cause,exceptionName);
     }
 
     /**
@@ -121,17 +121,10 @@ public class VrsException extends Exception
     // ===
 
     /** Named Exception */
-    protected VrsException(String name, String message)
-    {
-        super(message);
-        this.name = name;
-    };
-
-    /** Named Exception */
-    protected VrsException(String name, String message, Throwable cause)
+    protected VrsException(String message, Throwable cause, String optName)
     {
         super(message, cause);
-        this.name = name;
+        this.name = optName;
     };
 
     public String toString()

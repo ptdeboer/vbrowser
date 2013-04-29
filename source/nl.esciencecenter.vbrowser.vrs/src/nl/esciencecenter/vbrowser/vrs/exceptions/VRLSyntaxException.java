@@ -29,7 +29,7 @@ public class VRLSyntaxException extends VrsException
         super(message);
     }
 
-    public VRLSyntaxException(Exception e)
+    public VRLSyntaxException(Throwable e)
     {
         super(e); 
     }
