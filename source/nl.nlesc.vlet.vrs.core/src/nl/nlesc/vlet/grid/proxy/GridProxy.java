@@ -492,7 +492,7 @@ public class GridProxy
             this.fireProxyValidityChange(valid); // Separate (legacy) event;  
         
         if (attrs.size()>0) 
-            this.fireProxyValuesChanged(attrs.toArray()); 
+            this.fireProxyValuesChanged(attrs.toArray(new VAttribute[0])); 
         
         return valid;
     }

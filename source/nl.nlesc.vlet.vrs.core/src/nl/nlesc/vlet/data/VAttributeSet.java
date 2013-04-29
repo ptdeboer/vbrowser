@@ -20,17 +20,13 @@
 
 package nl.nlesc.vlet.data;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.IndexedHashtable;
 import nl.esciencecenter.ptk.data.StringList;
@@ -39,12 +35,11 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.data.xml.XMLData;
 import nl.nlesc.vlet.exception.VRLSyntaxException;
-import nl.nlesc.vlet.exception.VlIOException;
 import nl.nlesc.vlet.exception.VlXMLDataException;
 import nl.nlesc.vlet.vrs.vrl.VRL;
 
 /**
- *  A VAttributeSet is implemented as an OrdenedHashtable with extra
+ *  A VAttributeSet is implemented as an LinkedHashMap with extra
  *  set manipulation methods.
  *  Note that the order of the entries in the Hashtable is now kept since 
  *  this class is (now) a subclass of OrdenedHashtable (custom data type).
@@ -62,7 +57,7 @@ import nl.nlesc.vlet.vrs.vrl.VRL;
  */
 
 public class VAttributeSet extends IndexedHashtable<String,VAttribute> 
-    implements Serializable, Cloneable, Iterable<VAttribute>,Duplicatable<VAttributeSet>
+    implements Serializable, Cloneable, Duplicatable<VAttributeSet>
 {
     // ========================================================================
     // Class
@@ -85,36 +80,7 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
     {
         return new VAttributeSet(properties); 
     }
-
-    /**
-     * Create new set by reading from inputstream. 
-     * @throws VlXMLDataException 
-     */ 
-    public static VAttributeSet readFromXMLStream(InputStream inps) throws VlXMLDataException
-    {
-        XMLData data=new XMLData();
-        VAttributeSet attrSet = data.parseVAttributeSet(inps);
-        return attrSet; 
-    }
-
-    /**@deprecated: Will be replaced by readFromXMLStream  */ 
-    public static VAttributeSet readFrom(InputStream inps) throws VlIOException
-    {
-        VAttributeSet aset=new VAttributeSet();
-        aset.loadOld(inps); 
-        return aset; 
-    }
     
-    public static Vector<VAttribute> createVector(VAttribute[] attrs)
-    {
-        return new VAttributeSet(attrs).toVector(); 
-     }
-    
-    public static Vector<Object> createObjectVector(VAttribute[] attrs)
-    {
-        return new VAttributeSet(attrs).toObjectVector();
-    }
-
     // ========================================================================
     // Instance
     // ========================================================================
@@ -161,21 +127,6 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
     {
       super(); //empty hastable
       this.setName=name; 
-    }
-        
-    /**
-     * Create from Vector. Duplicate entries
-     * are overwritten. Last entry is kept.
-     */ 
-    public VAttributeSet(Vector<VAttribute> attrs)
-    {
-        init(attrs); 
-    }
-
-    public VAttributeSet(String nname, VAttribute[] attrs)
-    {
-        setName(nname); 
-        init(attrs); 
     }
     
     /**
@@ -248,7 +199,6 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
     }
     
     /**
-     * Ordened Put.
      * This method will add the attribute to the hashtable 
      * and keep the order in which it is put. 
      * If the attribute already has been added the order
@@ -296,8 +246,6 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
     {
         VAttributeSet newset = new VAttributeSet(this);
         newset.setName(this.getName()); 
-        newset.setKeyOrder(this.getOrdenedKeyList().toArray(), true); 
-        
         return newset;
     }
     @Override
@@ -315,7 +263,7 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
     /** Returns array of attribute names of the key set. */
     public String[] getAttributeNames()
     {
-        return this.getKeyArray(); 
+        return this.getKeyArray(new String[0]); 
     }
 
     /**
@@ -449,10 +397,10 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
      * The difference between put and set is that this method changes the 
      * stored Attribute in the hashtable by using VAttribute.setValue(). 
      * It does NOT put a new VAttribute into the hashtable. <br>
-     * This means the already stored VAttribute has to be editable !
+     * This means that already stored VAttribute has to be editable !
      * This way the 'changed' flag is updated from the VAttribute. 
      * If the named attribute isn't stored, a new attribute will be created
-     * and the behaviour is similar to put().  
+     * and the behavior is similar to put().  
      */
     public String set(String name, String val) 
     {
@@ -490,17 +438,7 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
             
        return attr.getBooleanValue();
     }
-//    /**
-//     * Old method to store VAttributeSets are flat property files with 
-//     * extra type information (%type and %enum).
-//     * 
-//     * @deprecated. Will switch to storeAsXML soon !
-//     */ 
-//    public void store(OutputStream outp, String comments) throws VlIOException
-//    {
-//        //storeAsXML(outp,comments);
-//         storeOld(outp,comments); 
-//    }
+
     /**
      * as XML file. 
      */
@@ -510,96 +448,11 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
         xmlData.writeAsXML(outp,this,comments); 
     }
    
-        
-    /**
-     * Read VAttributeSet from InputStream. 
-     * Uses Properties.
-     * @see #Properties.load(InputStream)
-     */
-    public void loadOld(InputStream inps) throws VlIOException
-    {
-        this.clear();
-        
-        if (inps==null)
-        {
-            throw new VlIOException("NULL inputstream:"+inps); 
-        }
-        
-        Properties props=new Properties(); 
-        
-        try
-        {
-            props.load(inps);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            throw new VlIOException("IOException:"+e,e);  
-        }
-        
-        setName=props.getProperty(ATTR_SETNAME); 
-        
-        for (Enumeration<Object> keys =props.keys();keys.hasMoreElements();) 
-        {
-            String name=(String)keys.nextElement(); 
-            String value=props.getProperty(name); 
-            if ((name.endsWith("%type")==false) && (name.endsWith("%enumValues")==false))
-            {
-                String type=props.getProperty(name+"%type");
-                  
-                //optional editable type
-                //boolean editable=true; 
-                //String editstr=props.getProperty(name+"%isEditable");
-                //if (editstr!=null)
-                //     if (editstr.compareToIgnoreCase("false")==0)
-                //         editable=false;
-                        
-                if (type!=null)
-                {
-                   VAttributeType atype=VAttributeType.valueOf(VAttributeType.class,type); 
-                
-                   if (atype==VAttributeType.ENUM) 
-                   {
-                       String str=props.getProperty(name+"%enumValues");
-                       
-                       if (str!=null)
-                       {
-                         String vals[]=str.split(",");  
-                        
-                         put(new VAttribute(name,vals,value));
-                       }
-                   }
-                   else
-                   {
-                      put(new VAttribute(atype,name,value));
-                   }
-                }
-                else
-                {
-                   logger.warnPrintf("Error reading property type:%s\n",name);
-                }
-            }
-        }
-        
-        // update stored order: 
-        // Backwards compatibility: Might not be present!
-        // 
-        
-        String str=(String)props.get("%attributeOrder");
-        if (str!=null)
-        {
-            // reorder keynames and be strict ! 
-            this.setKeyOrder(StringList.createFrom(str,",").toArray(),true);
-        }
-        else
-            logger.debugPrintf(">>> Warning: attributeOrder is not present");
-    }
-
     public String toString()
     {
-        VAttribute[] attrs = toArray(); 
+        VAttribute[] attrs = toArray(new VAttribute[]{}); 
     
-        String str = "VAttributeSet:"+this.setName+":{";
+        String str = "{VAttributeSet:"+this.setName+":[";
         
         if (attrs!=null)
             for (int i=0;i<attrs.length;i++)
@@ -607,12 +460,14 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
                 str+=attrs[i]+(i<(attrs.length-1)?",":"");
             }
         
-        str+="}";
+        str+="]}";
         
         return str; 
     }
     
-   /** Creates deep copy */ 
+   /** 
+    * Creates deep copy 
+    */ 
     public VAttributeSet clone()
     {
         return duplicate(); 
@@ -649,7 +504,9 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
         put (new VAttribute(attrName,val)); 
     }
 
-    /** Returns changed attributes as array */ 
+    /**
+     *  Returns changed attributes as array 
+     */ 
     public synchronized VAttribute[] getChangedAttributesArray()
     {
         int numChanged=0; 
@@ -668,7 +525,9 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
         return attrs; 
     }
 
-    /** Set Editable flag of attribute */ 
+    /** 
+     * Set Editable flag of attribute 
+     */ 
     public void setEditable(String name, boolean val)
     {
         VAttribute attr = this.get(name);
@@ -679,9 +538,9 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
         attr.setEditable(val); 
     }
 
-    public StringList getOrdenedKeyList()
+    public StringList getKeyStringList()
     {
-        return new StringList(this.getKeyArray());
+        return new StringList(this.getKeyArray(new String[0]));
     }
 
     /**
@@ -696,7 +555,7 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
     /** Remove attribute if name isn't in the key list */ 
     public void removeIfNotIn(StringList keylist)
     {
-        StringList names=this.getOrdenedKeyList(); 
+        StringList names=this.getKeyStringList(); 
 
         // match current attribute against newlist; 
         for (String name:names)
@@ -719,7 +578,7 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
     */ 
    public void matchTemplate(VAttributeSet templateSet, boolean removeOthers)
    {
-       StringList names=templateSet.getOrdenedKeyList(); 
+       StringList names=templateSet.getKeyStringList(); 
 
        for (String name:names)
        {
@@ -770,9 +629,6 @@ public class VAttributeSet extends IndexedHashtable<String,VAttribute>
        for (VAttribute attr:attrs)
             this.put(attr); 
    }
-
-
- 
 
 }
 

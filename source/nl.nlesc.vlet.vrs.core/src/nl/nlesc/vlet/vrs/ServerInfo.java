@@ -32,6 +32,7 @@ import static nl.nlesc.vlet.data.VAttributeConstants.AUTH_SCHEME;
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeConstants;
@@ -273,7 +274,7 @@ public class ServerInfo
         
         // this._serverAttributes = source._serverAttributes.duplicate();
         // Do a one by one copy (allows for checking !) 
-        for (VAttribute attr:source._serverAttributes)
+        for (VAttribute attr:source._serverAttributes.toArray(new VAttribute[0]))
         {
             // must duplicate !
             setAttribute(attr.duplicate()); 
@@ -316,7 +317,7 @@ public class ServerInfo
      */
     public String[] getAttributeNames()
     {
-        StringList nameList=this._serverAttributes.getOrdenedKeyList();
+        StringList nameList=this._serverAttributes.getKeyStringList();
         // remove hidden/meta attributes: 
         nameList.remove(ServerInfo.metaAttributeNames);
         return nameList.toArray(); 
@@ -328,7 +329,7 @@ public class ServerInfo
      */
     public String[] getAllAttributeNames()
     {
-        return this._serverAttributes.getKeyArray();
+        return this._serverAttributes.getKeyArray(new String[0]);
     }
 
     /** Remove Attribute from attribute hash */
@@ -792,19 +793,16 @@ public class ServerInfo
 
     private void warnPrintf(String format, Object... args)
     {
-        
+        ClassLogger.getLogger(ServerInfo.class).warnPrintf(format,args);
     }
     
-    private void errorPrintf(String format, Object... args)
-    {
-    }
     /**
      * Returns complete attribute set as Array. 
      * Includes both server properties as well as (hidden) meta attributes. 
      */ 
     public VAttribute[] getAllAttributes()
     {
-        return this._serverAttributes.toArray(); 
+        return this._serverAttributes.toArray(new VAttribute[0]); 
     }
 
     public boolean hasAttribute(String name)
@@ -1131,8 +1129,8 @@ public class ServerInfo
       set.put(new VAttribute(ATTR_SERVER_ID,this.getID()),false); 
       set.put(new VAttribute(ATTR_SERVER_NAME,getName()),true);
       
-      // keep order :
-      set.put(templateSet,templateSet.getKeyArray()); 
+      // re insert all values using the specified key list:
+      set.putAll(templateSet,templateSet.getKeyArray(new String[0])); 
       
       this._serverAttributes.matchTemplate(set,removeOthers); 
    } 
@@ -1186,7 +1184,7 @@ public class ServerInfo
    public void updateServerAttributesFrom(VAttributeSet resourceAttributes,boolean append)
    {
        // iterate over new attributes: 
-       for (VAttribute attr:resourceAttributes)
+       for (VAttribute attr:resourceAttributes.toArray(new VAttribute[0]))
        {
            String name=attr.getName(); 
            if (this._serverAttributes.containsKey(name))

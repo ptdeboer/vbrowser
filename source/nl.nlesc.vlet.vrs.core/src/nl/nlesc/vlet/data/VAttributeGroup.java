@@ -50,9 +50,9 @@ public class VAttributeGroup extends VAttributeSet
     {
         super(attrSet.getName());
         
-        //duplicate attriubtes 
+        //duplicate attributes 
         
-        VAttribute attrs[]=attrSet.toArray(); 
+        VAttribute attrs[]=attrSet.toArray(new VAttribute[]{}); 
         for (VAttribute attr:attrs)
             this.put(attr.duplicate()); 
     }
@@ -110,7 +110,7 @@ public class VAttributeGroup extends VAttributeSet
         if (attrs==null) 
             return; 
         
-        VAttribute[] attrArray = attrs.toArray();
+        VAttribute[] attrArray = attrs.toArray(new VAttribute[]{});
         
         for (VAttribute attr:attrArray)
             this.put(attr); 

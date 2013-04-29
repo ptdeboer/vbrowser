@@ -835,7 +835,7 @@ public class VRSContext implements Serializable
      */
     public VNode[] getResourceSystemNodes()
     {
-        VResourceSystem[] vsyss = this.resourceSystemInstances.toArray(VResourceSystem.class);
+        VResourceSystem[] vsyss = this.resourceSystemInstances.toArray(new VResourceSystem[0]);
 
         Vector<VNode> nodes = new Vector<VNode>();
 

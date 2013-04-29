@@ -221,7 +221,7 @@ public class XMLData
      */
     public Node createXMLNode(Document domDoc, VAttributeSet attrSet)
     {
-        VAttribute[] attrs = attrSet.toArray();
+        VAttribute[] attrs = attrSet.toArray(new VAttribute[]{});
         String name = attrSet.getName();
 
         // <Attribute name=... type=...>

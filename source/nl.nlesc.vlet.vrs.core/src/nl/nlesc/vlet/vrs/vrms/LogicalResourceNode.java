@@ -1249,7 +1249,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         // return linkAttributeNames;
         // As the GUI displays the names in the order it
         // receives them, sort them in the way as they should be displayed
-        StringList list = new StringList(this.resourceAttributes.getKeyArray());
+        StringList list = new StringList(this.resourceAttributes.getKeyArray(new String[0]));
 
         // remove gui attributes
         list.remove(guiAttributeNames);
