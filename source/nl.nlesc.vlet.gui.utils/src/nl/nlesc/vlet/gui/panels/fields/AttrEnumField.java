@@ -20,19 +20,17 @@
 
 package nl.nlesc.vlet.gui.panels.fields;
 
-import nl.esciencecenter.ptk.data.StringList;
 import nl.nlesc.vlet.data.VAttribute;
 import nl.nlesc.vlet.data.VAttributeType;
 
 public class AttrEnumField extends JStringComboBox implements IAttributeField
 {
     private static final long serialVersionUID = -2524144091178443352L;
-    private StringList values;
     boolean enumEditable = false; // whether enum types are editable
 
     public AttrEnumField()
     {
-        super();
+        super(new String[0]);
         init();
     }
 
@@ -50,8 +48,6 @@ public class AttrEnumField extends JStringComboBox implements IAttributeField
 
     public void setValues(String[] values)
     {
-        this.values = new StringList(values);
-
         if (values == null)
             values = new String[0];
 
