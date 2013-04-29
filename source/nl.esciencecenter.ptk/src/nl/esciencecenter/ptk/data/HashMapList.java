@@ -30,7 +30,6 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
  * Extended LinkedHashMap.
- * 
  * Added more support for array and lists. 
  * 
  * @author Piter T. de Boer.
@@ -38,7 +37,7 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
  * @param <TK> - The Key Type 
  * @param <TV> - The Value Type
  */
-public class IndexedHashtable<TK, TV> extends LinkedHashMap<TK, TV> 
+public class HashMapList<TK, TV> extends LinkedHashMap<TK, TV> 
     implements Serializable
 {
     private static final long serialVersionUID = -8373244037848706796L;
@@ -47,7 +46,7 @@ public class IndexedHashtable<TK, TV> extends LinkedHashMap<TK, TV>
 
     static
     {
-        logger = ClassLogger.getLogger(IndexedHashtable.class);
+        logger = ClassLogger.getLogger(HashMapList.class);
         logger.setLevelToDebug();
     }
 
@@ -123,20 +122,10 @@ public class IndexedHashtable<TK, TV> extends LinkedHashMap<TK, TV>
     {
         return this.keySet().iterator();
     }
-   
-    public Object[] getKeyArray()
-    {
-        return this.keySet().toArray(); 
-    }
     
     public TK[] getKeyArray(TK[] arr)
     {
         return this.keySet().toArray(arr);
-    }
-       
-    public Object[] toArray()
-    {
-        return this.values().toArray();
     }
     
     /**
