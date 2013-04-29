@@ -28,7 +28,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
-import nl.esciencecenter.ptk.data.IndexedHashtable;
+import nl.esciencecenter.ptk.data.HashMapList;
 import nl.esciencecenter.ptk.ui.UI;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -128,7 +128,7 @@ public class VRSContext implements Serializable
      * their ResourceSystems object into this VRSContext for runtime management
      * and caching of (connected) servers.
      */
-    protected IndexedHashtable<String, VResourceSystem> resourceSystemInstances = new IndexedHashtable<String, VResourceSystem>();
+    protected HashMapList<String, VResourceSystem> resourceSystemInstances = new HashMapList<String, VResourceSystem>();
 
     /** New Copy Manager to centralize VFS Transfers */
     protected VRSTransferManager vrsTransferManager = null;

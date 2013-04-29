@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import nl.esciencecenter.ptk.data.IndexedHashtable;
+import nl.esciencecenter.ptk.data.HashMapList;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.object.Duplicatable;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -53,10 +53,10 @@ import nl.nlesc.vlet.vrs.vrl.VRL;
  *  This way it is possible to keep references to the stored VAttribute for
  *  advanced manipulation methods.   
  *  
- *  @see IndexedHashtable
+ *  @see HashMapList
  */
 
-public class VAttributeSet extends IndexedHashtable<String,VAttribute> 
+public class VAttributeSet extends HashMapList<String,VAttribute> 
     implements Serializable, Cloneable, Duplicatable<VAttributeSet>
 {
     // ========================================================================
