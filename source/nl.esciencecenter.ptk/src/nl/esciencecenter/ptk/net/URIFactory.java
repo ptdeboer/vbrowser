@@ -374,7 +374,7 @@ public class URIFactory implements Serializable // because it can be embedded in
 
     protected URIFactory()
     {
-        ; // null 
+        ; 
     }
 
     public URIFactory(final String uristr) throws URISyntaxException
@@ -387,16 +387,15 @@ public class URIFactory implements Serializable // because it can be embedded in
         init(scheme, null, null, -1, schemeSpecificPart, null, null);
     }
 
-    public URIFactory(String scheme, String host, String path)
-    {
-        init(scheme, null, host, -1, path, null, null);
-    }
-
     public URIFactory(String scheme, String host, int port, String path)
     {
         init(scheme, null, host, port, path, null, null);
     }
-
+    
+    public URIFactory(String scheme, String userInfo, String host, int port, String path)
+    {
+        init(scheme, userInfo, host, port, path, null, null);
+    }
 
     public URIFactory(String scheme, String userInfo, String host, int port, String path, String query, String fragment)
     {
@@ -913,11 +912,22 @@ public class URIFactory implements Serializable // because it can be embedded in
         // normalize relative uri:
         String encodedPath;
         char c0 = reluri.charAt(0);
+        
         // keep query and fragment uri as-is.
         if ((c0 == '#') || (c0 == '?'))
+        {
             encodedPath = reluri;
+            // update query: 
+            if (c0=='?')
+            {
+                this.query=reluri.substring(1,reluri.length());
+                return this;
+            }
+        }
         else
+        {
             encodedPath = encode(uripath(reluri, false));
+        }
         uri = toURI().resolve(encodedPath); // *encoded* URI
 
         init(uri);
