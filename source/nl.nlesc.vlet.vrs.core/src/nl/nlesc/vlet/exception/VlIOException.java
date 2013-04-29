@@ -20,7 +20,9 @@
 
 package nl.nlesc.vlet.exception;
 
-public class VlIOException extends VlException
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+
+public class VlIOException extends VrsException
 {
     private static final long serialVersionUID = 857296791130965746L;
 

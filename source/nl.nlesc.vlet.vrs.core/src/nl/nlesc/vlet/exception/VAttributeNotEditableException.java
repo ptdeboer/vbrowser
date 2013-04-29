@@ -20,7 +20,9 @@
 
 package nl.nlesc.vlet.exception;
 
-public class VAttributeNotEditableException extends VlException
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+
+public class VAttributeNotEditableException extends VrsException
 {
     private static final long serialVersionUID = -5716888731202918685L;
 

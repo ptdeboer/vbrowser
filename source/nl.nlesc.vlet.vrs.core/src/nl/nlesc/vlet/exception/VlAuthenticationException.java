@@ -20,12 +20,14 @@
 
 package nl.nlesc.vlet.exception;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+
 /**
  * @author P.T. de Boer
  * 
  *         Grid Credential Exception(s)
  */
-public class VlAuthenticationException extends VlException
+public class VlAuthenticationException extends VrsException
 {
     /**
      * Credential Exceptions

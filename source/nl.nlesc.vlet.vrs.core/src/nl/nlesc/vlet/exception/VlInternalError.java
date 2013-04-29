@@ -20,10 +20,12 @@
 
 package nl.nlesc.vlet.exception;
 
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+
 /**
  * Super class for Program Errors or other internal errors
  */
-public class VlInternalError extends VlException
+public class VlInternalError extends VrsException
 {
     private static final long serialVersionUID = -8673540323173565403L;
 
