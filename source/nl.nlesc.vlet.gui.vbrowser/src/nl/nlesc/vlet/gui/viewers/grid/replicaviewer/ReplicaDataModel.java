@@ -167,7 +167,7 @@ public class ReplicaDataModel extends ResourceTableModel
                 attrs.put(new VAttribute(ATTR_LENGTH,"?")); 
             }
             
-            this.setValues(host,attrs.toArray()); 
+            this.setValues(host,attrs.toArray(new VAttribute[0])); 
         }
     }
     

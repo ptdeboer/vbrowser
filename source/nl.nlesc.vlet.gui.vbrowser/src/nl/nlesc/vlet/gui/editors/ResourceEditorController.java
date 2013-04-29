@@ -440,12 +440,12 @@ public class ResourceEditorController implements ActionListener, WindowListener,
 					{
 						
 						// apply attribute and signal refresh ! 
-						for (VAttribute attr:attrs)
+						for (VAttribute attr:attrs.toArray(new VAttribute[]{}))
 						{
 							debug("applying attribute:"+attr); 
 						}
 						
-						resourceNode.setAttributes(attrs.toArray(),singnalRefresj);
+						resourceNode.setAttributes(attrs.toArray(new VAttribute[]{}),singnalRefresj);
 						
 						if (enableServerConfig)
 						    saveServerConfig();
@@ -635,7 +635,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
 	 	// Editable/Enabled attributes 
 	 	// =========================
 
-	 	for (VAttribute attr:resourceAttributes)
+	 	for (VAttribute attr:resourceAttributes.toArray(new VAttribute[0]))
 	 	{
 	 		IAttributeField field=this.resourceForm.getAttributeField(attr.getName());
 	 		if (field!=null)
@@ -712,7 +712,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
     	}
     	
 		// strip sections 
-		String[] keys = propsAttrs.getKeyArray(); 
+		String[] keys = propsAttrs.getKeyArray(new String[0]); 
 		if (keys!=null)
 			for (String key:keys) 
 				if (key.startsWith("["))
@@ -926,7 +926,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
             this.isEditable=pnode.isEditable(); 
             
          // apply attribute and signal refresh ! 
-            for (VAttribute attr:attrs)
+            for (VAttribute attr:attrs.toArray(new VAttribute[0]))
             {
                 debug("New (re)read attribute:"+attr); 
             }
