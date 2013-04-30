@@ -176,19 +176,19 @@ public class StringList extends ArrayList<String> implements Cloneable, Serializ
     }
     
     /** 
-     * Concatenates String array using lineSeperator between lines 
+     * Concatenates String array using elementSeperator between elements 
      */ 
-    public String toString(String lineSeperator)
+    public String toString(String elementSeperator)
     {
-        return toString(null,null,lineSeperator);
+        return toString(null,null,elementSeperator);
     }
     
-    public String toString(String quote, String lineSeperator)
+    public String toString(String quote, String elementSeperator)
     {
-        return toString(quote,quote,lineSeperator);
+        return toString(quote,quote,elementSeperator);
     }
     
-    public String toString(String beginQuote,String endQuote,String lineSeperator)
+    public String toString(String beginQuote,String endQuote,String elementSeperator)
     {
         // two pass to alloc right size of target string 
         int nrStrs=this.size();
@@ -212,9 +212,9 @@ public class StringList extends ArrayList<String> implements Cloneable, Serializ
             if (endQuote!=null)
                 buf.append(endQuote);
             
-            // add lineseperator, but only BETWEEN strings 
+            // add separator, but only BETWEEN strings 
             if (i+1<nrStrs)
-                buf.append(lineSeperator);  
+                buf.append(elementSeperator);  
         }
         
         return buf.toString();  
