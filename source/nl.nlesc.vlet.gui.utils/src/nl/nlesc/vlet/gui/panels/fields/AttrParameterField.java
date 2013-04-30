@@ -22,8 +22,8 @@ package nl.nlesc.vlet.gui.panels.fields;
 
 import javax.swing.JTextField;
 
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeType;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 
 /**
  * An Attribute Parameter Field is an managed Field for an VAttribute
@@ -63,12 +63,12 @@ public class AttrParameterField extends JTextField implements IAttributeField
         return super.getText();
     }
 
-    public VAttributeType getVAttributeType()
+    public AttributeType getVAttributeType()
     {
-        return VAttributeType.STRING;
+        return AttributeType.STRING;
     }
 
-    public void updateFrom(VAttribute attr)
+    public void updateFrom(Attribute attr)
     {
         setText(attr.getStringValue());
     }

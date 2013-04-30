@@ -171,7 +171,7 @@ public class HTTPRS implements VResourceSystem, VStreamProducer
     @Override
     public VRL resolve(String path) throws VRLSyntaxException 
     {
-        return sourceVrl.resolveSibling(path);
+        return sourceVrl.uriResolve(path);
     }
 
 }

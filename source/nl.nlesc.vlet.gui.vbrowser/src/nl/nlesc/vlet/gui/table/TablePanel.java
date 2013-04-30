@@ -37,6 +37,7 @@ import javax.swing.table.TableModel;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentable;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
@@ -54,7 +55,6 @@ import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.VContainer;
 import nl.nlesc.vlet.gui.view.ViewFilter;
 import nl.nlesc.vlet.gui.view.ViewModel;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 /**
  * The Table View Panel.
@@ -430,9 +430,9 @@ public class TablePanel extends JTable implements VContainer,UIPresentable
            TableColumn column = cmodel.getColumn(i);
            Object obj=getVRSTableModel().getValueAt(0,i); 
            
-           if (obj instanceof VAttribute)
+           if (obj instanceof Attribute)
            {
-               VAttribute attr=(VAttribute)obj;
+               Attribute attr=(Attribute)obj;
                
                if (attr.isEditable()==true)
                {

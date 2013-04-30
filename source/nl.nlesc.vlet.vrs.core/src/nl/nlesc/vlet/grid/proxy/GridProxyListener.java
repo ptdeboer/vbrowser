@@ -20,7 +20,7 @@
 
 package nl.nlesc.vlet.grid.proxy;
 
-import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 
 public interface GridProxyListener
 {
@@ -37,6 +37,6 @@ public interface GridProxyListener
     public void notifyCACertStoreUpdated(String alias); 
     
     /** Called when an attribute of the proxy has changed, for example the VO */ 
-    public void notifyProxyAttributesChanged(GridProxy gridProxy,VAttribute attrs[]);  
+    public void notifyProxyAttributesChanged(GridProxy gridProxy,Attribute attrs[]);  
     
 }

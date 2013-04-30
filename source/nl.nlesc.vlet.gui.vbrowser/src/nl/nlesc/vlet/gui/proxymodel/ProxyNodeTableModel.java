@@ -28,14 +28,14 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTableModel;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class ProxyNodeTableModel extends ResourceTableModel
 {
@@ -86,10 +86,10 @@ public class ProxyNodeTableModel extends ResourceTableModel
                 
                 for (ProxyNode node:nodes)
                 {
-                    VAttributeSet set=new VAttributeSet();
+                    AttributeSet set=new AttributeSet();
                     set.put(ATTR_NAME,node.getVRL().getBasename()); 
                     set.put(ATTR_RESOURCE_TYPE,node.getType()); 
-                    set.put(new VAttribute(ATTR_LOCATION,node.getVRL())); 
+                    set.put(new Attribute(ATTR_LOCATION,node.getVRL())); 
                     
                     addRow(node.getVRL().toString(),set);  
                 }
@@ -99,7 +99,7 @@ public class ProxyNodeTableModel extends ResourceTableModel
                     VRL vrl=node.getVRL(); 
                     
                     String hdrs[] = getHeaders();   
-                    VAttribute[] attrs;
+                    Attribute[] attrs;
                     try
                     {
                         attrs = node.getAttributes(hdrs);
@@ -154,7 +154,7 @@ public class ProxyNodeTableModel extends ResourceTableModel
         
         for (ProxyNode node:nodes)
         {
-            VAttribute[] attrs;
+            Attribute[] attrs;
             try
             {
                 attrs = node.getAttributes(attrNames.toArray());

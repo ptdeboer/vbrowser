@@ -30,14 +30,14 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTableModel;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class JobStatusDataModel extends ResourceTableModel
 {
@@ -137,7 +137,7 @@ public class JobStatusDataModel extends ResourceTableModel
 
     public void addRow(String jobid) throws VRLSyntaxException
     {   
-        VAttributeSet attrs=new VAttributeSet();
+        AttributeSet attrs=new AttributeSet();
         
         VRL jobvrl=JobUtil.createJobVrl(jobid); 
         // actual job id as string. This is also the key! 
@@ -198,7 +198,7 @@ public class JobStatusDataModel extends ResourceTableModel
 
     public void setQueryBusy(String id, boolean b)
     {
-        this.setValue(id,new VAttribute(ATTR_IS_BUSY,b)); 
+        this.setValue(id,new Attribute(ATTR_IS_BUSY,b)); 
     }
 
     public boolean isStatusUnknown(String id)
@@ -207,7 +207,7 @@ public class JobStatusDataModel extends ResourceTableModel
         if (row==null)
             return true;
         
-        VAttribute attr=row.getAttribute(ATTR_STATUS);
+        Attribute attr=row.getAttribute(ATTR_STATUS);
         if (attr==null)
             return true; 
         
@@ -229,7 +229,7 @@ public class JobStatusDataModel extends ResourceTableModel
         this.setValue(id,ATTR_ERROR_TEXT,message); 
     }
 
-    public void updateJobAttributes(String id, VAttribute[] attrs)
+    public void updateJobAttributes(String id, Attribute[] attrs)
     {
         if (attrs==null)
         {
@@ -273,7 +273,7 @@ public class JobStatusDataModel extends ResourceTableModel
 		RowData row = this.getRow(jobid);
 		if (row==null)
 			return null; 
-		VAttribute attr = row.getAttribute(ATTR_JOBVRL);
+		Attribute attr = row.getAttribute(ATTR_JOBVRL);
 		if (attr==null)
 			return null; 
 		return attr.getVRL(); 

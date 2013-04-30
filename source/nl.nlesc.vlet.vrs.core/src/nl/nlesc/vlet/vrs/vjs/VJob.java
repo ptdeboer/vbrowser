@@ -22,12 +22,12 @@ package nl.nlesc.vlet.vrs.vjs;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 
 
@@ -99,10 +99,10 @@ public abstract class VJob extends VCompositeNode implements VEditable
 	
 	// === VEdtiable interface ===
 	
-	public boolean setAttributes(VAttribute[] attrs) throws VrsException
+	public boolean setAttributes(Attribute[] attrs) throws VrsException
 	{
 		boolean result=true; 
-		for (VAttribute attr:attrs)
+		for (Attribute attr:attrs)
 		{
 			boolean val=setAttribute(attr); 
 			result=result&val; 
@@ -136,28 +136,28 @@ public abstract class VJob extends VCompositeNode implements VEditable
         return null;
     }
 	
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         // Generic VJob Attributes: 
         if (StringUtil.equals(name, VAttributeConstants.ATTR_STATUS))
         {
-            return new VAttribute(name, this.getResourceStatus());
+            return new Attribute(name, this.getResourceStatus());
         }
         else if (StringUtil.equals(name, VAttributeConstants.ATTR_JOB_IS_RUNNING))
         {
-            return new VAttribute(name, this.isRunning());
+            return new Attribute(name, this.isRunning());
         }
         else if (StringUtil.equals(name, VAttributeConstants.ATTR_JOB_HAS_TERMINATED))
         {
-            return new VAttribute(name, this.hasTerminated());
+            return new Attribute(name, this.hasTerminated());
         }
         else if (StringUtil.equals(name, VAttributeConstants.ATTR_JOB_HAS_ERROR))
         {
-            return new VAttribute(name,this.hasError());
+            return new Attribute(name,this.hasError());
         }
         else if (StringUtil.equals(name, VAttributeConstants.ATTR_ERROR_TEXT))
         {
-            return new VAttribute(name,this.getErrorText());
+            return new Attribute(name,this.getErrorText());
         }
         
         

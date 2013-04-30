@@ -27,6 +27,7 @@ import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
@@ -34,7 +35,6 @@ import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.vdriver.infors.net.NetworkNode;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
@@ -221,26 +221,26 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         return list.toArray(); 
     }
     
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
     	ConfigManager cmgr = this.vrsContext.getConfigManager(); 
-    	VAttribute attr=null; 
+    	Attribute attr=null; 
     	
         if (name.equals(InfoConstants.ATTR_SYSTEMHOSTNAME))
         {
-            attr=new VAttribute(name,GlobalProperties.getHostname());
+            attr=new Attribute(name,GlobalProperties.getHostname());
         }
         else if (name.equals(InfoConstants.ATTR_SYSTEMOS))
         {
-        	attr=new VAttribute(name,GlobalProperties.getOsName()+" "+GlobalProperties.getOsVersion());
+        	attr=new Attribute(name,GlobalProperties.getOsName()+" "+GlobalProperties.getOsVersion());
         }
         else if (name.equals(InfoConstants.ATTR_JAVAVERSION))
         {
-        	attr=new VAttribute(name,GlobalProperties.getJavaVersion()); 
+        	attr=new Attribute(name,GlobalProperties.getJavaVersion()); 
         }
         else if (name.equals(InfoConstants.ATTR_JAVAHOME))
         {
-        	attr=new VAttribute(name,GlobalProperties.getJavaHome()); 
+        	attr=new Attribute(name,GlobalProperties.getJavaHome()); 
         }
         else if (name.equals(VletConfig.PROP_SKIP_FLOPPY_SCAN))
         {
@@ -255,7 +255,7 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
         return super.getAttribute(name); 
     }
     
-    public boolean setAttribute(VAttribute attr) throws VrsException
+    public boolean setAttribute(Attribute attr) throws VrsException
 	{
 		if (attr==null)
 			return false;

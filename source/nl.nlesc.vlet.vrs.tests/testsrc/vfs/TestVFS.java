@@ -47,6 +47,7 @@ import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
@@ -60,7 +61,6 @@ import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VCommentable;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 import nl.nlesc.vlet.vrs.io.VRandomReadable;
 import nl.nlesc.vlet.vrs.io.RandomReader;
@@ -1113,7 +1113,7 @@ public class TestVFS extends VTestCase
         // VFSNode read returns readonly ACL, so is never NULL, unless
         // an implementation screwed up.
 
-        VAttribute[][] acl = dir.getACL();
+        Attribute[][] acl = dir.getACL();
         Assert.assertNotNull("ACLs for directoires not supported: ACL is NULL", acl);
 
         VFile file = dir.createFile("aclTestFile", true);
@@ -1123,7 +1123,7 @@ public class TestVFS extends VTestCase
 
         // entities are default NULL, so stop testing when no entities are
         // present
-        VAttribute[] ents = dir.getACLEntities();
+        Attribute[] ents = dir.getACLEntities();
 
         // no entities: no support for ACLs: allowed
         if (ents == null)
@@ -1135,9 +1135,9 @@ public class TestVFS extends VTestCase
         Assert.assertFalse("non NULL ACL entity list may not be empty.", ents.length == 0);
 
         // get 1st entity
-        VAttribute entity = ents[0];
+        Attribute entity = ents[0];
 
-        VAttribute[] record = file.createACLRecord(entity, true);
+        Attribute[] record = file.createACLRecord(entity, true);
         Assert.assertNotNull("new entity returned NULL", record);
 
         file.delete();

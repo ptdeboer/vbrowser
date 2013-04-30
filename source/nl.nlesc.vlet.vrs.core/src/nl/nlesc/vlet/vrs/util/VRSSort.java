@@ -23,8 +23,8 @@ package nl.nlesc.vlet.vrs.util;
 import nl.esciencecenter.ptk.util.Comparer;
 import nl.esciencecenter.ptk.util.QSort;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.nlesc.vlet.vrs.VNode;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 /**
  * Sort VRSNodes. 
@@ -37,11 +37,11 @@ public class VRSSort<Type> extends QSort<Type>
         super(comparer);
     }
 
-    public static class VAttributeComparer implements Comparer<VAttribute>
+    public static class VAttributeComparer implements Comparer<Attribute>
     {
         public boolean ignoreCase = false;
 
-        public int compare(VAttribute a1, VAttribute a2)
+        public int compare(Attribute a1, Attribute a2)
         {
             if (a1 == null)
                 if (a2 == null)
@@ -154,8 +154,8 @@ public class VRSSort<Type> extends QSort<Type>
             // compare attributes while values are equal
             while ((result == 0) && (i < n))
             {
-                VAttribute a1;
-                VAttribute a2;
+                Attribute a1;
+                Attribute a2;
 
                 try
                 {
@@ -192,12 +192,12 @@ public class VRSSort<Type> extends QSort<Type>
 
     private static VAttributeComparer vattributeComparer = new VAttributeComparer();
 
-    public static void sortVAttributes(VAttribute[] attrs)
+    public static void sortVAttributes(Attribute[] attrs)
     {
         if (attrs == null)
             return;
 
-        VRSSort<VAttribute> qsort = new VRSSort<VAttribute>(vattributeComparer);
+        VRSSort<Attribute> qsort = new VRSSort<Attribute>(vattributeComparer);
         qsort.sort(attrs);
     }
 

@@ -22,7 +22,7 @@ package nl.nlesc.vlet.gui;
 
 import java.awt.event.MouseEvent;
 
-import nl.nlesc.vlet.vrs.data.VAttributeType;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 
 /**
  * Enum class of the PERSISTENT property gui names&types 
@@ -34,24 +34,24 @@ import nl.nlesc.vlet.vrs.data.VAttributeType;
  */
 public enum GuiPropertyName
 {
-    MOUSE_SELECTION_BUTTON(VAttributeType.INT,"mouseSelectionButton","Mouse selection button",MouseEvent.BUTTON1),  
-    MOUSE_POPUP_BUTTON(VAttributeType.INT,"mousePopupButton","Mouse menu pop-up button",MouseEvent.BUTTON3),     
-    MOUSE_ALT_BUTTON(VAttributeType.INT,"mouseAltButton","Mouse Alt (right) button",MouseEvent.BUTTON3),      
-    SINGLE_CLICK_ACTION(VAttributeType.BOOLEAN,"singleClickAction","Single click action",true), 
-    GLOBAL_SHOW_LOG_WINDOW(VAttributeType.BOOLEAN,"showLogWindow","Default show log window",false), 
-    GLOBAL_FILTER_HIDDEN_FILES(VAttributeType.BOOLEAN,"filterHiddenFiles","Default filter hidden files and directories",true),
-    GLOBAL_SHOW_RESOURCE_TREE(VAttributeType.BOOLEAN,"showResourceTree","Default show resource tree",true),
-    GLOBAL_USE_WINDOWS_ICONS(VAttributeType.BOOLEAN,"useWindowsIcons","Use windows icons",false),
-    GLOBAL_LOOK_AND_FEEL(VAttributeType.STRING,"defaultLookAndFeel","Platform Look and Feel",null)
+    MOUSE_SELECTION_BUTTON(AttributeType.INT,"mouseSelectionButton","Mouse selection button",MouseEvent.BUTTON1),  
+    MOUSE_POPUP_BUTTON(AttributeType.INT,"mousePopupButton","Mouse menu pop-up button",MouseEvent.BUTTON3),     
+    MOUSE_ALT_BUTTON(AttributeType.INT,"mouseAltButton","Mouse Alt (right) button",MouseEvent.BUTTON3),      
+    SINGLE_CLICK_ACTION(AttributeType.BOOLEAN,"singleClickAction","Single click action",true), 
+    GLOBAL_SHOW_LOG_WINDOW(AttributeType.BOOLEAN,"showLogWindow","Default show log window",false), 
+    GLOBAL_FILTER_HIDDEN_FILES(AttributeType.BOOLEAN,"filterHiddenFiles","Default filter hidden files and directories",true),
+    GLOBAL_SHOW_RESOURCE_TREE(AttributeType.BOOLEAN,"showResourceTree","Default show resource tree",true),
+    GLOBAL_USE_WINDOWS_ICONS(AttributeType.BOOLEAN,"useWindowsIcons","Use windows icons",false),
+    GLOBAL_LOOK_AND_FEEL(AttributeType.STRING,"defaultLookAndFeel","Platform Look and Feel",null)
     ;
     
     /** Attribute type is used when getting/setting VAttributes */
-    private VAttributeType type; 
+    private AttributeType type; 
     private String message; 
     private String name; // Property name used for storage/Attribute type 
     private String defaultValue; 
     
-    private GuiPropertyName(VAttributeType type,String name,String messagestr, int defaultVal)
+    private GuiPropertyName(AttributeType type,String name,String messagestr, int defaultVal)
     {
         this.name=name; 
         this.message=messagestr;
@@ -59,7 +59,7 @@ public enum GuiPropertyName
         this.defaultValue=""+defaultVal; 
     }
     
-    private GuiPropertyName(VAttributeType type,String name,String messagestr, boolean defaultVal)
+    private GuiPropertyName(AttributeType type,String name,String messagestr, boolean defaultVal)
     {
         this.name=name; 
         this.message=messagestr;
@@ -67,7 +67,7 @@ public enum GuiPropertyName
         this.defaultValue=""+defaultVal; 
     }
     
-    private GuiPropertyName(VAttributeType type,String name,String messagestr, String valstr)
+    private GuiPropertyName(AttributeType type,String name,String messagestr, String valstr)
     {
         this.name=name; 
         this.message=messagestr;
@@ -90,7 +90,7 @@ public enum GuiPropertyName
         return defaultValue; 
     }
     
-    public VAttributeType getType()
+    public AttributeType getType()
     {
         return type; 
     }

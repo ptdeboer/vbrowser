@@ -23,13 +23,13 @@ package nl.nlesc.vlet.vrs.vdriver.infors.grid;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
 import nl.nlesc.vlet.vrs.vdriver.infors.InfoConstants;
 import nl.nlesc.vlet.vrs.vdriver.infors.net.NetworkNode;
@@ -99,21 +99,21 @@ public class GridNeighbourhood extends CompositeServiceInfoNode<VNode>
         return list.toArray();
     }
 
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         ConfigManager cmgr = this.vrsContext.getConfigManager(); 
         
-        VAttribute attr=null; 
+        Attribute attr=null; 
         
         if (name.equals(VletConfig.PROP_BDII_HOSTNAME))
         {
             // As of vlet 1.4 return comma seperated host:port list! 
-            attr=new VAttribute(name, cmgr.getBdiiHostInfo());
+            attr=new Attribute(name, cmgr.getBdiiHostInfo());
             attr.setEditable(true); 
         }
         else if (name.equals(VletConfig.PROP_BDII_PORT))
         {
-            attr=new VAttribute(name, cmgr.getBdiiServiceURI().getPort());
+            attr=new Attribute(name, cmgr.getBdiiServiceURI().getPort());
             attr.setEditable(true);
         }
         
@@ -123,7 +123,7 @@ public class GridNeighbourhood extends CompositeServiceInfoNode<VNode>
         return super.getAttribute(name);
     }
 
-    public boolean setAttribute(VAttribute attr) throws VrsException
+    public boolean setAttribute(Attribute attr) throws VrsException
     {
         ConfigManager cmgr = this.vrsContext.getConfigManager(); 
         

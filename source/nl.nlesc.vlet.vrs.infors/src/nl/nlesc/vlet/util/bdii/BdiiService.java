@@ -32,13 +32,13 @@ import javax.naming.NamingException;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.util.bdii.ServiceInfo.ServiceInfoType;
 import nl.nlesc.vlet.util.bdii.info.glue.GlueConstants;
 import nl.nlesc.vlet.util.bdii.info.glue.GlueObject;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 
 /**
@@ -390,7 +390,7 @@ public class BdiiService
             }
 
             // Get the service attributes...
-            VAttribute[] attrs = getServiceVattributes(srmServices.get(i));
+            Attribute[] attrs = getServiceVattributes(srmServices.get(i));
             srm.addInfoAttributes(attrs);
 
             // ...the SE backend attributes
@@ -413,7 +413,7 @@ public class BdiiService
             // ..the location of services attributes
             // Apparently this is the best way to get back site attributes. All
             // other methods make VBrowser crash.
-            VAttribute[] siteAttrs = getSiteAttributes(sites, (String) (String) srmServices.get(i).getExtAttribute(
+            Attribute[] siteAttrs = getSiteAttributes(sites, (String) (String) srmServices.get(i).getExtAttribute(
                     GlueConstants.FOREIN_KEY).get(0));
 
             srm.addInfoAttributes(siteAttrs);
@@ -438,7 +438,7 @@ public class BdiiService
                 {
                     srm = createSRMServiceInfo(srmServices.get(i));
                     // Get the service attributes...
-                    VAttribute[] attrs = getServiceVattributes(srmServices.get(i));
+                    Attribute[] attrs = getServiceVattributes(srmServices.get(i));
                     srm.addInfoAttributes(attrs);
 
                     // ...the SE backend attributes
@@ -467,7 +467,7 @@ public class BdiiService
                     // attributes.
                     // All
                     // other methods make VBrowser crash.
-                    VAttribute[] siteAttrs = getSiteAttributes(sites, (String) (String) srmServices.get(i)
+                    Attribute[] siteAttrs = getSiteAttributes(sites, (String) (String) srmServices.get(i)
                             .getExtAttribute(GlueConstants.FOREIN_KEY).get(0));
 
                     srm.addInfoAttributes(siteAttrs);
@@ -557,12 +557,12 @@ public class BdiiService
             {
                 ServiceInfo serviceInfo = ServiceInfo.createWMService(wmsUri);
 
-                VAttribute[] attrs = getServiceVattributes(wms.get(i));
+                Attribute[] attrs = getServiceVattributes(wms.get(i));
                 serviceInfo.addInfoAttributes(attrs);
                 wmsServices.add(serviceInfo);
 
                 // TODO Service Location ---- Move this to getSiteInfoAttributes
-                VAttribute[] siteAttrs = getSiteAttributes(sites, (String) wms.get(i).getExtAttribute(
+                Attribute[] siteAttrs = getSiteAttributes(sites, (String) wms.get(i).getExtAttribute(
                         GlueConstants.FOREIN_KEY).get(0));
 
                 serviceInfo.addInfoAttributes(siteAttrs);
@@ -644,11 +644,11 @@ public class BdiiService
             try
             {
                 ServiceInfo serviceInfo = ServiceInfo.createLBService(lbUri);
-                VAttribute[] attrs = getServiceVattributes(lbs.get(i));
+                Attribute[] attrs = getServiceVattributes(lbs.get(i));
                 serviceInfo.addInfoAttributes(attrs);
                 lbServices.add(serviceInfo);
 
-                VAttribute[] siteAttrs = getSiteAttributes(sites, (String) lbs.get(i).getExtAttribute(
+                Attribute[] siteAttrs = getSiteAttributes(sites, (String) lbs.get(i).getExtAttribute(
                         GlueConstants.FOREIN_KEY).get(0));
                 serviceInfo.addInfoAttributes(siteAttrs);
 
@@ -681,11 +681,11 @@ public class BdiiService
             {
                 ServiceInfo serviceInfo = ServiceInfo.createLBService(lbUri.toString());
 
-                VAttribute[] attrs = getServiceVattributes(lbs.get(i));
+                Attribute[] attrs = getServiceVattributes(lbs.get(i));
                 serviceInfo.addInfoAttributes(attrs);
                 lbServices.add(serviceInfo);
 
-                VAttribute[] siteAttrs = getSiteAttributes(sites, (String) lbs.get(i).getExtAttribute(
+                Attribute[] siteAttrs = getSiteAttributes(sites, (String) lbs.get(i).getExtAttribute(
                         GlueConstants.FOREIN_KEY).get(0));
                 serviceInfo.addInfoAttributes(siteAttrs);
             }
@@ -698,7 +698,7 @@ public class BdiiService
         return lbServices;
     }
 
-    private VAttribute[] getLocationVattributes(GlueObject seLocationInfo)
+    private Attribute[] getLocationVattributes(GlueObject seLocationInfo)
     {
         return getGlueVattributes(seLocationInfo, GlueConstants.GRID_SITE_ATTRIBUTES);
     }
@@ -729,15 +729,15 @@ public class BdiiService
         }
     }
 
-    private VAttribute[] getGlueVattributes(GlueObject seBackEndInfo, String[] attrConst)
+    private Attribute[] getGlueVattributes(GlueObject seBackEndInfo, String[] attrConst)
     {
 
         // logger.debugPrintf("----------------getGlueVattributes------------------\n");
 
         Vector<Object> glueAtrrbutes;
-        ArrayList<VAttribute> vAtrrList = new ArrayList<VAttribute>();
+        ArrayList<Attribute> vAtrrList = new ArrayList<Attribute>();
         StringBuffer glueAtrr = new StringBuffer();
-        VAttribute[] vAtrr = new VAttribute[attrConst.length];
+        Attribute[] vAtrr = new Attribute[attrConst.length];
 
         for (int i = 0; i < attrConst.length; i++)
         {
@@ -761,7 +761,7 @@ public class BdiiService
                 attrName = attrConst[i].substring(4);
                 attrValue=glueAtrr.toString(); 
             
-                vAtrr[i] = new VAttribute(attrName, attrValue);
+                vAtrr[i] = new Attribute(attrName, attrValue);
                 glueAtrr.delete(0, glueAtrr.capacity());
                 // logger.debugPrintf(" %s : %s \n",
                 // attrName,glueAtrr);
@@ -769,7 +769,7 @@ public class BdiiService
             }
         }
 
-        VAttribute[] vAttr = new VAttribute[vAtrrList.size()];
+        Attribute[] vAttr = new Attribute[vAtrrList.size()];
         vAttr = vAtrrList.toArray(vAttr);
 
         // logger.debugPrintf("----------------------------------------------------\n");
@@ -777,12 +777,12 @@ public class BdiiService
         return vAttr;
     }
 
-    private VAttribute[] getSEBackendVattributes(GlueObject seBackEndInfo)
+    private Attribute[] getSEBackendVattributes(GlueObject seBackEndInfo)
     {
         return getGlueVattributes(seBackEndInfo, GlueConstants.SE_ATTRIBUTES);
     }
 
-    private VAttribute[] getServiceVattributes(GlueObject seBackEndInfo)
+    private Attribute[] getServiceVattributes(GlueObject seBackEndInfo)
     {
         return getGlueVattributes(seBackEndInfo, GlueConstants.SERVICE_ATTRIBUTES);
     }
@@ -963,10 +963,10 @@ public class BdiiService
 
                 ServiceInfo lfcInfo = ServiceInfo.createFrom(endpointURI, ServiceInfoType.LFC);
 
-                VAttribute[] attrs = getServiceVattributes(service);
+                Attribute[] attrs = getServiceVattributes(service);
                 lfcInfo.addInfoAttributes(attrs);
 
-                VAttribute[] siteAttrs = getSiteAttributes(sites, (String) service.getExtAttribute(
+                Attribute[] siteAttrs = getSiteAttributes(sites, (String) service.getExtAttribute(
                         GlueConstants.FOREIN_KEY).get(0));
                 lfcInfo.addInfoAttributes(siteAttrs);
 
@@ -981,7 +981,7 @@ public class BdiiService
         return lfcs;
     }
 
-    private VAttribute[] getSiteAttributes(ArrayList<GlueObject> sites, String serviceKey)
+    private Attribute[] getSiteAttributes(ArrayList<GlueObject> sites, String serviceKey)
     {
         for (GlueObject gSite : sites)
         {

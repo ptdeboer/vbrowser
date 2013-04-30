@@ -30,6 +30,8 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.ui.panels.monitoring.TaskMonitorDialog;
 import nl.esciencecenter.ptk.ui.panels.monitoring.TransferMonitorDialog;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
@@ -51,8 +53,6 @@ import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.ui.ICopyInteractor;
 import nl.nlesc.vlet.vrs.vfs.VFS;
@@ -92,9 +92,9 @@ public class BrowserInteractiveActions
         @Override
         public InteractiveAction askTargetExists(String message,
 				VRL source,
-				VAttribute sourceAttrs[], 
+				Attribute sourceAttrs[], 
 				VRL target, 
-				VAttribute targetAttrs[],
+				Attribute targetAttrs[],
 				StringHolder optNewName) 
 		{
             // already checked "Skip All"  or "Overwrite All"! 
@@ -166,9 +166,9 @@ public class BrowserInteractiveActions
         
         private InteractiveAction doAsk(String message, 
                 VRL source, 
-                VAttribute[] sourceAttrs, 
+                Attribute[] sourceAttrs, 
                 VRL target,
-                VAttribute[] targetAttrs, 
+                Attribute[] targetAttrs, 
                 StringHolder optNewName)
         {
         	
@@ -181,9 +181,9 @@ public class BrowserInteractiveActions
         	
         	CopyDialog dailog = CopyDialog.showCopyDialog(frame,
         			source,
-        			new VAttributeSet(sourceAttrs),
+        			new AttributeSet(sourceAttrs),
         			target,
-        			new VAttributeSet(targetAttrs),
+        			new AttributeSet(targetAttrs),
         			true); 
         
         	
@@ -1048,7 +1048,7 @@ public class BrowserInteractiveActions
         return name.replaceAll("[/\\;:!#$%*]*","_"); 
     }
 
-    public void interactiveDoProxyRefresh(VAttribute[] attrs)
+    public void interactiveDoProxyRefresh(Attribute[] attrs)
     {
         boolean val=SimpleDialog.askConfirmation("Your proxy has changed. Current connections need to be reset "
         		+"for the changes to take effect.\nProceed?"); 

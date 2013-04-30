@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.gui.editors;
 
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.nlesc.vlet.gui.panels.attribute.AttributePanelListener;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 
 /** Dedicated Controller for the Sever Configuration Panel */ 
@@ -38,7 +38,7 @@ public class ServerConfigController implements AttributePanelListener
 		this.editorController=controller; 
 	}
 
-	public void notifyAttributeChanged(VAttribute attr) 
+	public void notifyAttributeChanged(Attribute attr) 
 	{
 		// TODO Auto-generated method stub
 		

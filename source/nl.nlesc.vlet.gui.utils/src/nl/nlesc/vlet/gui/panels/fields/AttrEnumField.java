@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.gui.panels.fields;
 
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeType;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 
 public class AttrEnumField extends JStringComboBox implements IAttributeField
 {
@@ -87,7 +87,7 @@ public class AttrEnumField extends JStringComboBox implements IAttributeField
         return null;
     }
 
-    public void updateFrom(VAttribute attr)
+    public void updateFrom(Attribute attr)
     {
         this.setValue(attr.getStringValue());
     }
@@ -97,9 +97,9 @@ public class AttrEnumField extends JStringComboBox implements IAttributeField
     // this.setEditable(flag);
     // }
 
-    public VAttributeType getVAttributeType()
+    public AttributeType getVAttributeType()
     {
-        return VAttributeType.ENUM;
+        return AttributeType.ENUM;
     }
 
     /**

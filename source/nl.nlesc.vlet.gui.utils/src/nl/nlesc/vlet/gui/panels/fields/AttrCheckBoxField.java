@@ -22,8 +22,8 @@ package nl.nlesc.vlet.gui.panels.fields;
 
 import javax.swing.JCheckBox;
 
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeType;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 
 public class AttrCheckBoxField extends JCheckBox implements IAttributeField
 {
@@ -57,14 +57,14 @@ public class AttrCheckBoxField extends JCheckBox implements IAttributeField
         return this.isSelected();
     }
 
-    public void updateFrom(VAttribute attr)
+    public void updateFrom(Attribute attr)
     {
         this.setSelected(attr.getBooleanValue());
     }
 
-    public VAttributeType getVAttributeType()
+    public AttributeType getVAttributeType()
     {
-        return VAttributeType.BOOLEAN;
+        return AttributeType.BOOLEAN;
     }
 
     public void setEditable(boolean flag)

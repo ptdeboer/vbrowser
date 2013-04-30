@@ -21,11 +21,11 @@
 package nl.esciencecenter.vbrowser.vrs.octopus;
 
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 
@@ -116,12 +116,12 @@ public class OctopusFSFactory extends VFSFactory
 		String par1=context.getStringProperty("octopus.tentacles");
 		
 		if (StringUtil.isEmpty(par1)==false)
-		    info.setIfNotSet(new VAttribute("tentacles",par1), true);
+		    info.setIfNotSet(new Attribute("tentacles",par1), true);
 		else
-		    info.setIfNotSet(new VAttribute("tentacles","8"), true);
+		    info.setIfNotSet(new Attribute("tentacles","8"), true);
 		
 		// If property "parameter2" hasn't been specified, specify it as follows: 
-        info.setIfNotSet(new VAttribute("color","blue"), true);
+        info.setIfNotSet(new Attribute("color","blue"), true);
         
         // Important: Always perform an explicit update in registry after changing ! 
 		info.store(); 

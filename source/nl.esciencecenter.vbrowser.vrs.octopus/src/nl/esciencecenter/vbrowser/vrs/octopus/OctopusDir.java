@@ -25,10 +25,10 @@ import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 
@@ -173,10 +173,10 @@ public class OctopusDir extends VDir
         return list.toArray(); 
     }
     
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         if ("octoDir".equals(name))
-            return new VAttribute (name,true); 
+            return new Attribute (name,true); 
         else
             return super.getAttribute(name); 
     }

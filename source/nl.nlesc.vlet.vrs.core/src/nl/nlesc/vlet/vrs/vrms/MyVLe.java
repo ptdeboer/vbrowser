@@ -33,6 +33,7 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
@@ -51,7 +52,6 @@ import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VRSFactory;
 import nl.nlesc.vlet.vrs.VRenamable;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -232,27 +232,27 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         return attrNames;
     }
 
-    public VAttribute getAttribute(String name)
+    public Attribute getAttribute(String name)
     {
         if (name.startsWith("["))
-            return new VAttribute(name, "");
+            return new Attribute(name, "");
 
         // debug
         if (name.startsWith("-["))
-            return new VAttribute(name, "");
+            return new Attribute(name, "");
 
-        VAttribute attr = null;
+        Attribute attr = null;
 
         if (name.compareTo(ATTR_RESOURCE_TYPE) == 0)
         {
-            attr = new VAttribute(name, getResourceType());
+            attr = new Attribute(name, getResourceType());
             attr.setEditable(false);
             return attr;
         }
 
         if (name.compareTo(ATTR_NAME) == 0)
         {
-            attr = new VAttribute(name, getName());
+            attr = new Attribute(name, getName());
             attr.setEditable(true);
             return attr;
         }
@@ -274,7 +274,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         return null;
     }
 
-    public boolean setAttribute(VAttribute attr) throws VrsException
+    public boolean setAttribute(Attribute attr) throws VrsException
     {
         if (attr == null)
             return false;
@@ -1069,7 +1069,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         return false;
     }
 
-    public boolean setAttributes(VAttribute[] attrs) throws VrsException
+    public boolean setAttributes(Attribute[] attrs) throws VrsException
     {
         boolean result = true;
 

@@ -21,11 +21,11 @@
 package nl.nlesc.vlet.vrs;
 
 import nl.esciencecenter.ptk.data.IntegerHolder;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.error.ParameterError;
 import nl.nlesc.vlet.exception.NotImplementedException;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 
 /**
@@ -130,12 +130,12 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
         return false;
     }
 
-    public VAttribute[][] getNodeAttributes(String childNames[],
+    public Attribute[][] getNodeAttributes(String childNames[],
             String names[]) throws VrsException
     {
         VNode nodes[] = new VNode[childNames.length];
 
-        VAttribute attrs[][] = new VAttribute[nodes.length][];
+        Attribute attrs[][] = new Attribute[nodes.length][];
 
         for (int i = 0; i < childNames.length; i++)
         {
@@ -150,11 +150,11 @@ public abstract class VCompositeNode extends VNode implements VComposite// ,VCom
         return attrs;
     }
 
-    public VAttribute[][] getNodeAttributes(String names[]) throws VrsException
+    public Attribute[][] getNodeAttributes(String names[]) throws VrsException
     {
         VNode nodes[] = getNodes();
 
-        VAttribute attrs[][] = new VAttribute[nodes.length][];
+        Attribute attrs[][] = new Attribute[nodes.length][];
 
         for (int i = 0; i < nodes.length; i++)
         {

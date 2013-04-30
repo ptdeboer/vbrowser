@@ -30,14 +30,14 @@ import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_UNIQUE;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 
@@ -106,22 +106,22 @@ public class GftpFSFactory extends VFSFactory
         return info; 
     }
       
-    private VAttributeSet getDefaultServerAttributes() 
+    private AttributeSet getDefaultServerAttributes() 
     {
-    	VAttributeSet attrs=new VAttributeSet(); 
+    	AttributeSet attrs=new AttributeSet(); 
     	// set default server attributes (if not set already) 
-        attrs.put(new VAttribute(ATTR_PASSIVE_MODE,true),true);
+        attrs.put(new Attribute(ATTR_PASSIVE_MODE,true),true);
         // old resource description didn't have this one: 
-        attrs.put(new VAttribute(ATTR_ALLOW_3RD_PARTY,true),true);
-        attrs.put(new VAttribute(ATTR_HOSTNAME,"GFTPHOST"),true);
-        attrs.put(new VAttribute(ATTR_PORT,2811),true);
+        attrs.put(new Attribute(ATTR_ALLOW_3RD_PARTY,true),true);
+        attrs.put(new Attribute(ATTR_HOSTNAME,"GFTPHOST"),true);
+        attrs.put(new Attribute(ATTR_PORT,2811),true);
         
         
         // auto update when in debug mode ! 
         if (ClassLogger.getRootLogger().isLevelDebug())
         {
             //debug attribute
-            attrs.put(new VAttribute(GftpFileSystem.ATTR_GFTP_BLIND_MODE,false),true);   
+            attrs.put(new Attribute(GftpFileSystem.ATTR_GFTP_BLIND_MODE,false),true);   
         }
         
 		return attrs; 

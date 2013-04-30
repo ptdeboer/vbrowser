@@ -26,6 +26,7 @@ import java.awt.Point;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
 import java.awt.event.InputEvent;
 
 import javax.swing.JComponent;
@@ -351,7 +352,7 @@ public class VTransferHandler extends TransferHandler
     @Override
     public int getSourceActions(JComponent c)
     {
-        return COPY_OR_MOVE;
+        return COPY_OR_MOVE | DnDConstants.ACTION_LINK ;
     }
     
     

@@ -52,6 +52,8 @@ import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.NotImplementedException;
@@ -61,7 +63,6 @@ import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRenamable;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 
@@ -356,13 +357,13 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * Returns single File Resource Attribute. 
      * For optimized fetching of Attributes use getAttributes(String names[]) 
      */ 
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         if (name==null) 
             return null; 
 
         // Check if super class has this attribute
-        VAttribute supervalue = super.getAttribute(name);
+        Attribute supervalue = super.getAttribute(name);
 
         // Super class has this attribute, and since I do not overide
         // any attribute, return this one:
@@ -370,22 +371,22 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
             return supervalue;
 
         if (name.compareTo(ATTR_EXISTS) == 0)
-            return new VAttribute(name, exists());
+            return new Attribute(name, exists());
         else if (name.compareTo(ATTR_PARENT_DIRNAME) == 0)
-            return new VAttribute(name, getLocation().getDirname());
+            return new Attribute(name, getLocation().getDirname());
         else if (name.compareTo(ATTR_PATH) == 0)
-            return new VAttribute(name, getLocation().getPath());
+            return new Attribute(name, getLocation().getPath());
         else if (name.compareTo(ATTR_ISDIR) == 0)
-            return new VAttribute(name, isDir());
+            return new Attribute(name, isDir());
         else if (name.compareTo(ATTR_ISFILE) == 0)
-            return new VAttribute(name, isFile());
+            return new Attribute(name, isFile());
         else if (name.compareTo(ATTR_LENGTH) == 0)
         {
             if (this instanceof VFile)
             {
                 try
                 {
-                    return new VAttribute(name, ((VFile) this).getLength());
+                    return new Attribute(name, ((VFile) this).getLength());
                 }
                 catch (IOException e)
                 {
@@ -393,29 +394,29 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
                 }
             }
             // getLength for VDir not supported
-            return new VAttribute(name, 0);
+            return new Attribute(name, 0);
         }
         else if (name.compareTo(ATTR_GID) == 0)
         {
             if (this instanceof VUnixGroupMode)
-                return new VAttribute(name, ((VUnixGroupMode) this).getGid());
+                return new Attribute(name, ((VUnixGroupMode) this).getGid());
             // getLength for VDir not supported
-            return new VAttribute(name, "");
+            return new Attribute(name, "");
         }
         else if (name.compareTo(ATTR_UID) == 0)
         {
             if (this instanceof VUnixUserMode)
-                return new VAttribute(name, ((VUnixUserMode) this).getUid());
+                return new Attribute(name, ((VUnixUserMode) this).getUid());
             // getLength for VDir not supported
-            return new VAttribute(name, "");
+            return new Attribute(name, "");
         }
         else if (name.compareTo(ATTR_ISREADABLE) == 0)
-            return new VAttribute(name, isReadable());
+            return new Attribute(name, isReadable());
         /* Poor man's Permissions: */
         else if (name.compareTo(ATTR_ISWRITABLE) == 0)
-            return new VAttribute(name, isWritable());
+            return new Attribute(name, isWritable());
         else if (name.compareTo(ATTR_ISHIDDEN) == 0)
-            return new VAttribute(name, isHidden());
+            return new Attribute(name, isHidden());
 
         // VComposite attributes
         else if (name.compareTo(ATTR_NRCHILDS) == 0)
@@ -423,14 +424,14 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
             if (this instanceof VDir)
             {
                 VDir vdir = (VDir) this;
-                return new VAttribute(name, vdir.getNrOfNodes());
+                return new Attribute(name, vdir.getNrOfNodes());
             }
-            return new VAttribute(name, 0);
+            return new Attribute(name, 0);
         }
         else if (name.compareTo(ATTR_MODIFICATION_TIME) == 0)
         {
             // New TIME Type ! 
-            return VAttribute.createDateSinceEpoch(name,getModificationTime());
+            return VAttributeUtil.createDateFromMilliesSinceEpoch(name,getModificationTime());
         }
         /*else if (name.compareTo(ATTR_MODIFICATION_TIME_STRING) == 0)
         {
@@ -438,12 +439,12 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         }*/
         else if (name.compareTo(ATTR_PERMISSIONS_STRING) == 0)
         {
-            return new VAttribute(name,getPermissionsString()); 
+            return new Attribute(name,getPermissionsString()); 
         }
         else if (name.compareTo(ATTR_ISSYMBOLICLINK) == 0)
-            return new VAttribute(name, isSymbolicLink()); 
+            return new Attribute(name, isSymbolicLink()); 
         else if (name.compareTo(ATTR_SYMBOLICLINKTARGET) == 0)
-            return new VAttribute(name, getSymbolicLinkTarget());
+            return new Attribute(name, getSymbolicLinkTarget());
      
         else if ( (name.compareTo(ATTR_CHECKSUM) == 0) &&   (this instanceof VChecksum) )
         {
@@ -452,7 +453,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         	if ((types==null) || (types.length<=0))
         		return null; 
         	
-    		return new VAttribute(name, ((VChecksum)this).getChecksum(types[0]));
+    		return new Attribute(name, ((VChecksum)this).getChecksum(types[0]));
         }
         else if ( (name.compareTo(ATTR_CHECKSUM_TYPE) == 0) &&   (this instanceof VChecksum) )
         {
@@ -460,12 +461,12 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
             if ((types==null) || (types.length<=0))
                 return null; 
             
-            return new VAttribute(name,types [0]);  
+            return new Attribute(name,types [0]);  
         }
         else if ( (name.compareTo(ATTR_CHECKSUM_TYPES) == 0) &&   (this instanceof VChecksum) )
         {
             String types[]=((VChecksum)this).getChecksumTypes();
-            return new VAttribute(name,new StringList(types).toString(","));  
+            return new Attribute(name,new StringList(types).toString(","));  
         }
         /*
          * java support for local filesystem attributes is rather limited. Maybe
@@ -558,11 +559,11 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         return true; 
     }
 
-    public boolean setAttributes(VAttribute[] attrs) throws VrsException
+    public boolean setAttributes(Attribute[] attrs) throws VrsException
     {
         boolean result = true;
 
-        for (VAttribute attr:attrs) 
+        for (Attribute attr:attrs) 
         {
             Boolean res2=true;
 
@@ -605,7 +606,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      *  </pre>
      * 
      */
-    public boolean setAttribute(VAttribute attr) throws VrsException
+    public boolean setAttribute(Attribute attr) throws VrsException
     {
         String name = attr.getName();
 
@@ -632,7 +633,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     // ========================
     // ACL interface : Under Construction  
     // =========================
-    public void setACL(VAttribute[][] acl) throws VrsException
+    public void setACL(Attribute[][] acl) throws VrsException
     {
         if (this instanceof VUnixFileMode)
         {
@@ -651,7 +652,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * For more details {@linkplain VACL}.  
      * @see VACL 
      */ 
-    public VAttribute[][] getACL() throws VrsException
+    public Attribute[][] getACL() throws VrsException
     {
         if (this instanceof VUnixFileMode)
         {
@@ -660,10 +661,10 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         else
         {
             // default user readable writable list:
-            VAttribute attrs[][]=new VAttribute[1][]; 
-            attrs[0]=new VAttribute[3]; 
+            Attribute attrs[][]=new Attribute[1][]; 
+            attrs[0]=new Attribute[3]; 
 
-            attrs[0][0]=new VAttribute(ATTR_USERNAME,"current");
+            attrs[0][0]=new Attribute(ATTR_USERNAME,"current");
             attrs[0][0].setEditable(false);
             attrs[0][1]=getAttribute(ATTR_ISREADABLE); 
             attrs[0][1].setEditable(false); 
@@ -674,7 +675,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         }
     }
 
-    public VAttribute[][] getUXACL() throws VrsException
+    public Attribute[][] getUXACL() throws VrsException
     {
         if ((this instanceof VUnixFileMode)==false)
         {
@@ -696,7 +697,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * 
      * @throws VrsException
      */
-    public void setUXACL(VAttribute[][] acl)
+    public void setUXACL(Attribute[][] acl)
                 throws VrsException
     {
         if ((this instanceof VUnixFileMode)==false)
@@ -719,7 +720,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * Return null if not supported. 
      * @throws NestedIOException 
      */ 
-    public VAttribute[] getACLEntities() throws NestedIOException
+    public Attribute[] getACLEntities() throws NestedIOException
     {
         return null; 
     }
@@ -732,13 +733,13 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * @param writeThrough 
      * @param entity
      */
-    public VAttribute[] createACLRecord(VAttribute entity, boolean writeThrough) throws VrsException
+    public Attribute[] createACLRecord(Attribute entity, boolean writeThrough) throws VrsException
     {
         throw new NotImplementedException("Create new ACL Record not supported");
     }
 
     /** Delete entry in the ACL list or set permissions to none */ 
-    public boolean deleteACLEntity(VAttribute entity) throws VrsException
+    public boolean deleteACLEntity(Attribute entity) throws VrsException
     {
         throw new NotImplementedException("Entities can't be deleted");
     }

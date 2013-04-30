@@ -23,12 +23,12 @@ package test;
 import javax.swing.JFrame;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.panels.attribute.AttributePanel;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class testAttributePanel
 {
@@ -51,7 +51,7 @@ public class testAttributePanel
             e.printStackTrace();
         }
         
-        VAttributeSet attrs=lfcInfo.getAttributeSet();
+        AttributeSet attrs=lfcInfo.getAttributeSet();
         AttributePanel.showEditor(attrs); 
         
         // tests asynchtonous setAttributes ! 

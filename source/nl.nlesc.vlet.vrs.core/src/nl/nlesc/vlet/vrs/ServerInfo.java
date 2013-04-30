@@ -26,18 +26,16 @@ import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_USERNAME;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_VO_NAME;
-import static nl.nlesc.vlet.vrs.data.VAttributeConstants.AUTH_SCHEME;
-//import static nl.uva.vlet.data.VAttributeConstants.ATTR_PASSIVE_MODE;
 
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrms.SecretStore;
 import nl.nlesc.vlet.vrs.vrms.SecretStore.SecretCombi;
 
@@ -56,11 +54,6 @@ import nl.nlesc.vlet.vrs.vrms.SecretStore.SecretCombi;
  */
 public class ServerInfo
 {
-    // =======================================================================
-    // Class field
-    // =======================================================================
-
-
     /** Unique key used in server info registry ! */ 
     public static final String ATTR_SERVER_ID = "serverID";
     
@@ -102,14 +95,15 @@ public class ServerInfo
 
     public static final String ATTR_DEFAULT_YES_NO_ANSWER = "defaultYesNoAnswer";
 
+    public static final String AUTH_SCHEME = "AUTH_SCHEME"; 
+
     //  This is not an attribute, bute an attribute value 
     public static final String GSI_AUTH = "GSI_AUTH";
 
     //  This is not an attribute, bute an attribute value 
 	public static final String NO_AUTH = "NO_AUTH";
 	
-    public static final String authSchemes[] =
-           { GSI_AUTH, PASSWORD_AUTH };
+    public static final String authSchemes[] = { GSI_AUTH, PASSWORD_AUTH };
 
     /**
      * Meta Attributes control settings of this Server Info. 
@@ -140,7 +134,7 @@ public class ServerInfo
     // Instance fields
     // =======================================================================
     // 
-    protected VAttributeSet _serverAttributes = new VAttributeSet();
+    protected AttributeSet _serverAttributes = new AttributeSet();
 
     /** Key which as used to store key */  
     protected String serverKey;
@@ -148,7 +142,7 @@ public class ServerInfo
     protected VRSContext vrsContext = null;
 
     // New Read Only config! 
-    protected boolean isEditable=true; 
+    protected boolean isEditable=true;
     
     /** Protected constructor ! */
     protected ServerInfo()
@@ -183,7 +177,7 @@ public class ServerInfo
         init(context, location); 
     }
 
-    public ServerInfo(VRSContext context, VAttributeSet set)
+    public ServerInfo(VRSContext context, AttributeSet set)
     {
         init(context,null); 
         this._serverAttributes=set.duplicate();  
@@ -274,7 +268,7 @@ public class ServerInfo
         
         // this._serverAttributes = source._serverAttributes.duplicate();
         // Do a one by one copy (allows for checking !) 
-        for (VAttribute attr:source._serverAttributes.toArray(new VAttribute[0]))
+        for (Attribute attr:source._serverAttributes.toArray(new Attribute[0]))
         {
             // must duplicate !
             setAttribute(attr.duplicate()); 
@@ -295,9 +289,9 @@ public class ServerInfo
         return isEditable; 
     }
     
-    public VAttribute getAttribute(String name)
+    public Attribute getAttribute(String name)
     {
-        VAttribute attr= _serverAttributes.get(name);
+        Attribute attr= _serverAttributes.get(name);
         if (attr!=null)
             return attr.duplicate(); 
         return null; 
@@ -305,7 +299,7 @@ public class ServerInfo
     
     public String getAttributeValue(String name)
     {
-        VAttribute attr= _serverAttributes.get(name);
+        Attribute attr= _serverAttributes.get(name);
         if (attr==null)
         	return null;
         return attr.getStringValue(); 
@@ -342,7 +336,7 @@ public class ServerInfo
     }
 
     /** Set Attribute. All other setter call this one */ 
-    public void setAttribute(VAttribute attr)
+    public void setAttribute(Attribute attr)
     {
         if (attr == null)
             return; 
@@ -493,7 +487,7 @@ public class ServerInfo
     // =======================================================================
     
     /** Set Server Attribute. Update editable flag of VAttribute */
-    public void setAttribute(VAttribute attr, boolean editable)
+    public void setAttribute(Attribute attr, boolean editable)
     {
         if (attr == null)
             return; 
@@ -508,7 +502,7 @@ public class ServerInfo
 
     public String getStringProperty(String name)
     {
-        VAttribute val = this.getAttribute(name);
+        Attribute val = this.getAttribute(name);
 
         if (val != null)
             return val.getStringValue(); // explicit get StringValue 
@@ -518,7 +512,7 @@ public class ServerInfo
 
     public String getStringProperty(String name,String defaultValue)
     {
-        VAttribute val = this.getAttribute(name);
+        Attribute val = this.getAttribute(name);
 
         if (val != null)
             return val.getStringValue(); // explicit get StringValue 
@@ -528,7 +522,7 @@ public class ServerInfo
 
     public int getIntProperty(String name, int defVal)
     {
-        VAttribute attr = getAttribute(name);
+        Attribute attr = getAttribute(name);
 
         if (attr != null)
             return attr.getIntValue();
@@ -538,7 +532,7 @@ public class ServerInfo
 
     public boolean getBoolProperty(String name, boolean defVal)
     {
-        VAttribute attr = getAttribute(name);
+        Attribute attr = getAttribute(name);
 
         if (attr != null)
             return attr.getBooleanValue();
@@ -552,29 +546,29 @@ public class ServerInfo
      */  
     public void setAttribute(String name, String val, boolean editable)
     {
-        VAttribute attr=this.getAttribute(name);
+        Attribute attr=this.getAttribute(name);
         
         if (attr==null)
-            attr=new VAttribute(name,val);
+            attr=new Attribute(name,val);
         else
-            attr.setValue(val); 
+            attr.setObjectValue(val); 
                 
         this.setAttribute(attr,editable);  
     }
 
     public void setAttribute(String name, String val)
     {
-         setAttribute(new VAttribute(name,val),true); 
+         setAttribute(new Attribute(name,val),true); 
     } 
     
     public void setAttribute(String name, int intVal)
     {
-        this.setAttribute(new VAttribute(name, intVal),true);
+        this.setAttribute(new Attribute(name, intVal),true);
     }
     
     public void setAttribute(String name, boolean boolVal)
     {
-        setAttribute(new VAttribute(name, boolVal),true);
+        setAttribute(new Attribute(name, boolVal),true);
     }
     
     /** 
@@ -591,7 +585,7 @@ public class ServerInfo
 
     public void setPort(int port)
     {
-        setAttribute(new VAttribute(ATTR_PORT, port),true);
+        setAttribute(new Attribute(ATTR_PORT, port),true);
     }
 
     public String getHostname()
@@ -601,17 +595,17 @@ public class ServerInfo
 
     public void setScheme(String scheme)
     {
-        setAttribute(new VAttribute(ATTR_SCHEME, scheme),false); 
+        setAttribute(new Attribute(ATTR_SCHEME, scheme),false); 
     }
     
     public void setHostname(String val)
     {
-        setAttribute(new VAttribute(ATTR_HOSTNAME, val),true);
+        setAttribute(new Attribute(ATTR_HOSTNAME, val),true);
     }
 
     public void setVOName(String vo)
     {
-        setAttribute(new VAttribute(ATTR_VO_NAME, vo),true);
+        setAttribute(new Attribute(ATTR_VO_NAME, vo),true);
     }
     
     /**
@@ -685,11 +679,11 @@ public class ServerInfo
         
         // first is username
         if ((strs.length>=1) && StringUtil.isEmpty(strs[0])==false)  
-            setAttribute(new VAttribute(ATTR_USERNAME, strs[0]),true);
+            setAttribute(new Attribute(ATTR_USERNAME, strs[0]),true);
         
         // second is vo name 
         if ((strs.length>=2)  && StringUtil.isEmpty(strs[1])==false) 
-            setAttribute(new VAttribute(ATTR_PROFILE_ID, strs[1]),true);
+            setAttribute(new Attribute(ATTR_PROFILE_ID, strs[1]),true);
         
         if (userinf==null) 
             return; 
@@ -731,13 +725,13 @@ public class ServerInfo
 
     public void setUsername(String user)
     {
-        setAttribute(new VAttribute(ATTR_USERNAME, user),true);
+        setAttribute(new Attribute(ATTR_USERNAME, user),true);
     
     }
     
     protected void setProfileID(String id)
     {
-        setAttribute(new VAttribute(ATTR_PROFILE_ID,id),false);    
+        setAttribute(new Attribute(ATTR_PROFILE_ID,id),false);    
     }
     
     public String getScheme()
@@ -748,7 +742,7 @@ public class ServerInfo
    
     public boolean usePasswordAuth()
     {
-        String authScheme = getStringProperty(AUTH_SCHEME);
+        String authScheme = getStringProperty(ServerInfo.AUTH_SCHEME);
 
         if (authScheme == null)
             return false;
@@ -761,20 +755,20 @@ public class ServerInfo
 
     public void setUsePasswordAuth()
     {
-    	setAttribute(AUTH_SCHEME, PASSWORD_AUTH,false);
+    	setAttribute(ServerInfo.AUTH_SCHEME, PASSWORD_AUTH,false);
     }
 
     /**
      *  Only return server attributes without authentication attributes
      */
-    public VAttribute[] getAttributes()
+    public Attribute[] getAttributes()
     {
         // No server Attribute names defined 
         String[] attrNames = getAttributeNames();
 
         int len = attrNames.length;
 
-        VAttribute attrs[] = new VAttribute[attrNames.length];
+        Attribute attrs[] = new Attribute[attrNames.length];
 
         for (int i = 0; i < len; i++)
         {
@@ -800,9 +794,9 @@ public class ServerInfo
      * Returns complete attribute set as Array. 
      * Includes both server properties as well as (hidden) meta attributes. 
      */ 
-    public VAttribute[] getAllAttributes()
+    public Attribute[] getAllAttributes()
     {
-        return this._serverAttributes.toArray(new VAttribute[0]); 
+        return this._serverAttributes.toArray(new Attribute[0]); 
     }
 
     public boolean hasAttribute(String name)
@@ -811,7 +805,7 @@ public class ServerInfo
     }
     
     /** Return INTERNAL Set of attributes */ 
-    public VAttributeSet getAttributeSet()
+    public AttributeSet getAttributeSet()
     {
         return this._serverAttributes; 
     }
@@ -925,12 +919,12 @@ public class ServerInfo
 
     public void setUsePassiveMode(boolean val)
     {
-        setAttribute(new VAttribute(VletConfig.ATTR_PASSIVE_MODE,val),true); 
+        setAttribute(new Attribute(VletConfig.ATTR_PASSIVE_MODE,val),true); 
     }
     
     public void setAuthScheme(String authStr)
     {
-        setAttribute(AUTH_SCHEME, authStr,true);
+        setAttribute(ServerInfo.AUTH_SCHEME, authStr,true);
     }
 
     /**
@@ -938,14 +932,14 @@ public class ServerInfo
      */
     public void setUseGSIAuth()
     {
-    	VAttribute attr = new VAttribute(AUTH_SCHEME,GSI_AUTH);
+    	Attribute attr = new Attribute(ServerInfo.AUTH_SCHEME,GSI_AUTH);
     	setAttribute(attr,false);
     }
 
     public void setUseNoAuth()
     {
         // only return true if attribute has been set to GSI_AUTH!
-        setAttribute(AUTH_SCHEME, NO_AUTH,false);
+        setAttribute(ServerInfo.AUTH_SCHEME, NO_AUTH,false);
     }
     
     /** Return true if no authentication scheme has been set. */
@@ -964,7 +958,7 @@ public class ServerInfo
 
     public String getAuthScheme()
     {
-        return getStringProperty(AUTH_SCHEME);
+        return getStringProperty(ServerInfo.AUTH_SCHEME);
     }
 
     public boolean useGSIAuth()
@@ -1011,7 +1005,7 @@ public class ServerInfo
     public void setIfNotSet(String name, boolean value)
     {
 	// set editable server attributes: 
-        this.setIfNotSet(new VAttribute(name, value),true);
+        this.setIfNotSet(new Attribute(name, value),true);
     }
 
     /**
@@ -1023,7 +1017,7 @@ public class ServerInfo
     public void setIfNotSet(String name, String value)
     {
         // set boolean server attribute 
-        this.setIfNotSet(new VAttribute(name, value),true);
+        this.setIfNotSet(new Attribute(name, value),true);
     }
 
     /**
@@ -1032,16 +1026,16 @@ public class ServerInfo
     public void setIfNotSet(String name, int value)
     {
        // add new boolean attribute 
-        this.setIfNotSet(new VAttribute(name, value),true);
+        this.setIfNotSet(new Attribute(name, value),true);
     }
  
     /** 
      * Set attribute and update editable flag. Will update editable 
      * flag from existing attribute if it already exists. 
      */ 
-    public void setIfNotSet(VAttribute attr,boolean editable)
+    public void setIfNotSet(Attribute attr,boolean editable)
     {
-        VAttribute oldAttr=getAttribute(attr.getName()); 
+        Attribute oldAttr=getAttribute(attr.getName()); 
         if (oldAttr!=null)
             attr=oldAttr;
 
@@ -1065,13 +1059,13 @@ public class ServerInfo
     }
    
     /** Do some basic hardcoded checks on the server Attribute */ 
-    public static void checkServerAttribute(VRSContext context, VAttribute attr)
+    public static void checkServerAttribute(VRSContext context, Attribute attr)
     {
         if (attr == null)
             return;
 
         // SCHEME part in ServerInfo is never editable 
-        if (attr.hasName(AUTH_SCHEME))
+        if (attr.hasName(ServerInfo.AUTH_SCHEME))
         {
         	attr.setEditable(false); 
         }
@@ -1086,7 +1080,7 @@ public class ServerInfo
                     attr.setValue(true);
                 
                 attr.setEditable(false);
-                attr.setHelpText("Global PassiveMode has been set to true. Cannot edit Server specific settings."); 
+               //attr.setHelpText("Global PassiveMode has been set to true. Cannot edit Server specific settings."); 
             }
                 
         }
@@ -1094,7 +1088,7 @@ public class ServerInfo
 
    /** 
     * Update ServerInfo: Remove Attributes if the name is not in the specified name list 
-    * @see nl.nlesc.vlet.vrs.data.VAttributeSet#remoteIfNotIn(StringList)
+    * @see nl.esciencecenter.vbrowser.vrs.data.AttributeSet#remoteIfNotIn(StringList)
     */ 
    public void removeAttributesIfNotIn(StringList attrNames)
    {
@@ -1117,17 +1111,17 @@ public class ServerInfo
    /** 
     * Update ServerInfo: Match VAttibutes with template. 
     * Copy fields and (enum) type from template but keep value. 
-    * @see nl.nlesc.vlet.vrs.data.VAttributeSet#matchTemplate(VAttributeSet,boolean) 
+    * @see nl.esciencecenter.vbrowser.vrs.data.AttributeSet#matchTemplate(AttributeSet,boolean) 
     */ 
-   public void matchTemplate(VAttributeSet templateSet,boolean removeOthers)
+   public void matchTemplate(AttributeSet templateSet,boolean removeOthers)
    {
       // check: 
       
-      VAttributeSet  set=new VAttributeSet();
+      AttributeSet  set=new AttributeSet();
       // add defaults first: 
-      set.put(new VAttribute(VAttributeConstants.ATTR_SCHEME,getScheme()),false); 
-      set.put(new VAttribute(ATTR_SERVER_ID,this.getID()),false); 
-      set.put(new VAttribute(ATTR_SERVER_NAME,getName()),true);
+      set.put(new Attribute(VAttributeConstants.ATTR_SCHEME,getScheme()),false); 
+      set.put(new Attribute(ATTR_SERVER_ID,this.getID()),false); 
+      set.put(new Attribute(ATTR_SERVER_NAME,getName()),true);
       
       // re insert all values using the specified key list:
       set.putAll(templateSet,templateSet.getKeyArray(new String[0])); 
@@ -1148,7 +1142,7 @@ public class ServerInfo
 	   
 	   //check ID
        debug(">>> New Server ID="+id); 
-       this._serverAttributes.put(new VAttribute(ATTR_SERVER_ID,id));
+       this._serverAttributes.put(new Attribute(ATTR_SERVER_ID,id));
        this.serverKey=id; 
        return id; 
    }
@@ -1176,21 +1170,21 @@ public class ServerInfo
     * Stores copy of  VAttributeSet as-is !
     * Does not do any checking ! 
     */
-   public void setServerAttributes(VAttributeSet attrs)
+   public void setServerAttributes(AttributeSet attrs)
    {
       this._serverAttributes=attrs.duplicate(); 
    }
 
-   public void updateServerAttributesFrom(VAttributeSet resourceAttributes,boolean append)
+   public void updateServerAttributesFrom(AttributeSet resourceAttributes,boolean append)
    {
        // iterate over new attributes: 
-       for (VAttribute attr:resourceAttributes.toArray(new VAttribute[0]))
+       for (Attribute attr:resourceAttributes.toArray(new Attribute[0]))
        {
            String name=attr.getName(); 
            if (this._serverAttributes.containsKey(name))
            {
-               VAttribute orgAttr=this.getAttribute(name);
-               orgAttr.setValue(attr.getValue()); 
+               Attribute orgAttr=this.getAttribute(name);
+               orgAttr.setObjectValue(attr.getValue()); 
                this._serverAttributes.put(orgAttr); 
            }
            else if (append)

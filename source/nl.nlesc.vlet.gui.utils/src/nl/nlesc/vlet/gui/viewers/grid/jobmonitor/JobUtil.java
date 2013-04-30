@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -32,7 +33,6 @@ import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vjs.VJob;
 
 /** 
@@ -157,7 +157,7 @@ public class JobUtil
         return getJob(id).getJobAttributeNames(); 
     }
 
-    public VAttribute[] getAttributes(String id, String[] attrNames) throws VrsException
+    public Attribute[] getAttributes(String id, String[] attrNames) throws VrsException
     {
         return getJob(id).getAttributes(attrNames);
     }

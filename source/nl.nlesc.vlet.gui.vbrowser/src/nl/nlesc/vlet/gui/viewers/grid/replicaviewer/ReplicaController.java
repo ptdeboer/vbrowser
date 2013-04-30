@@ -36,6 +36,7 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.ui.panels.monitoring.TaskMonitorDialog;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -52,7 +53,6 @@ import nl.nlesc.vlet.gui.widgets.NavigationBar;
 import nl.nlesc.vlet.gui.widgets.NavigationBar.NavigationAction;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class ReplicaController implements ActionListener, ListSelectionListener, ListDataListener
 {
@@ -527,7 +527,7 @@ public class ReplicaController implements ActionListener, ListSelectionListener,
                         try
                         {
                             boolean checksum = getModel().hasHeader(VAttributeConstants.ATTR_CHECKSUM);
-                            VAttributeSet attrs = replicaUtil.getReplicaAttributes(repVrl, checksum);
+                            AttributeSet attrs = replicaUtil.getReplicaAttributes(repVrl, checksum);
                             dataModel.setReplicaAttributes(repVrl, attrs);
                         }
                         catch (Exception e)
@@ -783,7 +783,7 @@ public class ReplicaController implements ActionListener, ListSelectionListener,
                         {
                             try
                             {
-                                VAttributeSet newAttrs = replicaUtil.getReplicaAttributes(vrl, attrs);
+                                AttributeSet newAttrs = replicaUtil.getReplicaAttributes(vrl, attrs);
                                 model.setReplicaAttributes(vrl, newAttrs);
                             }
                             catch (VrsException e)

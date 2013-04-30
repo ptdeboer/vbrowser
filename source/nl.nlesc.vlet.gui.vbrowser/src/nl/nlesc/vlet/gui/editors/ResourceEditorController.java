@@ -51,6 +51,8 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.Messages;
@@ -62,9 +64,7 @@ import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 
 
@@ -129,7 +129,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
 		}
 		
 		// notification from server attribute panel 
-		public void notifyAttributeChanged(VAttribute attr) 
+		public void notifyAttributeChanged(Attribute attr) 
 		{
 			// Event from config attrs panel
 			updateServerConfigAttribute(attr); 
@@ -157,7 +157,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
 		}
 		
 		// notification from config attribute panel 
-		public void notifyAttributeChanged(VAttribute attr) 
+		public void notifyAttributeChanged(Attribute attr) 
 		{
 			// Event from config attrs panel
 			putResourceAttribute(attr); 
@@ -248,11 +248,11 @@ public class ResourceEditorController implements ActionListener, WindowListener,
 	// === Properties and Server Configuration === // 
 	// ============================================//
 	
-    private VAttributeSet resourceAttributes=new VAttributeSet();
+    private AttributeSet resourceAttributes=new AttributeSet();
 	
 	private ServerInfo serverInfo;
 
-	private VAttributeSet serverConfigurationAttrs=null;
+	private AttributeSet serverConfigurationAttrs=null;
 
 	private boolean busyLoading;
 
@@ -372,9 +372,9 @@ public class ResourceEditorController implements ActionListener, WindowListener,
     	{
     		// recreate: but use optional text still stored in the the TextFields ! :
     		if (this.resourceAttributes.get(ATTR_URI_FRAGMENT)==null)
-    			this.resourceAttributes.put(new VAttribute(ATTR_URI_FRAGMENT,resourceForm.uriFragmentField.getText()));
+    			this.resourceAttributes.put(new Attribute(ATTR_URI_FRAGMENT,resourceForm.uriFragmentField.getText()));
     		if (this.resourceAttributes.get(ATTR_URI_QUERY)==null)
-    			this.resourceAttributes.put(new VAttribute(ATTR_URI_QUERY,resourceForm.uriQueryField.getText())); 
+    			this.resourceAttributes.put(new Attribute(ATTR_URI_QUERY,resourceForm.uriQueryField.getText())); 
     		
     	}
     	else
@@ -417,7 +417,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
         
         this.resourceForm.applyB.setEnabled(false); 
           
-        final VAttributeSet attrs=this.resourceAttributes; 
+        final AttributeSet attrs=this.resourceAttributes; 
         
         // ================================================================
         // Update Location with server username if needed by serverInfo
@@ -426,7 +426,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
         if (this.enableServerConfig && this.serverConfigurationAttrs!=null) // && (this.originalServerInfo.getNeedUserinfo()))
         { 
             // just copy it if it has the attribute: 
-            VAttribute attr = this.serverConfigurationAttrs.get(VAttributeConstants.ATTR_USERNAME);
+            Attribute attr = this.serverConfigurationAttrs.get(VAttributeConstants.ATTR_USERNAME);
             if (attr!=null)
                 attrs.put(attr); 
         }
@@ -440,12 +440,12 @@ public class ResourceEditorController implements ActionListener, WindowListener,
 					{
 						
 						// apply attribute and signal refresh ! 
-						for (VAttribute attr:attrs.toArray(new VAttribute[]{}))
+						for (Attribute attr:attrs.toArray(new Attribute[]{}))
 						{
 							debug("applying attribute:"+attr); 
 						}
 						
-						resourceNode.setAttributes(attrs.toArray(new VAttribute[]{}),singnalRefresj);
+						resourceNode.setAttributes(attrs.toArray(new Attribute[]{}),singnalRefresj);
 						
 						if (enableServerConfig)
 						    saveServerConfig();
@@ -514,15 +514,15 @@ public class ResourceEditorController implements ActionListener, WindowListener,
                 return; 
             }
             
-            VAttribute attr = this.resourceAttributes.get(name); 
+            Attribute attr = this.resourceAttributes.get(name); 
             if (attr!=null) 
             {
-            	attr.setValue(field.getValue()); // update attribute 
+            	attr.setObjectValue(field.getValue()); // update attribute 
                 resourceAttributes.put(attr); //store/update
             }
             else
             	// put as is: 
-            	this.resourceAttributes.put(new VAttribute(field.getVAttributeType(),name,field.getValue()));
+            	this.resourceAttributes.put(new Attribute(field.getVAttributeType(),name,field.getValue()));
            
             // New Scheme -> enable host+port 
             if (name.compareToIgnoreCase(ATTR_SCHEME)==0)
@@ -570,7 +570,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
 	}
 
 	/** Stores copy of attribute set to edit */ 
-	public void setAttributes(VAttributeSet attrs, boolean editable)
+	public void setAttributes(AttributeSet attrs, boolean editable)
     {
 	    // Keep duplicate !
 	    this.resourceAttributes=attrs.duplicate();
@@ -609,7 +609,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
 	
 	protected void updateLocationFields()
 	{
-	    VAttributeSet attrs=this.resourceAttributes; 
+	    AttributeSet attrs=this.resourceAttributes; 
 	 
 	 	if (attrs==null)
 		{
@@ -635,7 +635,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
 	 	// Editable/Enabled attributes 
 	 	// =========================
 
-	 	for (VAttribute attr:resourceAttributes.toArray(new VAttribute[0]))
+	 	for (Attribute attr:resourceAttributes.toArray(new Attribute[0]))
 	 	{
 	 		IAttributeField field=this.resourceForm.getAttributeField(attr.getName());
 	 		if (field!=null)
@@ -695,7 +695,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
     private void updatePropertiesPanelAttrs()
     {
 		// update configuration panel with attribute which are not yeat displayed. 
-		VAttributeSet propsAttrs = resourceAttributes.duplicate(); 
+		AttributeSet propsAttrs = resourceAttributes.duplicate(); 
 
 		// remove header attributes
 		for (String attr:resourceHeaderAttrNames)
@@ -873,7 +873,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
         // Pre Fill Attributes in fiels to show location, etc when doing
         // background fetching. 
         // ===
-        VAttributeSet attrs=new VAttributeSet(); 
+        AttributeSet attrs=new AttributeSet(); 
         this.locationVrl=pnode.getVRL(); 
         
         attrs.set(ATTR_NAME,pnode.getName());
@@ -922,11 +922,11 @@ public class ResourceEditorController implements ActionListener, WindowListener,
         try
         {
             resourceIcon=pnode.getDefaultIcon(48,false);
-            VAttributeSet attrs = pnode.getAttributeSet();
+            AttributeSet attrs = pnode.getAttributeSet();
             this.isEditable=pnode.isEditable(); 
             
          // apply attribute and signal refresh ! 
-            for (VAttribute attr:attrs.toArray(new VAttribute[0]))
+            for (Attribute attr:attrs.toArray(new Attribute[0]))
             {
                 debug("New (re)read attribute:"+attr); 
             }
@@ -982,11 +982,11 @@ public class ResourceEditorController implements ActionListener, WindowListener,
 		return this.panelListener; 
 	}
 	
-	public void putResourceAttribute(VAttribute attr)
+	public void putResourceAttribute(Attribute attr)
 	{
 		debug("update Configuration Attribute:"+attr);
 	    	
-		VAttribute confAttr=this.resourceAttributes.get(attr.getName());
+		Attribute confAttr=this.resourceAttributes.get(attr.getName());
 		
 		if (confAttr==null)
 		{
@@ -996,7 +996,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
 	    	
 		this.setHasChanged(true);
 	    	 
-		confAttr.setValue(attr.getValue()); 
+		confAttr.setObjectValue(attr.getValue()); 
 		resourceAttributes.put(confAttr);
     }
 	
@@ -1028,7 +1028,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
     
     protected String getUserinfo()
     {
-        VAttribute attr= this.resourceAttributes.get(VAttributeConstants.ATTR_USERNAME); 
+        Attribute attr= this.resourceAttributes.get(VAttributeConstants.ATTR_USERNAME); 
         if (attr==null)
              return null; 
          
@@ -1059,16 +1059,16 @@ public class ResourceEditorController implements ActionListener, WindowListener,
                 return false; 
             }
             
-            VAttribute attr = this.serverConfigurationAttrs.get(name); 
+            Attribute attr = this.serverConfigurationAttrs.get(name); 
             if (attr!=null) 
             {
-            	attr.setValue(field.getValue()); // update attribute 
+            	attr.setObjectValue(field.getValue()); // update attribute 
             	serverConfigurationAttrs.put(attr); //store/update
             }
             else
             {
             	// put as is: 
-            	this.serverConfigurationAttrs.put(new VAttribute(field.getVAttributeType(),name,field.getValue()));
+            	this.serverConfigurationAttrs.put(new Attribute(field.getVAttributeType(),name,field.getValue()));
             }
             
             // if is header field: 
@@ -1082,14 +1082,14 @@ public class ResourceEditorController implements ActionListener, WindowListener,
     }
    
    
-    public void updateServerConfigAttribute(VAttribute attr)
+    public void updateServerConfigAttribute(Attribute attr)
     {
         if (this.serverConfigurationAttrs==null)
             return; 
         
     	debug("update Configuration Attribute:"+attr);
     	
-    	VAttribute confAttr=this.serverConfigurationAttrs.get(attr.getName());
+    	Attribute confAttr=this.serverConfigurationAttrs.get(attr.getName());
     	
     	if (confAttr==null)
     	{
@@ -1099,7 +1099,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
     	
     	this.setHasChanged(true);
     	 
-    	confAttr.setValue(attr.getValue()); 
+    	confAttr.setObjectValue(attr.getValue()); 
     	serverConfigurationAttrs.put(confAttr); 
     	
     }
@@ -1117,7 +1117,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
 
     protected void doNewServerConfig() 
 	{
-		VAttributeSet attrs=null; 
+		AttributeSet attrs=null; 
 		this.serverInfo=null;
 		this.serverConfigurationAttrs=null; 
 		String scheme=this.getCurrentScheme(); 
@@ -1246,7 +1246,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
             if (info!=null)
             {
                 // COpy of conifigurable server attributes: 
-                this.serverConfigurationAttrs=new VAttributeSet(info.getAttributes()); 
+                this.serverConfigurationAttrs=new AttributeSet(info.getAttributes()); 
             }
         }
         
@@ -1281,7 +1281,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
     	
    		if (this.serverConfigurationAttrs!=null)
    		{	
-   			VAttributeSet attrSet=this.serverConfigurationAttrs.duplicate();
+   			AttributeSet attrSet=this.serverConfigurationAttrs.duplicate();
    			
    			String userInf=this.getUserinfo(); 
    			

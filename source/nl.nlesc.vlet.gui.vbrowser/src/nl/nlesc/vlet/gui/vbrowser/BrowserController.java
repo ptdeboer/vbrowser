@@ -40,6 +40,7 @@ import javax.swing.SwingUtilities;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
@@ -77,7 +78,6 @@ import nl.nlesc.vlet.gui.viewers.ViewerEvent;
 import nl.nlesc.vlet.gui.viewers.ViewerManager;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.EventType;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
@@ -2656,14 +2656,14 @@ public class BrowserController implements WindowListener, GridProxyListener,
     }
 
     @Override
-    public void notifyProxyAttributesChanged(GridProxy proxy,VAttribute attrs[])
+    public void notifyProxyAttributesChanged(GridProxy proxy,Attribute attrs[])
     {
         int index=0;
         boolean reset=false; 
         boolean validityChanged=false; 
         boolean valid=proxy.isValid(); 
         
-        for (VAttribute attr:attrs)
+        for (Attribute attr:attrs)
         {
             if (attr.hasName(GridProxy.ATTR_VALIDITY))
                 validityChanged=true; 

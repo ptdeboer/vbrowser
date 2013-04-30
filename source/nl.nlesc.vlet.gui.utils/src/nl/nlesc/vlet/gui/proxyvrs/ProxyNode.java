@@ -26,6 +26,8 @@ import javax.swing.Icon;
 
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -34,9 +36,7 @@ import nl.nlesc.vlet.gui.data.ResourceRef;
 import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRenamable;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.events.ResourceEventListener;
 
@@ -224,20 +224,20 @@ public abstract class ProxyNode
         // createLinkTo(pnode);
     }
 
-    public VAttribute[] getAttributes() throws VrsException
+    public Attribute[] getAttributes() throws VrsException
     {
         return getAttributes(getAttributeNames());
     }
 
     /** get Ordened Attribute set in the specified order */
-    public VAttributeSet getAttributeSet(String[] names) throws VrsException
+    public AttributeSet getAttributeSet(String[] names) throws VrsException
     {
-        return new VAttributeSet(getAttributes(names));
+        return new AttributeSet(getAttributes(names));
     }
 
-    public VAttributeSet getAttributeSet() throws VrsException
+    public AttributeSet getAttributeSet() throws VrsException
     {
-        return new VAttributeSet(getAttributes());
+        return new AttributeSet(getAttributes());
     }
 
     /**
@@ -269,15 +269,15 @@ public abstract class ProxyNode
      */
     public String getTargetMimeType() throws VrsException
     {
-        VAttribute attr = this.getAttribute(VAttributeConstants.ATTR_TARGET_MIMETYPE);
+        Attribute attr = this.getAttribute(VAttributeConstants.ATTR_TARGET_MIMETYPE);
         if (attr != null)
             return attr.getStringValue();
         return null;
     }
 
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
-        VAttribute attrs[] = getAttributes(new String[]
+        Attribute attrs[] = getAttributes(new String[]
         { name });
 
         if ((attrs == null) || (attrs.length <= 0))
@@ -379,19 +379,19 @@ public abstract class ProxyNode
 
     abstract public String getIconURL(int size) throws VrsException;
 
-    abstract public VAttribute[] getAttributes(String[] attrNames) throws VrsException;
+    abstract public Attribute[] getAttributes(String[] attrNames) throws VrsException;
 
-    abstract public void setAttributes(VAttribute[] attrs, boolean refresh) throws VrsException;
+    abstract public void setAttributes(Attribute[] attrs, boolean refresh) throws VrsException;
 
     abstract public UIPresentation getPresentation();
 
-    abstract public VAttribute[][] getACL() throws VrsException;
+    abstract public Attribute[][] getACL() throws VrsException;
 
-    abstract public void setACL(VAttribute[][] acl) throws VrsException;
+    abstract public void setACL(Attribute[][] acl) throws VrsException;
 
-    abstract public VAttribute[] getACLEntities() throws VrsException;
+    abstract public Attribute[] getACLEntities() throws VrsException;
 
-    abstract public VAttribute[] createACLRecord(VAttribute entityAttr, boolean writeThrough) throws VrsException;
+    abstract public Attribute[] createACLRecord(Attribute entityAttr, boolean writeThrough) throws VrsException;
 
     //
     // Logical Tree Stucture + Composite Modification Methods:

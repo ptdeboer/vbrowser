@@ -38,9 +38,9 @@ import javax.swing.table.TableModel;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.nlesc.vlet.gui.UILogger;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 /** 
  * Generic Resource Table. 
@@ -152,9 +152,9 @@ public class ResourceTable extends JTable
            TableColumn column = cmodel.getColumn(i);
            Object obj=getModel().getValueAt(0,i); 
            
-           if (obj instanceof VAttribute)
+           if (obj instanceof Attribute)
            {
-               VAttribute attr=(VAttribute)obj;
+               Attribute attr=(Attribute)obj;
                
                if (attr.isEditable()==true)
                {

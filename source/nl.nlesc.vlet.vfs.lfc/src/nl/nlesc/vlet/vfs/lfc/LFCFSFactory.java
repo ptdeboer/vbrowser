@@ -25,6 +25,8 @@ import java.util.Vector;
 
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
@@ -35,9 +37,7 @@ import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vrl.VRLUtil;
@@ -105,16 +105,16 @@ public class LFCFSFactory extends VFSFactory
         // super update: 
         info=super.updateServerInfo(context, info, loc);
 
-        VAttributeSet attrs = null;
+        AttributeSet attrs = null;
         if (loc!=null)
             attrs=VRLUtil.getQueryAttributes(loc);
         
         // strip old attributes and match default 
         info.matchTemplate(LFCFSConfig.createDefaultServerAttributes(context,attrs),true);
-        VAttribute prefSEs=info.getAttribute(LFCFSConfig.ATTR_PREFERREDSSES);
+        Attribute prefSEs=info.getAttribute(LFCFSConfig.ATTR_PREFERREDSSES);
         // Bug in previous version: strip out white spaces: 
         String listStr=StringUtil.stripWhiteSpace(prefSEs.getStringValue()); 
-        prefSEs.setValue(listStr); 
+        prefSEs.setObjectValue(listStr); 
         info.setAttribute(prefSEs); // update! 
         
         //GlobalConfig.infoPrintf(this,"List preferred SEs=%s\n",prefSEs); 

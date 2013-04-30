@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.swing.tree.TreePath;
 
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.proxymodel.ProxyDataProducer;
@@ -34,7 +35,6 @@ import nl.nlesc.vlet.gui.proxyvrs.ProxyResourceEventListener;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
 import nl.nlesc.vlet.gui.vbrowser.BrowserController;
 import nl.nlesc.vlet.gui.view.ViewNode;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 
@@ -111,8 +111,8 @@ public class ResourceTreeDataProducer extends ProxyDataProducer
     		{
     			case SET_ATTRIBUTES:
     			{
-    				VAttribute[] attrs = e.getAttributes();
-    				for (VAttribute attr:attrs)
+    				Attribute[] attrs = e.getAttributes();
+    				for (Attribute attr:attrs)
     				{
     					// check name:
     

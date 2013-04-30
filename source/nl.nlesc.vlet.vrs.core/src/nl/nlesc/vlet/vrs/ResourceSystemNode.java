@@ -22,11 +22,11 @@ package nl.nlesc.vlet.vrs;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 /**
  * ResourceSystemNode is a VResourceSystem adaptor class.  
@@ -72,7 +72,7 @@ public abstract class ResourceSystemNode extends VCompositeNode implements VReso
 	private ServerInfo serverInfo;
 	
 	/** Extra instance attributes */ 
-	protected VAttributeSet instanceAttributes=new VAttributeSet(); 
+	protected AttributeSet instanceAttributes=new AttributeSet(); 
 	
 	@Override
 	public String getResourceType()
@@ -96,7 +96,7 @@ public abstract class ResourceSystemNode extends VCompositeNode implements VReso
      */
     public VRL resolve(String path) throws VRLSyntaxException
     {
-        return this.getVRL().resolveSibling("/").resolvePath(path);
+        return this.getVRL().uriResolve("/").resolvePath(path);
     }
     
     /** Default implementation is to browse the remote server home  */ 
@@ -196,18 +196,18 @@ public abstract class ResourceSystemNode extends VCompositeNode implements VReso
 		return list.toArray(); 
 	}
 	
-	public VAttribute getAttribute(String name) throws VrsException 
+	public Attribute getAttribute(String name) throws VrsException 
 	{
 		if  (StringUtil.compare(name, ATTR_SERVERID)==0) 
 		{
-			return new VAttribute(name,getID());
+			return new Attribute(name,getID());
 		}	
 		else if  (StringUtil.compare(name, ATTR_ISCONNECTED)==0) 
 		{
-			return new VAttribute(name,isConnected());
+			return new Attribute(name,isConnected());
 		}	
 		
-		VAttribute attr=this.serverInfo.getAttribute(name);
+		Attribute attr=this.serverInfo.getAttribute(name);
 		
 		if (attr!=null)
 			return attr;
@@ -222,17 +222,17 @@ public abstract class ResourceSystemNode extends VCompositeNode implements VReso
 		return super.getAttribute(name);
 	}
 	
-	protected void putInstanceAttribute(VAttribute attr)
+	protected void putInstanceAttribute(Attribute attr)
 	{
 		this.instanceAttributes.put(attr.getName(),attr); 
 	}
 	
 	protected void putInstanceAttribute(String name, String value) 
 	{
-		this.instanceAttributes.put(new VAttribute(name,value));
+		this.instanceAttributes.put(new Attribute(name,value));
 	}
 	
-	protected VAttribute getInstanceAttribute(String name)
+	protected Attribute getInstanceAttribute(String name)
 	{
 		return this.instanceAttributes.get(name);  
 	}

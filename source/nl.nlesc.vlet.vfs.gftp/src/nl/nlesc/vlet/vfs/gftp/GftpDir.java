@@ -25,9 +25,9 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -233,12 +233,12 @@ public class GftpDir extends VDir
     }
 
     @Override
-    public VAttribute[] getAttributes(String names[]) throws VrsException
+    public Attribute[] getAttributes(String names[]) throws VrsException
     {
         if (names == null)
             return null;
 
-        VAttribute attrs[] = new VAttribute[names.length];
+        Attribute attrs[] = new Attribute[names.length];
 
         // Optimized getAttribute: use single entry for all
         MlsxEntry entry = this.getMlsxEntry();
@@ -252,7 +252,7 @@ public class GftpDir extends VDir
     }
 
     @Override
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         return getAttribute(this.getMlsxEntry(), name);
     }
@@ -266,7 +266,7 @@ public class GftpDir extends VDir
      * @return
      * @throws VrsException
      */
-    public VAttribute getAttribute(MlsxEntry entry, String name) throws VrsException
+    public Attribute getAttribute(MlsxEntry entry, String name) throws VrsException
     {
         // is possible due to optimization:
 
@@ -276,7 +276,7 @@ public class GftpDir extends VDir
         // get Gftp specific attribute and update
         // the mslxEntry if needed
 
-        VAttribute attr = GftpFileSystem.getAttribute(entry, name);
+        Attribute attr = GftpFileSystem.getAttribute(entry, name);
 
         if (attr != null)
             return attr;

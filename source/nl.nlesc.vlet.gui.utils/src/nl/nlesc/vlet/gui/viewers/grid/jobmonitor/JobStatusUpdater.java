@@ -24,13 +24,13 @@ package nl.nlesc.vlet.gui.viewers.grid.jobmonitor;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyResourceEventListener;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.events.EventType;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 
@@ -156,7 +156,7 @@ public class JobStatusUpdater implements ProxyResourceEventListener
                 // Update all VAttribute currently shown in table.
                 if (attrNames!=null)
                 {
-                    VAttribute attrs[]=getJobUtil().getAttributes(id,attrNames);
+                    Attribute attrs[]=getJobUtil().getAttributes(id,attrNames);
                     jobStatusModel.updateJobAttributes(id,attrs);
                 }
                
@@ -208,8 +208,8 @@ public class JobStatusUpdater implements ProxyResourceEventListener
 			{
 				if (type==EventType.SET_ATTRIBUTES)
 				{
-					VAttribute[] attrs = event.getAttributes(); 
-					VAttributeSet attrSet=new VAttributeSet(attrs);
+					Attribute[] attrs = event.getAttributes(); 
+					AttributeSet attrSet=new AttributeSet(attrs);
 					// update table
 				}
 			}

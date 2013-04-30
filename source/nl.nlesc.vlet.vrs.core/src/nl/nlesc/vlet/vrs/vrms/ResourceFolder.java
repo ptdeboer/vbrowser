@@ -33,6 +33,8 @@ import java.io.OutputStream;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.ResourceDeletionFailedException;
@@ -50,9 +52,7 @@ import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VRSFactory;
 import nl.nlesc.vlet.vrs.VRenamable;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.data.xml.VCompositePersistance;
 import nl.nlesc.vlet.vrs.data.xml.XMLData;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
@@ -68,7 +68,7 @@ import nl.nlesc.vlet.vrs.io.VStreamReadable;
 public class ResourceFolder extends LogicalFolderNode<VNode> implements VCompositePersistance, VEditable, VRenamable,
         VDuplicatable<ResourceFolder>, VDeletable, VCompositeDeletable, VStreamReadable, IPresentable
 {
-    VAttributeSet attributes = new VAttributeSet();
+    AttributeSet attributes = new AttributeSet();
 
     private VRL descriptionLocation;
 
@@ -94,7 +94,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         init();
     }
 
-    public ResourceFolder(VRSContext context, VAttributeSet attrSet, VRL vrl)
+    public ResourceFolder(VRSContext context, AttributeSet attrSet, VRL vrl)
     {
         super(context, vrl);
         init(attrSet);
@@ -120,7 +120,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         return group;
     }
 
-    private void init(VAttributeSet attrSet)
+    private void init(AttributeSet attrSet)
     {
         // duplicate
         attributes = attrSet.duplicate();
@@ -135,7 +135,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
     private void initDefaultAttributes()
     {
         if (attributes == null)
-            attributes = new VAttributeSet();
+            attributes = new AttributeSet();
 
         setIfNotSet(ATTR_ICONURL, "vle-world-folder.png");
         setIfNotSet(ATTR_NAME, "<NO NAME>");
@@ -143,17 +143,17 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
 
     private void setIfNotSet(String name, String newValue)
     {
-        VAttribute attr = attributes.get(name);
+        Attribute attr = attributes.get(name);
         String value = null;
 
         if (attr != null)
             value = attr.getStringValue();
 
         if (StringUtil.isEmpty(value))
-            attributes.put(new VAttribute(name, newValue));
+            attributes.put(new Attribute(name, newValue));
     }
 
-    public VAttribute[] getAttributes() throws VrsException
+    public Attribute[] getAttributes() throws VrsException
     {
         return getAttributes(getAttributeNames());
     }
@@ -169,13 +169,13 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         return attributeNames;
     }
 
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         if (name == null)
             return null;
 
         // check attribute store first:
-        VAttribute attr = this.attributes.get(name);
+        Attribute attr = this.attributes.get(name);
 
         // check super (standard or derived attributes, like: scheme,path,etc!)
         if (attr == null)
@@ -198,7 +198,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
 
     public void setIconURL(String str)
     {
-        this.attributes.put(new VAttribute(VAttributeConstants.ATTR_ICONURL, str));
+        this.attributes.put(new Attribute(VAttributeConstants.ATTR_ICONURL, str));
     }
 
     public String getIconURL()
@@ -224,7 +224,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         return this.vrsContext.getMyVLe().createResourceTypes();
     }
 
-    public VAttributeSet getPersistantAttributes()
+    public AttributeSet getPersistantAttributes()
     {
         return this.attributes;
     }
@@ -238,7 +238,7 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
     {
         synchronized (attributes)
         {
-            this.attributes.set(new VAttribute(ATTR_NAME, name));
+            this.attributes.set(new Attribute(ATTR_NAME, name));
         }
 
     }
@@ -253,12 +253,12 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         return super.getMimeType(); // should be vlet-resourcefolder-xml
     }
 
-    public boolean setAttribute(VAttribute attr) throws VrsException
+    public boolean setAttribute(Attribute attr) throws VrsException
     {
         return setAttribute(attr, true);
     }
 
-    public boolean setAttribute(VAttribute attr, boolean save) throws VrsException
+    public boolean setAttribute(Attribute attr, boolean save) throws VrsException
     {
         synchronized (attributes)
         {
@@ -271,11 +271,11 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         return true;
     }
 
-    public boolean setAttributes(VAttribute[] attrs) throws VrsException
+    public boolean setAttributes(Attribute[] attrs) throws VrsException
     {
         synchronized (attributes)
         {
-            for (VAttribute attr : attrs)
+            for (Attribute attr : attrs)
                 setAttribute(attr, false);
         }
 

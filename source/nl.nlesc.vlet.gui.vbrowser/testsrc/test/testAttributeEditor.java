@@ -21,13 +21,13 @@
 package test;
 
 
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.gui.panels.attribute.AttributeEditorForm;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 
 public class testAttributeEditor
@@ -38,7 +38,7 @@ public class testAttributeEditor
         
         int len=20; 
         
-        VAttribute attrs[]=new VAttribute[len];
+        Attribute attrs[]=new Attribute[len];
         
         ServerInfo lfcInfo=null;
         
@@ -51,7 +51,7 @@ public class testAttributeEditor
             e.printStackTrace();
         }
         
-        VAttribute lfcAttrs[]=lfcInfo.getAttributes(); 
+        Attribute lfcAttrs[]=lfcInfo.getAttributes(); 
         
         for (int i=0;i<len;i++)
         {
@@ -61,7 +61,7 @@ public class testAttributeEditor
             }
             else
             {
-                attrs[i]=new VAttribute("Field:"+i,"Value"+i);
+                attrs[i]=new Attribute("Field:"+i,"Value"+i);
                 attrs[i].setEditable((i%2)==0);
             }
         }
@@ -75,7 +75,7 @@ public class testAttributeEditor
         if ((attrs==null) || (attrs.length<=0)) 
             System.out.println("NO NEW ATTRIBUTES!");
         else
-            for(VAttribute a:attrs)
+            for(Attribute a:attrs)
             {
                 System.out.println(">>> Changed Attrs["+i++ +"]="+a);
             }

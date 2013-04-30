@@ -338,7 +338,7 @@ public class VHTMLViewer extends InternalViewer  implements HyperlinkListener
     
     private VRL resolve(VRL base, String uriStr) throws Exception
     {
-        VRL loc = base.resolveSibling(uriStr);
+        VRL loc = base.uriResolve(uriStr);
         return loc;
     }
 

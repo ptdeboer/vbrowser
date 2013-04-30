@@ -46,6 +46,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.event.ChangeListener;
 
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UIPlatform;
 import nl.nlesc.vlet.gui.panels.attribute.AttributePanel;
@@ -56,7 +57,6 @@ import nl.nlesc.vlet.gui.panels.fields.AttrSchemeField;
 import nl.nlesc.vlet.gui.panels.fields.IAttributeField;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -882,7 +882,7 @@ public class ResourceEditor extends javax.swing.JDialog
         return iconUrlField;
     }
 
-    public void setConfigPanelAttributes(VAttributeSet attrs, boolean editable)
+    public void setConfigPanelAttributes(AttributeSet attrs, boolean editable)
     {
         this.propertiesAttrPanel.setAttributes(attrs, editable);
 
@@ -1054,7 +1054,7 @@ public class ResourceEditor extends javax.swing.JDialog
         return propertiesTopPanel;
     }
 
-    public void setServerConfigAttributes(VAttributeSet attrSet, boolean editable)
+    public void setServerConfigAttributes(AttributeSet attrSet, boolean editable)
     {
         this.serverConfigAttrPanel.setAttributes(attrSet, editable);
 

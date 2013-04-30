@@ -28,8 +28,8 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.nlesc.vlet.gui.UILogger;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 public class AttributeEditorController implements ActionListener, WindowListener
 {
@@ -54,7 +54,7 @@ public class AttributeEditorController implements ActionListener, WindowListener
     public void update()
     {
         // get attribute from attribute panel and update attribute object 
-        VAttribute attrs[]=attrEditorDialog.infoPanel.getAttributes();
+        Attribute attrs[]=attrEditorDialog.infoPanel.getAttributes();
         
         if (attrs==null) 
         {

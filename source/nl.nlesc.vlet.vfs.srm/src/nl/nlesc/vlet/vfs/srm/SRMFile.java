@@ -30,10 +30,10 @@ import java.io.InputStream;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.vfs.VChecksum;
 import nl.nlesc.vlet.vrs.vfs.VFile;
@@ -104,9 +104,9 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
 
     @Override
-    public VAttribute[] getAttributes(String names[]) throws VrsException
+    public Attribute[] getAttributes(String names[]) throws VrsException
     {
-        VAttribute[] attrs = new VAttribute[names.length];
+        Attribute[] attrs = new Attribute[names.length];
 
         // optional caching:
         for (int i = 0; i < names.length; i++)
@@ -121,7 +121,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
 
     @Override
-    public boolean setAttribute(VAttribute attr) throws VrsException
+    public boolean setAttribute(Attribute attr) throws VrsException
     {
         String name = attr.getName();
 
@@ -134,24 +134,24 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
     }
     
     @Override
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
-        VAttribute attr = null;
+        Attribute attr = null;
 
         if (name.compareTo(SRMConstants.ATTR_SRM_RETENTION_POLICY) == 0)
         {
-            attr = new VAttribute(name, this.getRetentionPolicy());
+            attr = new Attribute(name, this.getRetentionPolicy());
             //Not Now: it is possible to set this attribute using setAttribute() method.
            // attr.setEditable(true);
         }
         else if (name.compareTo(SRMConstants.ATTR_SRM_STORAGE_TYPE) == 0)
         {
-            attr = new VAttribute(name, this.getFileStorageType());
+            attr = new Attribute(name, this.getFileStorageType());
         }
         else if (name.compareTo(VAttributeConstants.ATTR_TRANSPORT_URI) == 0)
         {
             // A VRL is an URI.
-            attr = new VAttribute(name, this.getTransportVRL());
+            attr = new Attribute(name, this.getTransportVRL());
         }
         // else if (name.startsWith(VAttributeConstants.ATTR_CHECKSUM))
         // {

@@ -37,6 +37,9 @@ import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
+import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
@@ -48,8 +51,6 @@ import nl.nlesc.vlet.vfs.jcraft.ssh.SSHChannel.SSHChannelOptions;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeType;
 import nl.nlesc.vlet.vrs.io.VShellChannelCreator;
 import nl.nlesc.vlet.vrs.net.VOutgoingTunnelCreator;
 import nl.nlesc.vlet.vrs.vfs.FileSystemNode;
@@ -1237,7 +1238,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         return defaultHome;
     }
 
-    public VAttribute[][] getACL(String path, boolean isDir) throws VrsException
+    public Attribute[][] getACL(String path, boolean isDir) throws VrsException
     {
         SftpATTRS attrs = getSftpAttrs(path);
         // sftp support unix styl file permissions
@@ -1246,7 +1247,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
 
     }
 
-    public void setACL(String path, VAttribute[][] acl, boolean isDir) throws VrsException
+    public void setACL(String path, Attribute[][] acl, boolean isDir) throws VrsException
     {
         int mode = VFS.convertACL2FileMode(acl, isDir);
 
@@ -1281,7 +1282,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
 
     SftpATTRS attrs = null;
 
-    public VAttribute getAttribute(VFSNode node, SftpATTRS attrs, String name, boolean isDir, boolean update)
+    public Attribute getAttribute(VFSNode node, SftpATTRS attrs, String name, boolean isDir, boolean update)
             throws VrsException
     {
 
@@ -1300,40 +1301,40 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
 
         if (name.compareTo(ATTR_MODIFICATION_TIME) == 0)
         {
-            return VAttribute.createDateSinceEpoch(name, getModificationTime(attrs));
+            return VAttributeUtil.createDateFromMilliesSinceEpoch(name, getModificationTime(attrs));
         }
         else if (name.compareTo(ATTR_ACCESS_TIME) == 0)
         {
-            return new VAttribute(VAttributeType.TIME, name, getAccessTime(attrs));
+            return new Attribute(AttributeType.DATETIME, name, getAccessTime(attrs));
         }
         else if (name.compareTo(ATTR_LENGTH) == 0)
         {
-            return new VAttribute(name, attrs.getSize());
+            return new Attribute(name, attrs.getSize());
         }
         else if (name.compareTo(ATTR_UID) == 0)
         {
-            return new VAttribute(name, attrs.getUId());
+            return new Attribute(name, attrs.getUId());
         }
         else if (name.compareTo(ATTR_GID) == 0)
         {
-            return new VAttribute(name, attrs.getGId());
+            return new Attribute(name, attrs.getGId());
         }
         else if (name.compareTo(ATTR_UNIX_FILE_MODE) == 0)
         {
             // note sftp attributes return higher value the (8)07777 (isdir and
             // islink)
-            return new VAttribute(name, "0" + Integer.toOctalString(attrs.getPermissions() % 07777));
+            return new Attribute(name, "0" + Integer.toOctalString(attrs.getPermissions() % 07777));
         }
 
         return null;
     }
 
-    public VAttribute[] getAttributes(VFSNode node, SftpATTRS holder, String[] names, boolean isDir) throws VrsException
+    public Attribute[] getAttributes(VFSNode node, SftpATTRS holder, String[] names, boolean isDir) throws VrsException
     {
         if (names == null)
             return null;
 
-        VAttribute attrs[] = new VAttribute[names.length];
+        Attribute attrs[] = new Attribute[names.length];
 
         for (int i = 0; i < names.length; i++)
         {
@@ -1620,7 +1621,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     {
         ServerInfo info = this.getServerInfo();
 
-        VAttribute attr = info.getAttribute(SftpFSFactory.ATTR_KNOWN_HOSTS_FILE);
+        Attribute attr = info.getAttribute(SftpFSFactory.ATTR_KNOWN_HOSTS_FILE);
 
         if (attr == null)
             return getDefaultKnownHostsFile();
@@ -1632,7 +1633,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     {
         ServerInfo info = this.getServerInfo();
 
-        VAttribute attr = info.getAttribute(SftpFSFactory.ATTR_SSH_CONFIG_DIR);
+        Attribute attr = info.getAttribute(SftpFSFactory.ATTR_SSH_CONFIG_DIR);
 
         if (attr == null)
             return getDefaultSSHDir();

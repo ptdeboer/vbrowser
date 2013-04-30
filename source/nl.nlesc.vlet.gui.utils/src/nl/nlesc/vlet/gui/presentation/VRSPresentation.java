@@ -20,11 +20,7 @@
 
 package nl.nlesc.vlet.gui.presentation;
 
-import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ATTEMPTS;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_CREATION_TIME;
-import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_DEST_HOSTNAME;
-import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_DEST_URL;
-import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_FAULT;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_ICON;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_INDEX;
@@ -38,9 +34,6 @@ import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
-import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SOURCE_FILENAME;
-import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SOURCE_HOSTNAME;
-import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SOURCE_URL;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_STATUS;
 
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
@@ -53,51 +46,63 @@ import nl.nlesc.vlet.vrs.vfs.VFS;
  */
 public class VRSPresentation
 {
-    public static String defaultVFSAttributeNames[] = { ATTR_ICON, ATTR_NAME, ATTR_RESOURCE_TYPE, ATTR_LENGTH,
-    // ATTR_MODIFICATION_TIME_STRING,
+    public static String defaultVFSAttributeNames[] = 
+        {
+            ATTR_ICON, 
+            ATTR_NAME, 
+            ATTR_RESOURCE_TYPE, 
+            ATTR_LENGTH,
+            // ATTR_MODIFICATION_TIME_STRING,
             ATTR_MODIFICATION_TIME, ATTR_MIMETYPE, ATTR_PERMISSIONS_STRING,
-    // ATTR_ISHIDDEN,
-    // ATTR_ISLINK
-    // VFS.ATTR_ISFILE,
-    // VFS.ATTR_ISDIR
+            // ATTR_ISHIDDEN,
+            // ATTR_ISLINK
+            // VFS.ATTR_ISFILE,
+            // VFS.ATTR_ISDIR
     };
 
-    /** Default Attribute Name to show for VFSNodes */
-    public static String defaultSRBAttributeNames[] = { ATTR_ICON, ATTR_NAME, ATTR_RESOURCE_TYPE, ATTR_LENGTH, "Resource",
-    // ATTR_MODIFICATION_TIME_STRING,
+    /** 
+     * Default Attribute Name to show for VFSNodes 
+     */
+    public static String defaultSRBAttributeNames[] = 
+        {
+            ATTR_ICON, 
+            ATTR_NAME, 
+            ATTR_RESOURCE_TYPE,
+            ATTR_LENGTH, 
+            "Resource",
+            // ATTR_MODIFICATION_TIME_STRING,
             ATTR_MODIFICATION_TIME, ATTR_MIMETYPE,
-    // ATTR_PERMISSIONS_STRING,
-    // ATTR_ISHIDDEN,
-    // ATTR_ISLINK
-    // VFS.ATTR_ISFILE,
-    // VFS.ATTR_ISDIR
-    };
+            // ATTR_PERMISSIONS_STRING,
+            // ATTR_ISHIDDEN,
+            // ATTR_ISLINK
+            // VFS.ATTR_ISFILE,
+            // VFS.ATTR_ISDIR
+        };
     
-    /** Default Attribute Name to show for VNodes */
-    public static String defaultNodeAttributeNames[] = { ATTR_ICON, ATTR_RESOURCE_TYPE, ATTR_NAME,
-    // ATTR_LENGTH,
-            ATTR_MIMETYPE };
+    /** 
+     * Default Attribute Name to show for VNodes 
+     */
+    public static String defaultNodeAttributeNames[] = 
+        {
+            ATTR_ICON, 
+            ATTR_RESOURCE_TYPE, 
+            ATTR_NAME,
+            // ATTR_LENGTH,
+            ATTR_MIMETYPE
+        };
 
     /** Default Attribute Name to show for VNodes */
-    public static String myvleAttributeNames[] = { ATTR_ICON, ATTR_RESOURCE_TYPE, ATTR_NAME, ATTR_SCHEME, ATTR_HOSTNAME,
+    public static String myvleAttributeNames[] = 
+        {
+            ATTR_ICON, 
+            ATTR_RESOURCE_TYPE,
+            ATTR_NAME,
+            ATTR_SCHEME, 
+            ATTR_HOSTNAME,
             ATTR_PATH,
-    // ATTR_LENGTH,
-    // ATTR_MIMETYPE
-    };
-
-    /** Default Attribute names to show for RTFSJobs */
-    public static String defaultRFTJobAttributeNames[] = { ATTR_ICON, ATTR_RESOURCE_TYPE, ATTR_NAME, "requestStatus",
-            ATTR_FAULT, "transfersFinished", "transfersActive", "transfersRestarted", "transfersFailed",
-            "transfersCancelled", "transfersPending",
-
-    };
-
-    /** Default Attribute names to show for RTFSJobs */
-    public static String defaultRFSTransferAttributeNames[] = { ATTR_ICON, ATTR_RESOURCE_TYPE, ATTR_NAME, ATTR_ATTEMPTS,
-            ATTR_STATUS, ATTR_FAULT, ATTR_SOURCE_HOSTNAME, ATTR_SOURCE_FILENAME, ATTR_SOURCE_URL, ATTR_DEST_HOSTNAME,
-            ATTR_DEST_URL
-
-    };
+            // ATTR_LENGTH,
+            // ATTR_MIMETYPE
+        };
 
     /** @see getPresentationFor(String, String, String, boolean) */
     public static UIPresentation getPresentationFor(String scheme, String host, String type)
@@ -150,35 +155,6 @@ public class VRSPresentation
             // dont sort MyVle !
             pres.setAutoSort(false);
         }
-
-        // presentation=this.getVRS().getDefaultPresentation();
-        // if (this.vnode.getType().compareTo(VRS.RFTS_JOB_TYPE)==0)
-        else if (scheme.compareTo(VRS.RFTS_SCHEME) == 0)
-        {
-
-            if (type.compareTo(VRS.RFTS_JOB_TYPE) == 0)
-            {
-                // RFT Job, presentation is about childs: which is RFT
-                // Transfers:
-                pres.setChildAttributeNames(VRSPresentation.defaultRFSTransferAttributeNames);
-            }
-            else if (type.compareTo(VRS.RFTS_SERVER_TYPE) == 0)
-            {
-                pres.setChildAttributeNames(VRSPresentation.defaultRFTJobAttributeNames);// null-
-                                                                                      // >
-                                                                                      // show
-                                                                                      // ALL
-            }
-            else
-            {
-                // not possible
-                pres.setChildAttributeNames(null);
-            }
-
-            // names are numbers in RFT:
-            pres.setAttributePreferredWidth(ATTR_NAME, 40);
-
-        }
         else if (scheme.compareTo(VRS.SRB_SCHEME) == 0)
         {
             pres.setChildAttributeNames(VRSPresentation.defaultSRBAttributeNames);
@@ -187,27 +163,6 @@ public class VRSPresentation
         {
             pres.setChildAttributeNames(VRSPresentation.defaultVFSAttributeNames);
         }
-        // Handled by WMS and LB implementations: 
-//        else if (type.compareTo(VJS.TYPE_VJOBMANAGER) == 0)
-//        {
-//            pres.setChildAttributeNames(Presentation.defaultJobManagerAttributeNames);
-//            // shorter attribute widths:
-//            pres.setAttributePreferredWidth(ATTR_NAME, 120);
-//            pres.setAttributePreferredWidth(ATTR_PATH, 120);
-//        }
-//        else if ((type.compareTo(VJS.TYPE_VJOBGROUP) == 0) || (type.compareToIgnoreCase("MyJobs") == 0))
-//        {
-//            pres.setChildAttributeNames(Presentation.defaultJobGroupAttributeNames);
-//            // shorter attribute widths:
-//            pres.setAttributePreferredWidth(ATTR_NAME, 160);
-//            pres.setAttributePreferredWidth(ATTR_PATH, 180);
-//            pres.setAttributePreferredWidth(ATTR_JOB_ERROR_TEXT, 240);
-//            pres.setAttributePreferredWidth(ATTR_JOB_STATUS_UPDATE_TIME, 180);
-//            pres.setAttributePreferredWidth(ATTR_JOB_SUBMISSION_TIME, 180);
-//
-//            pres.setAutoSort(false);
-//            pres.getAutoSort();
-//        }
         else
         {
             pres.setChildAttributeNames(VRSPresentation.defaultNodeAttributeNames);
@@ -251,12 +206,6 @@ public class VRSPresentation
         pres.setAttributePreferredWidth(ATTR_STATUS, 48);
         pres.setAttributePreferredWidth(ATTR_MODIFICATION_TIME, 120);
         pres.setAttributePreferredWidth(ATTR_CREATION_TIME, 120);
-        // RFT attributes
-        pres.setAttributePreferredWidth(ATTR_SOURCE_URL, 200);
-        pres.setAttributePreferredWidth(ATTR_DEST_URL, 200);
-        pres.setAttributePreferredWidth(ATTR_DEST_HOSTNAME, 128);
-        pres.setAttributePreferredWidth(ATTR_SOURCE_HOSTNAME, 128);
-        pres.setAttributePreferredWidth(ATTR_FAULT, 120);
         // VQueues and VJobs:
         pres.setAttributePreferredWidth(ATTR_MAX_WALL_TIME, 100);
         pres.setAttributePreferredWidth(ATTR_NODE_TEMP_DIR, 160);

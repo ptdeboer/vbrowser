@@ -1165,7 +1165,7 @@ public class VletConfig
         {
             try
             {
-                vrls.add(getBaseLocation().resolveSibling(caPaths[i])); 
+                vrls.add(getBaseLocation().resolvePath(caPaths[i])); 
             }
             catch (Exception e)
             {

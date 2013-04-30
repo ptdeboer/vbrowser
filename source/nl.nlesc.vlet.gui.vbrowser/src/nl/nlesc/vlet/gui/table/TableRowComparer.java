@@ -21,8 +21,8 @@
 package nl.nlesc.vlet.gui.table;
 
 import nl.esciencecenter.ptk.util.Comparer;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.nlesc.vlet.gui.table.VRSTableModel.RowObject;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 public class TableRowComparer implements Comparer<RowObject>
 {
@@ -85,12 +85,12 @@ public class TableRowComparer implements Comparer<RowObject>
         
         int result;  
         
-        if ((o1 instanceof VAttribute) && (o2 instanceof VAttribute))
+        if ((o1 instanceof Attribute) && (o2 instanceof Attribute))
         {
         	if (ignoreCase)
-        		result=order*((VAttribute)o1).compareToIgnoreCase((VAttribute)o2);
+        		result=order*((Attribute)o1).compareToIgnoreCase((Attribute)o2);
         	else
-        		result=order*((VAttribute)o1).compareTo((VAttribute)o2);
+        		result=order*((Attribute)o1).compareTo((Attribute)o2);
         }
         else
         {

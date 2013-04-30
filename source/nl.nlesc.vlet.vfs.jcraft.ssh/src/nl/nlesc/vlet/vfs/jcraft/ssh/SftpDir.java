@@ -26,9 +26,9 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -141,12 +141,12 @@ public class SftpDir extends VDir implements VUnixFileAttributes
     }
     
     @Override
-    public VAttribute[][] getACL() throws VrsException
+    public Attribute[][] getACL() throws VrsException
     {
         return server.getACL(getPath(),true); 
     }
     @Override
-    public void setACL(VAttribute acl[][]) throws VrsException
+    public void setACL(Attribute acl[][]) throws VrsException
     {
         server.setACL(getPath(),acl,true); 
     }
@@ -160,13 +160,13 @@ public class SftpDir extends VDir implements VUnixFileAttributes
     }
    
     
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         if (name==null) 
             return null;
         
         // update attributes: 
-        VAttribute  attr=this.getStaticAttribute(name); 
+        Attribute  attr=this.getStaticAttribute(name); 
         if (attr!=null)
             return attr; 
         
@@ -179,14 +179,14 @@ public class SftpDir extends VDir implements VUnixFileAttributes
         return super.getAttribute(name); 
     }
     
-    public VAttribute[] getAttributes(String names[]) throws VrsException
+    public Attribute[] getAttributes(String names[]) throws VrsException
     {
         if (names==null) 
             return null; 
         
         // optimized Gftp Attributes: 
         
-        VAttribute[] vattrs=server.getAttributes(this,getSftpAttributes(),names,false);
+        Attribute[] vattrs=server.getAttributes(this,getSftpAttributes(),names,false);
         
         for (int i=0;i<names.length;i++)
         {

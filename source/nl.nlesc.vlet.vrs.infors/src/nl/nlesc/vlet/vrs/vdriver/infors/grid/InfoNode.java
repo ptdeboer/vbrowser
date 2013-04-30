@@ -22,14 +22,14 @@ package nl.nlesc.vlet.vrs.vdriver.infors.grid;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.Presentation;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrms.LogicalResourceNode;
 
 
@@ -55,7 +55,7 @@ public class InfoNode extends LogicalResourceNode
         return lnode;
     }
 
-    private VAttributeSet infoAttrs;
+    private AttributeSet infoAttrs;
 
     public InfoNode(VRSContext context, VRL logicalLocation)
     {
@@ -101,9 +101,9 @@ public class InfoNode extends LogicalResourceNode
         return lnode;
     }
 
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
-        VAttribute attr = null;
+        Attribute attr = null;
 
         if (infoAttrs != null)
         {
@@ -125,7 +125,7 @@ public class InfoNode extends LogicalResourceNode
     }
 
     // extra information
-    public void setInfoAttributes(VAttributeSet attrs)
+    public void setInfoAttributes(AttributeSet attrs)
     {
         this.infoAttrs = attrs;
     }

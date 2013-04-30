@@ -20,13 +20,13 @@
 
 package nl.nlesc.vlet.vfs.srm;
 
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 
@@ -93,7 +93,7 @@ public class SRMFSFactory extends VFSFactory
 			info=ServerInfo.createFor(context, loc); 
 		}
 		
-		VAttributeSet tmpSet=new VAttributeSet();
+		AttributeSet tmpSet=new AttributeSet();
 		
 		tmpSet.set(VAttributeConstants.ATTR_PORT,8443); 
 		tmpSet.set(VAttributeConstants.ATTR_HOSTNAME,"SRMHOST"); 

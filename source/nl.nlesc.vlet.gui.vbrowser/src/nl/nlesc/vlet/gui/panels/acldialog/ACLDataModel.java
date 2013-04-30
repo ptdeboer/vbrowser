@@ -21,9 +21,9 @@
 package nl.nlesc.vlet.gui.panels.acldialog;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTableModel;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class ACLDataModel extends ResourceTableModel
 {
@@ -48,7 +48,7 @@ public class ACLDataModel extends ResourceTableModel
         this.clearData(); 
     }
     
-    public void setACL(VAttribute[][] attrs)
+    public void setACL(Attribute[][] attrs)
     {
         this.clearData(); // keep headers ? 
         
@@ -72,22 +72,22 @@ public class ACLDataModel extends ResourceTableModel
         this.setHeaders(headers);
         this.setAllHeaders(headers);
         // set data: 
-        for (VAttribute row[]:attrs)
+        for (Attribute row[]:attrs)
         {
             String key=""+index++; 
-            VAttributeSet attrSet=new VAttributeSet(row); 
+            AttributeSet attrSet=new AttributeSet(row); 
             this.addRow(key, attrSet);
         }
     }
 
-    public void addACLRecord(VAttribute[] record)
+    public void addACLRecord(Attribute[] record)
     {
         String key=""+this.getRowCount();  
-        VAttributeSet attrSet=new VAttributeSet(record); 
+        AttributeSet attrSet=new AttributeSet(record); 
         this.addRow(key, attrSet);
     }
     
-    public VAttribute[][] getACL()
+    public Attribute[][] getACL()
     {// should have same format: 
         return this.getAttributeData(); 
     }

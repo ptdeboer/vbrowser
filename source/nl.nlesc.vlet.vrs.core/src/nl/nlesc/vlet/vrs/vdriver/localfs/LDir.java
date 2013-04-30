@@ -28,12 +28,12 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.ResourceReadAccessDeniedException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -166,13 +166,13 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
         return superNames;
     }
 
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         if (name == null)
             return null;
 
         // Check if super class has this attribute
-        VAttribute supervalue = super.getAttribute(name);
+        Attribute supervalue = super.getAttribute(name);
 
         // Super class has this attribute, and since I do not overide
         // any attribute, return this one:
@@ -180,7 +180,7 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
             return supervalue;
 
         if (name.compareTo(ATTR_UNIX_FILE_MODE) == 0)
-            return new VAttribute(name, Integer.toOctalString(getMode()));
+            return new Attribute(name, Integer.toOctalString(getMode()));
 
         // return null;
         return null; //

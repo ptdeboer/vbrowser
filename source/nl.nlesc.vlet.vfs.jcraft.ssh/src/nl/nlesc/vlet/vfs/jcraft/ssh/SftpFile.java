@@ -25,11 +25,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.io.VRandomReadable;
 import nl.nlesc.vlet.vrs.io.VStreamAppendable;
@@ -260,13 +260,13 @@ public class SftpFile extends VFile implements VUnixFileAttributes,
     }
     
     @Override
-    public VAttribute[][] getACL() throws VrsException
+    public Attribute[][] getACL() throws VrsException
     {
         return server.getACL(getPath(),false);
     }
 
     @Override
-    public void setACL(VAttribute acl[][]) throws VrsException
+    public void setACL(Attribute acl[][]) throws VrsException
     {
         server.setACL(getPath(),acl,true); 
     }
@@ -319,13 +319,13 @@ public class SftpFile extends VFile implements VUnixFileAttributes,
     }
    
     
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         if (name==null) 
             return null;
         
         // update attributes: 
-        VAttribute  attr=this.getStaticAttribute(name); 
+        Attribute  attr=this.getStaticAttribute(name); 
         if (attr!=null)
             return attr;
         
@@ -333,7 +333,7 @@ public class SftpFile extends VFile implements VUnixFileAttributes,
         
         if (VAttributeConstants.ATTR_EXISTS.equals(name))
         {   
-            return new VAttribute(name,exists()); 
+            return new Attribute(name,exists()); 
         }
         
         attr=server.getAttribute(this,this.getSftpAttributes(),name,false,true);
@@ -344,14 +344,14 @@ public class SftpFile extends VFile implements VUnixFileAttributes,
         return super.getAttribute(name); 
     }
     
-    public VAttribute[] getAttributes(String names[]) throws VrsException
+    public Attribute[] getAttributes(String names[]) throws VrsException
     {
         if (names==null) 
             return null; 
         
         // optimized Gftp Attributes: 
         
-        VAttribute[] vattrs=server.getAttributes(this,this.getSftpAttributes(),names,false);
+        Attribute[] vattrs=server.getAttributes(this,this.getSftpAttributes(),names,false);
         
         for (int i=0;i<names.length;i++)
         {

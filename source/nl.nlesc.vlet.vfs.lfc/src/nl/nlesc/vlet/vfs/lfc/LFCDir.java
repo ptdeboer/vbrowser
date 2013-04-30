@@ -27,13 +27,13 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.glite.lfc.internal.FileDesc;
 import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.vrs.VCommentable;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -88,9 +88,9 @@ public class LFCDir extends VDir
         return attrNames.toArray();
     }
 
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
-        VAttribute attr = null;
+        Attribute attr = null;
 
         // check my attributes:
         attr=this.fileDisc.getAttribute(name);
@@ -104,7 +104,7 @@ public class LFCDir extends VDir
         
     }
 
-    public VAttribute[] getAttributes(String names[]) throws VrsException
+    public Attribute[] getAttributes(String names[]) throws VrsException
     {
         // do smart caching/checkig
         return super.getAttributes(names);

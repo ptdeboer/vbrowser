@@ -110,7 +110,7 @@ public final class VFSClient extends VRSClient
     public  VFSNode openLocation(VRL location) throws VrsException
     {
         if (location.isAbsolute()==false)
-            location=resolve(location); 
+            location=resolvePath(location); 
         
         VNode node=getVRSContext().openLocation(location); 
         
@@ -152,7 +152,7 @@ public final class VFSClient extends VRSClient
      * current working directory of this VFSClient. 
      * @throws VRLSyntaxException 
      */
-    public VRL resolve(VRL relLoc) throws VRLSyntaxException
+    public VRL resolvePath(VRL relLoc) throws VRLSyntaxException
     {
         if (relLoc==null)
             return getWorkingDir(); 
@@ -162,7 +162,7 @@ public final class VFSClient extends VRSClient
         
         // check relative locations against current working dir. 
             
-        return getWorkingDir().resolveSibling(relLoc);  
+        return getWorkingDir().resolvePath(relLoc);  
     }
 
     /** Returns remote File or Directory specified by the location*/ 

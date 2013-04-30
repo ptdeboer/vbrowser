@@ -210,15 +210,21 @@ public class TestVRL
 
         // Check relative PATH from (html) FILE 
         
-        relvrl = new VRL("subdir");
-        parent = new VRL("gftp://hostname/parentpath/base.html");
-        loc2 = parent.resolveSibling(relvrl);
-        Assert.assertEquals("resolved VRL turned out wrong", "gftp://hostname/parentpath/subdir", loc2.toString());
+//        relvrl = new VRL("subdir");
+//        parent = new VRL("gftp://hostname/parentpath/base.html");
+//        loc2 = parent.uriResolve(relvrl);
+//        Assert.assertEquals("resolved VRL turned out wrong", "gftp://hostname/parentpath/subdir", loc2.toString());
 
         // index
-        relvrl = parent.resolveSibling("#index");
+        parent = new VRL("gftp://hostname/parentpath/base.html");
+        
+        relvrl = parent.uriResolve("#index");
         Assert.assertEquals("resolved VRL turned out wrong", "gftp://hostname/parentpath/base.html#index", relvrl
                 .toString());
+        
+        loc2 = parent.uriResolve("subdir");
+        Assert.assertEquals("resolved VRL turned out wrong", "gftp://hostname/parentpath/subdir", loc2.toString());
+
     }
     
     @Test
@@ -230,22 +236,22 @@ public class TestVRL
 
         VRL parent = new VRL("file:///C:");
         VRL relvrl = new VRL("subdir");
-        VRL resolved = parent.resolveSibling(relvrl);
+        VRL resolved = parent.resolvePath(relvrl);
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file:/C:/subdir", resolved.toString());
 
         parent = new VRL("file://WinHost/C:");
         relvrl = new VRL("subdir");
-        resolved = parent.resolveSibling(relvrl);
+        resolved = parent.resolvePath(relvrl);
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file://WinHost/C:/subdir", resolved.toString());
 
         parent = new VRL("file:/C:");
         relvrl = new VRL("subdir");
-        resolved = parent.resolveSibling(relvrl);
+        resolved = parent.resolvePath(relvrl);
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file:/C:/subdir", resolved.toString());
 
         parent = VRL.createDosVRL("file:///C:\\");
         relvrl = VRL.createDosVRL(".\\subdir");
-        resolved = parent.resolveSibling(relvrl);
+        resolved = parent.resolvePath(relvrl);
         Assert.assertEquals("resolved DOS VRL turned out wrong", "file:/C:/subdir", resolved.toString());
 
         parent = VRL.createDosVRL("file:///C:\\Windos XP\\Stuffdir\\");
@@ -589,17 +595,19 @@ public class TestVRL
     @Test
     public void testDefaultPorts() throws VRLSyntaxException
     {
-        VRL vrl1 = new VRL("sftp://elab/path1");
-        VRL vrl2 = new VRL("sftp://elab:22/path2");
-
-        Assert.assertTrue("VRL with missing SFTP port must match against default port (I)", VRLUtil.hasSameServer(vrl1,vrl2));
-        Assert.assertTrue("VRL with missing SFTP port must match against default port (II)", VRLUtil.hasSameServer(vrl2,vrl1));
-
-        vrl1 = new VRL("http://www.vl-e.nl/path1");
-        vrl2 = new VRL("http://www.vl-e.nl:80/path2");
-
-        Assert.assertTrue("VRL with missing HTTP port must match against default port (I)", VRLUtil.hasSameServer(vrl1,vrl2));
-        Assert.assertTrue("VRL with missing HTTP port must match against default port (II)", VRLUtil.hasSameServer(vrl2,vrl1));
+        // Not in VRL, use VRS 
+        
+//        VRL vrl1 = new VRL("sftp://elab/path1");
+//        VRL vrl2 = new VRL("sftp://elab:22/path2");
+//
+//        Assert.assertTrue("VRL with missing SFTP port must match against default port (I)", VRLUtil.hasSameServer(vrl1,vrl2));
+//        Assert.assertTrue("VRL with missing SFTP port must match against default port (II)", VRLUtil.hasSameServer(vrl2,vrl1));
+//
+//        vrl1 = new VRL("http://www.vl-e.nl/path1");
+//        vrl2 = new VRL("http://www.vl-e.nl:80/path2");
+//
+//        Assert.assertTrue("VRL with missing HTTP port must match against default port (I)", VRLUtil.hasSameServer(vrl1,vrl2));
+//        Assert.assertTrue("VRL with missing HTTP port must match against default port (II)", VRLUtil.hasSameServer(vrl2,vrl1));
     }
     
     @Test

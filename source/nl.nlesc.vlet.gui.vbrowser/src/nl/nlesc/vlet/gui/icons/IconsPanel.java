@@ -29,6 +29,7 @@ import java.util.Vector;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.MasterBrowser;
@@ -47,7 +48,6 @@ import nl.nlesc.vlet.gui.view.VContainer;
 import nl.nlesc.vlet.gui.view.ViewFilter;
 import nl.nlesc.vlet.gui.view.ViewModel;
 import nl.nlesc.vlet.gui.view.ViewNode;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vrl.VRLList;
@@ -725,7 +725,7 @@ public class IconsPanel extends BrowserJPanel implements ProxyResourceEventListe
        // this.revalidate();
      }
 
-    private void updateAttributes(VRL loc,VAttribute[] attrs)
+    private void updateAttributes(VRL loc,Attribute[] attrs)
     {
         if ((attrs==null) || (loc==null))
             return; 
@@ -735,7 +735,7 @@ public class IconsPanel extends BrowserJPanel implements ProxyResourceEventListe
         if (bicon==null)
             return; // asynchronized update: icon removed.
             
-        for (VAttribute attr:attrs)
+        for (Attribute attr:attrs)
         {
             if (attr.hasName(VAttributeConstants.ATTR_ICONURL))
             {

@@ -27,6 +27,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPopupMenu;
 
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.GuiSettings;
@@ -38,7 +39,6 @@ import nl.nlesc.vlet.gui.proxyvrs.ProxyNodeFactory;
 import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.VContainer;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 
 
@@ -92,7 +92,7 @@ public class DefaultNodeViewer extends ViewerPlugin implements VComponent
             //this.setPreferredSize(new java.awt.Dimension(400, 400));
         }
         {
-            aPanel = new AttributePanel((VAttributeSet)null); // !EMPTY window 
+            aPanel = new AttributePanel((AttributeSet)null); // !EMPTY window 
             this.add(aPanel, BorderLayout.CENTER);
             aPanel.setPreferredSize(new java.awt.Dimension(534, 186));
         }
@@ -124,7 +124,7 @@ public class DefaultNodeViewer extends ViewerPlugin implements VComponent
         {
             this.pnode = factory.openLocation(location,true);
 
-            final VAttributeSet set = pnode.getAttributeSet();
+            final AttributeSet set = pnode.getAttributeSet();
             aPanel.setAttributes(set);
             
             

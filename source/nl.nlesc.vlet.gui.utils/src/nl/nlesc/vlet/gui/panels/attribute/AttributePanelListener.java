@@ -20,9 +20,9 @@
 
 package nl.nlesc.vlet.gui.panels.attribute;
 
-import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 
 public interface AttributePanelListener
 {
-    public abstract void notifyAttributeChanged(VAttribute attr);
+    public abstract void notifyAttributeChanged(Attribute attr);
 }

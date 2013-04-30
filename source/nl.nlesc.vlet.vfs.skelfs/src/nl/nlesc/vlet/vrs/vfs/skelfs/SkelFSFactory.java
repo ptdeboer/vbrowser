@@ -21,11 +21,11 @@
 package nl.nlesc.vlet.vrs.vfs.skelfs;
 
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 
@@ -115,13 +115,13 @@ public class SkelFSFactory extends VFSFactory
         String par1 = context.getStringProperty("skelfs.defaultParameter1");
 
         if (StringUtil.isEmpty(par1) == false)
-            info.setIfNotSet(new VAttribute("parameter1", par1), true);
+            info.setIfNotSet(new Attribute("parameter1", par1), true);
         else
-            info.setIfNotSet(new VAttribute("parameter1", "value1"), true);
+            info.setIfNotSet(new Attribute("parameter1", "value1"), true);
 
         // If property "parameter2" hasn't been specified, specify it as
         // follows:
-        info.setIfNotSet(new VAttribute("parameter2", "value2"), true);
+        info.setIfNotSet(new Attribute("parameter2", "value2"), true);
 
         // Important: Always perform an explicit update in registry after
         // changing !

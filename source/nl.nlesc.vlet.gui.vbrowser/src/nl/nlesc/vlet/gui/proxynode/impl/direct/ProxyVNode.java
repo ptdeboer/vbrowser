@@ -30,6 +30,7 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentable;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
@@ -55,7 +56,6 @@ import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRenamable;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.util.VRSSort;
@@ -136,7 +136,7 @@ public final class ProxyVNode extends ProxyNode
         //public Boolean isAccessable = null;
         
         /** Thread save HashishTable. so put and get should be thread save ! */
-        private Hashtable<String, VAttribute> attributeHash = new Hashtable<String, VAttribute>();
+        private Hashtable<String, Attribute> attributeHash = new Hashtable<String, Attribute>();
         
         //public Boolean isWritable=null;
         
@@ -176,26 +176,26 @@ public final class ProxyVNode extends ProxyNode
         
         // == methods === 
         
-        public VAttribute getAttribute(String name)
+        public Attribute getAttribute(String name)
         {
-            VAttribute attr = null;
+            Attribute attr = null;
             
             Object o = attributeHash.get(name);
             
             if (o != null)
-                attr = ((VAttribute) o);
+                attr = ((Attribute) o);
             else
                 attr = null;
           
             return attr;
         }
         
-        public void storeAttributes(VAttribute[] uncachedAttrs)
+        public void storeAttributes(Attribute[] uncachedAttrs)
         {
             if (uncachedAttrs==null)
                 return; 
             
-            for (VAttribute attr : uncachedAttrs)
+            for (Attribute attr : uncachedAttrs)
             {
                 
                 if ((attr != null) && (attr.getName()!=null))
@@ -205,7 +205,7 @@ public final class ProxyVNode extends ProxyNode
             }
         }
         
-        public void storeAttribute(VAttribute attr)
+        public void storeAttribute(Attribute attr)
         {
             this.attributeHash.put(attr.getName(), attr);
         }
@@ -485,14 +485,14 @@ public final class ProxyVNode extends ProxyNode
     /** Returns mimetype of object, does not resolve LinkNodes */
     public String getMimeType()
     {
-        VAttribute attr = this.cache.getAttribute(VAttributeConstants.ATTR_MIMETYPE); 
+        Attribute attr = this.cache.getAttribute(VAttributeConstants.ATTR_MIMETYPE); 
         if (attr!=null)
             return attr.getStringValue(); 
         
         try
         {
             String mimeStr=vnode.getMimeType();
-            attr = new VAttribute(VAttributeConstants.ATTR_MIMETYPE,mimeStr);
+            attr = new Attribute(VAttributeConstants.ATTR_MIMETYPE,mimeStr);
             cache.storeAttribute(attr);
             return mimeStr;
         }
@@ -801,7 +801,7 @@ public final class ProxyVNode extends ProxyNode
     {
         if (cache.isHidden==null)
         {
-            VAttribute attr=null;
+            Attribute attr=null;
             
             attr = vnode.getAttribute(VAttributeConstants.ATTR_ISHIDDEN);
             
@@ -949,9 +949,9 @@ public final class ProxyVNode extends ProxyNode
      * @return
      * @throws VrsException
      */
-    public VAttribute[] getAttributes(final String[] attrNames) throws VrsException
+    public Attribute[] getAttributes(final String[] attrNames) throws VrsException
     {
-        VAttribute attrs[] = new VAttribute[attrNames.length];
+        Attribute attrs[] = new Attribute[attrNames.length];
         
         // new attribute names to fetch: 
         
@@ -971,7 +971,7 @@ public final class ProxyVNode extends ProxyNode
         	// filter out ICON for now:
             if ((name.compareTo(VAttributeConstants.ATTR_ICON) == 0)) 
             {
-                attrs[index] = new VAttribute(attrNames[index], getIconURL(48));
+                attrs[index] = new Attribute(attrNames[index], getIconURL(48));
             }
             else if ((attrs[index] = cache.getAttribute(name)) == null)
             {
@@ -987,7 +987,7 @@ public final class ProxyVNode extends ProxyNode
         // fectch new attributes: 
         if (numUncachedAttributes > 0)
         {
-            VAttribute uncachedAttrs[] = null;
+            Attribute uncachedAttrs[] = null;
             String newAttrs_arr[]=new String[numUncachedAttributes];
             newAttrs_arr=newAttrs.toArray(newAttrs_arr); 
            
@@ -1423,7 +1423,7 @@ public final class ProxyVNode extends ProxyNode
         return this.cache.resourceTypes;
     }
     
-    public VAttribute[][] getACL() throws VrsException
+    public Attribute[][] getACL() throws VrsException
     {
         if (vnode instanceof VACL) 
             return ((VACL)vnode).getACL();
@@ -1443,7 +1443,7 @@ public final class ProxyVNode extends ProxyNode
          return attrs;*/
     }
     
-    public void setACL(VAttribute[][] acl) throws VrsException
+    public void setACL(Attribute[][] acl) throws VrsException
     {
         if (vnode instanceof VACL)
         {
@@ -1454,7 +1454,7 @@ public final class ProxyVNode extends ProxyNode
         throw new NotImplementedException("Resource doesn't support ACLs");
     }
     
-    public VAttribute[] getACLEntities() throws VrsException
+    public Attribute[] getACLEntities() throws VrsException
     {
         if (vnode instanceof VACL) 
             return ((VACL)vnode).getACLEntities();
@@ -1462,7 +1462,7 @@ public final class ProxyVNode extends ProxyNode
         throw new NotImplementedException("Resource doesn't support ACLs");
     }
     
-    public VAttribute[] createACLRecord(VAttribute entity, boolean writeThrough) throws VrsException
+    public Attribute[] createACLRecord(Attribute entity, boolean writeThrough) throws VrsException
     {
         if (vnode instanceof VACL) 
             return ((VACL)vnode).createACLRecord(entity,writeThrough); 
@@ -1565,12 +1565,12 @@ public final class ProxyVNode extends ProxyNode
 		cacheClearChilds();
 	}
 
-	void handleSetAttributesEvent(VAttribute[] attrs)
+	void handleSetAttributesEvent(Attribute[] attrs)
 	{
 		 cache.storeAttributes(attrs);
 	}
 	
-	void cacheStoreAttributes(VAttribute[] attrs)
+	void cacheStoreAttributes(Attribute[] attrs)
 	{
 		cache.storeAttributes(attrs);
 	}
@@ -1663,7 +1663,7 @@ public final class ProxyVNode extends ProxyNode
 		return newLocation; 
 	}
 	
-	public void setAttributes(VAttribute attrs[],boolean refresh) throws VrsException
+	public void setAttributes(Attribute attrs[],boolean refresh) throws VrsException
 	{
 	    
 		if (vnode instanceof VEditable) 

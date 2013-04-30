@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.NestedIOException;
@@ -33,7 +34,6 @@ import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.io.VResizable;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
@@ -140,7 +140,7 @@ public class ReplicaManager
 //    }
 
     /** Get Default Replica Attributes */ 
-    public VAttributeSet getReplicaAttributes(VRL repVRL, boolean checksumInfo) throws VrsException
+    public AttributeSet getReplicaAttributes(VRL repVRL, boolean checksumInfo) throws VrsException
     {
         StringList attrNames=new StringList(); 
         attrNames.add(VAttributeConstants.ATTR_TRANSPORT_URI);
@@ -157,10 +157,10 @@ public class ReplicaManager
         return getReplicaAttributes(repVRL,attrNames); 
     }
     
-    public VAttributeSet getReplicaAttributes(VRL repVrl,StringList attrs) throws VrsException
+    public AttributeSet getReplicaAttributes(VRL repVrl,StringList attrs) throws VrsException
     {
         VNode repNode=vrsContext.openLocation(repVrl);  
-        VAttributeSet attrSet=repNode.getAttributeSet(attrs.toArray());
+        AttributeSet attrSet=repNode.getAttributeSet(attrs.toArray());
         
         if (attrs.contains(VAttributeConstants.ATTR_EXISTS))
         {

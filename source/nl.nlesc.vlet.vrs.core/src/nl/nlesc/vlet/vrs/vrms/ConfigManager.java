@@ -36,14 +36,13 @@ import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.MessageStrings;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.InitializationException;
 import nl.nlesc.vlet.net.ssl.CertificateStore;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 /** 
  * The Configuration Manager is a VRSContext aware configuration manager. 
@@ -184,7 +183,7 @@ public class ConfigManager
      * whether the configuration specific resources must be refreshed after setting the attribute. 
      * 
      */
-    public boolean setAttribute(VAttribute attr,BooleanHolder refresh)
+    public boolean setAttribute(Attribute attr,BooleanHolder refresh)
     {
         if (attr==null)
             return false; 
@@ -237,55 +236,55 @@ public class ConfigManager
         return false; 
     }
 
-    public VAttribute getAttribute(String name) throws InitializationException
+    public Attribute getAttribute(String name) throws InitializationException
     {
-        VAttribute attr=null; 
+        Attribute attr=null; 
         
         if (name.compareTo(VletConfig.PROP_VLET_VERSION)==0)
-            return new VAttribute(name,VletConfig.getVletVersion());
+            return new Attribute(name,VletConfig.getVletVersion());
         else if (name.compareTo(VletConfig.PROP_VLET_INSTALL)==0)
-            return new VAttribute(name,VletConfig.getInstallBaseDir().getPath());
+            return new Attribute(name,VletConfig.getInstallBaseDir().getPath());
         else if (name.compareTo(VletConfig.PROP_VLET_LIBDIR)==0)
-            return new VAttribute(name,VletConfig.getInstallationLibDir().getPath());
+            return new Attribute(name,VletConfig.getInstallationLibDir().getPath());
         else if (name.compareTo(VletConfig.PROP_VLET_SYSCONFDIR)==0)
-            return new VAttribute(name,VletConfig.getInstallationConfigDir().getPath());
+            return new Attribute(name,VletConfig.getInstallationConfigDir().getPath());
         else if (name.compareTo(VletConfig.PROP_SKIP_FLOPPY_SCAN)==0)
         {
-            attr=new VAttribute(name,VletConfig.getBoolProperty(VletConfig.PROP_SKIP_FLOPPY_SCAN,true));
+            attr=new Attribute(name,VletConfig.getBoolProperty(VletConfig.PROP_SKIP_FLOPPY_SCAN,true));
             attr.setEditable(true);
-            attr.setHelpText(MessageStrings.TXT_SKIP_FLOPPY_SCAN_WINDOWS);
+            //attr.setHelpText(MessageStrings.TXT_SKIP_FLOPPY_SCAN_WINDOWS);
             return attr; 
         }
         else if (name.compareTo(VletConfig.PROP_INCOMING_FIREWALL_PORT_RANGE)==0)
         {
-            attr = new VAttribute(name,VletConfig.getFirewallPortRangeString());
+            attr = new Attribute(name,VletConfig.getFirewallPortRangeString());
             attr.setEditable(true);
-            attr.setHelpText(MessageStrings.TXT_ALLOWED_INCOMING_PORTRANGE); 
+            //attr.setHelpText(MessageStrings.TXT_ALLOWED_INCOMING_PORTRANGE); 
             return attr; 
         }
         else if (name.compareTo(VletConfig.PROP_PASSIVE_MODE)==0)
         {
-            attr = new VAttribute(name,VletConfig.getPassiveMode());
+            attr = new Attribute(name,VletConfig.getPassiveMode());
             attr.setEditable(true);
-            attr.setHelpText(MessageStrings.TXT_GLOBAL_PASSIVE_MODE); 
+            //attr.setHelpText(MessageStrings.TXT_GLOBAL_PASSIVE_MODE); 
 
             return attr; 
         }
         else if (StringUtil.equals(name,VletConfig.PROP_BDII_HOSTNAME))
         {
-            attr=new VAttribute(name,this.getBdiiHostInfo()); 
+            attr=new Attribute(name,this.getBdiiHostInfo()); 
             attr.setEditable(true);
             return attr; 
         }
         else if (StringUtil.equals(name,VletConfig.PROP_BDII_PORT))
         {
-            attr=new VAttribute(name,this.getBdiiPort()); 
+            attr=new Attribute(name,this.getBdiiPort()); 
             attr.setEditable(true);
             return attr; 
         }
         else if (StringUtil.equals(name,VletConfig.PROP_USER_CONFIGURED_VOS))
         {
-            attr=new VAttribute(name,vrsContext.getStringProperty(VletConfig.PROP_USER_CONFIGURED_VOS));
+            attr=new Attribute(name,vrsContext.getStringProperty(VletConfig.PROP_USER_CONFIGURED_VOS));
             attr.setEditable(true);
             return attr; 
         }
@@ -293,7 +292,7 @@ public class ConfigManager
         {
             String val=vrsContext.getStringProperty(name);
             if (val!=null) 
-                return new VAttribute(name,val); 
+                return new Attribute(name,val); 
         }
 
         return null; 

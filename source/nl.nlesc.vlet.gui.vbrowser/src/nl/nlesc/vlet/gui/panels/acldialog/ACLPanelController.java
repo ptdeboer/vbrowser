@@ -32,10 +32,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 public class ACLPanelController implements ActionListener, WindowListener
 {
@@ -95,7 +95,7 @@ public class ACLPanelController implements ActionListener, WindowListener
     {
         try
         {
-            VAttribute[][] acl;
+            Attribute[][] acl;
             acl = this.aclPanel.getNode().getACL();
             this.aclPanel.getModel().setACL(acl);
             this.aclPanel.getTable().initColumns(); 
@@ -115,7 +115,7 @@ public class ACLPanelController implements ActionListener, WindowListener
     {
         try
         {
-            VAttribute[][] acl = aclPanel.getModel().getACL();
+            Attribute[][] acl = aclPanel.getModel().getACL();
             this.aclPanel.getNode().setACL(acl);
             
             reread();
@@ -131,7 +131,7 @@ public class ACLPanelController implements ActionListener, WindowListener
         JPopupMenu popupmenu=new JPopupMenu();
         JComponent menu=popupmenu; 
         
-        VAttribute ents[]=aclPanel.getACLEntities();
+        Attribute ents[]=aclPanel.getACLEntities();
         JMenuItem mitem=null;
         
         int maxMenuItems=30; 
@@ -144,7 +144,7 @@ public class ACLPanelController implements ActionListener, WindowListener
         }
         else
         {
-          for (VAttribute attr:ents)
+          for (Attribute attr:ents)
           {
               String name=attr.getStringValue(); 
               menu.add(mitem=createMenuItem(this,name,"add:"+name)); 
@@ -175,9 +175,9 @@ public class ACLPanelController implements ActionListener, WindowListener
     
     public void addEntity(String entityName)
     {
-        VAttribute entityAttr=null; 
+        Attribute entityAttr=null; 
         
-        VAttribute[] aclEntities = aclPanel.getACLEntities(); 
+        Attribute[] aclEntities = aclPanel.getACLEntities(); 
         
         for (int i=0;i<aclEntities.length;i++) 
         {
@@ -197,7 +197,7 @@ public class ACLPanelController implements ActionListener, WindowListener
         
         try
         {
-            VAttribute record[]=node.createACLRecord(entityAttr,false);
+            Attribute record[]=node.createACLRecord(entityAttr,false);
             // Add data row obly (No Row Object!)
             aclPanel.getModel().addACLRecord(record); 
             

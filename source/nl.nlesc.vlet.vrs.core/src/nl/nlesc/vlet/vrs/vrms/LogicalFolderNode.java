@@ -23,15 +23,15 @@ package nl.nlesc.vlet.vrs.vrms;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 
 /**
@@ -49,7 +49,7 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
 
     private boolean isEditable=true; 
     
-    protected VAttributeSet attributes=new VAttributeSet(); 
+    protected AttributeSet attributes=new AttributeSet(); 
 
 	public LogicalFolderNode(VRSContext context, VRL vrl) 
 	{
@@ -81,9 +81,9 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
         this.attributes.set(VAttributeConstants.ATTR_ICONURL,iconUrl);  
     }
 	
-	public VAttribute getAttribute(String name) throws VrsException
+	public Attribute getAttribute(String name) throws VrsException
 	{
-	    VAttribute attr=this.attributes.get(name);
+	    Attribute attr=this.attributes.get(name);
 	    
 	    if (attr!=null)
 	    {
@@ -95,7 +95,7 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
 	}
 	
 	
-	public boolean setAttribute(VAttribute attr) throws VrsException
+	public boolean setAttribute(Attribute attr) throws VrsException
     {
 	    return setAttribute(attr,false); 
     }
@@ -104,7 +104,7 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
 	 * Set attribute if the attribute is already in the AttributeSet. 
 	 * If setIfNoteSet==true the value will always be updated. 
 	 */
-	public boolean setAttribute(VAttribute attr, boolean setIfNotSet) throws VrsException
+	public boolean setAttribute(Attribute attr, boolean setIfNotSet) throws VrsException
 	{
 	    // only set if already specified in attributes; 
 	    if ((setIfNotSet==true) || (this.attributes.containsKey(attr.getName())))
@@ -118,10 +118,10 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
     }
 	
 	// @Override
-    public boolean setAttributes(VAttribute[] attrs) throws VrsException
+    public boolean setAttributes(Attribute[] attrs) throws VrsException
     {
         boolean all=true; 
-        for (VAttribute attr:attrs)
+        for (Attribute attr:attrs)
         {
             boolean result=this.setAttribute(attr);
             all=all&&result; 

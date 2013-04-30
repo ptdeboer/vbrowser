@@ -22,9 +22,10 @@ package nl.nlesc.vlet.vfs.lfc;
 
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
 import nl.nlesc.glite.lfc.internal.FileDesc;
 import nl.nlesc.glite.lfc.internal.ReplicaDesc;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 
 public class FileDescWrapper
@@ -141,53 +142,53 @@ public class FileDescWrapper
     }
 
     /** Return file property as VAttribute */
-    public VAttribute getAttribute(String name)
+    public Attribute getAttribute(String name)
     {
         // null in => null out
         if (name == null)
             return null;
 
-        VAttribute attr = null;
+        Attribute attr = null;
 
         if (StringUtil.equals(name, VAttributeConstants.ATTR_GID))
         {
-            attr = new VAttribute(name, getFileDesc().getGid());
+            attr = new Attribute(name, getFileDesc().getGid());
         }
         else if (StringUtil.equals(name, VAttributeConstants.ATTR_UID))
         {
-            attr = new VAttribute(name, getFileDesc().getUid());
+            attr = new Attribute(name, getFileDesc().getUid());
         }
 
         // Permission as String
         else if (StringUtil.equals(name,
                 VAttributeConstants.ATTR_PERMISSIONS_STRING))
         {
-            attr = new VAttribute(name, getFileDesc().getPermissions());
+            attr = new Attribute(name, getFileDesc().getPermissions());
         }
         // Permissions as Unix File Mode (int)
         else if (StringUtil.equals(name,
                 VAttributeConstants.ATTR_UNIX_FILE_MODE))
         {
-            attr = new VAttribute(name, getFileDesc().getFileMode());
+            attr = new Attribute(name, getFileDesc().getFileMode());
         }
         else if (StringUtil
                 .equals(name, VAttributeConstants.ATTR_CREATION_TIME))
         {
             // return unix time but create from milliseconds
-            attr = VAttribute.createUnixTimeAttribute(name,
+            attr = VAttributeUtil.createDateFromMilliesSinceEpoch(name,
                     1000 * getFileDesc().getCTime());
         }
         else if (StringUtil.equals(name,
                 VAttributeConstants.ATTR_MODIFICATION_TIME))
         {
             // return unix time :
-            attr = VAttribute.createUnixTimeAttribute(name,
+            attr = VAttributeUtil.createDateFromMilliesSinceEpoch(name,
                     1000 * getFileDesc().getMTime());
         }
         else if (StringUtil.equals(name, VAttributeConstants.ATTR_ACCESS_TIME))
         {
             // return unix time :
-            attr = VAttribute.createUnixTimeAttribute(name,
+            attr = VAttributeUtil.createDateFromMilliesSinceEpoch(name,
                     1000 * getFileDesc().getATime());
         }
 
@@ -197,23 +198,23 @@ public class FileDescWrapper
 
         else if (StringUtil.equals(name, VAttributeConstants.ATTR_GRIDUID))
         {
-            attr = new VAttribute(name, getFileDesc().getGuid());
+            attr = new Attribute(name, getFileDesc().getGuid());
         }
         else if (StringUtil.equals(name, LFCFSFactory.ATTR_LFC_FILEID))
         {
-            attr = new VAttribute(name, getFileDesc().getFileId());
+            attr = new Attribute(name, getFileDesc().getFileId());
         }
         else if (StringUtil.equals(name, LFCFSFactory.ATTR_LFC_FILECLASS))
         {
-            attr = new VAttribute(name, getFileDesc().getFileClass());
+            attr = new Attribute(name, (int)getFileDesc().getFileClass());
         }
         else if (StringUtil.equals(name, LFCFSFactory.ATTR_LFC_ULINK))
         {
-            attr = new VAttribute(name, getFileDesc().getULink());
+            attr = new Attribute(name, getFileDesc().getULink());
         }
         else if (StringUtil.equals(name, LFCFSFactory.ATTR_LFC_STATUS))
         {
-            attr = new VAttribute(name, getFileDesc().getStatus());
+            attr = new Attribute(name, (int)getFileDesc().getStatus());
         }
 //        else if (StringUtil.equals(name, LFCFSFactory.ATTR_LFC_COMMENT))
 //        {

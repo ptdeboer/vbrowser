@@ -258,7 +258,7 @@ public class HTTPNode extends VNode implements VStreamAccessable
         try
         {
             VRL vrl;
-            vrl = this.getVRL().resolveSibling("favicon.ico");
+            vrl = this.getVRL().resolvePath("favicon.ico");
             URL url=vrl.toURL();
 
             if (exists(url))

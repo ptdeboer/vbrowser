@@ -27,7 +27,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import nl.nlesc.vlet.vrs.data.VAttribute;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 
 public class ResourceTableCellRenderer extends DefaultTableCellRenderer 
 {
@@ -40,9 +40,9 @@ public class ResourceTableCellRenderer extends DefaultTableCellRenderer
 	    if (value==null)
 	        value="?";
 	    
-	    if (value instanceof VAttribute)
+	    if (value instanceof Attribute)
 	    {
-	        value=((VAttribute)value).getStringValue(); 
+	        value=((Attribute)value).getStringValue(); 
 	    }
 	    
 	    // thiz should be *this* 

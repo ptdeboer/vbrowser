@@ -36,6 +36,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.*;
 import nl.nlesc.vlet.gui.panels.attribute.AttributePanel;
@@ -83,12 +84,12 @@ public class CopyDialog extends javax.swing.JDialog implements ActionListener
 			VRL sourceVrl = new VRL("file:///usr/lib/verylongurl_1234567890_ABCDEFGHIJKLMNOPQRSTUVW_abcdefghijklmnopqrstuvxwz/test.txt");
 			VRL destVrl=new VRL("file:///etc/passwd");
 			
-			VAttributeSet set=new VAttributeSet();
+			AttributeSet set=new AttributeSet();
 			set.set("Hostname","localhost");
 			set.set("Length",12346); 
 			set.set("Modification","1984-Jan-01 12:34:56");  
 			
-			VAttributeSet set2=set.duplicate(); 
+			AttributeSet set2=set.duplicate(); 
 			set2.set("Modification","1984-Jan-01 12:34:59");  
 			set2.set("Creation","1984-Jan-01 12:34:56");  
 			set2.set("Usage","1984-Jan-01 12:34:56");  
@@ -128,9 +129,9 @@ public class CopyDialog extends javax.swing.JDialog implements ActionListener
 	 */
 	public static CopyDialog showCopyDialog(final JFrame parentFrame,
 			final VRL sourceVrl,
-			final VAttributeSet sourceAttrs,
+			final AttributeSet sourceAttrs,
 			final VRL destVrl, 
-			final VAttributeSet destAttrs,
+			final AttributeSet destAttrs,
 			boolean modal)
 	{
 		//final JFrame frame = new JFrame();
@@ -171,12 +172,12 @@ public class CopyDialog extends javax.swing.JDialog implements ActionListener
 		this.destVrl.setText(vrl.toString());
 	}
 	
-	public void setSourceAttrs(VAttributeSet attrs)
+	public void setSourceAttrs(AttributeSet attrs)
 	{
 		this.sourceAttrPnl.setAttributes(attrs,false);  
 	}
 	
-	public void setDestAttrs(VAttributeSet attrs)
+	public void setDestAttrs(AttributeSet attrs)
 	{
 		this.destAttrPnl.setAttributes(attrs,false);   
 	}

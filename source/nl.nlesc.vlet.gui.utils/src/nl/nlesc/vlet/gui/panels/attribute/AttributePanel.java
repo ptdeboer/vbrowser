@@ -40,6 +40,9 @@ import javax.swing.SwingUtilities;
 
 
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.font.FontUtil;
@@ -47,9 +50,6 @@ import nl.nlesc.vlet.gui.panels.fields.AttrEnumField;
 import nl.nlesc.vlet.gui.panels.fields.AttrIntField;
 import nl.nlesc.vlet.gui.panels.fields.AttrParameterField;
 import nl.nlesc.vlet.gui.panels.fields.AttrPortField;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
-import nl.nlesc.vlet.vrs.data.VAttributeType;
 
 import com.cloudgarden.layout.AnchorLayout;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -74,7 +74,7 @@ public class AttributePanel extends JPanel
      * Attribute Set. Operation on this set 
      * should reflect Panel and vice versa ! 
      */
-    protected VAttributeSet attributes=null;
+    protected AttributeSet attributes=null;
    
     private boolean isEditable=false;
     private boolean hasChangedAttributes=false; 
@@ -120,19 +120,19 @@ public class AttributePanel extends JPanel
     public AttributePanel()
     {
         //super();
-        VAttribute attrs[]=new VAttribute[4];
+        Attribute attrs[]=new Attribute[4];
         String options[]={"Option1","Option2"};
         
-        attrs[0]=new VAttribute("textAttribute", "text"); 
-        attrs[1]=new VAttribute("booleanAttribute", true); 
-        attrs[2]=new VAttribute("numberAttribute", 1);	
-        attrs[3]=new VAttribute("selectAttribute",options,0); 
+        attrs[0]=new Attribute("textAttribute", "text"); 
+        attrs[1]=new Attribute("booleanAttribute", true); 
+        attrs[2]=new Attribute("numberAttribute", 1);	
+        attrs[3]=new Attribute("selectAttribute",options,0); 
         initGui(); 
 
-        setAttributes(new VAttributeSet(attrs));   
+        setAttributes(new AttributeSet(attrs));   
     }
 
-    private void init(VAttributeSet set,boolean editable)
+    private void init(AttributeSet set,boolean editable)
     {
         this.isEditable=editable; 
         initGui();
@@ -144,25 +144,25 @@ public class AttributePanel extends JPanel
         setAttributes(set,editable);  
     }
 
-    public AttributePanel(VAttribute attrs[])
+    public AttributePanel(Attribute attrs[])
     {
         super();
-        init(new VAttributeSet(attrs),isEditable); 
+        init(new AttributeSet(attrs),isEditable); 
     }
 
-    public AttributePanel(VAttribute attrs[],boolean isEditable)
+    public AttributePanel(Attribute attrs[],boolean isEditable)
     {
         super();
-        init(new VAttributeSet(attrs),isEditable); 
+        init(new AttributeSet(attrs),isEditable); 
     }
 
-    public AttributePanel(VAttributeSet set,boolean isEditable)
+    public AttributePanel(AttributeSet set,boolean isEditable)
     {
         super();
         init(set,isEditable); 
     }
 
-    public AttributePanel(VAttributeSet set)
+    public AttributePanel(AttributeSet set)
 	{
     	super(); 
 		init(set,true); 
@@ -175,12 +175,12 @@ public class AttributePanel extends JPanel
      * @param editable 
      * @param attrs
      */
-    public void setAttributes(VAttributeSet orgSet)
+    public void setAttributes(AttributeSet orgSet)
     {
         setAttributes(orgSet,this.isEditable); 
     }
 
-    public void setAttributes(VAttributeSet orgSet, boolean editable)
+    public void setAttributes(AttributeSet orgSet, boolean editable)
     {
         this.isEditable=editable; 
 
@@ -198,7 +198,7 @@ public class AttributePanel extends JPanel
         // else this method will remove old attributes 
         
         // new ORDENED Set: 
-        attributes=new VAttributeSet(); 
+        attributes=new AttributeSet(); 
       
         //GridBagConstraints c = new GridBagConstraints();
 
@@ -223,7 +223,7 @@ public class AttributePanel extends JPanel
             {
                 /* if ( (editable==false) 
                     ||(editable & orgAttrs[i].isEditable()) )*/
-            	VAttribute attr = orgSet.elementAt(i);
+            	Attribute attr = orgSet.elementAt(i);
                 attributes.put(attr);                
             }
         }
@@ -245,7 +245,7 @@ public class AttributePanel extends JPanel
 
         for (int i=0;i<len;i++)
         { 
-        	VAttribute attr=attributes.elementAt(i); 
+        	Attribute attr=attributes.elementAt(i); 
         	//debug("Adding attribute:"+attr); 
             
             String name=attr.getName(); 
@@ -258,7 +258,7 @@ public class AttributePanel extends JPanel
             
             if (useFormLayout)
             {
-                if (VAttribute.isSectionName(name)) 
+                if (Attribute.isSectionName(name)) 
                     add(label, new CellConstraints(
                         "2,"+(i+rowOffset)+",1, 1, default, default"));
                 else
@@ -293,11 +293,11 @@ public class AttributePanel extends JPanel
 
         for (int i=0;i<len;i++)
         {
-            VAttribute attr=attributes.elementAt(i);
+            Attribute attr=attributes.elementAt(i);
             String value=attr.getStringValue();  
             String name=attr.getName(); 
-            VAttributeType type = attr.getType(); 
-            boolean isSection= VAttribute.isSectionName(name); 
+            AttributeType type = attr.getType(); 
+            boolean isSection= Attribute.isSectionName(name); 
             
             if (isSection)
                 continue; 
@@ -310,8 +310,8 @@ public class AttributePanel extends JPanel
 
             if ( (attr.isEditable()) 
                     && (this.isEditable)
-                    && ( (type==VAttributeType.ENUM)
-                            ||(type==VAttributeType.BOOLEAN)
+                    && ( (type==AttributeType.ENUM)
+                            ||(type==AttributeType.BOOLEAN)
                     )
             )
             {
@@ -367,8 +367,8 @@ public class AttributePanel extends JPanel
 
             else if ( (attr.isEditable()) 
                     && (this.isEditable)
-                    && ( (type==VAttributeType.INT)
-                            ||(type==VAttributeType.LONG)
+                    && ( (type==AttributeType.INT)
+                            ||(type==AttributeType.LONG)
                     )
             )
             {
@@ -419,9 +419,9 @@ public class AttributePanel extends JPanel
             //
             // Set optional tooltiptest if attribute specifies 'mini' help text ! 
             //
-            String text=attr.getHelpText(); 
-            if (text!=null)
-            	jField.setToolTipText(text);
+            //String text=attr.getHelpText(); 
+            //if (text!=null)
+            //	jField.setToolTipText(text);
           
             
             jField.addFocusListener(attributeListener);
@@ -654,8 +654,8 @@ public class AttributePanel extends JPanel
 			
 			if (e.getClickCount()==2)
 			{
-				VAttribute attr = getAttribute(this.attributeName); 
-				VAttribute newattr=AttributeViewer.editAttribute(attr,attr.isEditable());
+				Attribute attr = getAttribute(this.attributeName); 
+				Attribute newattr=AttributeViewer.editAttribute(attr,attr.isEditable());
 			
 				//Global.debugPrintln(this,"New attribute="+newattr);
 				
@@ -743,7 +743,7 @@ public class AttributePanel extends JPanel
 	{
     	for (AttributePanelListener listener:listeners)
     	{
-    		VAttribute attr = attributes.get(name); 
+    		Attribute attr = attributes.get(name); 
     		listener.notifyAttributeChanged(attr); 
     	}
 	}
@@ -757,15 +757,15 @@ public class AttributePanel extends JPanel
      *  return updated attributes.
      *  null Attribute are filtered out ! 
      */
-    public VAttribute[] getAttributes()
+    public Attribute[] getAttributes()
     {
         if (attributes==null)
             return null; 
 
-        return attributes.toArray(new VAttribute[]{}); 
+        return attributes.toArray(new Attribute[]{}); 
     }
 
-    public VAttribute getAttribute(String name)
+    public Attribute getAttribute(String name)
     {
         if (attributes==null)
             return null; 
@@ -774,10 +774,10 @@ public class AttributePanel extends JPanel
     }
 
     /** Modal show editor Panel */  
-    public static VAttribute[] showEditor(VAttributeSet attrs)
+    public static Attribute[] showEditor(AttributeSet attrs)
     {
         JDialog dialog=new JDialog(); 
-        VAttribute newAttrs[]=null; 
+        Attribute newAttrs[]=null; 
 
         AttributePanel panel=new AttributePanel(attrs);
         // JFrame frame=new JFrame();
@@ -802,7 +802,7 @@ public class AttributePanel extends JPanel
      * 
      * @param attrs
      */
-    public void asyncSetAttributes(final VAttributeSet set)
+    public void asyncSetAttributes(final AttributeSet set)
     {
         final AttributePanel apanel=this;  
 
@@ -818,14 +818,14 @@ public class AttributePanel extends JPanel
 
     }
 
-    public VAttribute[] getChangedAttributes()
+    public Attribute[] getChangedAttributes()
     {
         return this.attributes.getChangedAttributesArray(); 
     }
 
-	public static void showEditor(VAttribute attrs[])
+	public static void showEditor(Attribute attrs[])
 	{
-		showEditor(new VAttributeSet(attrs)); 
+		showEditor(new AttributeSet(attrs)); 
 	}
 	
 	Vector<AttributePanelListener>listeners=new Vector<AttributePanelListener>();

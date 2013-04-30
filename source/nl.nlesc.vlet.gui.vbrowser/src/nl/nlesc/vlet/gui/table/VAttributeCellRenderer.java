@@ -30,13 +30,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentable;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.nlesc.vlet.gui.Messages;
 import nl.nlesc.vlet.gui.icons.LabelIcon;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeType;
 
 public class VAttributeCellRenderer implements TableCellRenderer
 {
@@ -110,9 +110,9 @@ public class VAttributeCellRenderer implements TableCellRenderer
             // ButtonLabelIcon can render itself ! 
             return (LabelIcon)value;
         }
-        else if (value instanceof VAttribute)
+        else if (value instanceof Attribute)
         {
-            VAttribute attr=(VAttribute)value;
+            Attribute attr=(Attribute)value;
             String strval=attr.getStringValue();
             
             UIPresentation pres=null; 
@@ -146,7 +146,7 @@ public class VAttributeCellRenderer implements TableCellRenderer
                 JLabel label=(JLabel)renderer;
                 label.setToolTipText(attr.getStringValue());
                  
-                if (attr.getType()==VAttributeType.VRL)
+                if (attr.getType()==AttributeType.VRL)
                 {
                     label.setText("<html><u>"+attr.getValue()+"</u></html>");
                     label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -164,7 +164,7 @@ public class VAttributeCellRenderer implements TableCellRenderer
                 //{
                 //    label.setText("<html><u>"+attr.getValue()+"</u></html>");
                 //}
-               else if (attr.getType()==VAttributeType.TIME)
+               else if (attr.getType()==AttributeType.DATETIME)
                {
                    label.setText(UIPresentation.relativeTimeString(attr.getDateValue()));  
                }

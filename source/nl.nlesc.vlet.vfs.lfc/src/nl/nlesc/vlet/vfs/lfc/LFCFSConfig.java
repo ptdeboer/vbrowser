@@ -21,12 +21,12 @@
 package nl.nlesc.vlet.vfs.lfc;
 
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.nlesc.vlet.exception.ConfigurationError;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class LFCFSConfig
 {
@@ -155,10 +155,10 @@ public class LFCFSConfig
             ReplicaCreationMode.VORANDOM.getValue()
         };
 
-    public static VAttributeSet createDefaultServerAttributes(VRSContext context, VAttributeSet uriAttrs)
+    public static AttributeSet createDefaultServerAttributes(VRSContext context, AttributeSet uriAttrs)
         {
-           VAttributeSet set=new VAttributeSet(); 
-           VAttribute attr=null;
+           AttributeSet set=new AttributeSet(); 
+           Attribute attr=null;
            
            
            //Spiros non read variable 
@@ -168,44 +168,44 @@ public class LFCFSConfig
            // initialize with hardcoded defaults
            // === 
            
-           set.put(attr=new VAttribute(VAttributeConstants.ATTR_HOSTNAME,"LFCHOST")); 
+           set.put(attr=new Attribute(VAttributeConstants.ATTR_HOSTNAME,"LFCHOST")); 
            attr.setEditable(true);
            
-           set.put(attr=new VAttribute(VAttributeConstants.ATTR_PORT,5010)); 
+           set.put(attr=new Attribute(VAttributeConstants.ATTR_PORT,5010)); 
            attr.setEditable(true); 
           
            //use configuration property
            String val=context.getStringProperty("lfc."+ATTR_PREFERREDSSES);
-           attr=new VAttribute(ATTR_PREFERREDSSES,val);
+           attr=new Attribute(ATTR_PREFERREDSSES,val);
             
            attr.setEditable(true); 
            set.put(attr); 
     
            //String modes[]={"AlwaysFirst,MatchPreferredFirst,MatchPreferredInOrder,Random,Parralel"}; 
            String modes[]=REPLICAS_SELECTIONMODE_VALUES; 
-           attr=new VAttribute(ATTR_REPLICA_SELECTION_MODE,modes,replicaSelectionModeDefault);  
+           attr=new Attribute(ATTR_REPLICA_SELECTION_MODE,modes,replicaSelectionModeDefault);  
            attr.setEditable(true); 
            set.put(attr);
            
            modes=REPLICAS_CREATIONMODE_VALUES; 
-           attr=new VAttribute(ATTR_REPLICA_CREATION_MODE,modes,replicaCreationModeDefault);  
+           attr=new Attribute(ATTR_REPLICA_CREATION_MODE,modes,replicaCreationModeDefault);  
            attr.setEditable(true); 
            set.put(attr);
            
-           set.put(attr=new VAttribute(LFCFSConfig.ATTR_REPLICA_NR_OF_TRIES,5)); 
+           set.put(attr=new Attribute(LFCFSConfig.ATTR_REPLICA_NR_OF_TRIES,5)); 
            attr.setEditable(true);
            
-           attr=new VAttribute(ATTR_GENERATED_SUBDIR_DATE_SCHEME,
+           attr=new Attribute(ATTR_GENERATED_SUBDIR_DATE_SCHEME,
                                        DEFAULT_GENERATED_SUBDIR_DATE_SCHEME);
            attr.setEditable(false); // not editable for now ! 
            set.put(attr); 
     
-           attr=new VAttribute(ATTR_GENERATED_DIRNAME,DEFAULT_GENERATED_DIRNAME_VALUE);
+           attr=new Attribute(ATTR_GENERATED_DIRNAME,DEFAULT_GENERATED_DIRNAME_VALUE);
            attr.setEditable(false); // not editable for now ! 
            set.put(attr); 
                 
            modes=LFCFSConfig.REPLICA_NAME_POLICIES;  
-           attr=new VAttribute(ATTR_REPLICA_NAME_CREATION_POLICY,modes,0);  
+           attr=new Attribute(ATTR_REPLICA_NAME_CREATION_POLICY,modes,0);  
            attr.setEditable(true); 
            set.put(attr);
 
@@ -235,19 +235,19 @@ public class LFCFSConfig
            // Overriding hard coded defaults ! 
            for (String key:set.keySet()) 
            {
-               VAttribute orgAttr=set.get(key); 
+               Attribute orgAttr=set.get(key); 
     
                // check global and context properties: 
                Object obj=context.getProperty("lfc."+key); 
                
                if (obj!=null) 
                {
-                   orgAttr.setValue(obj.toString()); // store as String.  
+                   orgAttr.setObjectValue(obj.toString()); // store as String.  
                    //Global.infoPrintln(LFCFSConfig.class,"Using context property:"+key+"="+obj); 
                }
                
                // get attribute from optional URI attribute set:  
-               VAttribute uriAttr=null; 
+               Attribute uriAttr=null; 
                if (uriAttrs!=null)
                {
                       uriAttr=uriAttrs.get("lfc."+key);
@@ -257,14 +257,14 @@ public class LFCFSConfig
                if (uriAttr!=null)
                {
                    // Global.infoPrintln(LFCFSConfig.class,"Using URI attribute:"+key+"="+obj); 
-                   orgAttr.setValue(uriAttr.getValue());
+                   orgAttr.setObjectValue(uriAttr.getValue());
                }
            }
            // return updated set: 
            return set; 
         }
 
-    public static void updateURIAttributes(ServerInfo lfcInfo, VAttributeSet uriAttrs)
+    public static void updateURIAttributes(ServerInfo lfcInfo, AttributeSet uriAttrs)
     {
         if ((uriAttrs==null) || (lfcInfo==null))
             return; 
@@ -272,16 +272,16 @@ public class LFCFSConfig
      // Overriding hard coded defaults ! 
         for (String key:lfcInfo.getAttributeNames()) 
         {
-            VAttribute orgAttr=lfcInfo.getAttribute(key); 
+            Attribute orgAttr=lfcInfo.getAttribute(key); 
             
             // get attribute from optional URI attribute set:  
-            VAttribute uriAttr=uriAttrs.get("lfc."+key);
+            Attribute uriAttr=uriAttrs.get("lfc."+key);
             
             // get attribute from context: 
             if (uriAttr!=null)
             {
                 //Global.infoPrintln(LFCFSConfig.class,"Using URI attribute:"+key+"="+uriAttr); 
-                orgAttr.setValue(uriAttr.getValue());
+                orgAttr.setObjectValue(uriAttr.getValue());
             }
         }
     }

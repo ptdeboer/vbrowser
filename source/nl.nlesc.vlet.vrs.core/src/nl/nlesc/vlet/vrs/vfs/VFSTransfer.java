@@ -24,8 +24,8 @@ import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.task.TransferMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 /**
  * VFSTransfer class. Keeps record of ongoing transfers. 
@@ -106,17 +106,17 @@ public class VFSTransfer extends TransferMonitor
         logger.debugPrintf(" Exception     =%s\n",(this.getException()==null?getException():"no")); 
     }
       
-    public VAttribute[] getAttributes()
+    public Attribute[] getAttributes()
     {
-        VAttribute attrs[]= 
+        Attribute attrs[]= 
           {
-             new VAttribute("transferID",getID()),  
-             new VAttribute("type",resourceType),  
-             new VAttribute("method",(isMove?"Move":"Copy")),
-             new VAttribute("source",getSource()),  
-             new VAttribute("destination",getDestination()),  
-             new VAttribute("done",isDone()),  
-             new VAttribute("exception",getException().toString())  
+             new Attribute("transferID",getID()),  
+             new Attribute("type",resourceType),  
+             new Attribute("method",(isMove?"Move":"Copy")),
+             new Attribute("source",getSource()),  
+             new Attribute("destination",getDestination()),  
+             new Attribute("done",isDone()),  
+             new Attribute("exception",getException().toString())  
           };
         
         return attrs; 

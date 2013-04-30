@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.gui.panels.fields;
 
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeType;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 
 public interface IAttributeField
 {
@@ -29,9 +29,9 @@ public interface IAttributeField
 
     public String getValue();
 
-    public void updateFrom(VAttribute attr);
+    public void updateFrom(Attribute attr);
 
-    VAttributeType getVAttributeType();
+    AttributeType getVAttributeType();
 
     void setEditable(boolean flag);
 }

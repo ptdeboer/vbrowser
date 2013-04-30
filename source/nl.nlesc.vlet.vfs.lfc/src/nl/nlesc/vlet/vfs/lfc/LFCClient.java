@@ -42,6 +42,7 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -74,7 +75,6 @@ import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VResourceSystem;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.io.VStreamAccessable;
@@ -1916,7 +1916,7 @@ public class LFCClient
 
         try
         {
-            VAttribute[] attrs = lfcFile.getAttributes(attrNames);
+            Attribute[] attrs = lfcFile.getAttributes(attrNames);
             ResourceEvent event = ResourceEvent.createAttributesChangedEvent(lfcFile.getVRL(), attrs);
             this.getVRSContext().fireEvent(event);
         }

@@ -28,11 +28,12 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
+import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class VRLUtil
 {
@@ -271,7 +272,7 @@ public class VRLUtil
         return VRSContext.getDefault().resolveScheme(scheme);
     }
 
-    public static VAttributeSet getQueryAttributes(VRL vrl)
+    public static AttributeSet getQueryAttributes(VRL vrl)
     {
        String qstr=vrl.getQuery();
     
@@ -285,11 +286,11 @@ public class VRLUtil
        if ((stats==null) || (stats.length<=0))
            return null; 
     
-       VAttributeSet aset=new VAttributeSet(); 
+       AttributeSet aset=new AttributeSet(); 
     
        for (String stat:stats)
        {
-           VAttribute attr=VAttribute.createFromAssignment(stat);
+           Attribute attr=VAttributeUtil.createFromAssignment(stat);
            //Debug("+ adding attribute="+attr); 
            if (attr!=null)
                aset.put(attr); 

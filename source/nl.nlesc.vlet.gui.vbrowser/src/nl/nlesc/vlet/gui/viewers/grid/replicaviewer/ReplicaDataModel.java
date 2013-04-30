@@ -37,12 +37,12 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTableModel;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class ReplicaDataModel extends ResourceTableModel
 {
@@ -138,18 +138,18 @@ public class ReplicaDataModel extends ResourceTableModel
             if (this.getRow(info.getHostname())==null)
             {
                 // create new row: 
-                VAttributeSet attrs=new VAttributeSet();
+                AttributeSet attrs=new AttributeSet();
                 int index=this.addRow(host, attrs);
                 // update index FIRST  
                 this.setValue(host,ATTR_INDEX,""+index); 
             }
             // Update row attributes  
-            VAttributeSet attrs=new VAttributeSet();
+            AttributeSet attrs=new AttributeSet();
             
             UILogger.debugPrintf(this,"Adding replica:%s\n",info.getVRL());     
                 
             attrs.put(ATTR_STORAGE_ELEMENT,info.getVRL().getHostname());
-            attrs.put(new VAttribute(ATTR_LOCATION,info.getVRL())); 
+            attrs.put(new Attribute(ATTR_LOCATION,info.getVRL())); 
             attrs.put(ATTR_PATH,info.getVRL().getPath());
                 
                     
@@ -158,16 +158,16 @@ public class ReplicaDataModel extends ResourceTableModel
                 attrs.put(ATTR_STATUS,""+ReplicaStatus.OK);
                 attrs.put(ATTR_ERROR_TEXT,"");
                 if (info.getLength()>=0) 
-                    attrs.put(new VAttribute(ATTR_LENGTH,info.getLength()));
+                    attrs.put(new Attribute(ATTR_LENGTH,info.getLength()));
             }
             else
             {
                 attrs.put(ATTR_STATUS,""+ReplicaStatus.ERROR);
                 attrs.put(ATTR_ERROR_TEXT,info.getException().getMessage());
-                attrs.put(new VAttribute(ATTR_LENGTH,"?")); 
+                attrs.put(new Attribute(ATTR_LENGTH,"?")); 
             }
             
-            this.setValues(host,attrs.toArray(new VAttribute[0])); 
+            this.setValues(host,attrs.toArray(new Attribute[0])); 
         }
     }
     
@@ -180,7 +180,7 @@ public class ReplicaDataModel extends ResourceTableModel
     {
         int index= this.getRowCount();
         String key=host;   
-        VAttributeSet attrs=new VAttributeSet();
+        AttributeSet attrs=new AttributeSet();
         attrs.put(ATTR_INDEX,index); 
         attrs.put(ATTR_STORAGE_ELEMENT,host); 
         attrs.put(ATTR_PATH,"?"); 
@@ -247,8 +247,8 @@ public class ReplicaDataModel extends ResourceTableModel
         
         for (int i=0;i<this.getRowCount();i++)
         {
-            VAttribute statAttr=this.getAttribute(i,ATTR_STATUS);
-            VAttribute seAttr=this.getAttribute(i,ATTR_STORAGE_ELEMENT); 
+            Attribute statAttr=this.getAttribute(i,ATTR_STATUS);
+            Attribute seAttr=this.getAttribute(i,ATTR_STORAGE_ELEMENT); 
             if ((statAttr==null) || (seAttr==null))
                 continue; 
             String statStr=statAttr.getStringValue(); 
@@ -265,8 +265,8 @@ public class ReplicaDataModel extends ResourceTableModel
         
         for (int i=0;i<this.getRowCount();i++)
         {
-            VAttribute statAttr=this.getAttribute(i,ATTR_STATUS);
-            VAttribute seAttr=this.getAttribute(i,ATTR_STORAGE_ELEMENT); 
+            Attribute statAttr=this.getAttribute(i,ATTR_STATUS);
+            Attribute seAttr=this.getAttribute(i,ATTR_STORAGE_ELEMENT); 
             if ((statAttr==null) || (seAttr==null))
                 continue; 
             String statStr=statAttr.getStringValue(); 
@@ -284,8 +284,8 @@ public class ReplicaDataModel extends ResourceTableModel
         
         for (int i=0;i<this.getRowCount();i++)
         {
-            VAttribute statAttr=this.getAttribute(i,ATTR_STATUS);
-            VAttribute seAttr=this.getAttribute(i,ATTR_STORAGE_ELEMENT); 
+            Attribute statAttr=this.getAttribute(i,ATTR_STATUS);
+            Attribute seAttr=this.getAttribute(i,ATTR_STORAGE_ELEMENT); 
             if ((statAttr==null) || (seAttr==null))
                 continue; 
             String statStr=statAttr.getStringValue(); 
@@ -306,7 +306,7 @@ public class ReplicaDataModel extends ResourceTableModel
         return vrls; 
     }
 
-    public boolean setReplicaAttributes(VRL repVrl, VAttributeSet attrs)
+    public boolean setReplicaAttributes(VRL repVrl, AttributeSet attrs)
     {
         ReplicaInfo repInfo = this.getReplicaInfo(repVrl);
         repInfo.setAttributes(attrs);

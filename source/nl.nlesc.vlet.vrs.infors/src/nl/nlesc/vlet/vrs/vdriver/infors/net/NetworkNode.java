@@ -27,6 +27,7 @@ import java.net.UnknownHostException;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
@@ -36,7 +37,6 @@ import nl.nlesc.vlet.vrs.LinkNode;
 import nl.nlesc.vlet.vrs.VEditable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
 
 public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEditable
@@ -105,9 +105,9 @@ public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEdi
         return names.toArray();
     }
 
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
-        VAttribute attr = super.getAttribute(name);
+        Attribute attr = super.getAttribute(name);
         return attr;
     }
 
@@ -149,7 +149,7 @@ public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEdi
         return 0;
     }
 
-    public boolean setAttribute(VAttribute attr) throws VrsException
+    public boolean setAttribute(Attribute attr) throws VrsException
     {
         if (attr.getName().equals(ATTR_NETWORK_ADRESS))
         {
@@ -166,7 +166,7 @@ public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEdi
         this.childNodes.clear();
         this.rescan = true;
         // default
-        VAttribute attr = new VAttribute(ATTR_NETWORK_ADRESS, addrStr);
+        Attribute attr = new Attribute(ATTR_NETWORK_ADRESS, addrStr);
 
         String networkBitStr = "0";
 
@@ -189,7 +189,7 @@ public class NetworkNode extends CompositeServiceInfoNode<VNode> implements VEdi
                 {
                     addrStr = ips.get(0);
                     if (addrStr != null)
-                        attr = new VAttribute(ATTR_NETWORK_ADRESS, addrStr + "/" + networkBitStr);
+                        attr = new Attribute(ATTR_NETWORK_ADRESS, addrStr + "/" + networkBitStr);
                 }
             }
             catch (UnknownHostException e)

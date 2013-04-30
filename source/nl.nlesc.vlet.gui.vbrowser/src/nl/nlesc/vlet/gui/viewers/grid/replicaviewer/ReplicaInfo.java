@@ -20,11 +20,11 @@
 
 package nl.nlesc.vlet.gui.viewers.grid.replicaviewer;
 
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.viewers.grid.replicaviewer.ReplicaDataModel.ReplicaStatus;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class ReplicaInfo
 {
@@ -119,7 +119,7 @@ public class ReplicaInfo
         this.transportURI=vrl;  
     }
 
-    public void setAttributes(VAttributeSet attrs)
+    public void setAttributes(AttributeSet attrs)
     {
         // updat rep infos: 
         if (attrs.containsKey(VAttributeConstants.ATTR_LENGTH))

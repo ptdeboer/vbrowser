@@ -36,13 +36,14 @@ import javax.swing.border.BevelBorder;
 
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
+import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.UIPlatform;
 import nl.nlesc.vlet.gui.font.FontUtil;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class AttributeEditorForm extends JDialog
 {
@@ -54,7 +55,7 @@ public class AttributeEditorForm extends JDialog
     JButton okButton;
     JButton resetButton;
     // data: 
-    VAttribute[] originalAttributes;
+    Attribute[] originalAttributes;
     // ui stuff 
     private JTextField topLabelTextField;
     private JPanel buttonPanel;
@@ -64,7 +65,7 @@ public class AttributeEditorForm extends JDialog
     private JPanel mainPanel;
 	private boolean isEditable;
     
-    private void initGUI(VAttribute attrs[])
+    private void initGUI(Attribute attrs[])
     {
         try
         {
@@ -146,14 +147,14 @@ public class AttributeEditorForm extends JDialog
 //  Constructor 
 //  ==========================================================================
     
-    private void init(String titleName, VAttribute attrs[])
+    private void init(String titleName, Attribute attrs[])
     {
         //frame = new JFrame(); 
         
         this.originalAttributes=attrs;
         this.titleName=titleName; 
         
-        attrs=VAttribute.duplicateArray(attrs);  // use duplicate to edit;
+        attrs=VAttributeUtil.duplicateArray(attrs);  // use duplicate to edit;
         
         // Must first create ActionListener since it is used in initGui...
         this.formController = new AttributeEditorController(this); 
@@ -162,7 +163,7 @@ public class AttributeEditorForm extends JDialog
         // only set to editable if there exists at least one editable attribute
         this.isEditable=false; 
         
-        for (VAttribute attr:attrs)
+        for (Attribute attr:attrs)
         {
         	if ((attr!=null) && (attr.isEditable()==true))
         		this.isEditable=true; 
@@ -180,7 +181,7 @@ public class AttributeEditorForm extends JDialog
         // No auto-show: this.setVisible(true);
     }
     
-    public AttributeEditorForm(String titleName, VAttribute attrs[]) 
+    public AttributeEditorForm(String titleName, Attribute attrs[]) 
     {
         super();
         UIPlatform.getPlatform().getWindowRegistry().register(this);
@@ -197,14 +198,14 @@ public class AttributeEditorForm extends JDialog
 //  
 //  ==========================================================================
 
-    public void setAttributes(VAttribute[] attributes)
+    public void setAttributes(Attribute[] attributes)
     {
         this.originalAttributes=attributes;
         
         // use duplicate to edit:
-        attributes=VAttribute.duplicateArray(attributes);
+        attributes=VAttributeUtil.duplicateArray(attributes);
         
-        this.infoPanel.setAttributes(new VAttributeSet(attributes),true);
+        this.infoPanel.setAttributes(new AttributeSet(attributes),true);
         
         validate();
     }
@@ -232,7 +233,7 @@ public class AttributeEditorForm extends JDialog
      * 
      */
     
-    public static VAttribute[] editAttributes(final String titleName, final VAttribute[] attrs, 
+    public static Attribute[] editAttributes(final String titleName, final Attribute[] attrs, 
             final boolean returnChangedAttributesOnly)
     {        
 		final AttributeEditorForm dialog = new AttributeEditorForm(); 

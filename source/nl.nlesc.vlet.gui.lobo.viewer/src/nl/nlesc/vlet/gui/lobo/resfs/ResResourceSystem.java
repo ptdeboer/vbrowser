@@ -41,7 +41,7 @@ public class ResResourceSystem implements VResourceSystem
     @Override
     public VRL resolve(String path) throws VRLSyntaxException 
     {
-        return vrl.resolveSibling(path);
+        return vrl.uriResolve(path);
     }
     
     @Override

@@ -25,6 +25,7 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -38,7 +39,6 @@ import nl.nlesc.vlet.gui.proxyvrs.ProxyNodeFactory;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyResourceEventListener;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
 import nl.nlesc.vlet.gui.view.ViewNode;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.EventType;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
@@ -311,7 +311,7 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
 
                     logger.debugPrintf("fetching attributes node #%d=%s\n", i, node);
 
-                    VAttribute attrs[] = null;
+                    Attribute attrs[] = null;
 
                     if (node == null)
                         continue; // arg darn null nodes
@@ -368,7 +368,7 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
         return getTableModel().getHeadersAsArray();
     }
 
-    private void setNodeAttribute(ProxyNode pnode, VAttribute attr)
+    private void setNodeAttribute(ProxyNode pnode, Attribute attr)
     {
         if (attr == null)
             return;
@@ -419,9 +419,9 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
 
     }
 
-    private void setNodeAttributes(ProxyNode pnode, VAttribute attrs[])
+    private void setNodeAttributes(ProxyNode pnode, Attribute attrs[])
     {
-        for (VAttribute attr : attrs)
+        for (Attribute attr : attrs)
         {
             // when setting multiple attributes do no repaint
             if (attr != null)
@@ -434,11 +434,11 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
         if (attrNames == null)
             return;
 
-        VAttribute[] attrs = node.getAttributes(attrNames);
+        Attribute[] attrs = node.getAttributes(attrNames);
 
         // Testing InvokeLater:
 
-        final VAttribute fAttrs[] = attrs;
+        final Attribute fAttrs[] = attrs;
         final ProxyNode fNode = node;
         // tablePanel.asyncSetNodeAttributes(fNode,fAttrs);
 
@@ -649,7 +649,7 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
             return; // name not an attribute in this table
 
         String name = newNode.getName();
-        getTableModel().setValueAt(new VAttribute(VAttributeConstants.ATTR_NAME, name), row, col);
+        getTableModel().setValueAt(new Attribute(VAttributeConstants.ATTR_NAME, name), row, col);
     }
 
     protected void deleteChilds(VRL[] childs)

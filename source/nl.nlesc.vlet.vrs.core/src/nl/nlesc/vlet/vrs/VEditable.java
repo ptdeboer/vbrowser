@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.vrs;
 
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 /**
  * This interface provides some methods for nodes or resources which attributes
@@ -42,9 +42,9 @@ public interface VEditable
     /**
      * Sets a list of attributes. Returns true if all attributes could be set.
      */ 
-    public boolean setAttributes(VAttribute[] attrs) throws VrsException;
+    public boolean setAttributes(Attribute[] attrs) throws VrsException;
 
     /** Set single attribute. Return true if attribute was set. */  
-    public boolean setAttribute(VAttribute attr) throws VrsException;
+    public boolean setAttribute(Attribute attr) throws VrsException;
     
 }

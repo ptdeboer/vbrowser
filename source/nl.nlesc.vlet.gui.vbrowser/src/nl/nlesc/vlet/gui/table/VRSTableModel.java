@@ -26,12 +26,12 @@ import javax.swing.table.AbstractTableModel;
 
 import nl.esciencecenter.ptk.util.QSort;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.view.ViewModel;
 import nl.nlesc.vlet.gui.view.ViewNode;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 
 /**
@@ -139,7 +139,7 @@ public class VRSTableModel extends AbstractTableModel // implements IProxyModel
 			return rowData.size(); 
 		}
 
-		public VAttribute getAttribute(int j) 
+		public Attribute getAttribute(int j) 
 		{
 			if ((j<0) || (j>=rowData.size()))
 			{
@@ -149,9 +149,9 @@ public class VRSTableModel extends AbstractTableModel // implements IProxyModel
 			
 			Object obj=rowData.elementAt(j);
 			
-			if (obj instanceof VAttribute)
+			if (obj instanceof Attribute)
 			{
-				return (VAttribute)obj;
+				return (Attribute)obj;
 			}
 			else
 			{
@@ -175,7 +175,7 @@ public class VRSTableModel extends AbstractTableModel // implements IProxyModel
     public boolean isCellEditable(int row, int col) 
     {
         // Only attribute are editable: 
-        VAttribute attr=getAttribute(row,col);
+        Attribute attr=getAttribute(row,col);
         boolean val=false; 
         
         if (attr!=null) 
@@ -215,7 +215,7 @@ public class VRSTableModel extends AbstractTableModel // implements IProxyModel
 	}
 
 	
-    private VAttribute getAttribute(int row, int col)
+    private Attribute getAttribute(int row, int col)
     {
     	RowObject rowObj = getRow(row); 
     	if (rowObj==null)
@@ -223,8 +223,8 @@ public class VRSTableModel extends AbstractTableModel // implements IProxyModel
     	
         Object obj=rowObj.get(col); 
         
-        if (obj instanceof VAttribute) 
-            return (VAttribute)obj; 
+        if (obj instanceof Attribute) 
+            return (Attribute)obj; 
             
         return null;
     }
@@ -352,11 +352,11 @@ public class VRSTableModel extends AbstractTableModel // implements IProxyModel
         
         if (value instanceof String)
         {
-           VAttribute attr=getAttribute(rowNr,colNr);
+           Attribute attr=getAttribute(rowNr,colNr);
         
            if (attr!=null)
            {
-        	   attr.setValue((String)value);
+        	   attr.setObjectValue((String)value);
            }
            
         }
@@ -600,11 +600,11 @@ public class VRSTableModel extends AbstractTableModel // implements IProxyModel
     	return true; 
    }
 
-	public VAttribute[][] getData()
+	public Attribute[][] getData()
     {
         int nrRows=getRowCount(); 
         
-        VAttribute attrs[][]=new VAttribute[nrRows][]; 
+        Attribute attrs[][]=new Attribute[nrRows][]; 
         
         synchronized(rowObjects)
         {
@@ -614,11 +614,11 @@ public class VRSTableModel extends AbstractTableModel // implements IProxyModel
         		
         		int nrFields=row.size(); 
             
-        		attrs[i]=new VAttribute[nrFields]; 
+        		attrs[i]=new Attribute[nrFields]; 
             
         		for (int j=0;j<nrFields;j++)
         		{
-        			attrs[i][j]=(VAttribute)row.getAttribute(j); 
+        			attrs[i][j]=(Attribute)row.getAttribute(j); 
         		}
         	}
         }

@@ -26,6 +26,8 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -38,9 +40,7 @@ import nl.nlesc.vlet.util.bdii.StorageArea;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vdriver.infors.CompositeServiceInfoNode;
 import nl.nlesc.vlet.vrs.vdriver.infors.InfoConstants;
 import nl.nlesc.vlet.vrs.vrms.ResourceFolder;
@@ -81,11 +81,11 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         return list.toArray();
     }
 
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         if (name.equals(InfoConstants.ATTR_CONFIGURED_VOS))
         {
-            return new VAttribute(name, this.getConfiguredVOs());
+            return new Attribute(name, this.getConfiguredVOs().toString(","));
         }
 
         return super.getAttribute(name);
@@ -253,7 +253,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
                     break;
                 }
 
-                VAttributeSet set;
+                AttributeSet set;
                 
                 ServiceInfo srm = sa.getSRMV22Service();
 
@@ -339,7 +339,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
                     break;
                 }
                 
-                VAttributeSet set = new VAttributeSet();
+                AttributeSet set = new AttributeSet();
                 set = lfc.getInfoAttributes();
                 // attr = new VAttribute("serviceType", lfc.getServiceType());
                 // set.put(attr);
@@ -392,7 +392,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
                     break;
                 }
                 
-                VAttributeSet set = new VAttributeSet();
+                AttributeSet set = new AttributeSet();
 
                 // attr = new VAttribute("serviceType", wms.getServiceType());
                 // set.put(attr);
@@ -451,7 +451,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
                     break;
                 }
                 
-                VAttributeSet set = new VAttributeSet();
+                AttributeSet set = new AttributeSet();
 
                 // attr = new VAttribute("serviceType", wms.getServiceType());
                 // set.put(attr);

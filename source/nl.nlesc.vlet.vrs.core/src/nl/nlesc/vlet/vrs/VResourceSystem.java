@@ -44,7 +44,7 @@ public interface VResourceSystem
 	
     /** 
      * Resolve relative path or URI part to this Filesystem and return Absolute VRL.
-     * Actual result depend in implementing ResourceSystem. 
+     * Actual result depends on implementing ResourceSystem. 
      */ 
     public VRL resolve(String path) throws VRLSyntaxException; 
     

@@ -29,11 +29,11 @@ import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
@@ -286,7 +286,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
     }
 
     @Override
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         return getAttribute(this.getMlsxEntry(), name);
     }
@@ -295,9 +295,9 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
     // updated mslxEntry only once when getting multiple attributes
 
     @Override
-    public VAttribute[] getAttributes(String names[]) throws VrsException
+    public Attribute[] getAttributes(String names[]) throws VrsException
     {
-        VAttribute attrs[] = new VAttribute[names.length];
+        Attribute attrs[] = new Attribute[names.length];
 
         // Optimized getAttribute: use single entry for all
         MlsxEntry entry = this.getMlsxEntry();
@@ -319,7 +319,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
      * @return
      * @throws VrsException
      */
-    public VAttribute getAttribute(MlsxEntry entry, String name) throws VrsException
+    public Attribute getAttribute(MlsxEntry entry, String name) throws VrsException
     {
         // is possible due to optimization:
 
@@ -329,7 +329,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         // get Gftp specific attribute and update
         // the mslxEntry if needed
 
-        VAttribute attr = GftpFileSystem.getAttribute(entry, name);
+        Attribute attr = GftpFileSystem.getAttribute(entry, name);
 
         if (attr != null)
             return attr;

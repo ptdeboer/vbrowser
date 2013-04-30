@@ -32,6 +32,8 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.GuiSettings;
@@ -42,9 +44,7 @@ import nl.nlesc.vlet.gui.panels.attribute.AttributeViewer;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.vbrowser.BrowserController;
 import nl.nlesc.vlet.gui.viewers.ViewerEvent;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeType;
 
 /**
  *  
@@ -135,7 +135,7 @@ public class VTableController implements MouseListener, MouseMotionListener
         if (pos==null) 
         	return; 
         
-        VAttribute attr=null;
+        Attribute attr=null;
         
         //Global.debugPrintln("TableMouseEventHandler","click on component:"+comp);
          
@@ -161,9 +161,9 @@ public class VTableController implements MouseListener, MouseMotionListener
         
         Object value = tablePanel.getVRSTableModel().getValueAt(pos.row,pos.column);
           
-        if (value instanceof VAttribute)
+        if (value instanceof Attribute)
         {
-              attr=(VAttribute)value; 
+              attr=(Attribute)value; 
         }
     
 //        Global.debugPrintln("TableMouseEventHandler","rowNr="+pos.row);
@@ -190,7 +190,7 @@ public class VTableController implements MouseListener, MouseMotionListener
                 masterBrowser.performAction(dummyRow,viewCmd);
             }
             // special case: click on VRL: !
-            else if ((attr!=null) && (attr.getType()==VAttributeType.VRL))
+            else if ((attr!=null) && (attr.getType()==AttributeType.VRL))
             {
                 try
                 {

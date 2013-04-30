@@ -36,8 +36,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.nlesc.vlet.gui.GuiSettings;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -55,21 +55,21 @@ public class AttributeViewer extends JDialog implements FocusListener, ActionLis
     private JLabel attrValueLabel;
     private JLabel attrTypeLabel;
     
-    private VAttribute attribute=new VAttribute("LongAttribute",(long)10);
+    private Attribute attribute=new Attribute("LongAttribute",(long)10);
     private JScrollPane attrScrollPane; 
 
-    public static void viewAttribute(VAttribute attr)
+    public static void viewAttribute(Attribute attr)
     {
     	editAttribute(attr,false); 
     }
     
-    VAttribute newAttribute=null;
+    Attribute newAttribute=null;
 	private boolean editable=true;
 	private JButton cancelButton;
 	private JButton okButton;
 	private JPanel buttonPanel;
 
-    public static VAttribute editAttribute(VAttribute attr,boolean editable)
+    public static Attribute editAttribute(Attribute attr,boolean editable)
     {
         AttributeViewer av=new AttributeViewer(attr);
         av.setEditable(editable); 
@@ -90,7 +90,7 @@ public class AttributeViewer extends JDialog implements FocusListener, ActionLis
     	this.attrValueField.setEditable(editbl); 
     }
     
-    public AttributeViewer(VAttribute attr)
+    public AttributeViewer(Attribute attr)
     { 
         this.attribute=attr;
         initGUI(); 
@@ -200,8 +200,8 @@ public class AttributeViewer extends JDialog implements FocusListener, ActionLis
         AttributeViewer inst = new AttributeViewer();
         inst.setVisible(true);
         
-        AttributeViewer.viewAttribute(new VAttribute("Attr-Long",(long)10));
-        AttributeViewer.editAttribute(new VAttribute("Attr-big-Text",
+        AttributeViewer.viewAttribute(new Attribute("Attr-Long",(long)10));
+        AttributeViewer.editAttribute(new Attribute("Attr-big-Text",
                 "Testing LONG Text,\n Testing LONG text\n"
                 +"***********************************************\n"
                 +"***********************************************\n"
@@ -221,7 +221,7 @@ public class AttributeViewer extends JDialog implements FocusListener, ActionLis
 	
 	private void updateAttribute()
 	{
-		this.newAttribute=new VAttribute(attribute.getType(),attribute.getName(),attrValueField.getText());
+		this.newAttribute=new Attribute(attribute.getType(),attribute.getName(),attrValueField.getText());
 	}
 
 	public void actionPerformed(ActionEvent e)

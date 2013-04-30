@@ -35,6 +35,7 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.NestedFileNotFoundException;
@@ -47,7 +48,6 @@ import nl.nlesc.vlet.exception.ResourceWriteAccessDeniedException;
 import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.exception.ResourceNotWritableException;
 import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.io.VRandomAccessable;
 import nl.nlesc.vlet.vrs.io.VResizable;
 import nl.nlesc.vlet.vrs.io.VStreamAccessable;
@@ -167,7 +167,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
      * 
      * @throws VrsException
      */
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         // slowdown: logger.debugPrintf("getAttribute '%s' for:%s\n",name,this); 
         
@@ -175,7 +175,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
             return null;
 
         // Check if super class has this attribute
-        VAttribute supervalue = super.getAttribute(name);
+        Attribute supervalue = super.getAttribute(name);
 
         // Super class has this attribute, and since I do not overide
         // any attribute, return this one:
@@ -185,7 +185,7 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         // unix attributes
 
         if (name.compareTo(ATTR_UNIX_FILE_MODE) == 0)
-            return new VAttribute(name, Integer.toOctalString(getMode()));
+            return new Attribute(name, Integer.toOctalString(getMode()));
 
         return null;
     }

@@ -31,6 +31,7 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
@@ -43,7 +44,6 @@ import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VDeletable;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.io.VSize;
@@ -373,8 +373,8 @@ public final class VRSTransferManager
         if (targetFile.exists()==false)
             return targetFile; 
         
-        VAttribute sourceAttrs[]=null; 
-        VAttribute targetAttrs[]=null; 
+        Attribute sourceAttrs[]=null; 
+        Attribute targetAttrs[]=null; 
         
         do
         {
@@ -383,7 +383,7 @@ public final class VRSTransferManager
             
         	if (source instanceof VFile)
         	{	
-        		sourceAttrs=new VAttribute[2];
+        		sourceAttrs=new Attribute[2];
         		
         		VFile sourceFile=(VFile)source;
         		
@@ -391,7 +391,7 @@ public final class VRSTransferManager
         		sourceAttrs[1]=sourceFile.getAttribute(VAttributeConstants.ATTR_MODIFICATION_TIME);
         	}
         	
-        	targetAttrs=new VAttribute[2];
+        	targetAttrs=new Attribute[2];
         	targetAttrs[0]=targetFile.getAttribute(VAttributeConstants.ATTR_LENGTH);  
         	targetAttrs[1]=targetFile.getAttribute(VAttributeConstants.ATTR_MODIFICATION_TIME);
         	

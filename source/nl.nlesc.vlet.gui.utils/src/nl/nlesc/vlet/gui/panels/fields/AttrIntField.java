@@ -24,8 +24,8 @@ import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 import nl.nlesc.vlet.gui.util.Messages;
-import nl.nlesc.vlet.vrs.data.VAttributeType;
 
 public class AttrIntField extends AttrParameterField
 {
@@ -103,9 +103,9 @@ public class AttrIntField extends AttrParameterField
         }
     }
 
-    public VAttributeType getVAttributeType()
+    public AttributeType getVAttributeType()
     {
-        return VAttributeType.INT;
+        return AttributeType.INT;
     }
 
     public void setText(String txt)

@@ -26,6 +26,7 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -39,7 +40,6 @@ import nl.nlesc.vlet.vfs.lfc.LFCFSConfig.ReplicaCreationMode;
 import nl.nlesc.vlet.vfs.lfc.LFCFSConfig.ReplicaSelectionMode;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 import nl.nlesc.vlet.vrs.vfs.FileSystemNode;
 import nl.nlesc.vlet.vrs.vfs.VDir;
@@ -138,7 +138,7 @@ public class LFCFileSystem extends FileSystemNode
     public StringList getPreferredSEHosts()
     {
         // fetch NEW attribute!
-        VAttribute listAttr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_PREFERREDSSES);
+        Attribute listAttr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_PREFERREDSSES);
 
         if (listAttr == null)
             return new StringList(); 
@@ -189,7 +189,7 @@ public class LFCFileSystem extends FileSystemNode
     public VRLList getPreferredSEVRLs()
     {
         // fetch NEW attribute!
-        VAttribute listAttr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_PREFERREDSSES);
+        Attribute listAttr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_PREFERREDSSES);
 
         if (listAttr == null)
             return null;
@@ -231,7 +231,7 @@ public class LFCFileSystem extends FileSystemNode
      */
     public String getGeneratedSubdirName()
     {
-        VAttribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_GENERATED_DIRNAME);
+        Attribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_GENERATED_DIRNAME);
         if ((attr!=null) && (attr.getStringValue()!=null))
             return attr.getStringValue(); 
         
@@ -244,7 +244,7 @@ public class LFCFileSystem extends FileSystemNode
      */ 
     public String getGeneratedSubDirDateScheme()
     {
-        VAttribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_GENERATED_SUBDIR_DATE_SCHEME); 
+        Attribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_GENERATED_SUBDIR_DATE_SCHEME); 
         
         if ((attr!=null) && (attr.getStringValue()!=null))
             return attr.getStringValue(); 
@@ -378,7 +378,7 @@ public class LFCFileSystem extends FileSystemNode
 
    public ReplicaSelectionMode getReplicaSelectionMode() throws ConfigurationError 
    {
-      VAttribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_REPLICA_SELECTION_MODE);
+      Attribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_REPLICA_SELECTION_MODE);
 
       if (attr!=null)
           return ReplicaSelectionMode.createFromAttributeValue(attr.getStringValue()); 
@@ -389,7 +389,7 @@ public class LFCFileSystem extends FileSystemNode
    
    public ReplicaCreationMode getReplicaCreationMode() throws ConfigurationError 
    {
-       VAttribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_REPLICA_CREATION_MODE);
+       Attribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_REPLICA_CREATION_MODE);
 
        if (attr!=null)
            return ReplicaCreationMode.createFromAttributeValue(attr.getStringValue()); 
@@ -399,7 +399,7 @@ public class LFCFileSystem extends FileSystemNode
 
    public int getReplicasNrOfTries() 
    { 
-       VAttribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_REPLICA_NR_OF_TRIES);
+       Attribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_REPLICA_NR_OF_TRIES);
        
        if (attr!=null)
            return attr.getIntValue();
@@ -409,7 +409,7 @@ public class LFCFileSystem extends FileSystemNode
 
 public boolean getUseSimilarReplicaNames()
 {
-    VAttribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_REPLICA_NAME_CREATION_POLICY);
+    Attribute attr = this.getServerInfo().getAttribute(LFCFSConfig.ATTR_REPLICA_NAME_CREATION_POLICY);
     
     boolean defVal=false; 
     if (attr!=null)

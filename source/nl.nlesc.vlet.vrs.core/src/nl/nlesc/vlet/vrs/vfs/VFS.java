@@ -23,6 +23,7 @@ package nl.nlesc.vlet.vrs.vfs;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
@@ -30,7 +31,6 @@ import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VResourceSystem;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 /**
  * The Virtual File System Global Class.
@@ -61,13 +61,13 @@ public class VFS extends VRS
      * 
      * @see VACL
      */
-    public static VAttribute[][] convertFileMode2ACL(int mode, boolean isDir)
+    public static Attribute[][] convertFileMode2ACL(int mode, boolean isDir)
     {
         // Global.debugPrintf(VFS.class,"converting file mode: %o\n",mode);
 
         int numEntries = 3; // user, group,other
         int numAttrs = 5; // name, readable,writeable, exe/passable, <misc>
-        VAttribute acl[][] = new VAttribute[numEntries][];
+        Attribute acl[][] = new Attribute[numEntries][];
         String execName = null;
 
         String setUID[] = { "-", VACL.SETUID };
@@ -80,27 +80,27 @@ public class VFS extends VRS
             execName = VACL.PERM_EXECUTABLE;
 
         for (int i = 0; i < numEntries; i++)
-            acl[i] = new VAttribute[numAttrs];
+            acl[i] = new Attribute[numAttrs];
 
         // USER_ENTITY is both used for name as for value
-        acl[0][0] = new VAttribute(VACL.USER_ENTITY, VACL.USER_ENTITY);
+        acl[0][0] = new Attribute(VACL.USER_ENTITY, VACL.USER_ENTITY);
 
-        acl[0][1] = new VAttribute(VACL.PERM_READABLE, (mode & 00400) > 0);
-        acl[0][2] = new VAttribute(VACL.PERM_WRITABLE, (mode & 00200) > 0);
-        acl[0][3] = new VAttribute(execName, (mode & 00100) > 0);
-        acl[0][4] = new VAttribute("Misc", setUID, ((mode & 04000) > 0) ? 1 : 0);
+        acl[0][1] = new Attribute(VACL.PERM_READABLE, (mode & 00400) > 0);
+        acl[0][2] = new Attribute(VACL.PERM_WRITABLE, (mode & 00200) > 0);
+        acl[0][3] = new Attribute(execName, (mode & 00100) > 0);
+        acl[0][4] = new Attribute("Misc", setUID, ((mode & 04000) > 0) ? 1 : 0);
 
-        acl[1][0] = new VAttribute(VACL.USER_ENTITY, VACL.GROUP_ENTITY);
-        acl[1][1] = new VAttribute(VACL.PERM_READABLE, (mode & 00040) > 0);
-        acl[1][2] = new VAttribute(VACL.PERM_WRITABLE, (mode & 00020) > 0);
-        acl[1][3] = new VAttribute(execName, (mode & 0010) > 0);
-        acl[1][4] = new VAttribute("Misc", setGID, ((mode & 02000) > 0) ? 1 : 0);
+        acl[1][0] = new Attribute(VACL.USER_ENTITY, VACL.GROUP_ENTITY);
+        acl[1][1] = new Attribute(VACL.PERM_READABLE, (mode & 00040) > 0);
+        acl[1][2] = new Attribute(VACL.PERM_WRITABLE, (mode & 00020) > 0);
+        acl[1][3] = new Attribute(execName, (mode & 0010) > 0);
+        acl[1][4] = new Attribute("Misc", setGID, ((mode & 02000) > 0) ? 1 : 0);
 
-        acl[2][0] = new VAttribute(VACL.USER_ENTITY, VACL.WORLD_ENTITY);
-        acl[2][1] = new VAttribute(VACL.PERM_READABLE, (mode & 00004) > 0);
-        acl[2][2] = new VAttribute(VACL.PERM_WRITABLE, (mode & 00002) > 0);
-        acl[2][3] = new VAttribute(execName, (mode & 001) > 0);
-        acl[2][4] = new VAttribute("Misc", setSticky, ((mode & 01000) > 0) ? 1 : 0);
+        acl[2][0] = new Attribute(VACL.USER_ENTITY, VACL.WORLD_ENTITY);
+        acl[2][1] = new Attribute(VACL.PERM_READABLE, (mode & 00004) > 0);
+        acl[2][2] = new Attribute(VACL.PERM_WRITABLE, (mode & 00002) > 0);
+        acl[2][3] = new Attribute(execName, (mode & 001) > 0);
+        acl[2][4] = new Attribute("Misc", setSticky, ((mode & 01000) > 0) ? 1 : 0);
 
         // enable editing:
         for (int i = 0; i < numEntries; i++)
@@ -116,7 +116,7 @@ public class VFS extends VRS
      * 
      * @see VACL
      */
-    public static int convertACL2FileMode(VAttribute[][] acl, boolean isDir)
+    public static int convertACL2FileMode(Attribute[][] acl, boolean isDir)
     {
         int nrEntities = 3;
         int nrAttrs = 5;
@@ -167,7 +167,7 @@ public class VFS extends VRS
                     return -1;
                 }
 
-                VAttribute attr = acl[i][j];
+                Attribute attr = acl[i][j];
 
                 String perm = attr.getName();
                 int val = 0;

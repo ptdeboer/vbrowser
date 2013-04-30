@@ -133,7 +133,7 @@ public class VHyperListener implements HyperlinkListener
 
     private VRL resolve(URL base, String uriStr) throws Exception
     {
-        VRL loc = new VRL(base).resolveSibling(uriStr);
+        VRL loc = new VRL(base).uriResolve(uriStr);
         return loc;
     }
 

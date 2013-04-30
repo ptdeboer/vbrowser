@@ -39,6 +39,8 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
@@ -51,8 +53,6 @@ import nl.nlesc.vlet.net.ssl.CertificateStore;
 import nl.nlesc.vlet.net.ssl.SSLContextManager;
 import nl.nlesc.vlet.net.ssl.SslUtil;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 
 
@@ -470,7 +470,7 @@ public class GridProxy
         
         // System.err.println("> times = "+time+" + "+timeleft+" = "+endtime); 
         
-        VAttributeSet attrs=new VAttributeSet();
+        AttributeSet attrs=new AttributeSet();
         
         if (prevValid != valid)
             attrs.set(ATTR_VALIDITY,valid); 
@@ -492,7 +492,7 @@ public class GridProxy
             this.fireProxyValidityChange(valid); // Separate (legacy) event;  
         
         if (attrs.size()>0) 
-            this.fireProxyValuesChanged(attrs.toArray(new VAttribute[0])); 
+            this.fireProxyValuesChanged(attrs.toArray(new Attribute[0])); 
         
         return valid;
     }
@@ -1141,7 +1141,7 @@ public class GridProxy
     {
         try
         {
-            VRL vrl=new VRL("file:///").resolveSibling(getProxyFilename());
+            VRL vrl=new VRL("file:///").resolvePath(getProxyFilename());
               
             String str = ResourceLoader.getDefault().getText(vrl.toURI()); 
             return str;
@@ -1446,8 +1446,8 @@ public class GridProxy
     
     protected void fireVOValueChanged(String voInfo)
     {
-        VAttribute attrs[]=new VAttribute[1]; 
-        attrs[0]=new VAttribute(ATTR_VOINFO,voInfo);
+        Attribute attrs[]=new Attribute[1]; 
+        attrs[0]=new Attribute(ATTR_VOINFO,voInfo);
         
         if (listeners != null)
             for (GridProxyListener l : listeners)
@@ -1461,7 +1461,7 @@ public class GridProxy
                 l.notifyCACertStoreUpdated(alias);   
     }
     
-    protected void fireProxyValuesChanged(VAttribute[] attrs)
+    protected void fireProxyValuesChanged(Attribute[] attrs)
     {
         if ((attrs==null) || (attrs.length<=0))
         {

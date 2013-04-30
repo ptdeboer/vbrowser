@@ -26,10 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 /**
  * Info object describing BDII Service Element.
@@ -54,7 +54,7 @@ public class ServiceInfo
         serviceTypeToScheme.put(ServiceInfoType.LB, "wms");
     }
 
-    private VAttributeSet infoAttributes = new VAttributeSet(); // default empty
+    private AttributeSet infoAttributes = new AttributeSet(); // default empty
 
     private String protocol = null;
 
@@ -176,15 +176,15 @@ public class ServiceInfo
 
     public void addInfoAttribute(String name, String value)
     {
-        infoAttributes.put(new VAttribute(name, value));
+        infoAttributes.put(new Attribute(name, value));
     }
 
-    public void addInfoAttribute(VAttribute attr)
+    public void addInfoAttribute(Attribute attr)
     {
         infoAttributes.put(attr);
     }
 
-    public void addInfoAttributes(VAttribute[] attrs)
+    public void addInfoAttributes(Attribute[] attrs)
     {
         if (attrs != null)
         {
@@ -193,7 +193,7 @@ public class ServiceInfo
 
     }
 
-    public VAttributeSet getInfoAttributes()
+    public AttributeSet getInfoAttributes()
     {
         return infoAttributes;
     }

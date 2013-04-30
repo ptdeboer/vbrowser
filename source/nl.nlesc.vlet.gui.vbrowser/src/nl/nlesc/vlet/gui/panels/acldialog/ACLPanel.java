@@ -34,6 +34,8 @@ import javax.swing.JTextPane;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.GuiSettings;
@@ -42,9 +44,7 @@ import nl.nlesc.vlet.gui.panels.attribute.AttributePanel;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.vbrowser.BrowserController;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public class ACLPanel extends JPanel
 {
@@ -65,7 +65,7 @@ public class ACLPanel extends JPanel
     private JButton applyButton;
     private JButton cancelButton;
     private ACLPanelController panelListener;
-    private VAttribute[] aclEntities;
+    private Attribute[] aclEntities;
     private BrowserController browserController;
     private JButton rereadButton;
     private JPanel topPanel;
@@ -195,7 +195,7 @@ public class ACLPanel extends JPanel
         //Debug("setNode:"+node);
         this.proxyNode=node; 
         
-        VAttribute attrs[][]=node.getACL();
+        Attribute attrs[][]=node.getACL();
         this.getModel().setACL(attrs); 
         this.table.initColumns(); 
         
@@ -215,11 +215,11 @@ public class ACLPanel extends JPanel
         		VAttributeConstants.ATTR_PATH,
             };
         
-        VAttributeSet set = node.getAttributeSet(names); 
+        AttributeSet set = node.getAttributeSet(names); 
         this.attrPanel.setAttributes(set); 
     }
 
-    public VAttribute[] getACLEntities()
+    public Attribute[] getACLEntities()
     {
         return aclEntities;
     }

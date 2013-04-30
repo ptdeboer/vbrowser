@@ -86,21 +86,7 @@ public class DropAction
 	
 	public boolean isCopy()
 	{
-		return StringUtil.equals(dropAction,MOVE_ACTION); 
+		return StringUtil.equals(dropAction,COPY_ACTION); 
 	}
-    
-    /*public DropAction(VRL sources[],VRL dest)
-    {
-        this.isMove=false; 
-        this.sources=sources; 
-        this.destination=dest;  
-    }
 
-    public DropAction(VRL source,VRL dest,boolean isMove)
-    {
-        this.isMove=isMove; 
-        sources=new VRL[1]; 
-        sources[0]=source;
-        destination=dest;  
-    }*/
 }

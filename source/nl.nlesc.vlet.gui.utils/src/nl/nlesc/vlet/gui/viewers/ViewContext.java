@@ -26,13 +26,14 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
+import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.UILogger;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.vrl.VRLList;
 
 
@@ -229,16 +230,16 @@ public class ViewContext
 	 * Returns property as Resource Attributes ({name,type,value} triple).
 	 * Tries to inspect the stored Object and determine Resource type
 	 */ 
-	public VAttribute getAttribute(String name)
+	public Attribute getAttribute(String name)
 	{
 		Object val=getProperty(name); 
-		return VAttribute.createFrom(name,val);
+		return VAttributeUtil.createFrom(name,val);
 	}
 	
 	/** Returns properties as (VRS) VAttributeSet */ 
-	public VAttributeSet getVAttributeSet()
+	public AttributeSet getVAttributeSet()
 	{
-		return VAttributeSet.createFrom(properties);	
+		return AttributeSet.createFrom(properties);	
 	}
 	
 	/** Prints out Properties as VAttributeSet */ 

@@ -30,9 +30,9 @@ import javax.swing.table.AbstractTableModel;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.nlesc.vlet.gui.view.ViewNode;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 
 public class ResourceTableModel extends AbstractTableModel implements Iterable<ResourceTableModel.RowData>  
@@ -57,11 +57,11 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
 	    // OPTIONAL vrl (if resource row has VRL) 
 		private String rowKey; 
 		
-        private VAttributeSet rowAttributes=new VAttributeSet(); 
+        private AttributeSet rowAttributes=new AttributeSet(); 
 
         private ViewNode viewItem; 
         
-        public RowData(String rowKey, VAttributeSet attrs)
+        public RowData(String rowKey, AttributeSet attrs)
 		{
 			this.rowKey=rowKey;  
 
@@ -79,12 +79,12 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
 		    return rowAttributes.size(); 
 		}
 
-        public VAttribute getAttribute(String name)
+        public Attribute getAttribute(String name)
         {
             return rowAttributes.get(name); 
         }
         
-        public VAttribute getAttribute(int nr)
+        public Attribute getAttribute(int nr)
         {
             String key=rowAttributes.getKey(nr);
             if (key==null)
@@ -92,7 +92,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
             return rowAttributes.get(key); 
         }
 
-        public void updateData(VAttributeSet data, boolean merge)
+        public void updateData(AttributeSet data, boolean merge)
         {
             if (merge==false)
             {
@@ -109,12 +109,12 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
            this.rowAttributes.set(attrName,value); 
         }
 
-        public void setValues(VAttribute[] attrs)
+        public void setValues(Attribute[] attrs)
         {
             if (attrs==null)
                 return; 
             
-            for (VAttribute attr:attrs)
+            for (Attribute attr:attrs)
                 this.rowAttributes.put(attr); 
         }
 
@@ -173,7 +173,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
 		super(); 
 		String names[]={"Dummy1","Dummy2"}; 
 		headerModel=new HeaderModel(names); 
-		VAttributeSet dummySet=new VAttributeSet(); 
+		AttributeSet dummySet=new AttributeSet(); 
 		dummySet.set("Dummy1","value1"); 
 		dummySet.set("Dummy2","value2"); 
         
@@ -241,7 +241,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
     		
     		String header=this.headerModel.getElementAt(columnIndex);
     	
-    		VAttribute attr=rowObj.getAttribute(header);
+    		Attribute attr=rowObj.getAttribute(header);
     		
     		if (attr==null)
     		    return null;
@@ -254,7 +254,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
 	{
 	    synchronized(rows)
         {
-	        VAttribute attr=getAttribute(rowKey,attrName); 
+	        Attribute attr=getAttribute(rowKey,attrName); 
 	        if (attr==null)
 	            return null; 
 	        return attr.getValue();
@@ -269,7 +269,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
 	        if ((rowIndex<0) || rowIndex>=this.rows.size())
                 return null;
 	        
-	        VAttribute attr=this.rows.get(rowIndex).getAttribute(attrName);
+	        Attribute attr=this.rows.get(rowIndex).getAttribute(attrName);
 	        
 	        if (attr==null)
 	            return null;
@@ -281,7 +281,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
 	/** Return VAttribute.getValue() of specified row,attributeName */
 	public String getAttrStringValue(String rowKey,String attrName)
     {
-	    VAttribute attr=getAttribute(rowKey,attrName); 
+	    Attribute attr=getAttribute(rowKey,attrName); 
 	    if (attr==null)
 	        return null; 
 	    return attr.getStringValue(); 
@@ -289,7 +289,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
 	
 	public String getAttrStringValue(int row, String attrName)
 	{
-	    VAttribute attr=getAttribute(row,attrName); 
+	    Attribute attr=getAttribute(row,attrName); 
         if (attr==null)
             return null; 
         return attr.getStringValue(); 
@@ -312,12 +312,12 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
         }
 	}
 	
-	public boolean setValue(String key,VAttribute attr)
+	public boolean setValue(String key,Attribute attr)
     {
-	    return setValues(key,new VAttribute[]{attr});
+	    return setValues(key,new Attribute[]{attr});
     }
 	
-	public boolean setValues(String key,VAttribute attrs[])
+	public boolean setValues(String key,Attribute attrs[])
     {
 	    synchronized(rows)
         {
@@ -347,7 +347,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
         }
         
         // Let VAttribute figure object out!  
-        row.getAttribute(colNr).setValue(value.toString());
+        row.getAttribute(colNr).setObjectValue(value.toString());
         
         // optimization note: table will collect multiple events
         // and do the drawing at once. 
@@ -356,7 +356,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
         
     }
 	
-	public VAttribute getAttribute(String rowKey,String attrName)
+	public Attribute getAttribute(String rowKey,String attrName)
     {
 	    synchronized(rows)
         {
@@ -368,7 +368,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
     }
 	    
 	
-	public VAttribute getAttribute(int rowIndex,String attrName)
+	public Attribute getAttribute(int rowIndex,String attrName)
 	{
 	    synchronized(rows)
         {
@@ -379,7 +379,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
         }
     }
 	
-	public VAttribute getAttribute(int row,int col)
+	public Attribute getAttribute(int row,int col)
     {
         synchronized(rows)
         {
@@ -405,7 +405,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
             for (String key:rowKeys)
             {
                 // add to internal data structure only
-                _addRow(key,new VAttributeSet()) ; 
+                _addRow(key,new AttributeSet()) ; 
             }
         }
         
@@ -413,7 +413,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
     }
     
     /** Add new Row and return index to row */ 
-    public int addRow(String key,VAttributeSet attrs)
+    public int addRow(String key,AttributeSet attrs)
     {
         int index=this._addRow(key, attrs);
         this.fireTableRowsInserted(index,index);
@@ -422,7 +422,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
     
     public int addEmptyRow(String key)
     {
-        return this.addRow(key,new VAttributeSet()); 
+        return this.addRow(key,new AttributeSet()); 
     }
     
     public int delRow(String key)
@@ -472,7 +472,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
     }
     
     // add row to internal data structure 
-    private int _addRow(String key,VAttributeSet attrs)
+    private int _addRow(String key,AttributeSet attrs)
     {
         synchronized(rows)
         {
@@ -648,9 +648,9 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
    public boolean isCellEditable(int row, int col)
    {
        Object obj=this.getValueAt(row,col); 
-       if (obj instanceof VAttribute)
+       if (obj instanceof Attribute)
        {
-           return ((VAttribute)obj).isEditable(); 
+           return ((Attribute)obj).isEditable(); 
        }
        return false; 
    }
@@ -659,7 +659,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
     * Return COPY of Data as VAttribute matrix. 
     * Returns: VAttribute[row][col].  
     */ 
-   public VAttribute[][] getAttributeData() 
+   public Attribute[][] getAttributeData() 
    {
        synchronized(rows)
        {
@@ -672,10 +672,10 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
            if  (nrCols<=0)
                return null; 
            
-           VAttribute attrs[][]=new VAttribute[nrRows][]; 
+           Attribute attrs[][]=new Attribute[nrRows][]; 
            for (int row=0;row<nrRows;row++)
            {
-               attrs[row]=new VAttribute[nrCols]; 
+               attrs[row]=new Attribute[nrCols]; 
                for (int col=0;col<nrCols;col++)
                {
                    attrs[row][col]=this.getAttribute(row,col).duplicate(); 

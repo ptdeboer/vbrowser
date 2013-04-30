@@ -64,7 +64,7 @@ public class InfoResourceSystem extends CompositeServiceInfoNode<VNode> implemen
     @Override
     public VRL resolve(String path) throws VRLSyntaxException 
     {
-        return this.getVRL().resolveSibling(path);
+        return this.getVRL().resolvePath(path);
     }
     
     public VNode openLocation(VRL vrl) throws VrsException

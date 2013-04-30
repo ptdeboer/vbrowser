@@ -35,11 +35,11 @@ import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.NestedIOException;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.data.xml.XMLData;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 import nl.nlesc.vlet.vrs.vrms.SecretStore;
@@ -490,13 +490,13 @@ public class ServerInfoRegistry
     }
 
     /** Return ServerInfo as Vector of VAttributeSets */
-    public ArrayList<VAttributeSet> getInfoAttrSets()
+    public ArrayList<AttributeSet> getInfoAttrSets()
     {
         // synchronize !
         synchronized (this.serverInfos)
         {
             Set<String> keys = this.serverInfos.keySet();
-            ArrayList<VAttributeSet> sets = new ArrayList<VAttributeSet>(keys.size());
+            ArrayList<AttributeSet> sets = new ArrayList<AttributeSet>(keys.size());
 
             for (String key : keys)
             {
@@ -528,7 +528,7 @@ public class ServerInfoRegistry
 
         // is synchronized will return consistant list of configs
 
-        ArrayList<VAttributeSet> sets = this.getInfoAttrSets();
+        ArrayList<AttributeSet> sets = this.getInfoAttrSets();
         // ResourceLoader loader=new ResourceLoader(context);
 
         XMLData xmlifier = new XMLData();
@@ -574,7 +574,7 @@ public class ServerInfoRegistry
 
             // is synchronized will return consistant list of configs
 
-            ArrayList<VAttributeSet> sets = this.getInfoAttrSets();
+            ArrayList<AttributeSet> sets = this.getInfoAttrSets();
             // No Context!
             ResourceLoader loader = new ResourceLoader();
 
@@ -607,7 +607,7 @@ public class ServerInfoRegistry
             // Do not clear: just merge current with save ones !
             // serverInfos.clear();
             // ===
-            for (VAttributeSet set : sets)
+            for (AttributeSet set : sets)
             {
                 ServerInfo info = new ServerInfo(context, set);
                 logger.debugPrintf("Adding Server Config:%s\n", info);

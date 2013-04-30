@@ -21,8 +21,8 @@
 package nl.nlesc.vlet.vrs.ui;
 
 import nl.esciencecenter.ptk.data.StringHolder;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 /**
  * Interface to ask what to do when copying/transferring files
@@ -52,9 +52,9 @@ public interface ICopyInteractor
 	{
 		public InteractiveAction askTargetExists(String message,
 				VRL source,
-				VAttribute sourceAttrs[], 
+				Attribute sourceAttrs[], 
 				VRL target, 
-				VAttribute targetAttrs[],
+				Attribute targetAttrs[],
 				StringHolder optNewName) 
 		{
 			return InteractiveAction.CONTINUE;
@@ -75,9 +75,9 @@ public interface ICopyInteractor
      */
     public InteractiveAction askTargetExists(String message,
     		VRL source,
-			VAttribute sourceAttrs[], 
+			Attribute sourceAttrs[], 
 			VRL target, 
-			VAttribute targetAttrs[],
+			Attribute targetAttrs[],
             StringHolder optNewName); 
     
 }

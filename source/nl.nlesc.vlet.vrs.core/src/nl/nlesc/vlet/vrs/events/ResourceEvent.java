@@ -22,8 +22,8 @@ package nl.nlesc.vlet.vrs.events;
 
 import java.io.Serializable;
 
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 
 /**
@@ -148,13 +148,13 @@ public class ResourceEvent implements Serializable
 
         e.location = oldLocation;
         e.newLocation = newLocation;
-        e.attributes = new VAttribute[1];
-        e.attributes[0] = new VAttribute(VAttributeConstants.ATTR_NAME, newName);
+        e.attributes = new Attribute[1];
+        e.attributes[0] = new Attribute(VAttributeConstants.ATTR_NAME, newName);
 
         return e;
     }
 
-    public static ResourceEvent createAttributesChangedEvent(VRL node, VAttribute[] attrs)
+    public static ResourceEvent createAttributesChangedEvent(VRL node, Attribute[] attrs)
     {
         if (node == null)
             throw new NullPointerException("Source node can not be NULL!");
@@ -163,7 +163,7 @@ public class ResourceEvent implements Serializable
             throw new NullPointerException("Attribute list cannot be null or be an empty list!");
 
         // Check for misbehaving resource implementations!
-        for (VAttribute attr : attrs)
+        for (Attribute attr : attrs)
             if (attr == null)
                 throw new NullPointerException("Attribute list cannot have NULL members!");
 
@@ -176,8 +176,8 @@ public class ResourceEvent implements Serializable
 
     public static ResourceEvent createSetAttributeEvent(VRL source, String name, String value)
     {
-        VAttribute attrs[] = new VAttribute[1];
-        attrs[0] = new VAttribute(name, value);
+        Attribute attrs[] = new Attribute[1];
+        attrs[0] = new Attribute(name, value);
 
         return createAttributesChangedEvent(source, attrs);
     }
@@ -220,7 +220,7 @@ public class ResourceEvent implements Serializable
 
     // public VAttribute attribute=null;
 
-    protected VAttribute[] attributes = null;
+    protected Attribute[] attributes = null;
 
     protected boolean boolVal = false;
 
@@ -372,7 +372,7 @@ public class ResourceEvent implements Serializable
     }
 
     /** Returns changed Attributes in the case of an ATTRIBUTE event. */
-    public VAttribute[] getAttributes()
+    public Attribute[] getAttributes()
     {
         return this.attributes;
     }
@@ -381,7 +381,7 @@ public class ResourceEvent implements Serializable
     public String getAttributeValue(String name)
     {
         if (this.attributes != null)
-            for (VAttribute attr : attributes)
+            for (Attribute attr : attributes)
                 if (attr.hasName(name))
                     return attr.getStringValue();
         return null;

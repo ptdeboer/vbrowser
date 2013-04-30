@@ -39,10 +39,10 @@ import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_URI_QUERY;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.ptk.util.ResourceLoader;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 
 /**
@@ -246,7 +246,7 @@ public abstract class VNode // implements IVNode
      * 
      * @throws VrsException
      */
-    public VAttribute[] getAttributes() throws VrsException
+    public Attribute[] getAttributes() throws VrsException
     {
         return getAttributes(getAttributeNames());
     }
@@ -262,9 +262,9 @@ public abstract class VNode // implements IVNode
      * 
      * @throws VrsException
      */
-    public VAttribute[] getAttributes(String names[]) throws VrsException
+    public Attribute[] getAttributes(String names[]) throws VrsException
     {
-        VAttribute[] attrs = new VAttribute[names.length];
+        Attribute[] attrs = new Attribute[names.length];
 
         for (int i = 0; i < names.length; i++)
         {
@@ -281,9 +281,9 @@ public abstract class VNode // implements IVNode
      * Same as getAttributes(), but return the attributes in an (Ordened)
      * Attribute set.
      */
-    public VAttributeSet getAttributeSet(String names[]) throws VrsException
+    public AttributeSet getAttributeSet(String names[]) throws VrsException
     {
-        return new VAttributeSet(getAttributes(names));
+        return new AttributeSet(getAttributes(names));
     }
 
     /**
@@ -294,36 +294,36 @@ public abstract class VNode // implements IVNode
      * example the Resource Type of a VFile which doesn't change during the
      * lifetime of the (VFile) Object as this always must be "File" !
      */
-    public VAttribute getStaticAttribute(String name) throws VrsException
+    public Attribute getStaticAttribute(String name) throws VrsException
     {
         // by prefix values with "", a NULL value will be convert to "NULL".
         if (name.compareTo(ATTR_RESOURCE_TYPE) == 0)
-            return new VAttribute(name, getResourceType());
+            return new Attribute(name, getResourceType());
         else if (name.compareTo(ATTR_LOCATION) == 0)
-            return new VAttribute(name, getVRL());
+            return new Attribute(name, getVRL());
         else if (name.compareTo(ATTR_NAME) == 0)
-            return new VAttribute(name, getName());
+            return new Attribute(name, getName());
         else if (name.compareTo(ATTR_HOSTNAME) == 0)
-            return new VAttribute(name, getHostname());
+            return new Attribute(name, getHostname());
         // only return port attribute if it has a meaningful value
         else if (name.compareTo(ATTR_PORT) == 0)
-            return new VAttribute(name, getPort());
+            return new Attribute(name, getPort());
         else if (name.compareTo(ATTR_ICONURL) == 0)
-            return new VAttribute(name, getIconURL());
+            return new Attribute(name, getIconURL());
         else if (name.compareTo(ATTR_SCHEME) == 0)
-            return new VAttribute(name, getScheme());
+            return new Attribute(name, getScheme());
         else if (name.compareTo(ATTR_PATH) == 0)
-            return new VAttribute(name, getPath());
+            return new Attribute(name, getPath());
         else if ((name.compareTo(ATTR_URI_QUERY) == 0) && getLocation().hasQuery())
-            return new VAttribute(name, getQuery());
+            return new Attribute(name, getQuery());
         else if ((name.compareTo(ATTR_URI_FRAGMENT) == 0) && getLocation().hasFragment())
-            return new VAttribute(name, getLocation().getFragment());
+            return new Attribute(name, getLocation().getFragment());
         else if (name.compareTo(ATTR_NAME) == 0)
-            return new VAttribute(name, getName());
+            return new Attribute(name, getName());
         else if (name.compareTo(ATTR_LOCATION) == 0)
-            return new VAttribute(name, getLocation());
+            return new Attribute(name, getLocation());
         else if (name.compareTo(ATTR_MIMETYPE) == 0)
-            return new VAttribute(name, getMimeType());
+            return new Attribute(name, getMimeType());
 
         return null;
     }
@@ -334,13 +334,13 @@ public abstract class VNode // implements IVNode
      * super.getAttribute first to check whether the superclass provides an
      * attribute name.
      */
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
         if (name == null)
             return null;
 
         // Check Non-mutable attributes first!
-        VAttribute attr = this.getStaticAttribute(name);
+        Attribute attr = this.getStaticAttribute(name);
 
         if (attr != null)
             return attr;
@@ -349,9 +349,9 @@ public abstract class VNode // implements IVNode
         // VAttribute Interface for remote invokation
         // ===
         else if (name.compareTo(ATTR_ISCOMPOSITE) == 0)
-            return new VAttribute(name, (this instanceof VComposite));
+            return new Attribute(name, (this instanceof VComposite));
         else if (name.compareTo(ATTR_RESOURCE_CLASS) == 0)
-            return new VAttribute(name, this.getClass().getCanonicalName());
+            return new Attribute(name, this.getClass().getCanonicalName());
 
         else if (name.compareTo(ATTR_RESOURCE_TYPES) == 0)
         {
@@ -359,7 +359,7 @@ public abstract class VNode // implements IVNode
             {
                 String types[] = ((VComposite) this).getResourceTypes();
                 StringList list = new StringList(types);
-                return new VAttribute(name, list.toString(","));
+                return new Attribute(name, list.toString(","));
             }
             else
                 return null;
@@ -367,14 +367,14 @@ public abstract class VNode // implements IVNode
         else if (name.compareTo(ATTR_ISEDITABLE) == 0)
         {
             if (this instanceof VEditable)
-                return new VAttribute(name, ((VEditable) this).isEditable());
+                return new Attribute(name, ((VEditable) this).isEditable());
             else
-                return new VAttribute(name, false);
+                return new Attribute(name, false);
         }
         else if (name.compareTo(ATTR_ATTRIBUTE_NAMES) == 0)
         {
             StringList attrL = new StringList(this.getAttributeNames());
-            return new VAttribute(name, attrL.toString(","));
+            return new Attribute(name, attrL.toString(","));
         }
 
         return null;
@@ -529,16 +529,16 @@ public abstract class VNode // implements IVNode
     }
 
     /** Fire attribute(s) changed event with this resource as even source. */
-    protected void fireAttributesChanged(VAttribute attrs[])
+    protected void fireAttributesChanged(Attribute attrs[])
     {
         ResourceEvent event = ResourceEvent.createAttributesChangedEvent(getVRL(), attrs);
         this.vrsContext.getResourceEventNotifier().fire(event);
     }
 
     /** Fire attribute changed event with this resource as even source. */
-    protected void fireAttributeChanged(VAttribute attr)
+    protected void fireAttributeChanged(Attribute attr)
     {
-        ResourceEvent event = ResourceEvent.createAttributesChangedEvent(getVRL(), new VAttribute[]
+        ResourceEvent event = ResourceEvent.createAttributesChangedEvent(getVRL(), new Attribute[]
         { attr });
         this.vrsContext.getResourceEventNotifier().fire(event);
     }

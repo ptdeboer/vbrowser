@@ -48,6 +48,9 @@ import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
+import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.NotImplementedException;
@@ -66,9 +69,7 @@ import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.VRenamable;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 import nl.nlesc.vlet.vrs.data.xml.VPersistance;
 import nl.nlesc.vlet.vrs.data.xml.XMLData;
 import nl.nlesc.vlet.vrs.io.VStreamAccessable;
@@ -200,7 +201,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     /**
      * Contains ALL attributes. Also contains copies from ServerInfo
      */
-    protected VAttributeSet resourceAttributes = new VAttributeSet();
+    protected AttributeSet resourceAttributes = new AttributeSet();
 
     /** Custom Presentation */
     private Presentation presentation;
@@ -231,7 +232,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         super(context, logicalVRL);
     }
 
-    public LogicalResourceNode(VRSContext context, VAttributeSet attrSet, VRL logicalVRL) throws VrsException
+    public LogicalResourceNode(VRSContext context, AttributeSet attrSet, VRL logicalVRL) throws VrsException
     {
         super(context, logicalVRL);
         this.resourceAttributes = attrSet.duplicate();
@@ -278,7 +279,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     /** Currently SERVER type or LINK type */
     public String getType()
     {
-        VAttribute attr = resourceAttributes.get(ATTR_RESOURCE_TYPE);
+        Attribute attr = resourceAttributes.get(ATTR_RESOURCE_TYPE);
 
         if (attr != null)
             return attr.getStringValue();
@@ -537,7 +538,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         String comments = "VL-e Resource description of type:" + this.getType();
         XMLData xmlData = getXMLData();
         // Server Attributes moved to ServerReg !
-        VAttributeSet attrs = this.resourceAttributes; // this.getResourceAttributeSet(useServerRegistry);
+        AttributeSet attrs = this.resourceAttributes; // this.getResourceAttributeSet(useServerRegistry);
 
         xmlData.writeAsXML(outp, attrs, comments);
     }
@@ -569,7 +570,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     /** sets setIconURL of this linknode */
     public void setIconURL(String url)
     {
-        resourceAttributes.put(new VAttribute(ATTR_ICONURL, url));
+        resourceAttributes.put(new Attribute(ATTR_ICONURL, url));
     }
 
     /** Returns mimetype of link target */
@@ -634,7 +635,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     }
 
     // interface VEditable
-    public boolean setAttributes(VAttribute[] attrs, boolean store) throws VrsException
+    public boolean setAttributes(Attribute[] attrs, boolean store) throws VrsException
     {
         boolean result = true;
 
@@ -649,7 +650,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         {
             ServerInfo info = this.getServerInfo();
 
-            for (VAttribute attr : attrs)
+            for (Attribute attr : attrs)
             {
                 info.setAttribute(attr);
             }
@@ -664,7 +665,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     }
 
     // interface VEditable
-    public boolean setAttributes(VAttribute[] attrs) throws VrsException
+    public boolean setAttributes(Attribute[] attrs) throws VrsException
     {
         return setAttributes(attrs, true);
     }
@@ -675,13 +676,13 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     }
 
     // @Override
-    public boolean setAttribute(VAttribute attr) throws VrsException
+    public boolean setAttribute(Attribute attr) throws VrsException
     {
         return setAttribute(attr, true);
     }
 
     // @Override
-    public boolean setAttribute(VAttribute attr, boolean store) throws VrsException
+    public boolean setAttribute(Attribute attr, boolean store) throws VrsException
     {
         debugPrintln("setAttribute:" + attr);
 
@@ -768,7 +769,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         if (this.isEditable == false)
             throw new nl.nlesc.vlet.exception.ResourceNotEditableException("Cannot rename this resource");
 
-        this.setAttribute(new VAttribute(ATTR_NAME, newName));
+        this.setAttribute(new Attribute(ATTR_NAME, newName));
 
         return this.getVRL();
     }
@@ -881,7 +882,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
 
     public void setTargetIsComposite(boolean val)
     {
-        resourceAttributes.put(new VAttribute(ATTR_TARGET_IS_COMPOSITE, val));
+        resourceAttributes.put(new Attribute(ATTR_TARGET_IS_COMPOSITE, val));
     }
 
     /**
@@ -1093,7 +1094,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
                 value = true;
             }
             // add as BOOLEAN attribute:
-            resourceAttributes.put(new VAttribute(ATTR_TARGET_IS_COMPOSITE, value));
+            resourceAttributes.put(new Attribute(ATTR_TARGET_IS_COMPOSITE, value));
         }
 
         // Update later added attributes:
@@ -1133,15 +1134,15 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     }
 
     @Override
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
-        VAttribute attr = null;
+        Attribute attr = null;
 
         if (name == null)
             return null;
 
         if (name.startsWith("["))
-            return new VAttribute(name, "");
+            return new Attribute(name, "");
 
         // allowed resource attribute: Filter !
         if (allAttributeNames.contains(name))
@@ -1375,7 +1376,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         this.isEditable = val;
     }
 
-    public VAttributeSet getPersistantAttributes() throws VrsException
+    public AttributeSet getPersistantAttributes() throws VrsException
     {
         return this.resourceAttributes.duplicate();
     }
@@ -1440,7 +1441,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     }
 
     /** Extra hardcoded checks */
-    public VAttribute checkAttribute(VAttribute attr)
+    public Attribute checkAttribute(Attribute attr)
     {
         if (attr == null)
             return null;
@@ -1499,7 +1500,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
                 String value = attr.getStringValue();
                 // Create Schemes Enumerate
                 String schemes[] = this.getRegisteredSchemes();
-                attr = VAttribute.createEnumerate(name, schemes, value);
+                attr = VAttributeUtil.createEnumerate(name, schemes, value);
             }
 
             // scheme is now editable:

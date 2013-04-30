@@ -30,6 +30,7 @@ import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.glite.lfc.internal.FileDesc;
@@ -39,7 +40,6 @@ import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.vrs.VCommentable;
 import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.util.VRSStreamUtil;
 import nl.nlesc.vlet.vrs.vfs.VFS;
@@ -109,9 +109,9 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         return false;
     }
 
-    public VAttribute getAttribute(String name) throws VrsException
+    public Attribute getAttribute(String name) throws VrsException
     {
-        VAttribute attr = null;
+        Attribute attr = null;
 
         // Check non-mutable first to speed up attribute fetchings. 
         attr=this.getStaticAttribute(name); 
@@ -121,7 +121,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         // file might not exist: check attribute first  
         if (name.equals(VAttributeConstants.ATTR_EXISTS))
         {
-            return new VAttribute(name,exists());  
+            return new Attribute(name,exists());  
         }
         
         // Now check my attributes:
@@ -133,7 +133,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
             {
                 ReplicaDesc[] reps = this.getReplicaDescriptions();
                 if (reps != null)
-                    attr = new VAttribute(name,
+                    attr = new Attribute(name,
                             this.getReplicaDescriptions().length);
             }
             else if (StringUtil.equals(name, LFCFSFactory.ATTR_LFC_REPLICAHOSTS))
@@ -149,17 +149,17 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
                             buf.append(",");
                     }
                 }
-                attr = new VAttribute(name, buf.toString());
+                attr = new Attribute(name, buf.toString());
             }
 
             else if (StringUtil.equals(name, LFCFSFactory.ATTR_LOGICAL_FILENAME))
             {
-                attr = new VAttribute(name, this.getLogicalVRL().getPath());
+                attr = new Attribute(name, this.getLogicalVRL().getPath());
             }
             
             else if (StringUtil.equals(name, LFCFSFactory.ATTR_LFC_COMMENT))
             {
-                attr = new VAttribute(name, getComment());
+                attr = new Attribute(name, getComment());
             }
         }
 
@@ -182,7 +182,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         return this.getWrapperDesc().getFileDesc().getPermissions();
     }
 
-    public VAttribute[] getAttributes(String names[]) throws VrsException
+    public Attribute[] getAttributes(String names[]) throws VrsException
     {
         // do smart caching/checking/stripping names,etc.
         return super.getAttributes(names);
@@ -841,7 +841,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         this.lfcClient.setFileSize(this,newSize); 
         this.wrapperDesc.clearMetaData();
         // Event!
-        this.fireAttributeChanged(new VAttribute(VAttributeConstants.ATTR_LENGTH,newSize)); 
+        this.fireAttributeChanged(new Attribute(VAttributeConstants.ATTR_LENGTH,newSize)); 
     }
  
     /** @Override */

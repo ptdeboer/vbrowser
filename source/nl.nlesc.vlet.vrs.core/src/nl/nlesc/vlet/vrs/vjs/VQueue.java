@@ -20,12 +20,12 @@
 
 package nl.nlesc.vlet.vrs.vjs;
 
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VCompositeNode;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 
 public abstract class VQueue extends VCompositeNode
@@ -83,12 +83,12 @@ public abstract class VQueue extends VCompositeNode
 		return false;
 	}	
 	
-	public VAttribute[][] getNodeAttributes(String[] jobNames, String[] attrNames) throws VrsException
+	public Attribute[][] getNodeAttributes(String[] jobNames, String[] attrNames) throws VrsException
 	{
 		return getJobAttributes(jobNames,attrNames); 
 	}
 
-	public VAttribute[][] getNodeAttributes(String[] attrNames) throws VrsException
+	public Attribute[][] getNodeAttributes(String[] attrNames) throws VrsException
 	{
 		return getJobAttributes(attrNames); 
 	}
@@ -170,9 +170,9 @@ public abstract class VQueue extends VCompositeNode
 	// Abstract interface 
 	//=========================================================================
 	
-	public abstract VAttribute[][] getJobAttributes(String[] attrNames) throws VrsException; 
+	public abstract Attribute[][] getJobAttributes(String[] attrNames) throws VrsException; 
 	
-	public abstract VAttribute[][] getJobAttributes(String[] jobNames, String[] attrNames) throws VrsException;
+	public abstract Attribute[][] getJobAttributes(String[] jobNames, String[] attrNames) throws VrsException;
 	
 	public abstract VJob[] getJobs() throws VrsException; 
 

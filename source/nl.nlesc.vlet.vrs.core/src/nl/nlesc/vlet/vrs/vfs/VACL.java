@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.vrs.vfs;
 
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.vrs.data.VAttribute;
 
 /**
  * Universal Access Control List interface. 
@@ -54,7 +54,7 @@ import nl.nlesc.vlet.vrs.data.VAttribute;
  * </pre>
  * 
  * For Unix mode convertor methods, see: {@link VFS#convertFileMode2ACL(int, boolean) }
- * and {@link VFS#convertACL2FileMode(VAttribute[][], boolean)} . 
+ * and {@link VFS#convertACL2FileMode(Attribute[][], boolean)} . 
  * 
  * @author P.T. de Boer
  */
@@ -96,13 +96,13 @@ public interface VACL
      * @return
      * @throws VrsException
      */
-    public VAttribute[][] getACL() throws VrsException;
+    public Attribute[][] getACL() throws VrsException;
     
     /** 
      * Set the modified ACL list 
      */ 
     
-    public void setACL(VAttribute[][] acl) throws VrsException; 
+    public void setACL(Attribute[][] acl) throws VrsException; 
     
     /** 
      * Returns list of all possible 'entities' which can
@@ -114,7 +114,7 @@ public interface VACL
      *  
      * @return VAttribute array of possible entities. 
      */
-    public VAttribute[] getACLEntities() throws VrsException; 
+    public Attribute[] getACLEntities() throws VrsException; 
     
     /**
      * Returns a new 'row' or ACLRecord for the entity. 
@@ -124,7 +124,7 @@ public interface VACL
      * @param entity       entity to created the new ACL Record for.  
      * @param writeThrough add the new created entry to the ACL list  
      */
-    public VAttribute[] createACLRecord(VAttribute entity, boolean writeThrough) throws VrsException; 
+    public Attribute[] createACLRecord(Attribute entity, boolean writeThrough) throws VrsException; 
     
     /**
      * Remove the entity from the ACL list, effectively removing
@@ -134,6 +134,6 @@ public interface VACL
      * @return
      * @throws VrsException
      */
-    public boolean deleteACLEntity(VAttribute entity) throws VrsException; 
+    public boolean deleteACLEntity(Attribute entity) throws VrsException; 
     
 }

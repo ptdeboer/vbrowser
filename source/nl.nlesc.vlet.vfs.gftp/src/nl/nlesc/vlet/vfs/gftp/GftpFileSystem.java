@@ -48,6 +48,9 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
+import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
@@ -64,8 +67,6 @@ import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeType;
 import nl.nlesc.vlet.vrs.vfs.FileSystemNode;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFS;
@@ -362,7 +363,7 @@ public class GftpFileSystem extends FileSystemNode
                 newClient.setLocalNoDataChannelAuthentication();
             
             // update instance (debug) information.
-            this.putInstanceAttribute(new VAttribute(ATTR_GFTP_DATA_CHANNEL_AUTHENTICATION,ldca)); 
+            this.putInstanceAttribute(new Attribute(ATTR_GFTP_DATA_CHANNEL_AUTHENTICATION,ldca)); 
 
             logger.infoPrintf(">>> GftpServer: new gftp client:%s:%d\n",hostname,port); 
 
@@ -501,7 +502,7 @@ public class GftpFileSystem extends FileSystemNode
             // inform ServerInfo: 
             {
                 // debug option: 
-                VAttribute attr=new VAttribute("usingProtocolV1",protocol_v1); 
+                Attribute attr=new Attribute("usingProtocolV1",protocol_v1); 
                 attr.setEditable(false); 
                 this.putInstanceAttribute(attr);  
             }
@@ -530,7 +531,7 @@ public class GftpFileSystem extends FileSystemNode
         }
 
         // dynamic update ! 
-        this.putInstanceAttribute(new VAttribute(ATTR_PASSIVE_MODE,val)); 
+        this.putInstanceAttribute(new Attribute(ATTR_PASSIVE_MODE,val)); 
         logger.debugPrintf("passiveMode=%s\n",(val?"true":"false"));
         
         return val;
@@ -699,7 +700,7 @@ public class GftpFileSystem extends FileSystemNode
     {
         boolean val=getBooleanServerOption(GftpFileSystem.ATTR_GFTP_BLIND_MODE,default_useblindmode);
         // dynamic update ! 
-        this.putInstanceAttribute(new VAttribute(GftpFileSystem.ATTR_GFTP_BLIND_MODE,val));
+        this.putInstanceAttribute(new Attribute(GftpFileSystem.ATTR_GFTP_BLIND_MODE,val));
         
         return val; 
     }
@@ -709,7 +710,7 @@ public class GftpFileSystem extends FileSystemNode
         if (optName==null)
             return false; 
         
-        VAttribute attr=getServerInfo().getAttribute(optName); 
+        Attribute attr=getServerInfo().getAttribute(optName); 
         
         if (attr!=null)
             return attr.getBooleanValue(); 
@@ -761,7 +762,7 @@ public class GftpFileSystem extends FileSystemNode
             
         }
         // store to block further warnings! 
-        this.putInstanceAttribute(new VAttribute(GftpFileSystem.ATTR_GFTP_DATA_CHANNEL_AUTHENTICATION,val));
+        this.putInstanceAttribute(new Attribute(GftpFileSystem.ATTR_GFTP_DATA_CHANNEL_AUTHENTICATION,val));
         
         return val;    
     }
@@ -2688,7 +2689,7 @@ public class GftpFileSystem extends FileSystemNode
      * attribute
      * 
      */
-    public static VAttribute getAttribute(MlsxEntry entry, String name)
+    public static Attribute getAttribute(MlsxEntry entry, String name)
             throws VrsException
     {
 
@@ -2720,17 +2721,17 @@ public class GftpFileSystem extends FileSystemNode
                 if (val.length() < i)
                     val = val + "-";
 
-            return new VAttribute(name, val);
+            return new Attribute(name, val);
         }
         else if (name.compareTo(ATTR_MODIFICATION_TIME) == 0)
         {
-            return VAttribute.createDateSinceEpoch(name, GftpFileSystem
+            return VAttributeUtil.createDateFromMilliesSinceEpoch(name, GftpFileSystem
                     ._getModificationTime(entry));
 
         }
         else if (name.compareTo(ATTR_CREATION_TIME) == 0)
         {
-            return new VAttribute(VAttributeType.TIME, name,
+            return new Attribute(AttributeType.DATETIME, name,
                     GftpFileSystem._getCreationTime(entry));
 
         }
@@ -2741,22 +2742,22 @@ public class GftpFileSystem extends FileSystemNode
          **********************************************************************/
         else if (name.compareTo(ATTR_LENGTH) == 0)
         {
-            return new VAttribute(name, GftpFileSystem._getLength(entry));
+            return new Attribute(name, GftpFileSystem._getLength(entry));
 
         }
         else if (name.compareTo(ATTR_OWNER) == 0)
         {
-            return new VAttribute(name, GftpFileSystem._getOwner(entry));
+            return new Attribute(name, GftpFileSystem._getOwner(entry));
 
         }
         else if (name.compareTo(ATTR_GROUP) == 0)
         {
-            return new VAttribute(name, GftpFileSystem._getGroup(entry));
+            return new Attribute(name, GftpFileSystem._getGroup(entry));
 
         }
         else if (name.compareTo(ATTR_UNIQUE) == 0)
         {
-            return new VAttribute(name, GftpFileSystem._getUnique(entry));
+            return new Attribute(name, GftpFileSystem._getUnique(entry));
 
         }
 
