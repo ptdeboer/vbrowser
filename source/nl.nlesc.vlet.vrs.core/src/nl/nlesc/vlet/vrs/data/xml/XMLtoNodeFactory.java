@@ -20,10 +20,10 @@
 
 package nl.nlesc.vlet.vrs.data.xml;
 
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public abstract class XMLtoNodeFactory
 {
@@ -40,6 +40,6 @@ public abstract class XMLtoNodeFactory
 	}
 	
 	/** Create node of the Given type */
-	public abstract VNode createNode(VNode parent,String type,VAttributeSet attributes) throws VrsException; 
+	public abstract VNode createNode(VNode parent,String type,AttributeSet attributes) throws VrsException; 
 	
 }

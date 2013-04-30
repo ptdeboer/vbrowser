@@ -20,12 +20,12 @@
 
 package nl.nlesc.vlet.vrs.data.xml;
 
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
 
 public interface VPersistance 
 {
 	String getPersistantType(); 
 	
-	VAttributeSet getPersistantAttributes() throws VrsException; 
+	AttributeSet getPersistantAttributes() throws VrsException; 
 }

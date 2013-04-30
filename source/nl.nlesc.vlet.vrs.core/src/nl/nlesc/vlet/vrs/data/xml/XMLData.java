@@ -40,13 +40,14 @@ import javax.xml.transform.stream.StreamResult;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
+import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.exception.XMLDataParseException;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VNode;
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeSet;
-import nl.nlesc.vlet.vrs.data.VAttributeType;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -163,11 +164,11 @@ public class XMLData
     /**
      * Creates VAttribute (XML) node
      */
-    public Node createXMLNode(Document domDoc, VAttribute attr)
+    public Node createXMLNode(Document domDoc, Attribute attr)
     {
         String name = attr.getName();
         String value = attr.getStringValue(); // Cast to String representation !
-        VAttributeType type = attr.getType();
+        AttributeType type = attr.getType();
         boolean editable = attr.isEditable();
 
         // <Attribute name=... type=...>
@@ -219,9 +220,9 @@ public class XMLData
     /**
      * Create XML (Dom) node of VAttributeSet
      */
-    public Node createXMLNode(Document domDoc, VAttributeSet attrSet)
+    public Node createXMLNode(Document domDoc, AttributeSet attrSet)
     {
-        VAttribute[] attrs = attrSet.toArray(new VAttribute[]{});
+        Attribute[] attrs = attrSet.toArray(new Attribute[]{});
         String name = attrSet.getName();
 
         // <Attribute name=... type=...>
@@ -230,7 +231,7 @@ public class XMLData
 
         // domDoc.appendChild(attrElement);
         if (attrs != null)
-            for (VAttribute attr : attrs)
+            for (Attribute attr : attrs)
             {
                 // logger.debugPrintf("Adding VAttribute Node:%s\n",attr);
                 Node node = this.createXMLNode(domDoc, attr);
@@ -243,7 +244,7 @@ public class XMLData
     /**
      * Create XML (Dom) node of VAttributeSet
      */
-    public Node createXMLNode(Document domDoc, String setTag, String setName, Iterable<VAttributeSet> attrSets)
+    public Node createXMLNode(Document domDoc, String setTag, String setName, Iterable<AttributeSet> attrSets)
     {
 
         // <Attribute name=... type=...>
@@ -252,7 +253,7 @@ public class XMLData
 
         // domDoc.appendChild(attrElement);
         if (attrSets != null)
-            for (VAttributeSet set : attrSets)
+            for (AttributeSet set : attrSets)
             {
                 // logger.debugPrintf("Adding VAttribute Node:%s\n",set);
                 Node node = this.createXMLNode(domDoc, set);
@@ -265,7 +266,7 @@ public class XMLData
     /**
      * Create complete DOM Document from VAttributeSet.
      */
-    public Document createXMLDocumentFrom(VAttributeSet attrSet) throws XMLDataParseException
+    public Document createXMLDocumentFrom(AttributeSet attrSet) throws XMLDataParseException
     {
         Document domDoc = createDefaultDocument();
         Node node = createXMLNode(domDoc, attrSet);
@@ -277,7 +278,7 @@ public class XMLData
      * VAtttributeSet factory method. Parses the whole string. Assumes one XML
      * document string containing one VAttribute Set.
      */
-    public VAttributeSet parseVAttributeSet(String xmlString) throws XMLDataParseException
+    public AttributeSet parseVAttributeSet(String xmlString) throws XMLDataParseException
     {
         try
         {
@@ -293,7 +294,7 @@ public class XMLData
      * VAtttributeSet factory method. Reads the whole xml text from the
      * InputStream. Assumes one XML document containing one VAttribute Set.
      */
-    public VAttributeSet parseVAttributeSet(InputStream xmlStream) throws XMLDataParseException
+    public AttributeSet parseVAttributeSet(InputStream xmlStream) throws XMLDataParseException
     {
         try
         {
@@ -333,10 +334,10 @@ public class XMLData
      * 
      * @param collectionTag
      */
-    public ArrayList<VAttributeSet> parseVAttributeSets(InputStream xmlStream, String collectionTag)
+    public ArrayList<AttributeSet> parseVAttributeSets(InputStream xmlStream, String collectionTag)
             throws XMLDataParseException
     {
-        ArrayList<VAttributeSet> list = new ArrayList<VAttributeSet>();
+        ArrayList<AttributeSet> list = new ArrayList<AttributeSet>();
 
         try
         {
@@ -392,13 +393,13 @@ public class XMLData
         }
     }
 
-    public VAttributeSet parseVAttributeSet(Element setElement)
+    public AttributeSet parseVAttributeSet(Element setElement) throws Exception
     {
         // name - only one
         String setName = setElement.getAttribute("name");
         // String setEditableStr = setElement.getAttribute("editable");
 
-        VAttributeSet attrSet = new VAttributeSet(setName);
+        AttributeSet attrSet = new AttributeSet(setName);
         logger.debugPrintf(" > setName=%s\n", setName);
 
         NodeList attrNodes = setElement.getElementsByTagName(getVAtttributeElementName());
@@ -410,7 +411,7 @@ public class XMLData
             String typeStr = ((Element) attrNode).getAttribute("type");
             String editableStr = ((Element) attrNode).getAttribute("editable");
 
-            VAttributeType attrType = VAttributeType.valueOf(typeStr);
+            AttributeType attrType = AttributeType.valueOf(typeStr);
 
             logger.debugPrintf(" - new Attribute: {name,type}={%s,%s}\n", attrName, attrType);
             logger.debugPrintf(" - new Attribute editable=%s\n", editableStr);
@@ -423,7 +424,7 @@ public class XMLData
             logger.debugPrintf(" - new Attribute value=%s\n", valueStr);
             StringList enumValues = null;
             // enumValues
-            if (attrType == VAttributeType.ENUM)
+            if (attrType == AttributeType.ENUM)
             {
                 Element enumValuesElement = getFirstChildElement(attrNode, "enumValues");
 
@@ -443,15 +444,15 @@ public class XMLData
                 }
             }
 
-            VAttribute attr = null;
+            Attribute attr = null;
             // ===
             // Parsed enum value without enum list: add default value
             // ===
 
             if ((enumValues != null) && (enumValues.size() > 0))
-                attr = new VAttribute(attrName, enumValues.toArray(), valueStr);
+                attr = new Attribute(attrName, enumValues.toArray(), valueStr);
             else
-                attr = VAttribute.createFromString(attrType, attrName, valueStr); // new
+                attr = VAttributeUtil.parseFromString(attrType, attrName, valueStr); // new
                                                                                   // VAttribute(attrType,attrName,valueStr);
 
             logger.debugPrintf(" - new Attribute=%s\n", attr);
@@ -539,7 +540,7 @@ public class XMLData
         }
     }
 
-    public void writeAsXML(OutputStream outp, VAttributeSet attrSet, String comments) throws XMLDataParseException
+    public void writeAsXML(OutputStream outp, AttributeSet attrSet, String comments) throws XMLDataParseException
     {
         logger.debugPrintf("writeAsXML(): attrSet=%s\n", attrSet);
 
@@ -552,7 +553,7 @@ public class XMLData
     }
 
     /** Write Iterable Collection of VAttributeSets */
-    public void writeAsXML(OutputStream outp, String configName, Iterable<VAttributeSet> attrSets, String comments)
+    public void writeAsXML(OutputStream outp, String configName, Iterable<AttributeSet> attrSets, String comments)
             throws XMLDataParseException
     {
         logger.debugPrintf("writeAsXML(): attrSets\n");
@@ -592,7 +593,7 @@ public class XMLData
         {
             // current node :
             Node newXmlNode = domDoc.createElement(getPersistanteNodeElementName());
-            VAttributeSet attrSet = rootNode.getPersistantAttributes();
+            AttributeSet attrSet = rootNode.getPersistantAttributes();
             String type = rootNode.getPersistantType();
             ((Element) newXmlNode).setAttribute("type", type);
 
@@ -690,11 +691,18 @@ public class XMLData
 
         // Optional attributeSet:
         Element attrSetEl = getFirstChildElement(start, this.getVAtttributeSetElementName());
-        VAttributeSet attrSet = null;
+        AttributeSet attrSet = null;
 
         if (attrSetEl != null)
         {
-            attrSet = this.parseVAttributeSet(attrSetEl);
+            try
+            {
+                attrSet = this.parseVAttributeSet(attrSetEl);
+            }
+            catch(Exception e)
+            {
+                throw new XMLDataParseException("Failse to parse AttributeSet Element:"+attrSetEl);
+            }
         }
 
         // Call Factory:

@@ -23,25 +23,14 @@ package nl.esciencecenter.vbrowser.vrs.exceptions;
 import java.io.IOException;
 
 /**
- * Super class of all VL Exceptions.
+ * Super class of all VRS Exceptions.
  * <p>
- * The Class VlException provides more high-level information about the
+ * The Class VrsException provides more high-level information about the
  * Exception which occurred and hides the original System Exception.
  * <p>
- * This reduces the stack trace for example and provides the end-user (or
- * application programmer) a better descriptive error message then the low level
- * System Exception (which might be unknown to the application programmer).
- * <p>
+ * It it recommend to wrap low level exceptions and nested them into more descriptive Exceptions 
+ * providing extra information from the underlaying implementation. 
  * <br>
- * Example of Usage:<br>
- * <li><code> thrown new VlException("Unknown Exception.");</code>
- * <li><code> thrown new VlException(ReadAccesDeniedException);</code>
- * <li>
- * <code> thrown new VlException(ReadAccesDeniedException,"File has wrong group permissions.");</code>
- * <li>
- * <code> thrown new VlException(ReadAccesDeniedException,"Message txt",e);</code>
- * <p>
- * 
  */
 public class VrsException extends Exception
 {
@@ -76,21 +65,17 @@ public class VrsException extends Exception
     // Instance
     // ===============
 
-    /** Human Readable Name of the Exception */
-    protected String name = "General VlException"; // Who is this general ?
+    /**
+     *  Human Readable Error Description of this Exception
+     */
+    protected String name = "Vrs Exception"; 
 
-    // *** protected Instance Methods ***
-
-    /** Default contructor. For subclasses only. */
+    /** 
+     * Default contructor. For subclasses only.
+     */
     protected VrsException()
     {
         super();
-    };
-
-    /** Default contructor which holds system exception. For subclasses only. */
-    public VrsException(Throwable cause)
-    {
-        super(cause);
     };
 
     protected void setName(String newName)
@@ -101,8 +86,15 @@ public class VrsException extends Exception
     // ===
     // Public Constructors ***
     // ===
+    
+    public VrsException(Throwable cause)
+    {
+        super(cause);
+    };
 
-    /** Most basic implementation of the VlException. */
+    /** 
+     * Most basic implementation of the VlException. 
+     */
     public VrsException(String message)
     {
         super(message);

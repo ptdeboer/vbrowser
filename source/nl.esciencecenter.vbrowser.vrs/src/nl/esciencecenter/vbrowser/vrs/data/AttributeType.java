@@ -31,18 +31,18 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
  */
 public enum AttributeType
 {	
-	ANY("Any",Object.class), //   
-    BOOLEAN("Boolean",Boolean.class), 
+	ANY("Any",Object.class), 
+	BOOLEAN("Boolean",Boolean.class), 
     INT("Integer",Integer.class), 
     LONG("Long",Long.class), 
     FLOAT("Float",Float.class), 
     DOUBLE("Double",Double.class),
     STRING("String",String.class),
-    /** Enum type stores it's values as String */ 
+    /** Enum type stores its values as String */ 
     ENUM("Enum",String.class),
-    /** Store date time as unified string */ 
-    DATETIME("Time",String.class), 
-    VRI("VRI",VRL.class)
+    /** Store date time as unified date-time string */ 
+    DATETIME("DateTime",String.class), 
+    VRL("VRL",VRL.class)
     ;
 	
 	// === // 
@@ -94,13 +94,13 @@ public enum AttributeType
             return AttributeType.DATETIME;
         
         if (object instanceof VRL)
-            return AttributeType.VRI;
+            return AttributeType.VRL;
         
         if (object instanceof URL)
-            return AttributeType.VRI;
+            return AttributeType.VRL;
         
         if (object instanceof URI)
-            return AttributeType.VRI; 
+            return AttributeType.VRL; 
         
         return defaultType; 
     }
