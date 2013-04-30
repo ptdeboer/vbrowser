@@ -144,12 +144,12 @@ public abstract class FSNode
 	
 	public String resolvePath(String relPath) throws URISyntaxException
 	{
-		return resolvePathURI(relPath).getPath();
+		return new URIFactory(uri).resolvePath(relPath);
 	}
 	
 	public URI resolvePathURI(String relPath) throws URISyntaxException
 	{
-		return new URIFactory(uri).resolvePath(relPath).toURI();
+		return new URIFactory(uri).replacePath(resolvePath(relPath)).toURI(); 
 	}
 
 	public boolean create() throws IOException 

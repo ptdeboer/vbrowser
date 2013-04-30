@@ -30,6 +30,7 @@ import java.util.logging.Level;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.ptk.net.URIUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
@@ -107,7 +108,7 @@ public class FSUtil
     
     public URI resolvePathURI(String path) throws URISyntaxException
     {
-        return new URIFactory(workingDir).resolvePath(path).toURI();
+        return URIUtil.resolvePathURI(workingDir,path); 
     }
     
     public boolean existsPath(String path)

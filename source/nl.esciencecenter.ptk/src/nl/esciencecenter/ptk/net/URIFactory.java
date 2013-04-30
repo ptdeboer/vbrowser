@@ -30,14 +30,14 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.URLUTF8Encoder;
 
 /**
- * URI Factory. Most methods are shadowed from URI so it can also be used as URI Proxy object.
- * Use this factory to chain a sequence of URI modification methods.
- * 
- * Use toURI() to create the resulting URI. 
+ * URI Factory. Most methods are shadowed from URI so it can also be used as an
+ * URI Proxy object. Use this factory to chain a sequence of URI modification
+ * methods. Use toURI() to create the resulting URI.
  * 
  * @author Piter T. de Boer
  */
-public class URIFactory implements Serializable // because it can be embedded in a URI like class. 
+public class URIFactory implements Serializable // because it can be embedded in
+                                                // a URI like class.
 {
     private static final long serialVersionUID = 6425053125412658256L;
 
@@ -55,7 +55,8 @@ public class URIFactory implements Serializable // because it can be embedded in
     public final static char FRAGMENT_CHAR = '#';
 
     /**
-     * Default URI attribute separator '&amp;' in URL: http://../?ArgumentA=1&amp;ArgumentB=2"
+     * Default URI attribute separator '&amp;' in URL:
+     * http://../?ArgumentA=1&amp;ArgumentB=2"
      */
     public static final String ATTRIBUTE_SEPERATOR = "&";
 
@@ -80,18 +81,16 @@ public class URIFactory implements Serializable // because it can be embedded in
     /**
      * Produce URI compatible path and do other normalizations.
      * <ul>
-     * <li>Flip <code>localSepChar</code> to (URI compatible) forward slashes
-     * <li>changes DOS paths into absolute DOS paths: for example: 'c:' into
-     * '/c:/'
-     * <li>prefixes all paths with '/' to make it absolute , unless
-     * makeAbsolute=false
+     * <li> Flip <code>localSepChar</code> to (URI compatible) forward slashes
+     * <li> Changes DOS paths into absolute DOS paths: for example: 'c:' into '/c:/'
+     * <li> Prefixes all paths with '/' to make it absolute , unless makeAbsolute=false
      * </ul>
      * 
      * @param orgpath
      *            - original path.
      * @param makeAbsolute
      *            - prefix optional relative paths with '/' to make them
-     *              absolute.
+     *            absolute.
      * @param localSepChar
      *            - separator char to 'flip' to URI seperator char '/'
      */
@@ -352,8 +351,8 @@ public class URIFactory implements Serializable // because it can be embedded in
 
     private String userInfo;
 
-    /** 
-     * Contains path <em>or</em> scheme specific part without authorization,etc 
+    /**
+     * Contains path <em>or</em> scheme specific part without authorization,etc
      */
     private String pathOrReference;
 
@@ -365,7 +364,7 @@ public class URIFactory implements Serializable // because it can be embedded in
 
     private boolean hasAuthority = false;
 
-    private boolean isReference = false; 
+    private boolean isReference = false;
 
     public URIFactory(URI uri)
     {
@@ -374,7 +373,7 @@ public class URIFactory implements Serializable // because it can be embedded in
 
     protected URIFactory()
     {
-        ; 
+        ;
     }
 
     public URIFactory(final String uristr) throws URISyntaxException
@@ -391,7 +390,7 @@ public class URIFactory implements Serializable // because it can be embedded in
     {
         init(scheme, null, host, port, path, null, null);
     }
-    
+
     public URIFactory(String scheme, String userInfo, String host, int port, String path)
     {
         init(scheme, userInfo, host, port, path, null, null);
@@ -416,9 +415,7 @@ public class URIFactory implements Serializable // because it can be embedded in
      * Initialize by smartly parsing the provided String. Checks whether the
      * string is encoded or decoded.
      * 
-     * @param uriStr
-     *            - Relative or Absolute URI String. Might be URI encoded.
-     * 
+     * @param uriStr - Relative or Absolute URI String. Might be URI encoded.
      * @throws URISyntaxException
      */
     protected void init(final String uriStr) throws URISyntaxException
@@ -487,17 +484,17 @@ public class URIFactory implements Serializable // because it can be embedded in
      */
     protected void init(final URI _uri)
     {
-        // All URIs are normalized! 
+        // All URIs are normalized!
         URI uri = _uri.normalize();
-        
+
         String newScheme = uri.getScheme();
 
         boolean hasAuth = StringUtil.notEmpty(uri.getAuthority());
 
         String newUserInf = uri.getUserInfo();
-        
+
         // Resolve hostname here ?
-        String newHost = uri.getHost(); 
+        String newHost = uri.getHost();
 
         int newPort = uri.getPort();
 
@@ -559,7 +556,7 @@ public class URIFactory implements Serializable // because it can be embedded in
     private void init(String newscheme, String userinf, String newhost, int newport, String newpath, String newquery,
             String newfrag)
     {
-        
+
         // must be null or uri will add empty values
         if (StringUtil.isEmpty(newhost))
             newhost = null; // null => no hostname
@@ -635,10 +632,10 @@ public class URIFactory implements Serializable // because it can be embedded in
     {
         this.scheme = newScheme;
     }
-    
+
     protected void setHostname(String newHostname)
     {
-        this.hostname=newHostname; 
+        this.hostname = newHostname;
     }
 
     protected void setPath(String newPath)
@@ -777,12 +774,6 @@ public class URIFactory implements Serializable // because it can be embedded in
         return this.userInfo;
     }
 
-    public URIFactory changeUserInfo(String user)
-    {
-        userInfo = user;
-        return this;
-    }
-
     /** Returns dirname part of path */
     public String getDirname()
     {
@@ -811,44 +802,82 @@ public class URIFactory implements Serializable // because it can be embedded in
     // cases, but might create a new Factory instance.
     // ========================================================================
 
-    /** Changes scheme and returns </em>this<em> */
-    public URIFactory changeScheme(String newScheme)
+    /**
+     * Replace scheme value and return this factory.
+     * 
+     * @returns - this <em>changed</em> URIFactory
+     */
+    public URIFactory replaceScheme(String newScheme)
     {
         this.setScheme(newScheme);
         return this;
     }
 
-    /** Changes port and returns </em>this<em> */
-    public URIFactory changePort(int newPort)
+    /**
+     * Replace hostname value and return this factory.
+     * 
+     * @returns - this <em>changed</em> URIFactory
+     */
+    public URIFactory replaceHostname(String newHostname)
+    {
+        this.setHostname(newHostname);
+        return this;
+    }
+
+    public URIFactory replaceUserInfo(String user)
+    {
+        userInfo = user;
+        return this;
+    }
+
+    /**
+     * Replace port value and return this factory.
+     * 
+     * @returns - this <em>changed</em> URIFactory
+     */
+    public URIFactory replacePort(int newPort)
     {
         this.setPort(newPort);
         return this;
     }
 
-    /** Changes path and returns </em>this<em> */
-    public URIFactory changePath(String path)
+    /**
+     * Replace path value and return this factory.
+     * 
+     * @returns - this <em>changed</em> URIFactory
+     */
+    public URIFactory replacePath(String path)
     {
         this.setPath(path);
         return this;
     }
 
-    /** Changes query part and returns </em>this<em> */
-    public URIFactory changeQuery(String newQuery)
+    /**
+     * Replace query value and return this factory.
+     * 
+     * @returns - this <em>changed</em> URIFactory
+     */
+    public URIFactory replaceQuery(String newQuery)
     {
         this.setQuery(newQuery);
         return this;
     }
 
-    public URIFactory changeHostname(String newHostname)
+    /**
+     * Replace query value and return this factory.
+     * 
+     * @returns - this <em>changed</em> URIFactory
+     */
+    public URIFactory replaceFragment(String newFragment)
     {
-        this.setHostname(newHostname);
+        this.fragment = newFragment;
         return this;
     }
-    
+
     /**
-     * Appends plain string to this URI's String representation.
-     *  Does <em>NOT</em> check for fragments or query strings. 
-     *  When appending file system paths use explicit appendPath()!
+     * Appends plain string to this URI's String representation. Does
+     * <em>NOT</em> check for fragments or query strings. When appending file
+     * system paths use explicit appendPath()!
      */
     public URIFactory appendString(String substr) throws URISyntaxException
     {
@@ -858,7 +887,7 @@ public class URIFactory implements Serializable // because it can be embedded in
     /**
      * Creates new location by appending path to this one added seperator char
      * between path elements. To added query and/or fragments string use
-     * append().s
+     * append().
      */
     public URIFactory appendPath(String dirname)
     {
@@ -892,82 +921,52 @@ public class URIFactory implements Serializable // because it can be embedded in
     }
 
     /**
-     * Resolves optional relative URI using this URI as base location. Note: the
-     * last part (basename) of the URI is stripped, assuming the URI starts from
-     * a file, for example "http://myhost/index.html", base location =
-     * "http://myhost/". Any relative url starts from "http://myhost/" NOT
-     * "http://myhost/index.html" Also the supplied string must match URI paths
-     * (be %-encoded).
+     * Use URI.resolve() to resolve this relative path. Note that URI by default
+     * strips the last part of the complete filepath. Use resovePath() to do an
+     * actual path resolving.
      * 
      * @throws URISyntaxException
      */
-    public URIFactory resolveSibling(String reluri) throws URISyntaxException
+    public URIFactory uriResolve(String reluri) throws URISyntaxException
     {
         if ((reluri == null) || (reluri == ""))
             return this;
 
-        // resolve must have ENCODED URI paths...
-        URI uri;
-
-        // normalize relative uri:
-        String encodedPath;
+        // Legacy: check for Query and Fragment resolving:
         char c0 = reluri.charAt(0);
-        
-        // keep query and fragment uri as-is.
-        if ((c0 == '#') || (c0 == '?'))
-        {
-            encodedPath = reluri;
-            // update query: 
-            if (c0=='?')
-            {
-                this.query=reluri.substring(1,reluri.length());
-                return this;
-            }
-        }
-        else
-        {
-            encodedPath = encode(uripath(reluri, false));
-        }
-        uri = toURI().resolve(encodedPath); // *encoded* URI
 
-        init(uri);
+        // java.net.URI handles this incorrect:
+        if (c0 == '#')
+            return this.replaceFragment(reluri.substring(1, reluri.length()));
 
+        if (c0 == '?')
+            return this.replaceQuery(reluri.substring(1, reluri.length()));
+
+        init(toURI().resolve(encode(reluri)));
         return this;
     }
 
     /**
-     * Resolve DECODED (no %-chars) relative path against this URI, assuming
-     * this URI is a (directory) PATH and not a file or url location. The
-     * default URI.resolve() method strips the last part (basename) of an URI
-     * and uses that as base URI (for example the "index.html" part). Also the
-     * relative URIs must be %-coded when they contain spaces !
-     * 
-     * This method doesn't strip the last part of the URI.
-     * 
-     * @param relpath
-     *            decoded relative path without fragments or queries ('#' or
-     *            '?')
-     * @return
-     * @throws URISyntaxException
+     * Resolve path and return new decoded filepath. Ignores Query and Fragment
+     * parts and uses decoded path element from URI.
      */
-    public URIFactory resolvePath(String relpath) throws URISyntaxException
+    public String resolvePath(String relpath) throws URISyntaxException
     {
-        // add dummy html, and use URI 'resolve' (which expects .html file)
-        URIFactory fac = appendPath("dummy.html");
-
-        // resolves encoded path!
-        fac.resolveSibling(URIFactory.uripath(relpath, false)); 
-
-        return fac;
+        // append kludge file to trigger uri to resolving actual path.
+        String kludgePath = this.getPath() + "/dummy.html";
+        URI uri = new URI("file", kludgePath, null);
+        // use Encoded path string here!
+        URI newUri = uri.resolve(encode(relpath));
+        return newUri.getPath();
     }
 
     public URIFactory getParent()
     {
         URIFactory fac = duplicate();
-        fac.pathOrReference=dirname(this.pathOrReference);
+        fac.pathOrReference = dirname(this.pathOrReference);
         return fac;
     }
-    
+
     // ========================================================================
     // URI Formatter methods
     // ========================================================================
@@ -987,16 +986,16 @@ public class URIFactory implements Serializable // because it can be embedded in
         }
     }
 
-    /** 
-     * calls toURI().toURL() 
-     */ 
+    /**
+     * calls toURI().toURL()
+     */
     public URL toURL() throws MalformedURLException, URISyntaxException
     {
         return toURI().toURL();
     }
 
     /**
-     * Explicit encode URI. 
+     * Explicit encode URI fields.
      */
     public URI toEncodedURI() throws URISyntaxException
     {
@@ -1009,8 +1008,9 @@ public class URIFactory implements Serializable // because it can be embedded in
     }
 
     /**
-     * This method returns the <em>Decoded</em> URI string. For an URI compatible string
-     * (with %XX encoding) use toURI().toString() or toURIString() !
+     * This method returns the <em>Decoded</em> URI string. For an URI
+     * compatible string (with %XX encoding) use toURI().toString() or
+     * toURIString() !
      * 
      * @return normalized and decoded URI String.
      */
