@@ -401,28 +401,28 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     // ========================================================================
     // Resolvers 
     // ========================================================================
-
-    public VRL resolveSibling(VRL relLoc) throws VRLSyntaxException
-    {
-        try
-        {
-            return createVRL(uriFactory.duplicate().resolveSibling(relLoc.toString()),false);
-        }
-        catch (URISyntaxException e)
-        {
-            throw new VRLSyntaxException("Failed to resolve relative VRL:"+relLoc,e);
-        }
-    }
     
-    public VRL resolveSibling(String path) throws VRLSyntaxException
+//    public VRL uriResolve(VRL relVrl) throws VRLSyntaxException
+//    {
+//        try
+//        {
+//            return createVRL(uriFactory.duplicate().uriResolve(relVrl),false);
+//        }
+//        catch (URISyntaxException e)
+//        {
+//            throw new VRLSyntaxException("Failed to resolve lreative String:"+relVrl,e);
+//        } 
+//    }
+    
+    public VRL uriResolve(String relUri) throws VRLSyntaxException
     {
         try
         {
-            return createVRL(uriFactory.duplicate().resolveSibling(path),false);
+            return createVRL(uriFactory.duplicate().uriResolve(relUri),false);
         }
         catch (URISyntaxException e)
         {
-            throw new VRLSyntaxException("Failed to resolve lreative String:"+path,e);
+            throw new VRLSyntaxException("Failed to resolve lreative String:"+relUri,e);
         } 
     }
    
@@ -430,7 +430,8 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     {
         try
         {
-            return createVRL(uriFactory.duplicate().resolvePath(path),false);
+            String newPath=uriFactory.resolvePath(path); 
+            return createVRL(uriFactory.duplicate().replacePath(newPath),false);
         }
         catch (URISyntaxException e)
         {
@@ -445,23 +446,23 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
 
     public VRL replacePath(String path)
     {
-        return createVRL(uriFactory.duplicate().changePath(path),false);
+        return createVRL(uriFactory.duplicate().replacePath(path),false);
     }
     
     /** Duplicate VRL but create new Query */
     public VRL copyWithNewQuery(String str)
     {
-        return createVRL(uriFactory.duplicate().changeQuery(str),true); 
+        return createVRL(uriFactory.duplicate().replaceQuery(str),true); 
     }
     
     public VRL copyWithNewPort(int val)
     {
-        return createVRL(uriFactory.duplicate().changePort(val),false);
+        return createVRL(uriFactory.duplicate().replacePort(val),false);
     }
 
     public VRL replaceScheme(String newScheme)
     {
-        return createVRL(uriFactory.duplicate().changeScheme(newScheme),false);
+        return createVRL(uriFactory.duplicate().replaceScheme(newScheme),false);
     }
     
     /** 
@@ -500,7 +501,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
          
         return resolvePath(relvrl.getPath()); 
     }
-  
+   
     // =============================
     // Extra VRL interface methods. 
     // =============================
@@ -610,6 +611,8 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     {
         return (StringUtil.isEmpty(getFragment()) == false);
     }
+
+  
 
     
 }
