@@ -41,19 +41,6 @@ public class Presentation
 
     protected static Hashtable<String, Presentation> presentationStore = new Hashtable<String, Presentation>();
 
-    // /** Default Attribute Name to show for VFSNodes */
-    // public static String defaultFileAttributeNames[] =
-    // {
-    // ICON,
-    // NAME,
-    // RESOURCE_TYPE,
-    // LENGTH,
-    // // ATTR_MODIFICATION_TIME_STRING,
-    // MODIFICATION_TIME,
-    // MIMETYPE,
-    // PERMISSIONS_STRING
-    // };
-
     /** format number to 00-99 format */
     public static String to2decimals(long val)
     {
