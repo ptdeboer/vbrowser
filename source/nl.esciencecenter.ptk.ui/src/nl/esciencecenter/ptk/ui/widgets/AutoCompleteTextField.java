@@ -20,6 +20,7 @@
 
 package nl.esciencecenter.ptk.ui.widgets;
 
+import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -77,6 +78,7 @@ public class AutoCompleteTextField extends JComboBox
     
     private void init()
     {
+        history.addUnique("file:/");
         history.addUnique("file:///"+GlobalProperties.getGlobalUserHome());
         
         history.sort(true);
@@ -87,20 +89,13 @@ public class AutoCompleteTextField extends JComboBox
         if (getEditor() != null)
         {
             JTextField tf = getTextField();
-            if (tf != null)
-            {
-
+            if (tf != null)  {
                 tf.setDocument(new CBDocument());
-
-                addActionListener(new ActionListener()
-                {
-                    public void actionPerformed(ActionEvent evt)
-                    {
-                        if (evt.getActionCommand().equals(COMBOBOXEDITED))
-                        {
+                addActionListener(new ActionListener()  {
+                    public void actionPerformed(ActionEvent evt)  {
+                        if (evt.getActionCommand().equals(COMBOBOXEDITED))  {
                             saveHistory();
                         }
-
                     }
                 });
             }
@@ -196,6 +191,11 @@ public class AutoCompleteTextField extends JComboBox
     public void setText(String txt)
     {
         this.getTextField().setText(txt); 
+    }
+    
+    public void setDropTarget(DropTarget dt)
+    {
+        this.getTextField().setDropTarget(dt);
     }
 
 }

@@ -20,6 +20,7 @@
 
 package nl.esciencecenter.ptk.ui.widgets;
 
+import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -41,7 +42,6 @@ public class IconTextField extends JPanel implements ActionListener
     {
     	super(); 
         initGUI(); 
-        initDnD();  
     }
     
     private void initGUI() 
@@ -64,25 +64,12 @@ public class IconTextField extends JPanel implements ActionListener
         this.setBackground(textField.getBackground()); 
         this.setBorder(textField.getBorder()); 
         textField.setBorder(null); 
-        
     }
-    
-    private void initDnD()
+
+    public void setDropTarget(DropTarget dt)
     {
-//        // One For All: Transfer Handler: 
-//        setTransferHandler(VTransferHandler.getDefault());
-//            
-//        // reuse draglistener from iconsPanel:
-//        DragSource dragSource=DragSource.getDefaultDragSource();
-//        DragGestureListener dragListener = new VComponentDragGestureListener(this);
-//         
-//        dragSource.createDefaultDragGestureRecognizer(
-//                    this, DnDConstants.ACTION_COPY_OR_MOVE, dragListener );
-//           
-//        // I am also a DROP target: 
-//        setDropTarget(new NodeDropTarget(this));
-//        // Have to set Keymapping to my component 
-//        GuiSettings.setDefaultKeymappings(this); 
+        this.iconLabel.setDropTarget(dt);
+        this.textField.setDropTarget(dt);
     }
     
     public void setText(String txt)

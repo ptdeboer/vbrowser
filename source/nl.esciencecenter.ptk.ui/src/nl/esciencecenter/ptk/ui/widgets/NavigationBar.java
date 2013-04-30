@@ -22,6 +22,7 @@ package nl.esciencecenter.ptk.ui.widgets;
 
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.util.TooManyListenersException;
 
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
@@ -31,6 +32,9 @@ import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
+
+import java.awt.dnd.DropTarget;
 
 public class NavigationBar extends JToolBar
 {
@@ -96,6 +100,7 @@ public class NavigationBar extends JToolBar
     {
         initGui();
         this.setEnableNagivationButtons(false);
+        initDnD(); 
     }
 
     /** Add listener to text field only */
@@ -241,4 +246,29 @@ public class NavigationBar extends JToolBar
         return new ImageIcon(res);
     }
 
+    protected void initDnD()
+    {
+        DropTarget dt1=new DropTarget(); 
+        DropTarget dt2=new DropTarget(); 
+
+        // enable toolbar and icontext field:  
+        this.setDropTarget(dt1);
+        this.locationTextField.setDropTarget(dt2); 
+        
+        try
+        { 
+            dt1.addDropTargetListener(new NavigationBarDropHandler(this));
+            dt2.addDropTargetListener(new NavigationBarDropHandler(this));
+        }
+        catch (TooManyListenersException e)
+        {
+            ClassLogger.getLogger(this.getClass()).logException(ClassLogger.ERROR, e, "TooManyListenersException:"+e);
+        }
+    }
+
+    public void notifyDnDDrop(String txt)
+    {
+        this.updateLocation(txt,false);        
+    }
+    
 }
