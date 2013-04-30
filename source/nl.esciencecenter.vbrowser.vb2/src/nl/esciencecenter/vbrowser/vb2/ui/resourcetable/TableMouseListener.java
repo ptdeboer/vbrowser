@@ -21,18 +21,15 @@
 package nl.esciencecenter.vbrowser.vb2.ui.resourcetable;
 
 import java.awt.Component;
-import java.awt.Event;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.esciencecenter.vbrowser.vb2.ui.GuiSettings;
 import nl.esciencecenter.vbrowser.vb2.ui.UIGlobal;
 
 public class TableMouseListener implements MouseListener

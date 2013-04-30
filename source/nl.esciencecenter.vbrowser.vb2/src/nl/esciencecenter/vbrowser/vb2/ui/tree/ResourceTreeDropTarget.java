@@ -138,7 +138,7 @@ public class ResourceTreeDropTarget extends ViewNodeDropTarget
     	ResourceTreeNode rtnode = getRTNode(comp,p); 
     	
     	// check dropped data: 
-    	if (DnDData.canConvertToVRIs(data))
+    	if (DnDData.canConvertToVRLs(data))
     	{
     		 // I: accept drop: 
             dtde.acceptDrop (DnDConstants.ACTION_COPY_OR_MOVE);
@@ -147,7 +147,7 @@ public class ResourceTreeDropTarget extends ViewNodeDropTarget
             
             try
             {
-                vris = DnDData.getVRIsFrom(data);
+                vris = DnDData.getVRLsFrom(data);
             }
             catch (Exception e)
             {

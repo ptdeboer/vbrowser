@@ -27,6 +27,8 @@ import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentable;
@@ -36,8 +38,6 @@ import nl.nlesc.vlet.gui.presentation.VRSPresentation;
 import nl.nlesc.vlet.vrs.VComposite;
 import nl.nlesc.vlet.vrs.VNode;
 
-import nl.nlesc.vlet.vrs.data.VAttribute;
-import nl.nlesc.vlet.vrs.data.VAttributeType;
 import nl.nlesc.vlet.vrs.vrms.LogicalResourceNode;
 import nl.nlesc.vlet.vrs.vrms.VResourceLink;
 
@@ -305,53 +305,20 @@ public class VRSProxyNode extends ProxyNode
         {
             throw createProxyException("Couldn't get status of:"+vnode,e);  
         }
-         
     }
 
     @Override
     protected String[] doGetAttributeNames() throws ProxyException
     {
-        return convertAttrNames(vnode.getAttributeNames(),true); 
+        return vnode.getAttributeNames(); 
     }
-
-    private String[] convertAttrNames(String[] names,boolean firstToUpperCase) 
-    {
-    	String newnames[]=new String[names.length]; 
-    	
-    	for (int i=0;i<names.length;i++)
-    	{
-    		newnames[i]=convertAttrName(names[i],firstToUpperCase);
-    	}
-    	return newnames; 
-	}
     
-
-	private static String convertAttrName(String name,boolean firstToUpperCase) 
-	{
-		if (name==null)
-			return null;
-		
-		if (name.length()<=0)
-			return name; 
-		
-		String fstr=""+name.charAt(0);
-		if(firstToUpperCase)
-			fstr=fstr.toUpperCase();
-		else
-			fstr=fstr.toLowerCase();
-		
-		return ""+fstr+name.substring(1); 
-	}
-
 	@Override
     protected Attribute[] doGetAttributes(String[] names) throws ProxyException
     {
-        VAttribute[] vattrs;
-        
         try
         {
-            vattrs = vnode.getAttributes(convertAttrNames(names,false));
-            return convert(vattrs);
+            return vnode.getAttributes(names);
         }
         catch (VrsException e)
         {
@@ -359,59 +326,6 @@ public class VRSProxyNode extends ProxyNode
         } 
    }
     
-    public static Attribute[] convert(VAttribute vattrs[])
-    {
-        Attribute[] attrs=new Attribute[vattrs.length]; 
-        
-        for (int i=0;i<vattrs.length;i++)
-        {
-            attrs[i]=convert(vattrs[i]);
-        }
-        
-        return attrs; 
-        
-    }
-
-    public static Attribute convert(VAttribute vattr)
-    {
-        if (vattr==null)
-            return null;
-        
-        VAttributeType type = vattr.getType();
-        String name=convertAttrName(vattr.getName(),true);
-        
-        switch(type)
-        {
-            case BOOLEAN:
-                return new Attribute(name,vattr.getBooleanValue()); 
-            case INT:
-                return new Attribute(name,vattr.getIntValue());
-            case LONG:
-                return new Attribute(name,vattr.getLongValue());
-            case FLOAT:
-                return new Attribute(name,vattr.getFloatValue());
-            case DOUBLE:
-                return new Attribute(name,vattr.getDoubleValue());
-            case ENUM:
-                return new Attribute(name,vattr.getEnumValues(),vattr.getStringValue()); 
-            case VRL:
-                try
-                {
-                    return new Attribute(name,new VRL(vattr.getStringValue()));
-                }
-                catch (VRLSyntaxException e)
-                {
-                    return new Attribute(name,vattr.getStringValue());
-                } 
-            case TIME: 
-                return new Attribute(name,vattr.getDateValue());
-            case STRING:
-            default: 
-                return new Attribute(name,vattr.getStringValue());
-                
-        }
-    }
-
     @Override
     protected UIPresentation doGetPresentation()
     {

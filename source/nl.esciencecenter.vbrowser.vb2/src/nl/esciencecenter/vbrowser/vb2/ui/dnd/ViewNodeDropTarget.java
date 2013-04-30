@@ -43,11 +43,7 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
  * Install this DropTargetListener to support drops on the component. 
  * 
  * Swing/AWT Compatible DnD Support. 
- * 
- * @author P.T. de Boer. 
- *
  */
-
 public  class ViewNodeDropTarget extends DropTarget //, DragSourceListener,
 {
     private static final long serialVersionUID = 1985854014807809151L;
@@ -71,7 +67,7 @@ public  class ViewNodeDropTarget extends DropTarget //, DragSourceListener,
             //  update GUI: select the JButton
             //((VComponent)source).setMouseOver(true);
             // one of my component, so I accept this drop:
-            dtde.acceptDrag (DnDConstants.ACTION_COPY_OR_MOVE);
+            dtde.acceptDrag (DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK);
             //DropTargetContext dtc = dtde.getDropTargetContext();
             
             // Accept all DnD actions: 
@@ -135,10 +131,10 @@ public  class ViewNodeDropTarget extends DropTarget //, DragSourceListener,
     	}
     	
     	// check dropped data: 
-    	if (DnDData.canConvertToVRIs(data))
+    	if (DnDData.canConvertToVRLs(data))
     	{
     		// I: accept drop: 
-            dtde.acceptDrop (DnDConstants.ACTION_COPY_OR_MOVE);
+            dtde.acceptDrop (DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK);
          
             //II: Do Drop: 
             doInterActiveDrop(comp,p,data); 
@@ -173,22 +169,24 @@ public  class ViewNodeDropTarget extends DropTarget //, DragSourceListener,
             
         // this.interActiveDrop((ViewNodeComponent)comp,point,data); 
         
-        if (DnDData.canConvertToVRIs(data)==false)
+        if (DnDData.canConvertToVRLs(data)==false)
         {
             DnDUtil.errorPrintf("interActiveDrop(): Unsupported Data/Flavor:%s\n",data);
             return false;
         }
         try
         {
-            List<VRL> vris = DnDData.getVRIsFrom(data); 
+            List<VRL> vris = DnDData.getVRLsFrom(data); 
             DnDUtil.debugPrintf(">>> Actual Drop on ViewNode:%s\n",viewNode); 
             for (int i=0;i<vris.size();i++)
+            {
                 DnDUtil.debugPrintf(" -vri[#%d]=%s\n",i,vris.get(i));
+            }
         }
         catch (Exception e)
         {
             //TODO: Handle!
-            DnDUtil.logException(e,"interActiveDrop(): Couldn't get VRIs from data:%s\n",data);
+            DnDUtil.logException(e,"interActiveDrop(): Couldn't get VRLs from data:%s\n",data);
         }
             
         return true; // Handled! 

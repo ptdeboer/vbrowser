@@ -203,12 +203,12 @@ public class ResourceTreeModel extends DefaultTreeModel
         // Process the directories
         for (int i = 0; (childs != null) && (i < childs.length); i++)
         {
-            logger.debugPrintf("adding child:(ViewItem)%s\n",childs[i].getVRI()); 
+            logger.debugPrintf("adding child:(ViewItem)%s\n",childs[i].getVRL()); 
             	
             ViewNode iconItem = childs[i];
             if (iconItem != null)
             {
-                VRL childLoc = iconItem.getVRI(); 
+                VRL childLoc = iconItem.getVRL(); 
                 ResourceTreeNode rtnode = null;
 
                     // If child already added:

@@ -56,9 +56,10 @@ public class ResourceTableCellRenderer extends DefaultTableCellRenderer
 	       value="?";
 	    }
 
-        // =====================
-        // Render Icon 
-        // =====================
+	    // 
+	    // Some predefined render options. 
+	    // Check for icon types here. 
+	    // 
 
 	    if (value instanceof Icon)
 	    {

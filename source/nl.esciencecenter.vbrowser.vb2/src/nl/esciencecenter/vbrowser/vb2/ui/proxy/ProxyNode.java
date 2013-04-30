@@ -29,6 +29,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.UIGlobal;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
@@ -184,7 +185,7 @@ public abstract class ProxyNode
         return id; 
     }
     
-    public VRL getVRI()
+    public VRL getVRL()
     {
         return  locator; 
     }
@@ -268,7 +269,7 @@ public abstract class ProxyNode
     		catch (ProxyException e)
     		{
     			handle("Method getName() Failed",e); 
-    			this.cache.name=getVRI().getBasename(); 
+    			this.cache.name=getVRL().getBasename(); 
 			} 
     	}
     	
@@ -336,8 +337,7 @@ public abstract class ProxyNode
 	// ========================================================================
     // Cached methods
     // ========================================================================
-   
-	
+   	
 	public ProxyNode[] getChilds(int offset, int range, LongHolder numChildsLeft) throws ProxyException
 	{
 		 synchronized(this.cache.childs)
@@ -387,7 +387,7 @@ public abstract class ProxyNode
        ProxyNode parent = getParent();
        
        if (parent!=null)
-           return parent.getVRI();
+           return parent.getVRL();
        
        return null;  
    }
@@ -466,20 +466,61 @@ public abstract class ProxyNode
 	}
 	
     public String[] getAttributeNames() throws ProxyException
-    {
-        return doGetAttributeNames(); 
+    {  
+        String names[]=doGetAttributeNames(); 
+        
+        if (names!=null)
+            return names;
+        
+        return getDefaultProxyAttributesNames(); 
     }
 
     public Attribute[] getAttributes(String[] names) throws ProxyException
     {
-        return doGetAttributes(names); 
+        Attribute[] attrs = doGetAttributes(names); 
+
+        if (attrs!=null)
+            return attrs; 
+        
+        return getDefaultProxyAttributes(names);
     }
     
+    // ============
+    // Presentation 
+    // ============
+   
     public UIPresentation getPresentation() 
     {
         return doGetPresentation(); 
     }
 	
+    protected String[] getDefaultProxyAttributesNames()
+    {
+        return new String[]{"icon","name","location","resourceType","mimeType"};
+    }
+    
+    protected Attribute[] getDefaultProxyAttributes(String names[]) throws ProxyException
+    {
+        Attribute attrs[]=new Attribute[names.length]; 
+        
+        // hard coded default attributes: 
+        for (int i=0;i<names.length;i++)
+        {
+            String name=names[i];
+            if (name.equals("icon"))
+                attrs[i]=new Attribute(name,this.getIconURL(this.getResourceStatus(), 48));
+            else if (name.equals("name"))
+                attrs[i]=new Attribute(name,this.getName()); 
+            else if (name.equals("location"))
+                attrs[i]=new Attribute(name,this.getVRL()); 
+            else if (name.equals("resourceType"))
+                attrs[i]=new Attribute(name,this.getResourceType()); 
+            else if (name.equals("mimeType"))
+                attrs[i]=new Attribute(name,this.getMimeType());
+        }
+        return attrs; 
+    }
+    
 	// ========================================================================
     // Protected implementation interface ! 
     // ========================================================================

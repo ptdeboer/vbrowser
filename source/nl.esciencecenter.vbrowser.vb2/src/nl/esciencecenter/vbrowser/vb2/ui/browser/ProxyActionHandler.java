@@ -68,8 +68,8 @@ public class ProxyActionHandler
         
         ProxyNodeEventNotifier.getInstance().scheduleEvent(
                     ProxyNodeEvent.createChildAddedEvent(
-                            node.getVRI(),
-                            node.getVRI().appendPath(
+                            node.getVRL(),
+                            node.getVRL().appendPath(
                                     "/node" + ProxyNode.newID())));
     }
 
@@ -79,7 +79,7 @@ public class ProxyActionHandler
         
         ProxyNodeEventNotifier.getInstance().scheduleEvent(
                 ProxyNodeEvent.createChildDeletedEvent(null,
-                        node.getVRI()));
+                        node.getVRL()));
     }
 
 }

@@ -79,7 +79,7 @@ public class ViewNodeContainerDragListener implements DragGestureListener
             // node could be the parent itself! 
             ViewNodeContainer parent = node.getViewContainer(); 
     
-            DnDUtil.debugPrintf("Drag on ViewNode!:%s\n",node.getViewNode().getVRI()); 
+            DnDUtil.debugPrintf("Drag on ViewNode!:%s\n",node.getViewNode().getVRL()); 
             
             // Redirect Drag Selection to Parent to enable multi-select. 
             if (parent!=null)
@@ -102,7 +102,7 @@ public class ViewNodeContainerDragListener implements DragGestureListener
             }
         }
        
-        VRL vri=((ViewNodeComponent)comp).getViewNode().getVRI(); 
+        VRL vri=((ViewNodeComponent)comp).getViewNode().getVRL(); 
 
         DnDUtil.debugPrintf("Drag Vri:%s\n",vri); 
         

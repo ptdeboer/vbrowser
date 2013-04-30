@@ -35,10 +35,10 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 /**
  * 	List of ResourceTransferables !  
  */
-public class VRIListTransferable implements Transferable
+public class VRLListTransferable implements Transferable
 {
     
-    public static VRIListTransferable createFrom(ViewNode[] nodes)
+    public static VRLListTransferable createFrom(ViewNode[] nodes)
     {
         if (nodes==null)
             return null;
@@ -46,8 +46,8 @@ public class VRIListTransferable implements Transferable
        int n=nodes.length; 
        List<VRL> vris=new ArrayList<VRL>(n);
        for (int i=0;i<n;i++)
-           vris.add(nodes[i].getVRI()); 
-       return new VRIListTransferable(vris);
+           vris.add(nodes[i].getVRL()); 
+       return new VRLListTransferable(vris);
     }
     
     // ========================================================================
@@ -56,7 +56,7 @@ public class VRIListTransferable implements Transferable
     
     List<VRL> vris = null;
     
-    public VRIListTransferable(List<VRL> vris)
+    public VRLListTransferable(List<VRL> vris)
     {
         this.vris=vris;
     }
@@ -64,25 +64,19 @@ public class VRIListTransferable implements Transferable
     public Object getTransferData(DataFlavor flavor)
             throws UnsupportedFlavorException
     {
-    	//System.err.println("getTransferData:"+flavor); 
-    	
         if (!isDataFlavorSupported(flavor))
         {
             throw new UnsupportedFlavorException(flavor);
         }
-//        else if (flavor.equals(DnDData.VRIFlavor))
-//        {
-//            return vris.get(0);
-//        }
-        else if (flavor.equals(DnDData.flavorVRIList))
+        else if (flavor.equals(DnDData.flavorVRLList))
         {
             return vris;
         }
         //
-        // KDE drag and drop: asks for URIs  
+        // KDE/ Web browser drag and drop: asks for URIs  
         //
-        else if ((flavor.equals(DnDData.flavorURIList))
-        		 || (flavor.equals(DataFlavor.stringFlavor)))
+        else if ( (flavor.equals(DnDData.flavorURIList))
+        		  || (flavor.equals(DataFlavor.stringFlavor)) )
         {
         	// export as newline separated string 
         	// to mimic KDE's newline separated uriList flavor ! 
@@ -141,14 +135,14 @@ public class VRIListTransferable implements Transferable
 
     public DataFlavor[] getTransferDataFlavors()
     {
-        return DnDData.dataFlavorsVRI;
+        return DnDData.dataFlavorsVRL;
     }
 
     public boolean isDataFlavorSupported(DataFlavor flavor)
     {
         DnDUtil.debugPrintf("isDataFlavorSupported:%s\n",flavor); 
 
-        for (DataFlavor flav : DnDData.dataFlavorsVRI)
+        for (DataFlavor flav : DnDData.dataFlavorsVRL)
             if (flav.equals(flavor))
                 return true;
 

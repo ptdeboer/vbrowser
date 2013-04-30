@@ -38,8 +38,6 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 {
 	private static ClassLogger logger;
 
-	public static final String RESOURCE="Resource"; 
-
 	static
 	{
 		logger=ClassLogger.getLogger(ProxyNodeTableDataProducer.class); 
@@ -114,29 +112,30 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 		
 		if (pres==null)
 		{
-			pres= Presentation.getPresentationForSchemeType(rootNode.getVRI().getScheme(),
+		    // presentation store: 
+			pres= Presentation.getPresentationForSchemeType(rootNode.getVRL().getScheme(),
 					rootNode.getResourceType(),false);
 		}
 
+		String[] names=null;
+		
 		// set default attributes
 		if (pres!=null)
 		{
-			String[] names;
 			names=pres.getChildAttributeNames();
-			
-			if (names==null)
-			    names=new String[]{""};
-			
-			for (String name:names)
-				headers.add(name);
 		}
-		else
+		
+		if (names==null)
 		{
-			// ViewNode (ProxyNode) defaults 
-			headers.add("Type"); 
-//			headers.add(MetaDataConstants.HOSTNAME); 
-//			headers.add(MetaDataConstants.PORT);  
-//			headers.add(MetaDataConstants.PATH);  
+		    names=new String[]{""};
+		    // headers.add("icon"); 
+		    // headers.add("name");
+		    // headers.add("type"); 
+		}
+		
+		for (String name:names)
+		{
+		    headers.add(name);
 		}
 
 		filterHeaders(headers); 
@@ -155,24 +154,17 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 	
 	private VRL getRootVRI() throws ProxyException 
 	{
-		return getRootViewNode().getVRI(); 
+		return getRootViewNode().getVRL(); 
 	}
 
 	private void filterHeaders(StringList headers) 
 	{
-		// Combine "Icon+Name" into "Resource"; 
-		headers.insert(0,RESOURCE); 
-		// combined into "Resource";  
-		headers.remove("Name"); 
-		headers.remove("Icon"); 
-
 		for (String name:headers.toArray())
 		{
 			// MetaAttribute seperators (legacy); 
 			if (name.startsWith("["))
 				headers.remove(name); 
 		}
-
 	}
 
 	public int insertHeader(String headerName, String newName, boolean insertBefore)
@@ -253,9 +245,7 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 						{
 							String hdrs[] = tableModel.getHeaders();   
 							updateNodeAttributes(node,hdrs);
-							
-							allAttributes.add(dataSource.getAttributeNames(node.getVRI()),true); 
-
+							allAttributes.add(dataSource.getAttributeNames(node.getVRL()),true); 
 						}
 						catch (ProxyException e)
 						{
@@ -272,8 +262,6 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 					handle(t,"Failed to fetch table data\n");
 				}
 			}
-
-
 
 			public void stopTask()
 			{
@@ -354,36 +342,23 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 	{
 		Attribute[] attrs;
 		
-		attrs=dataSource.getAttributes(viewNode.getVRI(),attrNames); 
+		attrs=dataSource.getAttributes(viewNode.getVRL(),attrNames); 
 		
-		RowData row=tableModel.getRow(viewNode.getVRI().toString());
+		RowData row=tableModel.getRow(viewNode.getVRL().toString());
 		if (row==null)
 			return; 
 
 		row.setValues(attrs);
-
-		// Todo Icon Attributes: 
-
-			for (String name:attrNames)
-			{
-				if (name==RESOURCE) 
-				{
-					//row.setViewNode(viewNode); 
-					row.setValue(name,viewNode); // prefill icon with resource;
-					row.setViewNode(viewNode); 
-					break; 
-				} 
-			}
 	}
 
 	private void createRow(ViewNode node) throws ProxyException
 	{
 		AttributeSet set=new AttributeSet();
-
-		int index=tableModel.addRow(node.getVRI().toString(),set);
-		RowData row = tableModel.getRow(index); 
-
-		row.setValue(RESOURCE,node); 
+		int index=tableModel.addRow(node.getVRL().toString(),set);
+		
+		//RowData row = tableModel.getRow(index); 
+		//row.setObjectValue(RESOURCE,node); 
+		
 	}
 
 	public ProxyNode getRootProxyNode() 

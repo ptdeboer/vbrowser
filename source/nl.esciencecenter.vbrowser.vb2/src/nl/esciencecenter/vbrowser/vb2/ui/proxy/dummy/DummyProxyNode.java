@@ -60,7 +60,7 @@ public class DummyProxyNode extends ProxyNode
     protected DummyProxyNode createChild(String childname)
         
     {
-        return new DummyProxyNode(this,getVRI().appendPath(childname)); 
+        return new DummyProxyNode(this,getVRL().appendPath(childname)); 
     }
     
     public DummyProxyNode(VRL locator)
@@ -178,7 +178,7 @@ public class DummyProxyNode extends ProxyNode
     @Override
     protected String doGetName() 
     {
-        return this.getVRI().getBasename(); 
+        return this.getVRL().getBasename(); 
     }
 
     @Override

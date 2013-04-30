@@ -209,7 +209,7 @@ public class ResourceTreeNode implements TreeNode
 
 	public VRL getVRI() 
 	{
-		return this.viewNode.getVRI(); 
+		return this.viewNode.getVRL(); 
 	}
 
 	protected void setViewNode(ViewNode iconItem) 

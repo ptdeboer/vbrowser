@@ -29,6 +29,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 
+import nl.esciencecenter.ptk.data.History;
 import nl.esciencecenter.ptk.ui.widgets.NavigationBar;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.Action;
@@ -46,7 +47,6 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeDataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEvent;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEventNotifier;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTable;
-import nl.esciencecenter.vbrowser.vrs.data.History;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
@@ -342,7 +342,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     private void doRefresh(ViewNode node)
     {
         ProxyNodeEventNotifier.getInstance().scheduleEvent(
-                ProxyNodeEvent.createRefreshEvent(null, node.getVRI()));
+                ProxyNodeEvent.createRefreshEvent(null, node.getVRL()));
     }
 
     private void doViewAsTable()
@@ -386,7 +386,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     		return; 
     	}
 
-    	final VRL loc = this.getCurrentViewNode().getVRI();  
+    	final VRL loc = this.getCurrentViewNode().getVRL();  
         
         final ProxyFactory factory = this.platform.getFactoryFor(loc);
         
@@ -425,17 +425,17 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     // Open,etc //
     public void openNode(ViewNode actionNode)
     {
-        openLocation(actionNode.getVRI(),true,false);
+        openLocation(actionNode.getVRL(),true,false);
     }
 
     public void defaultAction(ViewNode actionNode)
     {
-        openLocation(actionNode.getVRI(),true,false);
+        openLocation(actionNode.getVRL(),true,false);
     }
 
     protected void createNewTab(ViewNode node)
     {
-    	this.openLocation(node.getVRI(),true,true); 
+    	this.openLocation(node.getVRL(),true,true); 
 	}
 
     protected void closeCurrentTab()
@@ -483,10 +483,10 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     	}
     	browserFrame.setTabTitle(tab,node.getName()); 
     	
-        updateNavBar(node.getVRI(),icon); 
+        updateNavBar(node.getVRL(),icon); 
         
         if (addHistory)
-            addToHistory(node.getVRI());
+            addToHistory(node.getVRL());
     }
     
     public void updateLocationFromNavBar()
@@ -570,7 +570,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     private void setCurrentViewNode(ViewNode node)
     {
         logger.debugPrintf(">>> Update Current ViewNode: %s\n", node);
-        this.openLocation(node.getVRI(),true,false);
+        this.openLocation(node.getVRL(),true,false);
     }
 
     public ProxyBrowserTaskWatcher getTaskWatcher()

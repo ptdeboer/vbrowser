@@ -122,7 +122,7 @@ public class AnyFileAttributes implements IAttributes,UIPresentable
             return new Attribute(name,anyFile.getModificationTime());
         
         if (name.equals(""+FileAttribute.MODIFICATION_TIME_STRING))
-            return new Attribute(name,Presentation.createNormalizedDateTimeString(anyFile.getModificationTime()));
+            return new Attribute(name,Presentation.createDate(anyFile.getModificationTime()));
 
         if (name.equals(""+FileAttribute.LENGTH))
             return new Attribute(name,anyFile.length());

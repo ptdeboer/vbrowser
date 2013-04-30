@@ -39,7 +39,6 @@ import nl.esciencecenter.vbrowser.vb2.ui.UIGlobal;
 import nl.esciencecenter.vbrowser.vb2.ui.actions.KeyMappings;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserInterface;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
-import nl.esciencecenter.vbrowser.vb2.ui.dnd.DnDUtil;
 import nl.esciencecenter.vbrowser.vb2.ui.dnd.ViewNodeContainerDragListener;
 import nl.esciencecenter.vbrowser.vb2.ui.dnd.ViewNodeDropTarget;
 import nl.esciencecenter.vbrowser.vb2.ui.model.DataSource;
@@ -101,8 +100,6 @@ public class IconsPanel extends JPanel implements ListDataListener, ViewNodeCont
 		
 		this.setFocusable(true);
 		
-		
-        
 		initDND();
 	}
 	
@@ -117,10 +114,7 @@ public class IconsPanel extends JPanel implements ListDataListener, ViewNodeCont
 		dragListener = new ViewNodeContainerDragListener(); // is (this) needed ?;
 		//this.dsListener = MyDragSourceListener.getDefault(); 
 		// component, action, listener
-		dragSource.createDefaultDragGestureRecognizer(
-		        this, DnDConstants.ACTION_COPY_OR_MOVE, dragListener );
-		
-		; 
+		dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, dragListener );
 		
 		  // IconPanel canvas can receive contents !
         this.setTransferHandler(getPlatform().getTransferHandler()); 
@@ -345,7 +339,7 @@ public class IconsPanel extends JPanel implements ListDataListener, ViewNodeCont
         if (node==null)
             return; // canvas click; 
         
-        IconItem item=getIconItem(node.getVRI());
+        IconItem item=getIconItem(node.getVRL());
         if (item!=null) 
             item.setSelected(isSelected); 
 	}

@@ -227,7 +227,7 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
 
     public boolean hasLocator(VRL locator)
     {
-        return this.viewNode.getVRI().equals(locator); 
+        return this.viewNode.getVRL().equals(locator); 
     }
 
     public void updateFocus(boolean hasFocus)

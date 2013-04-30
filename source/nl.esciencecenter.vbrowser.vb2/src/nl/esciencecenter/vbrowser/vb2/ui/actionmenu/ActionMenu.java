@@ -43,7 +43,7 @@ public class ActionMenu extends JPopupMenu
 			boolean canvasMenu)
 	{
 		
-		VRL locator = viewNode.getVRI(); 
+		VRL locator = viewNode.getVRL(); 
 		ActionMenu menu=new ActionMenu(viewNode,actionListener); 
 
     	ViewNode[] selected=null;

@@ -27,25 +27,24 @@ import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 public class TableRowComparer implements Comparer<RowData>
 {
     public boolean ignoreCase=true;
-    private int columnNr;
+    private String columnName;
     private int order=1;
     
-    private void init(int columnNr,boolean reverse)
+    private void init(String columnName,boolean reverse)
     {
-        this.columnNr=columnNr; 
+        this.columnName=columnName; 
         this.order=(reverse==false)?(1):(-1); 
     }
 
-    public TableRowComparer(int columnNr,boolean reverse)
+    public TableRowComparer(String columnName,boolean reverse)
     {
-        init(columnNr,reverse); 
+        init(columnName,reverse); 
     }
     
-    public TableRowComparer(int columnNr)
+    public TableRowComparer(String columnName)
     {
-        init(columnNr,false); 
-    }
-    
+        init(columnName,false); 
+    }    
     
     public int compare(RowData v1, RowData v2)
     {
@@ -69,8 +68,8 @@ public class TableRowComparer implements Comparer<RowData>
         RowData r1=(RowData)v1; 
         RowData r2=(RowData)v2;
         
-        Attribute o1 = r1.getAttribute(columnNr);
-        Attribute o2 = r2.getAttribute(columnNr);
+        Attribute o1 = r1.getAttribute(columnName);
+        Attribute o2 = r2.getAttribute(columnName);
         
         debug("comparing:"+o1+" <==> "+o2); 
         
@@ -107,7 +106,7 @@ public class TableRowComparer implements Comparer<RowData>
 
 	private void debug(String msg) 
 	{
-	    //System.err.println("TableRowComparar:"+msg); 
+	    //sSystem.err.printf("TableRowComparator:%s\n",msg); 
 	}
     
 }

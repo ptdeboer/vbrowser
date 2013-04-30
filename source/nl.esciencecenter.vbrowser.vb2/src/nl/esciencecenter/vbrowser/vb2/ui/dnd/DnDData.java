@@ -37,14 +37,18 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public class DnDData
 {
-//    public static class ViewNodeList extends ArrayList<ViewNode> {};
-//    
-//    public static DataFlavor ViewNodeDataFlavor = new DataFlavor(ViewNode.class, "ViewNode class");
-//
-//    public static DataFlavor ViewNodeListDataFlavor = new DataFlavor(ViewNodeList.class, "List<ViewNode> class");
-//    
-    public static class VRIList extends ArrayList<VRL> {};
     
+    // public static class ViewNodeList extends ArrayList<ViewNode> {};
+    //
+    // public static DataFlavor ViewNodeDataFlavor = new
+    // DataFlavor(ViewNode.class, "ViewNode class");
+    //
+    // public static DataFlavor ViewNodeListDataFlavor = new
+    // DataFlavor(ViewNodeList.class, "List<ViewNode> class");
+    //
+    
+    public static class VRLList extends ArrayList<VRL> {};
+
     /** One ore more URIstrings seperated by a ';' */
     public static DataFlavor flavorString = DataFlavor.stringFlavor;
 
@@ -58,26 +62,25 @@ public class DnDData
     public static DataFlavor octetStreamDataFlavor = new DataFlavor(
             "application/octet-stream;class=java.io.InputStream", "octetStream");
 
-//  public static DataFlavor VRIFlavor = new DataFlavor(VRI.class, "VRI class");
+    // public static DataFlavor VRLFlavor = new DataFlavor(VRL.class,
+    // "VRL class");
 
-  public static DataFlavor flavorVRIList = new DataFlavor(VRIList.class, "(Array)List<VRI> class");
+    public static DataFlavor flavorVRLList = new DataFlavor(VRLList.class, "(Array)List<VRL> class");
 
-    
-    public static DataFlavor[] dataFlavorsVRI = new DataFlavor[]
-            { 
-//                ViewNodeDataFlavor, 
-//                ViewNodeListDataFlavor,
-                //VRIFlavor,
-                flavorVRIList,
-                flavorJavaFileList, 
-                flavorURIList, 
-                flavorString, 
-            };
+    public static DataFlavor[] dataFlavorsVRL = new DataFlavor[]
+        {
+            // ViewNodeDataFlavor,
+            // ViewNodeListDataFlavor,
+            // VRLFlavor,
+            flavorVRLList, 
+            flavorJavaFileList,
+            flavorURIList, 
+            flavorString, 
+        };
 
     // ========================================================================
     //
     // ========================================================================
-   
 
     // === Object === //
 
@@ -85,11 +88,11 @@ public class DnDData
      * DataFlavors from which VRL(s) can be imported !
      */
 
-    public static boolean canConvertToVRIs(Transferable t)
+    public static boolean canConvertToVRLs(Transferable t)
     {
         // DataFlavor flavors[]=t.getTransferDataFlavors();
 
-        for (DataFlavor flav : dataFlavorsVRI)
+        for (DataFlavor flav : dataFlavorsVRL)
             if (t.isDataFlavorSupported(flav))
                 return true;
 
@@ -97,59 +100,60 @@ public class DnDData
         return false;
     }
 
-//    public static boolean isVRIListFlavor(DataFlavor[] flavors)
-//    {
-//        DataFlavor[] dataFlavors = dataFlavorsVRI;
-//
-//        for (int i = 0; i < flavors.length; i++)
-//        {
-//            for (int j = 0; j < dataFlavors.length; j++)
-//
-//                if (dataFlavors[j].equals(flavors[i]))
-//                {
-//                    return true;
-//                }
-//
-//        }
-//        return false;
-//        // return true;
-//    }
+    // public static boolean isVRLListFlavor(DataFlavor[] flavors)
+    // {
+    // DataFlavor[] dataFlavors = dataFlavorsVRL;
+    //
+    // for (int i = 0; i < flavors.length; i++)
+    // {
+    // for (int j = 0; j < dataFlavors.length; j++)
+    //
+    // if (dataFlavors[j].equals(flavors[i]))
+    // {
+    // return true;
+    // }
+    //
+    // }
+    // return false;
+    // // return true;
+    // }
 
-    public static List<VRL> getVRIsFrom(Transferable t) throws VRLSyntaxException, UnsupportedFlavorException,
+    public static List<VRL> getVRLsFrom(Transferable t) throws VRLSyntaxException, UnsupportedFlavorException,
             IOException
     {
         // Known URI/File type flavors:
 
-//        if (t.isDataFlavorSupported(DnDData.ViewNodeListDataFlavor))
-//        {
-//            // II: get data:
-//            ViewNode refs[] = (ViewNode[]) t.getTransferData(DnDData.ViewNodeListDataFlavor);
-//            return toVRIs(refs);
-//        }
-//        else if (t.isDataFlavorSupported(DnDData.ViewNodeDataFlavor))
-//        {
-//            // II: get data:
-//            ViewNode refs[] = new ViewNode[1];
-//            refs[0] = (ViewNode) t.getTransferData(DnDData.ViewNodeDataFlavor);
-//            return toVRIs(refs);
-//        }
-        if (t.isDataFlavorSupported(DnDData.flavorVRIList))
+        // if (t.isDataFlavorSupported(DnDData.ViewNodeListDataFlavor))
+        // {
+        // // II: get data:
+        // ViewNode refs[] = (ViewNode[])
+        // t.getTransferData(DnDData.ViewNodeListDataFlavor);
+        // return toVRLs(refs);
+        // }
+        // else if (t.isDataFlavorSupported(DnDData.ViewNodeDataFlavor))
+        // {
+        // // II: get data:
+        // ViewNode refs[] = new ViewNode[1];
+        // refs[0] = (ViewNode) t.getTransferData(DnDData.ViewNodeDataFlavor);
+        // return toVRLs(refs);
+        // }
+        if (t.isDataFlavorSupported(DnDData.flavorVRLList))
         {
             // II: get data:
-            List<VRL> vris = (List<VRL>) t.getTransferData(DnDData.flavorVRIList);
-            return vris; 
+            List<VRL> vris = (List<VRL>) t.getTransferData(DnDData.flavorVRLList);
+            return vris;
         }
-//        else if (t.isDataFlavorSupported(DnDData.VRIFlavor))
-//        {
-//            // II: get data:
-//            List<VRI> vris=new ArrayList<VRI>(0); 
-//            vris.add((VRI)t.getTransferData(DnDData.VRIFlavor));
-//            return vris; 
-//        }
+        // else if (t.isDataFlavorSupported(DnDData.VRLFlavor))
+        // {
+        // // II: get data:
+        // List<VRL> vris=new ArrayList<VRL>(0);
+        // vris.add((VRL)t.getTransferData(DnDData.VRLFlavor));
+        // return vris;
+        // }
         // drops from Windows create these objects (thanks to swing) !:
         else if (t.isDataFlavorSupported(DataFlavor.javaFileListFlavor))
         {
-            List<VRL> vris = DnDData.getJavaFileListVRIs(t);
+            List<VRL> vris = DnDData.getJavaFileListVRLs(t);
             return vris;
         }
         //
@@ -196,13 +200,13 @@ public class DnDData
         throw new UnsupportedFlavorException(t.getTransferDataFlavors()[0]);
     }
 
-    private static List<VRL> toVRIs(ViewNode[] refs)
+    private static List<VRL> toVRLs(ViewNode[] refs)
     {
-        List<VRL> list=new ArrayList<VRL>(refs.length); 
-        for (int i=0;i<refs.length;i++)
-            list.add(refs[i].getVRI());
-        
-        return list; 
+        List<VRL> list = new ArrayList<VRL>(refs.length);
+        for (int i = 0; i < refs.length; i++)
+            list.add(refs[i].getVRL());
+
+        return list;
     }
 
     /**
@@ -212,7 +216,7 @@ public class DnDData
      * @throws UnsupportedFlavorException
      */
 
-    public static List<VRL> getJavaFileListVRIs(Transferable t) throws UnsupportedFlavorException, IOException
+    public static List<VRL> getJavaFileListVRLs(Transferable t) throws UnsupportedFlavorException, IOException
     {
         java.util.List<File> fileList = (java.util.List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
         Iterator<File> iterator = fileList.iterator();

@@ -135,16 +135,16 @@ public class ResourceTreeUpdater implements ProxyNodeEventListener
         try
         {
         	this.rootItem=viewNodeSource.getRoot(getUIModel());
-        	logger.debugPrintf("updateRoot():%s\n",rootItem.getVRI());
+        	logger.debugPrintf("updateRoot():%s\n",rootItem.getVRL());
         	
-        	logger.debugPrintf("_updateRoot():%s\n",rootItem.getVRI());
+        	logger.debugPrintf("_updateRoot():%s\n",rootItem.getVRL());
     		
         	ResourceTreeNode rtRoot=new ResourceTreeNode(null,rootItem,true); 
         	getModel().setRoot(rtRoot);
         	
         	// pre fetch childs and populate root in advance: 
         	
-        	ViewNode[] childs = viewNodeSource.getChilds(getUIModel(),rootItem.getVRI(),0,-1,null); 
+        	ViewNode[] childs = viewNodeSource.getChilds(getUIModel(),rootItem.getVRL(),0,-1,null); 
         	
         	if (childs==null) 
         	{

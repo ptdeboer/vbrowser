@@ -91,8 +91,10 @@ public class HeaderModel extends AbstractListModel
         return this.values.indexOf(name); 
     }
 
-    /** Inserts newHeader after 'header' of before 'header'.
-     * Fires intervalAdded event */  
+    /**
+     * Inserts newHeader after 'header' of before 'header'.
+     * Fires intervalAdded event 
+     */  
     public int insertHeader(String header, String newHeader,
             boolean insertBefore)
     {

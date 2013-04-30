@@ -40,15 +40,15 @@ public class ViewNode
     public static final String SELECTED_ICON="defaultIcon"; 
 	
 	/** Atomic Locator, never changes during the lifetime of this object */
-    final VRL locator;
+    protected final VRL locator;
     
-    boolean isComposite;
+    protected boolean isComposite;
     
-    String name;
+    protected String name;
     
-    Map<String,Icon> iconMapping=new Hashtable<String,Icon>();
+    protected Map<String,Icon> iconMapping=new Hashtable<String,Icon>();
 
-    private String resourceType; 
+    protected String resourceType; 
     
     protected ViewNode(VRL locator)
     {
@@ -69,7 +69,7 @@ public class ViewNode
     	this.iconMapping.put(DEFAULT_ICON,defaultIcon); 
     }
     
-    public VRL getVRI()
+    public VRL getVRL()
     {
         return locator; 
     }
@@ -113,7 +113,7 @@ public class ViewNode
     
     public String toString()
     {
-    	return "<ViewNode>:"+locator; 
+    	return "{ViewNode:"+locator+"}"; 
     }
 
     public String getResourceType()

@@ -189,8 +189,7 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
            }
         }
     }
-    
-	/** Return DEFAULT Table Mouse Listener */ 
+    	
 	public MouseListener getMouseListener()
 	{
 	    return this.mouseListener; 
@@ -315,9 +314,7 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
         {
 			handle(e);
 		} 
-        
     }
-
 
 	public void removeColumn(String headerName)
     {

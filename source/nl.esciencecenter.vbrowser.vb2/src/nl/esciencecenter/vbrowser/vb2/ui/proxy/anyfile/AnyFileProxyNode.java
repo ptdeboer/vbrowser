@@ -43,7 +43,7 @@ public class AnyFileProxyNode extends ProxyNode
 	
     protected AnyFileProxyNode createChild(String childname) throws ProxyException
     {
-        return new AnyFileProxyNode(getProxyFactory(),getVRI().appendPath(childname)); 
+        return new AnyFileProxyNode(getProxyFactory(),getVRL().appendPath(childname)); 
     }
     
     public AnyFileProxyNode(ProxyFactory anyFileProxyFactory, VRL loc) throws ProxyException
@@ -153,7 +153,7 @@ public class AnyFileProxyNode extends ProxyNode
     @Override
     protected String doGetName() 
     {
-        return this.getVRI().getBasename(); 
+        return this.getVRL().getBasename(); 
     }
 
     @Override

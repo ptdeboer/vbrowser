@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
 import java.awt.event.InputEvent;
 
 import javax.swing.JComponent;
@@ -119,7 +120,7 @@ public class DnDTransferHandler extends TransferHandler
             if (nodes.length<=0)
                 return null;
             
-            return VRIListTransferable.createFrom(nodes); 
+            return VRLListTransferable.createFrom(nodes); 
         }
         else
         {
@@ -146,7 +147,7 @@ public class DnDTransferHandler extends TransferHandler
     @Override
     public int getSourceActions(JComponent c)
     {
-        return COPY_OR_MOVE;// nodes can be copied and moved. 
+        return COPY_OR_MOVE | DnDConstants.ACTION_LINK ;// nodes can be copied and moved. 
     }    
     
 
@@ -166,13 +167,14 @@ public class DnDTransferHandler extends TransferHandler
     }
 
     /*
-     * New (java 1.6) version. If this is overriden, the old ImportData(JComponent, Transferable) is NOT called 
+     * New (java 1.6) version. 
+     * If this is overriden, the old ImportData(JComponent, Transferable) is NOT called 
      * @see javax.swing.TransferHandler#importData(javax.swing.TransferHandler.TransferSupport)
      */
     @Override
     public boolean importData(TransferSupport support) 
     {
-        // This method is directory called when performing CTRL-V
+        // This method is direct called when performing CTRL-V
 
         Component comp = support.getComponent(); 
         Transferable data = support.getTransferable(); 

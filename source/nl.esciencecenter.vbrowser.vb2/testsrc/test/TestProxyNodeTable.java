@@ -29,7 +29,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
-import nl.esciencecenter.vbrowser.vb2.ui.browser.ProxyBrowser;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.anyfile.AnyFileProxyFactory;
@@ -45,8 +44,6 @@ public class TestProxyNodeTable
         try 
         {
             BrowserPlatform platform=BrowserPlatform.getInstance(); 
-            
-            //ProxyBrowser frame=(ProxyBrowser)platform.createBrowser();
             
             ProxyFactory fac = AnyFileProxyFactory.getDefault(); 
             

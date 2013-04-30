@@ -152,11 +152,11 @@ public class ProxyNodeTableModel extends ResourceTableModel
                         
                         //prefill: 
                         
-                        set.put("name",node.getVRI().getBasename()); 
+                        set.put("name",node.getVRL().getBasename()); 
                         set.put("type",node.getResourceType()); 
-                        set.put("location",node.getVRI()); 
+                        set.put("location",node.getVRL()); 
                         
-                        addRow(node.getVRI().toString(),set);  
+                        addRow(node.getVRL().toString(),set);  
                     }
                     
                     for (ProxyNode node:nodes)
@@ -164,7 +164,7 @@ public class ProxyNodeTableModel extends ResourceTableModel
                         if (mustStop==true)
                             return; 
                      
-                        VRL vrl=node.getVRI(); 
+                        VRL vrl=node.getVRL(); 
                         
                         String hdrs[] = getHeaders();   
                         Attribute[] attrs;
@@ -239,7 +239,7 @@ public class ProxyNodeTableModel extends ResourceTableModel
             try
             {
                 attrs = node.getAttributes(attrNames.toArray());
-                setValues(node.getVRI().toString(),attrs);  
+                setValues(node.getVRL().toString(),attrs);  
             }
             catch (Exception e)
             {
