@@ -406,6 +406,20 @@ public abstract class ActionTask implements Runnable
         return this.isCancelled;
     }
     
+    public String toString()
+    {
+        String threadInfo="";
+        if (threads!=null)
+        {
+            for (int i=0;i<threads.length;i++)
+            {
+                threadInfo+="["+threads[i].getId()+"]"; 
+            }
+        }
+        
+        return "ActionTask:["+threadInfo+"]"+this.taskName; 
+    }
+    
 	// =======================================================================
 	// Abstract Task interface; 
 	// =======================================================================

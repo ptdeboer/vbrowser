@@ -35,6 +35,7 @@ public class TaskWatcher implements ITaskSource
     static
     {
         logger=ClassLogger.getLogger(TaskWatcher.class); 
+        logger.setLevelToDebug(); 
     }
     
     // === //
@@ -60,6 +61,7 @@ public class TaskWatcher implements ITaskSource
     @Override
     public void registerTask(ActionTask actionTask)
     {
+        logger.debugPrintf("(+)RegisterTask:%s\n",actionTask); 
         synchronized(activeTasks)
         {
             this.activeTasks.add(actionTask); 
@@ -69,6 +71,8 @@ public class TaskWatcher implements ITaskSource
     @Override
     public void unregisterTask(ActionTask actionTask)
     {
+        logger.debugPrintf("(-)RegisterTask:%s\n",actionTask);
+        
         synchronized(activeTasks)
         {
             this.activeTasks.remove(actionTask); 
@@ -83,15 +87,19 @@ public class TaskWatcher implements ITaskSource
 	@Override
 	public void notifyTaskStarted(ActionTask actionTask) 
 	{	
-		; // 'kee
+	    logger.debugPrintf("(>)notifyTaskStarted:%s\n",actionTask);
+	    
+		this.setHasActiveTasks(true);
 	}
 
 	@Override
-	public void notifyTaskTerminated(ActionTask task)
+	public void notifyTaskTerminated(ActionTask actionTask)
 	{
+	    logger.debugPrintf("(*)notifyTaskTerminated:%s\n",actionTask);
+	    
 	    synchronized(activeTasks)
         {
-    		boolean removed=this.activeTasks.remove(task); 
+    		boolean removed=this.activeTasks.remove(actionTask); 
     		if (removed==false)
     		{
     		    ; // already in terminatedTasks ? 
@@ -100,23 +108,38 @@ public class TaskWatcher implements ITaskSource
 	    
 	    synchronized(terminatedTasks)
 	    {
-    		this.terminatedTasks.add(task); 
+    		this.terminatedTasks.add(actionTask); 
         }
 	    
-	    checkCleanup(); 
-    }
-
-	protected void checkCleanup()
-	{
+	    boolean hasRunningTasks=false; 
+	    
+	    synchronized(this.activeTasks)
+        {
+            if (this.activeTasks.size()>0)
+                hasRunningTasks=true; 
+        }
+	    
 	    synchronized(this.terminatedTasks)
 	    {
-	        if (this.terminatedTasks.size()<=maxTerminatedTasks)
-	            return; 
-	                
-	        for (int i=0;i<maxTerminatedTasks;i++)
-	            terminatedTasks.remove(0); // not efficient array remove.  
+	        if (this.terminatedTasks.size()>maxTerminatedTasks)
+	        {
+	            for (int i=0;i<maxTerminatedTasks;i++)
+	                terminatedTasks.remove(0); // not efficient array remove.
+	        }
         }
+	       
+        this.setHasActiveTasks(hasRunningTasks);
     }
+	
+	public boolean hasActiveTasks()
+	{
+	    synchronized(this.activeTasks)
+        {
+            if (this.activeTasks.size()>0)
+                return true; 
+        }
+	    return false; 
+	}
 	   
     public ActionTask getCurrentThreadActionTask()
     {
@@ -190,30 +213,24 @@ public class TaskWatcher implements ITaskSource
         return active; 
     }
 
-    @Override
     public void setHasActiveTasks(boolean active)
     {
-        ; // is actually called by me.
+        logger.debugPrintf("(?)setHasActiveTasks:%s\n",active);
     }
     
-    public void stopActionTasksFor(ITaskSource source,boolean all)
+    public void stopAllTasks()
     {
         ActionTask tasks[]=getActiveTaskArray();
         
         // send stop signal first: 
         for (ActionTask task:tasks)
         {
-            if ( (all==true)
-                 || ((task.getTaskSource()!=null) && (task.getTaskSource()==source))
-                 )
-            {
-                task.signalTerminate(); 
-            }
+            task.signalTerminate(); 
         }
         
         try
         {
-            Thread.sleep(100);
+            Thread.sleep(50);
         }
         catch (InterruptedException e)
         {
@@ -223,17 +240,9 @@ public class TaskWatcher implements ITaskSource
         // now send interrupt:   
         for (ActionTask task:tasks)
         {
-            if ((task.getTaskSource()!=null) && (task.getTaskSource()==source))
-            {
-                if (task.isAlive())
-                    task.interruptAll();  
-            }
-        }
-        
-        // check already stopped tasks: 
-        if (this.hasActiveTasks(source))
-        {
-            source.setHasActiveTasks(false); 
+            // send intterupt. 
+            if (task.isAlive())
+                task.interruptAll();  
         }
     }
     

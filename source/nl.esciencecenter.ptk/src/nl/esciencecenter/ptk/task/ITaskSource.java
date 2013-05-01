@@ -34,6 +34,4 @@ public interface ITaskSource
 
     void notifyTaskException(ActionTask actionTask, Throwable t);
 
-    void setHasActiveTasks(boolean active);
-
 }
