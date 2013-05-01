@@ -29,9 +29,9 @@ public class Test_BytesAndBigIntegers
 {
     
     @Test
-    public void test16bytesBigInteger()
+    public void test16bytesBigIntegerMax()
     {
-        // create 16 bytes unsinged integer. 
+        // create 16 bytes little endian unsinged integer. 
         byte bytes[]=new byte[16]; 
         int n=16;
         
@@ -39,34 +39,36 @@ public class Test_BytesAndBigIntegers
         {
             bytes[i]=(byte)0x00ff;  
         }
-        
-        testBigIntegerString("340282366920938463463374607431768211455",bytes,false,false); 
-        // todo: signed (negative) 
-    }
 
+        // for a all 0xff byte sequence, endianity doesn't matter. 
+        testBigIntegerString("340282366920938463463374607431768211455",bytes,false,false); 
+        testBigIntegerString("340282366920938463463374607431768211455",bytes,false,true); 
+    }
+    
     @Test
     public void test24bytesBigInteger()
     {
         // create 16 bytes unsinged integer. 
         byte bytes[]=new byte[24]; 
-        int n=16;
+        int n=24;
         
         for (int i=0;i<n;i++)
         {
             bytes[i]=(byte)0x00ff;  
         }
         
-        testBigIntegerString("6277101735386680763835789423207666416083908700390324961280",bytes,false,false); 
-        // todo: signed (negative) 
+        testBigIntegerString("6277101735386680763835789423207666416102355444464034512895",bytes,false,false); 
+        testBigIntegerString("6277101735386680763835789423207666416102355444464034512895",bytes,false,true); 
     }
     
     private void testBigIntegerString(String expected, byte[] bytes,boolean signed, boolean isLE)
     {
-        // big endian: 
-        String beStr=StringUtil.toBigIntegerString(bytes,signed, isLE); 
-        Assert.assertEquals("Big Endian BigInteger string doesn't match expected",expected, beStr); 
+        // actual endianity 
+        String bigStr=StringUtil.toBigIntegerString(bytes,signed, isLE); 
+        Assert.assertEquals("Big Endian BigInteger string doesn't match expected",expected, bigStr); 
         
         byte reverseEndian[];
+        
         // little endian:
         if (bytes==null)
         {
@@ -79,8 +81,8 @@ public class Test_BytesAndBigIntegers
             for (int i=0;i<len;i++)
                 reverseEndian[len-i-1]=bytes[i];
         }
-        String leStr=StringUtil.toBigIntegerString(reverseEndian, false,true); 
-        Assert.assertEquals("Little Endian BigInteger string doesn't match expected",expected, leStr); 
+        String revStr=StringUtil.toBigIntegerString(reverseEndian, false,(isLE==false)); 
+        Assert.assertEquals("Little Endian BigInteger string doesn't match expected",expected, revStr); 
     } 
     
     
