@@ -29,7 +29,7 @@ import java.io.IOException;
  * Exception which occurred and hides the original System Exception.
  * <p>
  * It it recommend to wrap low level exceptions and nested them into more descriptive Exceptions 
- * providing extra information from the underlaying implementation. 
+ * providing extra information from the underlying implementation. 
  * <br>
  */
 public class VrsException extends Exception
@@ -66,7 +66,7 @@ public class VrsException extends Exception
     // ===============
 
     /**
-     *  Human Readable Error Description of this Exception
+     *  Short Human Readable Error Description of this Exception. 
      */
     protected String name = "Vrs Exception"; 
 
@@ -101,7 +101,9 @@ public class VrsException extends Exception
         this.name = "VlException";
     };
 
-    /** Public constructor which holds original system exception. */
+    /** 
+     * Public constructor which holds original system exception.
+     */
     public VrsException(String message, Throwable cause)
     {
         super(message, cause);
