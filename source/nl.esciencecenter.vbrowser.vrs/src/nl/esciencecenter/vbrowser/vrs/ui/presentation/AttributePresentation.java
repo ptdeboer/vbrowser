@@ -68,15 +68,15 @@ public class AttributePresentation
         }
     }
 
-    AttributePresentation.PreferredSizes widths = null;
+    protected AttributePresentation.PreferredSizes widths = null;
 
-    Color foreground = null;
+    protected Color foreground = null;
     
-    Color background = null;
+    protected  Color background = null;
 
-    Map<String, Color> colorMap = null;
+    protected Map<String, Color> colorMap = null;
 
-    boolean attributeFieldResizable=true; 
+    protected boolean attributeFieldResizable=true; 
 
     public AttributePresentation.PreferredSizes getWidths()
     {   
