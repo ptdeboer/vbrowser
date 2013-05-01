@@ -88,7 +88,6 @@ public class TaskWatcher implements ITaskSource
 	public void notifyTaskStarted(ActionTask actionTask) 
 	{	
 	    logger.debugPrintf("(>)notifyTaskStarted:%s\n",actionTask);
-	    
 		this.setHasActiveTasks(true);
 	}
 
@@ -96,7 +95,12 @@ public class TaskWatcher implements ITaskSource
 	public void notifyTaskTerminated(ActionTask actionTask)
 	{
 	    logger.debugPrintf("(*)notifyTaskTerminated:%s\n",actionTask);
-	    
+	    deschedule(actionTask);
+	    this.setHasActiveTasks(hasActiveTasks());
+	}
+	
+	protected void deschedule(ActionTask actionTask)
+	{
 	    synchronized(activeTasks)
         {
     		boolean removed=this.activeTasks.remove(actionTask); 
@@ -111,14 +115,6 @@ public class TaskWatcher implements ITaskSource
     		this.terminatedTasks.add(actionTask); 
         }
 	    
-	    boolean hasRunningTasks=false; 
-	    
-	    synchronized(this.activeTasks)
-        {
-            if (this.activeTasks.size()>0)
-                hasRunningTasks=true; 
-        }
-	    
 	    synchronized(this.terminatedTasks)
 	    {
 	        if (this.terminatedTasks.size()>maxTerminatedTasks)
@@ -127,17 +123,44 @@ public class TaskWatcher implements ITaskSource
 	                terminatedTasks.remove(0); // not efficient array remove.
 	        }
         }
-	       
-        this.setHasActiveTasks(hasRunningTasks);
     }
 	
 	public boolean hasActiveTasks()
 	{
+	    int size=activeTasks.size(); 
+	    
+	    if (size>0)
+	    {
+	        int index=size; 
+	        
+	        while(index>=0)
+            {
+	            // synchronize per element check inside while loop. 
+	            // Do no claim whole array during scan. 
+	            
+	            synchronized(activeTasks)
+	            {
+	                // concurrent manipulation: size has already changed! 
+	                if (index>=activeTasks.size())
+	                {
+                        
+	                }
+	                else if (activeTasks.get(index).isAlive()==false)
+	                {
+	                    deschedule(activeTasks.get(index));
+	                }
+	            }// exit sync!
+	            
+	            index--;
+            }
+        }
+	    
 	    synchronized(this.activeTasks)
         {
             if (this.activeTasks.size()>0)
                 return true; 
-        }
+        } 
+        
 	    return false; 
 	}
 	   
