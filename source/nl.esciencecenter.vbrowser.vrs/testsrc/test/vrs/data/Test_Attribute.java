@@ -39,7 +39,7 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
  * 
  * @author P.T. de Boer. 
  */
-public class testAttribute 
+public class Test_Attribute 
 {
     final static Random rnd=new Random(0); 
 
@@ -110,16 +110,7 @@ public class testAttribute
             this.datestr=Presentation.createNormalizedDateTimeString(_dateval);
         }
     }
-    
-    protected void setUp()
-    {
-    }
 
-    // Tears down the tests fixture. (Called after every tests case method.)
-    protected void tearDown()
-    {
-    }
-    
     @Test
     public void testPresentationDateTimeString() 
     {
@@ -177,7 +168,7 @@ public class testAttribute
                 (long)Long.MIN_VALUE,
                 (float)Float.MIN_VALUE, 
                 (double)Double.MIN_VALUE,
-                null,     
+                "",     
                 new String[]{null},
                 newVRL(null,null,null,0,null,null,null),    
                 Presentation.createDate(1)
@@ -258,7 +249,7 @@ public class testAttribute
         // NULL value with NULL type default to String
         Attribute attr=new Attribute((String)null,(String)null);
         Assert.assertEquals("NULL attribute should return NULL",null,attr.getStringValue());  
-        Assert.assertEquals("NULL value defaults to StringType",AttributeType.STRING, attr.getType());
+        Assert.assertEquals("NULL value should default to ANY Type",AttributeType.ANY, attr.getType());
     }
  
     @Test 
@@ -299,7 +290,7 @@ public class testAttribute
         doTestStringValueConstructor(AttributeType.STRING,"string1","value","value");
         doTestStringValueConstructor(AttributeType.STRING,"string2","","");
         // allow NULL 
-        doTestStringValueConstructor(AttributeType.STRING,"string3",null,null);
+        doTestStringValueConstructor(AttributeType.ANY,"nullValue",null,null);
         
         // DATETIME
         long millies=System.currentTimeMillis(); 

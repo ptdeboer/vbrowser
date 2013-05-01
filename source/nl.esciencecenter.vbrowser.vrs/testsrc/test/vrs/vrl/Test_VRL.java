@@ -36,7 +36,7 @@ import junit.framework.TestCase;
 /**
  * Tests VRI. 
  */
-public class testVRL extends TestCase
+public class Test_VRL extends TestCase
 {
     // VAttribute attribute=null;
 
@@ -292,14 +292,19 @@ public class testVRL extends TestCase
         VRL parent = new VRL("http://hostname/parentpath/base.html");
 
         // index
-        VRL loc2 = parent.uriResolve("?fraq");
-        Assert.assertEquals("resolved VRI turned out wrong", "http://hostname/parentpath/base.html?fraq", 
+        VRL loc2 = parent.uriResolve("?query");
+        Assert.assertEquals("resolved VRI turned out wrong", "http://hostname/parentpath/base.html?query", 
                 loc2.toString());
 
         // index
-        loc2 = parent.uriResolve("?fraq&par=1;");
-        Assert.assertEquals("resolved VRI turned out wrong", "http://hostname/parentpath/base.html?fraq&par=1;", 
+        loc2 = parent.uriResolve("?query&par=1;");
+        Assert.assertEquals("resolved VRI turned out wrong", "http://hostname/parentpath/base.html?query&par=1;", 
                 loc2.toString());
+        
+        // index
+        VRL loc3 = parent.uriResolve("?query&par=2#index1");
+        Assert.assertEquals("resolved VRI turned out wrong", "http://hostname/parentpath/base.html?query&par=2#index1", 
+                loc3.toString());
     }
     
     public void testDosRelative() throws Exception
@@ -357,27 +362,7 @@ public class testVRL extends TestCase
 
     }
 
-    public void testLocalHosts()
-    {
-        VRL localVrl = new VRL("file", null, null);
-        Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
-
-        localVrl = new VRL("file", "localhost", "/etc");
-        Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
-
-        localVrl = new VRL("file", "", "/etc");
-        Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
-
-//        // Not valid for IPv6. 
-//        localVrl = new VRI("file", "127.0.0.1", "/etc");
-//        Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
-
-        localVrl = new VRL("file", null, "/etc");
-        Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
-
-        localVrl = new VRL("file", GlobalProperties.getHostname(), "/etc");
-        Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
-    }
+  
 
     /*
      * public void testForException() { try { //Object o = emptyList.get(0);
