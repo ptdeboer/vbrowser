@@ -64,9 +64,13 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
      */
     public static Object parseString(AttributeType toType, String strValue) throws Exception
     {
-        if (toType == null)
+        if (strValue == null)
+        {
+            // lazy type checking: 
+            // if toType isn't String or ANY, null should not be allowed!  
             return null;
-
+        }
+        
         switch (toType)
         {
             case BOOLEAN:
