@@ -35,6 +35,8 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.ui.panels.monitoring.TaskMonitorDialog;
+import nl.esciencecenter.ptk.ui.widgets.NavigationBar;
+import nl.esciencecenter.ptk.ui.widgets.NavigationBar.NavigationAction;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
@@ -49,8 +51,6 @@ import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTableModel.RowData;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyNode;
 import nl.nlesc.vlet.gui.vbrowser.VBrowserFactory;
-import nl.nlesc.vlet.gui.widgets.NavigationBar;
-import nl.nlesc.vlet.gui.widgets.NavigationBar.NavigationAction;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 

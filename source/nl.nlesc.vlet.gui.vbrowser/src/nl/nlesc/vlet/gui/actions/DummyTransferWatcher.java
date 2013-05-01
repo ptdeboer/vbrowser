@@ -90,13 +90,7 @@ public class DummyTransferWatcher implements ITaskSource
     public void notifyTaskTerminated(ActionTask actionTask)
     {
     }
-
-    @Override
-    public void setHasActiveTasks(boolean active)
-    {
-        // if false all ongoing transfer-dialogs should have ended.
-    }
-
+   
     @Override
     public void unregisterTask(ActionTask actionTask)
     {

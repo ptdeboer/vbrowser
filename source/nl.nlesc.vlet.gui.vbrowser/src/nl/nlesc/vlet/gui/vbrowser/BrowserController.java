@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
 
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -101,7 +102,7 @@ import nl.uva.vlet.util.vlterm.VLTerm;
  * @author P.T. de Boer
  */
 public class BrowserController implements WindowListener, GridProxyListener,
-   MasterBrowser, ProxyResourceEventListener
+   MasterBrowser, ProxyResourceEventListener, ITaskSource 
 {
 	// =======================================================================
 	// Class Fields
@@ -943,7 +944,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 	/** Perform stop ALL */ 
 	public void performMasterStop()
 	{
-		UIGlobal.getTaskWatcher().stopActionTasksFor(this,false);
+		UIGlobal.getTaskWatcher().stopAllTasks();
 	}
 
 	private static void performSwitchLAF(String lafstr)
@@ -2170,9 +2171,9 @@ public class BrowserController implements WindowListener, GridProxyListener,
 	{
         logger.debugPrintf("[%d]:setHasTasks=%s\n",Thread.currentThread().getId(), val);
 
+        // is browser already disposed ?
 		if (this.vbrowser == null)
-			// oopsy: browser already disposed !
-			return;
+			return; // yup. 
 
 		setSemiBusy(val);
 	}
@@ -2740,6 +2741,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
     public void notifyTaskTerminated(ActionTask actionTask)
     {
         UIGlobal.getTaskWatcher().notifyTaskTerminated(actionTask); 
+        this.setHasActiveTasks(UIGlobal.getTaskWatcher().hasActiveTasks());
     }
 
     @Override

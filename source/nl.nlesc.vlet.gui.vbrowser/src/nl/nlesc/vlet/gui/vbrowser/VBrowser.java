@@ -53,6 +53,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.ui.widgets.NavigationBar;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.gui.GuiPropertyName;
@@ -69,7 +70,6 @@ import nl.nlesc.vlet.gui.tree.ResourceTree;
 import nl.nlesc.vlet.gui.viewers.ViewerInfo;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry;
 import nl.nlesc.vlet.gui.viewers.ViewerRegistry.ViewerList;
-import nl.nlesc.vlet.gui.widgets.NavigationBar;
 
 /**
  * Main VBrowser Frame <br>
@@ -295,27 +295,27 @@ public class VBrowser extends javax.swing.JFrame
                                 navigationToolBar.addTextFieldListener(this.bcActionListener);
                                 navigationToolBar.setEnableNagivationButtons(true); 
                                 
-                                // ---
-                                // Custom Drop Target, redirect drop to browsercontroller
-                                // ---
-                                {
-                                    DropTarget dt1=new DropTarget(); 
-                                    DropTarget dt2=new DropTarget(); 
-
-                                    // enable toolbar and icontext field:  
-                                    navigationToolBar.setDropTarget(dt1);
-                                    navigationToolBar.getTextField().setDropTarget(dt2); 
-                                    
-                                    try
-                                    {
-                                        dt1.addDropTargetListener(new BarDropTargetListener(this.browserController));
-                                        dt2.addDropTargetListener(new BarDropTargetListener(this.browserController));
-                                    }
-                                    catch (TooManyListenersException e)
-                                    {
-                                        logger.logException(ClassLogger.ERROR,e,"***Error: Exception:%s\n",e); 
-                                    }
-                                }
+//                                // ---
+//                                // Custom Drop Target, redirect drop to browsercontroller
+//                                // ---
+//                                {
+//                                    DropTarget dt1=new DropTarget(); 
+//                                    DropTarget dt2=new DropTarget(); 
+//
+//                                    // enable toolbar and icontext field:  
+//                                    navigationToolBar.setDropTarget(dt1);
+//                                    navigationToolBar.getTextField().setDropTarget(dt2); 
+//                                    
+//                                    try
+//                                    {
+//                                        dt1.addDropTargetListener(new BarDropTargetListener(navigationToolBar, this.browserController));
+//                                        dt2.addDropTargetListener(new BarDropTargetListener(navigationToolBar, this.browserController));
+//                                    }
+//                                    catch (TooManyListenersException e)
+//                                    {
+//                                        logger.logException(ClassLogger.ERROR,e,"***Error: Exception:%s\n",e); 
+//                                    }
+//                                }
                                 
                                 // *** ADD BUSY ICON ***
                                 {

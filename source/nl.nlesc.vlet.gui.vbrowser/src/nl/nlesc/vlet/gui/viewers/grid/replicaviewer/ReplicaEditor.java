@@ -35,6 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.ui.widgets.NavigationBar;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.actions.ActionContext;
@@ -43,7 +44,6 @@ import nl.nlesc.vlet.gui.panels.list.StatusStringListField;
 import nl.nlesc.vlet.gui.panels.list.StatusStringListModel;
 import nl.nlesc.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
-import nl.nlesc.vlet.gui.widgets.NavigationBar;
 import nl.nlesc.vlet.vrs.VRS;
 
 import com.jgoodies.forms.layout.CellConstraints;
@@ -88,8 +88,6 @@ public class ReplicaEditor extends ViewerPlugin
     private JButton seSelAddBut;
     private StatusStringListField replicaHostsList;
     private JLabel replicaOptionsTopLbl;
-
-
   
     private JPanel topPanel;
     private JScrollPane scrollPane;

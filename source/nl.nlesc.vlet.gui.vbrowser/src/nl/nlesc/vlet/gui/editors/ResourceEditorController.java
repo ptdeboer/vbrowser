@@ -1358,11 +1358,6 @@ public class ResourceEditorController implements ActionListener, WindowListener,
     }
 
     @Override
-    public void setHasActiveTasks(boolean active)
-    {
-    }
-
-    @Override
     public void unregisterTask(ActionTask actionTask)
     {
     }

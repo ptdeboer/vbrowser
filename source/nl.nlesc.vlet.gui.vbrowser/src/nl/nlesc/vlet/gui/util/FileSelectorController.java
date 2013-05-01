@@ -246,11 +246,6 @@ public class FileSelectorController implements MasterBrowser, ITaskSource
     }
 
     @Override
-    public void setHasActiveTasks(boolean active)
-    {
-    }
-
-    @Override
     public void unregisterTask(ActionTask actionTask)
     {
     }

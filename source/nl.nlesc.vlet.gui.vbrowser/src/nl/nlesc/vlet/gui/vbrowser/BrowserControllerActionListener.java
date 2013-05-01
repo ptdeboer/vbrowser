@@ -24,10 +24,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.ui.widgets.NavigationBar;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.gui.actions.ActionCommand;
 import nl.nlesc.vlet.gui.actions.ActionCommandType;
-import nl.nlesc.vlet.gui.widgets.NavigationBar;
 
 
 /**
@@ -36,7 +36,6 @@ import nl.nlesc.vlet.gui.widgets.NavigationBar;
  * 
  * @author ptdeboer
  */
-
 public class BrowserControllerActionListener implements ActionListener
 {
     /** VBrowser to controller */
@@ -58,7 +57,7 @@ public class BrowserControllerActionListener implements ActionListener
         String cmdstr = e.getActionCommand();
         
         // check for NavigationBar 
-        NavigationBar.NavigationAction nav=NavigationBar.parseActionCommand(cmdstr); 
+        NavigationBar.NavigationAction nav=NavigationBar.NavigationAction.valueOf(cmdstr); 
         
         ActionCommand cmd=null; 
         
