@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.io.FSNode;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
@@ -92,9 +93,8 @@ public class VRLListTransferable implements Transferable
         	for (VRL ref:vris)
         	{
         	    VRL vri=ref;
-        	    
-        		if ( (vri.isLocalLocation())
-                    && (vri.getScheme().compareTo(FSNode.FILE_SCHEME) == 0))
+        	    // local files are dropped:
+        		if (vri.hasScheme(FSNode.FILE_SCHEME))
         		{
         			// create local file path (leave out hostname!) 
         			urisstr+= "file://" + vri.getPath()+sepStr;
@@ -115,8 +115,7 @@ public class VRLListTransferable implements Transferable
             {
                 VRL vri=ref;
                 
-            	if ( (vri.isLocalLocation())
-                        && (vri.getScheme().compareTo(FSNode.FILE_SCHEME) == 0))
+            	if (vri.hasScheme(FSNode.FILE_SCHEME))
                 {
                     File file = new File(vri.getPath());
                     fileList.add(file);
