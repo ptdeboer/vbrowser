@@ -1,11 +1,11 @@
-package nl.nlesc.ptk.data;
+package nl.esciencecenter.ptk.data;
 
 import junit.framework.Assert;
 import nl.esciencecenter.ptk.data.HashMapList;
 
 import org.junit.Test;
 
-public class TestHashMapList
+public class Test_HashMapList
 {
 
     @Test

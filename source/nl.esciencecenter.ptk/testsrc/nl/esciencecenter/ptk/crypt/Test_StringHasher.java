@@ -18,7 +18,7 @@
  */ 
 // source: 
 
-package nl.nlesc.ptk.crypt;
+package nl.esciencecenter.ptk.crypt;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -31,7 +31,7 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 import org.junit.Test;
 
-public class TestHasher
+public class Test_StringHasher
 {
     static
     {
@@ -40,7 +40,7 @@ public class TestHasher
     }
     
     @Test
-    public void testMD5Hash() throws NoSuchAlgorithmException, UnsupportedEncodingException
+    public void test_MD5() throws NoSuchAlgorithmException, UnsupportedEncodingException
     {
         StringHasher hasher = new StringHasher("MD5");
         String salt="";
@@ -52,11 +52,9 @@ public class TestHasher
         testHash(hasher,salt,"12345","827CCB0EEA8A706C4C34A16891F84E7B");
         testHash(hasher,salt,"00000000000000000000000000000000","CD9E459EA708A948D5C2F5A6CA8838CF");
     }
-
-   
     
     @Test
-    public void testMD5SaltedHash() throws NoSuchAlgorithmException, UnsupportedEncodingException
+    public void test_MD5Salted() throws NoSuchAlgorithmException, UnsupportedEncodingException
     {
         StringHasher hasher = new StringHasher("MD5");
         testHash(hasher,"","","D41D8CD98F00B204E9800998ECF8427E"); 
@@ -65,10 +63,8 @@ public class TestHasher
         testHash(hasher,"","salt1","55F312F84E7785AA1EFA552ACBF251DB"); 
     }
     
-   
-    
     @Test
-    public void testSHA256Hash() throws NoSuchAlgorithmException, UnsupportedEncodingException
+    public void test_SHA256Hash() throws NoSuchAlgorithmException, UnsupportedEncodingException
     {
         StringHasher hasher = new StringHasher("SHA-256");
         //testHash(hasher,null,null);
@@ -81,7 +77,7 @@ public class TestHasher
     }
 
     @Test
-    public void testSAH256SaltedHash() throws NoSuchAlgorithmException, UnsupportedEncodingException
+    public void test_SHA256SaltedHash() throws NoSuchAlgorithmException, UnsupportedEncodingException
     {
         // The salt String is just appended to the source text: text+salt 
         // So hashing "hello" or the "salt1" String alone will yield the same hash when
@@ -110,9 +106,7 @@ public class TestHasher
         testHash(hasher,"1","23","A665A45920422F9D417E4867EFDC4FB8A04A1F3FFF1FA07E998E86F7F7A27AE3");
         testHash(hasher,"12","3","A665A45920422F9D417E4867EFDC4FB8A04A1F3FFF1FA07E998E86F7F7A27AE3");
         testHash(hasher,"123","","A665A45920422F9D417E4867EFDC4FB8A04A1F3FFF1FA07E998E86F7F7A27AE3");
-        
     }
-    
     
     @Test
     public void testSHA256Truncated() throws NoSuchAlgorithmException, UnsupportedEncodingException
@@ -129,24 +123,12 @@ public class TestHasher
             testHash(hasher,"","hello",i,shortHash);
         }
      }
-  
-//    @Test
-//    public void testSHA256TruncatedBase64() throws NoSuchAlgorithmException, UnsupportedEncodingException
-//    {
-//        StringHasher hasher = new StringHasher("","SHA-256");
-//        
-//        // echo -n hello | sha256sum
-//        String hash32="2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824"; 
-//        testHashBase64(hasher,"hello",32,hash32);
-//        
-//        for (int i=32; i>4;i--)
-//        {
-//            String shortHash=createExorHash(hash32,i); 
-//            testHash(hasher,"hello",i,shortHash);
-//        }
-//     }
+
+    // ===
+    // Helper Methods 
+    // === 
     
-    private String createExorHash(String hexString, int len)
+    protected String createExorHash(String hexString, int len)
     {
         byte bytes[]=StringUtil.parseBytesFromHexString(hexString); 
         byte result[]=new byte[len];

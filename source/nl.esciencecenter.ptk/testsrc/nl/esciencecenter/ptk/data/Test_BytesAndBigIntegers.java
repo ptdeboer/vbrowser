@@ -18,14 +18,14 @@
  */ 
 // source: 
 
-package nl.nlesc.ptk.data;
+package nl.esciencecenter.ptk.data;
 
 import nl.esciencecenter.ptk.util.StringUtil;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-public class TestBytesAndBigInteger 
+public class Test_BytesAndBigIntegers 
 {
     
     @Test
