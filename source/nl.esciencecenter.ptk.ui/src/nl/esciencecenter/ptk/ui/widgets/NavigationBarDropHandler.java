@@ -72,8 +72,7 @@ public class NavigationBarDropHandler implements DropTargetListener
             {
                 // Convert to text: 
                 dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-                String txt;
-                    txt = (String) t.getTransferData(DataFlavor.stringFlavor);
+                String txt = (String) t.getTransferData(DataFlavor.stringFlavor);
                 dtde.getDropTargetContext().dropComplete(true);
                 navigationBar.notifyDnDDrop(txt);
                 dtde.dropComplete(true);
