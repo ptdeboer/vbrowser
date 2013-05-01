@@ -45,7 +45,10 @@
             <classpath refid="comp.classpath" />
         </javac>
     </target>
-
+	
+    <mkdir dir="${comp.dist}"/>
+    <mkdir dir="${comp.dist}/lib"/>
+    
     <target name="jar" depends="build">
 
         <!-- Create application JAR file -->
