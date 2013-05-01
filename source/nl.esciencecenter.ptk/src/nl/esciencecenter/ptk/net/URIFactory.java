@@ -602,23 +602,24 @@ public class URIFactory implements Serializable
             newscheme = newscheme.substring(0, newscheme.length() - 1);
         }
         
-        // ===
-        // Relative URIs do not have a Scheme nor Authority !
-        // examples: "dirname/tmp", "#label", "?query#fragment","local.html",
-        // 
-        // ===
-        // PATH
-        // Sanitize path, but keep relative paths or reference paths intact
-        // if there is no authority !
-        // ====
-        newpath = uripath(newpath, this.hasAuthority());
-
-        // store duplicates (or null) !
+        // Store duplicates of Strings  
         this.scheme = StringUtil.duplicate(newscheme);
+        
         // authority
         this.userInfo = StringUtil.duplicate(userinf);
         this.hostname = StringUtil.duplicate(newhost);
         this.port = newport;
+
+        // ===
+        // Relative URIs do not have a Scheme nor Authority !
+        // examples: "dirname/tmp", "#label", "?query#fragment","local.html",
+        // 
+        // Paths: 
+        // Sanitize path, but keep relative paths or reference paths intact
+        // if there is no authority !
+        
+        newpath = uripath(newpath, this.hasAuthority());
+
         // parts 
         this.pathOrReference = StringUtil.duplicate(newpath);
         this.query = StringUtil.duplicate(newquery);
@@ -963,7 +964,12 @@ public class URIFactory implements Serializable
     {
         if (this.hasAuthority())
         {
-            return new URI(this.scheme, this.userInfo, this.hostname, this.port, this.getPath(), this.query,
+            return new URI(this.scheme, 
+                    this.userInfo, 
+                    this.hostname, 
+                    this.port, 
+                    this.getPath(), 
+                    this.query,
                     this.fragment);
 
         }
@@ -1027,10 +1033,21 @@ public class URIFactory implements Serializable
 
         // path could start without "/" !
         if (pathOrReference != null)
+        {
+            // should not be possible: 
+            if ((hasAuthority()) && (pathOrReference.startsWith(SEP_CHAR_STR)==false))
+            {
+                // relative path but there muse be a '/ 'between host and path. 
+                str += SEP_CHAR; // still end with '/' for consistancy !
+            }
+            
             str += pathOrReference;
+        }
         else
+        {
             str += SEP_CHAR; // still end with '/' for consistancy !
-
+        }
+        
         if (query != null)
             str += "?" + query;
 
