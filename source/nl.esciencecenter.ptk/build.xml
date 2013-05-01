@@ -7,27 +7,11 @@
 		
     </description>
 
-    <!--
-      1) Read global project properties (if specified) from: project.prop
-         - for this to work project.root variable must be set to project root 
-      2) Set environment properties prefix to 'env.' 
-      3) Set comp.root to the location if this comp 
-      4) Read local comps properties from: build.prop 
-    -->
-    <!--	<property name="project.root" value="../mbuild"/> -->
-    <!-- standalone component: -->
     <property name="project.root" value="." />
-
     <property file="${project.root}/project.prop" />
     <property environment="env" />
     <property name="comp.root" location="." />
     <property file="build.prop" />
-
-    <!-- Default component structure. Can also be specifed in build.prop.-->
-    <property name="comp.src" value="src" />
-    <property name="comp.build" value="build" />
-    <property name="comp.build.classdir" value="${comp.build}/classes/" />
-    <property name="comp.dist" value="dist" />
 
     <!-- Target: init -->
     <target name="init">
@@ -44,9 +28,6 @@
 
 
     <target name="config" depends="init">
-    </target>
-
-    <target name="generate" depends="init">
     </target>
 
     <path id="comp.classpath">
@@ -66,9 +47,7 @@
 
     </path>
 
-    <!--
-		Target : Compilation 
-    -->
+    <!-- Target: build -->
     <target name="build" depends="init-build" description="compile the source ">
         <!-- Compile the java code from into ${build} -->
 
@@ -78,6 +57,7 @@
 
     </target>
 
+    <!-- compile bootstrapper classes in seperate build directory -->
     <target name="build-bootstrap" depends="init-build" description="compile the source ">
 
         <property name="comp.build.bootstrap" value="${comp.build}/bootstrap" />
@@ -85,6 +65,7 @@
 
     </target>
 
+    <!-- build component jar -->
     <target name="jar" depends="build">
         <!-- defaults -->
         <property name="comp.version" value="dev" />
@@ -131,6 +112,7 @@
         </jar>
     </target>
 
+    <!-- Target: dist --> 
     <target name="dist" depends="build,bootstrap-jar,jar">
 
         <filterset id="compfilters">
@@ -141,13 +123,7 @@
 
     </target>
 
-    <!--
-    *    Target: dist-install
-    *    Info:
-    *     install auxiliary (3rd party) libraries into {project.dist.lib}  dir 
-    *        
-    -->
-
+    <!-- Target: dist-install --> 
     <target name="dist-install" depends="dist" description="install libraries">
         <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
         <mkdir dir="${project.dist.doc}" />
@@ -161,8 +137,7 @@
             <fileset dir="${comp.dist}/lib" />
         </copy>
 
-        <!-- etc -->
-
+        <!-- libs -->
         <mkdir dir="${project.dist.auxlib}/jmimemagic"/>
         <copy todir="${project.dist.auxlib}/jmimemagic" >
             <fileset dir="lib/jmimemagic" />

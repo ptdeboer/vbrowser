@@ -4,8 +4,10 @@
 #
 
 ##
-# Project Build Environment 
-# Property poject.root is defined at toplevel build.xml file. 
+# Project Build Environment for standalone PTK build. 
+# If this module is part of a bigger project, project,root is defined
+# to the toplevel if the containing project.  
+
 project.dist=${project.root}/dist
 # var is used during build to write logs to 
 project.dist.var=${project.dist}/var
@@ -21,7 +23,7 @@ project.vendor=eScienceCenter.nl
 
 ###
 # Java Compiler options : Explicitly use java 1.6 
-javac.debug=true
+javac.debug=false
 javac.target=1.6
 javac.source=1.6
 javac.compiler=modern
