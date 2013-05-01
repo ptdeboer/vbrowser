@@ -406,11 +406,12 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
 
     public VRL replacePath(String path)
     {
+        // note: a reference path must be not made absolute when the uri has Authority!
         return new VRL(getScheme(),
                 getUserinfo(),
                 getHostname(),
                 getPort(), 
-                URIFactory.uripath(path,this.isRelative()==false),
+                URIFactory.uripath(path,hasAuthority()),
                 getQuery(),
                 getFragment());
     }
@@ -558,6 +559,11 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     public boolean hasFragment()
     {
         return (StringUtil.isEmpty(getFragment()) == false);
+    }
+    
+    public boolean hasAuthority()
+    {
+        return uriFactory.hasAuthority(); 
     }
     
 }
