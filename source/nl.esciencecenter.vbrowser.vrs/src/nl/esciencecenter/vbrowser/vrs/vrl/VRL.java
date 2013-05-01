@@ -26,7 +26,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.object.Duplicatable;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -278,8 +277,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     }
 
     /**
-     * Returns password part (if specified !) from userInfo string
-     * 
+     * Returns password part (if specified !) from userInfo string.
      * @deprecated It is NOT safe to use clear text password in any URI!
      */
     public String getPassword()
@@ -327,8 +325,6 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         return uriFactory.getFragment();
     }
     
-    // VRS interface: 
-
     public boolean hasHostname(String otherHostname)
     {
         return StringUtil.equals(this.uriFactory.getHostname(), otherHostname); 
@@ -364,34 +360,6 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         
         return false; 
     }
-    
-    /**
-     * Compares host to empty hostname, localhost, and actual fully qualified
-     * hostname. Don not rely on this method. Use actual network interface. This
-     * is just an indication.
-     */
-    public boolean isLocalLocation()
-    {
-        String host = this.getHostname();
-        if (StringUtil.isEmpty(host))
-            return true;
-        
-        if (StringUtil.compare(host, "localhost", true) == 0)
-            return true;
-        
-        // ipv4:
-        if (StringUtil.compare(host, "127.0.0.1", true) == 0)
-            return true;
-        
-        // ipv6:
-        if (StringUtil.compare(host, "::1", true) == 0)
-            return true;
-        
-        if (StringUtil.compare(host, GlobalProperties.getHostname(), true) == 0)
-            return true;
-        
-        return false;
-    }
 
     public String getUserinfo()
     {
@@ -401,18 +369,6 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     // ========================================================================
     // Resolvers 
     // ========================================================================
-    
-//    public VRL uriResolve(VRL relVrl) throws VRLSyntaxException
-//    {
-//        try
-//        {
-//            return createVRL(uriFactory.duplicate().uriResolve(relVrl),false);
-//        }
-//        catch (URISyntaxException e)
-//        {
-//            throw new VRLSyntaxException("Failed to resolve lreative String:"+relVrl,e);
-//        } 
-//    }
     
     public VRL uriResolve(String relUri) throws VRLSyntaxException
     {
@@ -431,7 +387,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         try
         {
             String newPath=uriFactory.resolvePath(path); 
-            return createVRL(uriFactory.duplicate().replacePath(newPath),false);
+            return createVRL(uriFactory.duplicate().setPath(newPath),false);
         }
         catch (URISyntaxException e)
         {
@@ -439,37 +395,30 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         } 
     }
     
+    /**
+     * Append path to this VRL and return new VRL 
+     */ 
     public VRL appendPath(String path)
     {
+        // Use URI factory here. 
         return createVRL(uriFactory.duplicate().appendPath(path),false);
     }
 
     public VRL replacePath(String path)
     {
-        return createVRL(uriFactory.duplicate().replacePath(path),false);
-    }
-    
-    /** Duplicate VRL but create new Query */
-    public VRL copyWithNewQuery(String str)
-    {
-        return createVRL(uriFactory.duplicate().replaceQuery(str),true); 
-    }
-    
-    public VRL copyWithNewPort(int val)
-    {
-        return createVRL(uriFactory.duplicate().replacePort(val),false);
+        return new VRL(getScheme(),
+                getUserinfo(),
+                getHostname(),
+                getPort(), 
+                URIFactory.uripath(path,this.isRelative()==false),
+                getQuery(),
+                getFragment());
     }
 
-    public VRL replaceScheme(String newScheme)
-    {
-        return createVRL(uriFactory.duplicate().replaceScheme(newScheme),false);
-    }
-    
     /** 
-     * check whether URI (and path) is a parent location of <code>subLocation</code>.  
-     * 
-     * @param subLocation
-     * @return
+     * Check whether URI (and path) is a parent location of <code>subLocation</code>.  
+     * @param subLocation child path of this VRL. 
+     * @return true if the subLocation is a child location of this VRL. 
      */
     public boolean isParentOf(VRL subLocation)
     {
@@ -478,7 +427,6 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         
         // Current implementation is based on simple string comparison.
         // For this to work, both VRL strings must be normalized ! 
-        // Debug("isSubPath:"+pathStr+","+subPath);
         
         if (subPath.startsWith(pathStr)==true)
         {
@@ -495,7 +443,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
 
     public VRL resolvePath(VRL relvrl) throws VRLSyntaxException
     {
-        // ambigious: 
+        // Ambiguous: 
         if (relvrl.uriFactory.isAbsolute())
             return relvrl;
          
@@ -611,8 +559,5 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     {
         return (StringUtil.isEmpty(getFragment()) == false);
     }
-
-  
-
     
 }
