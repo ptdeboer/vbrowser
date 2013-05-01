@@ -8,7 +8,7 @@ package nl.esciencecenter.ptk.crypt;
 public enum CryptScheme
 {
     /** 
-     * Triple DES (E-D-E), Electronic Cook Nook and PKC5 Padding.
+     * Triple DES (E-D-E), Electronic Cook Book and PKC5 Padding.
      */ 
     DESEDE_ECB_PKCS5("DESede","DESede/ECB/PKCS5Padding",24),
     

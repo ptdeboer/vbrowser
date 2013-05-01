@@ -62,6 +62,10 @@ public class GlobalProperties
     /** Java os.name value for Mac OS X */ 
     public static final String MAC_OSX= "Mac OS X";
     
+    // ========
+    // Privates
+    // ======== 
+    
     private static ClassLogger logger;
 
     /** Private copy for non system properties */ 
@@ -69,14 +73,14 @@ public class GlobalProperties
 
     static
     {
-    	// ---
     	// static init! Careful here not to make static references to other
         // potentiele not initialized classes
-    	// ---
 
         // Default logger. 
     	logger=ClassLogger.getLogger(GlobalProperties.class); 
-    	logger.infoPrintf(">>> Global Init <<<\n"); 
+    	logger.infoPrintf(">>> Global Init <<<\n");
+
+    	// To be checked; Applet mode or secure WebService mode. 
     }
 
     /** 
@@ -209,7 +213,7 @@ public class GlobalProperties
     }
     
     /** 
-     * Returns true for MacOS or MacOS X
+     * Returns true for MacOS or MacOS X.
      */ 
     public static boolean isMac()
     {

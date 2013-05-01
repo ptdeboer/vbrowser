@@ -100,7 +100,7 @@ public class Secret
     }
     
     /** 
-     * Returns clone of secret character array. 
+     * Returns <em>clone</em> of secret character array. 
      */
     public char[] getChars()
     {
@@ -120,6 +120,9 @@ public class Secret
     /** 
      * Encode characters to bytes using specified charSet and return as ByteBuffer. 
      * It is recommend to clear the ByteBuffer after use. 
+     * <p>
+     * Note that one Java Char is actually two bytes, this method convert to the byte 
+     * encoding used by 'charSetName'. 
      */ 
     public ByteBuffer toByteBuffer(String charSetName)
     {

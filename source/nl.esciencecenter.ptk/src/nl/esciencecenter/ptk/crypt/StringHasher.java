@@ -33,7 +33,7 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
  * String Hasher Util class.
- * 
+ * <p.
  * Salting:<br>
  * If a salt is specified the byte value of the salt string is added as extra
  * digest after processing the source text.

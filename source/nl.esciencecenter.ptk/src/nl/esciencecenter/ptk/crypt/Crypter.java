@@ -43,20 +43,6 @@ package nl.esciencecenter.ptk.crypt;
 //            super(message,cause);
 //        }
 //    }
-//    
-//    
-//    
-//    // ========================================================================
-//    // Class Constants  
-//    // ========================================================================
-//
-//    public static final String DES_ENCRYPTION_SCHEME = "DES";
-//
-//    public static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
-//
-//    public static final String DESEDE_ECB_PKCS5 = "DESede/ECB/PKCS5Padding"; 
-//
-//    public static final String DES_ECB_PKCS5 = "DES/ECB/PKCS5Padding"; 
 //
 //    // ========================================================================
 //    // Instance  

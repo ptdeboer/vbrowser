@@ -149,7 +149,7 @@ public abstract class FSNode
 	
 	public URI resolvePathURI(String relPath) throws URISyntaxException
 	{
-		return new URIFactory(uri).replacePath(resolvePath(relPath)).toURI(); 
+		return new URIFactory(uri).setPath(resolvePath(relPath)).toURI(); 
 	}
 
 	public boolean create() throws IOException 

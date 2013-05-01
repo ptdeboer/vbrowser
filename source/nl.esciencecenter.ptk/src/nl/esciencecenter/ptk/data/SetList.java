@@ -20,9 +20,4 @@ public class SetList<TK> extends LinkedHashSet<TK>
         return list; 
     }
     
-//    public int sort(Comparable<TK> comparer)
-//    {
-//        return -1; 
-//    }
-    
 }
