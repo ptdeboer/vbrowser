@@ -582,8 +582,8 @@ public class AttributeSet extends HashMapList<String, Attribute>
 
                 if ((oldVal != null) && StringUtil.isEmpty(oldVal.toString()) == false)
                 {
-                    // update with new value and type;
-                    newAttr.copyValueAndTypeFrom(oldAttr);
+                    // update with new value. type is automatfically adjusted. 
+                    newAttr.setObjectValue(oldAttr.getValue());
                 }
                 // else keep new non empty value !
                 // Overwrite:
