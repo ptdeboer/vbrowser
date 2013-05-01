@@ -487,7 +487,7 @@ public boolean getUseSimilarReplicaNames()
 		
         if (se != null)
         {
-            vrl=vrl.copyWithNewPort(se.getPort());
+            vrl=VRLUtil.replacePort(vrl, se.getPort()); 
             return vrl;
         }
 	}

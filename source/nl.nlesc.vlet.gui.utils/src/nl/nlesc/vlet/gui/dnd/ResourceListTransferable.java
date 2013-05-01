@@ -31,6 +31,7 @@ import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.data.ResourceRef;
 import nl.nlesc.vlet.vrs.Registry;
 import nl.nlesc.vlet.vrs.vfs.VFS;
+import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
 /**
  * 	List of ResourceTransferables !  
@@ -82,7 +83,7 @@ public class ResourceListTransferable implements Transferable
         	{
         		VRL vrl=ref.getVRL(); 
         		
-        		if ((Registry.isLocalLocation(vrl) == true)
+        		if ((VRLUtil.isLocalLocation(vrl) == true)
                     && (vrl.getScheme().compareTo(VFS.FILE_SCHEME) == 0))
         		{
         			// create local file path (leave out hostname!) 
@@ -105,7 +106,7 @@ public class ResourceListTransferable implements Transferable
             	VRL vrl=ref.getVRL(); 
             	
                 //I can export local file 
-                if ((Registry.isLocalLocation(vrl) == true)
+                if ((VRLUtil.isLocalLocation(vrl) == true)
                         && (vrl.getScheme().compareTo(VFS.FILE_SCHEME) == 0))
                 {
                     File file = new File(vrl.getPath());

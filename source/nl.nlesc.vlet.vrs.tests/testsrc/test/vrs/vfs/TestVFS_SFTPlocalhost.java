@@ -18,7 +18,7 @@
  */
 // source: 
 
-package vfs;
+package test.vrs.vfs;
 
 import org.junit.Before;
 

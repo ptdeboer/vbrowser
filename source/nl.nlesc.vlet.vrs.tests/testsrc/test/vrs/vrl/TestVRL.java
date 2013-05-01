@@ -18,7 +18,7 @@
  */
 // source: 
 
-package vrl;
+package test.vrs.vrl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -284,26 +284,26 @@ public class TestVRL
     }
     
     @Test
-    public void testLocalHosts()
+    public void testVRLUtil_isLocalLocation()
     {
         VRL localVrl = new VRL("file", null, null);
-        Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
+        Assert.assertTrue("isLocalHostname should be true", VRLUtil.isLocalLocation(localVrl));
 
         localVrl = new VRL("file", "localhost", "/etc");
-        Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
+        Assert.assertTrue("isLocalHostname should be true", VRLUtil.isLocalLocation(localVrl));
 
         localVrl = new VRL("file", "", "/etc");
-        Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
+        Assert.assertTrue("isLocalHostname should be true", VRLUtil.isLocalLocation(localVrl));
 
         // current hardcoded alias for localhosts
         localVrl = new VRL("file", "127.0.0.1", "/etc");
-        Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
+        Assert.assertTrue("isLocalHostname should be true", VRLUtil.isLocalLocation(localVrl));
 
         localVrl = new VRL("file", null, "/etc");
-        Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
+        Assert.assertTrue("isLocalHostname should be true", VRLUtil.isLocalLocation(localVrl));
 
         localVrl = new VRL("file", GlobalProperties.getHostname(), "/etc");
-        Assert.assertTrue("isLocalHostname should be true", localVrl.isLocalLocation());
+        Assert.assertTrue("isLocalHostname should be true", VRLUtil.isLocalLocation(localVrl));
     }
 
     /*

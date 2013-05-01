@@ -31,6 +31,7 @@ import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.data.ResourceRef;
 import nl.nlesc.vlet.vrs.Registry;
 import nl.nlesc.vlet.vrs.vfs.VFS;
+import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
 /**
  * Generic DnD (Drag and Drop) class. 
@@ -68,7 +69,7 @@ public class ResourceTransferable implements Transferable
         else if (flavor.equals(VTransferData.uriListFlavor))
         {
             //I can export local file 
-            if ((Registry.isLocalLocation(ref.getVRL()) == true)
+            if ((VRLUtil.isLocalLocation(ref.getVRL()) == true)
                     && (ref.getVRL().getScheme().compareTo(VFS.FILE_SCHEME) == 0))
             {
                 // create local file path: 
@@ -91,7 +92,7 @@ public class ResourceTransferable implements Transferable
             java.util.Vector<File> fileList = new Vector<File>();
 
             //I can export local file 
-            if ((Registry.isLocalLocation(ref.getVRL()) == true)
+            if ((VRLUtil.isLocalLocation(ref.getVRL()) == true)
                     && (ref.getVRL().getScheme().compareTo(VFS.FILE_SCHEME) == 0))
             {
                 File file = new File(ref.getVRL().getPath());

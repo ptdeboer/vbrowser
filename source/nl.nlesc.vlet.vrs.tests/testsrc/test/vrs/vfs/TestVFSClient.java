@@ -18,7 +18,7 @@
  */
 // source: 
 
-package vfs;
+package test.vrs.vfs;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;

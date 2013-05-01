@@ -18,44 +18,49 @@
  */
 // source: 
 
-package vfs;
+package test.vrs.vfs;
 
-import org.junit.Before;
-
-import test.TestSettings;
+import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-//import nl.uva.vlet.gui.dialog.AuthenticationDialog;
-import nl.nlesc.vlet.vrs.ServerInfo;
+import nl.nlesc.vlet.VletConfig;
+import nl.nlesc.vlet.vrs.VRS;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import test.TestSettings;
 
-/**
- * SRM. 
- * 
- */
-public class TestVFS_SRMsara extends TestVFS_SRM
+
+public class TestVFS_OctopusLocalFS extends TestVFS
 {
-    static private ServerInfo info;
-
+    private static final VFSClient vfs=null;
+    
     static
     {
-        TestVFS_LocalFS.initLocalFS(); 
+        try
+        {
+            initOctopus();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        } 
     }
     
-    public TestVFS_SRMsara()
+    public static VFSClient initOctopus() throws Exception
     {
-        // this.doRename=false;
-        // this.doWrites=false;
+        if (vfs!=null)
+            return vfs; 
+                
+        VletConfig.init();
+        VRS.getRegistry().unregisterVRSDriverClass(nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory.class); 
+        VRS.getRegistry().registerVRSDriverClass(OctopusFSFactory.class);
+        
+        VFSClient vfs=VFSClient.getDefault(); 
+        return vfs; 
     }
-
+    
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestSettings.VFS_SRM_DCACHE_SARA_LOCATION); 
-    }
-
-    @Before
-    public void testSetup()
-    {
-        
+        return TestSettings.getTestLocation(TestSettings.VFS_LOCALFS_LOCATION); 
     }
 
 }

@@ -18,29 +18,44 @@
  */
 // source: 
 
-package vfs;
+package test.vrs.vfs;
 
-import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+import org.junit.Before;
+
 import test.TestSettings;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+//import nl.uva.vlet.gui.dialog.AuthenticationDialog;
+import nl.nlesc.vlet.vrs.ServerInfo;
 
-public class TestVFS_OctopusSftpFS extends TestVFS
+/**
+ * SRM. 
+ * 
+ */
+public class TestVFS_SRMsara extends TestVFS_SRM
 {
+    static private ServerInfo info;
+
     static
     {
-        try
-        {
-            TestVFS_OctopusLocalFS.initOctopus(); 
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        } 
+        TestVFS_LocalFS.initLocalFS(); 
     }
     
+    public TestVFS_SRMsara()
+    {
+        // this.doRename=false;
+        // this.doWrites=false;
+    }
+
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestSettings.VFS_SFTP_LOCALHOST); 
+        return TestSettings.getTestLocation(TestSettings.VFS_SRM_DCACHE_SARA_LOCATION); 
+    }
+
+    @Before
+    public void testSetup()
+    {
+        
     }
 
 }

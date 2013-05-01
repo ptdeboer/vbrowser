@@ -18,45 +18,24 @@
  */
 // source: 
 
-package vfs;
+package test.vrs.vfs;
 
 import org.junit.Before;
 
+import test.TestSettings;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 //import nl.uva.vlet.gui.dialog.AuthenticationDialog;
 import nl.nlesc.vlet.vrs.ServerInfo;
-import nl.nlesc.vlet.vrs.VRS;
 
 /**
- * Test LFC. 
+ * TestSuite extends TestVFS class to test GFTP. 
  */
-public class TestVFS_LFCsara extends TestVFS
+public class TestVFS_GFTPlocalhost extends TestVFS
 {
-
-    static
-    {
-        initLocalFS();
-    }
-    
-    public static void initLocalFS()
-    {
-        try
-        {
-            VRS.getRegistry().registerVRSDriverClass(nl.nlesc.vlet.vfs.lfc.LFCFSFactory.class);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        } 
-    }
     static private ServerInfo info;
 
-    VRL testLoc=null; 
-    
-    public TestVFS_LFCsara()
+    public TestVFS_GFTPlocalhost()
     {
-        testLoc=new VRL("lfn","lfc.grid.sara.nl",5010,"/grid/nlesc.nl/ptdeboer/testlfc");
-            
         // this.doRename=false;
         // this.doWrites=false;
     }
@@ -64,7 +43,7 @@ public class TestVFS_LFCsara extends TestVFS
     @Override
     public VRL getRemoteLocation()
     {
-        return testLoc; 
+        return TestSettings.getTestLocation(TestSettings.VFS_GFTP_LOCATION); 
     }
 
 //    public static void authenticate() throws VlException

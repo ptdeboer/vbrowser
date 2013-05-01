@@ -35,6 +35,9 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 
+/** 
+ * Some VRL factory and manipulation methods. 
+ */
 public class VRLUtil
 {
     // hostname cache:
@@ -97,20 +100,7 @@ public class VRLUtil
                 }
         }
 
-        // java.net.InetAddress.getLocalHost().getCanonicalHostName();
-
-        InetAddress ipaddr;
-
-        // try
-        // {
-        ipaddr = java.net.InetAddress.getByName(name);
-        // }
-        // catch (UnknownHostException e)
-        // {
-        // Global.errorPrintln("VRL","Exception:"+e);
-        // e.printStackTrace(Global.getDebugStream());
-        // / return name; // return name as is.
-        // }
+        InetAddress ipaddr = java.net.InetAddress.getByName(name);
 
         newname = ipaddr.getCanonicalHostName();
 
@@ -220,6 +210,17 @@ public class VRLUtil
     }
 
     /**
+     * Compares host to empty hostname, localhost, and actual fully qualified
+     * hostname. Don not rely on this method. Use actual network interface. This
+     * is just an indication.
+     */
+    public static boolean isLocalLocation(VRL vrl)
+    {
+        String host = vrl.getHostname();
+        return isLocalHostname(host);
+    }
+    
+    /**
      * Static method to check for empty or localhost names 
      * and aliases (127.0.0.1) 
      */ 
@@ -231,14 +232,20 @@ public class VRLUtil
         if (host.compareTo("")==0)
             return true;
         
-        if (host.compareTo(VRS.LOCALHOST)==0)
+        if (StringUtil.compare(host, "localhost", true) == 0)
             return true;
         
-        if (host.compareTo("127.0.0.1")==0)
-            return true; 
+        // ipv4:
+        if (StringUtil.compare(host, "127.0.0.1", true) == 0)
+            return true;
         
-        if (host.compareTo(GlobalProperties.getHostname())==0)
-            return true; 
+        // ipv6:
+        if (StringUtil.compare(host, "::1", true) == 0)
+            return true;
+        
+        // resolve other local hostname ips
+        if (StringUtil.compare(host, GlobalProperties.getHostname(), true) == 0)
+            return true;
         
         return false;
     }
@@ -298,4 +305,40 @@ public class VRLUtil
        return aset; 
     }
 
+    public static VRL replaceScheme(VRL vrl, String newScheme)
+    {
+        return new VRL(newScheme,
+                vrl.getUserinfo(),
+                vrl.getHostname(),
+                vrl.getPort(),
+                vrl.getPath(),
+                vrl.getQuery(),
+                vrl.getFragment()); 
+    }
+        
+    public static VRL replacePort(VRL vrl, int newPort)
+    {
+        return new VRL(vrl.getScheme(),
+                vrl.getUserinfo(),
+                vrl.getHostname(),
+                newPort,
+                vrl.getPath(),
+                vrl.getQuery(),
+                vrl.getFragment()); 
+    }
+    
+    public static VRL replaceQuery(VRL vrl,String newQuery)
+    {
+        return new VRL(vrl.getScheme(),
+                vrl.getUserinfo(),
+                vrl.getHostname(),
+                vrl.getPort(),
+                vrl.getPath(),
+                newQuery,
+                vrl.getFragment()); 
+    }
+
+    
+    
 }
+

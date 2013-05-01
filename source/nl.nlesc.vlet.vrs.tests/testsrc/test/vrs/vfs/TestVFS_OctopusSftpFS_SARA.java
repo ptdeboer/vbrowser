@@ -18,31 +18,18 @@
  */
 // source: 
 
-package vfs;
+package test.vrs.vfs;
 
-import test.TestSettings;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.VRS;
+import test.TestSettings;
 
-/**
- * Test Local case
- * 
- * TestSuite uses testVFS class to tests Local implementation.
- * 
- * @author P.T. de Boer
- */
-public class TestVFS_LocalFS extends TestVFS
+public class TestVFS_OctopusSftpFS_SARA extends TestVFS
 {
     static
     {
-        initLocalFS();
-    }
-    
-    public static void initLocalFS()
-    {
         try
         {
-            VRS.getRegistry().registerVRSDriverClass(nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory.class);
+            TestVFS_OctopusLocalFS.initOctopus(); 
         }
         catch (Exception e)
         {
@@ -53,18 +40,7 @@ public class TestVFS_LocalFS extends TestVFS
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestSettings.VFS_LOCALFS_LOCATION); 
+        return TestSettings.getTestLocation(TestSettings.VFS_SFTP_SARA_LOCATION); 
     }
-
-// Use Junit 4 annotation.
-//    public static Test suite()
-//    {
-//        return new TestSuite(testLocalFS.class);
-//    }
-//
-//    public static void main(String args[])
-//    {
-//        junit.textui.TestRunner.run(suite());
-//    }
 
 }

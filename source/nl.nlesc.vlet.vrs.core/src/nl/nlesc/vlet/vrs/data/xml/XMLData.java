@@ -194,7 +194,7 @@ public class XMLData
 
         // enumValues:
 
-        if (attr.isEnumType())
+        if (attr.isEnum())
         {
             // <enumValues>...<enumValues/>
             Element enumValuesElement = domDoc.createElement("enumValues");

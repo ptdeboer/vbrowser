@@ -18,7 +18,7 @@
  */
 // source: 
 
-package vfs;
+package test.vrs.vfs;
 
 import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
 import nl.nlesc.vlet.VletConfig;

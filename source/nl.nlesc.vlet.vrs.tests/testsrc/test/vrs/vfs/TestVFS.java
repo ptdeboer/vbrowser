@@ -18,7 +18,7 @@
  */
 // source: 
 
-package vfs;
+package test.vrs.vfs;
 
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_EXISTS;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;

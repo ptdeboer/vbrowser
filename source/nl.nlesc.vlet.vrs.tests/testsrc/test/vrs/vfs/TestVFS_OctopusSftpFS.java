@@ -18,25 +18,18 @@
  */
 // source: 
 
-package vfs;
+package test.vrs.vfs;
 
-import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import test.TestSettings;
 
-
-public class TestVFS_OctopusLocalFS extends TestVFS
+public class TestVFS_OctopusSftpFS extends TestVFS
 {
-    private static final VFSClient vfs=null;
-    
     static
     {
         try
         {
-            initOctopus();
+            TestVFS_OctopusLocalFS.initOctopus(); 
         }
         catch (Exception e)
         {
@@ -44,23 +37,10 @@ public class TestVFS_OctopusLocalFS extends TestVFS
         } 
     }
     
-    public static VFSClient initOctopus() throws Exception
-    {
-        if (vfs!=null)
-            return vfs; 
-                
-        VletConfig.init();
-        VRS.getRegistry().unregisterVRSDriverClass(nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory.class); 
-        VRS.getRegistry().registerVRSDriverClass(OctopusFSFactory.class);
-        
-        VFSClient vfs=VFSClient.getDefault(); 
-        return vfs; 
-    }
-    
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestSettings.VFS_LOCALFS_LOCATION); 
+        return TestSettings.getTestLocation(TestSettings.VFS_SFTP_LOCALHOST); 
     }
 
 }

@@ -34,6 +34,7 @@ import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vjs.VJob;
+import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
 /** 
  * Job Status utility. 
@@ -48,14 +49,14 @@ public class JobUtil
         // replace https -> LB scheme. WMS implementation should do the rest. 
     	// note that JobVRL mights be updated when the VNode (VJob) object is returned!
         if (vrl.hasScheme("https"))
-            vrl=new VRL(vrl.replaceScheme(VRS.LB_SCHEME));
+            vrl=VRLUtil.replaceScheme(vrl,VRS.LB_SCHEME);
         
 		return vrl; 
 	}
     
 	public static String guessJobIdFromJobVrl(VRL vrl)
 	{	
-		vrl=new VRL(vrl.replaceScheme(VRS.HTTPS_SCHEME));
+		vrl=VRLUtil.replaceScheme(vrl,VRS.HTTPS_SCHEME);
 		return vrl.toString(); 
 	}
 

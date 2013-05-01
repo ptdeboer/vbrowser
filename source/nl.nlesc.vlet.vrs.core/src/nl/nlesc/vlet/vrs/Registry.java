@@ -85,15 +85,15 @@ public final class Registry // todo: change to vrs protected class.
     private static Registry instance = null;
 
     private static boolean globalURLStreamFactoryInitialized = false;
+    
+    private static Object singletonLock = new Object();
+
+    private static boolean instanceCreation = false;
 
     static
     {
         logger = ClassLogger.getLogger(Registry.class);
-        // Class instance initialization is done during (Singleton) Constructor
-        // to avoid mutual initialization conflicts at startup!
     }
-
-    // private static Registry instance=null;
 
     // ===============================================================
     // Class Definiations and fields.
@@ -144,6 +144,64 @@ public final class Registry // todo: change to vrs protected class.
         }
     }
 
+    // ===========================================================================
+    // Class (static) methods
+    // ===========================================================================
+
+    /**
+     * In the case auto class initialisation does not work, call this init
+     * method to initialize the class
+     */
+    public static void init()
+    {
+        GlobalProperties.init();
+    }
+    
+    /**
+     * Creates and returns the singlon instance. Only once instance is allowed.
+     * 
+     * @return the Singleton Registry Instance.
+     */
+    static Registry getInstance()
+    {
+        try
+        {
+            synchronized (singletonLock)
+            {
+                if (instance == null)
+                {
+                    // ============================================================
+                    // This can happen when during initailization time this
+                    // method is called again. within the same Thread !
+                    // Because of the 'synchronised' modifier,
+                    // this must be the same thread, so this is a recursive
+                    // call!
+                    // This must be avoided at all time.
+                    //
+                    // ============================================================
+                    if (instanceCreation == true)
+                    {
+                        logger.fatal("*** PANIC: Recursive Registry Initialisation. Cannot continue!\n");
+                        instanceCreation = false; // Release Lock !
+                        throw new Error("Recursive Creation of Singleton Instance detected");
+                    }
+
+                    instanceCreation = true;
+                }
+
+                instance = new Registry();
+                instanceCreation = false; // Release Lock !
+            }
+        }
+        catch (Throwable t)
+        {
+            logger.logException(ClassLogger.FATAL, t, "*** PANIC: Can not initialise Registry! Exception=" + t);
+            t.printStackTrace();
+            instanceCreation = false;
+        }
+        return instance;
+    }
+    
     // ====================================================================
     // Instance Methods
     // ====================================================================
@@ -848,71 +906,6 @@ public final class Registry // todo: change to vrs protected class.
         return this.resourceEventNotifier;
     }
 
-    // ===========================================================================
-    // Class (static) methods
-    // ===========================================================================
-
-    public static boolean isLocalLocation(VRL location)
-    {
-        return location.isLocalLocation();
-    }
-
-    /**
-     * In the case auto class initialisation does not work, call this init
-     * method to initialize the class
-     */
-    public static void init()
-    {
-        GlobalProperties.init();
-    }
-
-    private static Object singletonLock = new Object();
-
-    private static boolean instanceCreation = false;
-
-    /**
-     * Creates and returns the singlon instance. Only once instance is allowed.
-     * 
-     * @return the Singleton Registry Instance.
-     */
-    static Registry getInstance()
-    {
-        try
-        {
-            synchronized (singletonLock)
-            {
-                if (instance == null)
-                {
-                    // ============================================================
-                    // This can happen when during initailization time this
-                    // method is called again. within the same Thread !
-                    // Because of the 'synchronised' modifier,
-                    // this must be the same thread, so this is a recursive
-                    // call!
-                    // This must be avoided at all time.
-                    //
-                    // ============================================================
-                    if (instanceCreation == true)
-                    {
-                        logger.fatal("*** PANIC: Recursive Registry Initialisation. Cannot continue!\n");
-                        instanceCreation = false; // Release Lock !
-                        throw new Error("Recursive Creation of Singleton Instance detected");
-                    }
-
-                    instanceCreation = true;
-                }
-
-                instance = new Registry();
-                instanceCreation = false; // Release Lock !
-            }
-        }
-        catch (Throwable t)
-        {
-            logger.logException(ClassLogger.FATAL, t, "*** PANIC: Can not initialise Registry! Exception=" + t);
-            t.printStackTrace();
-            instanceCreation = false;
-        }
-        return instance;
-    }
+    
 
 }

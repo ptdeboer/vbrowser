@@ -1899,7 +1899,7 @@ public class LFCClient
     {
         try
         {
-            URI uri=vrl.copyWithNewPort(-1).toURI();
+            URI uri=VRLUtil.replacePort(vrl,0).toURI();
             return uri;
         }
         catch (Exception e)
@@ -2084,7 +2084,7 @@ public class LFCClient
             if (sfn.getPort() != port)
             {
                 // update port information only to get SRM v2.2 interface:
-                newVRL = sfn.copyWithNewPort(port);
+                newVRL = VRLUtil.replacePort(sfn, port);
             }
         }
 

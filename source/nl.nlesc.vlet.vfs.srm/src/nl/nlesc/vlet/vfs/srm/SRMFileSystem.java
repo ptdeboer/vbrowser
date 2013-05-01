@@ -140,7 +140,7 @@ public class SRMFileSystem extends FileSystemNode
             ServiceInfo se = BdiiUtil.getBdiiService(context).getSRMv22ServiceForHost(loc.getHostname());
             if (se != null)
             {
-                loc = loc.copyWithNewPort(se.getPort());
+                loc = VRLUtil.replacePort(loc,se.getPort());
                 return loc;
             }
         }
@@ -453,7 +453,7 @@ public class SRMFileSystem extends FileSystemNode
             String qstr=dirQuery.toString(); 
             
             logger.debugPrintf(">>> OLD VRL=%s\n",pathVrl);
-            pathVrl=pathVrl.copyWithNewQuery(qstr);
+            pathVrl=VRLUtil.replaceQuery(pathVrl,qstr);
             logger.debugPrintf(">> NEW VRL=%a\n",pathVrl); 
         }
         
