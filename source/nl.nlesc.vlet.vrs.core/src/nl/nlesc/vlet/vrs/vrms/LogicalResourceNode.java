@@ -1046,17 +1046,18 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
             catch (XMLDataParseException ex)
             {
                 // except1=ex;
-
-                debugPrintln("Not an XML file:" + vnode + " ???");
-
+                logger.logException(ClassLogger.WARN, ex, "Got parse exception on file:%s\n",vnode.getLocation()); 
+              
                 try
                 {
                     inps.close();
                 }
                 catch (IOException e)
                 {
-                    debugPrintln("Ignoring Error when closing inputstream:" + e);
+                    ; // debugPrintln("Ignoring Error when closing inputstream:" + e);
                 }
+                
+                throw ex; 
             }
             catch (IOException e)
             {
@@ -1070,7 +1071,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         // save();
         // }
 
-        if ((resourceAttributes == null) && (resourceAttributes.size() == 0))
+        if ((resourceAttributes == null) || (resourceAttributes.size() == 0))
         {
             throw new NestedIOException("ReadError.\nEmpty resource:" + this);
         }
