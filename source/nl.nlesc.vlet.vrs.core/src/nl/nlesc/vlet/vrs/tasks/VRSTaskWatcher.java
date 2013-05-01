@@ -26,7 +26,7 @@ import nl.esciencecenter.ptk.task.TaskWatcher;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
- * Task watcher for threaded VRS tasks 
+ * Task watcher for threaded VRS tasks. 
  * Use VRS.getTaskWatcher() for the default VRS Task Watchers.
  */ 
 public class VRSTaskWatcher extends TaskWatcher 
@@ -87,4 +87,10 @@ public class VRSTaskWatcher extends TaskWatcher
         return monitor;
     }
     
+    public void  notifyTaskStarted(ActionTask actionTask)
+    {
+        super.notifyTaskStarted(actionTask); 
+        System.err.println("***>>> Task Started:"+actionTask); 
+    }
+
 }

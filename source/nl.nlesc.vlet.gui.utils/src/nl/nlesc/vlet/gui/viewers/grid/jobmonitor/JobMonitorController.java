@@ -28,6 +28,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.ui.widgets.NavigationBar;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
@@ -39,7 +40,6 @@ import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.viewers.ViewContext;
 import nl.nlesc.vlet.gui.viewers.ViewerEvent;
-import nl.nlesc.vlet.gui.widgets.NavigationBar;
 import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
 

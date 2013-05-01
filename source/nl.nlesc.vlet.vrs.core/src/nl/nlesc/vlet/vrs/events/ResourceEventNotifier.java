@@ -390,11 +390,6 @@ public class ResourceEventNotifier implements ITaskSource
     }
 
     @Override
-    public void setHasActiveTasks(boolean active)
-    {
-    }
-
-    @Override
     public void unregisterTask(ActionTask actionTask)
     {
     }
