@@ -57,7 +57,7 @@ public class BrowserControllerActionListener implements ActionListener
         String cmdstr = e.getActionCommand();
         
         // check for NavigationBar 
-        NavigationBar.NavigationAction nav=NavigationBar.NavigationAction.valueOf(cmdstr); 
+        NavigationBar.NavigationAction nav=NavigationBar.NavigationAction.valueOfOrNull(cmdstr); 
         
         ActionCommand cmd=null; 
         
