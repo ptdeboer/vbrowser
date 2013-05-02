@@ -373,6 +373,9 @@ public abstract class ActionTask implements Runnable
 	    clearThreads();
 	}	
 
+	/** 
+	 * Set isCancelled() flag to true and interrupts all (waiting) threads. 
+	 */
     public void signalTerminate()
     {
         try
@@ -384,6 +387,7 @@ public abstract class ActionTask implements Runnable
             
             try
             {
+                // call action stopTask() if it has one for graceful termination. 
                 this.stopTask();
             }
             catch (Throwable t)
@@ -391,6 +395,7 @@ public abstract class ActionTask implements Runnable
                 ;
             }
             
+            // now signal all threads. 
             if (threads!=null)
             {
                 for (Thread thread:threads)
