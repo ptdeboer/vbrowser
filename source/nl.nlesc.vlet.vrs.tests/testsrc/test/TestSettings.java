@@ -38,38 +38,43 @@ import nl.nlesc.vlet.vrs.VRSContext;
  */
 public class TestSettings
 {
-    public static final String VFS_LOCALFS_LOCATION       = "vfsLocalFSLocation";
-    public static final String VFS_LOCAL_TEMPDIR_LOCATION = "vfsLocalTempDir"; 
-    public static final String VFS_GFTP_V1_LOCATION ="vfsGFTPV1Location"; 
-    public static final String VFS_GFTP_LOCATION    ="vfsGFTPLocation"; 
-    public static final String VFS_GFTP_LOCATION2   ="vfsGFTPLocation2"; 
-    public static final String VFS_GFTP_ELAB_LOCATION   ="vfsGFTPElabLocation"; 
-    public static final String VFS_SFTP_SARA_LOCATION    ="vfsSFTPSARALocation"; 
-    public static final String VFS_SFTP_LOCALHOST    ="vfsSFTPLocalhostLocation"; 
-    public static final String VFS_SRB_LOCATION     ="vfsSRBLocation";
-    public static final String VFS_SRM_DCACHE_SARA_LOCATION ="vfsSRM_dCache_SARA_Location";
-    public static final String VFS_SRM_T_DCACHE_SARA_LOCATION ="vfsSRM_T_dCache_SARA_Location";
-    public static final String VFS_SRM_DPM_NIKHEF_LOCATION  ="vfsSRM_DPM_NIKHEF_Location";
-    public static final String VFS_SRM_CASTORUK_LOCATION    ="vfsSRM_CASTOR_UK_Location";    
-    public static final String VFS_SRM_STORMIT_LOCATION     ="vfsSRM_STORM_IT_Location";
-    public static final String VFS_SRM_AMC_LOCATION         ="vfsSRM_DPM_AMC_Location";
+    public static final String VFS_LOCALFS_LOCATION         = "vfsLocalFS_location1";
+    public static final String VFS_LOCAL_TEMPDIR_LOCATION   = "vfsLocalFS_tmpDirLocation"; 
+    public static final String VFS_GFTP_V1_LOCATION         = "vfsGFTP_V1_location1"; 
+    public static final String VFS_GFTP_LOCATION            ="vfsGFTPLocation"; 
+    public static final String VFS_GFTP_LOCATION2           ="vfsGFTPLocation2"; 
+    public static final String VFS_GFTP_ELAB_LOCATION       ="vfsGFTPElabLocation"; 
+    public static final String VFS_SFTP_SARA_LOCATION       ="vfsSFTPSARALocation"; 
+    public static final String VFS_SFTP_LOCALHOST           ="vfsSFTPLocalhostLocation";
     
+    public static final String VFS_SRM_DCACHE_SARA_LOCATION         ="vfsSRM_dCache_SARA_location";
+    public static final String VFS_SRM_DCACHE_SARA_OTHER_LOCATION   ="vfsSRM_dCache_SARA_otherLocation";
+    public static final String VFS_SRM_DTEAM_DCACHE_SARA_LOCATION   ="vfsSRM_dteam_dCache_SARA_location";
+    public static final String VFS_SRM_DPM_NIKHEF_LOCATION          ="vfsSRM_DPM_NIKHEF_location";
+    public static final String VFS_SRM_CASTORUK_LOCATION            ="vfsSRM_CASTOR_UK_location";    
+    public static final String VFS_SRM_STORMIT_LOCATION             ="vfsSRM_STORM_IT_location";
+    public static final String VFS_SRM_AMC_LOCATION                 ="vfsSRM_DPM_AMC_location";
+    
+    public static final String VFS_LFC_SARA_LOCATION = "vfsLFC_SARA_location1"; 
+    public static final String VFS_LFC_SARA_OTHER_LOCATION = "vfsLFC_SARA_location2"; 
+
     public static final String VFS_SRM_STORMRUG_LOCATION   ="vfsSRM_STORM_RUG_Location";
     public static final String VFS_SRM_DCACHE_RUG_LOCATION ="vfsSRM_dCache_RUG_Location";
-    public static final String VFS_WEBDEV_LOCATION_1 = "vfsWebdav_location_1";
-    public static final String VFS_WEBDEV_LOCATION_2 = "vfsWebdav_location_2";
+    public static final String VFS_WEBDAV_LOCATION_1 = "vfsWebdav_location_1";
+    public static final String VFS_WEBDAV_LOCATION_2 = "vfsWebdav_location_2";
    
     public static final String BDII_URI_SARA = "ldap://bdii.grid.sara.nl:2170";
+    public static final String BDII2_URI_SARA = "ldap://bdii2.grid.sara.nl:2170";
     public static final String BDII_URI_NIKHEF = "ldap://bdii03.nikhef.nl:2170";
     public static final String BDII_URI_EXP_NIKHEF = "ldap://tbn19.nikhef.nl:2170";
+    
     public static final String[] BDII_LOCATIONS = 
             { 
                 TestSettings.BDII_URI_SARA, 
+                TestSettings.BDII2_URI_SARA,
                 TestSettings.BDII_URI_NIKHEF,
                 TestSettings.BDII_URI_EXP_NIKHEF 
             };
-
-
 
     /** Singleton! */ 
     private static TestSettings instance; 
@@ -78,7 +83,6 @@ public class TestSettings
     {
         instance=new TestSettings(); 
     }
-    
     
     public static TestSettings getDefault()
     {
@@ -109,8 +113,7 @@ public class TestSettings
         
         testLocations.put(VFS_LOCAL_TEMPDIR_LOCATION,
                 new VRL("file", null, "/tmp/" + testUserName + "/localtmpdir"));
-        
-         
+                 
         testLocations.put(VFS_LOCALFS_LOCATION,
                 new VRL("file", null, "/tmp/" + testUserName + "/testLocalFS"));
         
@@ -131,8 +134,11 @@ public class TestSettings
         
         testLocations.put(VFS_SRM_DCACHE_SARA_LOCATION,
                 new VRL("srm","srm.grid.sara.nl","/pnfs/grid.sara.nl/data/nlesc.nl/" + testUserName+ "/testSRM_dCache_SARA_t1"));
+
+        testLocations.put(VFS_SRM_DCACHE_SARA_OTHER_LOCATION,
+                new VRL("srm","srm.grid.sara.nl","/pnfs/grid.sara.nl/data/nlesc.nl/other" + testUserName+ "/testSRM_dCache_SARA_t1"));
         
-        testLocations.put(VFS_SRM_T_DCACHE_SARA_LOCATION,
+        testLocations.put(VFS_SRM_DTEAM_DCACHE_SARA_LOCATION,
                 new VRL("srm","srm-t.grid.sara.nl","/pnfs/grid.sara.nl/data/dteam/" + testUserName+ "/testSRM_T_dCache_SARA_t1"));
         
         testLocations.put(VFS_SRM_DPM_NIKHEF_LOCATION,
@@ -152,13 +158,18 @@ public class TestSettings
         
         testLocations.put(VFS_SRM_DCACHE_RUG_LOCATION,
                 new VRL("srm", null, "se.grid.rug.nl", 8443, "/pnfs/grid.rug.nl/data/pvier/")); 
-
         
-        testLocations.put(VFS_WEBDEV_LOCATION_1,
+        testLocations.put(VFS_WEBDAV_LOCATION_1,
                 new VRL("webdav", null, "localhost", 8008, "/tmp/" + testUserName + "/testWEBDAV"));
         
-        testLocations.put(VFS_WEBDEV_LOCATION_2,
+        testLocations.put(VFS_WEBDAV_LOCATION_2,
                 new VRL("webdav", null, "localhost", 8008, "/tmp/" + testUserName + "/testWEBDAV_2"));
+    
+        testLocations.put(VFS_LFC_SARA_LOCATION,
+                new VRL("lfn", null, "lfc.grid.sara.nl", 5010, "/grid/nlesc.nl/ptdeboer/testlfc"));
+
+        testLocations.put(VFS_LFC_SARA_OTHER_LOCATION,
+                new VRL("lfn", null, "lfc.grid.sara.nl", 5010, "/grid/nlesc.nl/ptdeboer/testlfc_other")); 
     }
     
     public VRL getLocation(String name)

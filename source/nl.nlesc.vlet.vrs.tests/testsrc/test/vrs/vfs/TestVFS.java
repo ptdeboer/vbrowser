@@ -77,6 +77,7 @@ import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable.ActiveTransferType;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vfs.VLogicalFileAlias;
 import nl.nlesc.vlet.vrs.vfs.VReplicatable;
@@ -2616,189 +2617,7 @@ public class TestVFS extends VTestCase
 
     }
 
-    @Test public void testX3rdPartySameServer() throws Exception
-    {
-        VRL loc1 = getRemoteLocation();
-
-        VRL loc2 = getRemoteLocation();
-
-        // same location but different names
-        testX3rdPartyTransfer(loc1, loc2, "3rdPartyFile1", "3rdPartyFile2", true);
-
-    }
-
-    @Test public void testX3rdPartySameServerReverse() throws Exception
-    {
-        VRL loc1 = getRemoteLocation();
-
-        VRL loc2 = getRemoteLocation();
-
-        // same location but different names
-        testX3rdPartyTransfer(loc1, loc2, "3rdPartyFile3", "3rdPartyFile4", false);
-
-    }
-
-    @Test public void testX3rdPartyTwoServers() throws Exception
-    {
-        VRL loc1 = getRemoteLocation();
-
-        VRL loc2 = getOtherRemoteLocation();
-        if (loc2 == null)
-        {
-            message("testX3rdPartyTwoServers: skipping 3rd party test: No other location configured");
-            return;
-        }
-        // same location but different names
-        testX3rdPartyTransfer(loc1, loc2, "3rdPartyFile5", "3rdPartyFile6", true);
-
-    }
-
-    @Test public void testX3rdPartyTwoServersReverse() throws Exception
-    {
-        VRL loc1 = getRemoteLocation();
-
-        VRL loc2 = getRemoteLocation();
-        if (loc2 == null)
-        {
-            message("testX3rdPartyTwoServers: skipping 3rd party test: No other location configured");
-            return;
-        }
-        // same location but different names
-        testX3rdPartyTransfer(loc1, loc2, "3rdPartyFile7", "3rdPartyFile8", false);
-
-    }
-
-    // // need two different test locations for this:
-    // public void test2Servers() throws Exception
-    // {
-    // VRL loc1=TestSettings.testGFTPLocation;
-    // VRL loc2=TestSettings.testGFTPLocation2;
-    //      
-    // // different locations
-    // testX3rdPartyTransfer(loc1,loc2,"file1","file2");
-    // }
-    //    
-    // public void test2ServersReverse() throws Exception
-    // {
-    // VRL loc1=TestSettings.testGFTPLocation;
-    // VRL loc2=TestSettings.testGFTPLocation2;
-    //      
-    // // different locations
-    // testX3rdPartyTransfer(loc2,loc1,"file3","file4");
-    // }
-
-    public void testX3rdPartyTransfer(VRL sourceDir, VRL targetDir, String sourceFilename, String targetFilename,
-            boolean sourceIsActiveParty) throws Exception
-    {
-        VDir dir1 = getVFS().mkdir(sourceDir, true);
-        VDir dir2 = getVFS().mkdir(targetDir, true);
-
-        String contents = "Test 3rd party transfer\n";
-
-        VFile file1 = dir1.createFile(sourceFilename);
-
-        new FileWriter(file1).setContents(contents);
-        VRL sourceVRL = file1.getVRL();
-        VRL targetVRL = targetDir.appendPath(targetFilename);
-        // create new VFile object, but do not really create file on filesystem
-        // !
-        VFile newTargetFile = dir2.getFileSystem().newFile(targetVRL);
-
-        StringHolder explanation = new StringHolder();
-
-        boolean skipTest = false;
-
-        if (sourceIsActiveParty)
-        {
-            if ((file1 instanceof VFileActiveTransferable) == false)
-            {
-                message("Skipping test: Third party transfers not supported by source file:" + file1);
-                skipTest = true;
-            }
-            // fail("GridFTP file should be VThirdPartyTransferable resources");
-            else
-            {
-                boolean check = ((VFileActiveTransferable) file1).canTransferTo(targetVRL, explanation);
-                if (check == false)
-                {
-                    message("Skipping test: Third party transfer not possible from source to target:" + targetVRL);
-                    skipTest = true;
-                    // Assert.assertTrue("A GFTP should always be able to do 3rd party transfers",check);
-                }
-            }
-        }
-        else
-        {
-            if ((newTargetFile instanceof VFileActiveTransferable) == false)
-            {
-                message("Skipping test: Third party transfer not possible by target file:" + newTargetFile);
-                skipTest = true;
-            }
-            // fail("GridFTP file should be VThirdPartyTransferable resources");
-            else
-            {
-                boolean check = ((VFileActiveTransferable) newTargetFile).canTransferFrom(sourceVRL, explanation);
-                if (check == false)
-                {
-                    message("Skipping test: Third party transfer (target <= source), not possible from source:"
-                            + sourceVRL);
-                    skipTest = true;
-                    // Assert.assertTrue("A GFTP should always be able to do 3rd party transfers",check);
-                }
-            }
-        }
-
-        if (skipTest == true)
-        {
-            file1.delete();
-            return;
-        }
-
-        // perform transfer
-        VFile resultFile = null;
-
-        VRSTaskMonitor monitor = new VRSTaskMonitor();
-
-        if (sourceIsActiveParty)
-        {
-            resultFile = ((VFileActiveTransferable) file1).activePartyTransferTo(monitor, targetVRL);
-        }
-        else
-        {
-            resultFile = ((VFileActiveTransferable) newTargetFile).activePartyTransferFrom(monitor, sourceVRL);
-        }
-
-        Assert.assertNotNull("Result of 3rd party transfer can not be null.", newTargetFile);
-        Assert.assertTrue("Resulting new  file should report that it does exists now", newTargetFile.exists());
-
-        // cleanup:
-
-        file1.delete();
-        newTargetFile.delete();
-
-    }
-
-    // public void test3rdPartyNotSupported() throws Exception
-    // {
-    // VFile file1=this.remoteTestDir.createFile("dummyFile123");
-    //      
-    // if ((file1 instanceof VThirdPartyTransferable)==false)
-    // {
-    // fail("GridFTP file should be VThirdPartyTransferable resource");
-    // }
-    //      
-    // VRL remoteLocation=new VRL("http://www.vl-e.nl/dummypath");
-    // StringHolder explanation=new StringHolder();
-    //          
-    // boolean
-    // check=((VThirdPartyTransferable)file1).canTransferTo(remoteLocation,
-    // explanation);
-    // message("3rd party canTransferTo() method returned:"+explanation.value);
-    // Assert.assertFalse("GridFTP should be not be able to party transfers to HTTP locations",check);
-    //          
-    //    
-    // }
-
+   
     // ========================================================================
     // Explicit Regression Tests (Start with 'Z' to show up last in eclipse)
     // ========================================================================
@@ -3257,9 +3076,6 @@ public class TestVFS extends VTestCase
         return remoteTestDir;
     }
 
-    protected void setOtherRemoteLocation(VRL otherRemoteLocation)
-    {
-        this.otherRemoteLocation = otherRemoteLocation;
-    }
+   
 
 }
