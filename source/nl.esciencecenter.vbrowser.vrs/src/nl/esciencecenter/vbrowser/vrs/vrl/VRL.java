@@ -180,7 +180,10 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
      */
     @Override
     public int compareTo(VRL other)
-    {   
+    {
+        // (not) null > null ?
+        if (other==null)
+            return 1; 
         return StringUtil.compare(this.toNormalizedString(), other.toNormalizedString(),false);
     }
     
