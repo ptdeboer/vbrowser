@@ -53,7 +53,7 @@ import org.globus.ftp.MlsxEntry;
  * @author P.T. de Boer
  */
 public class GftpFile extends VFile implements VStreamReadable, VStreamWritable, VRandomAccessable, VZeroSizable,
-        VFileActiveTransferable, VChecksum // VSizeAdjustable
+       VChecksum // VSizeAdjustable
 {
     /** GridServer handler */
     protected GftpFileSystem gftpServer = null;
@@ -350,54 +350,8 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         return _entry;
     }
 
-    public boolean canTransferTo(VRL remoteLocation, StringHolder explanation) throws VrsException
-    {
-        String remoteScheme = remoteLocation.getScheme();
+   
 
-        remoteScheme = this.vrsContext.getDefaultScheme(remoteScheme);
-
-        if (StringUtil.compareIgnoreCase(remoteScheme, VRS.GFTP_SCHEME) == 0)
-        {
-            explanation.value = "Can perform Third Party transfers between GridFTP locations.";
-            return true;
-        }
-        else
-        {
-            explanation.value = "Can only perform Third Party transfers between GridFTP locations.";
-            return false;
-        }
-    }
-
-    public boolean canTransferFrom(VRL remoteLocation, StringHolder explanation) throws VrsException
-    {
-        String remoteScheme = remoteLocation.getScheme();
-
-        remoteScheme = this.vrsContext.getDefaultScheme(remoteScheme);
-
-        if (StringUtil.compareIgnoreCase(remoteScheme, VRS.GFTP_SCHEME) == 0)
-        {
-            explanation.value = "Can perform Third Party transfers between GridFTP locations.";
-            return true;
-        }
-        else
-        {
-            explanation.value = "Can only perform Third Party transfers between GridFTP locations.";
-            return false;
-        }
-    }
-
-    public VFile activePartyTransferTo(ITaskMonitor monitor, VRL remoteDestination) throws VrsException
-    {
-        //logger.infoPrintf(this, ">>> Performing VThirdPartyTransfer(): %s ==> %s\n", this, remoteDestination);
-
-        return this.gftpServer.do3rdPartyTransferToOther(monitor, this, remoteDestination);
-    }
-
-    public VFile activePartyTransferFrom(ITaskMonitor monitor, VRL remoteSource) throws VrsException
-    {
-        //logger.infoPrintf(this, ">>> Performing VThirdPartyTransfer(): %s <<= %s\n", this, remoteSource);
-        return this.gftpServer.do3rdPartyTransferFromOther(monitor, remoteSource, this);
-    }
 
     public String getChecksum(String algorithm) throws VrsException
     {

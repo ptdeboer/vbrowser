@@ -22,6 +22,7 @@ package nl.nlesc.vlet.vfs.lfc;
 
 import java.util.List;
 
+import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -34,6 +35,7 @@ import nl.nlesc.glite.lfc.LFCConfig;
 import nl.nlesc.vlet.exception.NotImplementedException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ConfigurationError;
+import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.util.bdii.BdiiUtil;
 import nl.nlesc.vlet.util.bdii.ServiceInfo;
 import nl.nlesc.vlet.vfs.lfc.LFCFSConfig.ReplicaCreationMode;
@@ -45,47 +47,16 @@ import nl.nlesc.vlet.vrs.vfs.FileSystemNode;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
 import nl.nlesc.vlet.vrs.vrl.VRLList;
 import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
-
-
-public class LFCFileSystem extends FileSystemNode
+public class LFCFileSystem extends FileSystemNode implements VFileActiveTransferable 
 {
-    
     private static ClassLogger logger; 
     {
         logger=ClassLogger.getLogger(LFCFileSystem.class); 
     }
-    
-    // ===
-    // Class
-    // ===
-//    public static LFCFileSystem getServerNodeFor(VRSContext context,
-//            VRL location) throws VlException
-//    {
-//        debug("Getting node for: " + location);
-//
-//        String serverID = ServerNode.createServerID(location);
-//
-//        LFCFileSystem lfcServerNode = (LFCFileSystem) context.getServerInstance(
-//                serverID, LFCFileSystem.class);
-//
-//        if (lfcServerNode == null)
-//        {
-//            // store new client
-//            ServerInfo lfcInfo = context.getServerInfoFor(location, true);
-//            
-//            LFCFSConfig.updateURIAttributes(lfcInfo,location.getQueryAttributes()); 
-//            lfcInfo.store(); 
-//            
-//            lfcServerNode = new LFCFileSystem(context, lfcInfo);
-//            lfcServerNode.setID(serverID);
-//            context.putServerInstance(lfcServerNode);
-//        }
-//
-//        return lfcServerNode;
-//    }
 
     // ===
     // Instance
@@ -499,4 +470,37 @@ public boolean getUseSimilarReplicaNames()
 	return vrl; 
  }
 
+ @Override
+ public VFile activeTransferTo(ITaskMonitor monitor,VFile sourceFile, VRL remoteTargetLocation) throws VrsException
+ {
+     if (!(sourceFile instanceof LFCFile))
+         throw new ResourceTypeMismatchException("Source File must be a LFC File:"+sourceFile); 
+     
+     return this.lfcClient.doTransfer(monitor, (LFCFile)sourceFile, remoteTargetLocation);
+ }
+
+ @Override
+ public VFile activeTransferFrom(ITaskMonitor monitor,VFile targetFile, VRL remoteSourceLocation) throws VrsException
+ {
+     if (!(targetFile instanceof LFCFile))
+         throw new ResourceTypeMismatchException("Target File must be a LFC File:"+targetFile); 
+
+     return this.lfcClient.doTransfer(monitor, remoteSourceLocation, (LFCFile)targetFile);
+ }
+
+ @Override
+ public ActiveTransferType canTransferTo(VFile sourceFile,VRL remoteTargetLocation, StringHolder explanation)
+         throws VrsException
+ {
+     return this.lfcClient.checkTransferLocation(remoteTargetLocation, explanation, true);
+ }
+
+ @Override
+ public ActiveTransferType canTransferFrom(VFile targetFile,VRL remoteSourceLocation, StringHolder explanation)
+         throws VrsException
+ {
+     return this.lfcClient.checkTransferLocation(remoteSourceLocation, explanation, false);
+ }
+
+ 
 }

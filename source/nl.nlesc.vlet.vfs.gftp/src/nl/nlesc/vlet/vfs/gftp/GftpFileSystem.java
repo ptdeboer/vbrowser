@@ -44,9 +44,11 @@ import java.util.Hashtable;
 import java.util.TimeZone;
 import java.util.Vector;
 
+import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
@@ -60,6 +62,7 @@ import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.AuthenticationException;
 import nl.nlesc.vlet.exception.ConnectionException;
 import nl.nlesc.vlet.exception.NestedInterruptedException;
+import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.exception.ServerCommunicationException;
 import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
@@ -73,6 +76,7 @@ import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
 
 
 import org.globus.ftp.Buffer;
@@ -125,7 +129,7 @@ import org.ietf.jgss.GSSException;
  * 
  * @author P.T. de Boer
  */
-public class GftpFileSystem extends FileSystemNode
+public class GftpFileSystem extends FileSystemNode implements VFileActiveTransferable 
 {
     // ============================================================================
     // Class stuff
@@ -136,7 +140,7 @@ public class GftpFileSystem extends FileSystemNode
     static
     {
         logger=ClassLogger.getLogger(GftpFileSystem.class); 
-        //logger.setLevelToDebug(); 
+        logger.setLevelToDebug(); 
     }
     
     /** EDG SE backwards compatibility options (HACK) attribute */
@@ -2815,7 +2819,71 @@ public class GftpFileSystem extends FileSystemNode
         return new GftpFile(this,filePath.getPath());
     }
 
-    public VFile do3rdPartyTransferToOther(ITaskMonitor monitor,GftpFile fromGftpFile, VRL toTargetLocation) 
+    public ActiveTransferType canTransferTo(VFile sourceFile, VRL remoteLocation, StringHolder explanation) throws VrsException
+    {
+        String remoteScheme = remoteLocation.getScheme();
+
+        remoteScheme = this.vrsContext.getDefaultScheme(remoteScheme);
+
+        if (!(sourceFile instanceof GftpFile))
+        {
+            explanation.value = "Source File must be a GridFTP File.";
+            return ActiveTransferType.NONE;
+        }
+        else if (StringUtil.compareIgnoreCase(remoteScheme, VRS.GFTP_SCHEME) == 0)
+        {
+            explanation.value = "Can perform Third Party transfers between GridFTP locations.";
+            return ActiveTransferType.ACTIVE_3RDPARTY;
+        }
+        else
+        {
+            explanation.value = "Can only perform Third Party transfers between GridFTP locations.";
+            return ActiveTransferType.NONE;
+        }
+    }
+
+    public ActiveTransferType canTransferFrom(VFile targetFile,VRL remoteLocation, StringHolder explanation) throws VrsException
+    {
+        String remoteScheme = remoteLocation.getScheme();
+
+        remoteScheme = this.vrsContext.getDefaultScheme(remoteScheme);
+
+        if (!(targetFile instanceof GftpFile))
+        {
+            explanation.value = "Target File must be a GridFTP File.";
+            return ActiveTransferType.NONE;
+        }
+        else if (StringUtil.compareIgnoreCase(remoteScheme, VRS.GFTP_SCHEME) == 0)
+        {
+            explanation.value = "Can perform Third Party transfers between GridFTP locations.";
+            return ActiveTransferType.ACTIVE_3RDPARTY;
+        }
+        else
+        {
+            explanation.value = "Can only perform Third Party transfers between GridFTP locations.";
+            return ActiveTransferType.NONE;
+        }
+    }   
+
+    public VFile activeTransferTo(ITaskMonitor monitor,VFile sourceFile,VRL remoteDestination) throws VrsException
+    {
+        if (!(sourceFile instanceof GftpFile))
+            throw new ResourceTypeMismatchException("VFile must be a GridFTP File!:"+sourceFile); 
+        //logger.infoPrintf(this, ">>> Performing VThirdPartyTransfer(): %s ==> %s\n", this, remoteDestination);
+
+        return do3rdPartyTransferTo(monitor, (GftpFile)sourceFile, remoteDestination);
+    }
+
+    public VFile activeTransferFrom(ITaskMonitor monitor,VFile targetFile, VRL remoteSourceLocation) throws VrsException
+    {
+        if (!(targetFile instanceof GftpFile))
+            throw new ResourceTypeMismatchException("VFile must be a GridFTP File!:"+targetFile); 
+        
+        //logger.infoPrintf(this, ">>> Performing VThirdPartyTransfer(): %s <<= %s\n", this, remoteSource);
+        return do3rdPartyTransferFromOther(monitor, remoteSourceLocation, (GftpFile)targetFile);
+    }
+    
+    public VFile do3rdPartyTransferTo(ITaskMonitor monitor,GftpFile fromGftpFile, VRL toTargetLocation) 
            throws VrsException 
     {
         GftpFileSystem targetServer = GftpFileSystem.getOrCreateServerFor(this.vrsContext,toTargetLocation); 
@@ -2828,7 +2896,7 @@ public class GftpFileSystem extends FileSystemNode
                                         toTargetLocation);
     }
 
-    public VFile do3rdPartyTransferFromOther(ITaskMonitor monitor,VRL fromRemoteSource, GftpFile toGftpFile) 
+    protected VFile do3rdPartyTransferFromOther(ITaskMonitor monitor,VRL fromRemoteSource, GftpFile toGftpFile) 
            throws VrsException
     {
         GftpFileSystem sourceServer = GftpFileSystem.getOrCreateServerFor(this.vrsContext,fromRemoteSource); 
@@ -2851,12 +2919,11 @@ public class GftpFileSystem extends FileSystemNode
      * @return new Target VFile object 
      * @throws VrsException 
      */
-    public VFile doActive3rdPartyTransfer(ITaskMonitor monitor,GftpFileSystem sourceServer,VRL sourceVrl, 
+    protected VFile doActive3rdPartyTransfer(ITaskMonitor monitor,GftpFileSystem sourceServer,VRL sourceVrl, 
             GftpFileSystem targetServer,VRL targetVrl) 
             throws VrsException
     {
- 
-        String formatstr="GFTP: Performing 3rd party transfer:%s:%d => %s:%d\n";
+         String formatstr="GFTP: Performing 3rd party transfer:%s:%d => %s:%d\n";
                            
         monitor.logPrintf(formatstr,sourceServer.getHostname(),sourceServer.getPort(),
                 targetServer.getHostname(),targetServer.getPort() );
@@ -2994,17 +3061,18 @@ public class GftpFileSystem extends FileSystemNode
         monitor.endSubTask(null);
         
         if (transferEx!=null)
+        {
             throw transferEx; 
+        }
         
         monitor.logPrintf("GFTP: Finished 3rd party transfer.\n");
        
-        // should be there: 
-        
-        return targetServer.getFile(targetVrl);
+        // Should be there, but do not check if "blind mode" (In case of SRM).   
+        return targetServer.newFile(targetVrl);
     }
     
     /** 
-     * Start 3rd party transfer monitor which cehcks the size of the targetfile
+     * Start 3rd party transfer monitor which checks the size of the targetfile
      */  
     private ActionTask start3rdPartyMonitor(GftpFileSystem targetServer,
             final ITaskMonitor monitor,final VRL targetVrl)
@@ -3035,11 +3103,15 @@ public class GftpFileSystem extends FileSystemNode
                 {
                     try
                     {
-                        Thread.sleep(5000);
+                        Thread.sleep(1000);
                     }
                     catch (InterruptedException e)
                     {
                         e.printStackTrace();
+                        if (this.isInterrupted()) 
+                        {
+                            this.mustStop=true; 
+                        }
                     }
                     
                     try
@@ -3063,6 +3135,7 @@ public class GftpFileSystem extends FileSystemNode
                 }
             }
 
+          
             @Override
             public void stopTask()
             {

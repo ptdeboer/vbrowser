@@ -54,7 +54,7 @@ import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
 
 
 public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttributes,
-        ILFCLocation, VReplicatable, VFileActiveTransferable, VGlobalUniqueID,
+        ILFCLocation, VReplicatable, VGlobalUniqueID,
         VLinkListable, VCommentable// , VChecksum
 {
     private FileDescWrapper wrapperDesc;
@@ -631,36 +631,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         return vrls;
     }
 
-    @Override
-    public VFile activePartyTransferFrom(ITaskMonitor monitor,
-            VRL remoteSourceLocation) throws VrsException
-    {
-
-        return this.lfcClient.doTransfer(monitor, remoteSourceLocation, this);
-    }
-
-    @Override
-    public VFile activePartyTransferTo(ITaskMonitor monitor,
-            VRL remoteTargetLocation) throws VrsException
-    {
-        return this.lfcClient.doTransfer(monitor, this, remoteTargetLocation);
-    }
-
-    @Override
-    public boolean canTransferFrom(VRL remoteLocation, StringHolder explanation)
-            throws VrsException
-    {
-        return this.lfcClient.checkTransferLocation(remoteLocation,
-                explanation, false);
-    }
-
-    @Override
-    public boolean canTransferTo(VRL remoteLocation, StringHolder explanation)
-            throws VrsException
-    {
-        return this.lfcClient.checkTransferLocation(remoteLocation,
-                explanation, true);
-    }
+   
 
     /** Add Existing Replica file to this file */
     // public void addReplica(VFile replica,boolean updateReplicaMetaData)

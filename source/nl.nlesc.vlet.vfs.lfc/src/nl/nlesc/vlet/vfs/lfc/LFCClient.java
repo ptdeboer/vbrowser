@@ -84,6 +84,7 @@ import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
+import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable.ActiveTransferType;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vrl.VRLList;
 import nl.nlesc.vlet.vrs.vrl.VRLUtil;
@@ -1060,7 +1061,7 @@ public class LFCClient
         return text;
     }
 
-    protected VFSNode getVFSNodeFrom(VRL replicaVRL) throws VrsException
+    protected VFile getVFSNodeFrom(VRL replicaVRL) throws VrsException
     {
         // ===
         // Important: Make sure the SRM VRL points to the right V2.2 interface !
@@ -1070,8 +1071,8 @@ public class LFCClient
 
         // query ResourceSystem for more control over the object:
         VResourceSystem rs = this.getVRSContext().openResourceSystem(replicaVRL);
-
-        VFSNode node = null;
+        
+        VFile node = null;
 
         if (rs instanceof VFileSystem)
         {
@@ -1081,9 +1082,7 @@ public class LFCClient
         }
         else
         {
-            // use default openLocation, but problems might occure later if this
-            // isn't a 'proper' file system.
-            rs.openLocation(replicaVRL);
+            throw new ResourceTypeMismatchException("Replica is a File:"+replicaVRL); 
         }
 
         return node;
@@ -2507,8 +2506,8 @@ public class LFCClient
         }
     }
 
-    public boolean checkTransferLocation(VRL remoteLocation, StringHolder explanation,
-            boolean source2target)
+    public ActiveTransferType checkTransferLocation(VRL remoteLocation, StringHolder explanation,
+            boolean remoteIsTarget)
     {
         String scheme = VRLUtil.resolveScheme(remoteLocation.getScheme()); 
         
@@ -2516,18 +2515,18 @@ public class LFCClient
         debug("Checking 3rd party transfer for:" + remoteLocation);
 
         if (VRS.isGFTP(scheme))
-            return true;
+            return ActiveTransferType.ACTIVE_3RDPARTY;
 
         if (VRS.isSRM(scheme))
-            return true;
+            return ActiveTransferType.ACTIVE_3RDPARTY;
 
         if (VRS.isLFN(scheme))
-            return true;
+            return ActiveTransferType.ACTIVE_3RDPARTY;
 
         explanation.value = "Third party transactions not supported for scheme:" + scheme;
         debug("Checking 3rd party transfer:" + explanation.value);
 
-        return false;
+        return ActiveTransferType.NONE;
     }
 
     public VFile doTransfer(ITaskMonitor monitor, LFCFile sourceFile, VRL remoteTargetLocation) throws VrsException
@@ -2593,11 +2592,17 @@ public class LFCClient
                         + replicaTargetFile.getVRL() + "\n");
                 StringHolder reasonH = new StringHolder();
 
+                VFileSystem sourceVFS=sourceFile.getFileSystem(); 
+                VFileSystem targetVFS=targetFile.getFileSystem(); 
+                
                 // One of them MUST support active transfers
-                if ((sourceFile instanceof VFileActiveTransferable)
-                        || (replicaTargetFile instanceof VFileActiveTransferable))
+                if ((sourceVFS instanceof VFileActiveTransferable)
+                        || (targetVFS instanceof VFileActiveTransferable))
                 {
-                    // Delegete to TransferManager!
+                    // -----------------------------
+                    // Delegate to TransferManager!
+                    // -----------------------------
+                    
                     boolean result = this.getVRSContext().getTransferManager().doActiveFileTransfer(monitor,
                             sourceFile, replicaTargetFile, reasonH);
                     if (result == false)
@@ -2684,12 +2689,15 @@ public class LFCClient
                 // Select Replica to read from:
                 // ============================
                 replicaVRL = sourceFile.getSelectedReplicaVRL(monitor, trynr);
-                VFSNode sourceReplicaNode = this.getVFSNodeFrom(replicaVRL);
-
+                VFile sourceReplicaNode = this.getVFSNodeFrom(replicaVRL);
+                
+                VFileSystem sourceVFS=sourceReplicaNode.getFileSystem(); 
+                VFileSystem targetVFS=targetFile.getFileSystem();
+                
                 StringHolder reasonH = new StringHolder();
 
                 // One of them MUST support active transfers
-                if ((sourceReplicaNode instanceof VFileActiveTransferable) || (targetFile instanceof VFileActiveTransferable))
+                if ((sourceVFS instanceof VFileActiveTransferable) || (targetVFS instanceof VFileActiveTransferable))
                 {
                     // Delegete to TransferManager!
                     boolean result = this.getVRSContext().getTransferManager().doActiveFileTransfer(monitor,

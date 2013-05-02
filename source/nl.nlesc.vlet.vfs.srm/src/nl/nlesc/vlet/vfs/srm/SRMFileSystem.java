@@ -60,6 +60,7 @@ import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.NestedIOException;
+import nl.nlesc.vlet.exception.ResourceTypeMismatchException;
 import nl.nlesc.vlet.grid.globus.GlobusUtil;
 import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.util.bdii.BdiiUtil;
@@ -77,62 +78,35 @@ import nl.nlesc.vlet.vrs.vfs.VFSClient;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
+import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vrl.VRLUtil;
-
-
 
 import org.apache.axis.types.URI;
 import org.apache.axis.types.URI.MalformedURIException;
 
 /**
- * Refactored SRMFileSystem.
- * 
- * All Low Level SRM methods are in SRMClientV2.
+ * SRMFileSystem. 
  * 
  * @author Piter T. de Boer, Spiros Koulouzis.
- * 
  */
-public class SRMFileSystem extends FileSystemNode
+public class SRMFileSystem extends FileSystemNode implements VFileActiveTransferable
 {
     static Random fileRandomizer = new Random();
 
     private static ClassLogger logger;
-    
+
     static
     {
-        ClassLogger srmLogger=ClassLogger.getLogger(SRMClientV2.class); 
+        ClassLogger srmLogger = ClassLogger.getLogger(SRMClientV2.class);
         SRMClientV2.setLogger(srmLogger);
-        //srmLogger.setLevelToDebug();
-        logger=ClassLogger.getLogger(SRMFileSystem.class); 
-        //logger.setLevelToDebug(); 
+        // srmLogger.setLevelToDebug();
+        logger = ClassLogger.getLogger(SRMFileSystem.class);
+        // logger.setLevelToDebug();
     }
-    
-//    public static SRMFileSystem getClientFor(VRSContext context, VRL loc) throws VlException
-//    {
-//        // ==================================================================
-//        // PATCH: this is a V2@ SRMFileSystem: update port to v2.2 interface if
-//        // not explicit set in VRL.
-//        // ==================================================================
-//        if (loc.getPort() <= 0)
-//            loc = resolveToV22SRM(context, loc);
-//
-//        String serverID = ServerNode.createServerID(loc);
-//
-//        SRMFileSystem srmClient = (SRMFileSystem) context.getServerInstance(serverID, SRMFileSystem.class);
-//
-//        if (srmClient == null)
-//        {
-//            // store new client
-//            ServerInfo srmInfo = context.getServerInfoFor(loc, true);
-//            srmClient = new SRMFileSystem(context, srmInfo);
-//            srmClient.setID(serverID);
-//            context.putServerInstance(srmClient);
-//        }
-//
-//        return srmClient;
-//    }
 
-    /** Update location with SRM V2.2 port, if known */
+    /**
+     *  Update location with SRM V2.2 port, if known 
+     */
     public static VRL resolveToV22SRM(VRSContext context, VRL loc)
     {
         try
@@ -140,13 +114,13 @@ public class SRMFileSystem extends FileSystemNode
             ServiceInfo se = BdiiUtil.getBdiiService(context).getSRMv22ServiceForHost(loc.getHostname());
             if (se != null)
             {
-                loc = VRLUtil.replacePort(loc,se.getPort());
+                loc = VRLUtil.replacePort(loc, se.getPort());
                 return loc;
             }
         }
         catch (Exception e)
         {
-            logger.logException(ClassLogger.WARN,e,"Couldn't resolve SRM V2.2 location:%s\n", loc);
+            logger.logException(ClassLogger.WARN, e, "Couldn't resolve SRM V2.2 location:%s\n", loc);
         }
         // return default
         return loc;
@@ -164,8 +138,7 @@ public class SRMFileSystem extends FileSystemNode
 
     public static boolean isSRM(VRL location)
     {
-        String scheme = VRLUtil.resolveScheme(location.getScheme()); 
-        
+        String scheme = VRLUtil.resolveScheme(location.getScheme());
 
         if (StringUtil.equalsIgnoreCase(scheme, VRS.SRM_SCHEME))
             return true;
@@ -196,16 +169,16 @@ public class SRMFileSystem extends FileSystemNode
     public SRMFileSystem(VRSContext context, ServerInfo info, VRL vrl) throws VrsException
     {
         super(context, info);
-        connect(false); 
+        connect(false);
     }
-    
+
     public SRMFileSystem(VRSContext context, ServerInfo info, VRL vrl, boolean connect) throws VrsException
     {
         super(context, info);
         // get socket timeout:
         this.connectionTimeout = context.getConfigManager().getSocketTimeOut();
         if (connect)
-        	connect(false); 
+            connect(false);
     }
 
     @Override
@@ -213,7 +186,7 @@ public class SRMFileSystem extends FileSystemNode
     {
         connect(false);
         VFSNode node = getPath(loc);
-        
+
         return node;
     }
 
@@ -221,49 +194,49 @@ public class SRMFileSystem extends FileSystemNode
     {
         connect(false);
     }
-    
-   // private static Object globalSRMConnectMutex=new Object(); 
-    
+
+    // private static Object globalSRMConnectMutex=new Object();
+
     public void connect(boolean closeFirst) throws VrsException
     {
-        logger.infoPrintf("Connecting (closeFirst=%s):%s\n",closeFirst,this);
-        
+        logger.infoPrintf("Connecting (closeFirst=%s):%s\n", closeFirst, this);
+
         if (srmClient != null)
             if (closeFirst)
                 disconnect();
             else
                 return; // already connected
-        GridProxy prox=this.vrsContext.getGridProxy(); 
-        
-        int port=getPort(); 
-        if (port<=0) 
-            port=VFS.getSchemeDefaultPort(VFS.SRM_SCHEME); 
-        String host=getHostname(); 
-        
+        GridProxy prox = this.vrsContext.getGridProxy();
+
+        int port = getPort();
+        if (port <= 0)
+            port = VFS.getSchemeDefaultPort(VFS.SRM_SCHEME);
+        String host = getHostname();
+
         if (prox.isValid() == false)
             throw new nl.nlesc.vlet.exception.AuthenticationException("Invalid grid proxy");
         try
         {
             // check SRM V2 Client:
-            srmClient = new SRMClientV2(host,port, false);
-            
-            // Update Socket Connection time out. 
+            srmClient = new SRMClientV2(host, port, false);
+
+            // Update Socket Connection time out.
             srmClient.setConnectionTimeout(this.vrsContext.getConfigManager().getSocketTimeOut());
-            
-            // Update Reqeust timeout (post socket setup) 
-            int defVal=vrsContext.getConfigManager().getServerRequestTimeOut(); 
-            // optional server info value: 
-            int srmReqTimeOut=this.getServerInfo().getIntProperty(SRMFSFactory.ATTR_SRM_REQUEST_TIMEOUT,defVal);
-            if (srmReqTimeOut<=0)
-                srmReqTimeOut=defVal; 
-            
+
+            // Update Reqeust timeout (post socket setup)
+            int defVal = vrsContext.getConfigManager().getServerRequestTimeOut();
+            // optional server info value:
+            int srmReqTimeOut = this.getServerInfo().getIntProperty(SRMFSFactory.ATTR_SRM_REQUEST_TIMEOUT, defVal);
+            if (srmReqTimeOut <= 0)
+                srmReqTimeOut = defVal;
+
             srmClient.setSRMRequestTimeout(srmReqTimeOut);
- 
-            // Must Update used Globus Credential ! 
+
+            // Must Update used Globus Credential !
             srmClient.setGlobusCredential(GlobusUtil.getGlobusCredential(prox));
-            // NOW connect! 
+            // NOW connect!
             srmClient.connect();
-            
+
             // SrmPingResponse response = srmClient.srmPing();
             // this.srmVersionInfo = response.getVersionInfo();
 
@@ -276,8 +249,8 @@ public class SRMFileSystem extends FileSystemNode
 
     public void disconnect()
     {
-        logger.infoPrintf("disconnecting:%s\n",this);
-        
+        logger.infoPrintf("disconnecting:%s\n", this);
+
         if (this.srmClient != null)
         {
             try
@@ -316,19 +289,20 @@ public class SRMFileSystem extends FileSystemNode
 
     private String getSAPathFor(VRL saVRL, String vo) throws VrsException
     {
-        ArrayList<StorageArea> sa = BdiiUtil.getBdiiService(getVRSContext()).getVOStorageAreas(vo, saVRL.getHostname(), false);
+        ArrayList<StorageArea> sa = BdiiUtil.getBdiiService(getVRSContext()).getVOStorageAreas(vo, saVRL.getHostname(),
+                false);
 
         if ((sa != null) && (sa.size() > 0))
             return sa.get(0).getStoragePath();
 
         return null;
     }
-    
+
     private boolean getTrySRMV1()
     {
         return false;
     }
-    
+
     // =======================================================================
     // VRS/VFS Methods
     // =======================================================================
@@ -366,7 +340,7 @@ public class SRMFileSystem extends FileSystemNode
         }
         catch (IOException e)
         {
-            throw new NestedIOException("Couldn't create file:"+pathVRL,e);
+            throw new NestedIOException("Couldn't create file:" + pathVRL, e);
         }
 
     }
@@ -405,9 +379,9 @@ public class SRMFileSystem extends FileSystemNode
 
     public VFSNode getPath(VRL pathVrl) throws VrsException
     {
-        logger.debugPrintf("SRMFileSystem:getPath():%s\n",pathVrl); 
-        
-        String path=pathVrl.getPath(); 
+        logger.debugPrintf("SRMFileSystem:getPath():%s\n", pathVrl);
+
+        String path = pathVrl.getPath();
         // normalize and absolute path
         path = this.resolvePathString(path);
 
@@ -433,9 +407,9 @@ public class SRMFileSystem extends FileSystemNode
         // New SRM at RuG return NULL Type !
         if ((detail.getType() != null) && (detail.getType() == (TFileType.DIRECTORY)))
         {
-            DirQuery dirQ = DirQuery.parseDirQuery(pathVrl); 
-            logger.debugPrintf("DirQuery=%s\n",dirQ); 
-            return new SRMDir(this, detail,dirQ);
+            DirQuery dirQ = DirQuery.parseDirQuery(pathVrl);
+            logger.debugPrintf("DirQuery=%s\n", dirQ);
+            return new SRMDir(this, detail, dirQ);
         }
         else
         {
@@ -446,24 +420,24 @@ public class SRMFileSystem extends FileSystemNode
 
     public VRL createPathVRL(String path, DirQuery dirQuery)
     {
-        VRL pathVrl=new VRL(SRMFSFactory.SRM_SCHEME, getHostname(), getPort(), path);
-        
-        if (dirQuery!=null)
+        VRL pathVrl = new VRL(SRMFSFactory.SRM_SCHEME, getHostname(), getPort(), path);
+
+        if (dirQuery != null)
         {
-            String qstr=dirQuery.toString(); 
-            
-            logger.debugPrintf(">>> OLD VRL=%s\n",pathVrl);
-            pathVrl=VRLUtil.replaceQuery(pathVrl,qstr);
-            logger.debugPrintf(">> NEW VRL=%a\n",pathVrl); 
+            String qstr = dirQuery.toString();
+
+            logger.debugPrintf(">>> OLD VRL=%s\n", pathVrl);
+            pathVrl = VRLUtil.replaceQuery(pathVrl, qstr);
+            logger.debugPrintf(">> NEW VRL=%a\n", pathVrl);
         }
-        
-        return pathVrl; 
+
+        return pathVrl;
     }
-    
-    
+
     public TMetaDataPathDetail queryPath(String path) throws VrsException
     {
-        ArrayList<TMetaDataPathDetail> details = queryPaths(new String[] { path });
+        ArrayList<TMetaDataPathDetail> details = queryPaths(new String[]
+        { path });
 
         if ((details == null) || (details.size() <= 0))
             return null; // empty/non existant
@@ -498,32 +472,33 @@ public class SRMFileSystem extends FileSystemNode
         }
         catch (MalformedURIException e)
         {
-            throw new VRLSyntaxException("Invalid URI(s):"+flatten(paths),e);
+            throw new VRLSyntaxException("Invalid URI(s):" + flatten(paths), e);
         }
     }
 
     // List Single Path
     public VFSNode[] list(String path) throws VrsException
     {
-        return listPaths(new String[] { path }, true,-1,-1);
+        return listPaths(new String[]
+        { path }, true, -1, -1);
     }
 
-    
     // List Single Path
-    public VFSNode[] list(String path,int offset,int count) throws VrsException
+    public VFSNode[] list(String path, int offset, int count) throws VrsException
     {
-        return listPaths(new String[] { path }, true,offset,count); 
+        return listPaths(new String[]
+        { path }, true, offset, count);
     }
-    
+
     /**
      * list Paths. Master Method
      * 
-     * Level= 1= directory itself, level=2 including contents Specify
+     * Level=1 => directory itself, level=2 => including contents and specify
      * fullDetails for file details!
      * 
      * Method merges different paths.
      */
-    public VFSNode[] listPaths(String[] paths, boolean fullDetails,int offset,int count) throws VrsException
+    public VFSNode[] listPaths(String[] paths, boolean fullDetails, int offset, int count) throws VrsException
     {
         debug("listPaths:" + flatten(paths));
 
@@ -532,7 +507,7 @@ public class SRMFileSystem extends FileSystemNode
         ArrayList<TMetaDataPathDetail> details;
         try
         {
-            details = srmClient.listPaths(paths, fullDetails,offset,count);
+            details = srmClient.listPaths(paths, fullDetails, offset, count);
         }
         catch (SRMException e)
         {
@@ -552,9 +527,9 @@ public class SRMFileSystem extends FileSystemNode
 
         for (TMetaDataPathDetail detail : details)
         {
-            if (detail==null)
-                continue; // has happened... 
-            
+            if (detail == null)
+                continue; // has happened...
+
             ArrayOfTMetaDataPathDetail pathDetail = detail.getArrayOfSubPaths();
             TMetaDataPathDetail[] topLevel = null;
             TMetaDataPathDetail[] allPathDetails = null;
@@ -563,10 +538,10 @@ public class SRMFileSystem extends FileSystemNode
             {
                 topLevel = pathDetail.getPathDetailArray();
                 allPathDetails = getAllSubLevels(topLevel);
-                
+
                 // empty dir:
                 if (allPathDetails == null)
-                    continue;  // return null;
+                    continue; // return null;
 
                 for (int i = 0; i < allPathDetails.length; i++)
                 {
@@ -581,7 +556,7 @@ public class SRMFileSystem extends FileSystemNode
                     if ((type != null) && (isDirectory(type)))
                     {
                         // dir
-                        newNode = new SRMDir(this, allPathDetails[i],null);
+                        newNode = new SRMDir(this, allPathDetails[i], null);
                     }
                     else if ((type != null) && (isFile(type)))
                     {
@@ -608,10 +583,10 @@ public class SRMFileSystem extends FileSystemNode
 
             }
         }
-        
-        if (nodes.size()<=0)
-            return null; 
-        
+
+        if (nodes.size() <= 0)
+            return null;
+
         nodeArr = new VFSNode[nodes.size()];
         nodeArr = nodes.toArray(nodeArr);
 
@@ -677,40 +652,74 @@ public class SRMFileSystem extends FileSystemNode
         return arrayOfPathDetail;
     }
 
-    public boolean checkTransferLocation(VRL remoteLocation, StringHolder explanation, boolean isTarget)
+    @Override
+    public VFile activeTransferFrom(ITaskMonitor monitor, VFile targetFile, VRL remoteSourceLocation)
+            throws VrsException
     {
-        // all SRM And GFTP location can be both target
-        // and source when doing 3rd party transfers
-        // (ignore whether location is target or source)
+        if (!(targetFile instanceof SRMFile))
+            throw new ResourceTypeMismatchException("activeTransferFrom(): TargetFile must be a SRMFile:"+targetFile); 
+        
+        return doActiveTransfer(monitor, remoteSourceLocation, (SRMFile) targetFile);
+    }
+
+    @Override
+    public VFile activeTransferTo(ITaskMonitor monitor, VFile sourceFile, VRL remoteTargetLocation) throws VrsException
+    {
+        if (!(sourceFile instanceof SRMFile))
+            throw new ResourceTypeMismatchException("activeTransferTo(): SourceFile must be a SRMFile:"+sourceFile); 
+
+        return doTransfer(monitor, (SRMFile) sourceFile, remoteTargetLocation);
+    }
+
+    @Override
+    public ActiveTransferType canTransferFrom(VFile sourceFile, VRL remoteTargetLocation, StringHolder explanation)
+            throws VrsException
+    {
+        return checkTransferLocation(remoteTargetLocation, explanation, false);
+    }
+
+    @Override
+    public ActiveTransferType canTransferTo(VFile targetFile, VRL remoteSourceLocation, StringHolder explanation)
+            throws VrsException
+    {
+        return checkTransferLocation(remoteSourceLocation, explanation, true);
+    }
+
+    public ActiveTransferType checkTransferLocation(VRL remoteLocation, StringHolder explanation, boolean isTarget)
+    {
+        // All SRM And GFTP locations can be both target and source when doing 3rd party transfers
+        // (ignore whether location is target or source) but one of the should be a SRM File. 
         if (isGFTP(remoteLocation))
         {
             explanation.value = "SRM can handle GFTP locations.";
-            return true;
+            return ActiveTransferType.ACTIVE_3RDPARTY;
         }
 
         if (isSRM(remoteLocation))
         {
-            boolean val = true;
+            ActiveTransferType val = ActiveTransferType.NONE;
 
             //
             // Allow SRM <-> SRM copying on SAME server !
             // Currently SRM <-> SRM between difference servers don't work!
             //
 
-            if ((isTarget) && VRLUtil.hasSameServer(this.getServerVRL(),remoteLocation))
+            if ((isTarget) && VRLUtil.hasSameServer(this.getServerVRL(), remoteLocation))
             {
                 // transfer from this to remote Location on same server !
-                val = true;
+                val = ActiveTransferType.ACTIVE_3RDPARTY;
             }
-            else if ((isTarget == false) && VRLUtil.hasSameServer(this.getServerVRL(),remoteLocation))
+            else if ((isTarget == false) && VRLUtil.hasSameServer(this.getServerVRL(), remoteLocation))
             {
                 // transfer from remoteLocation to same server (this)
-                val = true;
+                val = ActiveTransferType.ACTIVE_3RDPARTY;
             }
             else
-                val = true; // getAllowSRM2SRMThirdPartyTransfer();
+            {
+                val = ActiveTransferType.ACTIVE_3RDPARTY; // getAllowSRM2SRMThirdPartyTransfer();
+            }
 
-            if (val == true)
+            if (val == ActiveTransferType.ACTIVE_3RDPARTY)
                 explanation.value = "SRM to SRM transfer supported";
             else
                 explanation.value = "SRM to SRM transfer currently not supported";
@@ -720,10 +729,15 @@ public class SRMFileSystem extends FileSystemNode
 
         explanation.value = "Unkown scheme. Cannot handle:" + remoteLocation.getScheme();
 
-        return false;
+        return ActiveTransferType.NONE;
     }
 
-    public VFile doActiveTransfer(ITaskMonitor monitor, VRL sourceLocation, SRMFile targetFile) throws VrsException
+  
+    /** 
+     * Actual transfer from SourceLocation to SRMFile. 
+     * Source can be both a GridFTP file or a SRM file. 
+     */
+    protected VFile doActiveTransfer(ITaskMonitor monitor, VRL sourceLocation, SRMFile targetFile) throws VrsException
     {
 
         VFSClient vfs = getVFSClient();
@@ -737,7 +751,7 @@ public class SRMFileSystem extends FileSystemNode
             monitor.logPrintf("Uploading GFTP file to SRM using Third Party copy from:\n - " + sourceLocation + "\n");
 
             VFile transportFile = this.doTransportTransfer(monitor, sourceLocation, targetFile);
-            // Must Return SRM File !
+            // Must Return SRM File here !
             return targetFile;
         }
 
@@ -824,49 +838,47 @@ public class SRMFileSystem extends FileSystemNode
 
     }
 
-    public VFile doTransfer(ITaskMonitor monitor, SRMFile sourceFile, VRL targetLocation) throws VrsException
+    protected VFile doTransfer(ITaskMonitor monitor, SRMFile sourceFile, VRL targetLocation) throws VrsException
     {
-
-        // should be gftp
-        VRL turl = sourceFile.getTransportVRL();
-
+        // Source here is always a (Transport) GridFTP file. 
+        
+        VRL transportUrl = sourceFile.getTransportVRL();
         VFSClient vfs = getVFSClient();
 
         // ===
         // SRM (GFTP) -> GFTP, use default GFTP third party transfer:
         // ===
 
-        if ((isGFTP(turl)) && (isGFTP(targetLocation)))
+        if ((isGFTP(transportUrl)) && (isGFTP(targetLocation)))
         {
+            // SRM sourceFile to GridFTP target location = transport file.  
             monitor.logPrintf("Delegating 3rd party transfer to GFTP destination:\n - " + targetLocation + "\n");
 
-            VFile sourceTransportFile = vfs.newFile(turl); // Can't check
-            // existance-> BLIND
-            // MODE !
-            // !
-
-            if (sourceTransportFile instanceof VFileActiveTransferable)
+            // Check GridFTP FileSytem:
+            VFile sourceTransportFile = vfs.newFile(transportUrl); 
+            VFileSystem sourceVFS=sourceTransportFile.getFileSystem();
+            if (sourceVFS instanceof VFileActiveTransferable)
             {
                 debug("Invoking gftp->gftp transfer to:" + targetLocation);
-                return ((VFileActiveTransferable) sourceTransportFile).activePartyTransferTo(monitor, targetLocation);
+                return ((VFileActiveTransferable) sourceVFS).activeTransferTo(monitor, sourceTransportFile,targetLocation);
             }
 
             // srm location should result in SRM File:
             throw new nl.nlesc.vlet.exception.ResourceTypeNotSupportedException(
-                    "GFTP location didn't result in a VThirdPartyTransferable:" + sourceTransportFile);
+                    "GridFtp FileSysem is not a ThirdParty Transferable FileSystem:" + sourceVFS);
 
         }
 
         // SRM (GFTP) -> SRM, must get new Transport URL !
 
-        if ((isGFTP(turl)) && (isSRM(targetLocation)))
+        if ((isGFTP(transportUrl)) && (isSRM(targetLocation)))
         {
             // New Location !
             VFile srmTarget = vfs.newFile(targetLocation);
 
             if (srmTarget instanceof SRMFile)
             {
-                VFile transportFile = doTransportTransfer(monitor, turl, (SRMFile) srmTarget);
+                VFile transportFile = doTransportTransfer(monitor, transportUrl, (SRMFile) srmTarget);
                 // return SRM Target !
                 return srmTarget;
             }
@@ -886,72 +898,56 @@ public class SRMFileSystem extends FileSystemNode
     }
 
     /**
-     * Do actual Transport Copy from gftp source Warning: Returns Transport file
-     * of Result ! (TURL) Use targetFile as actual (logical) target.
+     * Do actual transport Copy from GridFTP source file to SRM TargetFile.  
+     * Warning: Returns Transport file (TURL).
+     * @return the Transported File which is a GridFTP File. 
      */
-    public VFile doTransportTransfer(ITaskMonitor monitor, VRL transportSourceVRL, SRMFile targetFile)
+    protected VFile doTransportTransfer(ITaskMonitor monitor, VRL transportSourceVRL, SRMFile targetFile)
             throws VrsException
     {
         VFSClient vfs = getVFSClient();
 
-        // ===
         // Resolve source (Must be GFTP ! ) or compatible with SRM TargetFile
         // Transport VRL !
-        // ===
-
-        // ***
-        // Use Blind Fetch ! (Use newFile i.s.o getFile)
-        // ***
-
         VFile sourceTransportFile = vfs.newFile(transportSourceVRL);
-
-        if ((sourceTransportFile instanceof VFileActiveTransferable) == false)
+        VFileSystem sourceTransportVFS=sourceTransportFile.getFileSystem();  
+        
+        if ((sourceTransportVFS instanceof VFileActiveTransferable) == false)
         {
             throw new nl.nlesc.vlet.exception.ResourceTypeNotSupportedException(
-                    "Transport source doesn't support 3rd party transfers:" + sourceTransportFile);
+                    "Transport FileSystem doesn't support active 3rd party transfers:" + sourceTransportVFS);
         }
-
-        // StringHolder explanation=new StringHolder();
-        // boolean
-        // canTransfer=((VThirdPartyTransferable)sourceTransportFile).canTransferTo(transportSourceVRL,
-        // explanation);
-        // if (canTransfer==false)
-        // {
-        // }
-
-        // ===
+        
+        // 
         // Use REMOTE SRM FileSystem Object !
-        // ===
-
         SRMFileSystem targetFS = targetFile.getFileSystem();
 
         SRMPutRequest putRequest = targetFS.createPutRequest(monitor, targetFile.getPath(), true);
         VRL targetTransferVRL = new VRL(putRequest.getTurl(0).toString());
 
         // putRequest must have
-        monitor.logPrintf("SRM: Initiating third party (gftp->gftp) transfer: \n"
-                +" - from:"+sourceTransportFile+"\n"
-                +" - to  :"+targetTransferVRL + "\n");
+        monitor.logPrintf("SRM: Initiating third party (gftp->gftp) transfer: \n" + " - from:" + sourceTransportFile
+                + "\n" + " - to  :" + targetTransferVRL + "\n");
         {
             debug("Invoking gftp->gftp transfer to:" + targetTransferVRL);
 
             VFile resultFile = null;
             Exception transferEx = null;
-            
+
             try
             {
-                resultFile = ((VFileActiveTransferable) sourceTransportFile).activePartyTransferTo(monitor,
-                        targetTransferVRL);
-                debug("After activePartyTransfer, resulting file=" + resultFile);
+                resultFile = ((VFileActiveTransferable) sourceTransportVFS).activeTransferTo(monitor,
+                        sourceTransportFile,targetTransferVRL);
+                debug("After activePartyTransfer, resulting (transport) file=" + resultFile);
             }
             catch (Exception e)
             {
-                monitor.logPrintf("SRM: *** Error: 3rd party transfer failed. ***\n - Exception = %s\n",e); 
+                monitor.logPrintf("SRM: *** Error: 3rd party transfer failed. ***\n - Exception = %s\n", e);
                 debug("*** TransferException:" + e);
                 transferEx = e;
             }
-            
-            boolean succeeded=(transferEx==null); 
+
+            boolean succeeded = (transferEx == null);
             // ====
             // Always finalize !
             // ====
@@ -970,15 +966,16 @@ public class SRMFileSystem extends FileSystemNode
                     debug("Cleanup: finalizing ***FAILED*** SRMFile :" + targetFile);
                     debug("Cleanup: finalizing ***FAILED*** SURL[0] :" + putRequest.getSURLs().getUrlArray()[0]);
                 }
-                targetFS.finalizePutRequest(putRequest,(transferEx==null));
+                targetFS.finalizePutRequest(putRequest, (transferEx == null));
             }
             catch (SRMException e)
             {
-                if (transferEx!=null)
+                if (transferEx != null)
                 {
-                    // Finalize failed after invalid 
+                    // Finalize failed after invalid
                     monitor.setException(transferEx);
-                    throw convertException("SRM 3rd party copy failed. Finalizing PutRequest failed as well.", transferEx);
+                    throw convertException("SRM 3rd party copy failed. Finalizing PutRequest failed as well.",
+                            transferEx);
                 }
                 else
                 {
@@ -1118,7 +1115,8 @@ public class SRMFileSystem extends FileSystemNode
     public VRL getTransportVRL(ITaskMonitor monitor, String path) throws VrsException
     {
         // use new bulk mode:
-        VRL vrls[] = getTransportVRLs(monitor, new String[] { path });
+        VRL vrls[] = getTransportVRLs(monitor, new String[]
+        { path });
         if ((vrls == null) || (vrls.length <= 0))
             return null;
         return vrls[0];
@@ -1160,9 +1158,9 @@ public class SRMFileSystem extends FileSystemNode
         // ====
         // check for SRMClient v1 for hostname here!
         // ====
-        if (getTrySRMV1()==false) 
-             throw orgEx; 
-        
+        if (getTrySRMV1() == false)
+            throw orgEx;
+
         try
         {
             // URI[] uris = surls.getUrlArray();
@@ -1172,14 +1170,12 @@ public class SRMFileSystem extends FileSystemNode
         catch (Exception e)
         {
             logger.warnPrintf("getTransportVRLs(): Exception while trying SRMClientV1():%s\n", e);
-            logger.logException(ClassLogger.DEBUG,e,"--- SRMVlient V1 Exception stack trace ---\n");
+            logger.logException(ClassLogger.DEBUG, e, "--- SRMVlient V1 Exception stack trace ---\n");
 
             // throw SRM V2 exceptions:
             throw orgEx;
         }
     }
-
-    
 
     private VRL[] createTransportVRLs(URI[] turls) throws VRLSyntaxException
     {
@@ -1200,34 +1196,34 @@ public class SRMFileSystem extends FileSystemNode
         catch (SRMException e)
         {
             // exception handling:
-            
-            if (   e.hasReturnStatusCode(TStatusCode.SRM_DUPLICATION_ERROR)
-                || e.hasReturnStatusCode(TStatusCode.SRM_INVALID_PATH) ) 
+
+            if (e.hasReturnStatusCode(TStatusCode.SRM_DUPLICATION_ERROR)
+                    || e.hasReturnStatusCode(TStatusCode.SRM_INVALID_PATH))
+            {
+                if (!force)
                 {
-                    if (!force)
-                    {
-                        throw new nl.nlesc.vlet.exception.ResourceAlreadyExistsException("Path already exists:"
-                                + fullpath, e);
-                    }
-                    // fore==true check directory and keep it
-                    TMetaDataPathDetail details = this.queryPath(fullpath);
-                    if (isDirectory(details.getType()))
-                    {
-                        return true;
-                    }
-                    // SRM_INVALID_PATH can be almost anything. So start
-                    // investigating
-                    if (e.getReturnStatusExplanation().contains("exists as a file"))
-                    {
-                        throw new nl.nlesc.vlet.exception.ResourceAlreadyExistsException(
-                                "Path already exists but is a file:" + fullpath, e);
-                    }
-                    if (isFile(details.getType()))
-                    {
-                        throw new nl.nlesc.vlet.exception.ResourceAlreadyExistsException(
-                                "Path already exists but is a file:" + fullpath, e);
-                    }
+                    throw new nl.nlesc.vlet.exception.ResourceAlreadyExistsException("Path already exists:" + fullpath,
+                            e);
                 }
+                // fore==true check directory and keep it
+                TMetaDataPathDetail details = this.queryPath(fullpath);
+                if (isDirectory(details.getType()))
+                {
+                    return true;
+                }
+                // SRM_INVALID_PATH can be almost anything. So start
+                // investigating
+                if (e.getReturnStatusExplanation().contains("exists as a file"))
+                {
+                    throw new nl.nlesc.vlet.exception.ResourceAlreadyExistsException(
+                            "Path already exists but is a file:" + fullpath, e);
+                }
+                if (isFile(details.getType()))
+                {
+                    throw new nl.nlesc.vlet.exception.ResourceAlreadyExistsException(
+                            "Path already exists but is a file:" + fullpath, e);
+                }
+            }
 
             // exception handling:
             // if (e.getStatusCode() == TStatusCode.SRM_INVALID_PATH)
@@ -1266,7 +1262,7 @@ public class SRMFileSystem extends FileSystemNode
         }
         catch (SRMException e)
         {
-            throw convertException("Failed to remove:" + createPathVRL(path,null), e);
+            throw convertException("Failed to remove:" + createPathVRL(path, null), e);
         }
     }
 
@@ -1278,7 +1274,7 @@ public class SRMFileSystem extends FileSystemNode
         }
         catch (SRMException e)
         {
-            throw convertException("Failed to remove:" + createPathVRL(path,null), e);
+            throw convertException("Failed to remove:" + createPathVRL(path, null), e);
         }
         catch (MalformedURIException e)
         {
@@ -1294,7 +1290,8 @@ public class SRMFileSystem extends FileSystemNode
         {
             surl = this.srmClient.createPathSurlURI(path);
 
-            URI[] surls = new URI[] { surl };
+            URI[] surls = new URI[]
+            { surl };
 
             // determin TOverwriteMode
             TOverwriteMode mode = null;
@@ -1312,10 +1309,10 @@ public class SRMFileSystem extends FileSystemNode
         }
         catch (SRMException e)
         {
-            VRL vrl = createPathVRL(path,null);
-            
+            VRL vrl = createPathVRL(path, null);
+
             // Fix for castor. Make sure that the correct exception is created
-            if (e.hasReturnStatusCode(TStatusCode.SRM_DUPLICATION_ERROR)==false) 
+            if (e.hasReturnStatusCode(TStatusCode.SRM_DUPLICATION_ERROR) == false)
             {
                 if (existsPath(vrl))
                 {
@@ -1331,7 +1328,7 @@ public class SRMFileSystem extends FileSystemNode
 
     protected boolean finalizePutRequest(SRMPutRequest putRequest, boolean succeeded) throws SRMException
     {
-        return this.srmClient.finalizePutRequest(putRequest,succeeded);
+        return this.srmClient.finalizePutRequest(putRequest, succeeded);
     }
 
     public SRMOutputStream createNewOutputStream(ITaskMonitor monitor, String path, boolean overwrite)
@@ -1404,8 +1401,7 @@ public class SRMFileSystem extends FileSystemNode
         VRL turlVrl = new VRL(putreq.getTurl(0).toString());
         // use VRS:
         debug("createSrmOutputStream():uri=" + turlVrl);
-    
-        
+
         try
         {
             OutputStream outps = new VRSClient(this.vrsContext).openOutputStream(turlVrl);
@@ -1413,19 +1409,19 @@ public class SRMFileSystem extends FileSystemNode
         }
         catch (Exception e)
         {
-            
+
             try
             {
                 // must close Put Request !
-                this.finalizePutRequest(putreq,false);
+                this.finalizePutRequest(putreq, false);
             }
             catch (SRMException e1)
             {
-                logger.logException(ClassLogger.WARN,e1,"Got exception while trying to finalize PutRequest after exception!\n");  
+                logger.logException(ClassLogger.WARN, e1,
+                        "Got exception while trying to finalize PutRequest after exception!\n");
             }
-            
- 
-            throw convertException("Failed to created outputstream to Transport URL:"+turlVrl,e); 
+
+            throw convertException("Failed to created outputstream to Transport URL:" + turlVrl, e);
         }
 
     }
@@ -1438,7 +1434,7 @@ public class SRMFileSystem extends FileSystemNode
             boolean success = srmClient.mv(path, newPath);
             if (success)
             {
-                return createPathVRL(newPath,null);
+                return createPathVRL(newPath, null);
             }
         }
         catch (SRMException e)
@@ -1449,7 +1445,7 @@ public class SRMFileSystem extends FileSystemNode
     }
 
     // =====================================================
-    // 
+    //
     //
     // To Be Implemented;
     //
@@ -1507,7 +1503,7 @@ public class SRMFileSystem extends FileSystemNode
             {
                 return new ResourceAlreadyExistsException(message, cause);
             }
-            return new NestedIOException(message+"\n"+ex.getMessage(), ex);
+            return new NestedIOException(message + "\n" + ex.getMessage(), ex);
         }
 
         String errorstr = cause.getMessage();
@@ -1518,12 +1514,11 @@ public class SRMFileSystem extends FileSystemNode
         if ((errorstr.contains("Connection refused")) || (errorstr.contains("No route to host")))
 
         {
-            return new nl.nlesc.vlet.exception.ConnectionException(message + "\n" + "Connection error. Server might be down or not reachable:"
-                    + this.getHostname() + "\n" + "Reason:" + cause.getMessage(), cause);
+            return new nl.nlesc.vlet.exception.ConnectionException(message + "\n"
+                    + "Connection error. Server might be down or not reachable:" + this.getHostname() + "\n"
+                    + "Reason:" + cause.getMessage(), cause);
         }
 
-       
-        
         // Check Standard Globus Exceptions:
         VrsException globusEx = GlobusUtil.checkException(message, cause);
 
@@ -1531,7 +1526,7 @@ public class SRMFileSystem extends FileSystemNode
             return globusEx;
 
         // default:
-        return new NestedIOException("SRMException:"+message, cause);
+        return new NestedIOException("SRMException:" + message, cause);
     }
 
     // ============================================================ //
@@ -1540,17 +1535,17 @@ public class SRMFileSystem extends FileSystemNode
 
     private void debug(String msg)
     {
-        logger.debugPrintf("%s\n",msg); 
+        logger.debugPrintf("%s\n", msg);
     }
 
-//    private void error(String msg)
-//    {
-//        logger.errorPrintf("%s\n",msg);
-//    }
-    
+    // private void error(String msg)
+    // {
+    // logger.errorPrintf("%s\n",msg);
+    // }
+
     private void warn(String msg)
     {
-        logger.warnPrintf("%s\n",msg);
+        logger.warnPrintf("%s\n", msg);
     }
 
     public String flatten(String strs[])
@@ -1559,7 +1554,7 @@ public class SRMFileSystem extends FileSystemNode
             return "";
 
         // use StringList
-        return new StringList(strs).toString("\"","\n");
+        return new StringList(strs).toString("\"", "\n");
     }
 
     public String getBackendType() throws VrsException
@@ -1593,11 +1588,11 @@ public class SRMFileSystem extends FileSystemNode
             if (this.srmClientV1 == null)
             {
                 this.srmClientV1 = SRMClient.createSRMClientV1(getHostname(), getPort(), true);
-                
-                // Update Connection time out. 
+
+                // Update Connection time out.
                 srmClientV1.setConnectionTimeout(this.vrsContext.getConfigManager().getSocketTimeOut());
                 srmClientV1.setSRMRequestTimeout(this.vrsContext.getConfigManager().getServerRequestTimeOut());
-                
+
             }
         }
         catch (Exception e)
@@ -1610,11 +1605,11 @@ public class SRMFileSystem extends FileSystemNode
 
     public SRMClientV2 getSRMClient()
     {
-        return this.srmClient; 
+        return this.srmClient;
     }
 
     public static ClassLogger getLogger()
     {
-        return logger; 
+        return logger;
     }
 }

@@ -27,7 +27,6 @@ import gov.lbl.srm.v22.stubs.TRetentionPolicyInfo;
 import java.io.IOException;
 import java.io.InputStream;
 
-import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
@@ -37,19 +36,17 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.vfs.VChecksum;
 import nl.nlesc.vlet.vrs.vfs.VFile;
-import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
 import nl.nlesc.vlet.vrs.vfs.VTransportable;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileMode;
 
 import org.apache.axis.types.UnsignedLong;
 
 /**
- * SRM File 
+ * SRM File. 
  * 
  * @author Piter T. de Boer
  */
-public class SRMFile extends VFile implements VFileActiveTransferable,
-        VUnixFileMode, VChecksum, VTransportable 
+public class SRMFile extends VFile implements VUnixFileMode, VChecksum, VTransportable 
 {
     // private PathDetail srmDetails;
     private TMetaDataPathDetail srmDetails;
@@ -127,7 +124,7 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
 
         if (name.compareTo(SRMConstants.ATTR_SRM_RETENTION_POLICY) == 0)
         {
-            // update policy
+            // update policy ?
         }
 
         return false;
@@ -325,7 +322,6 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
         {
             throw new IOException(e.getMessage(),e); 
         }
-        
      }
     
     @Override
@@ -352,37 +348,6 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
         // no full details needed since the default details
         // already contain the modification time.
         return this.srmfs.createModTime(srmDetails);
-
-    }
-
-    @Override
-    public VFile activePartyTransferFrom(ITaskMonitor monitor,
-            VRL remoteSourceLocation) throws VrsException
-    {
-        return this.srmfs.doActiveTransfer(monitor, remoteSourceLocation, this);
-    }
-
-    @Override
-    public VFile activePartyTransferTo(ITaskMonitor monitor,
-            VRL remoteTargetLocation) throws VrsException
-    {
-        return this.srmfs.doTransfer(monitor, this, remoteTargetLocation);
-    }
-
-    @Override
-    public boolean canTransferFrom(VRL remoteLocation, StringHolder explanation)
-            throws VrsException
-    {
-        return this.srmfs.checkTransferLocation(remoteLocation,
-                explanation, false);
-    }
-
-    @Override
-    public boolean canTransferTo(VRL remoteLocation, StringHolder explanation)
-            throws VrsException
-    {
-        return this.srmfs.checkTransferLocation(remoteLocation,
-                explanation, true);
     }
     
     @Override
@@ -456,5 +421,5 @@ public class SRMFile extends VFile implements VFileActiveTransferable,
         
         return types.toArray();
     }
-
+    
 }

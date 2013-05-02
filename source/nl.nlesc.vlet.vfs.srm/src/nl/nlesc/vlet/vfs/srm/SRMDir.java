@@ -26,12 +26,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import nl.esciencecenter.ptk.data.IntegerHolder;
-import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.NodeFilter;
-import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 import nl.nlesc.vlet.vrs.vfs.VFile;
