@@ -93,67 +93,70 @@ public interface ITaskMonitor
 	
 	// === task === 
 	
-	TaskStats getTaskStats(); 
+	public TaskStats getTaskStats(); 
 	
-	void startTask(String taskNameOrComments, long numTodo);
+	// Should be called be implementing monitor. 
+	public void startTask(String taskNameOrComments, long numTodo);
 
-	String getTaskName(); 
+	public String getTaskName(); 
 	
-	void updateTaskDone(long numDone);
+	public void updateTaskDone(long numDone);
 
-	void endTask(String taskNameOrComments);
+	public void endTask(String taskNameOrComments);
 
-	long getTotalWorkDone();
+	public long getTotalWorkDone();
 
-    long getTotalWorkTodo();
+	public  long getTotalWorkTodo();
     
 	// === subtask === 
 
-    void startSubTask(String name, long numTodo);
+	public void startSubTask(String name, long numTodo);
     
-    String getCurrentSubTaskName();
+	public String getCurrentSubTaskName();
     
-	TaskStats getSubTaskStats(String name); 
+	public TaskStats getSubTaskStats(String name); 
 	
-	void updateSubTaskDone(String name,long numDone);
+	public void updateSubTaskDone(String name,long numDone);
 	
-	void endSubTask(String name);
+	public void endSubTask(String name);
 
 	// === flow control === 
 	
 	boolean isDone(); 
 	
-	/** Notify monitor the actual task has been cancelled or it is stop state. */ 
-	void setIsCancelled(); 
+	/** 
+	 * Notify monitor the actual task has been cancelled or it is stop state. 
+	 */ 
+	public void setIsCancelled(); 
 		
-	boolean isCancelled();
+	public boolean isCancelled();
 
 	// == timers/done === 
 	
-    long getStartTime();
+	public long getStartTime();
 
-    long getStopTime();
+	public long getStopTime();
 
     // === Logging/Etc === 
     
-    void logPrintf(String format, Object... args);
+	public void logPrintf(String format, Object... args);
 
     /**
      * Return log text, set sinceLastGet to true for incremental 
      * updates, or set to false to get the complete text buffer 
      */ 
-    String getLogText(boolean sinceLastGet);
+	public String getLogText(boolean sinceLastGet);
     
     /** Has error/exception, etc. */ 
-    boolean hasError();
+	public boolean hasError();
 
-    Throwable getException();
+	public Throwable getException();
     
-    void setException(Throwable t); 
+	public void setException(Throwable t); 
     // === Listeners ! === 
     
-    void addMonitorListener(ITaskMonitorListener listener);
+	public void addMonitorListener(ITaskMonitorListener listener);
     
-    void removeMonitorListener(ITaskMonitorListener listener);
+	public void removeMonitorListener(ITaskMonitorListener listener);
 	
 }

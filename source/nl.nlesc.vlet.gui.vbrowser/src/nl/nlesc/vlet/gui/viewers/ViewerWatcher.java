@@ -33,25 +33,13 @@ public class ViewerWatcher extends TaskWatcher
     
     public ViewerWatcher()
     {
-    }
-    
-    //@Override
-    public String getID()
-    {
-        return "ViewerWatcher"; 
+        super("ViewerWatcher");
     }
 
     @Override
     public void notifyTaskException(ActionTask task,Throwable e)
     {
-        UILogger.logException(this,ClassLogger.ERROR,e,"Exception\n"); 
-    }
-   
-    //@Override
-    public void setHasTasks(boolean val)
-    {
-        // if val==false, all viewers have stopped; 
-        // Global.infoPrintln(this,"has Tasks:"+val); 
+        UILogger.logException(this,ClassLogger.ERROR,e,"Viewer Error:%s\n",e.getMessage()); 
     }
 
     

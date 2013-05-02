@@ -96,4 +96,8 @@ public class DummyTransferWatcher implements ITaskSource
     {
     }
 
+    public String getTaskSourceName()
+    {
+        return "DummyTransferWatcher";  
+    }
 }

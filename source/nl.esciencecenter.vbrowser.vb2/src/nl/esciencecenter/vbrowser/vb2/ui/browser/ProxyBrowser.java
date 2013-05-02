@@ -145,6 +145,11 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     }
     
 
+    public String getBrowserId()
+    {
+        return "ProxyBrowser";
+    }
+
     private void init(BrowserPlatform platform, boolean show)
     {
         this.platform = platform;
@@ -590,5 +595,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     {
         logger.infoPrintf("HasActiveTasks=%s\n",active); 
     }
+
+
     
 }

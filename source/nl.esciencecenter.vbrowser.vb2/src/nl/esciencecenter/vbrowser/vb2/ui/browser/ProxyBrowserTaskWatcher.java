@@ -28,6 +28,7 @@ public class ProxyBrowserTaskWatcher extends TaskWatcher
      
 	public ProxyBrowserTaskWatcher(ProxyBrowser browser)  
 	{
+	    super("ProxyBrowserTaskWatcher"+browser.getBrowserId());
 		browserController=browser;
 	}
 

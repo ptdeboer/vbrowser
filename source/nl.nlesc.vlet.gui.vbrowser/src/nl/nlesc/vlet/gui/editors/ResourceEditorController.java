@@ -1367,4 +1367,9 @@ public class ResourceEditorController implements ActionListener, WindowListener,
     {
     }
 
+    public String getTaskSourceName()
+    {
+        return "ResourceEditorController";  
+    }
+    
 }

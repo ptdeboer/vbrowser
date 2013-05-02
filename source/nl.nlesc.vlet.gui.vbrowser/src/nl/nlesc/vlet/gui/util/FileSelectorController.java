@@ -256,4 +256,10 @@ public class FileSelectorController implements MasterBrowser, ITaskSource
         ExceptionForm.show(this.fileSelector,t,true);       
     }
 	
+    public String getTaskSourceName()
+    {
+        return "FileSelectorController";  
+    }
+
+    
 }

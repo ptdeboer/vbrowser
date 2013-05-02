@@ -22,6 +22,8 @@ package nl.esciencecenter.ptk.task;
 
 public interface ITaskSource 
 {
+    public String getTaskSourceName(); 
+    
     void registerTask(ActionTask actionTask);
 
     void unregisterTask(ActionTask actionTask); 

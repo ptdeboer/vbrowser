@@ -397,6 +397,11 @@ public class ResourceEventNotifier implements ITaskSource
     @Override
     public void notifyTaskException(ActionTask actionTask, Throwable t)
     {
+        logger.logException(ClassLogger.ERROR, t,"Got Exception during Event Notification Task for:%s\n", actionTask);
     }
 
+    public String getTaskSourceName()
+    {
+        return "ResourceEventNotifier";  
+    }
 }

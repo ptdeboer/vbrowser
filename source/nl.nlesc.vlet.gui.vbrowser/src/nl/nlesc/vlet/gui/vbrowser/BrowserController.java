@@ -2741,7 +2741,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
     public void notifyTaskTerminated(ActionTask actionTask)
     {
         UIGlobal.getTaskWatcher().notifyTaskTerminated(actionTask); 
-        this.setHasActiveTasks(UIGlobal.getTaskWatcher().hasActiveTasks());
+        this.setHasActiveTasks(UIGlobal.getTaskWatcher().hasActiveTasks(this));
     }
 
     @Override
@@ -2754,5 +2754,10 @@ public class BrowserController implements WindowListener, GridProxyListener,
     public void notifyTaskException(ActionTask actionTask, Throwable t)
     {
        this._handle(t); 
+    }
+    
+    public String getTaskSourceName()
+    {
+        return "BrowserController:#"+this.browserId; 
     }
 }

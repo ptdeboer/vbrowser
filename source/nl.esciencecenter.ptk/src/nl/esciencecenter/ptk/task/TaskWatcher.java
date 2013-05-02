@@ -39,23 +39,31 @@ public class TaskWatcher implements ITaskSource
     }
     
     // === //
+    private String name; 
 
     private int maxTerminatedTasks=100; 
     
 	protected Vector<ActionTask> activeTasks=new Vector<ActionTask>(); 
 
-	protected Vector<ActionTask> terminatedTasks=new Vector<ActionTask>(); 
+	protected Vector<ActionTask> terminatedTasks=new Vector<ActionTask>();
 
 	public static ITaskSource getTaskWatcher()
 	{
 		if (instance==null)
-			instance=new TaskWatcher(); 
+			instance=new TaskWatcher("Global Taskwatcher"); 
 
 		return instance; 
 	}
 	
-	public TaskWatcher()
+	public TaskWatcher(String name)
 	{
+	    this.name=name;
+	}
+	
+	@Override 
+	public String getTaskSourceName()
+	{
+	    return name; 
 	}
 	
     @Override
@@ -127,7 +135,9 @@ public class TaskWatcher implements ITaskSource
 	                terminatedTasks.remove(0); // not efficient array remove.
 	        }
         }
-	       
+	    
+	    logger.infoPrintf("Number active/terminated tasks: %d/%d\n", activeTasks.size(),terminatedTasks.size()); 
+	    
         this.setHasActiveTasks(hasRunningTasks);
     }
 	
@@ -138,6 +148,7 @@ public class TaskWatcher implements ITaskSource
             if (this.activeTasks.size()>0)
                 return true; 
         }
+	    
 	    return false; 
 	}
 	   
@@ -191,18 +202,23 @@ public class TaskWatcher implements ITaskSource
         logger.logException(ClassLogger.ERROR,task,ex,"TaskException for %s\n",task); 
     }
     
-    /** Check whether there are active tasks running for the TaskSource */ 
+    /** 
+     * Check whether there are active tasks running for the TaskSource 
+     */ 
     public boolean hasActiveTasks(ITaskSource source)
     {
+        logger.debugPrintf("hasActiveTasks() for:%s\n",source.getTaskSourceName());
+        
         ActionTask tasks[]=getActiveTaskArray();
         
         if ((tasks==null) || (tasks.length<=0))
             return false; 
         
         boolean active=false;
-        // send stop signal first: 
+         
         for (ActionTask task:tasks)
         {
+            logger.debugPrintf("Checking action task:%s\n", task);
             if ((task.getTaskSource()!=null) && (task.getTaskSource()==source))
             {
                 if (task.isAlive())
@@ -244,6 +260,8 @@ public class TaskWatcher implements ITaskSource
             if (task.isAlive())
                 task.interruptAll();  
         }
+        
+        
     }
     
 }

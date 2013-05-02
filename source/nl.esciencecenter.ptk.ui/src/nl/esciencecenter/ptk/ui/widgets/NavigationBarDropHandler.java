@@ -1,6 +1,5 @@
 package nl.esciencecenter.ptk.ui.widgets;
  
-import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -12,9 +11,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 
-import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.net.URIUtil;
 
 /** 
@@ -23,6 +20,9 @@ import nl.esciencecenter.ptk.net.URIUtil;
 public class NavigationBarDropHandler implements DropTargetListener
 {
     public static DataFlavor flavorURIList = new DataFlavor("text/uri-list;class=java.lang.String", "uri list");
+    public static DataFlavor stringFlavor = DataFlavor.stringFlavor; 
+    
+    public static DataFlavor myFlavors[]={stringFlavor,flavorURIList};
     
     private NavigationBar navigationBar;
 
@@ -33,6 +33,16 @@ public class NavigationBarDropHandler implements DropTargetListener
 
     public void dragEnter(DropTargetDragEvent dtde)
     {
+        // example how to check& Reject/Accept flavor.
+//        for (DataFlavor flavor:myFlavors)
+//        {
+//            if (dtde.isDataFlavorSupported(flavor))
+//            {
+//                dtde.acceptDrag(DnDConstants.ACTION_COPY);
+//                return ; 
+//            }
+//        }
+//        dtde.rejectDrag(); 
     }
 
     public void dragOver(DropTargetDragEvent dtde)

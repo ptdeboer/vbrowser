@@ -42,19 +42,10 @@ public class VRSTaskWatcher extends TaskWatcher
     // Instance  
     // ===
 
-    // private boolean hasTasks=false;
-    
-    private String watcherID="DefaultVRSWatcherID";     
     
     public VRSTaskWatcher(String idStr)
     {
-        super();
-        this.watcherID=idStr; 
-    }
-
-    public String getID()
-    {
-        return watcherID; 
+        super(idStr);
     }
     
     public void notifyTaskException(ActionTask task,Throwable e)
@@ -87,10 +78,9 @@ public class VRSTaskWatcher extends TaskWatcher
         return monitor;
     }
     
-    public void  notifyTaskStarted(ActionTask actionTask)
+    public void notifyTaskStarted(ActionTask actionTask)
     {
-        super.notifyTaskStarted(actionTask); 
-        System.err.println("***>>> Task Started:"+actionTask); 
+        super.notifyTaskStarted(actionTask);
     }
 
 }

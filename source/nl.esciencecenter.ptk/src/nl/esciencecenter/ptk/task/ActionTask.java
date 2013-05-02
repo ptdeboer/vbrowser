@@ -233,6 +233,11 @@ public abstract class ActionTask implements Runnable
     
     /** 
      * Invoke interrupt() to all threads. 
+     * The default behaviour for a thread is that if the interrupted() state is set,
+     * the thread should stop executing and perform a gracefull shutdown. 
+     * @See {@link Thread#isInterrupted()}
+     * @See {@link Thread#interrupt()}
+     * 
      */
     final public void interruptAll() 
     {
@@ -398,7 +403,19 @@ public abstract class ActionTask implements Runnable
         {
             ; // continue
         } 
-        
+    }
+    
+    /**
+     * Check whether the active thread is in interrupted state. 
+     * This usually means the ActionTask should be stopped. 
+     * 
+     * @return true if the active thread is in interrupted state. 
+     */
+    public boolean isInterrupted()
+    {
+        if ((this.threads==null)|| (threads.length<=0))
+            return false; 
+        return threads[0].isInterrupted(); 
     }
 
     public boolean isCancelled()
