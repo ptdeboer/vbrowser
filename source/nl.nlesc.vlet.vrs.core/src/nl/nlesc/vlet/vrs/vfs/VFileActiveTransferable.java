@@ -26,61 +26,73 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
- * The ActiveTransferables contain methods to indicate that this resource can be
- * the active party when doing Resource Transfers for example third party file
- * copying or some other form of optimized file transfer (using proxy copying or
- * reliable file transfers). <br>
- * Use this interface to indicate that this resource wants to do the transfer
- * itself instead of the default VRS/VFS copy mechanism which is based upon
- * stream read and write method. This allows for optimal transfers between
+ * The ActiveTransferable interface contain methods to indicate that a
+ * ResourceSystem can perform the transfer itself or example perform a third
+ * party file tranSfer.
+ * <p>
+ * Use this interface to indicate that this ResourceSystem wants to do the
+ * transfer itself instead of the default VRS/VFS copy mechanism which is based
+ * upon stream read and write method. This allows for optimal (3rd party) transfers between
  * different resources. <br>
  * 
- * @author P.T. de Boer
- * 
- * @see VThirdPartyTransferable
+ * @author Piter T. de Boer
+ * @since 1.6
  */
 public interface VFileActiveTransferable
 {
+    public static enum ActiveTransferType
+    {
+        NONE, ACTIVE_3RDPARTY
+    };
+
     /**
-     * Checks whether this resource can perform an optimized (third party)
+     * Checks whether this ResourceSystem can perform an optimized (third party)
      * transfer to the remote location. The StringHolder explanation might hold
-     * the reason why it can or can't perform the transfer.
+     * the reason why it can or can't perform the transfer. 
      * 
-     * @param remoteLocation
-     *            remote destination file to copy to.
-     * @param explanation
-     *            extra information why it can or can't do the transfer.
-     * @return true if this method has an optimized way to do the transfer.
+     * @param sourceFile
+     *            - Actual source file from this FileSystem to transfer. 
+     * @param remoteTarget
+     *            - Remote destination file to copy to.
+     * @param explenation
+     *            - Extra information why it can or can't do the transfer.
+     * @return Active Transfer Type. either NONE or ACTIVE_3RDPARTY is supported. 
      * @see #canTransferFrom(VRL, StringHolder)
      */
-    boolean canTransferTo(VRL remoteLocation, StringHolder explanation) throws VrsException;
+    ActiveTransferType canTransferTo(VFile sourceFile, VRL remoteTargetLocation, StringHolder explanation)
+            throws VrsException;
 
     /**
      * Similar to canTransferTo but with the active and passive parties
      * reversed.
      * 
+     * @param targetFile
+     *            - Target File on this file system. 
      * @param remoteLocation
-     *            remote source file to copy from
+     *            - Remote source file to copy from.
      * @param explanation
-     *            extra information why it can or can't do the transfer.
-     * @return true if this method has an optimized way to do the transfer.
+     *            - Extra information why it can or can't do the transfer.
+     * @return Active Transfer Type. Either NONE or ACTIVE_3RDPARTY if supported.
      * @see #canTransferTo(VRL, StringHolder)
      */
-    boolean canTransferFrom(VRL remoteLocation, StringHolder explanation) throws VrsException;
+    ActiveTransferType canTransferFrom(VFile targetFile, VRL remoteSourceLocation, StringHolder explanation)
+            throws VrsException;
 
     /**
      * Perform Active Transfer. Remote location is new File location.
      * Implementation might choose to create parent directory as well.
      * 
      * @param monitor
-     *            TaskMonitor: Use startSubTask() and updateSubTaskDone() to
+     *            -  TaskMonitor: Use startSubTask() and updateSubTaskDone() to
      *            update current transfer statistics as this file can be a
      *            subTask in a larger transfer action (directory copy).
-     * @param remoteLocation
-     *            remote destination file to copy to.
+     * @param sourceFile
+     *            - Actual source file from this FileSystem to transfer. 
+     * @param remoteTargetLocation
+     *            - Remote destination file to copy to.
      * @return new created VFile
      */
-    VFile activePartyTransferTo(ITaskMonitor monitor, VRL remoteLocation) throws VrsException;
+    VFile activeTransferTo(ITaskMonitor monitor, VFile sourceFile, VRL remoteTargetLocation) throws VrsException;
 
     /**
      * Perform Active Transfer. Remote location is source File. Implementation
@@ -95,11 +107,13 @@ public interface VFileActiveTransferable
      *            TaskMonitor: Use startSubTask() and updateSubTaskDone() for
      *            transfer current transfer statistics as this file can be a
      *            subTask in a larger transfer action (directory copy).
-     * @param remote
-     *            source file to copy from
+     * @param targetFile
+     *            - Target file on this FileSystem to copy to. 
+     * @param remoteSourceLocation 
+     *            - source file to copy from
      * @return new created VFile which should match the VFile implementing this
      *         interface ! Although the implementation might choose to create a
      *         new one.
      */
-    VFile activePartyTransferFrom(ITaskMonitor monitor, VRL remoteLocation) throws VrsException;
+    VFile activeTransferFrom(ITaskMonitor monitor, VFile targetFile, VRL remoteSourceLocation) throws VrsException;
 }
