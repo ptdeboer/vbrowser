@@ -3107,10 +3107,19 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                     }
                     catch (InterruptedException e)
                     {
-                        e.printStackTrace();
-                        if (this.isInterrupted()) 
+                        if (this.isCancelled()==true)
                         {
-                            this.mustStop=true; 
+                            // transfer completed. 
+                            this.mustStop=true;
+                        }
+                        else
+                        {
+                            // spurious interrupt ? 
+                            e.printStackTrace();
+                            if (this.isInterrupted()) 
+                            {
+                                this.mustStop=true; 
+                            }
                         }
                     }
                     
@@ -3160,7 +3169,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         }
         catch (Exception e)
         {
-            logger.logException(ClassLogger.WARN,e,"Exception when closing target server %s:%i\n",gftpClient.getHost(),gftpClient.getPort()); 
+            logger.logException(ClassLogger.WARN,e,"Exception when closing target server %s:%d\n",gftpClient.getHost(),gftpClient.getPort()); 
         }
     }
     
