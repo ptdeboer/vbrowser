@@ -117,7 +117,7 @@ public class FSUtil
     }
 
     /** Pref VFS initialization file copy. */
-    public void copyFile(String source, String destination) throws Exception
+    public void copyFile(String source, String destination) throws IOException
     {
         InputStream finput = newLocalFSNode(source).createInputStream();
         OutputStream foutput = newLocalFSNode(destination).createOutputStream();
@@ -254,7 +254,7 @@ public class FSUtil
     }
 
     
-    public String readText(String filename, String encoding) throws Exception
+    public String readText(String filename, String encoding) throws IOException
     {
         return readText(filename,encoding,1024*1024); 
     }    
@@ -268,7 +268,7 @@ public class FSUtil
      * @param maxSize
      *          - limit size of number of bytes read (not the String size).   
      */
-    public String readText(String filename, String encoding, int maxSize) throws Exception
+    public String readText(String filename, String encoding, int maxSize) throws IOException
     {
         if (encoding == null)
             encoding = ENCODING_UTF8;
