@@ -31,7 +31,6 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
 /**
  * Test VRL.
@@ -112,49 +111,7 @@ public class Test_VRL
             Assert.assertEquals("Zero port number is not ignored.", "file:/etc", local.toString());
     }
 
-    @Test
-    public void testDefaultGridPorts() throws VRLSyntaxException
-    {
 
-        VRL vrl1 = new VRL("gftp://elab/path1");
-        VRL vrl2 = new VRL("gftp://elab:2811/path2");
-
-        Assert.assertTrue("VRL with missing GFTP port must match against default port (I)",
-                VRLUtil.hasSameServer(vrl1, vrl2));
-        Assert.assertTrue("VRL with missing GFTP port must match against default port (II)",
-                VRLUtil.hasSameServer(vrl2, vrl1));
-
-        vrl1 = new VRL("gftp://elab/path1");
-        vrl2 = new VRL("gsiftp://elab:2811/path2");
-
-        Assert.assertTrue("VRL with missing GFTP port must match against default port (I)",
-                VRLUtil.hasSameServer(vrl1, vrl2));
-        Assert.assertTrue("VRL with missing GFTP port must match against default port (II)",
-                VRLUtil.hasSameServer(vrl2, vrl1));
-
-    }
-
-    @Test
-    public void testDefaultPorts() throws VRLSyntaxException
-    {
-        // Not in VRL, use VRS
-
-        // VRL vrl1 = new VRL("sftp://elab/path1");
-        // VRL vrl2 = new VRL("sftp://elab:22/path2");
-        //
-        // Assert.assertTrue("VRL with missing SFTP port must match against default port (I)",
-        // VRLUtil.hasSameServer(vrl1,vrl2));
-        // Assert.assertTrue("VRL with missing SFTP port must match against default port (II)",
-        // VRLUtil.hasSameServer(vrl2,vrl1));
-        //
-        // vrl1 = new VRL("http://www.vl-e.nl/path1");
-        // vrl2 = new VRL("http://www.vl-e.nl:80/path2");
-        //
-        // Assert.assertTrue("VRL with missing HTTP port must match against default port (I)",
-        // VRLUtil.hasSameServer(vrl1,vrl2));
-        // Assert.assertTrue("VRL with missing HTTP port must match against default port (II)",
-        // VRLUtil.hasSameServer(vrl2,vrl1));
-    }
 
     @Test
     public void testDosRelative() throws Exception
@@ -690,29 +647,7 @@ public class Test_VRL
 
     }
 
-    @Test
-    public void testVRLUtil_isLocalLocation()
-    {
-        VRL localVrl = new VRL("file", null, null);
-        Assert.assertTrue("isLocalHostname should be true", VRLUtil.isLocalLocation(localVrl));
-
-        localVrl = new VRL("file", "localhost", "/etc");
-        Assert.assertTrue("isLocalHostname should be true", VRLUtil.isLocalLocation(localVrl));
-
-        localVrl = new VRL("file", "", "/etc");
-        Assert.assertTrue("isLocalHostname should be true", VRLUtil.isLocalLocation(localVrl));
-
-        // current hardcoded alias for localhosts
-        localVrl = new VRL("file", "127.0.0.1", "/etc");
-        Assert.assertTrue("isLocalHostname should be true", VRLUtil.isLocalLocation(localVrl));
-
-        localVrl = new VRL("file", null, "/etc");
-        Assert.assertTrue("isLocalHostname should be true", VRLUtil.isLocalLocation(localVrl));
-
-        localVrl = new VRL("file", GlobalProperties.getHostname(), "/etc");
-        Assert.assertTrue("isLocalHostname should be true", VRLUtil.isLocalLocation(localVrl));
-    }
-
+    
     /**
      * Regressions unitTests for windows locations:
      * 
