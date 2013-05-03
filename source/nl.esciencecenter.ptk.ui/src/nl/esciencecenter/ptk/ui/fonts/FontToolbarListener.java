@@ -24,6 +24,10 @@ import java.awt.Font;
 
 public interface FontToolbarListener
 {
+    /**
+     * @param font - the new Font 
+     * @param renderingHints - Platform renderingHints like for example AntiAliasing. 
+     */
     public void updateFont(Font font, Object renderingHints);
     
 }
