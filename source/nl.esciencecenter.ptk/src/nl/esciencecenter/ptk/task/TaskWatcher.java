@@ -35,7 +35,6 @@ public class TaskWatcher implements ITaskSource
     static
     {
         logger=ClassLogger.getLogger(TaskWatcher.class); 
-        logger.setLevelToDebug(); 
     }
     
     // === //
