@@ -28,9 +28,10 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
 
+import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.net.ssl.CertificateStore;
+import nl.nlesc.vlet.net.ssl.SslUtil;
 
 /**
  * Wrapper around URLConnection
@@ -125,7 +126,7 @@ public class HTTPConnection
                        
                        CertificateStore certStore=this.httpNode.getVRSContext().getConfigManager().getCertificateStore();
                        // check+install certificate: 
-                       certStore.fetchCert(httpNode.getHostname(),httpNode.getPort());
+                       SslUtil.fetchCertificates(certStore,httpNode.getHostname(),httpNode.getPort());
                     }
                     catch (Exception e)
                     {

@@ -35,10 +35,11 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
+import nl.esciencecenter.ptk.ssl.CertificateStore;
+import nl.esciencecenter.ptk.ssl.CertificateStore.CaCertOptions;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.nlesc.vlet.dialog.CaCertDialog;
-import nl.nlesc.vlet.net.ssl.CertificateStore.CaCertOptions;
 
 /**
  * SslUtil class for all global SSL configuration methods.
@@ -119,7 +120,7 @@ public class SslUtil
     /** Open SSL socket using current keyStore */
     public static SSLSocket openSSLSocket(String host, int port, int timeOut) throws Exception
     {
-        SSLContext context = CertificateStore.getDefault().createSSLContext("SSLv3");
+        SSLContext context = CertificateStore.getDefault(true).createSSLContext("SSLv3");
         return openSSLSocket(context, host, port, timeOut);
     }
 
@@ -145,7 +146,7 @@ public class SslUtil
     public static SSLSocket openSSLv3Socket(String host, int port) throws KeyStoreException, NoSuchAlgorithmException,
             CertificateException, VrsException, Exception
     {
-        return openSSLv3Socket(CertificateStore.getDefault().createSSLContext("SSLv3"), host, port, -1);
+        return openSSLv3Socket(CertificateStore.getDefault(true).createSSLContext("SSLv3"), host, port, -1);
     }
 
     public static SSLSocket openSSLv3Socket(SSLContext context, String host, int port, int timeout)
@@ -203,17 +204,6 @@ public class SslUtil
         }
 
         return null;
-    }
-
-    /**
-     * Returns default Global user certificate store. Default location is
-     * ~/.vletrc/cacerts or if non existant, the cacerts file from
-     * $VLET_INSTALL/etc/cacerts will be copied to ~/.vletrc and that one will
-     * be returned.
-     */
-    public static CertificateStore getUserCertificateStore() throws VrsException
-    {
-        return CertificateStore.getDefault();
     }
 
     /**

@@ -36,6 +36,7 @@ import javax.net.ssl.SSLContext;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -49,7 +50,6 @@ import nl.nlesc.vlet.exception.InitializationException;
 import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.grid.voms.VO;
 import nl.nlesc.vlet.grid.voms.VOServer;
-import nl.nlesc.vlet.net.ssl.CertificateStore;
 import nl.nlesc.vlet.net.ssl.SSLContextManager;
 import nl.nlesc.vlet.net.ssl.SslUtil;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -1269,15 +1269,20 @@ public class GridProxy
         {
             if (this.sslCtxManager==null)
             {
-                // empty properities: do manual configuration. 
+                // Update with preloaded certificates cacerts from ~/.vletrc/cacerts: 
+                CertificateStore certs = vrsContext.getConfigManager().getCertificateStore(); 
+              
+                String cacertsPath=certs.getKeyStoreLocation(); 
+                Properties props=new Properties(); 
+                props.put(SSLContextManager.PROP_CACERTS_LOCATION, cacertsPath); 
                 this.sslCtxManager=new SSLContextManager(new Properties());
-                
+                                
                 //default:
-                this.sslCtxManager.setProperty(SSLContextManager.PROP_CACERTS_LOCATION,
-                        CertificateStore.getDefaultUserCACertsLocation()); 
+                this.sslCtxManager.setProperty(SSLContextManager.PROP_CACERTS_LOCATION,cacertsPath); 
             }
             
-            this.sslCtxManager.setProperty(SSLContextManager.PROP_CREDENTIALS_PROXY_FILE,this.getProxyFilename());
+            // Update, location could have changed by GUI! 
+            this.sslCtxManager.setProperty(SSLContextManager.PROP_CREDENTIALS_GRID_PROXY_FILE,this.getProxyFilename());
            
             // Update SSLContext with new KeyManager which contains private Key ! 
             PrivateKey privKey=this.getProvider().getUserPrivateKey(passwd);
@@ -1291,9 +1296,9 @@ public class GridProxy
             SSLContext sslContext=sslCtxManager.getContext(); 
             
             {
-                //String errorTxt="FIXME, cannot set default HTTPSSslContext\n";
-                //    logger.logException(ClassLogger.FATAL,new Exception(errorTxt),"Fatal:%s\n",errorTxt); 
-                //   Update Default SSL Context for URL handlers to use !
+                // String errorTxt="FIXME, cannot set default HTTPSSslContext\n";
+                // logger.logException(ClassLogger.FATAL,new Exception(errorTxt),"Fatal:%s\n",errorTxt); 
+                // Update Default SSL Context for URL handlers to use !
                 SslUtil.setDefaultHttpsSslContext(sslContext);
             }
              
@@ -1304,17 +1309,6 @@ public class GridProxy
             throw e; 
         }
     }
-//    
-//    public CertificateStore getPrivateKeystore()
-//    {
-//        return privateKeystore;
-//    }
-//    
-//    public void loadPrivateKeystore(String location,String passwd) throws Exception
-//    {
-//        this.privateKeystore=CertificateStore.loadCertificateStore(location, passwd, false);
-//        this.privateKeystorePasswd=passwd; 
-//    }
 
     /**
      * Convert proxy into password protected keystore including the proxy certificate chain.
@@ -1409,11 +1403,8 @@ public class GridProxy
 			try 
 			{
 	            CertificateStore certStore;
-
 				certStore = getVRSContext().getConfigManager().getCertificateStore();
-	            // check+install certificate: 
-				
-	            certStore.fetchCert(serv.getHostname(),serv.getPort());
+	            SslUtil.fetchCertificates(certStore,serv.getHostname(),serv.getPort());
 			}
 			catch (Exception e) 
 			{

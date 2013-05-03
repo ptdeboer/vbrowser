@@ -29,6 +29,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.ui.UI;
@@ -42,7 +43,6 @@ import nl.nlesc.vlet.grid.proxy.GridProxy;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.gui.dialog.SimpleDialog;
 import nl.nlesc.vlet.gui.proxyvrs.ProxyVRSClient;
-import nl.nlesc.vlet.net.ssl.CertificateStore;
 import nl.nlesc.vlet.vrs.Registry;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;

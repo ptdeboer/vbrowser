@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.nlesc.vlet.net.ssl;
+package nl.esciencecenter.ptk.ssl;
 
 
 import javax.net.ssl.X509KeyManager;

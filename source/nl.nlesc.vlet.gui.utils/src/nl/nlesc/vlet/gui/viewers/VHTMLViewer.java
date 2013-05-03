@@ -32,6 +32,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 
+import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -142,8 +143,8 @@ public class VHTMLViewer extends InternalViewer  implements HyperlinkListener
         {
             if (location.hasScheme(VRS.HTTPS_SCHEME))
             {
-                UIGlobal.getVRSContext().getConfigManager().getCertificateStore().fetchCert(location.getHostname(),location.getPort());
-        
+                CertificateStore certs = UIGlobal.getVRSContext().getConfigManager().getCertificateStore();
+                SslUtil.fetchCertificates(certs,location.getHostname(),location.getPort());
             }
         }
         catch (Exception e1)

@@ -30,6 +30,8 @@ import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.ptk.ssl.CertificateStore;
+import nl.esciencecenter.ptk.ssl.CertificateStoreException;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -42,7 +44,6 @@ import nl.nlesc.vlet.grid.proxy.VGridCredentialProvider;
 import nl.nlesc.vlet.grid.voms.VO;
 import nl.nlesc.vlet.grid.voms.VomsProxyCredential;
 import nl.nlesc.vlet.grid.voms.VomsUtil;
-import nl.nlesc.vlet.net.ssl.CertificateStore;
 
 
 import org.globus.common.CoGProperties;
@@ -326,9 +327,11 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
             try
             {
                 logger.debugPrintf(" +++ Loading Java KeyStore 'cacerts' +++\n");
-    
-                X509Certificate[] caCerts = CertificateStore.getDefault().getX509Certificates();
-                for (X509Certificate cert:caCerts)
+                
+                CertificateStore cacerts=getCertStore(); 
+                
+                X509Certificate[] certs = cacerts.getX509Certificates();
+                for (X509Certificate cert:certs)
                 {
                     logger.debugPrintf(" + loaded extra CaCert : %s\n",cert.getSubjectDN());
                     allCerts.add(cert); 
@@ -365,6 +368,12 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         // 
     }
     
+    private CertificateStore getCertStore() throws CertificateStoreException
+    {
+        String cacertsLoc=VletConfig.getDefaultUserCACertsLocation(); 
+        return CertificateStore.loadCertificateStore(cacertsLoc, CertificateStore.DEFAULT_PASSPHRASE, true); 
+    }
+
     public X509Certificate[] getTrustedCertificates()
     {
         return this.trustedCertificates.getCertificates(); 

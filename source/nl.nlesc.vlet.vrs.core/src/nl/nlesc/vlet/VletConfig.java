@@ -224,8 +224,7 @@ public class VletConfig
     /** The default BDII port to use. Default value is 2170 */ 
     public static final String PROP_BDII_PORT = "bdii.port";
     
-    /** CaCert handling policy. Set to "false" to ignore signing policies.*/ 
-    public static final String PROP_SSL_CACERT_POLICY = "ssl.cacert.policy"; 
+
 
     /** Comma separated list of User Configured VOs. */ 
     public static final String PROP_USER_CONFIGURED_VOS = "user.configuredVOs";
@@ -1120,6 +1119,14 @@ public class VletConfig
     {
         String rangestr=start+","+end; 
         VletConfig.setSystemProperty(VletConfig.PROP_INCOMING_FIREWALL_PORT_RANGE,rangestr);
+    }
+    
+    /** 
+     * Returns ~/.vletrc/cacerts location 
+     */  
+    public static String getDefaultUserCACertsLocation()
+    {
+        return VletConfig.getUserConfigDir().appendPath("cacerts").getPath(); 
     }
     
     public static VRL[] getCACertificateLocations()

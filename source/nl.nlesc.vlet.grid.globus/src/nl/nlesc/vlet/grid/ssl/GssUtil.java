@@ -2,7 +2,7 @@ package nl.nlesc.vlet.grid.ssl;
 
 import java.util.Properties;
 
-import nl.nlesc.vlet.net.ssl.CertificateStore;
+import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.nlesc.vlet.net.ssl.ExtSSLSocketFactory;
 import nl.nlesc.vlet.net.ssl.SSLContextManager;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -35,7 +35,7 @@ public class GssUtil
         CertificateStore cacert = context.getConfigManager().getCertificateStore();
 
         sslProps.setProperty(SSLContextManager.PROP_CACERTS_LOCATION, cacert.getKeyStoreLocation());
-        sslProps.setProperty(SSLContextManager.PROP_CREDENTIALS_PROXY_FILE, proxyFilename);
+        sslProps.setProperty(SSLContextManager.PROP_CREDENTIALS_GRID_PROXY_FILE, proxyFilename);
 
         // init context and return ssl factory.
         SSLContextManager ctxManager = new SSLContextManager(sslProps);

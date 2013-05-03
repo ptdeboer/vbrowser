@@ -40,36 +40,38 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 
+import nl.esciencecenter.ptk.ssl.CertificateStore;
+import nl.esciencecenter.ptk.ssl.MyX509KeyManager;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.grid.proxy.GridProxy;
+
+//import nl.nlesc.vlet.grid.proxy.GridProxy;
 
 /** 
- * Creates GLite SSLv3 Context and SocketFactory need to access OGSA/GSI servers. 
- * Based upon GLite code. 
- * SSLContextManager creates and manages one SSLContext.
- *  
+ * SSLContext Manager support different SSLContexts.
+ * Has backwards compatibility with SSLv3 contexts and grid based authentication procotocols
+ * as used in Glite and OGSA based webservices.    
+ * An SSLContextManager creates and manages one SSLContext.
  */
 public class SSLContextManager
 {
     private static ClassLogger logger; 
 
+    static 
     {
         logger =ClassLogger.getLogger(SSLContextManager.class);
-        //logger.setLevelToDebug();
     }
     
     // === Configurable Properties === //
     
-    public static final String PROP_CREDENTIALS_PROXY_FILE     = "gridProxyFile";
-    public static final String PROP_SSL_PROTOCOL               = "sslProtocol";
-    public static final String PROP_PRIVATE_KEYSTORE_PASSWD    = "privateKeystorePassword"; 
-    public static final String PROP_PRIVATE_KEYSTORE_KEY_ALIAS = "privateKeystoreKeyAlias";
-    public static final String PROP_PRIVATE_KEYSTORE_LOCATION  = "privateKeystoreLocation";
-    public static final String PROP_CACERTS_LOCATION           = "cacertsLocation";
-    public static final String PROP_CACERTS_PASSWORD           = "cacertsPassword";
-    public static final String PROP_USE_PROXY_AS_IDENTITY      = "enableProxyIdentity"; 
+    public static final String PROP_CREDENTIALS_GRID_PROXY_FILE = "gridProxyFile";
+    public static final String PROP_SSL_PROTOCOL                = "sslProtocol";
+    public static final String PROP_PRIVATE_KEYSTORE_PASSWD     = "privateKeystorePassword"; 
+    public static final String PROP_PRIVATE_KEYSTORE_KEY_ALIAS  = "privateKeystoreKeyAlias";
+    public static final String PROP_PRIVATE_KEYSTORE_LOCATION   = "privateKeystoreLocation";
+    public static final String PROP_CACERTS_LOCATION            = "cacertsLocation";
+    public static final String PROP_CACERTS_PASSWORD            = "cacertsPassword";
+    public static final String PROP_USE_PROXY_AS_IDENTITY       = "enableProxyIdentity"; 
     
     // === DEFAULT VALUES === //
     public static final String SSL_PROTOCOL_DEFAULT_VALUE = "SSLv3";    
@@ -127,7 +129,7 @@ public class SSLContextManager
 
     public String getProxyFilename()
     {
-        return getConfigProperty(PROP_CREDENTIALS_PROXY_FILE,"/tmp/x509up_u1000");   
+        return getConfigProperty(PROP_CREDENTIALS_GRID_PROXY_FILE,"/tmp/x509up_u1000");   
     }
     
     public String getProtocol()
@@ -162,7 +164,7 @@ public class SSLContextManager
             String protocol=getProtocol(); 
             logger.infoPrintf("Configuring SSLContext with protocol:%s\n",protocol); 
             this.sslContext=caCertificateStore.createSSLContext(protocol);
-            logger.infoPrintf("Actually protocl from SSLContext is:%s\n",sslContext.getProtocol()); 
+            logger.infoPrintf("Actual protocol from SSLContext is:%s\n",sslContext.getProtocol()); 
 
             this.sslContext.getProtocol(); 
             TrustManager managerArray[];
@@ -182,7 +184,7 @@ public class SSLContextManager
         }
     }
     
-    protected void initCertificateStore() throws VrsException
+    protected void initCertificateStore() throws Exception
     {
         logger.debugPrintf("--- initCertificateStore() ---\n");
 
@@ -196,7 +198,7 @@ public class SSLContextManager
         }
         else
         {
-            this.caCertificateStore=CertificateStore.getDefault();
+            this.caCertificateStore=CertificateStore.getDefault(true);
             logger.infoPrintf("Loaded default cacerts file from:%s\n",caCertificateStore.getKeyStoreLocation());
         }
         
@@ -329,7 +331,7 @@ public class SSLContextManager
             // must be enabled!
             else if (getEnableProxyIdentity()==true)
             {
-                this._privateKeystore=this.loadProxy().getProxyAsKeystore(keyalias,passwd);  
+                this._privateKeystore=null; // this.loadProxy().getProxyAsKeystore(keyalias,passwd);  
             }
             else
             {
@@ -388,10 +390,11 @@ public class SSLContextManager
         return Boolean.parseBoolean(value);
     }
 
-    public GridProxy loadProxy() throws VrsException
-    {
-        return GridProxy.loadFrom(this.getProxyFilename());  
-    }
+//    public GridProxy loadProxy() throws Exception
+//    {
+//        return GridProxy.loadFrom(this.getProxyFilename());  
+//    }
+    
     // ========================================================================
     // Private and mutex protected setters/getters!  
     // ========================================================================

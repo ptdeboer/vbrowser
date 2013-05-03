@@ -25,6 +25,7 @@ import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ import java.util.Properties;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
@@ -41,7 +43,6 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.exception.InitializationException;
-import nl.nlesc.vlet.net.ssl.CertificateStore;
 import nl.nlesc.vlet.vrs.VRSContext;
 
 /** 
@@ -774,10 +775,40 @@ public class ConfigManager
 		this.vrsContext.setProperty(VletConfig.PROP_ALLOW_USER_INTERACTION,""+val); 
 	}
 
-	/** Returns CertificateStore from (defaul) location ~/.vletrc/cacerts */ 
+	CertificateStore certificateStore; 
+	
+	/** 
+	 * Returns CertificateStore from (defaul) location ~/.vletrc/cacerts 
+	 */ 
     public CertificateStore getCertificateStore() throws VrsException
     {
-        return CertificateStore.getDefault();   
+        String usercerts = VletConfig.getDefaultUserCACertsLocation();
+        
+        try
+        {
+            if (this.certificateStore==null)
+            {
+                certificateStore=CertificateStore.loadCertificateStore(usercerts, CertificateStore.DEFAULT_PASSPHRASE, true); 
+    
+                VRL[] certDirs = VletConfig.getCACertificateLocations(true);
+                java.net.URL[] urls=new URL[certDirs.length];
+                
+                for (int i=0;i<certDirs.length;i++)
+                    urls[i]=certDirs[i].toURL(); 
+                
+                certificateStore.setCustomCerticateDirectories(urls); 
+                certificateStore.reloadCustomCertificates(); 
+                certificateStore.setAutoSave(true);
+                
+            }
+        }
+        catch (Exception e)
+        {
+            throw new VrsException("Failed to load/create CertificateStore:"+usercerts+"\n"
+                    +e.getMessage(),e); 
+        }
+        
+        return certificateStore;
     }
 
     public void addCACertificate(X509Certificate cert2, boolean save) throws Exception
@@ -794,6 +825,11 @@ public class ConfigManager
     public String getProxyFilename()
     {
         return this.vrsContext.getGridProxy().getProxyFilename();
+    }
+
+    public String getUserCACertsLocation()
+    {
+        return VletConfig.getDefaultUserCACertsLocation(); 
     }
     
 }

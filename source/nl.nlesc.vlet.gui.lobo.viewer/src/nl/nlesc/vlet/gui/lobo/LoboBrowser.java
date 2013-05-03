@@ -24,6 +24,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.net.MalformedURLException;
 
+import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -186,8 +187,8 @@ public class LoboBrowser extends ViewerPlugin
         {
             if (location.hasScheme(VRS.HTTPS_SCHEME))
             {
-                //SslUtil.installCert(location.getHostname(),location.getPort());
-                UIGlobal.getVRSContext().getConfigManager().getCertificateStore().fetchCert(location.getHostname(),location.getPort());
+                CertificateStore certs = UIGlobal.getVRSContext().getConfigManager().getCertificateStore();
+                SslUtil.fetchCertificates(certs,location.getHostname(),location.getPort());
             }
         }
         catch (Exception e1)
