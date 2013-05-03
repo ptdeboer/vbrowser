@@ -25,7 +25,7 @@ package nl.esciencecenter.vbrowser.vrs.data;
  *  
  * @author Piter T. de Boer 
  */
-public interface IAttributes
+public interface AttributeSource
 {
     public String[] getAttributeNames(); 
     

@@ -70,7 +70,7 @@ public enum AttributeType
 	public static AttributeType getObjectType(Object object,AttributeType defaultType) 
     {
         if (object==null)
-            return defaultType; 
+            return AttributeType.ANY; 
         
         if (object instanceof Integer)
             return AttributeType.INT;

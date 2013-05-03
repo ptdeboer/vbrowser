@@ -35,53 +35,28 @@ import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
- * jUnit test created to test the refactoring of Attribute. 
- * 
- * @author P.T. de Boer. 
+ * jUnit test created to test the refactorinks of the Attribute Class. 
+ * Attribute now supports dynamic typing and the Values are stored as actual objects.  
+ * NULL Values are allowed and ANY and STRING type are default types. 
+ * Casting from and to String should be possible for all types. 
+ *  
+ * @author Piter .T. de Boer. 
  */
 public class Test_Attribute 
 {
-    final static Random rnd=new Random(0); 
-
-    private String createRandomString(int size)
+    public static class TestValues
     {
-        StringBuffer strbuf=new StringBuffer(size);
-        for (int i=0;i<size;i++)
-        {
-            int val=rnd.nextInt();
-            char c=(char)('a'+val%31); 
-            strbuf.append(c); 
-        }
-        
-        String str=strbuf.toString(); 
-        return str; 
-    }
-    
-    private StringList createRandomStringList(int listSize,int stringSize)
-    {
-        String array[]=new String[listSize]; 
-        for (int i=0;i<listSize;i++)
-            array[i]=createRandomString(stringSize);
-         
-        return new StringList(array); 
-    }
-
-
-    
-    // AttributeType ::= {BOOLEAN,INT,LONG,FLOAT,DOUBLE,STRING,ENUM,VRL,TIME} 
-    
-    class TestValues
-    {
-        boolean  boolval=true; 
-        int      intval=1; 
-        long     longval=1024*1024*1024;
-        float    floatval=1.13f; 
-        double   doubleval=Math.PI;  
-        String    strval="String Value"; 
-        String    enumstrs[]={"aap","noot","mies"}; 
-        String    datestr="1970-01-13 01:23:45.678"; 
-        VRL       vrl=newVRL("file:","user","localhost",-1,"/tmp/stuff/","query","fragment"); 
-        Date      dateval=Presentation.createDateFromNormalizedDateTimeString(datestr); 
+        // just some random values:  
+        boolean boolval=true; 
+        int     intval=1; 
+        long    longval=-13*1024*1024*1024;
+        float   floatval=1.13f; 
+        double  doubleval=Math.PI;  
+        String  strval="A String Value"; 
+        String  enumstrs[]={"aap","noot","mies"}; 
+        String  datestr="1970-01-13 01:23:45.678"; 
+        VRL     vrl=newVRL("file:","user","localhost",-1,"/tmp/stuff/","query","fragment"); 
+        Date    dateval=Presentation.createDateFromNormalizedDateTimeString(datestr); 
                 
         TestValues()
         {
@@ -110,101 +85,170 @@ public class Test_Attribute
             this.datestr=Presentation.createNormalizedDateTimeString(_dateval);
         }
     }
+    
+    final static Random rnd=new Random(0); 
 
-    @Test
-    public void testPresentationDateTimeString() 
+    public static String createRandomString(int size)
     {
-        // text exception: 
-        //testPresentationDateTimeString("000000-00-00 00:00:00.000");
-        doPresentationDateTimeString("0001-01-01 00:00:00.000");
-        doPresentationDateTimeString("1970-01-13 01:23:45.678");  
-        doPresentationDateTimeString("999999-12-31 23:59:59.999");  
+        StringBuffer strbuf=new StringBuffer(size);
+        for (int i=0;i<size;i++)
+        {
+            int val=rnd.nextInt();
+            char c=(char)('a'+val%31); 
+            strbuf.append(c); 
+        }
+        
+        String str=strbuf.toString(); 
+        return str; 
     }
     
-    public void doPresentationDateTimeString(String datestr)
+    public static StringList createRandomStringList(int listSize,int stringSize)
+    {
+        String array[]=new String[listSize]; 
+        for (int i=0;i<listSize;i++)
+            array[i]=createRandomString(stringSize);
+         
+        return new StringList(array); 
+    }
+     
+    public static VRL newVRL(String scheme, String userInfo, String hostname, int port, String path, String query, String fragment)
+    {
+        return new VRL(scheme,userInfo,hostname,port,path,query,fragment); 
+    }
+    
+    public static void assertEquals(String message, String value1, String value2, boolean ignoreCase)
+    {
+        Assert.assertTrue(message,StringUtil.compare(value1,value2,ignoreCase)==0);
+    }
+
+    // test whether object has matching type and native value 
+    public static void checkObjectValueType(Attribute attr,Object objValue)
+    {
+        AttributeType unitType=getObjectAttributeType(objValue);
+        AttributeType attributeType=AttributeType.getObjectType(objValue,null); 
+        // Assert Consistency with unit tests.  
+        Assert.assertEquals("AttributeType.getObjectType() and unit test getObjectType() must agree.",unitType,attributeType);
+        if (objValue==null)
+        {
+            Assert.assertNull("NULL object must have NULL type.",objValue);
+            return; // NULL value.  
+        }
+        
+        Assert.assertTrue("Object type must be:"+attributeType,attr.isType(attributeType)); 
+
+        // check native value type! 
+        switch(attributeType)
+        {
+            case BOOLEAN:
+                Assert.assertTrue("getBoolValue() must match native type!",(attr.getBooleanValue()==((Boolean)objValue))); 
+                break;
+            case INT:
+                Assert.assertTrue("getIntValue() must match native type!",(attr.getIntValue()==((Integer)objValue))); 
+                break;
+            case LONG:
+                Assert.assertTrue("getLongValue() must match native type!",(attr.getLongValue()==((Long)objValue))); 
+                break; 
+            case FLOAT:
+                Assert.assertTrue("getFloatValue() must match native type!",(attr.getFloatValue()==((Float)objValue))); 
+                break; 
+            case DOUBLE:
+                Assert.assertTrue("getDoubleValue() must match native type!",(attr.getDoubleValue()==((Double)objValue))); 
+                break;
+            case STRING:
+                Assert.assertTrue("getStringValue() must match native type!",(attr.getStringValue()==((String)objValue))); 
+                break; 
+            case VRL:
+                try
+                {
+                    Assert.assertTrue("getVRLValue() must match native type!",((VRL)objValue).equals(attr.getVRL()) );
+                }
+                catch (Exception e)
+                {
+                    Assert.fail("Exception:"+e);
+                } 
+                break; 
+            case DATETIME:
+                Assert.assertTrue("getDateValue() must match native type!", compareDateValues(attr.getDateValue(),(Date)objValue)); 
+                break; 
+            default:
+                Assert.fail("Can not check type:"+attributeType); 
+
+        }
+        //compareDateValues(attr.getDateValue(),(Date)objValue))); 
+    }
+
+    public static boolean compareDateValues(Date val1,Date val2)
+    {
+        boolean result=false; 
+
+        if (val1==val2)
+            result=true; 
+        
+        if (result==false)
+        {
+            if ( val1.toString().equals(val2.toString()) ) 
+                result=true; 
+        }
+       
+        String unistr1=Presentation.createNormalizedDateTimeString(val1); 
+        String unistr2=Presentation.createNormalizedDateTimeString(val2); 
+
+        // also Compare Presentation string implementations. 
+        if (result)
+        {
+            Assert.assertEquals("Normalize date/time strings should be equal",unistr1,unistr2); 
+        }
+        else
+        {
+            Assert.assertEquals("Normalize date/time strings should NOT be equal",unistr1,unistr2); 
+        }
+        
+        return result; 
+    }
+
+    /** 
+     * Unit test implementation: 
+     * Explicit definition here to assert similar implementation in Attribute. 
+     */
+    public static AttributeType getObjectAttributeType(Object obj)
+    { 
+        if (obj==null)
+            return AttributeType.ANY;
+        
+        if (obj instanceof Boolean)
+            return AttributeType.BOOLEAN;
+        else if (obj instanceof Integer)
+            return AttributeType.INT;
+        else if (obj instanceof Long)
+            return AttributeType.LONG;
+        else if (obj instanceof Float)
+            return AttributeType.FLOAT;
+        else if (obj instanceof Double)
+            return AttributeType.DOUBLE;
+        else if (obj instanceof String)
+            return AttributeType.STRING;
+        else if (obj instanceof Date)
+            return AttributeType.DATETIME;
+        else if (obj instanceof VRL)
+            return AttributeType.VRL;
+        else if (obj instanceof Enum)
+            return AttributeType.ENUM;
+        
+        // check enum ? 
+        return null; 
+    }    
+    
+    // ========================================================================
+    // Test Helper methods 
+    // ========================================================================
+    
+    public void doTestPresentationDateTimeString(String datestr)
     {
         Date date=Presentation.createDateFromNormalizedDateTimeString(datestr);
         String reversestr=Presentation.createNormalizedDateTimeString(date); 
         Assert.assertEquals("Normalized datetime strings should be the same",datestr,reversestr); 
     }
     
-    @Test 
-    public void testValueConstructors()
-    {
-        TestValues tValues=new TestValues(); 
-        doTestValueConstructors(tValues); 
-        
-        tValues=new TestValues(
-                true,
-                (int)1, 
-                (long)1024*1024*1024,
-                (float)1.13f, 
-                (double)Math.PI,
-                "String Value",     
-                new String[]{"aap","noot","mies"},
-                newVRL("file:","user","localhost",-1,"/tmp/stuff/","query","fragment"),    
-                Presentation.createDateFromNormalizedDateTimeString("1970-01-13 01:23:45.678")
-                );
-        doTestValueConstructors(tValues); 
-
-        // empty: neutral (legal) 
-        tValues=new TestValues(
-                false,
-                (int)0, 
-                (long)0,
-                (float)0, 
-                (double)0,
-                "",     
-                new String[]{""},
-                newVRL("ref:",null,null,0,"",null,null),    
-                Presentation.createDateFromNormalizedDateTimeString("0001-01-01 00:00:00.000")
-                );
-        doTestValueConstructors(tValues); 
-
-        // minimum/null (allowed) 
-        tValues=new TestValues(
-                false,
-                (int)Integer.MIN_VALUE, 
-                (long)Long.MIN_VALUE,
-                (float)Float.MIN_VALUE, 
-                (double)Double.MIN_VALUE,
-                "",     
-                new String[]{null},
-                newVRL(null,null,null,0,null,null,null),    
-                Presentation.createDate(1)
-                );
-        
-        doTestValueConstructors(tValues); 
-        
-        // max (allowed) 
-        tValues=new TestValues(
-                true,
-                (int)Integer.MAX_VALUE, 
-                (long)Long.MAX_VALUE,
-                (float)Float.MAX_VALUE, 
-                (double)Double.MAX_VALUE,
-                createRandomString(1024),     
-                createRandomStringList(1024,1024).toArray(),
-                newVRL("scheme:",
-                        "Jan.Piet.Joris[Groupid-dev-0]",
-                        "www.llanfairpwllgwyngyllgogerychwyrndrobwyll-llantysiliogogogoch.com",
-                        99999,
-                        "/tmp/llanfairpwllgwyngyllgogerychwyrndrobwyll-llantysiliogogogoch/With Space",
-                        "aap=AapValue&noot=NootValue&mies=MiewValue",
-                        "fragment"), 
-                        Presentation.createDateFromNormalizedDateTimeString("0001-01-01 00:00:00.000")
-                );
-        
-        doTestValueConstructors(tValues); 
-    }
-
-  
-    private VRL newVRL(String string, String string2, String string3, int i, String string4, String string5,
-            String string6)
-    {
-       return  new VRL("file:","user","localhost",-1,"/tmp/stuff/","query","fragment");
-    }
-
     public void doTestValueConstructors(TestValues tValues)
     {
         double epsd=Double.MIN_NORMAL; 
@@ -243,17 +287,149 @@ public class Test_Attribute
       
     }
     
+    public void doTestStringValueConstructor(AttributeType type,String name,String strValue,Object objectValue) 
+    {
+        // basic constructor tests 
+        Attribute attr=VAttributeUtil.createFrom(name, objectValue); // Create From Object. Must match actual type!
+        
+        // check type,name and String value 
+        Assert.assertEquals("Type must be:"+type,type,attr.getType());
+        
+        boolean ignoreCase=false;
+        
+        if (objectValue instanceof Boolean)
+            ignoreCase=true; 
+        
+        if (ignoreCase==false)
+            Assert.assertEquals("String values should match (if parsed correctly) for type:"+type,strValue,attr.getStringValue());
+        else
+            assertEquals("String values should match (if parsed correctly) for type:"+type,strValue,attr.getStringValue(),ignoreCase); 
+        
+        Assert.assertEquals("Attribute name must match",name,attr.getName()); 
+        Assert.assertTrue("isType() must return true for attr:"+attr,attr.isType(type)); 
+        
+        checkObjectValueType(attr,objectValue); 
+    }
+
+    
+    // ========================================================================
+    // Actual Tests
+    // ========================================================================
+    
+    @Test
+    public void testPresentationDateTimeString_noTimezone() 
+    {
+        // text exception: 
+        //testPresentationDateTimeString("000000-00-00 00:00:00.000");
+        doTestPresentationDateTimeString("0001-01-01 00:00:00.000");
+        doTestPresentationDateTimeString("1970-01-13 01:23:45.678");  
+        doTestPresentationDateTimeString("999999-12-31 23:59:59.999");  
+    }
+    
+    @Test
+    public void testPresentationDateTimeString_NeagtiveNoTimezone() 
+    {
+        // negative time is B.C. 
+        doTestPresentationDateTimeString("-0001-01-01 00:00:00.000");
+        doTestPresentationDateTimeString("-1970-01-13 01:23:45.678");  
+        doTestPresentationDateTimeString("-999999-12-31 23:59:59.999");  
+    }
+      
+    @Test 
+    public void testValueConstructors()
+    {
+        TestValues tValues=new TestValues(); 
+        doTestValueConstructors(tValues); 
+        
+        tValues=new TestValues(
+                true,
+                (int)1, 
+                (long)1024*1024*1024,
+                (float)1.13f, 
+                (double)Math.PI,
+                "String Value",     
+                new String[]{"aap","noot","mies"},
+                newVRL("scheme:","user","localhost",13,"/tmp/stuff/","query","fragment"),    
+                Presentation.createDateFromNormalizedDateTimeString("1970-01-13 01:23:45.678")
+                );
+        doTestValueConstructors(tValues); 
+    }
+    
+    @Test 
+    public void testValueConstructors_nillValues()
+    {
+        // empty: neutral (legal) 
+        TestValues tValues = new TestValues(
+                false,
+                (int)0, 
+                (long)0,
+                (float)0, 
+                (double)0,
+                "",     
+                new String[]{""},
+                newVRL("ref:",null,null,0,null,null,null),    
+                Presentation.createDateFromNormalizedDateTimeString("0001-01-01 00:00:00.000")
+                );
+        doTestValueConstructors(tValues); 
+    }
+    
+    @Test 
+    public void testValueConstructors_minimumAllowedValues()
+    {
+    
+        // minimum/null (allowed) 
+        TestValues tValues=new TestValues(
+                false,
+                (int)Integer.MIN_VALUE, 
+                (long)Long.MIN_VALUE,
+                (float)Float.MIN_VALUE, 
+                (double)Double.MIN_VALUE,
+                "",     
+                new String[]{null},
+                newVRL("","","",0,"","",""),    
+                Presentation.createDate(1)
+                );
+        
+        doTestValueConstructors(tValues); 
+    }
+    
+    @Test 
+    public void testValueConstructors_maximumAllowedValues()
+    {
+        // max (allowed) 
+        TestValues tValues = new TestValues(
+                true,
+                (int)Integer.MAX_VALUE, 
+                (long)Long.MAX_VALUE,
+                (float)Float.MAX_VALUE, 
+                (double)Double.MAX_VALUE,
+                createRandomString(1024),     
+                createRandomStringList(1024,1024).toArray(),
+                newVRL("scheme:",
+                        "Jan.Piet.Joris[Groupid-dev-0]",
+                        "www.llanfairpwllgwyngyllgogerychwyrndrobwyll-llantysiliogogogoch.com",
+                        65535,
+                        "/tmp/llanfairpwllgwyngyllgogerychwyrndrobwyll-llantysiliogogogoch/With Space",
+                        "aap=AapValue&noot=NootValue&mies=MiesValue&emptyValue=",
+                        "fragment"), 
+                        Presentation.createDateFromNormalizedDateTimeString("9999-12-31 23:59:59.999")
+                );
+        
+        doTestValueConstructors(tValues); 
+    }
+    
     @Test 
     public void testNullConstructors()
     {
-        // NULL value with NULL type default to String
+        // NULL value with NULL type default to ANY
         Attribute attr=new Attribute((String)null,(String)null);
         Assert.assertEquals("NULL attribute should return NULL",null,attr.getStringValue());  
         Assert.assertEquals("NULL value should default to ANY Type",AttributeType.ANY, attr.getType());
+        
     }
  
     @Test 
-    public void testStringValueConstructors() throws Exception
+    public void testString2ValueConstructors() throws Exception
     {   
         // test simple String based constructors and match against object value 
         doTestStringValueConstructor(AttributeType.BOOLEAN,"boolean1","true",new Boolean(true));
@@ -286,7 +462,12 @@ public class Test_Attribute
         doTestStringValueConstructor(AttributeType.DOUBLE,"double4","-1.123456",new Double(-1.123456));
         doTestStringValueConstructor(AttributeType.DOUBLE,"double5",""+Double.MAX_VALUE,new Double(Double.MAX_VALUE));
         doTestStringValueConstructor(AttributeType.DOUBLE,"double6",""+Double.MIN_VALUE,new Double(Double.MIN_VALUE));
-        // STRING
+    }
+    
+    @Test 
+    public void testStringConstructors() throws Exception
+    { 
+        // String:  
         doTestStringValueConstructor(AttributeType.STRING,"string1","value","value");
         doTestStringValueConstructor(AttributeType.STRING,"string2","","");
         // allow NULL 
@@ -304,7 +485,6 @@ public class Test_Attribute
         String vrlStr="file:/local/path/to/file.ext";
         VRL vrl=new VRL(vrlStr);
         doTestStringValueConstructor(AttributeType.VRL,"name",vrlStr,vrl);
-
         
         // VRL 
         vrlStr="http://user@host.domain:1234/Directory/Path";
@@ -315,149 +495,9 @@ public class Test_Attribute
         vrlStr="http://user@host.domain:1234/Directory/AFile?query#frag";
         vrl=new VRL(vrlStr);
         doTestStringValueConstructor(AttributeType.VRL,"name",vrlStr,vrl);
-
     }
     
-    public void doTestStringValueConstructor(AttributeType type,String name,String strValue,Object objectValue) 
-    {
-        // basic constructor tests 
-        Attribute attr=VAttributeUtil.createFrom(name, objectValue); // Create From Object. Must match actual type!
-        
-        // check type,name and String value 
-        Assert.assertEquals("Type must be:"+type,type,attr.getType());
-        
-        boolean ignoreCase=false;
-        
-        if (objectValue instanceof Boolean)
-            ignoreCase=true; 
-        
-        if (ignoreCase==false)
-            Assert.assertEquals("String values should match (if parsed correctly) for type:"+type,strValue,attr.getStringValue());
-        else
-            assertEquals("String values should match (if parsed correctly) for type:"+type,strValue,attr.getStringValue(),ignoreCase); 
-        
-        Assert.assertEquals("Attribute name must match",name,attr.getName()); 
-        Assert.assertTrue("isType() must return true for attr:"+attr,attr.isType(type)); 
-        
-        checkObjectValueType(attr,objectValue); 
-    }
 
-    private void assertEquals(String message, String value1, String value2, boolean ignoreCase)
-    {
-        Assert.assertTrue(message,StringUtil.compare(value1,value2,ignoreCase)==0);
-    }
-
-    // test whether object has matching type and native value 
-    void checkObjectValueType(Attribute attr,Object objValue)
-    {
-        AttributeType type=getObjectAttributeType(objValue);
-        AttributeType type2=AttributeType.getObjectType(objValue,null); 
-        Assert.assertEquals("AttributeType.getObjectType() and unit test getObjectType() must agree.",type,type2);
-        if (objValue==null)
-        {
-            Assert.assertNull("NULL object msut have NULL type.",objValue);
-            return; // NULL value.  
-        }
-        
-        Assert.assertTrue("Object type must be:"+type,attr.isType(type)); 
-
-        // check native value type! 
-        switch(type)
-        {
-            case BOOLEAN:
-                Assert.assertTrue("getBoolValue() must match native type!",(attr.getBooleanValue()==((Boolean)objValue))); 
-                break;
-            case INT:
-                Assert.assertTrue("getIntValue() must match native type!",(attr.getIntValue()==((Integer)objValue))); 
-                break;
-            case LONG:
-                Assert.assertTrue("getLongValue() must match native type!",(attr.getLongValue()==((Long)objValue))); 
-                break; 
-            case FLOAT:
-                Assert.assertTrue("getFloatValue() must match native type!",(attr.getFloatValue()==((Float)objValue))); 
-                break; 
-            case DOUBLE:
-                Assert.assertTrue("getDoubleValue() must match native type!",(attr.getDoubleValue()==((Double)objValue))); 
-                break;
-            case STRING:
-                Assert.assertTrue("getStringValue() must match native type!",(attr.getStringValue()==((String)objValue))); 
-                break; 
-            case VRL:
-                try
-                {
-                    Assert.assertTrue("getDoubleValue() must match native type!",((VRL)objValue).equals(attr.getVRL()) );
-                }
-                catch (Exception e)
-                {
-                    Assert.fail("Exception:"+e);
-                } 
-                break; 
-            case DATETIME:
-                Assert.assertTrue("getDateValue() must match native type!", compareDateValues(attr.getDateValue(),(Date)objValue)); 
-                break; 
-            default:
-                Assert.fail("Can not check type:"+type); 
-
-        }
-        
-        //compareDateValues(attr.getDateValue(),(Date)objValue))); 
-    }
-
-    private boolean compareDateValues(Date val1,Date val2)
-    {
-        boolean result=false; 
-
-        if (val1==val2)
-            result=true; 
-        
-        if (result==false)
-        {
-            if ( val1.toString().equals(val2.toString()) ) 
-                result=true; 
-        }
-       
-        String unistr1=Presentation.createNormalizedDateTimeString(val1); 
-        String unistr2=Presentation.createNormalizedDateTimeString(val2); 
-
-        // also Compare Presentation string implementations. 
-        if (result)
-        {
-            Assert.assertEquals("Normalize date/time strings should be equal",unistr1,unistr2); 
-        }
-        else
-        {
-            Assert.assertEquals("Normalize date/time strings should NOT be equal",unistr1,unistr2); 
-        }
-        
-        return result; 
-    }
-
-    // Unit test implementation: Different then AttributeType to assert similar implementations
-    AttributeType getObjectAttributeType(Object obj)
-    { 
-        if (obj instanceof Boolean)
-            return AttributeType.BOOLEAN;
-        else if (obj instanceof Integer)
-            return AttributeType.INT;
-        else if (obj instanceof Long)
-            return AttributeType.LONG;
-        else if (obj instanceof Float)
-            return AttributeType.FLOAT;
-        else if (obj instanceof Double)
-            return AttributeType.DOUBLE;
-        else if (obj instanceof String)
-            return AttributeType.STRING;
-        else if (obj instanceof Date)
-            return AttributeType.DATETIME;
-        else if (obj instanceof VRL)
-            return AttributeType.VRL;
-        else if (obj instanceof Enum)
-            return AttributeType.ENUM;
-        
-        // check enum ? 
-        return null; 
-    }
-    
     @Test
     public void testVRLAttribute() throws Exception
     {

@@ -80,7 +80,7 @@ public class Presentation
             return str + val;
     }
     
-    /** Format number to 0000-9999 format */
+    /** Format number to [-]0000-9999 format */
     public static String to4decimals(long val)
     {
         String str = "";
@@ -92,11 +92,11 @@ public class Presentation
         }
 
         if (val < 10)
-            return str = "000" + val;
+            return str + "000" + val;
         else if (val < 100)
             return str + "00" + val;
         else if (val < 1000)
-            return str + "000" + val;
+            return str + "0" + val;
         else
             return str + val;
     }
@@ -353,6 +353,17 @@ public class Presentation
         if (value == null)
             return null;
 
+        int yearSign=1; 
+        
+        if (value.startsWith("-"))
+        {
+            // Support negative years as in years B.C. 
+            // Year -1 = 1 B.C
+            // Year 0 = year 0 
+            // Year 1 = 1 A.C. 
+            value=value.substring(1); 
+            yearSign=-1;
+        }
         String strs[] = value.split("[ :-]");
 
         int year = new Integer(strs[0]);
@@ -383,6 +394,9 @@ public class Presentation
         now.clear();
         // respect timezone:
         now.setTimeZone(storedTimeZone);
+        if (yearSign<0)
+            now.set(GregorianCalendar.ERA, GregorianCalendar.BC);
+        
         now.set(year, month, day, hours, minutes, seconds);
         now.set(GregorianCalendar.MILLISECOND, millis); // be precize!
         // convert timezone back to 'local'
@@ -402,6 +416,10 @@ public class Presentation
         // normalize to GMT:
         gmtTime.setTimeZone(TimeZone.getTimeZone("GMT"));
 
+        int yearSign=1; 
+        if (gmtTime.get(GregorianCalendar.ERA)== GregorianCalendar.BC)
+            yearSign=-1; 
+        
         int year = gmtTime.get(GregorianCalendar.YEAR);
         int month = 1 + gmtTime.get(GregorianCalendar.MONTH); // January=0!
         int day = gmtTime.get(GregorianCalendar.DAY_OF_MONTH);
@@ -410,7 +428,7 @@ public class Presentation
         int seconds = gmtTime.get(GregorianCalendar.SECOND);
         int millies = gmtTime.get(GregorianCalendar.MILLISECOND);
 
-        return "" + to4decimals(year) + "-" + to2decimals(month) + "-" + to2decimals(day) + " " + to2decimals(hours) + ":"
+        return "" + to4decimals(yearSign*year) + "-" + to2decimals(month) + "-" + to2decimals(day) + " " + to2decimals(hours) + ":"
                 + to2decimals(minutes) + ":" + to2decimals(seconds) + "." + to3decimals(millies);
     }
 

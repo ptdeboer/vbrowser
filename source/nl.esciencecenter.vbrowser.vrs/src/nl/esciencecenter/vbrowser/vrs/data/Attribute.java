@@ -23,6 +23,7 @@ package nl.esciencecenter.vbrowser.vrs.data;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;
+import java.util.List;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.object.Duplicatable;
@@ -36,12 +37,12 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 /**
  * This class provides a high level interface to resource Attributes.
  * <p>
- * It is a <code> {type, name, value}</code> <em>triple</em>. 
+ * It is a <code> {type, name, value}</code> Triple. 
  * <br>
  * The Attribute itself does not do any type checking, so casting is possible. A
  * getStringValue() after a setValue(int) will return the string representation
  * of the int. <br>
- * 
+ * @see AttributeType 
  * @author P.T. de Boer
  */
 public class Attribute implements Cloneable, Serializable, Duplicatable<Attribute>
@@ -140,7 +141,7 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
             default:
             {
                 if (object instanceof Duplicatable)
-                    return ((Duplicatable) object).duplicate(false);
+                    return ((Duplicatable<?>) object).duplicate(false);
 
                 throw new Error("Cannot clone/duplicate value object:" + object);
             }
@@ -152,7 +153,7 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
     // ========================================================================
 
     /** 
-     * The name of the attribute 
+     * The name of the attribute.
      */
     private String name = null;
 
@@ -163,13 +164,15 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
 
     /** 
      * Whether attribute is editable. 
+     * No runtime checking is done. 
+     * This attribute is only used in Attribute Editor forms. 
      */
     private boolean editable = false;
 
     /** 
      * List of enum values, index enumValue determines which enum value is set 
      */
-    private StringList enumValues = null;
+    private String enumValues[] = null;
 
     /** 
      * Index into enumValues[] so that: enumAvalues[enumIndex]==value 
@@ -192,13 +195,13 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
     /** Constructor to create a enum list of string */
     public Attribute(String name, String enumValues[], int enumVal)
     {
-        init(name, new StringList(enumValues), enumVal);
+        init(name, enumValues, enumVal);
     }
 
     /** Constructor to create a enum list of string */
-    public Attribute(String name, StringList enumValues, int enumVal)
+    public Attribute(String name, List<String> enumValues, int enumVal)
     {
-        init(name, enumValues, enumVal);
+        init(name, enumValues.toArray(new String[0]), enumVal);
     }
 
     public Attribute(String name, Boolean val)
@@ -246,6 +249,7 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
 
         if ((enumVals == null) || (enumVals.length <= 0))
             throw new NullPointerException("Cannot not have empty enum value list !");
+
         StringList enums = new StringList(enumVals);
 
         // robuustness! add defaultVal if not in enumVals!
@@ -256,7 +260,7 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
         if (index < 0)
             index = 0;
 
-        init(name, enums, index);
+        init(name, enums.toArray(), index);
     }
 
     /**
@@ -300,22 +304,29 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
         if (type == AttributeType.ANY)
             return;
 
-        //Assert here ? 
-        // Null type are either ANY or String. 
+        // Assert here ? 
+        // Null types are either ANY or String. 
         if (value==null)
         {
             if (type!=AttributeType.ANY && type!=AttributeType.STRING)
+            {
                 throw new Error("Null objects resolve to ANY type (or String)!"); 
+            }
+            else
+            {
+                // null may match against ANY and STRING. 
+                return;
+            }
         }
         
         // basic object type checks: 
         AttributeType objType = AttributeType.getObjectType(value, AttributeType.STRING);
 
-        // DateTime can be stored as normalized date-time string;
+        // DateTime can be stored as normalized date-time string as well as Date Object. 
         if (type == AttributeType.DATETIME && objType == AttributeType.STRING)
             return;
 
-        // Same for ENUM
+        // Enum are stored as Strings. 
         if (type == AttributeType.ENUM && objType == AttributeType.STRING)
             return;
 
@@ -329,15 +340,15 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
     /** 
      * Initialize as Enum Type 
      */
-    protected void init(String name, StringList enumValues, int enumIndex)
+    protected void init(String name, String enumValues[], int enumIndex)
     {
         this.name = name;
         this.enumValues = enumValues;
         this.enumIndex = enumIndex;
 
-        if ((enumValues != null) && (enumIndex >= 0) && (enumIndex < enumValues.size()))
+        if ((enumValues != null) && (enumIndex >= 0) && (enumIndex < enumValues.length))
         {
-            this.value = enumValues.get(enumIndex);
+            this.value = enumValues[enumIndex];
         }
         else
         {
@@ -346,11 +357,14 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
         }
     }
 
-    // master setter:
+    /** 
+     * Master setter method. All set(...) methods should call this. 
+     */
     private void _setValue(AttributeType type, Object object)
     {
         this.checkValueType(type, object);
         this.value = object;
+        this.changed=true; 
     }
 
     protected void copyFrom(Attribute source)
@@ -448,7 +462,7 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
     public String[] getEnumValues()
     {
         if (enumValues != null)
-            return enumValues.toArray();
+            return enumValues.clone(); // return private copy of array. 
 
         if (getType() == AttributeType.BOOLEAN)
             return booleanEnumValues;
@@ -470,17 +484,19 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
         return 0;
     }
 
+    /** Searches enum values if it contain the specified option. */  
     public boolean hasEnumValue(String val)
     {
-        return this.enumValues.contains(val);
+        if (enumValues==null) 
+            return false; 
+        
+        for (int i=0;i<enumValues.length;i++)
+            if (val.equals(enumValues[i]))
+                return true; 
+        
+        return false; 
     }
-
-    public boolean hasSetValue(String val)
-    {
-        // Set is Enum:
-        return this.hasEnumValue(val);
-    }
-
+    
     /**
      * Parse String to Object. 
      */
@@ -522,18 +538,24 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
     }
 
     /**
-     * Return true if this VAttribute is editable. This mean that the setValue()
-     * methods can be used to change the value. Note that VAttribute by default
-     * or NOT editable. use setEditable() to change this.
+     * Return true if this Attribute is supposed to be editable.
+     * The set() methods still work, this is just a flag used for Attribute Editor panels.
+     * @return whether this Attribute is supposed to be editable.  
      */
     public boolean isEditable()
     {
         return this.editable;
     }
 
-    public void setEditable(boolean b)
+    /** 
+     * Set whether this Attribute is supposed to be editable. 
+     * The set() method do not check this and no exception is thrown if the 
+     * Attribute is set anyway.  
+     * @param value - set whether this Attribute is supposed to be editable. 
+     */
+    public void setEditable(boolean value)
     {
-        this.editable = b;
+        this.editable = value; 
     }
 
     public int getIntValue()
@@ -678,7 +700,10 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
             return null;
         }
     }
-    /** Ignore case only makes sense for String like Attributes */
+    
+    /** 
+     * Ignore case only makes sense for String like Attributes 
+     */
     public int compareToIgnoreCase(Attribute attr2)
     {
         return compareTo(attr2, true);
@@ -694,16 +719,16 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
      * The type of this attribute is used and the other attribute is converted (casted) to this
      * type.
      * 
-     * @param attr
+     * @param other
      * @return
      */
-    public int compareTo(Attribute attr, boolean ignoreCase)
+    public int compareTo(Attribute other, boolean ignoreCase)
     {
         // NULL comparison MUST match String compare !
         if (this.value == null)
         {
             // / (this.value==null) < (other.value!=null)
-            if ((attr != null) && (attr.getValue() != null))
+            if ((other != null) && (other.getValue() != null))
                 return -1;
             else
                 return 0; // null equals null
@@ -715,9 +740,9 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
             case LONG:
             {
                 // use long both for int,long and time (millis!)
-                if (this.getLongValue() < attr.getLongValue())
+                if (this.getLongValue() < other.getLongValue())
                     return -1;
-                else if (this.getLongValue() > attr.getLongValue())
+                else if (this.getLongValue() > other.getLongValue())
                     return 1;
                 else
                     return 0;
@@ -725,14 +750,14 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
             case DATETIME:
             {
                 // Use Date Value:
-                return this.getDateValue().compareTo(attr.getDateValue());
+                return this.getDateValue().compareTo(other.getDateValue());
                 // break;
             }
             case FLOAT:
             {
-                if (this.getFloatValue() < attr.getFloatValue())
+                if (this.getFloatValue() < other.getFloatValue())
                     return -1;
-                else if (this.getFloatValue() > attr.getFloatValue())
+                else if (this.getFloatValue() > other.getFloatValue())
                     return 1;
                 else
                     return 0;
@@ -740,16 +765,16 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
             }
             case DOUBLE:
             {
-                if (this.getDoubleValue() < attr.getDoubleValue())
+                if (this.getDoubleValue() < other.getDoubleValue())
                     return -1;
-                else if (this.getDoubleValue() > attr.getDoubleValue())
+                else if (this.getDoubleValue() > other.getDoubleValue())
                     return 1;
                 else
                     return 0;
             }
             case STRING:
             {
-                return StringUtil.compare((String) value, attr.getStringValue());
+                return StringUtil.compare((String) value, other.getStringValue());
             }
             case VRL:
             {
@@ -757,17 +782,17 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
                 if (vrl==null)
                     return -1; 
                 // use object compare
-                vrl.compareToObject(attr.getVRLorNull()); 
+                vrl.compareToObject(other.getVRLorNull()); 
             }
             case ENUM:
             case ANY:
             default:
             {
                 String s1 = this.toString();
-                String s2 = attr.toString();
+                String s2 = other.toString();
 
                 // Default use string reprentation
-                if (attr.getValue() != null)
+                if (other.getValue() != null)
                 {
                     if (ignoreCase)
                     {
@@ -802,6 +827,9 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
 
     public Date getDateValue()
     {
+        if (value==null)
+            return null;
+    
         if (this.value instanceof java.util.Date)
             return (Date) this.value;
 
@@ -812,6 +840,11 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
         return Presentation.createDateFromNormalizedDateTimeString(getStringValue());
     }
 
+    /** 
+     * Old style section names are embedded between '[]' like '[config]'. 
+     * @param name - the attribute name to be checked. 
+     * @return - true for attribute names which are embedded between brackets. 
+     */
     public static boolean isSectionName(String name)
     {
         if (name == null)
@@ -855,17 +888,17 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
             enumStr = ",{";
 
             if (this.enumValues != null)
-                for (int i = 0; i < this.enumValues.size(); i++)
+                for (int i = 0; i < this.enumValues.length; i++)
                 {
-                    enumStr = enumStr + enumValues.get(i);
-                    if (i + 1 < enumValues.size())
+                    enumStr = enumStr + enumValues[i];
+                    if (i + 1 < enumValues.length)
                         enumStr = enumStr + ",";
                 }
 
             enumStr = enumStr + "}";
         }
 
-        // convert to VAttribute Triplet
+        // convert to Attribute Triplet
         return "{" 
                 + getType() + "," + name + "," + value + enumStr 
                 + ",[" + ((isEditable()) ? "E" : "") + ((hasChanged()) ? "C" : "") 
