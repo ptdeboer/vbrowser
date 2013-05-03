@@ -105,7 +105,7 @@ public class TaskWatcher implements ITaskSource
     {
         logger.debugPrintf("(*)notifyTaskTerminated:%s\n",actionTask);
         deschedule(actionTask);
-        this.setHasActiveTasks(hasActiveTasks());
+        this.setHasActiveTasks(checkHasActiveTasks());
     }
     
     protected void deschedule(ActionTask actionTask)
@@ -135,13 +135,13 @@ public class TaskWatcher implements ITaskSource
         logger.infoPrintf("deschedule(): Number active/terminated tasks: %d/%d\n", activeTasks.size(),terminatedTasks.size()); 
     }
     
-    public boolean hasActiveTasks()
+    public boolean checkHasActiveTasks()
     {
         int size=activeTasks.size(); 
         
         if (size>0)
         {
-            int index=size; 
+            int index=size-1; 
             
             while(index>=0)
             {
@@ -203,7 +203,9 @@ public class TaskWatcher implements ITaskSource
         return null; 
     }
     
-    /** Return a private copy of the task list, for thread save operations */
+    /** 
+     * Return a private copy of the task list, for thread safe operations 
+     */
     protected final ActionTask[] getActiveTaskArray()
     {
         synchronized (activeTasks)
@@ -254,6 +256,7 @@ public class TaskWatcher implements ITaskSource
     public void setHasActiveTasks(boolean active)
     {
         logger.debugPrintf("(?)setHasActiveTasks:%s\n",active);
+        // todo update TaksListeners. 
     }
     
     public void stopAllTasks()
@@ -273,7 +276,7 @@ public class TaskWatcher implements ITaskSource
         catch (InterruptedException e)
         {
             logger.logException(ClassLogger.ERROR,e,"***Error: Exception:"+e); 
-        } 
+        }         
         
         // now send interrupt:   
         for (ActionTask task:tasks)
