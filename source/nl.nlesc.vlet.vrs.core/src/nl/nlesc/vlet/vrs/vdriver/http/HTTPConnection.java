@@ -31,7 +31,7 @@ import java.net.URLConnection;
 import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.net.ssl.SslUtil;
+import nl.nlesc.vlet.net.ssl.VrsSslUtil;
 
 /**
  * Wrapper around URLConnection
@@ -123,10 +123,7 @@ public class HTTPConnection
                     try
                     {
                        logger.debugPrintf("doConnection: check certificates for:%s:%d\n",httpNode.getHostname(),httpNode.getPort());
-                       
-                       CertificateStore certStore=this.httpNode.getVRSContext().getConfigManager().getCertificateStore();
-                       // check+install certificate: 
-                       SslUtil.fetchCertificates(certStore,httpNode.getHostname(),httpNode.getPort());
+                       VrsSslUtil.interactiveImportCertificate(httpNode.getVRSContext(), httpNode.getHostname(),httpNode.getPort()); 
                     }
                     catch (Exception e)
                     {

@@ -34,7 +34,7 @@ import nl.nlesc.vlet.actions.ActionContext;
 import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.viewers.ViewerPlugin;
-import nl.nlesc.vlet.net.ssl.SslUtil;
+import nl.nlesc.vlet.net.ssl.VrsSslUtil;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 
@@ -187,8 +187,7 @@ public class LoboBrowser extends ViewerPlugin
         {
             if (location.hasScheme(VRS.HTTPS_SCHEME))
             {
-                CertificateStore certs = UIGlobal.getVRSContext().getConfigManager().getCertificateStore();
-                SslUtil.fetchCertificates(certs,location.getHostname(),location.getPort());
+                VrsSslUtil.interactiveImportCertificate(UIGlobal.getVRSContext(),location.getHostname(),location.getPort());
             }
         }
         catch (Exception e1)

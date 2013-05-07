@@ -27,7 +27,7 @@ import java.security.cert.X509Certificate;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-import nl.esciencecenter.ptk.ssl.CertificateStore;
+import nl.esciencecenter.ptk.ssl.CertUtil;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -233,7 +233,7 @@ public class ViewerX509 extends ViewerPlugin implements CertPanelListener
         {
             // Get (Expected) DER part
             String derStr = txt.substring(index);
-            return CertificateStore.createDERCertificateFromString(derStr);
+            return CertUtil.createDERCertificateFromString(derStr);
         }
         int len=txt.length(); 
         if (len>80)

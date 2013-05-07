@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.nlesc.vlet.dialog;
+package nl.esciencecenter.ptk.ssl;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,13 +32,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 
-public class CaCertDialog extends VletDialog
+public class CertificateDialog extends javax.swing.JDialog
 {
-	private static final long serialVersionUID = -8943578879979815967L;
+    private static final long serialVersionUID = -48781947889542443L;
 
-	// --- //
-	
-	public static final int CANCEL = -1;
+    public static final int CANCEL = -1;
     public static final int OK = 0;
     public static final int TEMPORARY = 1;
     public static final int NO  = 2;
@@ -60,7 +58,7 @@ public class CaCertDialog extends VletDialog
 	private int value=CANCEL; 
 	
 	
-	public CaCertDialog(JFrame frame)
+	public CertificateDialog(JFrame frame)
 	{
 		super(frame);
 		initGUI();
@@ -135,8 +133,7 @@ public class CaCertDialog extends VletDialog
 						buttonPanel.add(yesButton);
 						yesButton.setText("yes");
 						yesButton.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent evt) 
-							{
+							public void actionPerformed(ActionEvent evt) {
 								exit(OK); 
 							}
 						});
@@ -146,8 +143,7 @@ public class CaCertDialog extends VletDialog
 						buttonPanel.add(temporaryButton);
 						temporaryButton.setText("Temporary");
 						temporaryButton.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent evt) 
-							{
+							public void actionPerformed(ActionEvent evt) {
 								exit(TEMPORARY);  
  							}
 						});
@@ -157,8 +153,7 @@ public class CaCertDialog extends VletDialog
 						buttonPanel.add(cancelButton);
 						cancelButton.setText("cancel");
 						cancelButton.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent evt) 
-							{
+							public void actionPerformed(ActionEvent evt) {
 								exit(CANCEL); 
 							}
 						});
@@ -192,14 +187,14 @@ public class CaCertDialog extends VletDialog
 	public static void main(String[] args) 
 	{
 		JFrame frame = new JFrame();
-		CaCertDialog inst = new CaCertDialog(frame);
+		CertificateDialog inst = new CertificateDialog(frame);
 		inst.setVisible(true);
 	}
 	
 	public static int showDialog(String text, String chainMessage)
 	{
 		JFrame frame = new JFrame();
-		CaCertDialog inst = new CaCertDialog(frame);
+		CertificateDialog inst = new CertificateDialog(frame);
 		inst.setQuestion(text);
 		inst.setMessageText(chainMessage); 
 		inst.setModal(true); 

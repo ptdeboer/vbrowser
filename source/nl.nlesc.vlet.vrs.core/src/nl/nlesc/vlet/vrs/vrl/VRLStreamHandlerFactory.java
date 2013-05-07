@@ -5,7 +5,7 @@ import java.net.URLStreamHandlerFactory;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.net.ssl.SslUtil;
+import nl.nlesc.vlet.net.ssl.VrsSslUtil;
 
 /**
  * The VRLStreamHandlerFactory.
@@ -55,7 +55,7 @@ public class VRLStreamHandlerFactory implements URLStreamHandlerFactory
 
     private VRLStreamHandlerFactory()
     {
-        this.httpsURLHandlerClass = SslUtil.createHttpsHandler().getClass();
+        this.httpsURLHandlerClass = VrsSslUtil.createHttpsHandler().getClass();
     }
 
     public URLStreamHandler createURLStreamHandler(String protocol)

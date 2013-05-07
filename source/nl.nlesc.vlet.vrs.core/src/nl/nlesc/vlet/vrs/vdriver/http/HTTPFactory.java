@@ -22,7 +22,7 @@ package nl.nlesc.vlet.vrs.vdriver.http;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.net.ssl.SslUtil;
+import nl.nlesc.vlet.net.ssl.VrsSslUtil;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
@@ -36,7 +36,7 @@ public class HTTPFactory extends VRSFactory
 	static
 	{
 	    // HTTPS/SSL verifier
-	    SslUtil.init(); 
+	    // VrsSslUtil.init(); 
 	    // initSslHostnameVerifier(); 
 	    //SslUtil.setMySslValidation();
 	    //SslUtil.setNoSslValidation();

@@ -371,7 +371,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
     private CertificateStore getCertStore() throws CertificateStoreException
     {
         String cacertsLoc=VletConfig.getDefaultUserCACertsLocation(); 
-        return CertificateStore.loadCertificateStore(cacertsLoc, CertificateStore.DEFAULT_PASSPHRASE, true); 
+        return CertificateStore.loadCertificateStore(cacertsLoc, CertificateStore.DEFAULT_PASSPHRASE, true,false); 
     }
 
     public X509Certificate[] getTrustedCertificates()

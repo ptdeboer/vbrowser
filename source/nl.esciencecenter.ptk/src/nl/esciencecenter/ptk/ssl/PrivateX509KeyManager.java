@@ -33,24 +33,24 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 
 /**
- * Implementation of  X509KeyManager, which always returns one pair of a private key 
+ * Implementation of a X509KeyManager, which always returns one pair of a private key 
  * and certificate chain.
- * It manages "My Key" which is a private key.  
+ * It manages a user key which is a private key.  
  */
-public class MyX509KeyManager implements X509KeyManager 
+public class PrivateX509KeyManager implements X509KeyManager 
 {
    static ClassLogger log = null;
    
    static
    {
-       log=ClassLogger.getLogger(MyX509KeyManager.class);
-       //log.setLevelToDebug(); 
+       log=ClassLogger.getLogger(PrivateX509KeyManager.class);
    }
    
    private final X509Certificate[] certChain;
+
    private final PrivateKey key;
 
-   public MyX509KeyManager(Certificate[] cchain, PrivateKey key)
+   public PrivateX509KeyManager(Certificate[] cchain, PrivateKey key)
    {
        this.certChain = new X509Certificate[cchain.length];
        System.arraycopy(cchain, 0, this.certChain, 0, cchain.length);
@@ -64,8 +64,7 @@ public class MyX509KeyManager implements X509KeyManager
        return null;
    }
 
-
-   // Intented to be implemented by GUI for user interaction, but we have only one key.
+   /// Intented to be implemented by GUI for user interaction, but we have only one key.
    public String chooseClientAlias(String[] keyType, Principal[] issuers, Socket socket) 
    {
        if (log.isLoggable(ClassLogger.DEBUG))

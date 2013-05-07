@@ -36,6 +36,7 @@ import javax.net.ssl.SSLContext;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.ptk.ssl.CertUtil;
 import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -51,7 +52,7 @@ import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.grid.voms.VO;
 import nl.nlesc.vlet.grid.voms.VOServer;
 import nl.nlesc.vlet.net.ssl.SSLContextManager;
-import nl.nlesc.vlet.net.ssl.SslUtil;
+import nl.nlesc.vlet.net.ssl.VrsSslUtil;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 
@@ -1255,7 +1256,7 @@ public class GridProxy
     
     public X509Certificate getUserCertificate() throws Exception
     {
-        return CertificateStore.loadPEMCertificate(this.getUserCertFile());
+        return CertUtil.loadPEMCertificate(this.getUserCertFile());
     }
     
     public void setPrivateKeystorePassword(String passwd)
@@ -1299,7 +1300,7 @@ public class GridProxy
                 // String errorTxt="FIXME, cannot set default HTTPSSslContext\n";
                 // logger.logException(ClassLogger.FATAL,new Exception(errorTxt),"Fatal:%s\n",errorTxt); 
                 // Update Default SSL Context for URL handlers to use !
-                SslUtil.setDefaultHttpsSslContext(sslContext);
+                VrsSslUtil.setDefaultHttpsSslContext(sslContext);
             }
              
         }
@@ -1402,9 +1403,7 @@ public class GridProxy
 			
 			try 
 			{
-	            CertificateStore certStore;
-				certStore = getVRSContext().getConfigManager().getCertificateStore();
-	            SslUtil.fetchCertificates(certStore,serv.getHostname(),serv.getPort());
+	            VrsSslUtil.interactiveImportCertificate(getVRSContext(),serv.getHostname(),serv.getPort());
 			}
 			catch (Exception e) 
 			{

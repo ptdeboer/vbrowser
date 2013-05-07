@@ -41,7 +41,7 @@ import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 
 import nl.esciencecenter.ptk.ssl.CertificateStore;
-import nl.esciencecenter.ptk.ssl.MyX509KeyManager;
+import nl.esciencecenter.ptk.ssl.PrivateX509KeyManager;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
@@ -49,7 +49,7 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /** 
  * SSLContext Manager support different SSLContexts.
- * Has backwards compatibility with SSLv3 contexts and grid based authentication procotocols
+ * Has backwards compatibility with(buggy) SSLv3 contexts and grid based authentication procotocols
  * as used in Glite and OGSA based webservices.    
  * An SSLContextManager creates and manages one SSLContext.
  */
@@ -193,7 +193,7 @@ public class SSLContextManager
             
         if (StringUtil.isEmpty(loc)==false)
         {
-            this.caCertificateStore=CertificateStore.loadCertificateStore(loc,passwd,false);
+            this.caCertificateStore=CertificateStore.loadCertificateStore(loc,passwd,false,false);
             logger.infoPrintf("Loaded custom cacerts file from:%s\n",loc); 
         }
         else
@@ -305,7 +305,7 @@ public class SSLContextManager
     
     public void setPrivateKeystore(String keystoreLocation,String privateKeyAlias,String passwd) throws Exception
     {
-        CertificateStore certStore = CertificateStore.loadCertificateStore(keystoreLocation,passwd,false);
+        CertificateStore certStore = CertificateStore.loadCertificateStore(keystoreLocation,passwd,false,false);
         this._updatePrivateKeyStore(certStore.getKeyStore(),privateKeyAlias,passwd,keystoreLocation);  
     }
     
@@ -325,7 +325,7 @@ public class SSLContextManager
             // If there is a private keystore and Proxy Identity is not enabled: load keystore: 
             if ( (StringUtil.isEmpty(keystoreLocation)==false) && (getEnableProxyIdentity()==false) ) 
             {
-                CertificateStore certStore = CertificateStore.loadCertificateStore(keystoreLocation,passwd,false);
+                CertificateStore certStore = CertificateStore.loadCertificateStore(keystoreLocation,passwd,false,false);
                 this._privateKeystore=certStore.getKeyStore();
             }
             // must be enabled!
@@ -362,7 +362,7 @@ public class SSLContextManager
         PrivateKey privKey ;
         privKey=(PrivateKey)keyStore.getKey(alias,passwd.toCharArray());
         
-        MyX509KeyManager manager=new MyX509KeyManager(chain,privKey); 
+        PrivateX509KeyManager manager=new PrivateX509KeyManager(chain,privKey); 
        
         for (X509Certificate cert:chain)
         {

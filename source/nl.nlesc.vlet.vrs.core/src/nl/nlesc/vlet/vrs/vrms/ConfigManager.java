@@ -730,8 +730,8 @@ public class ConfigManager
     }
 
     /**
-     * Check wether a SSH tunnel configuration exists for the specifed {scheme,host,port} resource. 
-     * The name for the property is: <br> 
+     * Check wether a SSH tunnel configuration exists for the specified {scheme,host,port} resource. 
+     * The name for the property is: <br> s
      * ssh.tunnel.${scheme}.${host}.${port} and the value is specifies is a hostname with optional port,
      * for example:<br>
      * ssh.tunnel.bdii.bdii.grid.sara.nl.2170=ui.grid.sara.nl
@@ -788,7 +788,7 @@ public class ConfigManager
         {
             if (this.certificateStore==null)
             {
-                certificateStore=CertificateStore.loadCertificateStore(usercerts, CertificateStore.DEFAULT_PASSPHRASE, true); 
+                certificateStore=CertificateStore.loadCertificateStore(usercerts, CertificateStore.DEFAULT_PASSPHRASE, true,true); 
     
                 VRL[] certDirs = VletConfig.getCACertificateLocations(true);
                 java.net.URL[] urls=new URL[certDirs.length];
@@ -798,7 +798,7 @@ public class ConfigManager
                 
                 certificateStore.setCustomCerticateDirectories(urls); 
                 certificateStore.reloadCustomCertificates(); 
-                certificateStore.setAutoSave(true);
+                certificateStore.setIsPersistant(true);
                 
             }
         }
@@ -811,15 +811,14 @@ public class ConfigManager
         return certificateStore;
     }
 
-    public void addCACertificate(X509Certificate cert2, boolean save) throws Exception
+    public void addCACertificate(X509Certificate cert, boolean save) throws Exception
     {
         CertificateStore certstore = this.getCertificateStore(); 
         
-        certstore.addCertificate(cert2.getIssuerDN().getName(), cert2, save);
+        certstore.addCertificate(cert.getIssuerDN().getName(), cert, save);
         // synchronize Certificates with cacerts! 
-        // make sure certstore and grid proxy fromt his context are the same.  
+        // make sure certstore and grid proxy from this context are the same.  
         this.vrsContext.getGridProxy().loadCertificates(); 
-        
     }
 
     public String getProxyFilename()

@@ -29,7 +29,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.nlesc.vlet.net.ssl.SslUtil;
+import nl.esciencecenter.ptk.ssl.CertificateStore;
+import nl.esciencecenter.ptk.ssl.SslUtil;
+import nl.nlesc.vlet.net.ssl.VrsSslUtil;
 
 public class NetUtil
 {
@@ -309,7 +311,7 @@ private Scanner scanner;
    
    public Socket createSSLSocket(String host,int port,int timeout) throws Exception
    {
-       Socket socket =  SslUtil.openSSLSocket(host,port,timeout); 
+       Socket socket =  SslUtil.createSSLv3Socket(CertificateStore.getDefault(true),host,port,timeout,true); 
        return socket; 
    }
 
