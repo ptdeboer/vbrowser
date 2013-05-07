@@ -147,6 +147,8 @@ public class CertificateDialog extends javax.swing.JDialog
 								exit(TEMPORARY);  
  							}
 						});
+						temporaryButton.setEnabled(false); 
+						temporaryButton.setVisible(false);
 					}
 					{
 						cancelButton = new JButton();
