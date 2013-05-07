@@ -18,7 +18,7 @@
  */ 
 // source: 
 
-package nl.nlesc.ptk.io;
+package nl.esciencecenter.ptk.io;
 
 import java.io.File;
 
@@ -30,7 +30,7 @@ import org.junit.Test;
 
 
 
-public class TestGlobal 
+public class Test_GlobalProperties 
 {
 	
 	@Test

@@ -218,8 +218,8 @@ public class CertificateStore
 
     /**
      * Loads CertificateStore from specified location using the specifed
-     * password to unlock it. If the keystore doesn't exists and autoInitiliaze
-     * is true an default keystore will be created. Set persistant to true to
+     * password to unlock it. If the keystore doesn't exist and autoInitiliaze
+     * is true a default keystore will be created. Set persistant to true to
      * autosave changes to this location.
      * 
      * @param keyStoreLocation
@@ -245,9 +245,6 @@ public class CertificateStore
 
     /**
      * Create non persistent internal CertificateStore.
-     * 
-     * Does not load automatically configured certificates not stores the data
-     * in a file.
      */
     public static CertificateStore createInternal(String passwd) throws CertificateStoreException
     {
@@ -428,7 +425,7 @@ public class CertificateStore
     }
 
     /**
-     * Set this to true to auto save new added Certificate to the keystore.
+     * Set this to true to auto save new added Certificates to the keystore.
      */
     public void setIsPersistant(boolean val)
     {
@@ -436,7 +433,7 @@ public class CertificateStore
     }
 
     /**
-     * Whether key store is persistent. A KeyStore can only be persistent if it has a
+     * Whether the KeyStore is persistent. A KeyStore can only be persistent if it has a
      * storage location.
      */
     public boolean isPersistant()
@@ -453,7 +450,7 @@ public class CertificateStore
     }
 
     /**
-     * Returns configured passphrase or return default value given as argument.
+     * Returns configured passphrase for this KeyStore. 
      */
     private String getPassphrase()
     {
@@ -910,6 +907,21 @@ public class CertificateStore
         }
     }
 
+    public Certificate getCertificate(String alias) throws CertificateStoreException
+    {
+        synchronized (this._keyStore)
+        {
+            try
+            {
+                return this._keyStore.getCertificate(alias);
+            }
+            catch (Exception e)
+            {
+                throw new CertificateStoreException(
+                        "Error accessing KeyStore while getting certificate for alias:" + alias, e);
+            }
+        }
+    }
     /**
      * Return private key specified by the alias.
      * 
@@ -1043,6 +1055,5 @@ public class CertificateStore
         return this.savingTrustManager;
     }
 
- 
 
 }

@@ -3,11 +3,15 @@ package nl.esciencecenter.ptk.ssl;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.ptk.util.StringUtil;
 
 public class CertUtil
 {
@@ -77,6 +81,22 @@ public class CertUtil
         CertificateStore.logger.debugPrintf(" -  Subject  = %s\n", x590.getSubjectDN().toString());
         CertificateStore.logger.debugPrintf(" -  Issuer   = %s\n", x590.getIssuerDN().toString());
         return x590;
+    }
+
+    public static String toString(X509Certificate cert, String indent, String eolStr) throws NoSuchAlgorithmException, CertificateEncodingException
+    {
+        MessageDigest sha1 = MessageDigest.getInstance("SHA1");
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
+        sha1.update(cert.getEncoded());
+        sha1.update(cert.getEncoded());
+            
+        String certStr;
+        certStr   = indent + "Subject :" + cert.getSubjectDN() + eolStr;
+        certStr += indent + "Issuer  :" + cert.getIssuerDN() +  eolStr;
+        certStr += indent + "sha1    :" + StringUtil.toHexString(sha1.digest(), true) + eolStr;
+        certStr += indent + "md5     :" + StringUtil.toHexString(md5.digest(), true) + eolStr; 
+
+        return certStr; 
     }
 
 

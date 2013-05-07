@@ -103,8 +103,7 @@ public class ImportCertificates
 
         logger.debugPrintf("Server sent " + chain.length + " certificate(s):\n");
 
-        MessageDigest sha1 = MessageDigest.getInstance("SHA1");
-        MessageDigest md5 = MessageDigest.getInstance("MD5");
+       
         String chainMessage = "";// sslerrorMessage;
 
         int nrKeys = chain.length;
@@ -121,12 +120,7 @@ public class ImportCertificates
             keyIssuers[i] = cert.getIssuerDN().toString();
 
             chainMessage += " --- Certificate [" + (i + 1) + "] ---\n";
-            chainMessage += "    Subject : " + cert.getSubjectDN() + "\n";
-            chainMessage += "    Issuer  : " + cert.getIssuerDN() + "\n";
-            sha1.update(cert.getEncoded());
-            chainMessage += "    sha1    : " + StringUtil.toHexString(sha1.digest(), true) + "\n";
-            md5.update(cert.getEncoded());
-            chainMessage += "    md5     : " + StringUtil.toHexString(md5.digest(), true) + "\n";
+            chainMessage += CertUtil.toString(cert,"    ","\n"); 
         }
 
         // String options[]={"yes","no","temporary"};

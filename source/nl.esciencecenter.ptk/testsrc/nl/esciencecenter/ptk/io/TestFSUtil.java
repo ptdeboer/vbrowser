@@ -18,7 +18,7 @@
  */ 
 // source: 
 
-package nl.nlesc.ptk.io;
+package nl.esciencecenter.ptk.io;
 
 import java.io.IOException;
 
