@@ -195,17 +195,9 @@ public class TaskMonitorDialog extends javax.swing.JDialog
 
     public void cancel()
     {
-        if (this.actionTask.isCancelled())
-        {
-            // again; 
-            this.cancelButton.setEnabled(false); 
-        }
-        else
-        {
-            if (this.actionTask.isAlive())
-            {   
-                this.actionTask.signalTerminate();
-            }
+        if (this.actionTask.isAlive())
+        {   
+            this.actionTask.signalTerminate();
         }
     }
 
