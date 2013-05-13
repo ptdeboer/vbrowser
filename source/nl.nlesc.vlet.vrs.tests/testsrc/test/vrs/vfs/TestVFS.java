@@ -574,17 +574,17 @@ public class TestVFS extends VTestCase
     {
 
         Assert.assertEquals("Both getType() and getAttribute(ATTR_TYPE) must return same value", newFile.getResourceType(),
-                newFile.getAttribute(ATTR_RESOURCE_TYPE).getValue());
+                newFile.getAttribute(ATTR_RESOURCE_TYPE).getStringValue());
 
         Assert.assertEquals("Both getName() and getAttribute(ATTR_NAME) must return same value", newFile.getName(),
-                newFile.getAttribute(ATTR_NAME).getValue());
+                newFile.getAttribute(ATTR_NAME).getStringValue());
 
-        Assert.assertEquals("Both getVRL() and getAttribute('location') must return same value", newFile.getVRL()
-                .toString(), newFile.getAttribute(ATTR_LOCATION).getValue());
+        Assert.assertEquals("Both getVRL() and getAttribute('location') must return same value", newFile.getVRL(),
+        		newFile.getAttribute(ATTR_LOCATION).getVRL());
 
         // for hostname comparisons:
         Assert.assertEquals("Both getHostname() and getAttribute(ATTR_HOSTNAME) must return same value", newFile
-                .getHostname(), newFile.getAttribute(ATTR_HOSTNAME).getValue());
+                .getHostname(), newFile.getAttribute(ATTR_HOSTNAME).getStringValue());
 
         // for hostname:port comparisons:
         Assert.assertEquals("Both getPort() and getAttribute(ATTR_PORT) must return same value", newFile.getPort(),
@@ -592,14 +592,17 @@ public class TestVFS extends VTestCase
 
         // for scheme://hostname:port comparisons:
         Assert.assertEquals("Both getScheme() and getAttribute(ATTR_SCHEME) must return same value", newFile
-                .getScheme(), newFile.getAttribute(ATTR_SCHEME).getValue());
+                .getScheme(), newFile.getAttribute(ATTR_SCHEME).getStringValue());
 
         // for scheme://hostname:port comparisons:
         Assert.assertEquals("Both getPath() and getAttribute(ATTR_PATH) must return same value", newFile.getPath(),
-                newFile.getAttribute(ATTR_PATH).getValue());
+                newFile.getAttribute(ATTR_PATH).getStringValue());
+
+        Assert.assertEquals("Both getPath() and getAttribute(ATTR_PATH).VRL().getPath() must return same value", newFile.getPath(),
+                newFile.getAttribute(ATTR_PATH).getVRL().getPath());
 
         Assert.assertEquals("Both getMimetype() and getAttribute(ATTR_MIMETYPE) must return same value", newFile
-                .getMimeType(), newFile.getAttribute(ATTR_MIMETYPE).getValue());
+                .getMimeType(), newFile.getAttribute(ATTR_MIMETYPE).getStringValue());
 
         Assert.assertEquals("Both exists() and getAttribute(ATTR_EXISTS) must return same value", newFile.exists(),
                 newFile.getAttribute(ATTR_EXISTS).getBooleanValue());
