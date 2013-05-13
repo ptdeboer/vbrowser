@@ -69,7 +69,7 @@ public abstract class ActionTask implements Runnable
 		if (monitor!=null)
 		    this.taskMonitor=monitor;
 		else
-		    this.taskMonitor=new MonitorAdaptor();
+		    this.taskMonitor=new TaskMonitorAdaptor();
 		
 		if (taskWatcher!=null)
 		    taskWatcher.registerTask(this); 

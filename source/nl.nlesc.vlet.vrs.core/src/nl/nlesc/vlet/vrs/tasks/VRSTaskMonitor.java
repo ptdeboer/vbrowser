@@ -20,12 +20,12 @@
 
 package nl.nlesc.vlet.vrs.tasks;
 
-import nl.esciencecenter.ptk.task.MonitorAdaptor;
+import nl.esciencecenter.ptk.task.TaskMonitorAdaptor;
 
 /**
  * Default VRS TaskMonitor Adaptor. 
  */
-public class VRSTaskMonitor extends MonitorAdaptor 
+public class VRSTaskMonitor extends TaskMonitorAdaptor 
 {
     // =========================================================================
     //

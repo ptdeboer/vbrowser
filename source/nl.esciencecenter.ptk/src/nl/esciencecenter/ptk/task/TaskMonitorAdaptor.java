@@ -24,7 +24,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
 
-public class MonitorAdaptor implements ITaskMonitor
+public class TaskMonitorAdaptor implements ITaskMonitor
 {
     private static int instanceCounter = 0;
 
@@ -54,7 +54,7 @@ public class MonitorAdaptor implements ITaskMonitor
 
     private Object waitMutex = new Object();
 
-    public MonitorAdaptor()
+    public TaskMonitorAdaptor()
     {
         init();
     }
@@ -200,7 +200,9 @@ public class MonitorAdaptor implements ITaskMonitor
         this.isCancelled = true;
     }
 
-    /** Add INFORMATIVE (for end user) text without newline to logtext */
+    /** 
+     * Add informative text (for end user).  
+     */
     public void logPrintf(String format, Object... args)
     {
         // ALREADY sync'd: synchronized(logText)

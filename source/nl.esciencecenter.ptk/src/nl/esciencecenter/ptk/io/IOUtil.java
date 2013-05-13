@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.esciencecenter.ptk.task.MonitorAdaptor;
+import nl.esciencecenter.ptk.task.TaskMonitorAdaptor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
@@ -276,7 +276,7 @@ public class IOUtil
 	   
 	   
         if (monitor==null) 
-        	monitor=new MonitorAdaptor(); // defaut:
+        	monitor=new TaskMonitorAdaptor(); // defaut:
         
         // Setup & Initiate Stream Copy: 
         // 

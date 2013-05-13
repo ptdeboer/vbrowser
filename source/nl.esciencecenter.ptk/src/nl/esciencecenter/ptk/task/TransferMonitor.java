@@ -27,7 +27,7 @@ import java.net.URI;
  * 
  * @author Piter T. de BOer. 
  */
-public class TransferMonitor extends MonitorAdaptor
+public class TransferMonitor extends TaskMonitorAdaptor
 {
     private static int transferCounter=0; 
     
