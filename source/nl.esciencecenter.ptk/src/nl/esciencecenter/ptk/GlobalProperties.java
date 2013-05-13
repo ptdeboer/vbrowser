@@ -56,6 +56,9 @@ public class GlobalProperties
     /** Java os.name value for Windows */ 
     public static final String WINDOWS= "Windows";
 
+    /** Java os.name value for Windows */ 
+    public static final String WINDOWS7= "Windows 7";
+
     /** Java os.name value for Mac OS */ 
     public static final String MAC_OS= "Mac OS";
     
@@ -186,9 +189,36 @@ public class GlobalProperties
         return getStringProperty(PROP_JAVA_OS_VERSION); 
     }
 
+    /**
+     *  Returns true for all OS Name values that start with "Windows". 
+     *  Current known values are (some unconfirmed):
+     *  <lu>
+     *  <li> Windows Me 
+     *  <li> Windows 2000
+     *  <li> Windows 95
+     *  <li> Windows 98
+     *  <li> Windows NT
+     *  <li> Windows Vista
+     *  <li> Windows XP
+     *  <li> Windows 7
+     *  <li> Windows 8 
+     *  </ul>
+     *  @return - true if OS Name value starts with "Windows".
+     */ 
     public static boolean isWindows()
     {
-      return StringUtil.equalsIgnoreCase(GlobalProperties.getOsName(),WINDOWS);
+    	// compare in all lower case 
+    	return GlobalProperties.getOsName().toLowerCase().startsWith(WINDOWS.toLowerCase());
+    }
+    
+    /** 
+     * Returns true if OSName exactly matches "Windows 7". 
+     * Use isWindows() for all (modern) windows versions. 
+     * @return - true if operating system is Windows 7 and only Windows 7. 
+     */
+    public static boolean isWindows7()
+    {
+      return StringUtil.equalsIgnoreCase(GlobalProperties.getOsName(),WINDOWS7);
     }
 
     public static boolean isLinux()
@@ -213,11 +243,11 @@ public class GlobalProperties
     }
     
     /** 
-     * Returns true for MacOS or MacOS X.
+     * Returns true for all OS Name values that start with "Mac". 
      */ 
     public static boolean isMac()
     {
-    	return (isMacOS() || isMacOSX()); 
+    	return GlobalProperties.getOsName().toLowerCase().startsWith("mac");
     }
     
     public static String getJavaVersion()
