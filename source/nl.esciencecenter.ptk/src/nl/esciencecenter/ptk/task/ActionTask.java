@@ -406,7 +406,7 @@ public abstract class ActionTask implements Runnable
         }
         catch (Throwable t)
         {
-            ; // continue
+            t.printStackTrace(); 
         } 
     }
     
