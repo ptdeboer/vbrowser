@@ -28,7 +28,6 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 /**
- * 
  * Implementation of FontComboBoxRenderer.
  * Renderers the text in the ComboBox with the font name specified. 
  * Is special component in the FontToolBar.

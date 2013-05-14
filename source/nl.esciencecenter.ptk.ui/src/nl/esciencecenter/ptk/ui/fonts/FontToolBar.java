@@ -34,7 +34,8 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 /**
- * 
+ * FontToolBar widget. 
+ * Show a selections of system installed fonts. 
  */
 public class FontToolBar extends JToolBar implements ActionListener
 {
@@ -46,8 +47,7 @@ public class FontToolBar extends JToolBar implements ActionListener
     // ========================================================================
 
     // text viewer attributes:
-    private String fontSizes[] =
-    { "6", "7", "8", "9", "10", "11", "12", "13", "14", "16", "18", "20", "24", "36", "48" };
+    private String fontSizes[] = { "6", "7", "8", "9", "10", "11", "12", "13", "14", "16", "18", "20", "24", "36", "48" };
 
     private String[] fontFamilyNames;
 

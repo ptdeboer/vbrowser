@@ -170,10 +170,7 @@ public class TaskMonitorDialog extends javax.swing.JDialog
         }
         
         this.addWindowListener(this); 
-        
     }
-    
-   
     
     public void setDelay(int delay)
     {
@@ -209,7 +206,6 @@ public class TaskMonitorDialog extends javax.swing.JDialog
     
     ActionTask updateTask = new ActionTask(TaskWatcher.getTaskWatcher(),"Monitor Updater Task") 
     {
-         
         
         public void doTask() 
         {
@@ -354,11 +350,6 @@ public class TaskMonitorDialog extends javax.swing.JDialog
     @Override
     public void windowOpened(WindowEvent e){}
     
-//    public void addSubMonitor(VFSTransfer transfer)
-//    {
-//        this.dockingPanel.add(new TransferMonitorPanel(transfer));
-//    }
-    
     public void addSubMonitor(ITaskMonitor monitor)
     {
         this.dockingPanel.add(new TaskMonitorPanel(monitor));
@@ -371,12 +362,13 @@ public class TaskMonitorDialog extends javax.swing.JDialog
         {
             case ChildMonitorAdded:
             {
+                // no sub monitors. 
 //                if (event.childMonitor instanceof VFSTransfer)
 //                {
 //                    this.addSubMonitor((VFSTransfer)event.childMonitor); 
-//                }
+//                } 
 //                else
-                    this.addSubMonitor(event.childMonitor); 
+                this.addSubMonitor(event.childMonitor); 
             }
         }
         

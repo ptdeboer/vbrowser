@@ -20,7 +20,6 @@
 
 package panels;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JFrame;
@@ -43,6 +42,8 @@ public class TestProgressPanel
          final ProgresPanel panel=new ProgresPanel(); 
          frame.getContentPane().add(panel);
          
+         final long startTime=System.currentTimeMillis();
+         
          ActionTask task=new ActionTask(null,"StatusPanel tester")
          {
              public void doTask()
@@ -57,9 +58,8 @@ public class TestProgressPanel
                      panel.setProgress((double)i/1000.0); 
                      panel.setProgressText(" "+i+" out of:"+1000); 
                      
-                     
-                     Date dateTime=Presentation.createDate(System.currentTimeMillis());
-                     panel.setTimeText(Presentation.relativeTimeString(dateTime)); 
+                     long deltaTime=System.currentTimeMillis()-startTime; 
+                     panel.setTimeText(Presentation.createRelativeTimeString(deltaTime,false)); 
                      
                      try
                      {

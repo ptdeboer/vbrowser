@@ -40,10 +40,7 @@ public class TransferMonitorPanel extends JPanel
 {
     private static final long serialVersionUID = -8105023008570959471L;
     
- // === Static === 
-    
-    
-     // =======================================================================
+    // =======================================================================
      
     private JTextField titleTextField;
     private JLabel destLabel;
@@ -131,7 +128,7 @@ public class TransferMonitorPanel extends JPanel
 
     public String getTotalTimeText()
     {
-        String timestr=presentation.createRelativeTimeString(monitorStats.getTimeRunning(),false);
+        String timestr=Presentation.createRelativeTimeString(monitorStats.getTotalTimeRunning(),false);
         
         long eta=this.monitorStats.getETA();
         
@@ -140,28 +137,14 @@ public class TransferMonitorPanel extends JPanel
         else if (eta==0) 
         	timestr+= " (done)";
         else
-        	timestr+=" ("+presentation.createRelativeTimeString(eta,false)+")";
+        	timestr+=" ("+Presentation.createRelativeTimeString(eta,false)+")";
         
         return timestr; 
     }
 
     public String getSubTimeText()
     {
-        String subTask=monitorStats.getCurrentSubTaskName(); 
-        long subTime=monitorStats.getSubTaskDoneDeltaTime(subTask);
-        
-        String timestr=presentation.createRelativeTimeString(subTime,false);
-        
-        long eta=this.monitorStats.getSubTaskETA(subTask); 
-        
-        if (eta<0)
-            timestr+=" (?)";
-        else if (eta==0) 
-            timestr+= " (done)";
-        else
-            timestr+=" ("+presentation.createRelativeTimeString(eta,false)+")";
-        
-        return timestr; 
+        return monitorStats.getCurrentSubTaskTimeStatusText(); 
     }
     
     private void initGUI() 
@@ -181,10 +164,7 @@ public class TransferMonitorPanel extends JPanel
                 titleTextField = new JTextField();
                 this.add(titleTextField, new CellConstraints("2, 2, 3, 1, default, default"));
                 titleTextField.setText("Transfer Title");
-                titleTextField.setBackground(new java.awt.Color(
-                        229,
-                        229,
-                        229));
+                titleTextField.setBackground(new java.awt.Color(229, 229,229));
             }
             {
                 sourceLabel = new JLabel();
@@ -221,9 +201,8 @@ public class TransferMonitorPanel extends JPanel
             //handle(e);
         }
     }
-   
-     
-      /** return progress information */ 
+    
+    /** return progress information */ 
     public String getTotalProgressText()
     {
         TransferMonitor info=vfsTransferInfo;
@@ -234,7 +213,7 @@ public class TransferMonitorPanel extends JPanel
             progstr+="Transfer "+info.getSourcesDone()+" of "+info.getTotalSources(); 
         
         String speedStr=sizeString((int)monitorStats.getTotalSpeed())+"B/s"; 
-        String amountStr=sizeString(info.getTotalWorkDone())+"B (of "+sizeString(info.getTotalWorkTodo())+"B)";
+        String amountStr=sizeString(info.getTaskStats().done)+"B (of "+sizeString(info.getTaskStats().todo)+"B)";
         
         if (info.isDone())
         {
@@ -248,7 +227,7 @@ public class TransferMonitorPanel extends JPanel
             
             finalStr+=" ("+speedStr+")"; 
             
-            finalStr+=" in "+presentation.createRelativeTimeString(monitorStats.getTotalDoneTime(),false);
+            finalStr+=" in "+Presentation.createRelativeTimeString(monitorStats.getTotalDoneTime(),false);
             
             return finalStr; 
         }
@@ -295,7 +274,6 @@ public class TransferMonitorPanel extends JPanel
         return progstr;
     }
 
-
     private String sizeString(long size)
     {
     	if (size<0) 
@@ -304,10 +282,8 @@ public class TransferMonitorPanel extends JPanel
         return presentation.sizeString(size,true,1,1);
     }
     
-    
     public void dispose()
     {
- 
     }
     
     private ProgresPanel getProgresPanel() 

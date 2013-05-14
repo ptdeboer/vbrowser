@@ -28,7 +28,8 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
 /**
- * Docks panels in vertical Boxed JPanel container
+ * Docks panels in vertical Boxed JPanel container. 
+ * Can be used for multiple chained (sub)Tasks. 
  */
 public class DockingPanel extends JPanel
 {

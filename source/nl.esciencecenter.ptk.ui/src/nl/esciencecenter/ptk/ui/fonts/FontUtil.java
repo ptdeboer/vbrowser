@@ -24,7 +24,9 @@ import java.awt.Font;
 
 public class FontUtil
 {
-    /** Create Font Info from Font, copying font attributes like style and name.  */ 
+    /** 
+     * Create Font Info from Font, copying font attributes like style and name.  
+     */ 
     public static FontInfo createFontInfo(Font font)
     {
        FontInfo info=new FontInfo(); 
@@ -32,7 +34,9 @@ public class FontUtil
        return info; 
     }
 
-    /** Get FontInfo from Font Info data base */ 
+    /**
+     *  Get FontInfo from Font Info data base.
+     */ 
     public static FontInfo getFontInfo(String name)
     {
         return FontInfo.getFontInfo(name);
