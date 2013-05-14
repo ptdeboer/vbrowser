@@ -24,6 +24,9 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
 
+/** 
+ * Default Adaptor for ITaskMonitor interface. 
+ */
 public class TaskMonitorAdaptor implements ITaskMonitor
 {
     private static int instanceCounter = 0;
@@ -38,21 +41,20 @@ public class TaskMonitorAdaptor implements ITaskMonitor
 
     // === Listeners ===
 
-    Vector<ITaskMonitorListener> listeners = new Vector<ITaskMonitorListener>();
+    protected Vector<ITaskMonitorListener> listeners = new Vector<ITaskMonitorListener>();
 
-    // === flow control ===
-
+    // === status === 
     protected boolean isCancelled = false;
 
-    private Throwable exception = null;
+    protected String currentSubTaskName = null;
 
-    private String currentSubTaskName = null;
+    protected ITaskMonitor parent;
 
-    private TaskLogger taskLogger = null;
-
-    ITaskMonitor parent;
-
+    // === privates === 
+    
     private Object waitMutex = new Object();
+    private Throwable exception = null;
+    private TaskLogger taskLogger = null;
 
     public TaskMonitorAdaptor()
     {
@@ -181,6 +183,7 @@ public class TaskMonitorAdaptor implements ITaskMonitor
                 throw e;
                 // could start wait cycle again, but reason of interrupt is
                 // unknown here.
+                // Typically isInterrupted means stop what you are doing. 
             }
         }
     }
@@ -191,7 +194,6 @@ public class TaskMonitorAdaptor implements ITaskMonitor
         if (taskStats.isDone)
             this.wakeAll(); // extra wakeup incase prvious was missed! (Rare)
         return taskStats.isDone;
-
     }
 
     @Override
@@ -205,7 +207,7 @@ public class TaskMonitorAdaptor implements ITaskMonitor
      */
     public void logPrintf(String format, Object... args)
     {
-        // ALREADY sync'd: synchronized(logText)
+        // Do not synchronize here. 
         {
             // if (logSubTask)
             // {
@@ -245,25 +247,11 @@ public class TaskMonitorAdaptor implements ITaskMonitor
         return this.subTaskStats.get(name);
     }
 
-    @Override
-    public long getTotalWorkDone()
-    {
-        return this.taskStats.done;
-    }
-
-    @Override
-    public long getTotalWorkTodo()
-    {
-        return taskStats.todo;
-    }
-
-    @Override
     public long getStartTime()
     {
         return taskStats.startTimeMillies;
     }
 
-    @Override
     public long getStopTime()
     {
         return this.taskStats.stopTimeMillies;

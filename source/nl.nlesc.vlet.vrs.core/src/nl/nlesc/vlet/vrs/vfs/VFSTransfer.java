@@ -153,6 +153,11 @@ public class VFSTransfer extends TransferMonitor
         return isMove;
     }
     
+    public long getStartTime()
+    {
+        return this.getTaskStats().startTimeMillies; 
+    }
+    
     /** Return current transfer speed string in KB/s */
     public String getCurrentSpeedString()
     {
@@ -299,5 +304,21 @@ public class VFSTransfer extends TransferMonitor
     {
         return this.getCurrentSubTask().done; 
     }
-  
+
+    public long getTotalWorkTodo()
+    {
+        TaskStats stats=this.getTaskStats();
+        if (stats==null)
+            return -1; 
+        return stats.todo; 
+    }
+    
+    public long getTotalWorkDone()
+    {
+        TaskStats stats=this.getTaskStats();
+        if (stats==null)
+            return -1; 
+        return stats.done; 
+    }
+
 }

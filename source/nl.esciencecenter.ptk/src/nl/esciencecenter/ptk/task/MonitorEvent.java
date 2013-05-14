@@ -64,7 +64,6 @@ public class MonitorEvent
     public static MonitorEvent createStatusEvent(ITaskMonitor source)
     {
         return new MonitorEvent(source,MonitorEventType.StatusChanged); 
-    }
-    
+    }   
     
 }

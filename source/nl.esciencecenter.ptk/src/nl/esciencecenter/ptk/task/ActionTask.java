@@ -100,7 +100,9 @@ public abstract class ActionTask implements Runnable
 		return this.taskName;
 	}
 	
-	/** Returns master thread */ 
+	/** 
+	 * Returns master thread 
+	 */ 
 	final public Thread getThread()
 	{
 		if (threads==null)
@@ -455,6 +457,8 @@ public abstract class ActionTask implements Runnable
 	 * If possible, try to stop the running task when this method is called. 
      * This to encourage pre empty task scheduling.
      * To trigger the stopTask() call signalTerminate(). 
+     * It is also recommend to check the isCancelled() method and check the state
+     * of the running 
 	 */ 
 	abstract protected void stopTask() throws Exception;
   

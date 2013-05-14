@@ -173,18 +173,23 @@ public class TaskWatcher implements ITaskSource
         return false; 
     }
        
+    /** 
+     * This method checks whether the current execution Thread belongs to a Registered Action Task. 
+     * 
+     * @return - actual ActionTask linked to the current execution thread. 
+     */
     public ActionTask getCurrentThreadActionTask()
     {
         return findActionTaskForThread(Thread.currentThread()); 
     }
+    
     /**
-     * Find ActionTask with thread id. 
-     * Since all ActionTask are currently started in their
-     * own thread, this method will find the actionTask
-     * currently executed in the specified thread. 
+     * Find ActionTask with specified thread id. 
+     * Since all ActionTasks are currently started in their own thread, this 
+     * method will find the actionTask currently executed in the specified thread. 
      * 
      * @param thread Thread which started an ActionTask 
-     * @return 
+     * @return ActionTaks or null which is started within to the specified Thread. 
      */
     public ActionTask findActionTaskForThread(Thread thread)
     {
@@ -203,7 +208,7 @@ public class TaskWatcher implements ITaskSource
     }
     
     /** 
-     * Return a private copy of the task list, for thread safe operations 
+     * Return a private copy of the task list, for thread safe operations.
      */
     protected final ActionTask[] getActiveTaskArray()
     {
@@ -218,10 +223,9 @@ public class TaskWatcher implements ITaskSource
     @Override
     public void notifyTaskException(ActionTask task,Throwable ex)
     {
-        // optional handling of exception throw by Task Execution. (ignore here)
-        // subclasses might do something here. 
+        // Optional handling of an exception throw by an ActionTask. 
+        // Ignore here. Subclasses might do something here. 
 
-        //logger.errorPrintf("Received Exception for task:"+task.toString()); 
         logger.logException(ClassLogger.ERROR,task,ex,"TaskException for %s\n",task); 
     }
     

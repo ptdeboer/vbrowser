@@ -567,8 +567,11 @@ public class Presentation
      * Create Relative Time String: "DD (days) hh:mm:ss.ms" time string" from
      * the specified nr of milli seconds.
      */
-    public String createRelativeTimeString(long timeInMillis, boolean showMillis)
+    public static String createRelativeTimeString(long timeInMillis, boolean showMillis)
     {
+        if (timeInMillis<0)
+            return "?"; 
+        
         String timestr = "";
 
         if (timeInMillis > 1000L * 24L * 60L * 60L)

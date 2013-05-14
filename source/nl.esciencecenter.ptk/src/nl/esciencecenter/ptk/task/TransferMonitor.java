@@ -24,6 +24,7 @@ import java.net.URI;
 
 /** 
  * Transfer Specific Monitor. 
+ * Adds more meta fields specific for (VFS) File Transfers. 
  * 
  * @author Piter T. de BOer. 
  */

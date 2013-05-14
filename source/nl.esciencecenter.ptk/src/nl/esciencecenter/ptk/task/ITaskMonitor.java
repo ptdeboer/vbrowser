@@ -20,6 +20,9 @@
 
 package nl.esciencecenter.ptk.task;
 
+/** 
+ * Interface for Action Tasks, or other objects,  which can be monitored. 
+ */
 public interface ITaskMonitor 
 {
 	public static class TaskStats
@@ -35,7 +38,6 @@ public interface ITaskMonitor
         
         protected TaskStats()
         {
-            
         }
         
 		public TaskStats(String taskName, 
@@ -93,20 +95,17 @@ public interface ITaskMonitor
 	
 	// === task === 
 	
-	public TaskStats getTaskStats(); 
 	
-	// Should be called be implementing monitor. 
+	// Should be called be implementing monitor. Will be moved. 
 	public void startTask(String taskNameOrComments, long numTodo);
 
 	public String getTaskName(); 
 	
 	public void updateTaskDone(long numDone);
 
+	public TaskStats getTaskStats(); 
+
 	public void endTask(String taskNameOrComments);
-
-	public long getTotalWorkDone();
-
-	public  long getTotalWorkTodo();
     
 	// === subtask === 
 
@@ -135,24 +134,25 @@ public interface ITaskMonitor
 	
 	public long getStartTime();
 
-	public long getStopTime();
-
     // === Logging/Etc === 
     
 	public void logPrintf(String format, Object... args);
 
     /**
      * Return log text, set sinceLastGet to true for incremental 
-     * updates, or set to false to get the complete text buffer 
+     * updates, or set to false to get the complete text buffer.
      */ 
 	public String getLogText(boolean sinceLastGet);
     
-    /** Has error/exception, etc. */ 
+    /** 
+     * Has error/exception, etc. 
+     */ 
 	public boolean hasError();
 
 	public Throwable getException();
     
 	public void setException(Throwable t); 
+	
     // === Listeners ! === 
     
 	public void addMonitorListener(ITaskMonitorListener listener);
