@@ -35,6 +35,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 
+import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.task.ITaskMonitorListener;
@@ -211,7 +212,7 @@ public class TaskMonitorDialog extends javax.swing.JDialog
         {
             while (actionTask.isAlive())
             {
-               update();
+               update(false);
             
                if (actionTask.getTaskMonitor().isDone())
                {
@@ -231,7 +232,7 @@ public class TaskMonitorDialog extends javax.swing.JDialog
             cancelButton.setEnabled(false); 
             
             // task done: final update
-            update();
+            update(true);
         }
 
         @Override
@@ -245,6 +246,8 @@ public class TaskMonitorDialog extends javax.swing.JDialog
     private int prevHeight=-1;
     
     private long startTime=0;
+    
+    private int  currentLogEventNr=0;
    
     public void start()
     {
@@ -273,7 +276,7 @@ public class TaskMonitorDialog extends javax.swing.JDialog
         }
     }
 
-    protected void update()
+    protected void update(boolean isFinalUpdate)
     {
         if (delay>=0)
         {
@@ -284,18 +287,20 @@ public class TaskMonitorDialog extends javax.swing.JDialog
             }
         }
         
-        this.monitorPanel.update();
-        updateLog(); 
+        this.monitorPanel.update(isFinalUpdate);
+        
+        updateLog(isFinalUpdate); 
+                
         JPanel panels[]=this.dockingPanel.getPanels(); 
         for (JPanel panel:panels)
         {
             if (panel instanceof TransferMonitorPanel)
             {
-                ((TransferMonitorPanel)panel).update(); 
+                ((TransferMonitorPanel)panel).update(false); 
             }
             else if (panel instanceof TaskMonitorPanel)
             {
-                ((TaskMonitorPanel)panel).update(); 
+                ((TaskMonitorPanel)panel).update(false); 
             }
             // if dockingpanel has an new monitor: resize Dialog!
             int newHeight=this.dockingPanel.getPreferredSize().height; 
@@ -313,18 +318,35 @@ public class TaskMonitorDialog extends javax.swing.JDialog
         }
     }
 
-    public void updateLog()
+    public void updateLog(boolean isFinalUpdate)
     {
-        // only do incremental updates: 
-        String newText=this.actionTask.getTaskMonitor().getLogText(true);
+        ITaskMonitor monitor = actionTask.getTaskMonitor();
         
-        if (StringUtil.isEmpty(newText)==false) 
+        StringHolder textHolder=new StringHolder();
+        
+        if (isFinalUpdate)
         {
-            this.logText.append(newText); 
-            //this.logText.revalidate(); not needed?
-            //this.logSP.revalidate(); // trigger update of scrollbars!
+            monitor.getLogText(true,0,textHolder);
+            // Final Update: Get All text.  
+            String newText="<<<Final>>>\n"+textHolder.value; 
+            this.logText.setText(newText);  
         }
+        else
+        {
+            this.currentLogEventNr=monitor.getLogText(false,currentLogEventNr,textHolder);
+            // only do incremental updates: 
+
+            if (StringUtil.isEmpty(textHolder.value)==false) 
+            {
+                this.logText.append(textHolder.value); // .append(newText); 
+            }
+        }
+            
+        if (isFinalUpdate)
+            this.logText.revalidate(); // Final text update sometimes gets lost, use asynchronous revalidate().
+        
     }
+    
     @Override
     public void windowActivated(WindowEvent e) {}
 

@@ -75,7 +75,7 @@ public class TestTransferMonitorPanel
              transfer.updateSourcesDone(i/dif); 
              transfer.updateSubTaskDone(transfer.getCurrentSubTaskName(), i%dif); 
              // do update self!
-             inst.update(); 
+             inst.update(false); 
              
              try
             {
@@ -87,6 +87,8 @@ public class TestTransferMonitorPanel
                 e.printStackTrace();
             } 
          }
+         
+         inst.update(true); 
          
          transfer.endTask(transfer.getTaskName());
          

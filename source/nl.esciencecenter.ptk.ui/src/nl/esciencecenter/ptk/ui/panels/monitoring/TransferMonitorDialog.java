@@ -35,8 +35,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 
+import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.task.MonitorStats;
 import nl.esciencecenter.ptk.task.TaskWatcher;
@@ -82,6 +84,8 @@ public class TransferMonitorDialog extends javax.swing.JDialog implements Action
     // code between VFSTransfer and default Task monitor
     private MonitorStats monitorStats = null;
 
+    private int currentLogEventNr;
+
     // private BrowserController browserController;
 
     public TransferMonitorDialog(JFrame frame)
@@ -115,7 +119,7 @@ public class TransferMonitorDialog extends javax.swing.JDialog implements Action
         this.setLocationRelativeTo(null);
         initGUI();
         // initial update:
-        update();
+        update(false);
         //
         initUpdateTask();
     }
@@ -137,7 +141,7 @@ public class TransferMonitorDialog extends javax.swing.JDialog implements Action
                     // if()
                     try
                     {
-                        update();
+                        update(false);
 
                         // delayed dialog:
                         if ((monitorStats.getTotalTimeRunning() > delay) && (isVisible() == false))
@@ -176,7 +180,7 @@ public class TransferMonitorDialog extends javax.swing.JDialog implements Action
                 logger.infoPrintf("Post updateLoop for (done) transfer:%s\n", vfsTransferInfo.toString());
 
                 // task done: final update to show statistics when job is done!
-                update();
+                update(true);
 
             }
 
@@ -209,24 +213,17 @@ public class TransferMonitorDialog extends javax.swing.JDialog implements Action
         updateTask.startTask();
     }
 
-    protected void update()
+    protected void update(boolean finalUpdate)
     {
         logger.debugPrintf(">>> Before Update\n");
 
-        this.transferPanel.update();
+        this.transferPanel.update(finalUpdate);
 
         logger.debugPrintf("Update total  :'%s'\n", transferPanel.getTotalTimeText());
         logger.debugPrintf("Update subTask:'%s'\n", transferPanel.getSubTimeText());
 
-        // only do incremental updates:
-        String newText = vfsTransferInfo.getLogText(true);
-        if (StringUtil.isEmpty(newText) == false)
-        {
-            this.logText.append(newText);
-            // this.logText.revalidate();
-            // this.logScrollPane.revalidate(); // trigger update of scrollbars!
-        }
-
+        updateLog(finalUpdate);
+        
         if (this.vfsTransferInfo.isDone())
         {
             this.cancelButton.setEnabled(false);
@@ -234,6 +231,35 @@ public class TransferMonitorDialog extends javax.swing.JDialog implements Action
         }
     }
 
+    public void updateLog(boolean isFinalUpdate)
+    {
+        ITaskMonitor monitor = vfsTransferInfo;
+        
+        StringHolder textHolder=new StringHolder();
+        
+        if (isFinalUpdate)
+        {
+            monitor.getLogText(true,0,textHolder);
+            // Final Update: Get All text.  
+            String newText=textHolder.value; 
+            this.logText.setText(newText);  
+        }
+        else
+        {
+            this.currentLogEventNr=monitor.getLogText(false,currentLogEventNr,textHolder);
+            // only do incremental updates: 
+
+            if (StringUtil.isEmpty(textHolder.value)==false) 
+            {
+                this.logText.append(textHolder.value); // .append(newText); 
+            }
+        }
+            
+        if (isFinalUpdate)
+            this.logText.revalidate(); // Final text update sometimes gets lost, use asynchronous revalidate().
+        
+    }
+    
     private void initGUI()
     {
         try

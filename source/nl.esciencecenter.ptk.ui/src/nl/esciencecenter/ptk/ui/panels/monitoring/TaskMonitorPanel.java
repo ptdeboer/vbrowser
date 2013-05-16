@@ -76,7 +76,7 @@ public class TaskMonitorPanel extends JPanel implements ActionListener
         this.taskMonitor = monitor;
         this.monitorStats = new MonitorStats(taskMonitor);
         // update at start to initialize fields:
-        update();
+        update(false); 
     }
 
     /** Whether speeds in [GMK]B/s should be shown */
@@ -85,7 +85,7 @@ public class TaskMonitorPanel extends JPanel implements ActionListener
         this.showTransfersSpeeds = val;
     }
 
-    public void update()
+    public void update(boolean isFinalUpdate)
     {
         if (taskMonitor == null)
             return;

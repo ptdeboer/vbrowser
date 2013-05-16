@@ -84,11 +84,11 @@ public class TransferMonitorPanel extends JPanel
     private void init()
     {
     	initGUI();
-        update(); 
+        update(false); 
     }
       
     
-    public void update()
+    public void update(boolean finalUpdate)
     {
         String task=this.vfsTransferInfo.getTaskName(); 
         String subTask=this.vfsTransferInfo.getCurrentSubTaskName(); 
