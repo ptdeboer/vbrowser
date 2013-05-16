@@ -22,6 +22,7 @@ package nl.esciencecenter.ptk.task;
 
 import java.util.logging.Level;
 
+import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.util.logging.FormattingLogger;
 import nl.esciencecenter.ptk.util.logging.RecordingLogHandler;
 
@@ -51,9 +52,9 @@ public class TaskLogger extends FormattingLogger
         log(defaultLevel,format,args); 
     }
 
-    public String getLogText(boolean incremental)
+    public int getLogText(boolean clearLogBuffer,int logEventOffset,StringHolder logTextHolder)
     {
-        return handler.getLogText(incremental); 
+        return handler.getLogText(clearLogBuffer,logEventOffset,logTextHolder); 
     }
     
 }

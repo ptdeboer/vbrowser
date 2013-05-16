@@ -24,6 +24,8 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
 
+import nl.esciencecenter.ptk.data.StringHolder;
+
 /** 
  * Default Adaptor for ITaskMonitor interface. 
  */
@@ -192,7 +194,7 @@ public class TaskMonitorAdaptor implements ITaskMonitor
     public boolean isDone()
     {
         if (taskStats.isDone)
-            this.wakeAll(); // extra wakeup incase prvious was missed! (Rare)
+            this.wakeAll(); // extra wakeup incase previous was missed! (Rare)
         return taskStats.isDone;
     }
 
@@ -207,31 +209,31 @@ public class TaskMonitorAdaptor implements ITaskMonitor
      */
     public void logPrintf(String format, Object... args)
     {
-        // Do not synchronize here. 
+        // Do not synchronize here: it might deadlock threads.
         {
-            // if (logSubTask)
-            // {
-            // taskLogger.logPrintf(insertIndentation(format),args);
-            // }
-            // else
-            {
-                // sloppy code!
-                if (format == null)
-                    format = "<NULL FORMAT>";
-                taskLogger.logPrintf(format, args);
-            }
+            // sloppy code!
+            if (format == null)
+                format = "<NULL FORMAT>";
+            taskLogger.logPrintf(format, args);
         }
     }
 
+    /** 
+     * Return all log events as single String. 
+     * @return - String holding all the log events as single String. 
+     */
     public String getLogText()
     {
-        return getLogText(false);
+        StringHolder holder=new StringHolder(); 
+        getLogText(false,0,holder);
+        return holder.value; 
     }
 
-    public String getLogText(boolean incremental)
+    public int getLogText(boolean clearLogBuffer,int logEventOffset,StringHolder logTextHolder)
     {
-        return taskLogger.getLogText(incremental);
+        return taskLogger.getLogText(clearLogBuffer,logEventOffset,logTextHolder); 
     }
+   
 
     @Override
     public TaskStats getTaskStats()
