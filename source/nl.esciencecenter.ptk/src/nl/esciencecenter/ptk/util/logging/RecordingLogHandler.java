@@ -29,6 +29,8 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import nl.esciencecenter.ptk.data.StringHolder;
+
 
 /**
  * Recording Log Handler which records logging events. 
@@ -64,9 +66,9 @@ public class RecordingLogHandler extends Handler
     
     protected Vector<RecordElement> records=new Vector<RecordElement>();
     
-    private Formatter formatter;
+    // private Formatter formatter;
     
-    private StringBuilder stringBuilder; 
+    // private StringBuilder stringBuilder; 
     
     private boolean printLogLevel=false;
     
@@ -79,8 +81,8 @@ public class RecordingLogHandler extends Handler
     
     private void init()
     {
-        stringBuilder=new StringBuilder(); 
-        formatter=new Formatter(stringBuilder); 
+        //stringBuilder=new StringBuilder(); 
+        // formatter=new Formatter(stringBuilder); 
     }
     
     @Override
@@ -137,39 +139,50 @@ public class RecordingLogHandler extends Handler
     }
     
     /** 
-     * Returns current recorded events as one String. 
-     * Optionally resets recorded log events if reset==true.
+     * Returns recorded events since <code>startEventNumber</code> as a single String text into the StringHolder.  
+     * Optionally resets recorded log events if clearLogBuffer==true.
      * This method can be used to get the new recorded log records since the last 
-     * time this method was called. 
+     * time this method was called by specifying the startEventNumber. 
+     * The most recent event number is returned so this method van be used to get incremental updates. 
+     *  
+     * @param resetLogBugger - clears log buffer.
+     * @param startEventNumber - offset into the LogEvents buffer to start from.   
+     * @return - returns current log event number included in  the logtext. 
+     *  
      */ 
-    public String getLogText(boolean reset)
+    public int getLogText(boolean clearLogBuffer,int startEventNumber,StringHolder logText)
     {
-        String logText=null; 
         
         synchronized(records)
         {
+            StringBuilder stringBuilder=new StringBuilder(); 
+            Formatter formatter=new Formatter(stringBuilder);
+            
             if (records.size()<=0)
-                return null; // empty log 
+            {
+                formatter.close();
+                return 0; // empty log 
+            }
             
             int len=records.size(); 
             
             // format records 
-            for (int i=0;i<len;i++)
+            for (int i=startEventNumber;i<len;i++)
             {
-                
                 format(formatter,records.get(i));  
             }
             
-            if (reset==true)
+            if (clearLogBuffer==true)
             {
-                this.records.clear();    
+                this.records.clear();
+                reset();
             }
             
-            logText=stringBuilder.toString(); 
-            reset();  
+            logText.value=stringBuilder.toString(); 
+            formatter.close();
         }
         
-        return logText; 
+        return records.size(); 
     }
 
     protected void format(Formatter formatter, RecordElement recordElement)

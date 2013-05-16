@@ -180,5 +180,11 @@ public class ClassLogger extends FormattingLogger
         String srcstr=this.object2classString(source); 
         this.logException(level, e, srcstr+":"+format, args);
     }
+
+    public boolean hasDebugLevel()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
 }
