@@ -327,9 +327,7 @@ public class TaskMonitorDialog extends javax.swing.JDialog
         if (isFinalUpdate)
         {
             monitor.getLogText(true,0,textHolder);
-            // Final Update: Get All text.  
-            String newText="<<<Final>>>\n"+textHolder.value; 
-            this.logText.setText(newText);  
+            this.logText.setText(textHolder.value);  
         }
         else
         {
