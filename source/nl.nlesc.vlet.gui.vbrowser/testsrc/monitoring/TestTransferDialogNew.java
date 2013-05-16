@@ -75,7 +75,7 @@ public class TestTransferDialogNew
 
             // Following method can only called by package members!
             // Do update here:
-            inst.update(); 
+            inst.update(false); 
 
             try
             {
@@ -86,6 +86,8 @@ public class TestTransferDialogNew
                 e.printStackTrace();
             } 
         }
+        
+        inst.update(true); 
 
         transfer.endTask(null);
 
