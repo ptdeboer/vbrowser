@@ -20,6 +20,8 @@
 
 package nl.esciencecenter.ptk.task;
 
+import nl.esciencecenter.ptk.data.StringHolder;
+
 /** 
  * Interface for Action Tasks, or other objects,  which can be monitored. 
  */
@@ -139,10 +141,13 @@ public interface ITaskMonitor
 	public void logPrintf(String format, Object... args);
 
     /**
-     * Return log text, set sinceLastGet to true for incremental 
-     * updates, or set to false to get the complete text buffer.
+     * Returns logging events into one text String.  
+     * Set resetLogBuffer to true to reset the log buffer so that
+     * each getLogTexT() will return the events since the last getLogText() call.
+     * Specify log event offset in logEventOffset.
+     * @return returns current log event number.  
      */ 
-	public String getLogText(boolean sinceLastGet);
+	public int getLogText(boolean clearLogBuffer,int logEventOffset,StringHolder logTextHolder);
     
     /** 
      * Has error/exception, etc. 
