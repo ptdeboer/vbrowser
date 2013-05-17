@@ -51,7 +51,6 @@ public class TestTransferDialogNew
         int step=1024; 
 
         transfer.startTask("TransferTask",max); 
-        transfer.setTotalSources(max/dif); 
 
         for (int i=0;i<=max;i+=step)
         {

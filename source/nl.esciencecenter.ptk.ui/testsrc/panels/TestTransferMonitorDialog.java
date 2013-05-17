@@ -38,23 +38,27 @@ public class TestTransferMonitorDialog
      {
          try
          {
-             JFrame frame = new JFrame();
-             // dimmy:
-             TransferMonitor transfer=new TransferMonitor("Transfer", 
-                     new URI("file","host","/source"),
-                     new URI("file","host","/dest"));
-             
-             TransferMonitorDialog inst = new TransferMonitorDialog(transfer);
-             inst.setModal(false); 
-             inst.setVisible(true);
-             inst.start();
-             
              int max=1000*1024; 
              int dif=50*1024;
              int step=1024; 
+             int numSources= max/dif; 
+
+             URI uris[]=new URI[numSources]; 
+             for (int i=0;i<numSources;i++)
+            	 uris[i]=new URI("file","host","/source/file_"+i); 
+
+             JFrame frame = new JFrame();
+             // dimmy:
+             TransferMonitor transfer=new TransferMonitor("Transfer", 
+                     new URI[]{new URI("file","host","/source")},
+                     new URI("file","host","/dest"));
              
+             TransferMonitorDialog inst = new TransferMonitorDialog(frame,transfer);
+             inst.setModal(false); 
+             inst.setVisible(true);
+             inst.start();
+                        
              transfer.startTask("TransferTask",max); 
-             transfer.setTotalSources(max/dif); 
     
              String subTask="?";
     

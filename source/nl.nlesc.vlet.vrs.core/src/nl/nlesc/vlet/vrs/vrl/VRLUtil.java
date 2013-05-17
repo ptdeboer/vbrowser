@@ -338,6 +338,17 @@ public class VRLUtil
                 vrl.getFragment()); 
     }
 
+    /**
+     * Convert VRL array to URI array, and ignore exceptions. 
+     * @return - array of URIs. 
+     */  
+	public static java.net.URI[] toURIs(VRL[] vrls) 
+	{
+		java.net.URI uris[]=new java.net.URI[vrls.length];
+		for (int i=0;i<vrls.length;i++)
+			uris[i]=vrls[i].toURINoException();
+		return uris; 
+	}
     
     
 }

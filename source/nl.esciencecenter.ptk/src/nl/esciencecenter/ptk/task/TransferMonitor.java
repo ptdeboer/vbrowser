@@ -26,7 +26,7 @@ import java.net.URI;
  * Transfer Specific Monitor. 
  * Adds more meta fields specific for (VFS) File Transfers. 
  * 
- * @author Piter T. de BOer. 
+ * @author Piter T. de Boer. 
  */
 public class TransferMonitor extends TaskMonitorAdaptor
 {
@@ -34,7 +34,7 @@ public class TransferMonitor extends TaskMonitorAdaptor
     
     private int transferId=0; 
     
-    private URI source;
+    private URI sources[];
 
     private URI dest;
 
@@ -42,19 +42,17 @@ public class TransferMonitor extends TaskMonitorAdaptor
 
     private int sourcesDone;
 
-    private int totalSources;
-
-    public TransferMonitor(String action, URI sourceVri, URI destVri)
+    public TransferMonitor(String action, URI sourceUris[], URI destVri)
     {
         this.transferId=transferCounter++; 
         this.actionStr=action; 
-        this.source=sourceVri;
+        this.sources=sourceUris;
         this.dest=destVri; 
     }
 
     public String getID()
     {
-        return ""+transferId; 
+        return "transfer:#"+transferId; 
     }
     
     public URI getDestination()
@@ -64,17 +62,21 @@ public class TransferMonitor extends TaskMonitorAdaptor
 
     public URI getSource()
     {
-        return source;
+    	if ((sources!=null) && (sources.length>0))
+    		return sources[0];
+    	return null;
     }
 
     public int getTotalSources()
     {
-        return totalSources;
+       if (sources!=null)
+    	   return sources.length; 
+       return 0; 
     }
-    
-    public void setTotalSources(int sources)
+        
+    public void setSources(URI sources[])
     {
-        this.totalSources=sources;
+        this.sources=sources; 
     }
 
     public int getSourcesDone()

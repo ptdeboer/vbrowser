@@ -26,6 +26,7 @@ import java.net.URISyntaxException;
 import javax.swing.JFrame;
 
 import nl.esciencecenter.ptk.task.TransferMonitor;
+import nl.esciencecenter.ptk.ui.panels.monitoring.TransferMonitorDialog;
 import nl.esciencecenter.ptk.ui.panels.monitoring.TransferMonitorPanel;
 
 public class TestTransferMonitorPanel
@@ -37,25 +38,28 @@ public class TestTransferMonitorPanel
      */
      public static void main(String[] args) throws URISyntaxException
      {
+    	 int max=1000*1024; 
+         int dif=50*1024;
+         int step=1024; 
+         int numSources= max/dif; 
+
+         URI uris[]=new URI[numSources]; 
+         for (int i=0;i<numSources;i++)
+        	 uris[i]=new URI("file","host","/source/file_"+i); 
+
          JFrame frame = new JFrame();
          // dimmy:
          TransferMonitor transfer=new TransferMonitor("Transfer", 
-                 new URI("file","host","/source"),
-                 new URI("file","host","/dest")); 
+                 new URI[]{new URI("file","host","/source")},
+                 new URI("file","host","/dest"));
          
          TransferMonitorPanel inst = new TransferMonitorPanel(transfer);
-        
+                 
          frame.add(inst); 
          frame.pack(); 
          frame.setVisible(true); 
          
-         
-         int max=1000*1024; 
-         int dif=50*1024;
-         int step=1024; 
-         
          transfer.startTask("TransferTask",max); 
-         transfer.setTotalSources(max/dif); 
          
          for (int i=0;i<=max;i+=step)
          {

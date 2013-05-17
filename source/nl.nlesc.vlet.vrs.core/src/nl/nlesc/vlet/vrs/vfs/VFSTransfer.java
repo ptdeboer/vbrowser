@@ -26,29 +26,12 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
 /**
- * VFSTransfer class. Keeps record of ongoing transfers. 
- * VFSS classes should update this transfer information when 
- * given as an argument when requested to perform an (file) transfer. 
- * <p>
- * The minimum use is: <pre> 
- *   startTask("Task") // Start Stransfer <br> 
- *   // dostuff...<br> 
- *   endTask()  // End Transfer <br>
- * </pre>
- * It is recommend to set and update the current transfer size
- * to allow transfer statistics to be calculated. <br>
- * Update the transfer info as follows:<pre>
- *   startTask("Task") // Start Stransfer <br> 
- *   setTotalWorkTodo(fileSize)
- *   while(transferDone==false)
- *   {
- *   	// do transfer ..<br>
- *      updateWorkDone(bytesTransferred)
- *   }
- *   endTask() // End Transfer <br>
- * </pre>
+ * VFSTransfer monitor class. 
+ * 
+ * Monitor object for ongoing VFS Transfers. 
  * 
  * @author P.T. de Boer
  */
@@ -72,21 +55,26 @@ public class VFSTransfer extends TransferMonitor
     private VRL currentSource; 
     
     // instance methods
-    public VFSTransfer(ITaskMonitor parentMonitor, String resourceType,VRL source, VRL destination,boolean isMove)
+    public VFSTransfer(ITaskMonitor parentMonitor, String resourceType,VRL sources[], VRL destination,boolean isMove)
     {
-        super("VFSTransfer", source.toURINoException(), destination.toURINoException());
-        
+        super("VFSTransfer", VRLUtil.toURIs(sources), destination.toURINoException());
         setParent(parentMonitor); // add this transfer to parent monitor 
         this.resourceType=resourceType; 
         this.isMove=isMove; 
-        this.setTotalSources(-1);  
     }
 
-    /** Specify what kinf of action this transfer is */ 
+    public VFSTransfer(ITaskMonitor optParentMonitor, String resourceType,
+			VRL source, VRL targetParentDirVrl, boolean isMove)
+    {
+    	this(optParentMonitor,resourceType,new VRL[]{source},targetParentDirVrl,isMove);
+	}
+
+	/** 
+	 * Specify what kind of action this transfer is.
+	 */ 
     public void setVFSTransferType(VFSActionType type)
     {
         this.actionType=type; 
-        
     }
     
     // =======================================================================
@@ -101,7 +89,7 @@ public class VFSTransfer extends TransferMonitor
         logger.debugPrintf(" destination   =%s\n",this.getDestination()); 
         logger.debugPrintf(" type          =%s\n",this.actionType); 
         logger.debugPrintf(" is move       =%s\n",StringUtil.boolString(this.isMove));  
-        logger.debugPrintf(" transfertime  =%f(s)\n",(double)this.getTime()/1000.0); 
+        logger.debugPrintf(" transfer time =%f(s)\n",(double)this.getTime()/1000.0); 
         logger.debugPrintf(" transfer size =%d\n",+getSubTaskTodo()); 
         logger.debugPrintf(" Exception     =%s\n",(this.getException()==null?getException():"no")); 
     }
@@ -320,5 +308,10 @@ public class VFSTransfer extends TransferMonitor
             return -1; 
         return stats.done; 
     }
+
+	public void setSources(VRL[] vrls) 
+	{
+		super.setSources(VRLUtil.toURIs(vrls)); 
+	}
 
 }

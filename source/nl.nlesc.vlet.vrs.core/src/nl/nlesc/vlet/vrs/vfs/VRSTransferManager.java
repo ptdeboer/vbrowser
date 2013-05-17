@@ -90,7 +90,6 @@ public final class VRSTransferManager
 	protected VFSTransfer newTransfer(ITaskMonitor monitor, VNode source,VRL targetVRL, boolean isMove) throws Exception
 	{
 		VFSTransfer transfer=new VFSTransfer(monitor,source.getResourceType(),source.getVRL(),targetVRL,isMove);
-		transfer.setTotalSources(0);  // init 
 		transfer.setTotalWorkTodo(0); // init
 		this.transfers.add(transfer); 
 		return transfer; 
@@ -203,8 +202,7 @@ public final class VRSTransferManager
 		if (nodeCopy==true)
 		{
 		    taskStr="Downloading resource.";  
-            transfer.setTotalSources(1);
-		}
+   		}
 		else if (fileCopy==true)
 		{
 		    // single file transfer. Ony here can this be detected. 
@@ -213,7 +211,6 @@ public final class VRSTransferManager
 		    sourceFile=(VFile)source;
 		    totalTodo=sourceFile.getLength();
 		    taskStr="File transfer.";  
-            transfer.setTotalSources(1);
 		}
 		else
 		{
@@ -532,8 +529,7 @@ public final class VRSTransferManager
              final ICopyInteractor interactor
             ) throws Exception
     {
-        final VFSTransfer transfer=new VFSTransfer(optParentMonitor,"MultiCopy",null,targetParentDirVrl,isMove); 
-        transfer.setTotalSources(0); 
+        final VFSTransfer transfer=new VFSTransfer(optParentMonitor,"MultiCopy",vrls,targetParentDirVrl,isMove); 
         transfer.setTotalWorkTodo(0); // init! 
         transfer.setMultiTransfer(true); 
         //transfer.setInteractor(interactor); 
@@ -552,11 +548,6 @@ public final class VRSTransferManager
                 {
                     nodes.add(context.openLocation(vrl));  
                 }
-                
-                // Initial start with sources from argument
-                // Dir copy methods will increase this !
-                
-                transfer.setTotalSources(nodes.size());
                 
                 for (VNode node:nodes)
                 {
@@ -1382,7 +1373,12 @@ public final class VRSTransferManager
 
 			// update monitoring as we work ! 
 			if ((monitor!=null) && (monitor instanceof VFSTransfer))
-				((VFSTransfer)monitor).setTotalSources(totalSources+heap.size());
+			{
+				// Do a microsoft and change the statistics during a (multi) file copy here.  
+				VRL vrls[]=heap.toArray(new VRL[0]); 
+				((VFSTransfer)monitor).setSources(vrls); //
+			}
+			
 			dirIndex++; // process next dir (if existant)
 
 		}while(dirIndex<dirStack.size()); 
