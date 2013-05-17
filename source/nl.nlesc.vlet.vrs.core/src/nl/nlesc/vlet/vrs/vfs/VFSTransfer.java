@@ -26,6 +26,7 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
 /**
@@ -312,6 +313,17 @@ public class VFSTransfer extends TransferMonitor
 	public void setSources(VRL[] vrls) 
 	{
 		super.setSources(VRLUtil.toURIs(vrls)); 
+	}
+
+	public VRL[] setSources(VNode[] nodes) 
+	{
+		if (nodes==null)
+			return null; 
+		
+		VRL vrls[]=new VRL[nodes.length];
+		for (int i=0;i<nodes.length;i++)
+			vrls[i]=nodes[i].getVRL(); 
+		return vrls; 
 	}
 
 }
