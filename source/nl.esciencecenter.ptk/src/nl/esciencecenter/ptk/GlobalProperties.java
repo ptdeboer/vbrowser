@@ -50,6 +50,9 @@ public class GlobalProperties
 	/** Java property which specifies the user name or $USER.*/ 
 	public static final String PROP_JAVA_USER_NAME = "user.name"; 
 
+	/** Java property which specifies the 'user directory' or current working directory.*/ 
+    public static final String PROP_JAVA_USER_DIR = "user.dir"; 
+    
     /** Java os.name value for Linux */ 
     public static final String LINUX = "Linux";
 
@@ -135,7 +138,23 @@ public class GlobalProperties
 		
 		return URIFactory.uripath(val,true); 
 	}
-    
+
+	/** 
+	 * The "User Directory" is also known as "current working directory", except this is the path
+	 * at startup and can't be manipulated. 
+	 * Note: If an application might want to change the CWD, this has to be done by the application itself.   
+	 * @return
+	 */
+	public static String getGlobalUserDir() 
+	{
+	    String val=getStringProperty(PROP_JAVA_USER_DIR); 
+
+	    if (val==null)
+	        return null; 
+	        
+	    return URIFactory.uripath(val,true); 
+    }
+	   
 	public static String getGlobalTempDir() 
 	{
 	    String val=getStringProperty(PROP_JAVA_TMPDIR); 
