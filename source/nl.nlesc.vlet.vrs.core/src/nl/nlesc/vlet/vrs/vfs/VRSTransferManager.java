@@ -1375,8 +1375,8 @@ public final class VRSTransferManager
 			if ((monitor!=null) && (monitor instanceof VFSTransfer))
 			{
 				// Do a microsoft and change the statistics during a (multi) file copy here.  
-				VRL vrls[]=heap.toArray(new VRL[0]); 
-				((VFSTransfer)monitor).setSources(vrls); //
+				VNode nodeArr[]=heap.toArray(new VNode[0]); 
+				((VFSTransfer)monitor).setSources(nodes); //
 			}
 			
 			dirIndex++; // process next dir (if existant)
