@@ -20,7 +20,6 @@
 
 package test.vrs.vfs;
 
-import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
