@@ -248,7 +248,7 @@ public class FSUtil
      * @param filename
      *            - path to resolve and read.
      */
-    public String readText(String filename) throws Exception
+    public String readText(String filename) throws IOException
     {
         return readText(filename, ENCODING_UTF8);
     }
