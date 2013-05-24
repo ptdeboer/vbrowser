@@ -330,7 +330,9 @@ public class StringCrypter
         }
     }
 
-    /** Decrypt base64 encoded and encrypted String */ 
+    /** 
+     * Decrypt base64 encoded and encrypted String and return decoded String.  
+     */ 
     public String decryptHexEncodedString(String hexEncodedString) throws EncryptionException
     {
         if (StringUtil.isWhiteSpace(hexEncodedString))
@@ -338,27 +340,16 @@ public class StringCrypter
             throw new IllegalArgumentException("Encrypted String was null or empty. Must be hexadecimal encoded String.");
         }
         
-        try
-        {
-            byte[] cleartext= StringUtil.parseBytesFromHexString(hexEncodedString); 
-            
-            SecretKey key = keyFactory.generateSecret(keySpec);
-            cipher.init(Cipher.DECRYPT_MODE, key);
-            
-            byte[] ciphertext = cipher.doFinal(cleartext);
-            return new String(ciphertext,charSet);
-        }
-        catch (javax.crypto.BadPaddingException e)
-        {
-            throw new DecryptionFailedException("Decryption Failed: Bad or invalid key",e); 
-        }
-        catch (Exception e)
-        {
-            throw new EncryptionException(e.getMessage(),e);
-        }
+        byte[] cleartext= StringUtil.parseBytesFromHexString(hexEncodedString); 
+        byte[] ciphertext=decrypt(cleartext); 
+        
+        return new String(ciphertext,charSet);
+        
     }
     
-    /** Decrypt base64 encoded and encrypted String */ 
+    /**
+     * Decrypt base64 encoded and encrypted String and return as bytes
+     */ 
     public byte[] decrypt(byte crypt[]) throws EncryptionException
     {
         if (crypt==null)

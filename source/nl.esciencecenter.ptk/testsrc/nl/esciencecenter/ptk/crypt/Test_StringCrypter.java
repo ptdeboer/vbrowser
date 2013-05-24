@@ -117,8 +117,7 @@ public class Test_StringCrypter
     @Test
     public void test_CryptDESedeECBPKCS5_SHA256_12345() throws Throwable
     {
-        // echo -n 12345 | openssl enc -des-ede3 -nosalt -pass pass:12345
-        // -base64 -md sha256 -p
+        // echo -n 12345 | openssl enc -des-ede3 -nosalt -pass pass:12345 -base64 -md sha256 -p
         // key=5994471ABB01112AFCC18159F6CC74B4F511B99806DA59B3
         // xC5gLUJ1UxI=
         testEncrypt("12345", "12345", "xC5gLUJ1UxI=", CryptScheme.DESEDE_ECB_PKCS5, "SHA-256",
