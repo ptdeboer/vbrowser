@@ -20,6 +20,7 @@
 
 package nl.esciencecenter.ptk.crypt;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -302,7 +303,9 @@ public class StringCrypter
         }
     }
 
-    /** Decrypt base64 encoded and encrypted String */ 
+    /** 
+     * Decrypt base64 encoded and encrypted String
+     */ 
     public String decryptString(String base64String) throws EncryptionException
     {
         if (StringUtil.isWhiteSpace(base64String))
@@ -313,25 +316,18 @@ public class StringCrypter
         try
         {
             byte[] cleartext= StringUtil.base64Decode(base64String);
-            
-            SecretKey key = keyFactory.generateSecret(keySpec);
-            cipher.init(Cipher.DECRYPT_MODE, key);
-            
-            byte[] ciphertext = cipher.doFinal(cleartext);
+            byte[] ciphertext=decrypt(cleartext);
             return new String(ciphertext,charSet);
         }
-        catch (javax.crypto.BadPaddingException e)
+        catch (IOException e)
         {
-            throw new DecryptionFailedException("Decryption Failed: Bad or invalid key",e); 
+            throw new DecryptionFailedException("Base 64 decoding failed.\n"+e.getMessage(),e);  
         }
-        catch (Exception e)
-        {
-            throw new EncryptionException(e.getMessage(),e);
-        }
+
     }
 
     /** 
-     * Decrypt base64 encoded and encrypted String and return decoded String.  
+     * Decrypt hexadecimal encoded and encrypted String and return decoded String.  
      */ 
     public String decryptHexEncodedString(String hexEncodedString) throws EncryptionException
     {
@@ -348,7 +344,7 @@ public class StringCrypter
     }
     
     /**
-     * Decrypt base64 encoded and encrypted String and return as bytes
+     * Decrypt base64 encoded and encrypted String and return as bytes.
      */ 
     public byte[] decrypt(byte crypt[]) throws EncryptionException
     {

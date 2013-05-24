@@ -25,6 +25,8 @@ import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.junit.Test;
+
 public class Test_GifDecoder
 {
     public static void main(String args[])
@@ -39,6 +41,7 @@ public class Test_GifDecoder
         }
     }
     
+    @Test
     public static void test() throws MalformedURLException
     {
         NS2GifDecoder gifDec = new NS2GifDecoder(); 
