@@ -15,6 +15,7 @@ comp.version=0.2.0
 comp.mainclass=nl.esciencecenter.ptk.bootstrap.Bootstrapper
 
 comp.src=src
+comp.testsrc=testsrc
 comp.dist=dist
 comp.build=build
 comp.build.classdir=${comp.build}/classes
