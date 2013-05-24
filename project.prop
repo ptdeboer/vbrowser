@@ -24,6 +24,8 @@ project.dist.doc=${project.dist}/doc
 #mark project.prop read!
 project.env.ok=ok; 
 
+project.version=1.6.0alpha1
+
 ##
 #
 project.vendor=eScienceCenter.nl
