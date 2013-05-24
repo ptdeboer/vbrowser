@@ -68,7 +68,7 @@
 
     <target name="test" depends="project-init" >
 
-          <antcall target="doModules">
+          <antcall target="doModules-test">
             <param name="target" value="test" />
         </antcall>
             

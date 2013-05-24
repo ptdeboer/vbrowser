@@ -47,7 +47,10 @@
             <classpath refid="comp.classpath" />
         </javac>
     </target>
-
+    
+    <target name="test" depends="build">
+    </target> 
+        
     <target name="jar" depends="build">
 
         <!-- Create application JAR file -->

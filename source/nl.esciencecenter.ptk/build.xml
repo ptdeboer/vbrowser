@@ -112,7 +112,7 @@
         </jar>
     </target>
 
-    <!-- Target: dist --> 
+    <!-- Target: dist -->
     <target name="dist" depends="build,bootstrap-jar,jar">
 
         <filterset id="compfilters">
@@ -123,7 +123,24 @@
 
     </target>
 
-    <!-- Target: dist-install --> 
+    <target name="test" depends="build">
+
+        <junit printsummary="yes" fork="yes">
+            <classpath refid="default.classpath" />
+            <batchtest fork="yes" todir="reports">
+                <formatter type="xml" />
+                <formatter type="plain" />
+                <fileset dir="src">
+                    <include name="**/Test*.java" />
+                    <include name="**/*Test.java" />
+                    <include name="**/*TestCase.java" />
+                    <exclude name="**/integration/*.java" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <!-- Target: dist-install -->
     <target name="dist-install" depends="dist" description="install libraries">
         <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
         <mkdir dir="${project.dist.doc}" />

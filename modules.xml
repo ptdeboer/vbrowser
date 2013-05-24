@@ -43,6 +43,20 @@
     <target name="doModules" depends="vlet-all">
     </target>
 
+    <target name="doModules-test" depends="modules-test">
+    </target>
+
+    <target name="modules-test" depends="project-init">
+
+        <antcall target="build-component">
+            <param name="name" value="nl.esciencecenter.ptk"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+
+        </antcall>
+
+    </target>
+
     <target name="vlet-all" depends="project-init,vlet-core,vlet-vfs-adaptors,vlet-vbrowser,vlet-vbrowser-viewers">
     </target>
 

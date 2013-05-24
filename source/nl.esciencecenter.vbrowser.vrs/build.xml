@@ -20,6 +20,8 @@
         <mkdir dir="${comp.build}" />
         <mkdir dir="${comp.build.classes}" />
         <mkdir dir="${comp.dist}" />
+        <mkdir dir="${comp.dist}/lib"/>
+            
     </target>
 
     <target name="config">
@@ -46,8 +48,10 @@
         </javac>
     </target>
 	
-    <mkdir dir="${comp.dist}"/>
-    <mkdir dir="${comp.dist}/lib"/>
+    <target name="test" depends="build">
+    </target> 
+        
+
     
     <target name="jar" depends="build">
 

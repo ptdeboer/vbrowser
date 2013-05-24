@@ -32,7 +32,7 @@ import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.io.LocalFSNode;
 
-public class TestFSUtil 
+public class ITTestFSUtil 
 {
 	protected static Object testDirMutex=new Object(); 
 	

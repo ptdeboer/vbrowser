@@ -59,6 +59,9 @@
 
     </target>
 
+    <target name="test" depends="build">
+    </target> 
+        
     <target name="jar" depends="build">
         <!-- defaults -->
         <property name="comp.version" value="dev" />
