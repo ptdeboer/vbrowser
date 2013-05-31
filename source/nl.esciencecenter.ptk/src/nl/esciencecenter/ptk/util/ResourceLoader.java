@@ -37,9 +37,11 @@ import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
- * Generic ResourceLoader class which supports URIs and URLs.
+ * Generic ResourceLoader class which supports (relative) URIs and URLs.
+ * It is recommended to use relative URLs and URIs to local files and other resources which might be on the classpath
+ * and not rely on absolute file locations.<br>
+ * This allows for a more flexible run time environment in applet and servlet environments.  
  * <p>
- * 
  * @author Piter.T. de Boer
  */
 public class ResourceLoader
@@ -47,30 +49,34 @@ public class ResourceLoader
     /** Default UTF-8 */
     public static final String CHARSET_UTF8 = "UTF-8";
 
-    /** Legacy UTF-16 Big Endian */
+    /** UTF-16 Big Endian or "wide char" */
     public static final String CHARSET_UTF16BE = "UTF-16BE";
 
-    /** Legacy UTF-16 Little Endian */
+    /** UTF-16 Little Endian or "wide char" */
     public static final String CHARSET_UTF16LE = "UTF-16LE";
 
-    /** 7-bits (US) ASCII, mother of all ASCII's */
+    /** 7-bits (US) ASCII */
     public static final String CHARSET_US_ASCII = "US-ASCII";
 
-    /** 8-bits US/Euro 'standard' encoding */
+    /** 8-bits US and Euro 'standard' encoding */
     public static final String CHARSET_ISO_8859_1 = "ISO-8859-1";
 
     /** Latin is an alias for ISO-8859-1 (All Roman/Latin languages) */
     public static final String CHARSET_LATIN = "ISO-8869-1";
 
-    /** Old EXTEND (US) ASCII Code Page 437 */
+    /** Old extended (US) ASCII Code Page 437 */
     public static final String CHARSET_CP437 = "CP437";
 
     /** Default is UTF-8 */
     public static final String DEFAULT_CHARSET = CHARSET_UTF8;
 
-    public static final String charEncodings[] =
-    { CHARSET_UTF8, CHARSET_UTF16BE, CHARSET_UTF16LE, CHARSET_US_ASCII, CHARSET_ISO_8859_1, CHARSET_LATIN,
-            CHARSET_CP437 };
+    /** 
+     * Supported character sets. 
+     */
+    public static final String charEncodings[] =  { 
+            CHARSET_UTF8, CHARSET_UTF16BE, CHARSET_UTF16LE, CHARSET_US_ASCII, CHARSET_ISO_8859_1, CHARSET_LATIN,
+            CHARSET_CP437 
+            };
 
     private static ResourceLoader instance;
 
@@ -116,10 +122,9 @@ public class ResourceLoader
 
     /**
      * Initialize ResourceLoader with extra URL search path. When resolving a
-     * relative URL these path URLs will be searched as well.
+     * relative URL these path URLs will be searched as well similar as using a PATH environment variable. 
      * 
-     * @param urls
-     *            Optional URL search path
+     * @param urls - URL search paths
      */
     public ResourceLoader(URL urls[])
     {
@@ -138,25 +143,22 @@ public class ResourceLoader
     }
 
     /**
-     * Tries to load resource from relative or absolute url: <br>
-     * - I) get current classLoader to resource 'urlstr'<br>
-     * - II) get thread classload to resolve 'urlstr'<br>
-     * - III) tries if urlstr is an absolute url and performs
-     * openConnection().getInputStream()<br>
+     * Resolves relative URL string and returns InputStream to resource. 
+     * If the urlstr is an absolute URL this method is similar to  <code>URL.openConnection().getInputStream()</code>.
      * 
-     * @param urlstr
-     *            can be boths relative (classpath) url or URI
-     * @return InputStream
-     * @throws VlIOException
-     * @throws VlIOException
+     * @see #resolveUrl(ClassLoader, String)
+     *  
+     * @param urlstr - can be both relative (classpath) url or absolute URI
+     * @return InputStream - InputStream to resource. 
+     * @throws IOException
      */
-    public InputStream getInputStream(String urlstr) throws IOException
+    public InputStream createInputStream(String urlstr) throws IOException
     {
         URL url=resolveUrl(null, urlstr); 
         if (url==null)
             throw new FileNotFoundException("Couldn't resolve:"+urlstr); 
         
-        return getInputStream(url);
+        return createInputStream(url);
     }
 
     /**
@@ -166,7 +168,7 @@ public class ResourceLoader
      * @return
      * @throws VlException
      */
-    public InputStream getInputStream(URL url) throws IOException
+    public InputStream createInputStream(URL url) throws IOException
     {
         if (url==null)
             throw new NullPointerException("URL is NULL!"); 
@@ -182,7 +184,7 @@ public class ResourceLoader
         }
     }
 
-    public InputStream getInputStream(URI uri) throws IOException
+    public InputStream createInputStream(URI uri) throws IOException
     {
         try
         {
@@ -196,30 +198,36 @@ public class ResourceLoader
         }
     }
 
-    /** Returns resource as String */
+    /**
+     * Returns resource as String.
+     */
     public String getText(URL location, String charset) throws IOException
     {
-        InputStream inps = getInputStream(location);
+        InputStream inps = createInputStream(location);
         return getText(inps, charset);
     }
 
-    /** Returns resource as String */
+    /** 
+     * Returns resource as String. 
+     */
     public String getText(URL loc) throws IOException
     {
-        InputStream inps = getInputStream(loc);
+        InputStream inps = createInputStream(loc);
         return getText(inps, null);
     }
 
-    /** Returns resource as String */
+    /** 
+     * Returns resource as String. 
+     */
     public String getText(URI uri) throws IOException
     {
-        InputStream inps = getInputStream(uri.toURL());
+        InputStream inps = createInputStream(uri.toURL());
         return getText(inps, null);
     }
 
     public byte[] getBytes(URL loc) throws IOException
     {
-        InputStream inps = getInputStream(loc);
+        InputStream inps = createInputStream(loc);
         byte bytes[] = getBytes(inps);
         try
         {
@@ -234,7 +242,7 @@ public class ResourceLoader
 
     public byte[] getBytes(String pathOrUrl) throws IOException
     {
-        InputStream inps = getInputStream(pathOrUrl);
+        InputStream inps = createInputStream(pathOrUrl);
         byte bytes[] = getBytes(inps);
         try
         {
@@ -248,8 +256,10 @@ public class ResourceLoader
     }
 
     /**
-     * Read text from input stream in encoding 'charset'. (Default is utf-8)
-     * Does this line by line. Line seperators might be changed!
+     * Read text from InputSream using charset as String encoding. 
+     * Default is UTF-8.
+     * @param inps - The InputStream. all byte will be read, but the InputStream won't be closed
+     * @param charset - Optional Character Encoding. Can be null.  
      */
     public String getText(InputStream inps, String charset) throws IOException
     {
@@ -268,7 +278,10 @@ public class ResourceLoader
         }
     }
 
-    /** Read all bytes from inputstream */
+    /** 
+     * Read all bytes from InputStream until an EOF or other IOException occored. 
+     * InputStream won't be closed.  
+     */
     public byte[] getBytes(InputStream inps) throws IOException
     {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -311,7 +324,7 @@ public class ResourceLoader
 
         try
         {
-            InputStream inps = this.getInputStream(url);
+            InputStream inps = this.createInputStream(url);
             props.load(inps);
             logger.debugPrintf("Read properties from:%s\n", url);
             try
@@ -328,7 +341,7 @@ public class ResourceLoader
             throw new IOException("Couldn't load propertied from:" + url + "\n" + e.getMessage(), e);
         }
         // in the case of applet startup: Not all files are
-        // accessable, wrap exception for gracfull exception handling.
+        // accessable, wrap exception for gracefull exception handling.
         catch (java.security.AccessControlException ex)
         {
             // Applet/Servlet environment !
@@ -345,21 +358,43 @@ public class ResourceLoader
         return props;
     }
 
-    /** Returns char encoding which is used when reading text. */
+    /** 
+     * Returns default characted encoding which is used when reading text. 
+     */
     public String getCharEncoding()
     {
         return charEncoding;
     }
 
-    /** Specify char encoding which is used when reading text. */
+    /**
+     * Specify default character encoding which is used when reading text.
+     */
     public void setCharEncoding(String encoding)
     {
         charEncoding = encoding;
     }
 
+    
     public String getText(String url) throws IOException
     {
-        return this.getText(this.getInputStream(url), this.getCharEncoding());
+        InputStream inps=createInputStream(url);
+        
+        try
+        {
+            String text=getText(inps,this.charEncoding); 
+            return text;
+        }
+        finally
+        {
+            try 
+            {
+                inps.close(); 
+            }
+            catch (IOException e2) 
+            { 
+                ; 
+            }
+        }
     }
 
     /**
@@ -450,7 +485,9 @@ public class ResourceLoader
         return resolvedUrl;
     }
 
-    /** Returns current search path */
+    /**
+     *  Returns current URL search path for relative resources.  
+     */
     public URL[] getSearchPath()
     {
         URL urls[] = null;
@@ -488,11 +525,7 @@ public class ResourceLoader
 
     public OutputStream createOutputStream(URI loc) throws IOException
     {
-//        // local file:
-//        if (isLocalLocation(loc))
-//        {
-//            return fsUtil.getFileOutputStream(loc.getPath());
-//        }
+
         try
         {
             URL url = loc.toURL();
@@ -513,8 +546,38 @@ public class ResourceLoader
         catch (IOException e)
         {
             // wrap:
-            throw new IOException("Cannot get OutputStream from" + url + "\n" + e.getMessage(), e);
+            throw new IOException("Cannot create OutputStream from:" + url + "\n" + e.getMessage(), e);
         }
     }
 
+    /**
+     * Save properties file to specified location.
+     */
+    public void saveText(URI loc, String text) throws IOException
+    {
+        saveBytes(loc,text.getBytes(this.charEncoding));
+    }
+    
+    /**
+     * Save properties file to specified location.
+     */
+    public void saveText(URI loc, String text,String charset) throws IOException
+    {
+        saveBytes(loc,text.getBytes(charset));
+    }
+    
+    public void saveBytes(URI loc,byte[] bytes) throws IOException
+    {
+        OutputStream outps = createOutputStream(loc);
+        outps.write(bytes); 
+        
+        try
+        {
+            outps.close();
+        }
+        catch (Exception e)
+        {
+            logger.logException(ClassLogger.DEBUG, e, "Exception while closing outputstream:%s\n", e);
+        }
+    }
 }
