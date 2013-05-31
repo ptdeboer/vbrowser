@@ -20,15 +20,10 @@
 
 package nl.esciencecenter.ptk.ui.image;
 
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
-import nl.esciencecenter.ptk.util.gif.NS2GifDecoder;
 
 //import com.sun.media.jai.codec.ByteArraySeekableStream;
 //import com.sun.media.jai.codec.ImageDecodeParam;
@@ -133,48 +128,48 @@ public class ImageUtil
 //        return new ImageSequence(images); 
 //    }
 
-    /** 
-     * Loads legacy Netscape 2.0 animated Gificon and decodes it which seems to be 
-     * the animated gif standard nowdays! 
-     * This method does NOT do any caching.  
-     */  
-    public static ImageSequence loadAnimatedGif(URL url) throws Exception
-    {
-        NS2GifDecoder gifDec = new NS2GifDecoder(); 
-        
-        gifDec.read(url);
-        Dimension size = gifDec.getFrameSize(); 
-        int num=gifDec.getFrameCount(); 
-        
-        int loopc=gifDec.getLoopCount(); 
-        
-        //infoPrintf(" --- header ---\n");
-        //infoPrintf("  - num frames = %d\n",num);  
-        //infoPrintf("  - loop count = %dn",loopc);  
-        //infoPrintf("  - frame size = %dx%d\n",size.width,size.height);  
-    
-        List<BufferedImage> images=new ArrayList<BufferedImage>(); 
-        List<ImageSequence.FrameInfo> infos=new ArrayList<ImageSequence.FrameInfo>();
-        // get frames; 
-        for (int i=0;i<num;i++)
-        {
-            //infoPrintf(" --- frame #%d ---\n",i);
-            
-            BufferedImage frame = gifDec.getFrame(i);
-            int delay=gifDec.getDelay(i); 
-            //infoPrintf("  - delay = %d\n",delay);
-            images.add(frame);
-            // 1st = 1st image,etc. 
-            //inf.imageNr=i;
-            //inf.waitTimeMs=delay; 
-    
-            ImageSequence.FrameInfo inf=new ImageSequence.FrameInfo(i,delay);
-            infos.add(inf); 
-        }   
-        
-        ImageSequence anim=new ImageSequence(images,infos,loopc);
-        return anim; 
-    }
+//    /** 
+//     * Loads legacy Netscape 2.0 animated Gificon and decodes it which seems to be 
+//     * the animated gif standard nowdays! 
+//     * This method does NOT do any caching.  
+//     */  
+//    public static ImageSequence loadAnimatedGif(URL url) throws Exception
+//    {
+//        NS2GifDecoder gifDec = new NS2GifDecoder(); 
+//        
+//        gifDec.read(url);
+//        Dimension size = gifDec.getFrameSize(); 
+//        int num=gifDec.getFrameCount(); 
+//        
+//        int loopc=gifDec.getLoopCount(); 
+//        
+//        //infoPrintf(" --- header ---\n");
+//        //infoPrintf("  - num frames = %d\n",num);  
+//        //infoPrintf("  - loop count = %dn",loopc);  
+//        //infoPrintf("  - frame size = %dx%d\n",size.width,size.height);  
+//    
+//        List<BufferedImage> images=new ArrayList<BufferedImage>(); 
+//        List<ImageSequence.FrameInfo> infos=new ArrayList<ImageSequence.FrameInfo>();
+//        // get frames; 
+//        for (int i=0;i<num;i++)
+//        {
+//            //infoPrintf(" --- frame #%d ---\n",i);
+//            
+//            BufferedImage frame = gifDec.getFrame(i);
+//            int delay=gifDec.getDelay(i); 
+//            //infoPrintf("  - delay = %d\n",delay);
+//            images.add(frame);
+//            // 1st = 1st image,etc. 
+//            //inf.imageNr=i;
+//            //inf.waitTimeMs=delay; 
+//    
+//            ImageSequence.FrameInfo inf=new ImageSequence.FrameInfo(i,delay);
+//            infos.add(inf); 
+//        }   
+//        
+//        ImageSequence anim=new ImageSequence(images,infos,loopc);
+//        return anim; 
+//    }
   
     public static BufferedImage convertToBufferedImage(Image image)
     {

@@ -511,33 +511,33 @@ public class IconProvider
 	// ========================
     // ========================
     
-    /**
-     * Returns 'AnimatedIcon' instead of plain 'Icon'
-     * The AnimatedIcon class implement the Icon interface so it is Swing compatible
-     * but is NOT a subclass of IconImage ! 
-     */ 
-    public AnimatedIcon createAnimatedIcon(String url)
-    {
-        return createAnimatedIcon(this.resourceLoader.resolveUrl(null,url)); 
-    }
+//    /**
+//     * Returns 'AnimatedIcon' instead of plain 'Icon'
+//     * The AnimatedIcon class implement the Icon interface so it is Swing compatible
+//     * but is NOT a subclass of IconImage ! 
+//     */ 
+//    public AnimatedIcon createAnimatedIcon(String url)
+//    {
+//        return createAnimatedIcon(this.resourceLoader.resolveUrl(null,url)); 
+//    }
     
-	/**
-	 *  Load animated image and return as explicit AnimatedIcon class. 
-	 *  Currently supports animated gifs only.
-	 */ 
-	public AnimatedIcon createAnimatedIcon(URL url)
-	{
-	    ImageSequence image;
-        try
-        {
-            image = ImageUtil.loadAnimatedGif(url);
-            return new AnimatedIcon(image);
-        }
-        catch (Exception e)
-        {
-            return new AnimatedIcon(ImageUtil.convertToBufferedImage(this.brokenImage));           
-        }
-	}
+//	/**
+//	 *  Load animated image and return as explicit AnimatedIcon class. 
+//	 *  Currently supports animated gifs only.
+//	 */ 
+//	public AnimatedIcon createAnimatedIcon(URL url)
+//	{
+//	    ImageSequence image;
+//        try
+//        {
+//            image = ImageUtil.loadAnimatedGif(url);
+//            return new AnimatedIcon(image);
+//        }
+//        catch (Exception e)
+//        {
+//            return new AnimatedIcon(ImageUtil.convertToBufferedImage(this.brokenImage));           
+//        }
+//	}
 
     /**
      * Resolve Icon URL and create icon.   

@@ -168,7 +168,7 @@ public class UIResourceLoader extends ResourceLoader
     {
         try
         {
-            InputStream inps=getInputStream(iconurl);  
+            InputStream inps=createInputStream(iconurl);  
             ImageInputStream in = ImageIO.createImageInputStream(inps);
 
             nl.ikarus.nxt.priv.imageio.icoreader.obj.ICOFile f;
