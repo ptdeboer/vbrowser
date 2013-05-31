@@ -545,7 +545,7 @@ public class VomsUtil
         try
         {
             logger.infoPrintf("Trying VOMS file:%s\n", vomsFilename);
-            InputStream xmlStream = loader.getInputStream(vomsFilename);
+            InputStream xmlStream = loader.createInputStream(vomsFilename);
 
             // if (vomsXMLFile.exists()==false)
             // {

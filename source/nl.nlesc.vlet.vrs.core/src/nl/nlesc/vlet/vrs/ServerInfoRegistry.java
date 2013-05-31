@@ -585,7 +585,7 @@ public class ServerInfoRegistry
             InputStream inps;
             try
             {
-                inps = loader.getInputStream(loc.toURL());
+                inps = loader.createInputStream(loc.toURL());
             }
             catch (IOException e)
             {
