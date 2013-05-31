@@ -97,9 +97,7 @@ public class CertificateStore
 
     static
     {
-        // ClassLoggers:
         logger = ClassLogger.getLogger(CertificateStore.class);
-        logger.setLevelToDebug();
     }
 
     /**
@@ -167,16 +165,19 @@ public class CertificateStore
 
     /**
      * Loads default 'cacerts' on classpath or creates an empty one if none can
-     * be found.
+     * be found and autoinit==true. 
      */
     public static KeyStore loadDefaultKeystore(String passwd, boolean autoinit) throws CertificateStoreException
     {
         if (passwd == null)
+        {
             throw new NullPointerException("Keystore cannot have NULL password.");
-
+        }
+        
         try
         {
-            // check classpath:
+            // Check classpath to resolve 'cacerts' file. 
+            // This file might be a non writable location. 
             URL url = Thread.currentThread().getContextClassLoader().getResource("cacerts");
             KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
 
@@ -187,7 +188,8 @@ public class CertificateStore
             }
             else if (autoinit)
             {
-                // as documented: supply null input stream for a new KeyStore.
+                logger.warnPrintf("Creating EMPTY KeyStore!\n");
+                // As documented: supply null input stream to create a new (empty) KeyStore.
                 keystore.load(null, passwd.toCharArray());
             }
             else
@@ -425,7 +427,7 @@ public class CertificateStore
     }
 
     /**
-     * Set this to true to auto save new added Certificates to the keystore.
+     * Set this to true to auto save new added Certificates to the KeyStore.
      */
     public void setIsPersistant(boolean val)
     {
@@ -433,8 +435,8 @@ public class CertificateStore
     }
 
     /**
-     * Whether the KeyStore is persistent. A KeyStore can only be persistent if it has a
-     * storage location.
+     * Whether the KeyStore is persistent. 
+     * A KeyStore can only be persistent if it has a storage location.
      */
     public boolean isPersistant()
     {
@@ -478,8 +480,10 @@ public class CertificateStore
             LocalFSNode keyStoreFile = null;
 
             if (keystoreLocation != null)
+            {
                 keyStoreFile = FSUtil.getDefault().newLocalFSNode(keystoreLocation);
-
+            }
+            
             // check user copy of cacerts
             if ((keyStoreFile != null) && (keyStoreFile.exists()))
             {
@@ -514,14 +518,12 @@ public class CertificateStore
                 }
             }
 
-            if ((_keyStore == null) && (autoInitialize))
+            if (_keyStore == null)
             {
                 // EMPTY keystore !
                 try
                 {
-                    logger.warnPrintf("Will try to create empty keystore:%s\n", keyStoreLocation);
-                    _keyStore = loadDefaultKeystore(passphrasestr, true);
-                    // auto save here ?
+                    _keyStore = loadDefaultKeystore(passphrasestr, autoInitialize);
                 }
                 catch (Exception e2)
                 {
@@ -632,9 +634,9 @@ public class CertificateStore
 
     /**
      * SSLContext factory method to create a custom SSLContext using this
-     * certificate store.
+     * certificate store. 
      * 
-     * @param sslProtocol - the SSL protocol for example "SSLv3".
+     * @param sslProtocol - the SSL protocol for example "SSLv3" or "TLS". 
      */
     public SSLContext createSSLContext(String sslProtocol) throws CertificateStoreException
     {
