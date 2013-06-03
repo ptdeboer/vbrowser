@@ -523,22 +523,23 @@ public class ResourceLoader
         }
     }
 
-    public OutputStream createOutputStream(URI loc) throws IOException
-    {
-
-        try
-        {
-            URL url = loc.toURL();
-            return createOutputStream(url);
-        }
-        catch (IOException e)
-        {
-            throw e;
-        }
-    }
-
     public OutputStream createOutputStream(URL url) throws IOException
     {
+        return _createOutputStream(url);
+    }
+
+    public OutputStream createOutputStream(URI uri) throws IOException
+    {
+        return _createOutputStream(uri.toURL());
+    }
+    
+    protected OutputStream _createOutputStream(URL url) throws IOException
+    {
+        if (url.getProtocol().equalsIgnoreCase("file"))
+        {
+            return this.fsUtil.createOutputStream(url.getPath());  
+        }
+        
         try
         {
             return url.openConnection().getOutputStream();
