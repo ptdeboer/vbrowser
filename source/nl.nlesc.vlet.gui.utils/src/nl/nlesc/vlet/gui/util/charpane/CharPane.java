@@ -39,8 +39,8 @@ import java.io.UnsupportedEncodingException;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
+import nl.esciencecenter.ptk.ui.fonts.FontInfo;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.nlesc.vlet.gui.font.FontInfo;
 
 
 /**
@@ -1206,15 +1206,9 @@ public class CharPane extends JComponent implements ICharacterTerminal, ActionLi
        
        Graphics2D g2d = (Graphics2D) imageGraphics;
        
-       if (this.fontInfo.getAntiAliasing()==true)
+       if (this.fontInfo.getRenderingHints()!=null)
        {
-           g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, // Anti-alias!
-               RenderingHints.VALUE_ANTIALIAS_ON);
-       }
-       else
-       {
-           g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, // Anti-alias!
-               RenderingHints.VALUE_ANTIALIAS_OFF);
+           g2d.setRenderingHints(fontInfo.getRenderingHints()); 
        }
        
        // =========================

@@ -30,6 +30,7 @@ import java.awt.Frame;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.Map;
 import java.util.TooManyListenersException;
 
 import javax.swing.JLabel;
@@ -41,6 +42,9 @@ import javax.swing.JToolBar;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ActionTask;
+import nl.esciencecenter.ptk.ui.fonts.FontInfo;
+import nl.esciencecenter.ptk.ui.fonts.FontToolBar;
+import nl.esciencecenter.ptk.ui.fonts.FontToolbarListener;
 import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -51,9 +55,6 @@ import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
-import nl.nlesc.vlet.gui.font.FontInfo;
-import nl.nlesc.vlet.gui.font.FontToolBar;
-import nl.nlesc.vlet.gui.font.FontToolbarListener;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.vfs.FileReader;
 import nl.nlesc.vlet.vrs.vfs.VFile;
@@ -848,9 +849,9 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 		
 	}
 	
-	public void updateFont(Font font, boolean useAntialising) 
+	public void updateFont(Font font, Map<?,?> renderingHints) 
 	{
-		GuiSettings.setAntiAliasing(this,useAntialising); 
+		GuiSettings.updateRenderingHints(this,renderingHints); // useAntialising); 
 		textArea.setFont(font); 
 		redrawContents(); 
 	}

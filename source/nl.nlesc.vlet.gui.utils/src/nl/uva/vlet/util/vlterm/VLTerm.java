@@ -346,6 +346,7 @@ public class VLTerm extends JFrame implements  Runnable
     		this.vlTerm.updateFontSize(Integer.parseInt(propStr),false); 
     
     	propStr = (String) persistantProperties.get("vlterm.font.antiAliasing");
+    	
     	if (propStr!=null)
     	{
     		boolean val=Boolean.parseBoolean(propStr);
@@ -532,7 +533,7 @@ public class VLTerm extends JFrame implements  Runnable
                     fontAAcheckBox = new JCheckBoxMenuItem("Anti aliasing");
                     fontAAcheckBox.addActionListener(termController);
                     fontAAcheckBox.setActionCommand("font-aa");
-                    fontAAcheckBox.setState(vlTerm.getFontInfo().getAntiAliasing());
+                    fontAAcheckBox.setState(vlTerm.getFontInfo().hasAntiAliasing());
                     fontmenu.add(fontAAcheckBox);
                 }
 

@@ -28,8 +28,8 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import nl.nlesc.vlet.gui.font.FontInfo;
-import nl.nlesc.vlet.gui.font.FontUtil;
+import nl.esciencecenter.ptk.ui.fonts.FontInfo;
+import nl.esciencecenter.ptk.ui.fonts.FontUtil;
 
 public class StringListCellRenderer extends DefaultListCellRenderer
 {

@@ -35,6 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
 
+import nl.esciencecenter.ptk.ui.fonts.FontUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
@@ -43,7 +44,7 @@ import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.UIPlatform;
-import nl.nlesc.vlet.gui.font.FontUtil;
+
 
 public class AttributeEditorForm extends JDialog
 {

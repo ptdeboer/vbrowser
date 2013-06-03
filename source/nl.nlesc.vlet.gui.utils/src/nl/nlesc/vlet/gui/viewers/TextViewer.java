@@ -26,6 +26,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.regex.Pattern;
@@ -62,9 +63,9 @@ import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
-import nl.nlesc.vlet.gui.font.FontInfo;
-import nl.nlesc.vlet.gui.font.FontToolBar;
-import nl.nlesc.vlet.gui.font.FontToolbarListener;
+import nl.esciencecenter.ptk.ui.fonts.FontInfo;
+import nl.esciencecenter.ptk.ui.fonts.FontToolBar;
+import nl.esciencecenter.ptk.ui.fonts.FontToolbarListener;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
 import nl.nlesc.vlet.vrs.vfs.VReplicatable;
@@ -364,13 +365,13 @@ public class TextViewer extends InternalViewer implements ActionListener,
     protected void updateFont(FontInfo info)
     {
         this.fontToolbar.setFontInfo(info);
-        this.updateFont(info.createFont(),info.getAntiAliasing());
+        this.updateFont(info.createFont(),info.getRenderingHints());
     }
     
-	public void updateFont(Font font, boolean useAA)
+	public void updateFont(Font font, Map<?,?> renderingHints)
 	{
 		textArea.setFont(font);
-		GuiSettings.setAntiAliasing(textArea,useAA); 
+		GuiSettings.updateRenderingHints(textArea,renderingHints); 
 		textArea.repaint();
 	}
 

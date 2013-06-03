@@ -30,7 +30,7 @@ import java.awt.event.ComponentListener;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-import nl.nlesc.vlet.gui.font.FontInfo;
+import nl.esciencecenter.ptk.ui.fonts.FontInfo;
 import nl.nlesc.vlet.gui.util.charpane.CharPane;
 import nl.nlesc.vlet.gui.util.charpane.ColorMap;
 import nl.nlesc.vlet.gui.util.charpane.ICharacterTerminal;

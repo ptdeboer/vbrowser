@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
@@ -53,9 +54,9 @@ import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
-import nl.nlesc.vlet.gui.font.FontInfo;
-import nl.nlesc.vlet.gui.font.FontToolBar;
-import nl.nlesc.vlet.gui.font.FontToolbarListener;
+import nl.esciencecenter.ptk.ui.fonts.FontInfo;
+import nl.esciencecenter.ptk.ui.fonts.FontToolBar;
+import nl.esciencecenter.ptk.ui.fonts.FontToolbarListener;
 import nl.nlesc.vlet.vrs.VNode;
 
 /**
@@ -294,14 +295,9 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 		// this.notifySizeChange(textArea.getPreferredSize());
 	}
 
-	public void updateFont(Font font, boolean useAA)
+	public void updateFont(Font font, Map<?,?> renderingHints)
 	{
-		/* Java 1.5 way not compatible with 1.6 
-    	 textArea.putClientProperty(
-                 com.sun.java.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY, useAA);
-		 */ 
-
-		GuiSettings.setAntiAliasing(textArea,useAA); 
+		GuiSettings.updateRenderingHints(textArea,renderingHints); 
 		textArea.setFont(font);
 		textArea.repaint();
 

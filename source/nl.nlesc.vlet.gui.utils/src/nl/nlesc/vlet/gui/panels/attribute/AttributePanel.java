@@ -39,19 +39,21 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 
+import nl.esciencecenter.ptk.ui.fonts.FontUtil;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.nlesc.vlet.gui.UIGlobal;
 import nl.nlesc.vlet.gui.UILogger;
-import nl.nlesc.vlet.gui.font.FontUtil;
+
 import nl.nlesc.vlet.gui.panels.fields.AttrEnumField;
 import nl.nlesc.vlet.gui.panels.fields.AttrIntField;
 import nl.nlesc.vlet.gui.panels.fields.AttrParameterField;
 import nl.nlesc.vlet.gui.panels.fields.AttrPortField;
 
 import com.cloudgarden.layout.AnchorLayout;
+//import com.cloudgarden.layout.AnchorLayout;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 

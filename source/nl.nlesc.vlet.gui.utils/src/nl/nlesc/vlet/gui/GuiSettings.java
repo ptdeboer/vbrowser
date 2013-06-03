@@ -24,16 +24,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.JComponent;
@@ -45,8 +43,6 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.gui.font.FontInfo;
-import nl.nlesc.vlet.gui.font.FontUtil;
 
 /**
  * Gui Settings. Contains Global settings for the UI Environment.
@@ -70,7 +66,9 @@ public class GuiSettings
     // === Current hardcoded defaults === //
 
     private static int maxWindowWidth = 800;
+
     private static int maxWindowHeight = 600;
+
     private static boolean autosave = true;
 
     static
@@ -91,18 +89,28 @@ public class GuiSettings
     // Instance
     // ========================================================================
 
-    public Color textfield_non_editable_background_color = new Color(240, 240, 240); 
+    public Color textfield_non_editable_background_color = new Color(240, 240, 240);
+
     public Color textfield_non_editable_foreground_color = Color.BLACK;
+
     public Color textfield_non_editable_gray_foreground_color = new Color(32, 32, 32);
+
     public Color textfield_editable_background_color = new Color(255, 255, 255);
+
     public Color textfield_editable_foreground_color = Color.BLACK;
+
     public Color label_default_background_color = new Color(255, 255, 255);
+
     public Color label_selected_background_color = new Color(184, 207, 229);
+
     public Color label_default_foreground_color = new Color(0, 0, 0);
+
     public long viewer_file_size_warn_limit = (long) 100 * 1024 * 1024;
+
     public int max_dialog_text_width = 800;
+
     public int default_max_iconlabel_width = 100;
-    
+
     // ===
     // Private fields
     // ===
@@ -110,6 +118,7 @@ public class GuiSettings
     // private boolean singleClickAction=true;
 
     private Cursor busyCursor = new Cursor(Cursor.WAIT_CURSOR);
+
     private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
     /**
@@ -136,7 +145,7 @@ public class GuiSettings
         }
         catch (VrsException e)
         {
-            UILogger.logException(this,ClassLogger.WARN, e, "Warning. Error when loading guisettings:%s\n", loc);
+            UILogger.logException(this, ClassLogger.WARN, e, "Warning. Error when loading guisettings:%s\n", loc);
         }
 
         // init to defaults:
@@ -162,11 +171,11 @@ public class GuiSettings
 
                 if (name == null)
                 {
-                    UILogger.warnPrintf(this,"Warning: unknown gui property:%s\n", key);
+                    UILogger.warnPrintf(this, "Warning: unknown gui property:%s\n", key);
                     continue; // continue for loop
                 }
 
-                UILogger.debugPrintf(this,"Setting GUI property name:%s->%s\n", name, valStr);
+                UILogger.debugPrintf(this, "Setting GUI property name:%s->%s\n", name, valStr);
 
                 _setProperty(name, valStr, false);
             }
@@ -191,7 +200,7 @@ public class GuiSettings
             }
             catch (Exception e)
             {
-                UILogger.logException(this,ClassLogger.ERROR, e, "Could not save properties to:%s\n",
+                UILogger.logException(this, ClassLogger.ERROR, e, "Could not save properties to:%s\n",
                         getGuiSettingsLocation());
             }
         }
@@ -333,7 +342,7 @@ public class GuiSettings
         }
         catch (Exception e)
         {
-            UILogger.logException(GuiSettings.class,ClassLogger.ERROR,e,"Exception:%s\n",e);
+            UILogger.logException(GuiSettings.class, ClassLogger.ERROR, e, "Exception:%s\n", e);
         }
         // load()/save()
     }
@@ -514,28 +523,6 @@ public class GuiSettings
         inst.setLocation(size.width / 2 - inst.getWidth() / 2, size.height / 2 - inst.getHeight() / 2);
     }
 
-    /**
-     * Return font alias/style Uses FontInfo database to lookup font.
-     * 
-     * @param name
-     * @return
-     */
-    public static FontInfo getFontInfo(String name)
-    {
-        return FontInfo.getFontInfo(name);
-    }
-
-    /**
-     * Return font alias/style Uses FontInfo database to lookup font.
-     * 
-     * @param name
-     * @return
-     */
-    public static Font getFont(String name)
-    {
-        return FontUtil.createFont(name);
-    }
-
     public Color getDefaultPanelBGColor()
     {
         return Color.WHITE;
@@ -546,105 +533,33 @@ public class GuiSettings
         return Color.BLACK;
     }
 
-    // static Object AA_TEXT_PROPERTY_KEY = new String("AATextPropertyKey");
-
-    // In Java 1.6 this should be done automatically bases upon the Font
+    /**
+     * Manually Set Rendering Hints. In Java 1.6 this should be
+     * done automatically bases upon the Font properties.
+     * 
+     * @param jcomp Swing JComponent
+     * @param renderingHints RenderingHints 
+     */
     // properties.
-    public static void setAntiAliasing(JComponent comp, Boolean useAA)
+    public static void updateRenderingHints(JComponent jcomp, Map<?, ?> renderingHints)
     {
-        // boolean gotAA=false;
-
-        // try
-        // {
-        // // =================================
-        // // Java 1.5 Way:
-        // //
-        // comp.putClientProperty(com.sun.java.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY,
-        // useAA);
-        // // =================================
-        //
-        // // Use Reflection to get Java 1.5 object to avoid compilation/runtime
-        // errors
-        // // when using java 1.6(+)
-        // Class
-        // cls=GuiSettings.class.getClassLoader().loadClass("com.sun.java.swing.SwingUtilities2");
-        //
-        //
-        // if (cls!=null)
-        // {
-        // Field field = cls.getField("AA_TEXT_PROPERTY_KEY");
-        // Object obj=new Object();
-        // // get field value:
-        // obj=field.get(obj);
-        //
-        // /* Check:
-        // if
-        // (obj.equals(com.sun.java.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY))
-        // {
-        // System.err.println(">>> Got object!! <<<");
-        // }
-        // else
-        // {
-        // System.err.println(">>> Got wrong object :-/ <<<");
-        // }
-        // */
-        // if (obj instanceof StringBuffer)
-        // {
-        // Global.debugPrintln(GuiSettings.class,"Got StringBuffer object:"+field);
-        // //gotAA=true;
-        // comp.putClientProperty(obj, useAA);
-        // return;
-        // }
-        // }
-        //
-        // }
-        // catch (Throwable t){};
-
         // =========================
-        // Java. 1.6 stuff:
+        // Java. 1.6
         // =========================
-
-        // MAP<OBJECT, OBJECT> DESKTOPHINTS=NULL ;
-        //
-        // IF (DESKTOPHINTS == NULL)
-        // {
-        // TOOLKIT TK = TOOLKIT.GETDEFAULTTOOLKIT();
-        // DESKTOPHINTS = (MAP<OBJECT, OBJECT>)
-        // (TK.GETDESKTOPPROPERTY("AWT.FONT.DESKTOPHINTS"));
-        // }
-
-        Graphics graph = comp.getGraphics();
+        
+        Graphics graph = jcomp.getGraphics();
         Graphics2D g2d = (Graphics2D) graph;
 
         if (g2d == null)
             return;
-        //
-        // if (desktopHints != null)
-        // {
-        // if (g2d!=null)
-        // g2d.addRenderingHints(desktopHints);
-        // }
-
-        if (useAA)
+        // check set graphics
+        
+        if (renderingHints != null)
         {
-            // g2d.setRenderingHint(
-            // RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON
-            // );
-            // g2d.setRenderingHint(
-            // RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY
-            // );
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+            if (g2d != null)
+                g2d.addRenderingHints(renderingHints);
         }
-        else
-        {
-            // g2d.setRenderingHint(
-            // RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_OFF
-            // );
-            // g2d.setRenderingHint(
-            // RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_DEFAULT);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        }
+        
     }
 
     public static VRL getUserIconsDir()

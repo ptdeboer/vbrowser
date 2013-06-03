@@ -28,8 +28,6 @@ import java.util.Vector;
 
 import javax.swing.JComponent;
 
-
-
 /**
  * Icon Animator calling the icons 'repaint' method
  *

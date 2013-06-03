@@ -29,12 +29,12 @@ import java.awt.event.FocusListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import nl.esciencecenter.ptk.ui.fonts.FontInfo;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.gui.MasterBrowser;
 import nl.nlesc.vlet.gui.actions.KeyMappings;
 import nl.nlesc.vlet.gui.data.ResourceRef;
 import nl.nlesc.vlet.gui.dnd.VTransferHandler;
-import nl.nlesc.vlet.gui.font.FontInfo;
 import nl.nlesc.vlet.gui.icons.IconViewType.Orientation;
 import nl.nlesc.vlet.gui.view.VComponent;
 import nl.nlesc.vlet.gui.view.VContainer;

@@ -20,20 +20,21 @@
 
 package nl.esciencecenter.ptk.ui.fonts;
 
-
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.RenderingHints;
+import java.awt.RenderingHints.Key;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.JComponent;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
-
 /** 
  * Simple Font Information holder class. 
- *  
  * FontInfo is used by the FontToolbar.   
  * Use createFont() to instantiate a new Font object using the specified Font information.
  * 
@@ -55,17 +56,19 @@ public class FontInfo
 	/** Custom name */
     public static final String FONT_ALIAS="fontAlias";
     
-    /** Most specific font type. might be equal to "font family" or more specific. */ 
+    /** Most specific font type. Might be equal to "font family" or more specific. */ 
     public static final String FONT_TYPE="fontType";
     
-    /** Less specific font "Family" */ 
+    /** Less specific font type or font "family" */ 
     public static final String FONT_FAMILY="fontFamily";
     
     /** Italic,Bold,etc. */ 
     public static final String FONT_STYLE="fontStyle";
     
+    /** Size in pixels */ 
     public static final String FONT_SIZE="fontSize";
     
+    /** Java 1.6 and 1.7 Font RenderingHints  */ 
     public static final String FONT_RENDERING_HINTS="fontRenderingHints";
     
     public static final String fontPropertyNames[]=
@@ -94,7 +97,9 @@ public class FontInfo
     //  Info
     //  ========================================================================
     
-    /** Whether to store FontInfo in persistant Font DataBase */ 
+    /** 
+     * Whether to store FontInfo in persistant Font DataBase 
+     */ 
     public static void setGlobalAutoSave(boolean value)
     {
         autosave=value; 
@@ -104,32 +109,53 @@ public class FontInfo
     //  Info
     //  ========================================================================
 
-    /** Font Type or Font Family Name */ 
-    String fontFamily="Monospaced";
-    
-    /** Optional Alias for the GUI (dialog,terminal,label) */ 
-    String fontAlias=null; 
-    
-    /** Font Size */ 
-    Integer fontSize=13; 
+    /** 
+     * Font Type or Font Family Name/  
+     */ 
+    protected String fontFamily="Monospaced";
     
     /**
-     * Font Style, 0=non, 0x01=bold,0x02=italic, etc. 
-     * @see Font*/
-    Integer fontStyle=0;
+     *  Optional Alias for the GUI (dialog,terminal,label)
+     */ 
+    protected String fontAlias=null; 
     
-    /** Optional Foreground color, can be NULL (= use default) */ 
-    Color foreground=Color.BLACK;
+    /**
+     * Font Size in pixels.  
+     */ 
+    protected  Integer fontSize=13; 
+    
+    /**
+     * Font Style, 0=non, 0x01=bold, 0x02=italic, etc. 
+     * @see java.awt.Font
+     */
+    protected Integer fontStyle=0;
+    
+    /** 
+     * Optional Foreground color, can be NULL (= use default) 
+     */ 
+    protected Color foreground=Color.BLACK;
        
-    /** Optional Background color, can be NULL (= use default) */ 
-    Color background=Color.WHITE;
+    /** 
+     * Optional Background color, can be NULL (= use default) 
+     */ 
+    protected Color background=Color.WHITE;
     
-    /** Optional Highlighted foreground color, can be NULL (= use default) */ 
-    Color highlightedForeground=new Color(64,64,240);
+    /** 
+     * Optional Highlighted foreground color, can be NULL (= use default) 
+     */ 
+    protected Color highlightedForeground=new Color(64,64,240);
 
-    /** For hierarchical Fonts: currently not used */ 
-    FontInfo parent=null; 
+    /** 
+     * For hierarchical Fonts: currently not used 
+     */ 
+    protected FontInfo parent=null; 
  
+    protected Map<Key,Object> renderingHints=null;
+
+    protected FontInfo()
+    {
+    }
+
     public FontInfo(Properties props)
     {
         this.setFontProperties(props);
@@ -138,16 +164,12 @@ public class FontInfo
            fontAlias=fontFamily; 
     }
 
-    public FontInfo()
-    {
-    }
-
     public FontInfo(Font font) 
     {
         init(font);  
     }
     
-    void init(Font font)
+    protected void init(Font font)
     {
         fontSize=font.getSize(); 
         fontStyle=font.getStyle(); 
@@ -191,13 +213,11 @@ public class FontInfo
 
     /**
      * @return Returns the font family, for example "Monospaced"  or "Arial"
-     *  
      */
     public String getFontFamily()
     {
         return fontFamily;
     }
-  
     
     /**
      * @param Set Font Family name. For example "Monospaced" or "Arial". 
@@ -206,18 +226,15 @@ public class FontInfo
     {
         this.fontFamily = family;
     }
-
-    /** @deprecated use setFontFamily */
-    public void setType(String family)
-    {
-        this.fontFamily = family;
-    }
     
+    /** 
+     * Create Font using this Font Information. 
+     * @return
+     */
     public Font createFont()
     {
         return new Font(fontFamily,fontStyle,fontSize);
     }
-    
     
     public boolean isBold()
     {
@@ -237,21 +254,26 @@ public class FontInfo
     public void setItalic(boolean val)
     {
         fontStyle=setFlag(fontStyle,Font.ITALIC,val); 
-        //System.err.println("fontStyle="+fontStyle);
     }
     
     private int setFlag(int orgvalue, int flag, boolean val)
     { 
         if (val==true) 
-            orgvalue=orgvalue|flag;  
+        {
+            orgvalue=orgvalue|flag;
+        }
         else if ((orgvalue & flag) == flag)
+        {
             orgvalue-=flag;
-        // else val=false and flag not set in the first place
+        }
+
         return orgvalue; 
-       // System.err.println("fontstyle="+fontStyle);
     }
     
-    // return font properties as property set
+    /** 
+     * Return font properties as Properties Set. 
+     * @return Properties set with this font information. 
+     */
     public Properties getFontProperties()
     {
         Properties props=new Properties();
@@ -267,7 +289,9 @@ public class FontInfo
         return props; 
     }
     
-    /** Uses FONT properties and updates info */ 
+    /**
+     *  Uses FONT properties and updates info 
+     */ 
     public void setFontProperties(Properties props)
     {
          String valstr=null; 
@@ -321,8 +345,9 @@ public class FontInfo
     }
     
     
-    /** For selected text/icon label text */ 
-    
+    /**
+     * For selected text/icon label text 
+     */ 
     public Color getHighlightedForeground()
     {
         return this.highlightedForeground; 
@@ -337,19 +362,76 @@ public class FontInfo
     {
         return this.foreground; 
     }
-    
-    // tbd
-    public Object getRenderingHints()
+
+    /** 
+     * Return explicit Rendering Hints for this font.
+     * These hints override the default Font Rendering hints.  
+     * Currently not implemented. 
+     */
+    public Map<?,?> getRenderingHints()
     {
-    	return null; 
+        return this.renderingHints; 
+    }
+        
+    /**
+     * Explicit Set Anti Aliasing Rendering Hints to "On" or "Off".  
+     * If useAA==null the settings will be set to "Default". 
+     * 
+     * @param useAA - Anti Aliasing Rendering Hint: Use true to turn On, use false to run Off, null to set to "Default".  
+     */
+    public void setAntiAliasing(Boolean useAA)
+    {
+        if (this.renderingHints==null)
+            renderingHints=new HashMap<Key,Object>();
+        
+        logger.debugPrintf("setAntiAliasing():"+useAA); 
+        
+        if (useAA==null)
+        {
+            renderingHints.put(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_DEFAULT);
+        }
+        else if (useAA==true)
+        {
+            renderingHints.put(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        }
+        else
+        {
+            renderingHints.put(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+        }
+    }
+    
+    /**
+     * 
+     * @return - true if AntiAliasing Rendering Hint has been set to "on". 
+     */
+    public boolean hasAntiAliasing()
+    {
+        if (renderingHints!=null)
+        {
+            if (renderingHints.get(RenderingHints.KEY_ANTIALIASING)!=null)
+            {
+                return (renderingHints.get(RenderingHints.KEY_ANTIALIASING)==RenderingHints.VALUE_ANTIALIAS_ON);
+            }
+        }
+
+        return true; // default  
+    }
+    
+    /** 
+     * Update font settings of specified Component with this font.
+     */ 
+    public void updateComponentFont(JComponent jcomp)
+    {
+        jcomp.setFont(createFont());
     }
     
     // ==============================================
     // Static FontInfo Factory 
     // ==============================================
     
-    /** Return Aliased Font Style */ 
-    
+    /**
+     * 
+     */ 
     public static FontInfo getFontInfo(String name)
     {
         // autoinit 
@@ -401,8 +483,14 @@ public class FontInfo
         return null; 
     }
     
-    // Store FontInfo under (new) alias 
-    private static FontInfo store(Font font, String alias)
+    /** 
+     *  Store FontInfo under (new) alias. 
+     *   
+     * @param font
+     * @param alias
+     * @return
+     */
+    protected static FontInfo store(Font font, String alias)
     {
         FontInfo info=new FontInfo(font); 
         info.fontAlias=alias; 
@@ -411,17 +499,14 @@ public class FontInfo
         return info;
     }
 
-    /** Store FontInfo */ 
+    /** 
+     * Store FontInfo 
+     */ 
     public static void store(FontInfo info) 
     {
         info.store();  
     }
 
-    /** Update font settings of specified Component with this font */ 
-    public void updateComponentFont(JComponent jcomp)
-    {
-        jcomp.setFont(createFont());
-    }
 
 //    private void saveFontStyles() throws IOException
 //    {

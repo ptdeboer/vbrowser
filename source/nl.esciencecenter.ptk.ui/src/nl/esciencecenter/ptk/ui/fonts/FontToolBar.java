@@ -156,7 +156,7 @@ public class FontToolBar extends JToolBar implements ActionListener
             antiAliasingButton.setToolTipText("Toggle anti-aliasing");
             antiAliasingButton.addActionListener(this);
             // since java 1.6 not needed: rendering hints are done automatically 
-            antiAliasingButton.setEnabled(false);
+            antiAliasingButton.setEnabled(true);
         }
         {
             boldButton = new JToggleButton();
@@ -230,9 +230,10 @@ public class FontToolBar extends JToolBar implements ActionListener
 
         fontInfo.setFontSize(new Integer((String) fontSizeCB.getSelectedItem()));
 
+        fontInfo.setAntiAliasing(this.antiAliasingButton.isSelected());
+        
         // check antialiasing/rendering hints. 
         this.listener.updateFont(fontInfo.createFont(), fontInfo.getRenderingHints());
-
     }
 
     public void setFontInfo(FontInfo info)
@@ -264,7 +265,9 @@ public class FontToolBar extends JToolBar implements ActionListener
         this.fontInfo = info;
     }
 
-    /** Select Font Family Name. Returns index number or -1 if not found. */
+    /** 
+     * Select Font Family Name. Returns index number or -1 if not found. 
+     */
     public int selectFont(String familyName)
     {
         if (familyName == null)
