@@ -41,6 +41,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.ui.fonts.FontInfo;
 import nl.esciencecenter.ptk.ui.fonts.FontToolBar;
@@ -56,7 +57,9 @@ import nl.nlesc.vlet.gui.GuiSettings;
 import nl.nlesc.vlet.gui.UILogger;
 import nl.nlesc.vlet.gui.dialog.ExceptionForm;
 import nl.nlesc.vlet.vrs.VNode;
-import nl.nlesc.vlet.vrs.vfs.FileReader;
+import nl.nlesc.vlet.vrs.io.VRandomReadable;
+import nl.nlesc.vlet.vrs.util.VRSIOUtil;
+import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 
 
@@ -768,10 +771,11 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
             setBusy(true); 
 
             this.setViewerTitle("Reading:"+getVRL()); 
-			new FileReader(vfile).read(fileOffset,buffer,0,len);
+            // new FileReader(vfile).read(fileOffset,buffer,0,len);
+            readBytes(vfile,fileOffset,buffer,0,len); 
             this.setViewerTitle("Inspecting:"+getVRL());
 		} 
-		catch (VrsException e) 
+		catch (IOException e) 
 		{
 		    this.setViewerTitle("Error reading:"+getVRL());
 			handle(e);
@@ -782,7 +786,15 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 		}
 	}
 	
-	void debug(String msg) 
+	private void readBytes(VFile file, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws IOException 
+    {
+	    
+	    VRSResourceLoader reader = new VRSResourceLoader(file.getVRSContext());
+	    reader.syncReadBytes(file, fileOffset, buffer, bufferOffset, numBytes);
+	    
+    }
+
+    void debug(String msg) 
 	{
 		UILogger.debugPrintf(this,"%s\n",msg); 
 	}

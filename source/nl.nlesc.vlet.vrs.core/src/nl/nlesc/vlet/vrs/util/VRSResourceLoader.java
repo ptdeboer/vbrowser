@@ -35,11 +35,18 @@ import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRSClient;
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.io.VRandomReadable;
+import nl.nlesc.vlet.vrs.io.VResizable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
+import nl.nlesc.vlet.vrs.vfs.VFile;
 
+/** 
+ * ResourceLoader which uses VRS methods for reading/writing resources. 
+ */
 public class VRSResourceLoader extends ResourceLoader
 {
     private VRSContext vrsContext;
+
     private VRSClient vrsClient;
 
     public VRSResourceLoader(VRSContext context)
@@ -48,13 +55,13 @@ public class VRSResourceLoader extends ResourceLoader
         this.vrsClient=new VRSClient(context);
     }
     
-    public String getText(URI uri) throws IOException
+    public String readText(URI uri) throws IOException
     {
         try
         {
             InputStream inps;
             inps = vrsClient.openInputStream(new VRL(uri));
-            String text=getText(inps,null);  
+            String text=readText(inps,null);  
             try { inps.close(); } catch (Exception e) { ; } 
             return text; 
         }
@@ -64,11 +71,13 @@ public class VRSResourceLoader extends ResourceLoader
         }  
     }
     
-    /** Returns resource as String */ 
+    /** 
+     * Returns resource as String. 
+     */ 
     public  String getText(VRL vrl) throws Exception
     {
          InputStream inps=vrsClient.openInputStream(vrl);  
-         String text=getText(inps,null);  
+         String text=readText(inps,null);  
          try { inps.close(); } catch (Exception e) { ; } 
          return text; 
     }
@@ -76,16 +85,27 @@ public class VRSResourceLoader extends ResourceLoader
     public String getText(VRL vrl, String textEncoding) throws Exception
     {
         InputStream inps=vrsClient.openInputStream(vrl);  
-        String text=getText(inps,textEncoding);  
+        String text=readText(inps,textEncoding);  
         try { inps.close(); } catch (Exception e) { ; } 
         return text;
     }
 
+    public void syncReadBytes(VFile file, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws IOException
+    {
+        if ((file instanceof VRandomReadable)==false)
+        {
+            throw new IOException("Can't read from resource. Must be RandomReadable:"+file); 
+        }
+        
+        VRandomReadable readable=(VRandomReadable)file;
+        VRSIOUtil.syncReadBytes(readable, fileOffset, buffer, bufferOffset, numBytes); 
+    }
+    
     /**
      * Writes String contents to remote location using optional encoding
      * Tries to truncate resource or delete original resource
      */ 
-    public void setContents(VRL vrl, String txt,String encoding) throws Exception
+    public void writeTextTo(VRL vrl, String txt,String encoding) throws Exception
     {
         VNode node = this.vrsContext.openLocation(vrl); 
         OutputStream outps=null; 
@@ -119,6 +139,112 @@ public class VRSResourceLoader extends ResourceLoader
             throw new NestedIOException(e);
         }
     }
- 
     
+    public boolean setSizeToZero(VFile file) throws VrsException, IOException 
+    {
+        if (file.exists()==false)
+            return true; 
+        
+        if (file.getLength()<=0)
+            return true; 
+        
+        // optimization 
+        if (file instanceof VResizable)
+        {
+            ((VResizable)file).setLengthToZero(); 
+            return true; 
+        }
+        
+        file.delete(); 
+        return file.sync(); 
+    }
+
+    public boolean writeTextTo(VFile file,String text,boolean truncate) throws VrsException
+    {
+        try 
+        {
+            if (truncate)
+                setSizeToZero(file);
+            
+            OutputStream outps=file.createOutputStream(); 
+            outps.write(text.getBytes(this.charEncoding));
+            outps.flush();
+ 
+            
+            try 
+            {
+                outps.close();  
+            }
+            catch (IOException e)
+            {
+                ;
+            }
+            
+            return file.sync();
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e);
+        }
+    }
+    
+    public boolean writeContentsTo(VFile file, byte[] bytes,boolean truncate) throws VrsException
+    {
+        try 
+        {
+            if (truncate)
+                setSizeToZero(file);
+            
+            OutputStream outps=file.createOutputStream(); 
+            outps.write(bytes); 
+            
+            try 
+            {
+                outps.close();  
+            }
+            catch (IOException e)
+            {
+                ;
+            }
+            
+            return file.sync();
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e);
+        }
+        
+    }
+
+    public String readText(VFile file) throws IOException
+    {
+        InputStream inps = file.createInputStream(); 
+        String text=this.readText(inps, this.charEncoding); 
+        try
+        {
+            inps.close(); 
+        }
+        catch (IOException e)
+        {
+            ; 
+        }
+        return text; 
+    }
+
+    public byte[] readContents(VFile file) throws IOException
+    {
+        InputStream inps = file.createInputStream(); 
+        byte[] bytes=this.readBytes(inps);  
+        try
+        {
+            inps.close(); 
+        }
+        catch (IOException e)
+        {
+            ; 
+        }
+        return bytes; 
+        
+    }
+   
 }

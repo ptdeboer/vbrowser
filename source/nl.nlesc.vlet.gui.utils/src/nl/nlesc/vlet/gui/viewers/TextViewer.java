@@ -730,7 +730,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
             setViewerTitle("Saving text:"+getVRL().getBasename());
 	        VRSResourceLoader loader = UIGlobal.getResourceLoader();
 	        updateTitle(); 
-	        loader.setContents(this.getVRL(),txt,encoding);
+	        loader.writeTextTo(this.getVRL(),txt,encoding);
 	    }
 	    catch (Exception e)
 	    {

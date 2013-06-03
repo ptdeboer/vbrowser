@@ -3,7 +3,7 @@ package test.vrs.vfs;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
-import nl.nlesc.vlet.vrs.vfs.FileWriter;
+import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
@@ -187,7 +187,8 @@ public class TestVFS_3rdPartyTransfers extends VTestCase
         String contents = "Test 3rd party transfer\n";
         // checks also wether a file can be created: 
         VFile sourceFile = dir1.createFile(sourceFilename);
-        new FileWriter(sourceFile).setContents(contents);
+        VRSResourceLoader writer=new VRSResourceLoader(sourceFile.getVRSContext());
+        writer.writeTextTo(sourceFile,contents, true); 
         
         VRL sourceVRL = sourceFile.getVRL();
         VRL targetVRL = targetDir.appendPath(targetFilename);

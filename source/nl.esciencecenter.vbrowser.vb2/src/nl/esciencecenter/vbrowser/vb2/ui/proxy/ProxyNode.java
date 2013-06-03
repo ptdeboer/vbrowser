@@ -29,10 +29,8 @@ import nl.esciencecenter.vbrowser.vb2.ui.UIGlobal;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
-import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-
 
 /**
  * ProxyNode is abstract interface to Resource Nodes. It represents a "Proxy" of the actual viewed Node. 

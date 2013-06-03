@@ -18,29 +18,42 @@
  */
 // source: 
 
-package nl.nlesc.vlet.vrs.io;
+package test.vrs.vfs;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import org.junit.Before;
 
-import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-
+import test.TestSettings;
+import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+//import nl.uva.vlet.gui.dialog.AuthenticationDialog;
+import nl.nlesc.vlet.vrs.ServerInfo;
 
 /**
- * Interface for stream writable resources. 
- * Default method creates an OutputStream to which can be written. 
+ * Test SRB case
+ * 
+ * TestSuite uses testVFS class to tests SRB implementation.
+ * 
+ * @author P.T. de Boer
  */
-public interface VStreamWritable
+public class TestVFS_SFTPUISara extends TestVFS
 {
-    /** 
-     * Create OutputStream to this file/object to write to. <p>
-     * This method will start to write at the beginning of the file. 
-     * File length is not decreased. Old data is just overwritten! 
-     *  
-     * @see java.io.OutputStream
-     * @return java.io.OutputStream object
-     * @throws VrsException
-     */
-    public OutputStream createOutputStream() throws IOException; 
-    
+    static private ServerInfo info;
+
+    public TestVFS_SFTPUISara()
+    {
+        // this.doRename=false;
+        // this.doWrites=false;
+    }
+
+    @Override
+    public VRL getRemoteLocation()
+    {
+        return TestSettings.getTestLocation(TestSettings.VFS_SFTP_SARA_LOCATION); 
+    }
+
+    @Before
+    public void testSetup()
+    {
+        
+    }
+
 }

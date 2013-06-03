@@ -51,7 +51,7 @@ import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskWatcher;
 import nl.nlesc.vlet.vrs.ui.ICopyInteractor;
 import nl.nlesc.vlet.vrs.ui.ICopyInteractor.InteractiveAction;
-import nl.nlesc.vlet.vrs.util.VRSStreamUtil;
+import nl.nlesc.vlet.vrs.util.VRSIOUtil;
 import nl.nlesc.vlet.vrs.vdriver.http.HTTPNode;
 import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable.ActiveTransferType;
 import nl.nlesc.vlet.vrs.vrl.VRLUtil;
@@ -925,7 +925,7 @@ public final class VRSTransferManager
 	/**
 	 *  Default VFile stream copy uses VNode to VNode stream Copy.
 	 *  
-	 *  @see nl.nlesc.vlet.vrs.util.VRSStreamUtil.IOUtil#streamCopy(VFSTransfer, VNode, VNode, int)
+	 *  @see nl.nlesc.vlet.vrs.util.VRSIOUtil.IOUtil#streamCopy(VFSTransfer, VNode, VNode, int)
 	 */ 
 	protected void doStreamCopy(VFSTransfer transfer,
 			VNode sourceNode, 
@@ -940,7 +940,7 @@ public final class VRSTransferManager
     	       len=((VFile)sourceNode).getLength(); 
     	    }
     	    
-    		VRSStreamUtil.streamCopy(transfer,sourceNode,destNode,len,VFS.DEFAULT_STREAM_COPY_BUFFER_SIZE); 
+    		VRSIOUtil.streamCopy(transfer,sourceNode,destNode,len,VFS.DEFAULT_STREAM_COPY_BUFFER_SIZE); 
 	    }
 	    catch (IOException e)
 	    {

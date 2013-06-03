@@ -1144,7 +1144,7 @@ public class GridProxy
         {
             VRL vrl=new VRL("file:///").resolvePath(getProxyFilename());
               
-            String str = ResourceLoader.getDefault().getText(vrl.toURI()); 
+            String str = ResourceLoader.getDefault().readText(vrl.toURI()); 
             return str;
         }
         catch (Exception e)

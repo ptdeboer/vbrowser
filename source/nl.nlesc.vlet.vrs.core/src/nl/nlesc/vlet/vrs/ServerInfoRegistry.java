@@ -539,7 +539,7 @@ public class ServerInfoRegistry
         try
         {
             // registry must be local path:
-            OutputStream outps = FSUtil.getDefault().getOutputStream(loc.getPath());
+            OutputStream outps = FSUtil.getDefault().createOutputStream(loc.getPath());
             xmlifier.writeAsXML(outps, XML_SERVER_CONFIG_HEADER_TAG, sets, XML_SERVER_CONFIG_HEADER);
             this.isSaved = true;
             

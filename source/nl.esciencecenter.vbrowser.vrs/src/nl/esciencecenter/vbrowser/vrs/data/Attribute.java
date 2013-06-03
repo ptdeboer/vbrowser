@@ -62,8 +62,9 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
 
     /** 
      * Parse String to Object. 
+     * @throws VRLSyntaxException 
      */
-    public static Object parseString(AttributeType toType, String strValue) throws Exception
+    public static Object parseString(AttributeType toType, String strValue) throws ValueParseException, VRLSyntaxException
     {
         if (strValue == null)
         {

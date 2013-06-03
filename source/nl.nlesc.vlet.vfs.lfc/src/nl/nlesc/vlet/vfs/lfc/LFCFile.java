@@ -41,7 +41,7 @@ import nl.nlesc.vlet.exception.InternalError;
 import nl.nlesc.vlet.vrs.VCommentable;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
-import nl.nlesc.vlet.vrs.util.VRSStreamUtil;
+import nl.nlesc.vlet.vrs.util.VRSIOUtil;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 import nl.nlesc.vlet.vrs.vfs.VFile;
@@ -833,7 +833,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
            if (len==0) 
                 len=-1; 
            //Call stream copy direclty ignoreing file size!
-           long size=VRSStreamUtil.streamCopy(transfer,this,targetLocalFile,len,VFS.DEFAULT_STREAM_COPY_BUFFER_SIZE);
+           long size=VRSIOUtil.streamCopy(transfer,this,targetLocalFile,len,VFS.DEFAULT_STREAM_COPY_BUFFER_SIZE);
            //Global.debugPrintf(this,"Actual nr of bytes transferred=%d\n",size);
         }
         catch (IOException e)

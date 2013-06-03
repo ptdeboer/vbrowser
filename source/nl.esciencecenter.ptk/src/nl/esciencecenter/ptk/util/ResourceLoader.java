@@ -73,10 +73,16 @@ public class ResourceLoader
     /** 
      * Supported character sets. 
      */
-    public static final String charEncodings[] =  { 
-            CHARSET_UTF8, CHARSET_UTF16BE, CHARSET_UTF16LE, CHARSET_US_ASCII, CHARSET_ISO_8859_1, CHARSET_LATIN,
+    public static final String charEncodings[] =  
+        { 
+            CHARSET_UTF8, 
+            CHARSET_UTF16BE, 
+            CHARSET_UTF16LE, 
+            CHARSET_US_ASCII, 
+            CHARSET_ISO_8859_1, 
+            CHARSET_LATIN,
             CHARSET_CP437 
-            };
+        };
 
     private static ResourceLoader instance;
 
@@ -89,7 +95,6 @@ public class ResourceLoader
     static
     {
         logger = ClassLogger.getLogger(ResourceLoader.class);
-        // logger.setLevelToDebug();
     }
 
     public static String[] getCharEncodings()
@@ -201,34 +206,34 @@ public class ResourceLoader
     /**
      * Returns resource as String.
      */
-    public String getText(URL location, String charset) throws IOException
+    public String readText(URL location, String charset) throws IOException
     {
         InputStream inps = createInputStream(location);
-        return getText(inps, charset);
+        return readText(inps, charset);
     }
 
     /** 
      * Returns resource as String. 
      */
-    public String getText(URL loc) throws IOException
+    public String readText(URL loc) throws IOException
     {
         InputStream inps = createInputStream(loc);
-        return getText(inps, null);
+        return readText(inps, null);
     }
 
     /** 
      * Returns resource as String. 
      */
-    public String getText(URI uri) throws IOException
+    public String readText(URI uri) throws IOException
     {
         InputStream inps = createInputStream(uri.toURL());
-        return getText(inps, null);
+        return readText(inps, null);
     }
 
-    public byte[] getBytes(URL loc) throws IOException
+    public byte[] readBytes(URL loc) throws IOException
     {
         InputStream inps = createInputStream(loc);
-        byte bytes[] = getBytes(inps);
+        byte bytes[] = readBytes(inps);
         try
         {
             inps.close();
@@ -240,10 +245,10 @@ public class ResourceLoader
         return bytes;
     }
 
-    public byte[] getBytes(String pathOrUrl) throws IOException
+    public byte[] readBytes(String pathOrUrl) throws IOException
     {
         InputStream inps = createInputStream(pathOrUrl);
-        byte bytes[] = getBytes(inps);
+        byte bytes[] = readBytes(inps);
         try
         {
             inps.close();
@@ -261,7 +266,7 @@ public class ResourceLoader
      * @param inps - The InputStream. all byte will be read, but the InputStream won't be closed
      * @param charset - Optional Character Encoding. Can be null.  
      */
-    public String getText(InputStream inps, String charset) throws IOException
+    public String readText(InputStream inps, String charset) throws IOException
     {
         if (charset == null)
             charset = charEncoding;
@@ -269,7 +274,7 @@ public class ResourceLoader
         // just read all:
         try
         {
-            byte bytes[] = getBytes(inps);
+            byte bytes[] = readBytes(inps);
             return new String(bytes, charset);
         }
         catch (UnsupportedEncodingException e)
@@ -282,7 +287,7 @@ public class ResourceLoader
      * Read all bytes from InputStream until an EOF or other IOException occored. 
      * InputStream won't be closed.  
      */
-    public byte[] getBytes(InputStream inps) throws IOException
+    public byte[] readBytes(InputStream inps) throws IOException
     {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
@@ -373,15 +378,14 @@ public class ResourceLoader
     {
         charEncoding = encoding;
     }
-
     
-    public String getText(String url) throws IOException
+    public String readText(String url) throws IOException
     {
         InputStream inps=createInputStream(url);
         
         try
         {
-            String text=getText(inps,this.charEncoding); 
+            String text=readText(inps,this.charEncoding); 
             return text;
         }
         finally
@@ -554,20 +558,20 @@ public class ResourceLoader
     /**
      * Save properties file to specified location.
      */
-    public void saveText(URI loc, String text) throws IOException
+    public void writeTextTo(URI loc, String text) throws IOException
     {
-        saveBytes(loc,text.getBytes(this.charEncoding));
+        writeBytesTo(loc,text.getBytes(this.charEncoding));
     }
     
     /**
      * Save properties file to specified location.
      */
-    public void saveText(URI loc, String text,String charset) throws IOException
+    public void writeTextTo(URI loc, String text,String charset) throws IOException
     {
-        saveBytes(loc,text.getBytes(charset));
+        writeBytesTo(loc,text.getBytes(charset));
     }
     
-    public void saveBytes(URI loc,byte[] bytes) throws IOException
+    public void writeBytesTo(URI loc,byte[] bytes) throws IOException
     {
         OutputStream outps = createOutputStream(loc);
         outps.write(bytes); 
@@ -581,4 +585,5 @@ public class ResourceLoader
             logger.logException(ClassLogger.DEBUG, e, "Exception while closing outputstream:%s\n", e);
         }
     }
+   
 }

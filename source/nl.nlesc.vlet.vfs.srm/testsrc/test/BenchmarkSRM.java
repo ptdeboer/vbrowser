@@ -13,7 +13,7 @@ import nl.nlesc.vlet.vfs.srm.SRMFileSystem;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.vfs.FileWriter;
+import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
 import nl.nlesc.vlet.vrs.vfs.VDir;
 import nl.nlesc.vlet.vrs.vfs.VUnixFileMode;
 
@@ -24,7 +24,8 @@ public class BenchmarkSRM
 
     private static VRSContext context;
 
-//    private static Map<String, String> resultMap = new HashMap<String, String>();
+    // private static Map<String, String> resultMap = new HashMap<String,
+    // String>();
 
     private static final String SE_NAME_TITLE = "SE";
 
@@ -42,11 +43,11 @@ public class BenchmarkSRM
 
     private static final String THIRD_PARTY_COPY_TITLE = "3rdParty";
 
-    private static final String[] KEYS = { SE_NAME_TITLE, BACKEND_TYPE_TITLE, BACKEND_VERSION_TITLE,
-            CHECKSUM_TYPE_TITLE, ACL_FOR_FILES_TITLE, ACL_FOR_DIR_TITLE, PUT_OVERHEAD_TITLE, THIRD_PARTY_COPY_TITLE };
-    
-    
-    
+    private static final String[] KEYS =
+        { 
+            SE_NAME_TITLE, BACKEND_TYPE_TITLE, BACKEND_VERSION_TITLE, CHECKSUM_TYPE_TITLE, ACL_FOR_FILES_TITLE,
+            ACL_FOR_DIR_TITLE, PUT_OVERHEAD_TITLE, THIRD_PARTY_COPY_TITLE 
+        };
 
     public static void main(String args[])
     {
@@ -54,11 +55,8 @@ public class BenchmarkSRM
         {
             context = VRSContext.getDefault();
             srmFacktory = new SRMFSFactory();
-            
-            
-            new BenchmarkSRM().testAllSE(); 
-            
-            
+
+            new BenchmarkSRM().testAllSE();
 
             VRS.exit();
             Thread.sleep(3500);
@@ -89,8 +87,9 @@ public class BenchmarkSRM
         SRMDir testDir = null;
         int numOfBulkFiles = 4;
         StringBuffer results = new StringBuffer();
-        int[] fileModes = { 33206, 33279, 33152 };
-        
+        int[] fileModes =
+        { 33206, 33279, 33152 };
+
         SRMFile[] bulkFiles = new SRMFile[numOfBulkFiles];
 
         for (int i = 0; i < Sas.size(); i++)
@@ -99,8 +98,8 @@ public class BenchmarkSRM
             seVRL = Sas.get(i).getVOStorageLocation();
 
             // message("VRL: " + seVRL);
-            results.append(seVRL.getHostname()+"\t");
-            
+            results.append(seVRL.getHostname() + "\t");
+
             SRMFileSystem srmFS;
             try
             {
@@ -108,54 +107,54 @@ public class BenchmarkSRM
 
                 testDir = createTestDir(srmFS, seVRL);
 
-                results.append(getBackendType(srmFS)+"\t");
+                results.append(getBackendType(srmFS) + "\t");
                 // message("------------------Type: " + backendType);
 
-                results.append(getBackendVersion(srmFS)+"\t");
+                results.append(getBackendVersion(srmFS) + "\t");
                 // message("------------------Version: " + backendVersion);
 
                 SRMFile[] testFiles = createTestFiles(numOfBulkFiles, testDir);
 
-                results.append(getChecksumTypes(testFiles[0])[0]+"\t");
+                results.append(getChecksumTypes(testFiles[0])[0] + "\t");
 
-                results.append(supportsACL(testFiles[0], fileModes)+"\t");
+                results.append(supportsACL(testFiles[0], fileModes) + "\t");
 
-                results.append(supportsACL(testDir, fileModes)+"\t");
+                results.append(supportsACL(testDir, fileModes) + "\t");
 
-                results.append(testOverhead(numOfBulkFiles, testDir, bulkFiles)+"\t");
+                results.append(testOverhead(numOfBulkFiles, testDir, bulkFiles) + "\t");
 
                 StringBuffer thirdPartyCopy = new StringBuffer();
                 for (int j = 0; j < Sas.size(); j++)
                 {
                     VRL seVRLNext = Sas.get(j).getVOStorageLocation();
 
-                     message("---- Copying from: "+seVRL.getHostname()+" to: "+seVRLNext.getHostname());
+                    message("---- Copying from: " + seVRL.getHostname() + " to: " + seVRLNext.getHostname());
 
                     SRMFileSystem srmFSNext = (SRMFileSystem) srmFacktory.openFileSystem(context, seVRLNext);
                     SRMDir nextTestDir = createTestDir(srmFSNext, seVRLNext);
                     long thirdrdPartyCopyTime = do3rdPartyCopy(srmFS, bulkFiles, nextTestDir.getVRL());
-                    thirdPartyCopy.append(seVRL.getHostname() + "->" + seVRLNext.getHostname() + " = " + thirdrdPartyCopyTime);
-                    if(j<Sas.size()-1){
+                    thirdPartyCopy.append(seVRL.getHostname() + "->" + seVRLNext.getHostname() + " = "
+                            + thirdrdPartyCopyTime);
+                    if (j < Sas.size() - 1)
+                    {
                         thirdPartyCopy.append(",");
                     }
 
                 }
-                results.append(thirdPartyCopy.toString()+"\t");
+                results.append(thirdPartyCopy.toString() + "\t");
                 results.append("\n");
-                
+
                 message(((i * 100.0) / Sas.size()) + " Done");
 
             }
             catch (VrsException e)
             {
                 e.printStackTrace();
-                results.append(e.getMessage()+"\n");
+                results.append(e.getMessage() + "\n");
                 // continue;
             }
         }
-
         printResults(results);
-
     }
 
     private static void printResults(StringBuffer results)
@@ -163,23 +162,24 @@ public class BenchmarkSRM
         StringBuffer title = new StringBuffer();
         for (int i = 0; i < KEYS.length; i++)
         {
-                title.append(KEYS[i] + "\t");
+            title.append(KEYS[i] + "\t");
         }
-        title
-                .append("\n-----------------------------------------------------------------------------------------------------------------------");
-        
-        
-        message(title.toString()+"\n"+results.toString());
+        title.append("\n-----------------------------------------------------------------------------------------------------------------------");
+
+        message(title.toString() + "\n" + results.toString());
     }
 
     private static SRMFile[] createTestFiles(int numOfBulkFiles, VDir testDir) throws VrsException
     {
+        VRSResourceLoader writer = new VRSResourceLoader(testDir.getVRSContext());
+
         SRMFile[] bulkFiles = new SRMFile[numOfBulkFiles];
         for (int j = 0; j < numOfBulkFiles; j++)
         {
             bulkFiles[j] = (SRMFile) testDir.newFile("chsFile" + j);
             bulkFiles[j].create();
-            new FileWriter(bulkFiles[j]).setContents("This test contents");
+
+            writer.writeTextTo(bulkFiles[j], "This test contents", true);
         }
         return bulkFiles;
     }
@@ -193,7 +193,6 @@ public class BenchmarkSRM
         }
 
         return testDir;
-
     }
 
     private static long do3rdPartyCopy(SRMFileSystem srmFS, SRMFile[] bulkFiles, VRL destDir)
@@ -224,6 +223,8 @@ public class BenchmarkSRM
 
     private static double testOverhead(int numOfBulkFiles, VDir testDir, SRMFile[] bulkFiles) throws VrsException
     {
+        VRSResourceLoader writer = new VRSResourceLoader(testDir.getVRSContext());
+
         long start = 0;
         long overhead = 0;
         long overheadSum = 0;
@@ -231,7 +232,8 @@ public class BenchmarkSRM
         {
             start = System.currentTimeMillis();
             bulkFiles[j] = (SRMFile) testDir.newFile("chsOverheadFiles" + j);
-            new FileWriter(bulkFiles[j]).setContents(new byte[] { '1' });
+            writer.writeContentsTo(bulkFiles[j], new byte[]
+            { '1' }, true);
             overhead = System.currentTimeMillis() - start;
             overheadSum += overhead;
         }
@@ -306,7 +308,8 @@ public class BenchmarkSRM
         types = chFile.getChecksumTypes();
         if (types == null || types.length < 1)
         {
-            types = new String[] { "No Checksum returned" };
+            types = new String[]
+            { "No Checksum returned" };
         }
         return types;
     }

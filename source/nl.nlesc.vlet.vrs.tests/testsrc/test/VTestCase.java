@@ -22,6 +22,7 @@ package test;
 
 
 import nl.nlesc.vlet.vrs.VRSContext;
+import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
 import nl.nlesc.vlet.vrs.vfs.VFSClient;
 
 /**
@@ -82,14 +83,26 @@ public class VTestCase
 
     protected VFSClient vfs = new VFSClient();
 
-    public VFSClient getVFS()
+    protected VRSResourceLoader resourceLoader=null;
+
+    protected VFSClient getVFS()
     {
         return vfs;
     }
 
-    public VRSContext getVRSContext()
+    protected VRSContext getVRSContext()
     {
         return vfs.getVRSContext(); 
     }
     
+    protected VRSResourceLoader getResourceLoader()
+    {
+        if (this.resourceLoader==null)
+        {
+            this.resourceLoader=new VRSResourceLoader(getVRSContext()); 
+        }
+        
+        return this.resourceLoader; 
+    }
+
 }

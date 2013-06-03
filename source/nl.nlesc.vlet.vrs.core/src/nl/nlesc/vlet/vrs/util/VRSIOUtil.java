@@ -36,17 +36,16 @@ import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
 
 /**
- * Unbuffered StreamUtil helper class.
- *  
- * See methods for explenation 
+ * VRS IO Util class.
+ * Extends IO Util with VRS aware methods.  
  */ 
-public class VRSStreamUtil extends IOUtil
+public class VRSIOUtil extends IOUtil
 {
     private static ClassLogger logger; 
     
     static
     {
-        logger=ClassLogger.getLogger(VRSStreamUtil.class); 
+        logger=ClassLogger.getLogger(VRSIOUtil.class); 
         //logger.setLevelToDebug(); 
     }
 
