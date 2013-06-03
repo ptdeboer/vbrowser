@@ -29,13 +29,12 @@ import nl.esciencecenter.ptk.task.TaskMonitorAdaptor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
- * Unbuffered StreamUtil helper class.
- *  
- * See methods for explenation 
+ * IO read/write helper methods. 
  */ 
 public class IOUtil
 {
     private static int defaultBufferSize=1*1024*1024; 
+    
     private static ClassLogger logger; 
     
     static
@@ -117,18 +116,20 @@ public class IOUtil
             throw e; // new IOException("Got IO Exception during read !\n"+ e.getMessage(), e);
         }
     }
-
     
-    /** Copy all the data from the InputStream to the OutputStream */ 
-    public static long copyStreams(InputStream input,OutputStream output) throws IOException
+    /**
+     * Copy all the data from the InputStream to the OutputStream.
+     * @param autoCloseStream - set to true to close the Input- and OuputStream after a copy. 
+     * @throws IOException 
+     */ 
+    public static long copyStreams(InputStream input,OutputStream output, boolean autoCloseStreams) throws IOException
     {
-        //return circularStreamCopy(null,input,output,-1,defaultBufferSize,true); 
-        return directStreamCopy(null,input,output,defaultBufferSize,-1,true); 
+        return directStreamCopy(null,input,output,defaultBufferSize,-1,autoCloseStreams); 
     }
 
-    public static long circularCopyStreams(InputStream input,OutputStream output) throws IOException
+    public static long circularCopyStreams(InputStream input,OutputStream output,boolean autoCloseStreams) throws IOException
     { 
-        return circularStreamCopy(null,input,output,-1,defaultBufferSize,true); 
+        return circularStreamCopy(null,input,output,-1,defaultBufferSize,autoCloseStreams); 
     }
     
     public static long copyStreams(
@@ -144,7 +145,15 @@ public class IOUtil
     }
     
     
-    /** Direct Stream Copy */ 
+    /**
+     * Copy all the data from the InputStream to the OutputStream.
+     * @param InputStream - the InputStream to read from. 
+     * @param OutputStream - the OutputStream to write to.
+     * @param bufSize - the buffer size to use during copy. For big files, use a big copy buffer. 
+     * @param totalToTransfer - number of bytes to transfer, or -1 for copy until EOF occurs.  
+     * @param autoCloseStream - set to true to close the Input- and OuputStream after a copy. 
+     * @throws IOException 
+     */ 
     public static long directStreamCopy(ITaskMonitor monitor, 
 			InputStream input, 
 			OutputStream output,
@@ -390,11 +399,11 @@ public class IOUtil
      * Synchronized read loop which performs several readBytes() calls to 
      * fill buffer.
      * Helper method for read() method with should be done in a loop. 
-     * (This since File.read() or InputStream reads() don't always return 
-     * the desired nr. of bytes. This method keeps on reading until either
-     * End Of File is reached (EOF) or the desired nr of bytes is read. 
+     * This since File.read() or InputStream reads() don't always return 
+     * the desired number of bytes. This method keeps on reading until either
+     * End Of File is reached (EOF) or the desired number of bytes is read. 
      * <p> 
-     * Returns -1 when EOF is encountered, or actual nr of bytes read. 
+     * Returns -1 when EOF is encountered, or actual number of bytes read. 
      * If the return value doesn't match the nrBytes wanted, no extra bytes
      * could be read so this method doesn't have to be called again. 
      */
@@ -468,17 +477,5 @@ public class IOUtil
     	
     	return totalRead; 
     }
-    
-    // todo: move. 
-    public static String readString(InputStream inps,int maxSize,String charset) throws IOException
-    {
-        byte buffer[]=new byte[maxSize]; 
-        int numRead=IOUtil.syncReadBytes(inps,0,buffer,0,maxSize);
-        
-        if (numRead<=0)
-            return null; 
-        
-        String newStr=new String(buffer,0,numRead,charset); 
-        return newStr; 
-    }
+   
 }

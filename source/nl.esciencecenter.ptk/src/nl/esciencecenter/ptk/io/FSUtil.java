@@ -29,7 +29,6 @@ import java.net.URISyntaxException;
 import java.util.logging.Level;
 
 import nl.esciencecenter.ptk.GlobalProperties;
-import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.net.URIUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
@@ -40,9 +39,11 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 public class FSUtil
 {
     public static final String ENCODING_UTF8 = "UTF8";
+    
     public static final String ENCODING_ASCII = "ASCII";
 
     private static ClassLogger logger;
+    
     private static FSUtil instance = null;
 
     static
@@ -86,8 +87,8 @@ public class FSUtil
    
     /**
      * Check syntax and decode optional (relative) URL or path to an absolute
-     * normalized path. When an exception occured (syntax error) the path is
-     * returned "as is" !
+     * normalized path. 
+     * If an exception occurs (syntax error) the path is returned "as is" !
      * Use resolvePathURI(path) for URI.
      */
     public String resolvePath(String path)
@@ -101,8 +102,7 @@ public class FSUtil
 
             logger.logException(Level.WARNING,e,"Couldn't resolve path:%s\n",path); 
         } 
-        
-        // Be Robuust: return AS IS !
+        // return unchecked path! 
         return path;
     }
     
@@ -116,13 +116,15 @@ public class FSUtil
         return newLocalFSNode(path).exists();
     }
 
-    /** Pref VFS initialization file copy. */
+    /** 
+     * Simple Copy File.  
+     */
     public void copyFile(String source, String destination) throws IOException
     {
         InputStream finput = newLocalFSNode(source).createInputStream();
         OutputStream foutput = newLocalFSNode(destination).createOutputStream();
 
-        IOUtil.copyStreams(finput, foutput);
+        IOUtil.copyStreams(finput, foutput,false);
 
         try
         {
@@ -238,7 +240,7 @@ public class FSUtil
      *            - relative or absolute file path (resolves to absolute path on
      *            local fileystem)
      */
-    public OutputStream getOutputStream(String filename) throws FileNotFoundException
+    public OutputStream createOutputStream(String filename) throws FileNotFoundException
     {
         return newLocalFSNode(filename).createOutputStream();
     }
