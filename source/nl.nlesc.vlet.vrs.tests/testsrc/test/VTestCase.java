@@ -32,51 +32,63 @@ import nl.nlesc.vlet.vrs.vfs.VFSClient;
  */
 public class VTestCase 
 {
-    public static final int VERBOSE_NONE = 0;
+    public static final int VERBOSE_NONE = 10;
 
-    public static final int VERBOSE_ = 1;
-    
-    public static final int VERBOSE_WARN = 2;
+    public static final int VERBOSE_ERROR = 8;
 
-    public static final int VERBOSE_INFO = 3;
+    public static final int VERBOSE_WARN = 6;
 
-    public static final int VERBOSE_DEBUG = 4;
+    public static final int VERBOSE_INFO = 4;
 
-    static int verboseLevel = VERBOSE_WARN;
+    public static final int VERBOSE_DEBUG = 2;
 
-    public static void setVerbose(int level)
+    int verboseLevel = VERBOSE_INFO;
+
+    public void setVerbose(int level)
     {
         verboseLevel = level;
     }
 
-    public static void verbose(int verbose, String msg)
+    public  void verbose(int verbose, String msg)
     {
-        if (verbose <= verboseLevel)
+        if (verbose >= verboseLevel)
             System.out.println("testVFS:" + msg);
     }
 
-    public static void message(String msg)
+    public  void errorPrintf(String format,Object... args)
+    {
+        if (VERBOSE_INFO >= verboseLevel)
+           System.out.printf(format,args); 
+    }
+
+    public  void warnPrintf(String format,Object... args)
+    {
+        if (VERBOSE_WARN >= verboseLevel)
+           System.out.printf(format,args); 
+    }
+
+    public  void message(String msg)
     {
         verbose(VERBOSE_INFO, msg);
     }
-    
-    public static void warning(String msg)
+
+    public  void messagePrintf(String format,Object... args)
     {
-        verbose(VERBOSE_WARN, msg);
+        if (VERBOSE_INFO >= verboseLevel)
+           System.out.printf(format,args); 
     }
 
-    public static void debug(String msg)
+    public  void debug(String msg)
     {
         verbose(VERBOSE_DEBUG, msg);
     }
 
-    public  synchronized boolean staticCheckProxy()
+    public  void debugPrintf(String format,Object... args)
     {
-//        if ((VRSContext.getDefault().getGridProxy().isValid() == false))
-//            GridProxyDialog.askInitProxy("Grid Proxy needed for Junit tests");
-        return false;
+        if (VERBOSE_DEBUG >= verboseLevel)
+           System.out.printf(format,args); 
     }
-
+   
     // ===
     // Instance
     // ===

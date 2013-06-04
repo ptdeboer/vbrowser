@@ -105,9 +105,11 @@ import test.VTestCase;
 
 public class TestVFS extends VTestCase
 {
-    private static final String TEST_CONTENTS = ">>> This is a testfile used for the VFS unit tests  <<<\n"
+    private static final String TEST_CONTENTS = 
+              ">>> This is a testfile used for the VFS unit tests  <<<\n"
             + "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\n" + "0123456789@#$%*()_+\n"
-            + "Strange characters:...<TODO>\n" + "UTF8:<TODO>\n" + "\n --- You Can Delete this File ---\n";
+            + "Strange characters:áéíóúâêîôû\n<TODO more...>\nUTF8:<TODO>\n" 
+            + "\n --- If you read this, you can delete this file ---\n";
 
     // ========================================================================
     // Instance
@@ -197,6 +199,7 @@ public class TestVFS extends VTestCase
         {
             // logger.
         }
+        // after a stream write, update file meta data since the length and time has changed. 
         file.sync(); 
     }
     
@@ -213,36 +216,34 @@ public class TestVFS extends VTestCase
     @Before // Before the new Setup()!
     public void setUpTestEnv() throws Exception
     {
-        verbose(3, "setUp(): Checking remote test location:" + getRemoteLocation());
+        debugPrintf("setUp(): Checking remote test location:%s\n",getRemoteLocation());
 
+        checkAuthentication(); 
+        
         synchronized (setupMutex)
         {
             // create/get only if VDir hasn't been fetched/created before !
             if (getRemoteTestDir() == null)
             {
-
                 if (getVFS().existsDir(getRemoteLocation()))
                 {
                     setRemoteTestDir(getVFS().getDir(getRemoteLocation()));
-                    verbose(3, "setUp(): Using remoteDir:" + getRemoteTestDir());
-
+                    debugPrintf("setUp(): Using existing remoteDir:%s\n",getRemoteTestDir());
                 }
                 else
                 {
                     // create complete path !
                     try
                     {
-                        verbose(1, "creating new remote test location:" + getRemoteLocation());
+                        debugPrintf("setUp:Creating new remote test location:%s\n",getRemoteLocation());
                         setRemoteTestDir(getVFS().mkdirs(getRemoteLocation()));
-                        verbose(1, "New created remote test directory=" + getRemoteTestDir());
+                        messagePrintf("setUp:Created new remote test directory:%s\n",getRemoteTestDir());
                     }
                     catch (Exception e)
                     {
                         e.printStackTrace();
                         throw e;
                     }
-
-                    verbose(1, "created new remote test location:" + getRemoteTestDir());
                 }
             }
 
@@ -259,15 +260,17 @@ public class TestVFS extends VTestCase
                 {
                     // create complete path !
                     localTempDir = getVFS().mkdirs(localdir, true);
-
-                    verbose(1, "created new local test location:" + localTempDir);
+                    messagePrintf("setUp: created new local test location:%s\n",localTempDir);
                 }
             }
-            
-            
         }
     }
-
+    
+    protected void checkAuthentication() throws Exception
+    {
+        ; // check here 
+    }
+    
     @After
     public void tearDown()
     {
@@ -330,9 +333,12 @@ public class TestVFS extends VTestCase
 
     }
 
-    @Test public void testFirst() throws Exception
+    @Test
+    public void testFirst() throws Exception
     {
-        testVChecksum();
+        testCreateAndList3SubFiles();
+        testCreateAndList3SubDirs(); 
+        testCreateAndDeleteRecursiveDir(); 
     }
 
     /**
@@ -392,8 +398,15 @@ public class TestVFS extends VTestCase
      */
     @Test public void testTildeExpansion() throws Exception
     {
-        VFSNode node = getRemoteTestDir().getPath("/~");
+        VDir dir=getRemoteTestDir();
+        VFileSystem fs = dir.getFileSystem(); 
+        
+        VRL tildeVRL=dir.resolvePath("/~"); 
+        messagePrintf("VRL of '/~' => '%s'\n",tildeVRL);
+        VFSNode node=fs.openLocation(tildeVRL);  
         Assert.assertTrue("Default HOME reports is does not exist (SRB might do this):'/~' => '"+node+"'", node.exists());
+        messagePrintf("Tilde expansion of '/~' => '%s'\n",node.getPath());
+
     }
 
     /**
@@ -669,6 +682,44 @@ public class TestVFS extends VTestCase
         Assert.assertFalse("Directory should not exist after deletion", newDir.exists());
     }
 
+    @Test
+    public void testCreateAndList3SubFiles() throws Exception
+    {
+
+        VDir newDir = getRemoteTestDir().createDir(nextFilename("testDirD"));
+        
+        // create subdir:
+        VFile file1 = newDir.createFile("subFile1");
+        VFile file2 = newDir.createFile("subFile2");
+        VFile file3 = newDir.createFile("subFile3");
+        
+        VRL dirVrl=newDir.getVRL(); 
+        VDir reDir=newDir.getFileSystem().getDir(dirVrl); 
+
+        VFSNode[] nodes = reDir.list(); 
+        //VFSNode[] nodes = newDir.list(); 
+        
+        Assert.assertEquals("Directory must have 3 sub files", 3,nodes.length);
+    }
+    
+    @Test
+    public void testCreateAndList3SubDirs() throws Exception
+    {
+
+        VDir newDir = getRemoteTestDir().createDir(nextFilename("testDirC"));
+        // create subdir:
+        VDir subDir1 = newDir.createDir("subDir1");
+        VDir subDir2 = newDir.createDir("subDir2");
+        VDir subDir3 = newDir.createDir("subDir3");
+        
+        newDir.sync(); 
+        
+        VFSNode[] nodes = newDir.list(); 
+        
+        Assert.assertEquals("Directory must have 3 subdirectories", 3,nodes.length);
+        
+    }
+    
     /**
      * Regression for SRM: cannot delete directory which contains directory and
      * a file.
@@ -681,6 +732,7 @@ public class TestVFS extends VTestCase
         VDir subDir = newDir.createDir("subDir1");
         subDir = newDir.createDir("subDir2");
         subDir = newDir.createDir("subDir3");
+
         newDir.createFile("subFile1");
         newDir.createFile("subFile2");
 
@@ -691,6 +743,11 @@ public class TestVFS extends VTestCase
         subDir.createFile("subsubFile1");
         subDir.createFile("subsubFile2");
 
+        VFSNode[] list = newDir.list(); 
+        
+        for (VFSNode node:list)
+            messagePrintf(" - %s\n",node); 
+        
         newDir.delete(true);
 
         Assert.assertFalse("Directory should not exist after deletion", newDir.exists());
@@ -1087,7 +1144,7 @@ public class TestVFS extends VTestCase
             Assert.assertTrue("IntegerHolder may not contain NULL value.", totalNumNodes.isSet());
             
             if (totalNumNodes.intValue()<0)
-                warning("testListDirIterator(): totalNumNodes not supported!"); 
+                warnPrintf("testListDirIterator(): totalNumNodes not supported!\n"); 
             else
                 Assert.assertEquals("Total Number of nodes is not correct.", 4, totalNumNodes.intValue());
             // get first file:
@@ -1098,13 +1155,13 @@ public class TestVFS extends VTestCase
             Assert.assertEquals("Number of returned files is not correct.", 1, result.length);
             Assert.assertTrue("IntegerHolder may not contain NULL value.", totalNumNodes.isSet());
             if (totalNumNodes.intValue()<0)
-                warning("testListDirIterator(): totalNumNodes not supported!"); 
+                warnPrintf("testListDirIterator(): totalNumNodes not supported!\n"); 
             else
                 Assert.assertEquals("Total Number of nodes is not correct.", 4, totalNumNodes.intValue());
             // Check with filename with entry in complete list
             Assert.assertEquals("Returned result is not correct.", result[0].getName(), totalResult[0].getName());
             if (totalNumNodes.intValue()<0)
-                warning("testListDirIterator(): totalNumNodes not supported!"); 
+                warnPrintf("testListDirIterator(): totalNumNodes not supported!\n"); 
             else
                 Assert.assertEquals("Total Number of nodes is not correct.", 4, totalNumNodes.intValue());
             message("test ListIterator Single result is =" + result[0]);
@@ -1126,7 +1183,7 @@ public class TestVFS extends VTestCase
             Assert.assertTrue("IntegerHolder may not contain NULL value.", totalNumNodes.isSet());
 
             if (totalNumNodes.intValue()<0)
-                warning("testListDirIterator(): totalNumNodes not supported!"); 
+                warnPrintf("testListDirIterator(): totalNumNodes not supported!\n"); 
             else
                 Assert.assertEquals("Total Number of nodes is not correct.", 4, totalNumNodes.intValue());
 
@@ -1608,32 +1665,33 @@ public class TestVFS extends VTestCase
 
     /**
      * Regression test for some stream write implementations: When writing to an
-     * existing file, the existing file must be truncated when closing the
+     * existing file, the existing file must be not truncated when closing the
      * stream.
+     * This way append can be done and a copy can be resumed. 
      * 
      * @throws Exception
      */
     @Test 
-    public void testStreamWriteTruncates() throws Exception
+    public void testStreamWriteDoesNotTruncate() throws Exception
     {
         VFile remoteFile = null;
-        remoteFile = getRemoteTestDir().createFile("testStreamWriteTruncate");
+        remoteFile = getRemoteTestDir().createFile("testStreamWriteDoesNotTruncate");
 
-        int len = 10 * 1024; // 10k;
+        int originalLength = 10 * 1024; // 10k;
 
         // fixed seed for reproducable tests!
         Random generator = new Random(45);
 
-        byte buffer[] = new byte[len];
+        byte buffer[] = new byte[originalLength];
         generator.nextBytes(buffer);
         // use streamWrite for now:
         verbose(1, "streadWriting to:" + remoteFile);
         streamWrite(remoteFile,buffer, 0, buffer.length);
-        Assert.assertEquals("Initial remote file size NOT correct", remoteFile.getLength(), len);
+        Assert.assertEquals("Initial remote file size NOT correct", remoteFile.getLength(), originalLength);
 
         // reduce size!
-        len = 5 * 1024; // new size less then 10k!
-        buffer = new byte[len];
+        int newLength = 5 * 1024; // new size less then 10k!
+        buffer = new byte[newLength];
         generator.nextBytes(buffer);
 
         // Stream Write: 
@@ -1651,10 +1709,8 @@ public class TestVFS extends VTestCase
             remoteFile.sync(); 
         }
         
-        verbose(1, "remoteFile.getLength()=" + remoteFile.getLength() + " len=" + len);
-
-        Assert.assertEquals("New file size should be truncated after Stream Write!", len, remoteFile.getLength());
-
+        debugPrintf("testStreamWriteDoesNotTruncate(), after write new length=%d\n",remoteFile.getLength());
+        Assert.assertEquals("File length should be the same after stream write", originalLength, remoteFile.getLength());
         remoteFile.delete();
     }
 
@@ -2601,7 +2657,7 @@ public class TestVFS extends VTestCase
 
     }
 
-    private static void unregisterEmptyRep(VReplicatable rep, VFSClient vfs)
+    private void unregisterEmptyRep(VReplicatable rep, VFSClient vfs)
     {
         VRL[] replicas = null;
         if (vfs == null)
@@ -2654,7 +2710,7 @@ public class TestVFS extends VTestCase
             e.printStackTrace();
         }
 
-        message("Listing replicas.........");
+        message("Listing replicas.........\n");
         for (int i = 0; i < replicas.length; i++)
         {
             message("Remaing replicas: " + replicas[i]);

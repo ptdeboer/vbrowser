@@ -63,6 +63,13 @@ public class TaskMonitorAdaptor implements ITaskMonitor
         init();
     }
 
+    public TaskMonitorAdaptor(String taskName,long todo)
+    {
+        init();
+        
+    }
+
+    
     private void init()
     {
         this.taskLogger = new TaskLogger("TaskLogger");

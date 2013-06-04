@@ -23,6 +23,7 @@ package test.vrs.vfs;
 import org.junit.Before;
 
 import test.TestSettings;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 //import nl.uva.vlet.gui.dialog.AuthenticationDialog;
 import nl.nlesc.vlet.vrs.ServerInfo;
@@ -47,29 +48,16 @@ public class TestVFS_SFTPlocalhost extends TestVFS
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestSettings.VFS_SFTP_LOCALHOST); 
+        return TestSettings.getTestLocation(TestSettings.VFS_SFTP_LOCALHOST_TESTUSER); 
     }
 
-//    public static void authenticate() throws VlException
-//    {
-//        if (info == null)
-//            info = TestSettings.getServerInfoFor(TestSettings.getTestLocation(TestSettings.VFS_SFTP_ELAB_LOCATION), true);
-//
-//        info.store();
-//
-//        if (info.hasValidAuthentication() == false)
-//        {
-//            ServerInfo ans = AuthenticationDialog.askAuthentication("Password for:" + info.getUsername() + "@"
-//                    + info.getHostname(), info);
-//
-//            if (ans == null)
-//            {
-//                // fail("Authentication Failed!!!");
-//            }
-//
-//            ans.store(); // store in ServerInfo database !
-//        }
-//    }
+    protected void checkAuthentication() throws Exception
+    {
+        ServerInfo info=this.getVRSContext().getServerInfoFor(this.getRemoteLocation(), true); 
+        
+        info.setAttribute(ServerInfo.ATTR_SSH_IDENTITY,"test_rsa"); 
+        info.store();
+    }
 
     @Before
     public void testSetup()

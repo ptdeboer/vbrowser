@@ -45,7 +45,7 @@ public class TestSettings
     public static final String VFS_GFTP_LOCATION2           ="vfsGFTPLocation2"; 
     public static final String VFS_GFTP_ELAB_LOCATION       ="vfsGFTPElabLocation"; 
     public static final String VFS_SFTP_SARA_LOCATION       ="vfsSFTPSARALocation"; 
-    public static final String VFS_SFTP_LOCALHOST           ="vfsSFTPLocalhostLocation";
+    public static final String VFS_SFTP_LOCALHOST_TESTUSER  ="vfsSFTPLocalhostLocation";
     
     public static final String VFS_SRM_DCACHE_SARA_LOCATION         ="vfsSRM_dCache_SARA_location";
     public static final String VFS_SRM_DCACHE_SARA_OTHER_LOCATION   ="vfsSRM_dCache_SARA_otherLocation";
@@ -129,8 +129,8 @@ public class TestSettings
         testLocations.put(VFS_SFTP_SARA_LOCATION,
                 new VRL("sftp", "ui.grid.sara.nl", "/tmp/" + testUserName+ "/testSFTP1"));
 
-        testLocations.put(VFS_SFTP_LOCALHOST,
-                new VRL("sftp", "localhost", "/tmp/" + testUserName+ "/testSFTP2"));
+        testLocations.put(VFS_SFTP_LOCALHOST_TESTUSER,
+                new VRL("sftp", "testuser", "localhost", 22, "/tmp/testuser/testSFTP2"));
         
         testLocations.put(VFS_SRM_DCACHE_SARA_LOCATION,
                 new VRL("srm","srm.grid.sara.nl","/pnfs/grid.sara.nl/data/nlesc.nl/" + testUserName+ "/testSRM_dCache_SARA_t1"));
