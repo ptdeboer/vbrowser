@@ -34,11 +34,11 @@ import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.FileSystem;
 import nl.esciencecenter.octopus.files.PathAttributesPair;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
+import nl.esciencecenter.octopus.files.RelativePath;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.vrs.ServerInfo;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vfs.FileSystemNode;
@@ -63,11 +63,11 @@ public class OctopusFS extends FileSystemNode
 	// Instance
 	// ========================================================================
 	
-    /** Shared OctopusClient */ 
 	protected OctopusClient octoClient;
 	
-	/** Actual FileSystem */ 
-    protected FileSystem octoFS;
+	protected FileSystem octoFS;
+
+    private AbsolutePath remoteHomePath;
 
     public OctopusFS(VRSContext context, ServerInfo info,VRL location) throws VrsException 
 	{
@@ -78,16 +78,15 @@ public class OctopusFS extends FileSystemNode
 
 		String fsUriStr=null;
 		
+		String vrlUser=location.getUsername(); 
+	    String configeredUser=info.getUsername(); 
+        
 		if (isSftp)
 		{
-		    String user=info.getUsername(); 
-	        
-	        user=info.getUsername(); 
-   
-            if (StringUtil.isEmpty(user))
-                user=VletConfig.getUserName(); 
+            if (StringUtil.isEmpty(configeredUser))
+                configeredUser=context.getConfigManager().getUserName(); 
             
-            fsUriStr=location.getScheme()+"://"+user+"@"+location.getHostname();
+            fsUriStr=location.getScheme()+"://"+configeredUser+"@"+location.getHostname();
 		}
 		else
 		{
@@ -99,16 +98,23 @@ public class OctopusFS extends FileSystemNode
 		    URI fsUri=new URI(fsUriStr);
 		    
 		    // create optional shared client. 
-		    octoClient=OctopusClient.createFor(context,info,location); 
+		    octoClient=OctopusClient.createFor(context,info); 
 		    
 		    if ("sftp".equals(location.getScheme()))
 		    {
-	            octoFS=octoClient.createFileSystem(fsUri,octoClient.getSSHCredentials());
+		        info.getUserinfo(); 
+	            octoFS=octoClient.createFileSystem(fsUri,octoClient.createSSHCredentials(info));
 		    }
 		    else
 		    {
 		        octoFS=octoClient.createFileSystem(fsUri);
 		    }
+		    
+		    RelativePath entryPath = octoFS.getEntryPath();
+		    remoteHomePath=octoClient.resolvePath(octoFS, entryPath); 
+		    
+		    
+		    
         }
         catch (OctopusIOException | OctopusException | URISyntaxException e)
         {
@@ -116,7 +122,9 @@ public class OctopusFS extends FileSystemNode
         } 
 	}
 
-    /** Resolve VRL against this FileSystem */ 
+    /** 
+     * Resolve VRL against this FileSystem 
+     */ 
     public AbsolutePath createPath(VRL vrl) throws VrsException
     {
         try
@@ -130,7 +138,9 @@ public class OctopusFS extends FileSystemNode
         }  
     }
     
-    /** Convert Octopus path to (absolute) VRL */ 
+    /** 
+     * Convert Octopus path to (absolute) VRL 
+     */ 
     public VRL createVRL(AbsolutePath path)
     {
         FileSystem fs = path.getFileSystem(); 

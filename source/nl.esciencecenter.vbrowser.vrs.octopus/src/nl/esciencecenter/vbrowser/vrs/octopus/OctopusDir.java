@@ -144,7 +144,8 @@ public class OctopusDir extends VDir
     {
         if (recurse)
         {
-            // my recursive delete 
+            // my recursive delete
+            //DebuggingMonitor monitor=new DebuggingMonitor("Deleting Octopus Directory:" + this.getPath(),1);
             ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting Octopus Directory:" + this.getPath(), 1);
             getTransferManager().recursiveDeleteDirContents(monitor, this,true); 
         }

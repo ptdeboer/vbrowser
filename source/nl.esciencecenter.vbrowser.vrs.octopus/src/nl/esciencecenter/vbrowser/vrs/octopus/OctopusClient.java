@@ -48,6 +48,7 @@ import nl.esciencecenter.octopus.files.RelativePath;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
@@ -56,8 +57,24 @@ import nl.nlesc.vlet.vrs.VRSContext;
 
 public class OctopusClient
 {
-
-    public static OctopusClient createFor(VRSContext context, ServerInfo info, VRL location) throws VrsException
+    private static ClassLogger logger; 
+    
+    static
+    {
+        logger=ClassLogger.getLogger(OctopusClient.class); 
+        logger.setLevelToDebug(); 
+    }
+    
+    /** 
+     * Create OctopusClient and initalize Octopuse Engine for the specfied VRSContext. 
+     * Optionally add properties from ServerInfo to the initialization. 
+     * 
+     * @param vrsContext - The VRSContext  
+     * @param serverInfo - specific remote resource configuration. 
+     * @return new OctopusClient. 
+     * @throws VrsException
+     */
+    public static OctopusClient createFor(VRSContext vrsContext, ServerInfo serverInfo) throws VrsException
     {
         // check shared clients here. 
         try
@@ -79,7 +96,7 @@ public class OctopusClient
             }
             
             OctopusClient client = new OctopusClient(props); 
-            client.updateProperties(context,info); 
+            client.updateProperties(vrsContext,serverInfo); 
             return client;
         }
         catch (Exception e)
@@ -92,7 +109,8 @@ public class OctopusClient
     
     private Octopus engine;
     private Properties octoProperties;
-    private Credentials octoCredentials;
+    private VRL userHomeDir;
+    private String userName;
 
     /**
      * Protected constructor: Use factory method.
@@ -106,15 +124,47 @@ public class OctopusClient
     
     protected void updateProperties(VRSContext context, ServerInfo info)
     {
-        ; // 
+        this.userName=info.getUsername(); 
+        this.userHomeDir=context.getUserHomeLocation();  
     }
     
-    public AbsolutePath resolvePath(FileSystem fs,String pathString) throws OctopusIOException, OctopusException
+    public String getUsername()
     {
+        return this.userName; 
+    }
+    
+    public VRL getUserHome()
+    {
+        return this.userHomeDir; 
+    }
+    
+    public AbsolutePath resolvePath(FileSystem octoFS,String pathString) throws OctopusIOException, OctopusException
+    {
+        boolean startsWithTilde=false;  
+                
+        if ( (pathString.startsWith("~")) || (pathString.startsWith("/~")) )  
+        {
+            if (pathString.startsWith("/~"))
+            {
+                pathString=pathString.substring(2);
+            }
+            else
+            {
+                pathString=pathString.substring(1);
+            }
+            
+            startsWithTilde=true; 
+        }
+        
         RelativePath relativePath=new RelativePath(pathString);
-        AbsolutePath path=engine.files().newPath(fs, relativePath); 
+        AbsolutePath path=engine.files().newPath(octoFS, relativePath); 
 
         return path; 
+    }
+    
+    public AbsolutePath resolvePath(FileSystem octoFS, RelativePath relativePath) throws OctopusIOException, OctopusException
+    {
+        return engine.files().newPath(octoFS, relativePath); 
     }
     
     public FileSystem createFileSystem(java.net.URI uri) throws OctopusIOException, OctopusException
@@ -132,7 +182,9 @@ public class OctopusClient
         return engine.files().getAttributes(path); 
     }
 
-    /** Stat Directory including attributes */ 
+    /**
+     *  Stat Directory including attributes
+      */ 
     public List<PathAttributesPair> statDir(AbsolutePath octoAbsolutePath) throws OctopusIOException
     {
         DirectoryStream<PathAttributesPair> dirIterator = engine.files().newAttributesDirectoryStream(octoAbsolutePath); 
@@ -144,7 +196,8 @@ public class OctopusClient
         while(iterator.hasNext())
         {
             PathAttributesPair el = iterator.next();
-            paths.add(el); 
+            paths.add(el);
+            System.err.printf("***>> adding:%s\n",el.path().getPath());
         }
         
         if (paths.size()==0)
@@ -153,7 +206,9 @@ public class OctopusClient
         return paths;
     }
 
-    /** list files only without attributes */ 
+    /** 
+     * list files only without attributes 
+     */ 
     public List<AbsolutePath> listDir(AbsolutePath octoAbsolutePath) throws OctopusIOException
     {
         DirectoryStream<AbsolutePath> dirIterator = engine.files().newDirectoryStream(octoAbsolutePath); 
@@ -166,6 +221,7 @@ public class OctopusClient
         {
             AbsolutePath el = iterator.next();
             paths.add(el); 
+            System.err.printf("***>> adding:%s\n",el.getPath());
         }
         
         if (paths.size()==0)
@@ -324,13 +380,56 @@ public class OctopusClient
         return true; 
     }
     
-    public Credential getSSHCredentials() throws OctopusException
+    public Credential createSSHCredentials(ServerInfo info) throws OctopusException, VRLSyntaxException
     {
-        Credentials creds = engine.credentials();
+        String sshUser=info.getUsername(); 
+        String ssh_id_key_file=info.getAttributeValue(ServerInfo.ATTR_SSH_IDENTITY);          
+        String passWd=""; 
+        
+        if (StringUtil.isEmpty(ssh_id_key_file)==false)
+        {
+            // ssh_id_key_file can be absolute here: 
+            VRL idFile=getUserHome().resolvePath(".ssh").resolvePath(ssh_id_key_file);  
+         
+            if (FSUtil.getDefault().existsFile(idFile.getPath(), true))
+            {
+                ssh_id_key_file=idFile.getPath();
+            }
+            else
+            {
+                ssh_id_key_file=null; // do not use!
+            }
+         
+        }
 
-        String username = System.getProperty("user.name");
-        Credential cred = creds.newCertificateCredential("ssh", null, "/home/" + username + "/.ssh/id_rsa", 
-                            "/home/" + username + "/.ssh/id_rsa.pub", username, "");
+        logger.debugPrintf("createSSHCredentials(): Using Username:"+sshUser);
+        logger.debugPrintf("createSSHCredentials(): Using ID Key file:%s\n",ssh_id_key_file);
+        
+        Credentials creds = engine.credentials();
+        Credential cred;
+        
+        if (ssh_id_key_file==null)
+        {
+            cred= creds.newCertificateCredential("ssh", 
+                    null, 
+                    null,
+                    null, 
+                    sshUser, 
+                    passWd);
+        }
+        else
+        {
+            cred= creds.newCertificateCredential("ssh", 
+                    null, 
+                    ssh_id_key_file, 
+                    ssh_id_key_file+".pub",
+                    sshUser, 
+                    passWd);
+        }
+        
         return cred; 
     }
+
+   
+
 }

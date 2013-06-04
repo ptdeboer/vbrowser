@@ -25,29 +25,28 @@ import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.ServerInfo;
+import nl.nlesc.vlet.vrs.VRS;
 import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.vfs.VFSFactory;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 
 
 /**
- *  FSFactory for Octopus adaptor. 
- *  Handles filesystem objects.  
+ *  Octopus Meta FSFactory. 
  */ 
 public class OctopusFSFactory extends VFSFactory
 {
 	// ========================================================================
 	// Static 
 	// ========================================================================
-	
-	// Example schemes. A FileSystem implementation can support mutliple schemes. 
+	    
 	static private String schemes[]=
 		{
-			"file",
-			"sftp",
-			// for testing: 
-			"octopus.file",
-			"octopus.sftp"
+			VRS.FILE_SCHEME,
+			VRS.SFTP_SCHEME,
+			// for testing only:
+			"octopus."+VRS.FILE_SCHEME,
+			"octopus."+VRS.SFTP_SCHEME
 		}; 
 
 	// ========================================================================
@@ -94,45 +93,25 @@ public class OctopusFSFactory extends VFSFactory
 	// See super method 
 	public ServerInfo updateServerInfo(VRSContext context,ServerInfo info, VRL loc) throws VrsException
 	{
-		// Update server configuration information. 
-		// This method should check (Server/Resource) properties and optional update them. 
-		// The ServerInfo object might be a new created object or an old (saved) configuration. 
-		// Important: 
-		// Use VRSContext object for context specific settings. 
-				
+	    if (loc.hasScheme(VRS.SFTP_SCHEME))
+	    {
+	        return updateSSHServerInfo(context,info,loc); 
+	    }
+	    
+	    // Default file system properties:  
+	    
 		// defaults: 
 		info=super.updateServerInfo(context, info, loc); 
-		int port=info.getPort();
-		
-		// Example: update default port. 
-		if (port<=0) 
-		    info.setPort(getDefaultPortFor(loc)); 
-		
-		// === 
-		// Check global properties from Context (AND System Properties) 
-		// === 
-		// Example: use property from VRSContext and update ServerInfo if that property
-		// was set yet: 
-		String par1=context.getStringProperty("octopus.tentacles");
-		
-		if (StringUtil.isEmpty(par1)==false)
-		    info.setIfNotSet(new Attribute("tentacles",par1), true);
-		else
-		    info.setIfNotSet(new Attribute("tentacles","8"), true);
-		
-		// If property "parameter2" hasn't been specified, specify it as follows: 
-        info.setIfNotSet(new Attribute("color","blue"), true);
-        
-        // Important: Always perform an explicit update in registry after changing ! 
-		info.store(); 
 		
 		return info; 
 	}
 
-    public static int getDefaultPortFor(VRL loc)
+	public ServerInfo updateSSHServerInfo(VRSContext context, ServerInfo info, VRL loc)
     {
-        // resolve per scheme: file is
-        return 0;
+	    
+        info.setIfNotSet(ServerInfo.ATTR_SSH_IDENTITY,"id_rsa"); 
+        
+        return info; 
     }
 
    
