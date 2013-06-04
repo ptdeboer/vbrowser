@@ -1564,7 +1564,7 @@ public final class VRSTransferManager
         if (monitor==null)
             monitor =vrsContext.getTaskWatcher().getCurrentThreadTaskMonitor("Deleting contents of:"+dir,len);
 
-        monitor.logPrintf("Deleting contents of:%s\n",dir.getPath()); 
+        monitor.logPrintf("Deleting %d entries from:%s\n",len,dir.getPath()); 
         
         for (int i=0;i<len;i++)
         {
