@@ -830,5 +830,10 @@ public class ConfigManager
     {
         return VletConfig.getDefaultUserCACertsLocation(); 
     }
+
+    public String getUserName()
+    {
+       return VletConfig.getUserName();
+    }
     
 }

@@ -1421,7 +1421,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
             // Create new ServerInfo:
             ServerInfo info = this.vrsContext.getServerInfoFor(serverVRL, true);
             // copy ServerAttribute into ResourceDescription !
-            info = vrsContext.updateServerInfo(info);
+            info = vrsContext.updateServerInfo(info,serverVRL);
             // check already existing configuration !:
             ServerInfo oldInfo = this.vrsContext.getServerInfoFor(info.getServerVRL(), false);
             if (oldInfo != null)
@@ -1539,7 +1539,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     {
         debugPrintln(">>> Storing Server Type Info");
         // synchronize with VRS Implementation and store.
-        info = vrsContext.updateServerInfo(info);
+        info = vrsContext.updateServerInfo(info,info.getServerVRL());
         storeServerInfo(info);
     }
 
