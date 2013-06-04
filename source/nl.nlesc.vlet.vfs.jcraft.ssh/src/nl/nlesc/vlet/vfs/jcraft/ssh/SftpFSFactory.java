@@ -99,12 +99,13 @@ public class SftpFSFactory extends VFSFactory
 
     	String user=info.getUsername(); 
         
-        String defaultUser=VletConfig.getUserName();
+        String defaultUser=context.getConfigManager().getUserName();
       	// sftp MUST have username: set current to default ! 
         if ((user==null) || (user.compareTo("")==0)) 
         {
             info.setUsername(defaultUser);
         }
+        
         info.setNeedUserinfo(true);
         info.setIfNotSet(VAttributeConstants.ATTR_HOSTNAME,"hostname"); 
         info.setIfNotSet(ServerInfo.ATTR_SSH_IDENTITY,"id_rsa"); 
