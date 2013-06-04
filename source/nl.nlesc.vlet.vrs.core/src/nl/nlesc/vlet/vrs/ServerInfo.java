@@ -65,7 +65,10 @@ public class ServerInfo
     
     public static final String ATTR_ROOT_PATH = "rootPath";
     
-    /** "id_rsa" or "id_dsa" file in ~/.ssh */ 
+    /**
+     * Identity file without any path, for example: "id_rsa" or "id_dsa".
+     * Default location is $HOME/.ssh/    
+     */ 
     public static final String ATTR_SSH_IDENTITY = "sshIdentity";
     
     public static final String ATTR_SSH_USE_PROXY    = "sshUseProxy";
