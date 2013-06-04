@@ -298,7 +298,7 @@ public class VRSContext implements Serializable
      * <p>
      * The Scheme, Hostname and Port are use to query the ServerInfo database.
      * Optionally the UserInfo, if present in the VRL, is used as well. If more
-     * ServerInfo match, the first is returned. If autoCreate==true a new object
+     * ServerInfo object match, the first is returned. If autoCreate==true a new object
      * will be created but not stored in the Registry !
      * 
      * @see ServerInfoRegistry
@@ -323,7 +323,7 @@ public class VRSContext implements Serializable
             info = this.serverInfoRegistry.getServerInfoFor(loc, true);
         }
 
-        info = this.updateServerInfo(info);
+        info = this.updateServerInfo(info,loc);
 
         return info;
     }
@@ -335,7 +335,7 @@ public class VRSContext implements Serializable
      * 
      * @throws VrsException
      */
-    public ServerInfo updateServerInfo(ServerInfo info) throws VrsException
+    public ServerInfo updateServerInfo(ServerInfo info, VRL location) throws VrsException
     {
         if (info == null)
             return null;
@@ -350,7 +350,7 @@ public class VRSContext implements Serializable
             return info;
         }
 
-        info = vrs.updateServerInfo(ctx, info, null);
+        info = vrs.updateServerInfo(ctx, info, location);
         info.store();
 
         return info;
