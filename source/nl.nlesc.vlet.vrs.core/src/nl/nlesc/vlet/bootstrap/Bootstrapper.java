@@ -95,7 +95,7 @@ public class Bootstrapper
                 };
     }
 
-    protected static boolean debug = true;
+    protected static boolean debug = false;
 
     // ========================================================================
     //
