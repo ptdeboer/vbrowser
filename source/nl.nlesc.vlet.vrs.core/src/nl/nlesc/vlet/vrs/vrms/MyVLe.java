@@ -466,6 +466,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
             catch (Exception e)
             {
                 logger.logException(ClassLogger.ERROR, this, e, "Error reading child resource:%s\n", child);
+                child.delete(); 
             }
             // else directories not supported yet
         }

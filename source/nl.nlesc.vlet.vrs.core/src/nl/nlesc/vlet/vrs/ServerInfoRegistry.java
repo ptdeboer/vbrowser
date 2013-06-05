@@ -41,6 +41,7 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.exception.NestedIOException;
 import nl.nlesc.vlet.vrs.data.xml.XMLData;
+import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 import nl.nlesc.vlet.vrs.vrms.SecretStore;
 
@@ -536,19 +537,19 @@ public class ServerInfoRegistry
         xmlifier.setVAttributeSetElementName("vlet:ServerInfo");
         // xmlifier.setPersistanteNodeElementName("vlet:ServerInfo2"); // No
         // Nodes!
+        
         try
         {
-            // registry must be local path:
-            OutputStream outps = FSUtil.getDefault().createOutputStream(loc.getPath());
-            xmlifier.writeAsXML(outps, XML_SERVER_CONFIG_HEADER_TAG, sets, XML_SERVER_CONFIG_HEADER);
+            // bootstrap warning: use default ResourceLoader here: VRS might not be initialized! 
+            ResourceLoader writer=new ResourceLoader(); 
+            String xmlString=xmlifier.createXMLString(XML_SERVER_CONFIG_HEADER_TAG, sets, XML_SERVER_CONFIG_HEADER);
+            writer.writeTextTo(loc.toURI(), xmlString); 
             this.isSaved = true;
-            
-            try {outps.close();} catch (Exception e){;} 
-            
         }
         catch (Exception e)
         {
-            logger.logException(ClassLogger.WARN, e, "Couldn't save server registry to:%s\n", loc);
+            // check persistant user configuration: 
+            logger.logException(ClassLogger.ERROR, e, "Couldn't save ServerInfo registry to:%s\n", loc);
             // but continue!
         }
     }

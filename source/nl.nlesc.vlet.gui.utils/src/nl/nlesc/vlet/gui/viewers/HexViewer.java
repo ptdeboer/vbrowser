@@ -775,7 +775,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
             readBytes(vfile,fileOffset,buffer,0,len); 
             this.setViewerTitle("Inspecting:"+getVRL());
 		} 
-		catch (IOException e) 
+		catch (Exception e) 
 		{
 		    this.setViewerTitle("Error reading:"+getVRL());
 			handle(e);
@@ -786,12 +786,10 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 		}
 	}
 	
-	private void readBytes(VFile file, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws IOException 
+	private void readBytes(VFile file, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws IOException, VrsException 
     {
-	    
 	    VRSResourceLoader reader = new VRSResourceLoader(file.getVRSContext());
 	    reader.syncReadBytes(file, fileOffset, buffer, bufferOffset, numBytes);
-	    
     }
 
     void debug(String msg) 

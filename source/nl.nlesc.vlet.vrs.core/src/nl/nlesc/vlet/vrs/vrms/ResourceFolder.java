@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.w3c.dom.DOMException;
+
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -56,6 +58,9 @@ import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.data.xml.VCompositePersistance;
 import nl.nlesc.vlet.vrs.data.xml.XMLData;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
+import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
+import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import nl.nlesc.vlet.vrs.vfs.VFile;
 
 
 /**
@@ -651,7 +656,6 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
     private void saveToXml() throws Exception
     {
         //debug("Save to xml:" + this);
-
         synchronized (saveMutex)
         {
 
@@ -659,45 +663,21 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
             //debug("Saving location=" + loc);
 
             if (loc == null)
+            {
                 throw new nl.nlesc.vlet.exception.ResourceDeletionFailedException("Description Location is NULL of:"
                         + this);
-
-            /** Create private client */
-            VRSClient vrsClient = new VRSClient(this.vrsContext);
-
-            OutputStream outps = vrsClient.openOutputStream(loc);
-
-            this.writeAsXmlTo(outps);
-
-            try
-            {
-                outps.flush();
-                outps.close();
             }
-            catch (IOException e)
-            {
-                //Global.logException(ClassLogger.WARN,this,e,"Warning: Exception when closing:%s\n",this);
-            }
-
+            
+            VRSResourceLoader writer=new VRSResourceLoader(vrsContext); 
+            writer.writeTextTo(loc, this.toXMLString()); 
         }
-
     }
-
-    public void writeAsXmlTo(OutputStream outp) throws IOException
+  
+    public String toXMLString() throws DOMException, VrsException
     {
-        synchronized (saveMutex)
-        {
-            try
-            {
-                String comments = "VL-e ResourceFolder description :" + this.getName();
-                XMLData xmlData = getXMLData();
-                xmlData.writeAsXML(outp, this, comments);
-            }
-            catch (Exception e)
-            {
-                throw new IOException(e); 
-            }
-        }
+        String comments = "VL-e ResourceFolder description :" + this.getName();
+        XMLData xmlData = getXMLData();
+        return xmlData.createXMLString(this, comments);
     }
 
     private static XMLData getXMLData()
@@ -716,7 +696,6 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
             this.descriptionLocation = loc;
             save();
         }
-
     }
 
     public static ResourceFolder readFromXMLStream(VRSContext context, VStreamReadable source) throws Exception
@@ -736,23 +715,27 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
     private static ResourceFolder readFromXMLStream(VRSContext context, InputStream stream) throws Exception
     {
         XMLData data = getXMLData();
-
         ResourceNodeFactory nodeFactory = new ResourceNodeFactory(data, context);
-
         return (ResourceFolder) data.parsePersistantNodeTree(nodeFactory, stream);
-
     }
 
     public InputStream createInputStream() throws IOException
     {
-        // outputstream to ByteArray
-        ByteArrayOutputStream outps = new ByteArrayOutputStream(1024);
-        this.writeAsXmlTo(outps);
-
-        // ByteArray to Input Stream
-        ByteArrayInputStream inps = new ByteArrayInputStream(outps.toByteArray());
-
-        return inps;
+        try
+        {
+            String xmlString = this.toXMLString();
+            // ByteArray to Input Stream
+            ByteArrayInputStream inps = new ByteArrayInputStream(xmlString.getBytes("UTF-8"));
+            return inps; 
+        }
+        catch (DOMException e)
+        {
+            throw new IOException(e.getMessage(),e); 
+        }
+        catch (VrsException e)
+        {
+            throw new IOException(e.getMessage(),e);
+        } 
     }
 
     public int getOptimalReadBufferSize()

@@ -38,6 +38,7 @@ import nl.nlesc.vlet.vrs.VRSContext;
 import nl.nlesc.vlet.vrs.io.VRandomReadable;
 import nl.nlesc.vlet.vrs.io.VResizable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
+import nl.nlesc.vlet.vrs.io.VZeroSizable;
 import nl.nlesc.vlet.vrs.vfs.VFile;
 
 /** 
@@ -74,7 +75,7 @@ public class VRSResourceLoader extends ResourceLoader
     /** 
      * Returns resource as String. 
      */ 
-    public  String getText(VRL vrl) throws Exception
+    public  String getText(VRL vrl) throws IOException, VrsException 
     {
          InputStream inps=vrsClient.openInputStream(vrl);  
          String text=readText(inps,null);  
@@ -82,7 +83,7 @@ public class VRSResourceLoader extends ResourceLoader
          return text; 
     }
    
-    public String getText(VRL vrl, String textEncoding) throws Exception
+    public String getText(VRL vrl, String textEncoding) throws IOException, VrsException 
     {
         InputStream inps=vrsClient.openInputStream(vrl);  
         String text=readText(inps,textEncoding);  
@@ -90,7 +91,7 @@ public class VRSResourceLoader extends ResourceLoader
         return text;
     }
 
-    public void syncReadBytes(VFile file, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws IOException
+    public void syncReadBytes(VFile file, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws IOException, VrsException 
     {
         if ((file instanceof VRandomReadable)==false)
         {
@@ -101,17 +102,35 @@ public class VRSResourceLoader extends ResourceLoader
         VRSIOUtil.syncReadBytes(readable, fileOffset, buffer, bufferOffset, numBytes); 
     }
     
+    public void writeTextTo(VRL vrl, String txt)  throws IOException, VrsException
+    {
+        writeTextTo(vrl,txt,this.charEncoding); 
+    }
     /**
      * Writes String contents to remote location using optional encoding
      * Tries to truncate resource or delete original resource
      */ 
-    public void writeTextTo(VRL vrl, String txt,String encoding) throws Exception
+    public void writeTextTo(VRL vrl, String txt,String encoding) throws IOException, VrsException 
     {
         VNode node = this.vrsContext.openLocation(vrl); 
         OutputStream outps=null; 
         
         if (encoding==null)
-            encoding=this.getCharEncoding(); 
+            encoding=this.getCharEncoding();
+        
+        // delete existing file: 
+        if (node instanceof VFile)
+        {
+            VFile file=(VFile)node; 
+            if ((file.exists() && file.getLength()>0))
+            {
+                file.delete();
+            }
+        }
+        else if (node instanceof VZeroSizable)
+        {
+            ((VZeroSizable)node).setLengthToZero(); 
+        }
         
         if (node instanceof VStreamWritable)
         {
@@ -140,7 +159,7 @@ public class VRSResourceLoader extends ResourceLoader
         }
     }
     
-    public boolean setSizeToZero(VFile file) throws VrsException, IOException 
+    public boolean setSizeToZero(VFile file) throws  IOException, VrsException
     {
         if (file.exists()==false)
             return true; 

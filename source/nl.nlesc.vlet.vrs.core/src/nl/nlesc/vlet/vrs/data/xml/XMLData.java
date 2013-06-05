@@ -539,43 +539,40 @@ public class XMLData
             throw new XMLDataParseException(e.getMessage(), e);
         }
     }
-
-    public void writeAsXML(OutputStream outp, AttributeSet attrSet, String comments) throws XMLDataParseException
+    
+    public String createXMLString(AttributeSet attrSet, String comments) throws XMLDataParseException
     {
         logger.debugPrintf("writeAsXML(): attrSet=%s\n", attrSet);
 
         Document domDoc = this.createDefaultDocument();
         domDoc.appendChild(createCommentsNode(domDoc, comments));
         domDoc.appendChild(this.createXMLNode(domDoc, attrSet));
-
-        StreamResult sr = new StreamResult(outp);
-        this.writeXML(domDoc, sr);
+        return this.createXMLString(domDoc); 
     }
 
-    /** Write Iterable Collection of VAttributeSets */
-    public void writeAsXML(OutputStream outp, String configName, Iterable<AttributeSet> attrSets, String comments)
+    /** 
+     * Write Collection of VAttributeSets 
+     */
+    public String createXMLString(String configName, Iterable<AttributeSet> attrSets, String comments)
             throws XMLDataParseException
     {
-        logger.debugPrintf("writeAsXML(): attrSets\n");
+        logger.debugPrintf("createXMLString(): attrSets\n");
 
         Document domDoc = this.createDefaultDocument();
         domDoc.appendChild(createCommentsNode(domDoc, comments));
         domDoc.appendChild(this.createXMLNode(domDoc, configName, configName, attrSets));
 
-        StreamResult sr = new StreamResult(outp);
-        this.writeXML(domDoc, sr);
+        return this.createXMLString(domDoc); 
     }
 
-    public void writeAsXML(OutputStream outp, VPersistance rootNode, String comments) throws DOMException, VrsException
+    public String createXMLString(VPersistance rootNode, String comments) throws DOMException, VrsException
     {
-        logger.debugPrintf("writeAsXML(): Persistance Node=%s\n", rootNode);
+        logger.debugPrintf("createXMLString(): Persistance Node=%s\n", rootNode);
 
         Document domDoc = this.createDefaultDocument();
         domDoc.appendChild(createCommentsNode(domDoc, comments));
         domDoc.appendChild(this.createXMLTree(domDoc, rootNode));
-
-        StreamResult sr = new StreamResult(outp);
-        this.writeXML(domDoc, sr);
+        return this.createXMLString(domDoc); 
     }
 
     private Node createCommentsNode(Document domDoc, String comments)
@@ -775,5 +772,7 @@ public class XMLData
 
         return els.elementAt(0);
     }
+
+  
 
 }

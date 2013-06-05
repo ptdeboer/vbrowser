@@ -75,6 +75,7 @@ import nl.nlesc.vlet.vrs.data.xml.XMLData;
 import nl.nlesc.vlet.vrs.io.VStreamAccessable;
 import nl.nlesc.vlet.vrs.io.VStreamReadable;
 import nl.nlesc.vlet.vrs.io.VStreamWritable;
+import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
 import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 
@@ -502,26 +503,9 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
 
         try
         {
-            OutputStream outp = ((VStreamWritable) storageNode).createOutputStream();
-
-            // BUUGGY this.properties.storeToXML(outp,"VRS.LinkNode");
-            // if (useXML)
-            writeAsXmlTo(outp);
-            // else
-            // resourceAttributes.store(outp,"VL-e Resource description of type:"+this.getType());
-
-            try
-            {
-                outp.flush();
-                outp.close();
-            }
-            catch (IOException e)
-            {
-                warnPrintln("Exception when closing outputstream:" + e);
-            }
-
+            VRSResourceLoader writer=new VRSResourceLoader(this.getVRSContext());
+            writer.writeTextTo(storageNode.getLocation(),this.toXMLString()); 
             return true;
-
         }
         catch (IOException e)
         {
@@ -533,14 +517,14 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         }
     }
 
-    public void writeAsXmlTo(OutputStream outp) throws XMLDataParseException
+    public String toXMLString() throws XMLDataParseException
     {
         String comments = "VL-e Resource description of type:" + this.getType();
         XMLData xmlData = getXMLData();
         // Server Attributes moved to ServerReg !
         AttributeSet attrs = this.resourceAttributes; // this.getResourceAttributeSet(useServerRegistry);
-
-        xmlData.writeAsXML(outp, attrs, comments);
+        
+        return xmlData.createXMLString(attrs,comments); 
     }
 
     /** XMLData factory */
