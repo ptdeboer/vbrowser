@@ -3,35 +3,39 @@
 #
 
 ##
-# Project Build Enviroment 
+# Project Build Environment 
 
 ##
-# source structure: 
+# Source structure: 
 project.sourcedir=source
 
 ##
-# build structure  
+# Distribution target directory:   
 project.dist=${project.root}/dist
-# var is used during build to write logs to 
+
+# Directory 'var' is used during build to write logs to. Can be deleted after build.  
 project.dist.var=${project.dist}/var
-# configure files/etc:
+
+##
+# Distribution structure:
 project.dist.lib=${project.dist}/lib
 project.dist.auxlib=${project.dist}/lib/auxlib
-#3rd party libraries,etc. 
 project.dist.etc=${project.dist}/etc
 project.dist.bin=${project.dist}/bin
 project.dist.doc=${project.dist}/doc
-#mark project.prop read!
-project.env.ok=ok; 
 
-project.version=1.6.0alpha1
+#mark project.prop read!
+project.env.ok=ok;
+ 
+# version
+project.version=1.6.0alpha2
 
 ##
 #
 project.vendor=eScienceCenter.nl
 
 ###
-# Java Compiler options : Explicitly use java 1.6 
+# Java Compiler options : Use Java 1.7  
 javac.debug=true
 javac.target=1.7
 javac.source=1.7

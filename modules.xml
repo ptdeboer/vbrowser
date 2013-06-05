@@ -119,6 +119,16 @@
 
     </target>
 
+    <target name="vlet-vrs-octopus" depends="vlet-core">
+
+        <antcall target="build-component">
+            <param name="name" value="nl.esciencecenter.vbrowser.vrs.octopus"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+    </target>
+
     <target name="vlet-vfs-lfc-srm" depends="vlet-vfs-globus">
 
         <antcall target="build-component">
@@ -153,7 +163,7 @@
 
     </target>
 
-    <target name="vlet-vfs-adaptors" depends="vlet-vfs-globus,vlet-vfs-lfc-srm"/>
+    <target name="vlet-vfs-adaptors" depends="vlet-vrs-octopus,vlet-vfs-globus,vlet-vfs-lfc-srm"/>
 
     <target name="vlet-vbrowser" depends="vlet-core">
 
@@ -184,7 +194,7 @@
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
-        
+
         <antcall target="build-component">
             <param name="name" value="nl.nlesc.vlet.gui.pedal"/>
             <param name="version" value=""/>
@@ -192,5 +202,43 @@
         </antcall>
 
     </target>
+
+    <!-- =================================================================== -->
+    <!--    VLET documentation                                               -->
+    <!-- =================================================================== -->
+
+    <!-- 
+         Conditional target: latexdocs can only be created on Linux
+  -->
+
+    <target name="check-build-userguide">
+        <!-- set if not set -->
+        <property name=" " value="yes" />
+
+        <condition property="do.build.doc.userguide">
+            <and>
+                <!-- yes/true strings: -->
+                <istrue value="${project.build.doc.userguide}"/>
+                <not>
+                    <os family="windows" />
+                </not>
+            </and>
+        </condition>
+
+        <echo message=" project.build.doc.userguide =${project.build.doc.userguide} "/>
+        <echo message=" do.build.doc.userguide      =${do.build.doc.userguide} "/>
+
+    </target>
+
+    <target name="vlet-doc.userguide" if="do.build.doc.userguide" depends="vlet-core,check-build-userguide">
+
+        <antcall target="build-component" >
+            <param name="name" value="doc.userguide"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+    </target>
+
 
 </project>

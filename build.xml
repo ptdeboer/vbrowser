@@ -6,102 +6,102 @@
         See build.prop for custom properties. 
         
     </description>
-    
-    <!-- Toplevel build is *here* -->  
-    <property name="project.root" location="."/>  
+
+    <!-- Toplevel build is *here* -->
+    <property name="project.root" location="."/>
     <property file="${project.root}/project.prop"/>
     <property environment="env"/>
-    
+
     <!-- custom properties -->
     <property file="build.prop"/>
 
-    <import file="modules.xml" /> 
+    <import file="modules.xml" />
     <!-- Target: init -->
 
     <target name="project-init">
-        
+
         <!-- Create the build directory structure used by compile -->
         <mkdir dir="${project.dist}"/>
         <mkdir dir="${project.dist.lib}"/>
         <mkdir dir="${project.dist.etc}"/>
         <mkdir dir="${project.dist.bin}"/>
         <mkdir dir="${project.dist.doc}"/>
-        
-        <!-- project defaults --> 
-        <property name="project.sourcedir" value="${project.root}" />    
-                
+
+        <!-- project defaults -->
+        <property name="project.sourcedir" value="${project.root}" />
+
         <tstamp>
             <format property="project.tstamp" pattern="yyyy-MM-dd HH:mm:ss" locale="en"/>
         </tstamp>
-        
+
         <tstamp>
             <format property="project.time.number" pattern="yyyyMMddHHmmss" locale="en"/>
         </tstamp>
-            
-        <!-- read escxnat property file: --> 
+
+        <!-- read escxnat property file: -->
         <property file="${project.sourcedir}/nl.nlesc.xnat.client/etc/escxnat_version.prop" />
-            
+
         <echo message=" - source version=${escxnat.version}" />
-        <property name="project.version" value="${escxnat.version}"/> 
-        
+        <property name="project.version" value="${escxnat.version}"/>
+
     </target>
-    
+
     <target name="project-dist" depends="project-init" >
-        <!-- *here* --> 
-        
-        <property name="project.sourcedir" value="${project.root}" />    
-        <property name="target" value="dist" /> 
-                
-          <antcall target="doModules">
-                <param name="target" value="dist" />
-          </antcall>
-        
+        <!-- *here* -->
+
+        <property name="project.sourcedir" value="${project.root}" />
+        <property name="target" value="dist" />
+
+        <antcall target="doModules">
+            <param name="target" value="dist" />
+        </antcall>
+
     </target>
-    
+
     <target name="project-dist-install" depends="project-init" >
 
         <antcall target="doModules">
-                <param name="target" value="dist-install" />
+            <param name="target" value="dist-install" />
         </antcall>
-        
+
     </target>
 
     <target name="project-test" depends="project-clean,clean,project-init" >
 
-          <antcall target="doModules-test">
+        <antcall target="doModules-test">
             <param name="target" value="test" />
         </antcall>
-            
+
     </target>
-    
-        
+
+
     <target name="project-clean" depends="project-init" >
 
-          <antcall target="doModules">
+        <antcall target="doModules">
             <param name="target" value="clean" />
         </antcall>
-            
+
     </target>
-    
+
     <target name="clean" description="clean">
 
         <delete dir="${project.dist}"/>
 
     </target>
-    
+
     <target name="project-dist-zip" depends="project-dist-install" >
-        
+
         <mkdir dir="packs" />
-        
+
         <!-- zippit -->
         <property name="distro.prefix" value="vbrowser"/>
         <property name="distro.zip.prefix" value="vbrowser"/>
-         <!-- derived --> 
+        <!-- derived -->
         <property name="distro.zip.root" value="${distro.prefix}-${project.version}"/>
-        <property name="distro.zip.filename" value="${distro.zip.prefix}-${project.version}"/>    
-        
+        <property name="distro.zip.filename" value="${distro.zip.prefix}-${project.version}"/>
+
         <zip destfile="packs/${distro.zip.filename}.zip">
-            <!-- Add all excluding shell scripts and other executables --> 
+            <!-- Add all excluding shell scripts and other executables -->
             <zipfileset dir="${project.dist}" filemode="644" prefix="${distro.zip.filename}" 
                 excludes="bin/**,*.sh" />
 
@@ -112,9 +112,9 @@
             <zipfileset dir="${project.dist}/" filemode="755" prefix="${distro.zip.root}" 
                 includes="*.sh" >
             </zipfileset>
-            
+
         </zip>
-        
+
     </target>
 
 </project>
