@@ -141,22 +141,21 @@
         <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
               unless="project.env.ok"/>
 
-        <!-- install in lib/plugins/  -->
-        <mkdir dir="${project.dist.lib}/plugins" />
+        <property name="vrsfactory.installdir" value="${project.dist.lib}/vdrivers"/>
 
-        <!-- Copy all-in-one package lib into project lib dir -->
-        <!-- <copy file="${vrsfactory.dist}/${vrsfactory.package}.jar" todir="${project.dist.lib}/plugins" /> 
-          -->
+        <!-- install in lib/plugins/  -->
+        <mkdir dir="${vrsfactory.installdir}" />
+
         <!-- 
-			Register plugin! do this by creation a plugin directory 
+			Register plugin! do this by creating a plugin directory 
             and copy the properties file there. 
     	  -->
+        <mkdir dir="${vrsfactory.installdir}/${vrsfactory.artefactId}" />
 
-        <mkdir dir="${project.dist.lib}/plugins/${vrsfactory.artefactId}" />
-
-        <copy todir="${project.dist.lib}/plugins/${vrsfactory.artefactId}">
+        <copy todir="${vrsfactory.installdir}/${vrsfactory.artefactId}">
             <resources>
-                <fileset dir="${vrsfactory.dist}/${vrsfactory.artefactId}" >
+                <fileset dir="${vrsfactory.dist}/${vrsfactory.artefactId}">
+                    <!-- <include name="plugin.prop"/> -->
                 </fileset>
             </resources>
         </copy>
