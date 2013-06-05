@@ -718,37 +718,11 @@ public final class Registry // todo: change to vrs protected class.
         if (location == null)
             return null;
 
-        // Not The Place: resolve against user's home:
-        // if (location.isRelative()==true)
-        // {
-        // VRL home=context.getUserHomeLocation();
-        // location=home.resolve(location);
-        // }
-
-        // *** Service Security ***
-        // Check whether host and scheme is allowed
-        // Must set Java Security Context as Well !!!
-        // ************************
-
-        String hostname = location.getHostname();
-
-        if (context.isAllowedHost(hostname) == false)
-        {
-            throw new nl.nlesc.vlet.exception.ResourceAccessDeniedException(
-                    "Blocked Host: Acces to the remote host is denied by security settings:" + hostname);
-        }
-
         String scheme = location.getScheme();
 
         if (scheme == null)
         {
             throw new VrsException("Invalid location. No scheme for:" + location);
-        }
-
-        if (context.isAllowedScheme(scheme) == false)
-        {
-            throw new nl.nlesc.vlet.exception.ResourceAccessDeniedException(
-                    "Blocked Schemes: scheme is denied by security settings:" + scheme);
         }
 
         VRSFactory rsFactory = getVRSFactoryForScheme(scheme);
@@ -870,8 +844,6 @@ public final class Registry // todo: change to vrs protected class.
         // private implementation:
         return this.getRegisteredServices();
     }
-
-
 
     public synchronized void reset()
     {
