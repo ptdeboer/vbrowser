@@ -197,7 +197,6 @@ public class OctopusClient
         {
             PathAttributesPair el = iterator.next();
             paths.add(el);
-            System.err.printf("***>> adding:%s\n",el.path().getPath());
         }
         
         if (paths.size()==0)
@@ -278,7 +277,6 @@ public class OctopusClient
             set.add(PosixFilePermission.OTHERS_WRITE); 
         if ((mode & 0001)>0)
             set.add(PosixFilePermission.OTHERS_EXECUTE); 
-
         return set;
     }        
 
@@ -384,7 +382,7 @@ public class OctopusClient
     {
         String sshUser=info.getUsername(); 
         String ssh_id_key_file=info.getAttributeValue(ServerInfo.ATTR_SSH_IDENTITY);          
-        String passWd=""; 
+        char passWord[]=null; 
         
         if (StringUtil.isEmpty(ssh_id_key_file)==false)
         {
@@ -415,7 +413,7 @@ public class OctopusClient
                     null,
                     null, 
                     sshUser, 
-                    passWd);
+                    passWord);
         }
         else
         {
@@ -424,7 +422,7 @@ public class OctopusClient
                     ssh_id_key_file, 
                     ssh_id_key_file+".pub",
                     sshUser, 
-                    passWd);
+                    passWord);
         }
         
         return cred; 

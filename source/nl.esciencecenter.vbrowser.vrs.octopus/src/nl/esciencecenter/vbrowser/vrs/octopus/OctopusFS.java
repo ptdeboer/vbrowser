@@ -67,7 +67,8 @@ public class OctopusFS extends FileSystemNode
 	
 	protected FileSystem octoFS;
 
-    private AbsolutePath remoteHomePath;
+    private AbsolutePath entryPath;
+
 
     public OctopusFS(VRSContext context, ServerInfo info,VRL location) throws VrsException 
 	{
@@ -110,10 +111,7 @@ public class OctopusFS extends FileSystemNode
 		        octoFS=octoClient.createFileSystem(fsUri);
 		    }
 		    
-		    RelativePath entryPath = octoFS.getEntryPath();
-		    remoteHomePath=octoClient.resolvePath(octoFS, entryPath); 
-		    
-		    
+		    this.entryPath = octoFS.getEntryPath();
 		    
         }
         catch (OctopusIOException | OctopusException | URISyntaxException e)
