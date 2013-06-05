@@ -490,25 +490,7 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
             throw new NestedIOException(e); 
         }
     }
-
-    /** returns outputstream to viewed resource */
-    public OutputStream getOutputStream() throws VrsException
-    {
-        try
-        {
-            VNode node = getVNode();
-    
-            if (node instanceof VStreamWritable)
-                return ((VStreamWritable) node).createOutputStream();
-            else
-                throw new ResourceTypeMismatchException("VRL is not stream writable:" + location);
-        }
-        catch (IOException e)
-        {
-            throw new NestedIOException(e); 
-        }
-    }
-
+  
     /**
      * Returns true if this viewer has it's own scrollpane. When false, the
      * ViewrePanel might embed this viewer in a scrollpanel. Override this
