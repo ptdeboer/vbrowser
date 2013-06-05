@@ -1,7 +1,7 @@
 <project name="nlesc-vbrowser.vrs.octopus" default="dist" basedir=".">
     <description>
         Project   : VBrowser
-        Component : Octopus
+        Component : VDriver: Octopus
                 
     </description>
 
@@ -15,10 +15,15 @@
     <!-- Target: init -->
 
     <target name="init">
+        
         <!-- Create the build directory structure used by compile -->
+        
+        <property name="vdriver.dist.subdir" value="${vdriver.dist}/${vdriver.artefactId}" />
+        
         <mkdir dir="${vdriver.build}" />
         <mkdir dir="${vdriver.dist}" />
-        <mkdir dir="${vdriver.dist}/lib" />
+        <mkdir dir="${vdriver.dist.subdir}" />
+
         <!-- <mkdir dir="${vdriver.dist}/lib" /> -->
         <property name="vdriver.plugin" value="true" />
 
@@ -54,7 +59,6 @@
 
     </path>
 
-
     <!--
         Target = Compilation 
     -->
@@ -67,20 +71,17 @@
 
     </target>
 
-    <target name="jar" depends="build">
+    <target name="vdriver-jar" depends="build">
         <!-- Create application JAR file -->
-        <jar jarfile="${vdriver.dist}/lib/${vdriver.artefactId}.jar" basedir="${vdriver.build}">
+        <jar jarfile="${vdriver.dist.subdir}/${vdriver.artefactId}.jar" basedir="${vdriver.build}">
             <!-- .. includes/excludes .. -->
         </jar>
     </target>
+    
     <target name="dist" depends="vdriver-dist">
     </target>
 
-    <target name="vdriver-dist" depends="build,jar">
-
-        <property name="vdriver.dir" value="${vdriver.dist}/${vdriver.artefactId}" />
-
-        <mkdir dir="${vdriver.dir}" />
+    <target name="vdriver-dist" depends="build,vdriver-jar">
 
         <!-- Add extra files from etc -->
         <!--
@@ -89,26 +90,17 @@
 		 </copy> 
         -->
 
-        <!-- Add external libs -->
-        <!-- 
-    	 <copy todir="${vdriver.dir}">
-             <fileset dir="${vdriver.root}/lib" /> 
-         </copy>
-        -->
-
         <!-- Add vdrivers libs  -->
-        <copy todir="${vdriver.dir}">
-            <fileset dir="${vdriver.dist}/lib" />
+        <copy todir="${vdriver.dist.subdir}/lib">
+            <fileset dir="${vdriver.lib}" />
         </copy>
 
         <!-- create plugin.prop file -->
-        <property name="plugininfo" value="${vdriver.dir}/plugin.prop" />
+        <property name="plugininfo" value="${vdriver.dist.subdir}/plugin.prop" />
+        
         <echo message="##${line.separator}#Plugin description for: ${vdriver.artefactId}${line.separator}#${line.separator}" file="${plugininfo}" append="false" />
-
         <echo message="#Plugin name:${line.separator}vdriver.artefactId=${vdriver.artefactId}${line.separator}${line.separator}" file="${plugininfo}" append="true" />
-
         <echo message="#Plugin package name:${line.separator}vdriver.package=${vdriver.package}${line.separator}${line.separator}" file="${plugininfo}" append="true" />
-
         <echo message="#Plugin (VRS)Factory name (Must be subclass of VRSFactory which will be registered in the VRS Registry!):${line.separator}vdriver.factory=${vdriver.factory}${line.separator}${line.separator}" file="${plugininfo}" append="true" />
 
     </target>
@@ -121,56 +113,28 @@
     <target name="vdriver-dist-install" depends="vdriver-dist" description="install libraries">
         <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
 
-        <!-- install in lib/plugins/  -->
-        <mkdir dir="${project.dist.lib}/plugins" />
-
-        <!-- Copy all-in-one package lib into project lib dir -->
-        <!-- <copy file="${vdriver.dist}/${vdriver.package}.jar" todir="${project.dist}/lib/plugins" /> 
-	      -->
-
-        <mkdir dir="${project.dist.lib}/vdrivers" />
-        <copy todir="${project.dist.lib}/vdrivers/">
-            <fileset file="${vdriver.dist}/lib/${vdriver.artefactId}.jar" />
-        </copy>
+        <property name="project.dist.vdrivers" value="${project.dist.lib}/vdrivers" />
+        <mkdir dir="${project.dist.vdrivers}" />
 
         <!-- 
-			Register plugin! do this by creating a plugin directory 
-            and copy the properties file there. 
-    	  -->
-        <mkdir dir="${project.dist.lib}/plugins/${vdriver.artefactId}" />
-
-        <!-- register as plugin, copy plugin.prop info only  -->
-
-        <!-- <copy todir="${project.dist.lib}/plugins/${vdriver.artefactId}">
-    		<resources> 
-    			<fileset dir="${vdriver.dist}/${vdriver.artefactId}" >
-    				<include name="plugin.prop"/>
-    			</fileset>
-    		</resources> 
-    	</copy>  -->
-
-    </target>
-
-    <target name="dist-install-octopus" depends="dist" description="install libraries">
-        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
-
-        <mkdir dir="${project.dist.lib}" />
-        <mkdir dir="${project.dist.lib}/octopus" />
-
-        <copy todir="${project.dist.lib}/octopus">
-            <fileset dir="${vdriver.root}/lib/octopus" />
+   			Install vdriver into distribution.  
+       	  -->
+        <copy todir="${project.dist.vdrivers}/${vdriver.artefactId}">
+            <resources>
+                <fileset dir="${vdriver.dist}/${vdriver.artefactId}">
+                    <!-- <include name="plugin.prop"/> -->
+                </fileset>
+            </resources>
         </copy>
 
     </target>
 
-    <target name="dist-install" depends="dist,dist-install-octopus,vdriver-dist-install" description="install libraries">
+    <target name="dist-install" depends="dist,vdriver-dist-install" description="install libraries">
+
         <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
 
         <!-- dist-install done by target dependencies -->
-        <!-- 
-   			optional dist install *here * 
-   		  -->
-
+        
     </target>
 
     <target name="clean" description="clean">
