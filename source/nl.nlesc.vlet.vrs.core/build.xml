@@ -194,7 +194,7 @@
     <target name="source-dist" />
 
 
-    <target name="dist" depends="build,jar,jar-sdk,bootstrap,javadoc">
+    <target name="dist" depends="build,jar,jar-sdk,bootstrap">
         <filterset id="vletfilters">
             <!-- nifty:  ant filterset (keyword subtitution) while copying files ! -->
             <filter token="VLET_VERSION" value="${vlet.version}" />
