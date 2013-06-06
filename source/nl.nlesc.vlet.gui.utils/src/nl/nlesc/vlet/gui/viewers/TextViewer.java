@@ -49,10 +49,10 @@ import javax.swing.border.BevelBorder;
 
 
 import nl.esciencecenter.ptk.task.ActionTask;
-import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.util.MimeTypes;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
 import nl.nlesc.vlet.actions.ActionContext;

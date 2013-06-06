@@ -37,11 +37,11 @@ import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_URI_FRAGMENT;
 import static nl.nlesc.vlet.vrs.data.VAttributeConstants.ATTR_URI_QUERY;
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.util.MimeTypes;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.events.ResourceEvent;
 

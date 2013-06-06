@@ -25,13 +25,13 @@ import java.io.IOException;
 import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.io.FSUtil;
-import nl.esciencecenter.ptk.util.MimeTypes;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.dummy.DummyProxyFactory;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
+import nl.esciencecenter.vbrowser.vrs.util.MimeTypes;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 

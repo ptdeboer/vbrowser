@@ -82,6 +82,12 @@
             <fileset file="${comp.dist}/lib/${comp.artefactId}.jar" />
         </copy>
 
+        <!-- libs -->
+       <mkdir dir="${project.dist.auxlib}/jmimemagic" />
+       <copy todir="${project.dist.auxlib}/jmimemagic">
+           <fileset dir="lib/jmimemagic" />
+       </copy>
+            
         <!-- etc -->
         <!-- <mkdir dir="${project.dist}/etc" />
 		<copy todir="${project.dist}/etc">

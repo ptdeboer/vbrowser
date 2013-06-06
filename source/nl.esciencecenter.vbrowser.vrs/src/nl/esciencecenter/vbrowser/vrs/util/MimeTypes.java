@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.esciencecenter.ptk.util;
+package nl.esciencecenter.vbrowser.vrs.util;
 
 
 import java.io.File;
