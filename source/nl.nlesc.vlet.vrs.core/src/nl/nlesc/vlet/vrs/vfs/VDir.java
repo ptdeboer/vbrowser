@@ -567,41 +567,6 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     }
     
     /**
-     * Create new file and return OutputStream to write to.  
-     * Call: createNewFileOutputStream()
-     */
-    public OutputStream putFile(String fileName) throws VrsException 
-    {
-        return createFileOutputStream(fileName,true); 
-    } 
-    
-    public OutputStream putFile(String fileName,boolean force) throws VrsException 
-    {
-        return createFileOutputStream(fileName,force); 
-    } 
-    
-    /**
-     * Create new File object and return outputstream to write to. 
-     * 
-     * @param  fileName relative or absolute path to new file.   
-     * @param  force overwrite existing or create new file if it doesn't exists. 
-     * @return  OutputStream to the new VFile.  
-     * @throws VrsException
-     */
-    public OutputStream createFileOutputStream(String fileName, boolean force) throws VrsException
-    {
-        try
-        {
-            VFile file=getFileSystem().newFile(resolvePath(fileName));
-            return file.createOutputStream(); 
-        }
-        catch (IOException e)
-        {
-            throw new NestedIOException(e); 
-        }
-    }
-
-    /**
      * Create new directory or subdirectory.  
      * 
      * @param name filename to create. If the path is absolute (starting with '/') 

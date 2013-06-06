@@ -28,6 +28,7 @@ import java.net.URLConnection;
 import java.net.UnknownServiceException;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.vrs.VNode;
 import nl.nlesc.vlet.vrs.VRS;
@@ -61,9 +62,9 @@ public class VRLConnection extends URLConnection
             node = VRS.getDefaultVRSContext().openLocation(this.getVRL());
             connected = true;
         }
-        catch (Exception e)
+        catch (VrsException e)
         {
-            throw convertToIO(e);
+            throw new IOException(e.getMessage(),e); 
         }
     }
 
@@ -74,14 +75,7 @@ public class VRLConnection extends URLConnection
 
         if (node instanceof VStreamReadable)
         {
-            try
-            {
-                return ((VStreamReadable) node).createInputStream();
-            }
-            catch (Exception e)
-            {
-                throw convertToIO(e);
-            }
+            return ((VStreamReadable) node).createInputStream();
         }
         else if (node instanceof VDir)
         {
@@ -103,14 +97,7 @@ public class VRLConnection extends URLConnection
 
         if (node instanceof VStreamReadable)
         {
-            try
-            {
-                return ((VStreamWritable) node).createOutputStream();
-            }
-            catch (Exception e)
-            {
-                throw convertToIO(e);
-            }
+            return ((VStreamWritable) node).createOutputStream();
         }
         else if (node instanceof VDir)
         {
@@ -123,14 +110,6 @@ public class VRLConnection extends URLConnection
         {
             throw new UnknownServiceException("VRS: location is not streamwritable:" + node);
         }
-    }
-
-    private IOException convertToIO(Exception e)
-    {
-        if (e instanceof IOException)
-            return (IOException) e;
-
-        return new IOException(e.getClass().getName() + "\n" + e.getMessage());
     }
 
     public VRL getVRL() throws VRLSyntaxException

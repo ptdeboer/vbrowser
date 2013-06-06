@@ -22,7 +22,6 @@ package nl.nlesc.vlet.vrs;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -43,7 +42,6 @@ import nl.nlesc.vlet.vrs.events.ResourceEventNotifier;
 import nl.nlesc.vlet.vrs.tasks.VRSTaskWatcher;
 import nl.nlesc.vlet.vrs.vfs.VFileSystem;
 import nl.nlesc.vlet.vrs.vfs.VRSTransferManager;
-import nl.nlesc.vlet.vrs.vrl.VRLUtil;
 import nl.nlesc.vlet.vrs.vrms.ConfigManager;
 import nl.nlesc.vlet.vrs.vrms.MyVLe;
 
@@ -508,161 +506,6 @@ public class VRSContext implements Serializable
     }
 
     /**
-     * Returns Grid Proxy Subject String. Returns NULL if proxy hasn't been
-     * created
-     */
-    public String getUserSubject()
-    {
-        GridProxy prox = getGridProxy();
-
-        if (prox != null)
-            return prox.getSubject();
-
-        return null;
-    }
-
-    /**
-     * Whether a host is allowed or blocked. If not in this list, the parameter
-     * 'allowOtherHosts' determines whether non specified hosts are allowed or
-     * blocked.
-     */
-    protected Hashtable<String, Boolean> hostAccessList = new Hashtable<String, Boolean>();
-
-    protected boolean allowOtherHosts = true;
-
-    /**
-     * Whether a scheme is allowed or blocked. If not in this list, the settings
-     * 'allowOtherSchemes' determines whether non specified scheme is allowed or
-     * not allowed.
-     */
-    protected Hashtable<String, Boolean> schemeAccessList = new Hashtable<String, Boolean>();
-
-    protected boolean allowOtherSchemes = true;
-
-    /**
-     * Add host to blocked hosts list in the case allowOtherHosts==true. If
-     * allowOtherHosts==false, the block list will be ignored and all host will
-     * be disallowed unless explictly allowed by the method allowHost().
-     * <p>
-     * Do not trust this method: use Java's own SecurityManager for secure
-     * contexts !
-     */
-    public void blockHost(String hostname)
-    {
-        if (VRLUtil.isLocalHostname(hostname))
-            hostname = VRS.LOCALHOST;
-
-        hostAccessList.put(hostname, new Boolean(false));
-        // store resolved hostname as well !
-        hostAccessList.put(VRLUtil.resolveHostname(hostname), new Boolean(false));
-    }
-
-    /**
-     * Add host to allowed hosts list in the case allowOtherHosts==false. If
-     * allowOtherHosts==true, the allow list will be ignored and all hosts will
-     * be allowed unless explictly blocked by the method blockHost().
-     * <p>
-     * Do not trust this method: use Java's own SecurityManager for secure
-     * contexts !
-     */
-    public void allowHost(String hostname)
-    {
-        if (VRLUtil.isLocalHostname(hostname))
-            hostname = VRS.LOCALHOST;
-
-        // store alias for faster lookup:
-        hostAccessList.put(hostname, new Boolean(true));
-        // store resolved hostname as well !
-        hostAccessList.put(VRLUtil.resolveHostname(hostname), new Boolean(true));
-    }
-
-    /**
-     * Determines whether hosts not in the block or allow list are allowed by
-     * default. <br>
-     * If allowOtherHosts==true : (Implicit Mode), the block list will be used
-     * to determine whether hosts are <strong>blocked</strong> or not. <br>
-     * If allowOtherHosts==false :(Explicit Mode), the allow list will be use to
-     * determine whether hosts are <strong>allowed</strong> or not.
-     * <p>
-     * Do not trust this method: use Java's own SecurityManager for secure
-     * contexts !
-     */
-    public void setAllowOtherHosts(boolean val)
-    {
-        this.allowOtherHosts = val;
-    }
-
-    /**
-     * Returns whether access to host is allowed or not. Do not trust this
-     * method: use Java's own SecurityManager for secure contexts !
-     */
-    public boolean isAllowedHost(String hostname)
-    {
-        if (VRLUtil.isLocalHostname(hostname))
-            hostname = VRS.LOCALHOST;
-
-        boolean hasEntry = this.hostAccessList.containsKey(hostname);
-        // check access list:
-        if (hasEntry)
-        {
-            Boolean val = this.hostAccessList.get(hostname);
-            return val;
-        }
-        else
-            // return default:
-            return this.allowOtherHosts;
-    }
-
-    /**
-     * Add scheme to blocked schemes list in the case allowOtherSchemes==true.
-     * If allowOtherSchemes==false, the block list will be ignored and all
-     * schemes will be disallowed unless explictly allowed by the method
-     * allowScheme().
-     * <p>
-     * Do not trust this method: use Java's own SecurityManager for secure
-     * contexts !
-     */
-    public void blockScheme(String scheme)
-    {
-        schemeAccessList.put(scheme, new Boolean(false));
-    }
-
-    /**
-     * Add scheme to allowed scheme list in the case allowOtherSchemes==false.
-     * If allowOtherSchemes==true, the allow list will be ignored and all
-     * schemes will be allowed unless explicitly blocked by the method
-     * blockScheme().
-     * <p>
-     * Do not trust this method: use Java's own SecurityManager for secure
-     * contexts !
-     */
-    public void allowScheme(String scheme)
-    {
-        // store alias for faster lookup:
-        schemeAccessList.put(scheme, new Boolean(true));
-    }
-
-    /**
-     * Returns whether scheme is allowed or not
-     * <p>
-     * Do not trust this method: use Java's own SecurityManager for secure
-     * contexts !
-     */
-    public boolean isAllowedScheme(String scheme)
-    {
-        boolean hasEntry = this.schemeAccessList.containsKey(scheme);
-        // check access list:
-        if (hasEntry)
-        {
-            Boolean val = this.schemeAccessList.get(scheme);
-            return val;
-        }
-        else
-            // return default:
-            return this.allowOtherSchemes;
-    }
-
-    /**
      * Returns path to LOCAL user home. In service contexts, this MIGHT be a
      * temporary local location to store user settings
      */
@@ -907,9 +750,6 @@ public class VRSContext implements Serializable
         return this.getGridProxy().getVOName();
     }
 
-    private Object bdiiMutex = new Object();
-
-   
 
     public String getSystemEnv(String envVar)
     {
