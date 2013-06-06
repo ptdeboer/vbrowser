@@ -1,7 +1,7 @@
 <project name="vlet-glite.lfc" default="dist" basedir=".">
     <description>
         Project   : VLET/LFCJ
-        Component : Pure LFC Java package 
+        Component : LFC API 
                 
         Configuring: 
         ===
@@ -46,9 +46,8 @@
     </target>
         
     <!-- Target: Config (configure this component) -->
-    <target name="config" >
-    </target> 
-
+    <target name="config" />
+ 
     <!--
          Target: source-dist (Only needed when creating source distributions) 
       -->
@@ -66,11 +65,9 @@
         <!-- add local paths settings --> 
     </path>
                 
-            
     <!--
-        Target = Compilation 
+        Target: Compilation 
     -->
-               
     <target name="build" depends="init" description="compile the source ">
         <!-- Compile the java code from the ${src} into ${build} -->
         
@@ -109,23 +106,7 @@
          </jar> 
     </target>
 
-    <target name="javadoc" depends="init" description="documentation">
-            <mkdir dir="${dist.package.doc}/api" />
-            <javadoc  use="true"
-                 private="false"
-                destdir="${dist.package.doc}/api"
-                author="false"
-                version="false"
-                windowtitle="VL-e Toolkit"
-                packagenames="vlet.*">
-                <!-- include all java source found in the 'src' directory of this component -->
-                <fileset dir="${src}" defaultexcludes="yes">
-                    <include name="**/*.java" />
-                </fileset>
-            </javadoc>
-        </target>
-    
-    <target name="dist" depends="build,javadoc,jar" >
+    <target name="dist" depends="build,jar" >
         
        <!-- copy extra libs --> 
        <copy todir="${dist.package.dir}/lib">

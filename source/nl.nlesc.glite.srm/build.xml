@@ -1,7 +1,7 @@
 <project name="vlet-glite.lbl.srm" default="dist" basedir=".">
     <description>
         Project   : VLET/srm
-        Component : Pure SRM Java package 
+        Component : SRM API  
                 
         Configuring: 
         ===
@@ -98,9 +98,8 @@
 
 
     <!--
-        Target = Compilation 
+        Target: Compilation 
     -->
-
     <target name="build-client" depends="init" description="Compile the SRM client source ">
         <javac srcdir="src" destdir="${build}/classes" compiler="${javac.compiler}" debug="${javac.debug}" source="${javac.source}" target="${javac.target}">
             <classpath refid="classpath" />
@@ -117,9 +116,7 @@
 
     </target>
 
-    <target name="do-stubs" depends="check-stubs,compile-stubs-srm1.1,compile-stubs-srm2.2" description="Build stubs for V1 and V2">
-
-    </target>
+    <target name="do-stubs" depends="check-stubs,compile-stubs-srm1.1,compile-stubs-srm2.2" description="Build stubs for V1 and V2" />
 
     <target name="generate-stubs-srm1.1" description="Generate v1.1 stubs" unless="stubs.srm1.1.exists">
 
@@ -143,8 +140,6 @@
         </ant>
     </target>
 
-
-
     <target name="generate-stubs-srm2.2" description="Generate v2.2 stubs" unless="stubs.srm2.2.exists">
 
         <echo>Compiling srm stubs for V 2.2. WSDL file is ${wsdl2.2}</echo>
@@ -167,10 +162,7 @@
         </ant>
     </target>
 
-    <target name="build" depends="do-stubs,build-client">
-
-    </target>
-
+    <target name="build" depends="do-stubs,build-client"/>
 
     <target name="jar" depends="build">
         <jar jarfile="${dist.package.jar}" basedir="${build}/classes">
@@ -191,8 +183,7 @@
         </jar>
     </target>
 
-    <target name="jar-all" depends="jar-1.1,jar-2.2">
-    </target>
+    <target name="jar-all" depends="jar-1.1,jar-2.2"/>
 
     <target name="jar-1.1" description="Generate V1 jars">
         <echo>Compiling srm stubs for V 2.2. WSDL file is ${wsdl2.2}</echo>
@@ -212,53 +203,18 @@
         </ant>
     </target>
 
-    <target name="javadoc" depends="init" description="documentation">
-        <mkdir dir="${dist.package.doc}/api" />
-        <javadoc use="true" private="false" destdir="${dist.package.doc}/api" author="false" version="false" windowtitle="VL-e Toolkit" packagenames="vlet.*">
-            <!-- include all java source found in the 'src' directory of this component -->
-            <fileset dir="${src}" defaultexcludes="yes">
-                <include name="**/*.java" />
-            </fileset>
-            <fileset dir="${stubsrc}" defaultexcludes="yes">
-                <include name="**/*.java" />
-            </fileset>
-        </javadoc>
-    </target>
-
-    <target name="dist" depends="build,javadoc,jar">
+    <target name="dist" depends="build,jar">
 
         <!-- copy extra libs -->
         <copy todir="${dist.package.dir}/lib">
             <fileset dir="lib/" />
         </copy>
-
-        <!-- copy extra files to the root distribution directory -->
-        <!-- <copy todir="${dist.package.dir}" file="ReleaseNotes.txt"/> -->
-
-        <!-- extra run script -->
-        <!--
-       <copy todir="${dist.package.dir}">
-           <fileset dir="bin/" />
-       </copy>
-        -->
-
-        <!-- update permission of lfc* scrips -->
-        <!--
-       <chmod perm="ugo+rx" >
-           <fileset dir="${dist.package.dir}">
-               <filename name="lfc*"/> 
-           </fileset>
-       </chmod>
-       -->
+        
     </target>
 
     <!--
     *    Target: dist-install
-    *    Info:
-    *          Only used when component is part of the main project. 
-    *        
     -->
-
     <target name="dist-install" depends="dist" description="install srm into VLET distribution">
         <fail message="*** Error: property VLET 'project.root' not defined or could not find project environment.${line.separator}. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
 
@@ -285,7 +241,6 @@
 	    *   Standalone Targets: 
 	    *         Build source zip or distribution zip for release. 
 	    -->
-
     <target name="source-zip" depends="source-dist" description="Create source zipfile">
         <mkdir dir="${dist}" />
         <!-- create zip file from dist/* to vlet-<Version>  -->

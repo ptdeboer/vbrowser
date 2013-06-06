@@ -41,9 +41,9 @@
             <include name="**/*.jar" />
         </fileset>
 
-        <fileset dir="${comp.root}/lib">
+        <!-- <fileset dir="${comp.root}/lib">
             <include name="**/*.jar" />
-        </fileset>
+        </fileset> -->
 
     </path>
 
@@ -53,9 +53,9 @@
             <include name="**/*.jar" />
         </fileset>
 
-        <fileset dir="${comp.root}/lib">
+        <!-- <fileset dir="${comp.root}/lib">
             <include name="**/*.jar" />
-        </fileset>
+        </fileset> -->
 
         <fileset dir="${comp.root}/testlib">
             <include name="**/*.jar" />
@@ -70,7 +70,12 @@
     <target name="build" depends="init-build" description="compile the source ">
         <!-- Compile the java code from into ${build} -->
 
-        <javac srcdir="${comp.src}" destdir="${comp.build.classdir}" compiler="${javac.compiler}" debug="${javac.debug}" source="${javac.source}" target="${javac.target}">
+        <javac srcdir="${comp.src}" 
+            destdir="${comp.build.classdir}" 
+            compiler="${javac.compiler}" 
+            debug="${javac.debug}" 
+            source="${javac.source}" 
+            target="${javac.target}">
             <classpath refid="comp.classpath" />
         </javac>
 
@@ -155,7 +160,6 @@
 
     <target name="test" depends="build-tests">
 
-
         <mkdir dir="${comp.dist}/reports" />
         <mkdir dir="${comp.dist}/reports/jacoco" />
 
@@ -200,15 +204,11 @@
     <mkdir dir="${project.dist.doc}" />
 
     <!-- toplevel directory structure -->
-    <mkdir dir="${project.dist.lib}" />
-    <mkdir dir="${project.dist.bin}" />
-    <mkdir dir="${project.dist.lib}" />
+	<mkdir dir="${project.dist.lib}" />
 
-    <copy todir="${project.dist.lib}">
+	<copy todir="${project.dist.lib}">
         <fileset dir="${comp.dist}/lib" />
-    </copy>
-
-   
+    </copy> 
 
 </target>
 
