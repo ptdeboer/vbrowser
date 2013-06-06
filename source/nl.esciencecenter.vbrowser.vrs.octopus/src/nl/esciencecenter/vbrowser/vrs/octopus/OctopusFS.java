@@ -232,6 +232,11 @@ public class OctopusFS extends FileSystemNode
             if ((optFileattrs!=null) && optFileattrs.isDirectory())
             {
                 return new OctopusDir(this,optFileattrs,path);
+            }   
+            else if ((optFileattrs!=null) && optFileattrs.isSymbolicLink())
+            {
+                // resolve links here: 
+                return new OctopusFile(this,optFileattrs,path);
             }
             else
             {
@@ -292,6 +297,7 @@ public class OctopusFS extends FileSystemNode
             for (int i=0;i<paths.size();i++)
             {
                 PathAttributesPair pathAttrs=paths.get(i); 
+                
                 nodes[i]=newVFSNode(pathAttrs.path(),pathAttrs.attributes()); 
             }
             

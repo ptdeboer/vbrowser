@@ -104,7 +104,37 @@ public class OctopusClient
             throw new VrsException(e.getMessage(),e); 
         }
     }
+    public static class NillPathAttributesPair implements  PathAttributesPair
+    {
+        AbsolutePath path; 
+        FileAttributes fileAttrs; 
+        Exception exception; 
+        
+        NillPathAttributesPair(AbsolutePath octoPath, FileAttributes attrs)
+        {
+            this.path=octoPath; 
+            this.fileAttrs=attrs;  
+        }
 
+        NillPathAttributesPair(AbsolutePath octoPath, FileAttributes attrs, Exception e)
+        {
+            this.path=octoPath; 
+            this.fileAttrs=attrs;  
+            this.exception=e; 
+        }
+
+        @Override
+        public AbsolutePath path()
+        {
+            return path;
+        }
+
+        @Override
+        public FileAttributes attributes()
+        {
+            return fileAttrs;
+        }
+    }
     // === instance == 
     
     private Octopus engine;
@@ -185,18 +215,34 @@ public class OctopusClient
     /**
      *  Stat Directory including attributes
       */ 
-    public List<PathAttributesPair> statDir(AbsolutePath octoAbsolutePath) throws OctopusIOException
+    public List<PathAttributesPair> statDir(AbsolutePath octoPath) throws OctopusIOException
     {
-        DirectoryStream<PathAttributesPair> dirIterator = engine.files().newAttributesDirectoryStream(octoAbsolutePath); 
+        DirectoryStream<PathAttributesPair> dirIterator = engine.files().newAttributesDirectoryStream(octoPath); 
 
         Iterator<PathAttributesPair> iterator = dirIterator.iterator(); 
         
         List<PathAttributesPair> paths=new ArrayList<PathAttributesPair>(); 
         
+        Exception lastException=null;  
+        int count=0; 
+        
         while(iterator.hasNext())
         {
-            PathAttributesPair el = iterator.next();
-            paths.add(el);
+            PathAttributesPair el=null; 
+            
+            try
+            {
+                el= iterator.next();
+                paths.add(el);
+            }
+            catch (Exception e)
+            {
+                // happens when file is a borken link. but can check that here. 
+                lastException=e;
+                paths.add(new NillPathAttributesPair(octoPath.resolve(new RelativePath("?#"+count)),null,e));
+                logger.logException(ClassLogger.ERROR, this, e, "Couldn't get next when listing directory:"+octoPath);
+            }
+            count++;
         }
         
         if (paths.size()==0)
