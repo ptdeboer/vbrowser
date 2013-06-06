@@ -21,7 +21,7 @@
         <mkdir dir="${comp.build.classes}" />
         <mkdir dir="${comp.dist}" />
         <mkdir dir="${comp.dist}/lib"/>
-            
+
     </target>
 
     <target name="config">
@@ -31,11 +31,16 @@
     </target>
 
     <path id="comp.classpath">
+        
         <!-- include project libraries-->
         <fileset dir="${project.dist.lib}">
             <include name="**/*.jar" />
         </fileset>
-        <!-- add local paths settings -->
+        
+        <fileset dir="${comp.lib}">
+	         <include name="**/*.jar" />
+         </fileset>
+
     </path>
 
     <!--
@@ -47,12 +52,9 @@
             <classpath refid="comp.classpath" />
         </javac>
     </target>
-	
-    <target name="test" depends="build">
-    </target> 
-        
 
-    
+    <target name="test" depends="build"/>
+ 
     <target name="jar" depends="build">
 
         <!-- Create application JAR file -->
@@ -83,11 +85,11 @@
         </copy>
 
         <!-- libs -->
-       <mkdir dir="${project.dist.auxlib}/jmimemagic" />
-       <copy todir="${project.dist.auxlib}/jmimemagic">
-           <fileset dir="lib/jmimemagic" />
-       </copy>
-            
+        <mkdir dir="${project.dist.auxlib}/jmimemagic" />
+        <copy todir="${project.dist.auxlib}/jmimemagic">
+            <fileset dir="lib/jmimemagic" />
+        </copy>
+
         <!-- etc -->
         <!-- <mkdir dir="${project.dist}/etc" />
 		<copy todir="${project.dist}/etc">
