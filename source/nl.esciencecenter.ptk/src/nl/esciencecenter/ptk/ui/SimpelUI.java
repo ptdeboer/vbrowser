@@ -59,7 +59,7 @@ public class SimpelUI implements UI
 	    return enabled; 
 	}
 	
-	public void showMessage(String message)
+	public void showMessage(String title, String message, boolean modal)
 	{
 		if (enabled==false)
 		{

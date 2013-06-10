@@ -31,7 +31,7 @@ public interface UI
     public boolean isEnabled();
     
     /** Display message dialog or print to console */ 
-    void showMessage(String message);
+    void showMessage(String title,String message,boolean modal);
     
     /**
      * Simple Yes/No prompter 
