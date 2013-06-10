@@ -223,7 +223,7 @@ public class ViewerX509 extends ViewerPlugin implements CertPanelListener
 
     private X509Certificate instCert(VRL loc) throws Exception
     {
-        String txt = UIGlobal.getResourceLoader().readText(loc.toURL(), textEncoding);
+        String txt = UIGlobal.getResourceLoader().readText(loc.toURI(), textEncoding);
 
         // Use hardcoded String to find start of certificate. 
         // Current Pem reader is just as simplistic.  
