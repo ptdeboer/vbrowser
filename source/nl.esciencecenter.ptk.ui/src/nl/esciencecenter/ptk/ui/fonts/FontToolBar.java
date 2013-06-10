@@ -24,6 +24,7 @@ import java.awt.FlowLayout;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.net.URL;
 
 import javax.swing.Icon;
@@ -151,7 +152,7 @@ public class FontToolBar extends JToolBar implements ActionListener
             antiAliasingButton = new JToggleButton();
             add(antiAliasingButton);
             // antiAliasingButton.setSelected();
-            antiAliasingButton.setIcon(getIcon("menu/antialiasing.png"));
+            antiAliasingButton.setIcon(getIconOrDefault("menu/antialiasing.png"));
             antiAliasingButton.setActionCommand("antiAliasing");
             antiAliasingButton.setToolTipText("Toggle anti-aliasing");
             antiAliasingButton.addActionListener(this);
@@ -162,7 +163,7 @@ public class FontToolBar extends JToolBar implements ActionListener
             boldButton = new JToggleButton();
             add(boldButton);
             // boldButton.setText("B");
-            boldButton.setIcon(getIcon("menu/bold.png"));
+            boldButton.setIcon(getIconOrDefault("menu/bold.png"));
             boldButton.setActionCommand("bold");
             boldButton.setToolTipText("Toggle Bold text");
             boldButton.addActionListener(this);
@@ -171,16 +172,33 @@ public class FontToolBar extends JToolBar implements ActionListener
             italicButton = new JToggleButton();
             add(italicButton);
             // boldButton.setText("B");
-            italicButton.setIcon(getIcon("menu/italic.png"));
+            italicButton.setIcon(getIconOrDefault("menu/italic.png"));
             italicButton.setActionCommand("italic");
             italicButton.setToolTipText("Toggle Italic text");
             italicButton.addActionListener(this);
         }
     }
 
-    private Icon getIcon(String iconstr)
+    private Icon getIconOrDefault(String iconstr) 
+    {
+        try
+        {
+            return getIcon(iconstr);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.fillInStackTrace();
+            // todo: B0rken image here. 
+            return null; 
+        }
+         
+    }
+    
+    private Icon getIcon(String iconstr) throws FileNotFoundException
     {
         URL iconUrl = this.getClass().getClassLoader().getResource(iconstr);
+        if (iconUrl==null)
+            throw new FileNotFoundException("Coulnd't resolve iconUrl:"+iconstr);
         return new ImageIcon(iconUrl);
     }
 
