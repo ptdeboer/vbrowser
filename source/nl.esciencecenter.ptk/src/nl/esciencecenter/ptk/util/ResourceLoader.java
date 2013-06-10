@@ -203,33 +203,63 @@ public class ResourceLoader
         }
     }
 
+    public String readText(URL location) throws IOException
+    {
+        return readText(location,this.charEncoding); 
+    }
+    
+    public String readText(URI location) throws IOException
+    {
+        return readText(location,this.charEncoding); 
+    }
+
     /**
      * Returns resource as String.
      */
     public String readText(URL location, String charset) throws IOException
     {
         InputStream inps = createInputStream(location);
-        return readText(inps, charset);
+        
+        try
+        {
+            String text=readText(inps,charset); 
+            return text;
+        }
+        finally
+        {
+            try 
+            {
+                inps.close(); 
+            }
+            catch (IOException e2) 
+            { 
+                ; 
+            }
+        }
     }
-
-    /** 
-     * Returns resource as String. 
-     */
-    public String readText(URL loc) throws IOException
+    
+    public String readText(URI uri, String charset) throws IOException
     {
-        InputStream inps = createInputStream(loc);
-        return readText(inps, null);
+        InputStream inps=createInputStream(uri);
+        
+        try
+        {
+            String text=readText(inps,charset); 
+            return text;
+        }
+        finally
+        {
+            try 
+            {
+                inps.close(); 
+            }
+            catch (IOException e2) 
+            { 
+                ; 
+            }
+        }
     }
-
-    /** 
-     * Returns resource as String. 
-     */
-    public String readText(URI uri) throws IOException
-    {
-        InputStream inps = createInputStream(uri.toURL());
-        return readText(inps, null);
-    }
-
+    
     public byte[] readBytes(URL loc) throws IOException
     {
         InputStream inps = createInputStream(loc);
@@ -326,7 +356,7 @@ public class ResourceLoader
     public Properties loadProperties(URL url) throws IOException
     {
         Properties props = new Properties();
-
+     
         try
         {
             InputStream inps = this.createInputStream(url);
@@ -378,37 +408,15 @@ public class ResourceLoader
     {
         charEncoding = encoding;
     }
-    
-    public String readText(String url) throws IOException
-    {
-        InputStream inps=createInputStream(url);
-        
-        try
-        {
-            String text=readText(inps,this.charEncoding); 
-            return text;
-        }
-        finally
-        {
-            try 
-            {
-                inps.close(); 
-            }
-            catch (IOException e2) 
-            { 
-                ; 
-            }
-        }
-    }
-
+   
     /**
      * Resolve URL string to absolute URL
      * 
      * @see ResourceLoader#resolveUrl(ClassLoader, String)
      */
-    public URL resolveUrl(String url)
+    public URL resolveUrl(String urlString)
     {
-        return resolveUrl(null, null);
+        return resolveUrl(null, urlString);
     }
 
     /**
@@ -516,14 +524,20 @@ public class ResourceLoader
     public void saveProperties(URI loc, Properties props, String comments) throws IOException
     {
         OutputStream outps = createOutputStream(loc);
-        props.store(outps, comments);
         try
         {
-            outps.close();
+            props.store(outps, comments);
         }
-        catch (Exception e)
+        finally
         {
-            ;
+            try
+            {
+                outps.close();
+            }
+            catch (Exception e)
+            {
+                ;
+            }
         }
     }
 
@@ -585,5 +599,6 @@ public class ResourceLoader
             logger.logException(ClassLogger.DEBUG, e, "Exception while closing outputstream:%s\n", e);
         }
     }
+
    
 }
