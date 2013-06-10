@@ -248,7 +248,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
             }
             else
             {
-                getVRSContext().getUI().showMessage(message);
+                getVRSContext().getUI().showMessage("Sftp",message,false);
             }
         }
 

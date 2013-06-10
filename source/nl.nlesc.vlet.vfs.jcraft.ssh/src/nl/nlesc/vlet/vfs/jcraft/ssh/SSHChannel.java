@@ -116,7 +116,7 @@ public class SSHChannel implements VShellChannel
 
         public void showMessage(String message)
         {
-           vrsContext.getUI().showMessage(message); 
+           vrsContext.getUI().showMessage("SSHChannel message",message,false); 
         }
         
         public boolean promptYesNo(String message)
