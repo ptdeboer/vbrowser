@@ -29,10 +29,12 @@ public class TestOctopusVBrowser
 	
 	public static void main(String args[]) throws Exception
     {
-	    testGetDir(); 
 	    
 	    // The VBrowser classes must be in the classpath to be able to start this. 
         nl.nlesc.vlet.gui.startVBrowser.main(args);
+        
+        testGetDir(); 
+
     }
 
     private static void testGetDir() throws Exception
