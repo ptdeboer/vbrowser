@@ -258,8 +258,9 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * Note that the implementation of hidden files on filesystems
      * might differ!
      * Default implemententation is to return true for 'dot' files. 
+     * @throws VrsException 
      */
-    public boolean isHidden()
+    public boolean isHidden() throws VrsException
     {
         if (getBasename().startsWith("."))
             return true;
