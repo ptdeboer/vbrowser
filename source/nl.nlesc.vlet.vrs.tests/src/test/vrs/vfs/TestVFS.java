@@ -700,6 +700,11 @@ public class TestVFS extends VTestCase
         //VFSNode[] nodes = newDir.list(); 
         
         Assert.assertEquals("Directory must have 3 sub files", 3,nodes.length);
+
+        file1.delete(); 
+        file2.delete(); 
+        file3.delete(); 
+        newDir.delete(); 
     }
     
     @Test
@@ -717,6 +722,11 @@ public class TestVFS extends VTestCase
         VFSNode[] nodes = newDir.list(); 
         
         Assert.assertEquals("Directory must have 3 subdirectories", 3,nodes.length);
+        
+        subDir1.delete(); 
+        subDir2.delete(); 
+        subDir3.delete(); 
+        newDir.delete(); 
         
     }
     
@@ -761,7 +771,7 @@ public class TestVFS extends VTestCase
      */
     @Test  public void testCreateAndDeleteFullDir() throws Exception
     {
-        VRL fullPath = getRemoteTestDir().resolvePath(nextFilename("testDirC"));
+        VRL fullPath = getRemoteTestDir().resolvePath(nextFilename("testDirD"));
 
         // get parent dir to check whether directory allow (sub) directories in
         // the create method.
@@ -775,7 +785,7 @@ public class TestVFS extends VTestCase
         newDir.delete();
 
         // check ./path !
-        fullPath = getRemoteTestDir().resolvePath("./" + nextFilename("testDirD"));
+        fullPath = getRemoteTestDir().resolvePath("./" + nextFilename("testDirE"));
         newDir = parentDir.createDir(fullPath.getPath());
         Assert.assertEquals("Directory should use complete pathname as new directory name.", fullPath.getPath(), newDir
                 .getPath());
@@ -785,7 +795,7 @@ public class TestVFS extends VTestCase
         // New Since 0.9.2:
         // create full directory paths in between ! (as default)
         //
-        String pathStr = getRemoteTestDir().getPath() + URIFactory.SEP_CHAR + "testDir3d";
+        String pathStr = getRemoteTestDir().getPath() + URIFactory.SEP_CHAR + "testDirF";
         newDir = getRemoteTestDir().createDir(pathStr);
         Assert.assertEquals("Directory should use complete pathname as new directory name", pathStr, newDir.getPath());
         // delete parent of parent !
@@ -801,7 +811,7 @@ public class TestVFS extends VTestCase
      */
     @Test public void testFSCreateAndDeleteDir() throws Exception
     {
-        VRL fullPath = getRemoteTestDir().resolvePath(nextFilename("testFSDirE"));
+        VRL fullPath = getRemoteTestDir().resolvePath(nextFilename("testFSDirG"));
         VFileSystem fs = getRemoteTestDir().getFileSystem();
 
         VDir newDir = createDir(fs,fullPath, true);
@@ -893,7 +903,7 @@ public class TestVFS extends VTestCase
 
         String newFileName = "newFileName6";
 
-        VFile newFile = getRemoteTestDir().createFile(nextFilename("testFileH"));
+        VFile newFile = getRemoteTestDir().createFile(nextFilename("testFileH2"));
 
         {
             boolean result = newFile.renameTo(newFileName, false);
