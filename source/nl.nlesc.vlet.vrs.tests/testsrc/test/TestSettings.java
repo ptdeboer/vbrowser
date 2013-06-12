@@ -127,7 +127,7 @@ public class TestSettings
                 new VRL("gftp", "elab.lab.uvalight.net", "/tmp/" + testUserName + "/testGFTP3"));
         
         testLocations.put(VFS_SFTP_SARA_LOCATION,
-                new VRL("sftp", "ui.grid.sara.nl", "/tmp/" + testUserName+ "/testSFTP1"));
+                new VRL("sftp"," ptdeboer", "ui.grid.sara.nl", 22,"/tmp/" + testUserName+ "/testSFTP1"));
 
         testLocations.put(VFS_SFTP_LOCALHOST_TESTUSER,
                 new VRL("sftp", "testuser", "localhost", 22, "/tmp/testuser/testSFTP2"));

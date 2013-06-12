@@ -41,7 +41,7 @@ import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
 import com.jcraft.jsch.SftpATTRS;
 
 public class SftpFile extends VFile implements VUnixFileAttributes,
-	VRandomReadable,VZeroSizable,VStreamAppendable
+	VRandomReadable,VZeroSizable// VStreamAppendable
 {
     /** Currently SFTP can NOT handle stream read/write > 3200 per read/write  */ 
     

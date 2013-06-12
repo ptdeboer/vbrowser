@@ -377,22 +377,46 @@ public class OctopusClient
         return engine.files().newInputStream(octoAbsolutePath);
     }
 
-    // if append = true, to existin file
-    // if append = false create new, truncating existing (if it already exist) 
-    //
-    public OutputStream createOutputStream(AbsolutePath path, boolean append) throws IOException
+    // Open existing file and rewrite contents. If appen==true the OutputStream
+    // will start at the end of the file. 
+    public OutputStream createRewritingOutputStream(AbsolutePath path, boolean append) throws IOException
     {
         OpenOption opts[]=new OpenOption[1];
-        
+
         if (append)
-            opts[0]=OpenOption.APPEND;
-        else
+        {   
             opts[0]=OpenOption.CREATE;
+        }
+        else
+        {
+            opts[0]=OpenOption.APPEND;
+        }
+        
+        return engine.files().newOutputStream(path, opts); 
+        
+    }
+
+    // Create new OutputStream, optionally create new file if it doesn exists,
+    // old file will be deleted. 
+    public OutputStream createNewOutputStream(AbsolutePath path, boolean ignoreExisting) throws IOException
+    {
+        OpenOption opts[]=new OpenOption[2];
+        
+        if (ignoreExisting)
+        {
+            opts[0]=OpenOption.CREATE;
+        }
+        else
+        {
+            opts[0]=OpenOption.CREATE_NEW;
+        }
+        
+        opts[1]=OpenOption.TRUNCATE_EXISTING;
         
         return engine.files().newOutputStream(path, opts);
         
     }
-
+    
     public void rmdir(AbsolutePath octoAbsolutePath) throws OctopusIOException
     {
         //DeleteOption options;

@@ -61,7 +61,7 @@ import nl.nlesc.vlet.vrs.vfs.VUnixFileAttributes;
 /**
  * Local LFile System implementation of the VFile class
  */
-public class LFile extends VFile implements VStreamAccessable, VStreamAppendable, 
+public class LFile extends VFile implements VStreamAccessable, 
         VRandomAccessable, VUnixFileAttributes, VResizable, VChecksum
 {
     private static ClassLogger logger;
@@ -348,14 +348,9 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
 
     public OutputStream createOutputStream() throws IOException 
     {
-        return createOutputStream(false);
-    }
-
-    public OutputStream createOutputStream(boolean append) throws IOException 
-    {
         try
         {
-            return new FileOutputStream(this._file, append);
+            return new FileOutputStream(this._file, false);
         }
         catch (FileNotFoundException e)
         {
@@ -373,9 +368,27 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
     {
         RandomAccessFile afile = null;
 
-        afile = new RandomAccessFile(this._file, "rw");
-        afile.setLength(newLength);
-        this.statInf=null; 
+        try
+        {
+            afile = new RandomAccessFile(this._file, "rw");
+            afile.setLength(newLength);
+            this.statInf=null; 
+        }
+        finally
+        {
+            if (afile!=null)
+            {
+                try
+                {
+                    // Must close between Reads! (not fast but ensures consistency between reads). 
+                    afile.close();
+                }
+                catch (IOException e)
+                {
+                }
+            }
+        }
+        
         return;
     }
 
@@ -390,15 +403,26 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
             afile = new RandomAccessFile(this._file, "r");
             afile.seek(fileOffset);
             int nrRead = afile.read(buffer, bufferOffset, nrBytes);
-
-            // MUST CLOSE !!!
-            afile.close();
-
+         
             return nrRead;
         }
         catch (IOException e)
         {
             throw new IOException("Could open location for reading:" + this,e);
+        }
+        finally
+        {
+            if (afile!=null)
+            {
+                try
+                {
+                    // Must close between Reads! (not fast but ensures consistency between reads). 
+                    afile.close();
+                }
+                catch (IOException e)
+                {
+                }
+            }
         }
 
     }
@@ -422,6 +446,20 @@ public class LFile extends VFile implements VStreamAccessable, VStreamAppendable
         catch (IOException e)
         {
             throw e;
+        }
+        finally
+        {
+            if (afile!=null)
+            {
+                try
+                {
+                    // Must close between Reads! (not fast but ensures consistency between reads). 
+                    afile.close();
+                }
+                catch (IOException e)
+                {
+                }
+            }
         }
     }
 

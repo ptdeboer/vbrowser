@@ -32,15 +32,16 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 public interface VStreamAppendable extends VStreamWritable
 {
     /** 
-     * Create OutputStream to this file/object to write to. <p>
+     * Create OutputStream to rewrite or continue writing to this file or resource.<p>
      * The append parameter specifies whether to begin writing at the 
      * beginning or the end of the file. 
+     * The previous content is kept if the number of bytes written is less then the original file length. 
      *  
      * @see java.io.OutputStream
      * @return java.io.OutputStream object
      * @throws VrsException
      */
-    public OutputStream createOutputStream(boolean append) throws IOException; 
+    public OutputStream createAppendingOutputStream(boolean append) throws IOException; 
 
     
 }

@@ -175,7 +175,7 @@ public class OctopusFile extends VFile
 
 	public OutputStream createOutputStream() throws IOException 
 	{
-	    return this.getOctoClient().createOutputStream(octoPath,false); 
+	    return this.getOctoClient().createNewOutputStream(octoPath,true); 
 	}
 
 	public VRL rename(String newName, boolean renameFullPath)

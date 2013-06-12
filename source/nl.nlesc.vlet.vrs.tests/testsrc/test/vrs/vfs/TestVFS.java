@@ -769,6 +769,9 @@ public class TestVFS extends VTestCase
         VDir newDir = parentDir.createDir(fullPath.getPath());
         Assert.assertEquals("Directory should use complete pathname as new directory name.", fullPath.getPath(), newDir
                 .getPath());
+        
+        this.messagePrintf("Full path=%s\n",newDir.getPath()); 
+        
         newDir.delete();
 
         // check ./path !
