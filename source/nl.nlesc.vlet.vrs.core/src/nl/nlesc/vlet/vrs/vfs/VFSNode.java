@@ -149,13 +149,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     // ========================================================================
     
     VFileSystem vfsSystem=null;
-    
-//    /** @deprecated Will switch to VFSNode(VFileSystem,...) ! */
-//    public VFSNode(VRSContext context, VRL vrl)
-//    {
-//        super(context, vrl);
-//    }
-//    
+
     public VFSNode(VFileSystem vfs, VRL vrl)
     {
         super(vfs.getVRSContext(), vrl);
@@ -493,13 +487,13 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         }
         
         String str = (isDir() ? "d" : "-")
-        + (isReadable() ? "r" : "-")
-        + (isWritable() ? "w" : "-")
-        // append extra Non-Unix attributes/permissions
-        + " [" 
-                + (isHidden() ? "H" : "") 
-                + (isSymbolicLink() ? "L" : "")
-          + "]";// + "?";
+                + (isReadable() ? "r" : "-")
+                + (isWritable() ? "w" : "-")
+                // append extra Non-Unix attributes/permissions
+                + " [" 
+                     + (isHidden() ? "H" : "") 
+                     + (isSymbolicLink() ? "L" : "")
+                 + "]";// + "?";
 
         return str;
     }
