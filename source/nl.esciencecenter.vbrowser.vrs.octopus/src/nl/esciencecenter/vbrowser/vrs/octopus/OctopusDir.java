@@ -20,6 +20,7 @@
 
 package nl.esciencecenter.vbrowser.vrs.octopus;
 
+import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
 import nl.esciencecenter.octopus.exceptions.OctopusIOException;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.AbsolutePath;
@@ -225,4 +226,31 @@ public class OctopusDir extends VDir
     {
         return this.getFileSystem().octoClient; 
     }
+    
+    public boolean isSymbolicLink() throws VrsException
+    {
+        try
+        { 
+            return this.getAttrs(false).isSymbolicLink();
+        }
+        catch (AttributeNotSupportedException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
+    }
+    
+    public boolean isHidden() throws VrsException
+    {
+        try
+        {
+            return this.getAttrs(false).isHidden(); 
+        }
+        catch (AttributeNotSupportedException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
+
+    }
+   
+    
 }

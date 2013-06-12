@@ -379,7 +379,7 @@ public class OctopusClient
 
     // Open existing file and rewrite contents. If appen==true the OutputStream
     // will start at the end of the file. 
-    public OutputStream createRewritingOutputStream(AbsolutePath path, boolean append) throws IOException
+    public OutputStream createAppendingOutputStream(AbsolutePath path, boolean append) throws IOException
     {
         OpenOption opts[]=new OpenOption[1];
 
