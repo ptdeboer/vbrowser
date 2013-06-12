@@ -87,7 +87,7 @@ public class OctopusFS extends FileSystemNode
             if (StringUtil.isEmpty(configeredUser))
                 configeredUser=context.getConfigManager().getUserName(); 
             
-            fsUriStr=location.getScheme()+"://"+configeredUser+"@"+location.getHostname();
+            fsUriStr=location.getScheme()+"://"+configeredUser+"@"+location.getHostname()+"/";
 		}
 		else
 		{
