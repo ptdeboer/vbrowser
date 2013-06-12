@@ -1665,14 +1665,14 @@ public class TestVFS extends VTestCase
 
     /**
      * Regression test for some stream write implementations: When writing to an
-     * existing file, the existing file must be not truncated when closing the
-     * stream.
-     * This way append can be done and a copy can be resumed. 
-     * 
+     * existing file, the existing file must be truncated and the content of the file must be disregarded. 
+     * File rewriting and appending must be done by using the VStreamAppendable interface or the RandomAccess
+     * interface. 
+     *  
      * @throws Exception
      */
     @Test 
-    public void testStreamWriteDoesNotTruncate() throws Exception
+    public void testStreamWriteMustTruncateFile() throws Exception
     {
         VFile remoteFile = null;
         remoteFile = getRemoteTestDir().createFile("testStreamWriteDoesNotTruncate");
@@ -1709,8 +1709,8 @@ public class TestVFS extends VTestCase
             remoteFile.sync(); 
         }
         
-        debugPrintf("testStreamWriteDoesNotTruncate(), after write new length=%d\n",remoteFile.getLength());
-        Assert.assertEquals("File length should be the same after stream write", originalLength, remoteFile.getLength());
+        debugPrintf("testStreamWriteMustTruncateFile(), after write new length=%d\n",remoteFile.getLength());
+        Assert.assertEquals("File length must match new (smaller) size.", newLength,remoteFile.getLength());
         remoteFile.delete();
     }
 
