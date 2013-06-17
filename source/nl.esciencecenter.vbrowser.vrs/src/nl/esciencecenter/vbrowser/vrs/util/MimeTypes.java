@@ -20,7 +20,6 @@
 
 package nl.esciencecenter.vbrowser.vrs.util;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +35,7 @@ import net.sf.jmimemagic.MagicParseException;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
- * Simple MimteType util class. 
+ * MimeType util class. 
  * 
  * @author P.T. de Boer
  */
@@ -47,7 +46,9 @@ public class MimeTypes
 	public static final String MIME_OCTET_STREAM  =	"application/octet-stream";
 	public static final String MIME_BINARY        =	MIME_OCTET_STREAM; 
 
-	/** Class Instance */ 
+	/** 
+	 * Singleton instance. 
+	 */ 
 	private static MimeTypes instance;
 	
 	private static ClassLogger logger; 
@@ -69,44 +70,27 @@ public class MimeTypes
 	// Instance 
 	// ========================================================================
 
-	/** the mime types file type map */ 
+	/**
+	 *  Mime type file type map 
+	 */ 
 	private MimetypesFileTypeMap typemap=null;
 	
-    //private URL customMimetypesUrl;
-
     public MimeTypes()
     {
-//        try
-//        {
-//           //this.customMimetypesUrl= new URL("file",null,0,Global.getGlobalUserHome()+"/.mimetypes/mime.types");
-//        }
-//        catch (MalformedURLException e)
-//        {
-//            logger.logException(ClassLogger.INFO,e,"Could not create user mimetype URL\n");
-//        }
-
         init();
     }
-    
-//    public MimeTypes(URL customMimeTypes)
-//    {
-//        this.customMimetypesUrl=customMimeTypes; 
-//        init();
-//    }
     
 	private void init()
 	{
 		try
 		{  
-			// use mime.types from class path:  
-
+			// Load default mime.type file from classpath.   
 			String confFile="etc/mime.types";
 			URL result = getClass().getClassLoader().getResource(confFile);
 
 			if (result==null)
 			{
-				// Service/Applet configuration: 
-				// get ANY mime.types file on the classpath 
+			    // no mime.type file in etc/ check optional other location.   
 				confFile="mime.types";
 				result = getClass().getClassLoader().getResource(confFile);
 			}
@@ -128,37 +112,12 @@ public class MimeTypes
 			// empty one ! 
 			this.typemap=new MimetypesFileTypeMap(); 
 		}
-		
-		// load custom mime types:
-		
-//		URL usermimes=getUserMimeTypeURL(); 
-//		if (usermimes!=null)
-//        {
-//    		try
-//    		{
-//    		    addMimeTypes(usermimes);
-//    		}
-//    		catch (IOException e)
-//    		{
-//    		    logger.infoPrintf("Ignoring missing: user mimetypes:%s\n",usermimes);
-//    		}
-//        }
 	}
 	
-//	public void addMimeTypes(URL url) throws IOException 
-//	{
-//	    try
-//	    {
-//	        String txt=ResourceLoader.getDefault().getText(url);
-//	        addMimeTypes(txt); 
-//        }
-//	    catch (IOException e) 
-//	    {
-//	        throw new IOException("Failed to add mime type from url"+url+"\n"+e.getMessage(),e);   
-//		}
-//	}
 
-    /** Add mime type definitions */ 
+    /** 
+     * Add extra mime type definitions. 
+     */ 
     public void addMimeTypes(String mimeTypes)
     {
         String lines[]=mimeTypes.split("\n");
@@ -170,15 +129,11 @@ public class MimeTypes
             }
     }
     
-//	public URL getUserMimeTypeURL()
-//    {
-//	    return this.customMimetypesUrl;  
-//	}
-
-    /** Returns mimetype string by checking the extension or name of the file */ 
+    /**
+     * Returns mimetype string by checking the extension or name of the file 
+     */ 
 	public String getMimeType(String path)
 	{
-		// garbage in, garbage out 
 		if (path==null) 
 			return null;
 		
@@ -186,26 +141,15 @@ public class MimeTypes
 	}
 
 	/**
-	 * Returns the MimeType by checking against known the 'Magic' 
-	 * attribute of a file. Note that this method provides 
-	 * a better way to determinte the actual file type, 
-	 * but needs to read (some) bytes from the file. 
+	 * Returns the 'magic' MimeType by checking the first bytes of a file against known 'magic' 
+	 * values.  
 	 * 
 	 * @param firstBytes The first bytes of a file
-	 * @return
-	 * @throws VlException 
+	 * @return Mime Type. 
+	 * @throws Exception  
 	 */
-
 	public String getMagicMimeType(byte firstBytes[]) throws Exception
 	{
-
-		//Magic parser = new Magic() ;
-
-		//      getMagicMatch accepts Files or byte[], 
-		//      which is nice if you want to tests streams
-
-		// MagicMatch match = parser.getMagicMatch(new File("gumby.gif"));
-
 		MagicMatch match;
 
 		try
@@ -227,12 +171,15 @@ public class MimeTypes
 		}
 	}
 
+	/**
+	 * Check magic type of file. 
+	 * Read first byte of the file and checks against known magic values.
+	 * 
+	 * @param file the file to check. File must exists.  
+	 * @return
+	 */
 	public String getMagicMimeType(File file)
 	{
-		// getMagicMatch accepts Files or byte[], 
-		// which is nice if you want to tests streams
-		// MagicMatch match = parser.getMagicMatch(new File("gumby.gif"));
-
 		MagicMatch match;
 		 
 		try
@@ -246,6 +193,5 @@ public class MimeTypes
 		}
 		
 		return null;
-		
 	}
 }
