@@ -35,26 +35,26 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.ValueParseException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
- * This class provides a high level interface to resource Attributes.
- * <p>
- * It is a <code> {type, name, value}</code> Triple. 
- * <br>
- * The Attribute itself does not do any type checking, so casting is possible. A
- * getStringValue() after a setValue(int) will return the string representation
- * of the int. <br>
- * @see AttributeType 
+ * This class provides a high level interface to Resource Attributes.
+ * It is a <code> {name, value}</code> pair with dynamic typing.  
+ * The Attribute itself does not do any type checking, so casting is possible.
+ * For example getStringValue() after setValue(int) will return the string representation
+ * of the integer. <br>
+ * 
+ * @see AttributeType
+ *  
  * @author P.T. de Boer
  */
 public class Attribute implements Cloneable, Serializable, Duplicatable<Attribute>
 {
-    private static final long serialVersionUID = -8999238098979470171L;
+    private static final long serialVersionUID = 2911511497535338526L;
 
     private static ClassLogger logger;
     {
         logger = ClassLogger.getLogger(Attribute.class);
     }
 
-    private static String[] booleanEnumValues = { "false", "true" };
+    protected static String[] booleanEnumValues = { "false", "true" };
 
     // ========================================================================
     // Class Methods
@@ -100,7 +100,7 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
         }
     }
 
-    private static Object duplicateValue(AttributeType type, Object object)
+    protected static Object duplicateValue(AttributeType type, Object object)
     {
         if (object == null)
             return null;
@@ -182,7 +182,9 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
 
     private boolean changed = false;
 
-    /** Copy Constructor */
+    /** 
+     * Copy Constructor 
+     */
     public Attribute(Attribute source)
     {
         copyFrom(source);
