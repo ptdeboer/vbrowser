@@ -29,7 +29,7 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class IconTextField extends JPanel implements ActionListener 
+public class ComboBoxIconTextPanel extends JPanel implements ActionListener 
 {
     private static final long serialVersionUID = -3502306954828479242L;
     private AutoCompleteTextField textField;
@@ -38,7 +38,7 @@ public class IconTextField extends JPanel implements ActionListener
     private String comboBoxEditedCommand;
     private String comboBoxUpdateSelectionCommand;
 
-    public IconTextField()
+    public ComboBoxIconTextPanel()
     {
     	super(); 
         initGUI(); 
@@ -66,6 +66,11 @@ public class IconTextField extends JPanel implements ActionListener
         textField.setBorder(null); 
     }
 
+    public void clearHistory()
+    {
+        textField.clearHistory(); 
+    }
+    
     public void setDropTarget(DropTarget dt)
     {
         this.iconLabel.setDropTarget(dt);
@@ -135,4 +140,6 @@ public class IconTextField extends JPanel implements ActionListener
         
         this.textFieldListener.actionPerformed(wrapEvent); 
     }
+
+  
 }

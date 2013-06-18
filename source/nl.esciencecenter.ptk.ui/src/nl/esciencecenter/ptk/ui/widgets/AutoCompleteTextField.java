@@ -23,6 +23,7 @@ package nl.esciencecenter.ptk.ui.widgets;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -36,8 +37,6 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 
-
-
 public class AutoCompleteTextField extends JComboBox
 {
     public final static String COMBOBOXEDITED="comboBoxEdited";
@@ -46,13 +45,12 @@ public class AutoCompleteTextField extends JComboBox
     		
     private static final long serialVersionUID = 2531178303560053536L;
 
+    // === instance === 
+    
     private StringList history = new StringList();
-
-    // private String oldText;
 
     public class CBDocument extends PlainDocument
     {
-
         private static final long serialVersionUID = -7002767598883985096L;
 
         public void insertString(int offset, String str, AttributeSet a) throws BadLocationException
@@ -67,7 +65,6 @@ public class AutoCompleteTextField extends JComboBox
             {
                 completeText();
             }
-
         }
     }
 
@@ -78,13 +75,11 @@ public class AutoCompleteTextField extends JComboBox
     
     private void init()
     {
-        history.addUnique("file:/");
-        history.addUnique("file:///"+GlobalProperties.getGlobalUserHome());
-        
-        history.sort(true);
-
-        ComboBoxModel historyListModel = new DefaultComboBoxModel(history.toArray());
-        setModel(historyListModel);
+        StringList list=new StringList(); 
+        list.addUnique("file:/");
+        list.addUnique("file:///"+GlobalProperties.getGlobalUserHome());
+        list.sort(true);
+        this.setHistory(list); 
 
         if (getEditor() != null)
         {
@@ -94,7 +89,7 @@ public class AutoCompleteTextField extends JComboBox
                 addActionListener(new ActionListener()  {
                     public void actionPerformed(ActionEvent evt)  {
                         if (evt.getActionCommand().equals(COMBOBOXEDITED))  {
-                            saveHistory();
+                            addFieldToHistory();
                         }
                     }
                 });
@@ -157,9 +152,8 @@ public class AutoCompleteTextField extends JComboBox
         return (JTextField) getEditor().getEditorComponent();
     }
 
-    protected void saveHistory()
+    protected void addFieldToHistory()
     {
-
         String insertedText = getTextField().getText();
         if (!StringUtil.isEmpty(insertedText) || !insertedText.equals(" "))
         {
@@ -167,20 +161,36 @@ public class AutoCompleteTextField extends JComboBox
         }
 
         history.sort(true);
-
+        
+        updateHistoryToComboBox(); 
+        
+        selectField(insertedText); 
+    }
+    
+    protected void updateHistoryToComboBox()
+    {
         ComboBoxModel historyListModel = new DefaultComboBoxModel(history.toArray());
         setModel(historyListModel);
+    }
+    
+    public boolean selectField(String text)
+    {
+        int index = history.indexOf(text);
+        if (index<0)
+            return false; 
         
-        
-        int index = history.indexOf(insertedText);
-        if (getSelectedIndex()!=index)
+        if (getSelectedIndex()==index)
+        {
+            return true; // already selected 
+        }
+        else
         {
             String orgCmd=this.getActionCommand();
             this.setActionCommand(UPDATESELECTION);
             setSelectedIndex(index);
             this.setActionCommand(orgCmd);
+            return true; 
         }
-
     }
 
     public String getText()
@@ -196,6 +206,21 @@ public class AutoCompleteTextField extends JComboBox
     public void setDropTarget(DropTarget dt)
     {
         this.getTextField().setDropTarget(dt);
+    }
+
+    public void clearHistory()
+    {
+        this.history.clear();
+    }
+    
+    public List<String> getHistory()
+    {
+        return history; 
+    }
+    
+    public void setHistory(List<String> history)
+    {
+        this.history=new StringList(history); 
     }
 
 }

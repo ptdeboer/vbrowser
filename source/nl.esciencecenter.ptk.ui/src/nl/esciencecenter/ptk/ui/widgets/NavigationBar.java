@@ -68,7 +68,7 @@ public class NavigationBar extends JToolBar
 
     // private Container locationToolBar;
 
-    private IconTextField locationTextField;
+    private ComboBoxIconTextPanel locationTextField;
 
     // private Vector<NavigationBarListener> listeners=new
     // Vector<NavigationBarListener>();
@@ -178,7 +178,7 @@ public class NavigationBar extends JToolBar
 
         }
         {
-            locationTextField = new IconTextField();
+            locationTextField = new ComboBoxIconTextPanel();
             locationToolBar.add(locationTextField);
             locationTextField.setText("location:///");
             locationTextField.setComboActionCommand(NavigationAction.LOCATION_EDITED.toString());
@@ -192,7 +192,11 @@ public class NavigationBar extends JToolBar
     public void updateLocation(String location, boolean addToHistory)
     {
         this.locationTextField.setText(location);
+    }
 
+    public void clearLocationHistory()
+    {
+        this.locationTextField.clearHistory();
     }
 
     /**
@@ -217,7 +221,6 @@ public class NavigationBar extends JToolBar
             return true;
 
         return false;
-
     }
 
     public void setLocationText(String txt)
@@ -246,6 +249,9 @@ public class NavigationBar extends JToolBar
         return new ImageIcon(res);
     }
 
+    /** 
+     * Adds default support for dropped URI and URls. 
+     */
     protected void initDnD()
     {
         DropTarget dt1=new DropTarget(); 

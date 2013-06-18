@@ -23,13 +23,16 @@ package nl.esciencecenter.ptk.ui.widgets;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+/** 
+ * String Selection ComboBox. 
+ */
 public class SelectionComboBox extends JComboBox
 {
     private static final long serialVersionUID = -8233146785771708020L;
 
     //private StringList values;
     
-    boolean enumEditable = false; // whether enum types are editable
+    boolean optionsEditable = false; // whether options are editable
 
     public SelectionComboBox()
     {
