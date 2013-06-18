@@ -26,6 +26,11 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
@@ -309,6 +314,7 @@ public class ImageRenderer
 
         // reduce in color strenght;
         for (int x = 0; x < width; x++)
+        {
             for (int y = 0; y < height; y++)
             {
                 // TYPE INT ARGB
@@ -332,11 +338,15 @@ public class ImageRenderer
 
                     // Keep alpha level!
                     // a=255;
-
-                    baseImage.setRGB(x, y, ((int) a) * 256 * 256 * 256 + ((int) r) * 65536 + ((int) g) * 256
-                            + ((int) b));
+                    paintPixel(baseImage,x,y,a,r,g,b); 
                 }
             }
+        }
+    }
+
+    private void paintPixel(BufferedImage image, int x, int y, int a, int r, int g, int b)
+    {
+        image.setRGB(x, y, ((int) a) * 256 * 256 * 256 + ((int) r) * 65536 + ((int) g) * 256 + ((int) b));
     }
 
     public Image getLinkImage()
@@ -359,4 +369,63 @@ public class ImageRenderer
         return this.greyoutColor;
     }
 
+    /** 
+     * Create simple bitmap image from XPM like String definition.  
+     */
+    public Image createImage(String imageStr, Map<String, Color> colorMap,Color defaultColor, char alphaChar)
+    {
+        if ( (imageStr==null) || (imageStr.equals("")) )
+            return null; 
+        
+        String lines[]=imageStr.split("\n"); 
+        int height=lines.length; 
+        
+        if (height<=0)
+        {
+            return null;
+        }
+        int width=lines[0].length();
+        
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        
+        for (int y=0;y<height;y++)
+        {
+            if (lines[y].length()<width)
+            {
+                throw new IndexOutOfBoundsException("Line #"+y+" is to short:"+lines[y].length()+"<"+width+"!"); 
+            }
+            
+            for (int x=0;x<width;x++)
+            {
+               int a=0,r=0,g=0,b=0; 
+                
+               char pixelChar=lines[y].charAt(x);
+               if (pixelChar==alphaChar)
+               {
+                   a=0;
+                   r=defaultColor.getRed();
+                   g=defaultColor.getGreen();
+                   b=defaultColor.getBlue();
+               }
+               else
+               {
+                   Color c=colorMap.get(""+pixelChar); 
+                   if (c==null)
+                   {
+                       c=defaultColor;
+                   }
+                   a=255;
+                   r=c.getRed(); 
+                   g=c.getGreen();
+                   b=c.getGreen(); 
+               }
+               paintPixel(image,x,y,a,r,g,b);
+            }
+        }
+            
+        return image; 
+    }
+
+
+    
 }
