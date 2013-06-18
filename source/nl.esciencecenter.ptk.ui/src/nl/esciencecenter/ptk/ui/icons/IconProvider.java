@@ -31,8 +31,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import nl.esciencecenter.ptk.ui.image.ImageSequence;
-import nl.esciencecenter.ptk.ui.image.ImageUtil;
 import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -42,7 +40,6 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
  * both user and installation directories. 
  * Also checks and searches for mimetype icon 
  */ 
-
 public class IconProvider
 {
     // ==========================================================================
@@ -144,240 +141,10 @@ public class IconProvider
         mime_icons_theme_path=mimeiconpath; 
     }
 
-	
-	/**
-	 * icons search path (including mimetype search path): 
-	 * $HOME/.vletrc/icons/
-	 * $INSTALL/lib/icons /
-	 * === 
-	 * Mime type search paths already appended by createMimeTypeIcon...
-	 * $HOME/.vletrc/icons/mimeypes/
-	 * $INSTALL/lib/icons/mimetypes/
-	 * $INSTALL/lib/icons/gnome/48x48/mimetypes/
-	 */
-
-//	/**
-//	 * getDefaultIcon() tries to create an icon (mimetype or otherwise). 
-//	 * 
-//	 * + Non Mimetype: 
-//	 *   - $HOME/.vletrc/icons/				  ; Custom user icons 
-//	 *   - $VLET_INSTALL/icons/               ; Is on CLASSPATH, thus covered by ResouceLoader.getIcon())
-//	 *   
-//	 * + Mimetype icons:  
-//	 * - $HOME/.vletrc/icons/mimetypes        ; For custom user mimetype icons 
-//	 * - $VLET_INSTALL/lib/icons/mimetypes/ 	  ; For custom system mimetype icons
-//	 * - $VLET_INSTALL/lib/icons/<mimetype theme path>/ ; Mimetype Icons from 'theme' 
-//	 * 
-//	 * + Resource (GUI/menu/swing components, use ResourceLoader directly !): 
-//	 * - $CLASSPATH                           ; For resource icons, is covered by ResourceLoader.getIcon() 
-//	 * - URL/VRL: 'file:///..'			      ; Is covered by ResourceLoader.getIcon() 
-//	 * 
-//	 * I) linknode/resourcenode with (optional) private iconURL
-//	 * II) mimetype 
-//	 * III) Default/backup icon
-//	 * IV) broken image 
-//	 * 
-//	 * @param preferredSize 
-//	 *            try to find icon with this size. Return bigger icon if
-//	 *            preferred size is not found !
-//	 * @return the prefed Icon, size, might not match.
-//	 * @throws VlException
-//	 */
-//	public Icon createDefaultIcon(VNode vnode,int size,boolean greyOut)
-//	{
-//		logger.debugPrintf("createDefaultIcon [%d,%b] for: %s\n",size,greyOut,vnode); 
-//
-//		if (vnode==null)
-//		{
-//		    logger.warnPrintf("*** Warning: createDefaultIcon():got NULL VNode\n");
-//			return null;
-//		}
-//		// for plugins, must use classLoader of plugin class ! 
-//		ClassLoader nodeClassLoader=vnode.getClass().getClassLoader(); 
-//
-//		// =============================================================================
-//		// LinkNodes  
-//		// =============================================================================
-//
-//
-//		boolean showAsLink = false;
-//		boolean isComposite=false; 
-//		String mimetype=null;
-//		String iconURL=null;  
-//		//VRL targetVRL=null; 
-//
-//		// Resolve LogicalResourceNodes: 
-//		if (vnode instanceof LogicalResourceNode)
-//		{
-//			try
-//			{
-//				// get LogicalResourceNode attributes: 
-//				LogicalResourceNode lnode=(LogicalResourceNode)vnode; 
-//				showAsLink=lnode.getShowShortCutIcon();
-//				vnode=lnode;
-//
-//				isComposite=lnode.getTargetIsComposite(true);
-//				//targetVRL=lnode.getTargetVRL(); 
-//
-//				// be reboost when getting linktarget attributes: 
-//
-//				try
-//				{
-//					mimetype=lnode.getTargetMimeType();
-//				}
-//				catch (Exception e)
-//				{
-//				    logger.warnPrintf("Couldn't get target mimetype of linknode:%s\n",lnode); 
-//					logger.warnPrintf("Exception=%s\n",e); 
-//				}
-//				
-//				try
-//				{
-//					iconURL=lnode.getIconURL(size); 
-//				}
-//				catch (Exception e)
-//				{
-//				    logger.warnPrintf("Couldn't get target mimetype of linknode:%s\n",lnode); 
-//					logger.warnPrintf("Exception=%s\n",e); 
-//				}
-//				// Debug("target Is Composite="+isComposite+"for:"+lnode.getTargetVRL());
-//			}
-//			catch (Exception e)
-//			{
-//			    logger.errorPrintf("Error getting LogicalNode from:%s\n",vnode); 
-//				logger.errorPrintf("Exception=%s\n",e); 
-//			}
-//		}
-//		else
-//		{
-//			// use vnode defaults: 
-//			isComposite=vnode.isComposite();
-//			//targetVRL=vnode.getVRL(); 
-//
-//			try
-//			{
-//				mimetype=vnode.getMimeType();
-//			}
-//			catch (VlException e)
-//			{
-//				logger.warnPrintf("Could not get Mimetype of:%s\n",vnode); 
-//				logger.warnPrintf("Exception =%s\n",e); 
-//
-//				e.printStackTrace();
-//			}
-//			iconURL=vnode.getIconURL(size); 
-//		}
-//		
-//		if (StringUtil.isEmpty(iconURL)==true)
-//			iconURL=null; // set empty string "" to null 
-//		
-//		if (StringUtil.isEmpty(mimetype)==true)
-//			mimetype=null; // set empty string "" to null 
-//	
-//		// =============================================================================
-//		// Resolve Icon URL   
-//		// =============================================================================
-//
-//		if (StringUtil.isEmpty(iconURL)==false) 
-//		{
-//			logger.debugPrintf("createDefaultIcon: I)\n");
-//			
-//			Icon icon=renderIcon(nodeClassLoader,iconURL,showAsLink,size,greyOut);
-//		 
-//			if	(icon!=null)
-//			{
-//				logger.debugPrintf("createDefaultIcon: I) found:%s\n",iconURL);
-//				return icon;
-//			}
-//			logger.debugPrintf("createDefaultIcon: I)  NULL for:%s\n",iconURL);
-//		}
-//
-//		// =============================================================================
-//		// MimeType Icons 
-//		// =============================================================================
-//
-//		//
-//		// The mimetype: "application/octet-stream" is not allowed as 
-//		// default mimetype for Composite nodes.
-//		// Set to null to trigger 'default' icons further in this method: 
-//		// 
-//		if ( (mimetype!=null) && (isComposite) 
-//				&& (mimetype.compareToIgnoreCase("application/octet-stream")==0) 
-//		   )
-//		{
-//			mimetype=null;
-//		}
-//
-//		if ((iconURL==null) && (mimetype!=null))
-//		{
-//			iconURL=createMimeTypeIconURLSuffix(mimetype);
-//		}
-//
-//		if (iconURL!=null)
-//		{
-//			logger.debugPrintf("createDefaultIcon: using mimetype IIa):%s\n",iconURL);
-//		
-//			// try ./mimetypes/iconURL subpath 
-//			Icon icon = renderIcon(nodeClassLoader,"mimetypes/"+iconURL,showAsLink,size,greyOut);
-//			
-//			if (icon!=null)
-//				return icon;
-//		}
-//		
-//		
-//		if (iconURL!=null)
-//		{
-//			logger.debugPrintf("createDefaultIcon: using theme mimetype IIb):%s\n",iconURL);
-//		
-//			// try again using full (theme) mimetype path: ./<themes path>/iconURL
-//			Icon icon = renderIcon(nodeClassLoader,mime_icons_theme_path+"/"+iconURL,showAsLink,size,greyOut);
-//			
-//			if (icon!=null)
-//				return icon;
-//		}
-//		
-//
-//		
-//		// =============================================================================
-//		// Default Resource Icons (File,Folder,...) 
-//		// =============================================================================
-//
-//		logger.debugPrintf("createDefaultIcon: III):%s\n",iconURL);
-//		
-//		if (isComposite)
-//		{
-//			if (vnode instanceof VDir)
-//			{
-//				if (UIGlobal.getVRSContext().getConfigManager().getUserHomeLocation().compareTo(vnode.getVRL()) == 0)
-//					iconURL = home_folder_icon_url;
-//				else
-//					iconURL = default_folder_icon_url;
-//			}
-//			else
-//			{
-//				iconURL = default_folder_icon_url;
-//			}
-//		}
-//		else
-//		{
-//			iconURL = default_icon_url;
-//		}
-//		
-//		logger.debugPrintf("createDefaultIcon: IV):%s\n",iconURL);
-//		
-//		Icon icon = renderIcon(nodeClassLoader,iconURL,showAsLink,size,greyOut);
-//
-//		if (icon!=null)
-//			return icon;
-//		
-//		return renderIcon(nodeClassLoader,default_icon_url,showAsLink,size,greyOut);
-//	}
-	
 	public ClassLoader getClassLoader()
 	{
 	    return Thread.currentThread().getContextClassLoader(); 
 	}
-	
 	   
     /** Return broken image icon */ 
     public Icon getBrokenIcon()
@@ -389,7 +156,6 @@ public class IconProvider
     {
         return this.createImageIcon(this.miniLinkImage); 
     }
-
 	
 	// ========================
 	// Icon Factory Methods. 
@@ -483,8 +249,7 @@ public class IconProvider
         
         return createIcon(classLoader,file_icon_url,isLink,size,greyOut);
     }
-    
-	
+    	
 	/**
 	 * Returns Icon or broken image icon.
 	 * Creates ImageIcon directly from URL, works with animated GIFs as
@@ -509,35 +274,9 @@ public class IconProvider
 	}
 	
 	// ========================
+	// Icon Render methods 
     // ========================
     
-//    /**
-//     * Returns 'AnimatedIcon' instead of plain 'Icon'
-//     * The AnimatedIcon class implement the Icon interface so it is Swing compatible
-//     * but is NOT a subclass of IconImage ! 
-//     */ 
-//    public AnimatedIcon createAnimatedIcon(String url)
-//    {
-//        return createAnimatedIcon(this.resourceLoader.resolveUrl(null,url)); 
-//    }
-    
-//	/**
-//	 *  Load animated image and return as explicit AnimatedIcon class. 
-//	 *  Currently supports animated gifs only.
-//	 */ 
-//	public AnimatedIcon createAnimatedIcon(URL url)
-//	{
-//	    ImageSequence image;
-//        try
-//        {
-//            image = ImageUtil.loadAnimatedGif(url);
-//            return new AnimatedIcon(image);
-//        }
-//        catch (Exception e)
-//        {
-//            return new AnimatedIcon(ImageUtil.convertToBufferedImage(this.brokenImage));           
-//        }
-//	}
 
     /**
      * Resolve Icon URL and create icon.   
@@ -800,7 +539,6 @@ public class IconProvider
     {
         return this.createIcon(this.home_icon_url,size); 
     }
-
-    
+   
  
 }
