@@ -20,6 +20,7 @@
 
 package nl.esciencecenter.ptk.ui.util;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -27,13 +28,17 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import nl.esciencecenter.ptk.ui.icons.ImageRenderer;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
@@ -213,6 +218,35 @@ public class UIResourceLoader extends ResourceLoader
         {
             throw new IOException("Read error:"+iconurl,e); 
         }
+    }
+
+    public Icon getMiniBrokenImage()
+    {
+        // create image on the fly:
+        String imageStr=
+                 ".x............x.\n"
+                +"xRx..........xRx\n"
+                +".xRx........xRx.\n"
+                +"..xRx......xRx..\n"
+                +"...xRx....xRx...\n"
+                +"....xRx..xRx....\n"
+                +".....xRxxRx.....\n"
+                +"......xRRx......\n"
+                +"......xRRx......\n"
+                +".....xRxxRx.....\n"
+                +"....xRx..xRx....\n"
+                +"...xRx....xRx...\n" 
+                +"..xRx......xRx..\n" 
+                +".xRx........xRx.\n" 
+                +"xRx..........xRx\n" 
+                +".x............x.\n"; 
+        
+        Map<String,java.awt.Color> colorMap=new HashMap<String,java.awt.Color>();
+        colorMap.put(".", Color.WHITE);
+        colorMap.put("R",Color.RED); 
+        colorMap.put("x",Color.BLACK); 
+        Image image=new ImageRenderer(null).createImage(imageStr,colorMap,Color.WHITE,' '); 
+        return new ImageIcon(image);  
     }
    
 
