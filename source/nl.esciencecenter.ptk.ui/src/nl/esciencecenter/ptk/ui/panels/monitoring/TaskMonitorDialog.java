@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
+import javax.swing.text.DefaultCaret;
 
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.task.ActionTask;
@@ -125,7 +126,12 @@ public class TaskMonitorDialog extends javax.swing.JDialog
                         logText = new JTextArea();
                         logSP.setViewportView(logText);
                         logText.setText("\n\n");
+                        
+                        DefaultCaret caret = (DefaultCaret)logText.getCaret();
+                        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
                     }
+                    logSP.setAutoscrolls(true);
+                    logSP.setPreferredSize(new Dimension(600,200));
                 }
             }
             
@@ -328,6 +334,7 @@ public class TaskMonitorDialog extends javax.swing.JDialog
         {
             monitor.getLogText(true,0,textHolder);
             this.logText.setText(textHolder.value);  
+
         }
         else
         {
@@ -339,9 +346,11 @@ public class TaskMonitorDialog extends javax.swing.JDialog
                 this.logText.append(textHolder.value); // .append(newText); 
             }
         }
-            
-        if (isFinalUpdate)
-            this.logText.revalidate(); // Final text update sometimes gets lost, use asynchronous revalidate().
+         
+        logText.revalidate(); 
+        
+        // if (isFinalUpdate)
+        //    this.logText.revalidate(); // Final text update sometimes gets lost, use asynchronous revalidate().
         
     }
     
