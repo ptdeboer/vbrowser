@@ -121,12 +121,16 @@ public class LocalFSNode extends FSNode
 	public void mkdir() throws IOException
 	{
 		_file.mkdir(); 
+		if (_file.exists()==false)
+		    throw new FileNotFoundException("Failed to create directory:"+this); 
 	}
 	
 	@Override
 	public void mkdirs() throws IOException
 	{
 		_file.mkdirs(); 
+		if (_file.exists()==false)
+            throw new FileNotFoundException("Failed to create directory:"+this); 
 	}
 	
 	@Override
