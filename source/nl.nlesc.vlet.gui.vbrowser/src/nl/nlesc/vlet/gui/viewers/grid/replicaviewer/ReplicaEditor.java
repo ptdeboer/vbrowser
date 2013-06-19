@@ -418,7 +418,7 @@ public class ReplicaEditor extends ViewerPlugin
 
     public void setLocationText(String txt)
     {
-        this.locationToolbar.setLocationText(txt); 
+        this.locationToolbar.setLocationText(txt,false); 
     }
 
 

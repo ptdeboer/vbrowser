@@ -180,7 +180,7 @@ public class NavigationBar extends JToolBar
         {
             locationTextField = new ComboBoxIconTextPanel();
             locationToolBar.add(locationTextField);
-            locationTextField.setText("location:///");
+            locationTextField.setText("location:///",false);
             locationTextField.setComboActionCommand(NavigationAction.LOCATION_EDITED.toString());
             locationTextField.setComboEditedCommand(NavigationAction.LOCATION_CHANGED.toString());
 
@@ -191,7 +191,7 @@ public class NavigationBar extends JToolBar
 
     public void updateLocation(String location, boolean addToHistory)
     {
-        this.locationTextField.setText(location);
+        this.locationTextField.setText(location,addToHistory);
     }
 
     public void clearLocationHistory()
@@ -223,9 +223,9 @@ public class NavigationBar extends JToolBar
         return false;
     }
 
-    public void setLocationText(String txt)
+    public void setLocationText(String txt,boolean addToHistory)
     {
-        this.locationTextField.setText(txt);
+        this.locationTextField.setText(txt,addToHistory);
     }
 
     public static NavigationAction getNavigationCommand(String cmdStr)

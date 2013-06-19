@@ -161,9 +161,7 @@ public class AutoCompleteTextField extends JComboBox
         }
 
         history.sort(true);
-        
         updateHistoryToComboBox(); 
-        
         selectField(insertedText); 
     }
     
@@ -198,9 +196,11 @@ public class AutoCompleteTextField extends JComboBox
         return this.getTextField().getText(); 
     }
 
-    public void setText(String txt)
+    public void setText(String txt, boolean addToHistory)
     {
         this.getTextField().setText(txt); 
+        if (addToHistory)
+            addFieldToHistory(); 
     }
     
     public void setDropTarget(DropTarget dt)

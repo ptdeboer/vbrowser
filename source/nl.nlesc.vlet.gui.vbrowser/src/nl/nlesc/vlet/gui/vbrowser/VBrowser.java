@@ -1347,7 +1347,7 @@ public class VBrowser extends javax.swing.JFrame
 
     public void setLocationText(String txt)
     {
-        this.navigationToolBar.setLocationText(txt);
+        this.navigationToolBar.setLocationText(txt,false);
     }
 
     public String getLocationText()

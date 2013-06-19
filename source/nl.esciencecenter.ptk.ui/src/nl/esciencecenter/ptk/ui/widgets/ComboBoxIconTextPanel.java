@@ -56,7 +56,7 @@ public class ComboBoxIconTextPanel extends JPanel implements ActionListener
         {
             textField = new AutoCompleteTextField();
             this.add(textField);
-            textField.setText("TextField");
+            textField.setText("TextField",false);
             textField.setLocation(16,0); 
         }
         
@@ -77,9 +77,9 @@ public class ComboBoxIconTextPanel extends JPanel implements ActionListener
         this.textField.setDropTarget(dt);
     }
     
-    public void setText(String txt)
+    public void setText(String txt, boolean addToHistory)
     {
-        this.textField.setText(txt); 
+        this.textField.setText(txt,addToHistory); 
     }
     
     public void setIcon(Icon icon)
@@ -100,9 +100,9 @@ public class ComboBoxIconTextPanel extends JPanel implements ActionListener
     }
 
 
-    public void setURI(java.net.URI uri)
+    public void setURI(java.net.URI uri,boolean addToHistory)
     {
-        this.setText(uri.toString());
+        this.setText(uri.toString(),addToHistory);
     }
  
     public void setTextActionListener(ActionListener listener)
