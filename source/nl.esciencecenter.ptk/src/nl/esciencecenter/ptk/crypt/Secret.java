@@ -150,4 +150,30 @@ public class Secret
         
         return false; 
     }
+    
+    public boolean equals(Secret other)
+    {
+        if (other==null)
+            return false; 
+        
+        if (secret==null)
+        {
+            if (other.secret==null)
+                return true;
+            else
+                return false;
+        }
+        
+        if (secret.length!=other.secret.length)
+            return false; 
+        
+        for (int i=0;i<secret.length;i++)
+        {
+            if (secret[i]!=other.secret[i])
+                return false;
+        }
+        
+        // assume equal:
+        return true; 
+    }
 }
