@@ -547,7 +547,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     public void updateNavBar(VRL locator, Icon icon)
     {
         NavigationBar navbar = this.browserFrame.getNavigationBar();
-        navbar.setLocationText(locator.toString());
+        navbar.setLocationText(locator.toString(),false);
 
         if (icon != null)
             navbar.setIcon(icon);
