@@ -38,6 +38,11 @@ public class ITTestFSUtil
 	
 	protected static LocalFSNode testDir=null;
 
+	protected static FSUtil getFSUtil()
+	{
+	    return FSUtil.getDefault(); 
+	}
+	
 	protected static LocalFSNode getCreateTestDir() throws IOException
 	{
 		synchronized(testDirMutex)
@@ -46,10 +51,10 @@ public class ITTestFSUtil
 				if (testDir.exists())
 					return testDir; 
 		
-			FSUtil fs = FSUtil.getDefault(); 
+			FSUtil fsUtil = getFSUtil();  
 	    
 			// setup also tests basic methods ! 
-			testDir=fs.newLocalFSNode(GlobalProperties.getGlobalTempDir()+"/testfsutil/"); 
+			testDir=fsUtil.newLocalFSNode(GlobalProperties.getGlobalTempDir()+"/testfsutil/"); 
 
 			Assert.assertNotNull("Local test directory is null",testDir);
 
@@ -60,7 +65,6 @@ public class ITTestFSUtil
 
 			return testDir; 
 		}
-		
 	}
 	
 	@BeforeClass
@@ -141,7 +145,7 @@ public class ITTestFSUtil
 	    try
         {
 	        FSNode tDir=getTestDir();
-	        tDir.delete(true); 
+	        getFSUtil().delete(tDir, true); 
 	        Assert.assertFalse("Test directory must be deleted after testSuite",tDir.exists()); 
         }
         catch (IOException e)
