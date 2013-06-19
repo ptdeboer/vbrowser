@@ -312,7 +312,7 @@ public class JobMonitor extends ViewerPlugin
 
     public void updateLocationBar(VRL loc)
     {
-        this.locationToolbar.setLocationText("" + loc);
+        this.locationToolbar.setLocationText("" + loc,false);
 
     }
     
