@@ -381,14 +381,6 @@ public class FSUtil
         return dir; 
     }
 
-    public LocalFSNode createLocalDir(URI uri) throws IOException 
-    {
-        LocalFSNode dir=this.newLocalFSNode(uri.getPath());
-        if (dir.exists()==false)
-            dir.mkdir(); 
-        return dir; 
-    }
-
     public void deleteDirectoryContents(URI uri,boolean recursive) throws IOException
     {
         LocalFSNode node = newLocalDir(uri); 
