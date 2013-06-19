@@ -284,7 +284,7 @@ public class ImageRenderer
         Color c = greyoutColor;
 
         if (greyOut)
-            doGreyout(newImage, c);
+            applyMesh(newImage, c);
 
         //
         // IV) new ImageIcon Object!
@@ -304,7 +304,7 @@ public class ImageRenderer
     /** 
      * Create mesh like pattern over the image 
      */
-    public void doGreyout(BufferedImage baseImage, Color greycolor)
+    public void applyMesh(BufferedImage baseImage, Color greycolor)
     {
         int width = baseImage.getWidth();
         int height = baseImage.getHeight();
@@ -344,6 +344,43 @@ public class ImageRenderer
         }
     }
 
+    /** 
+     * Convert RGB color image to monochrome image. 
+     */
+    public void toMonochromeImage(BufferedImage baseImage, Color monoColor)
+    {
+        int width = baseImage.getWidth();
+        int height = baseImage.getHeight();
+
+        // ColorModel model = newimage.getColorModel();
+        // Raster raster=newimage.getRaster();
+
+        // reduce in color strenght;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                // TYPE INT ARGB
+                int rgb = baseImage.getRGB(x, y);
+                // colorModel.getRGB(raster.getDataElements(x, y, null));
+
+                int a = (rgb >> 24) % 256;
+                int r = (rgb >> 16) % 256;
+                int g = (rgb >> 8) % 256;
+                int b = rgb % 256;
+
+                double monoValue=(r+g+b)/(256.0*256.0*256.0); // weighted colors ?  
+                
+                r = (int)Math.floor(monoValue*monoColor.getRed()); 
+                g = (int)Math.floor(monoValue*monoColor.getGreen());
+                b = (int)Math.floor(monoValue*monoColor.getBlue());
+
+                // Keep alpha level!
+                paintPixel(baseImage,x,y,a,r,g,b); 
+            }
+        }
+    }
+    
     private void paintPixel(BufferedImage image, int x, int y, int a, int r, int g, int b)
     {
         image.setRGB(x, y, ((int) a) * 256 * 256 * 256 + ((int) r) * 65536 + ((int) g) * 256 + ((int) b));
