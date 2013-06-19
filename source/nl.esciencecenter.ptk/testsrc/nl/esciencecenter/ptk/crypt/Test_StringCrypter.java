@@ -123,8 +123,7 @@ public class Test_StringCrypter
         testEncrypt("12345", "12345", "xC5gLUJ1UxI=", CryptScheme.DESEDE_ECB_PKCS5, "SHA-256",
                 StringCrypter.CHARSET_UTF8);
 
-        // echo -n 0123456789012345678901234 | openssl enc -des-ede3 -nosalt
-        // -pass pass:12345 -base64 -md sha256 -p
+        // echo -n 0123456789012345678901234 | openssl enc -des-ede3 -nosalt -pass pass:12345 -base64 -md sha256 -p
         // key=5994471ABB01112AFCC18159F6CC74B4F511B99806DA59B3
         // 3FpToewkL3fDIeGFWHCj9olKRKuErWn33oCk2oQdQdQ=
         testEncrypt("12345", "0123456789012345678901234", "3FpToewkL3fDIeGFWHCj9olKRKuErWn33oCk2oQdQdQ=",
@@ -134,12 +133,15 @@ public class Test_StringCrypter
     @Test
     public void test_CryptLegacyAppKey1() throws Exception
     {
+        // echo  -n changeme | openssl enc -des-ede3 -nosalt -K 31323343534D3334353637383930454E4352595054494F4E00 -base64 -p
+        // echo -n 'zJPWCwDeSgG8j2uyHEABIQ==' | base64 -d | openssl  enc -des-ede3 -K 31323343534D3334353637383930454E4352595054494F4E -d
+        
         // Legacy App1 doesn't use hash digest!
         StringCrypter crypter = new StringCrypter(StringCrypter.getAppKey1(), CryptScheme.DESEDE_ECB_PKCS5, null,
                 StringCrypter.CHARSET_UTF8);
         // not recommend, use (iterative) hashing instead.
         crypter.setUsePlainCharBytes(true);
-
+              
         test_EncryptDecrypt(crypter, "changeme", "zJPWCwDeSgG8j2uyHEABIQ==");
         test_EncryptDecrypt(crypter, "SomeWords7777", "Gs2dtmYD3jWetekNGGcEPg==");
     }
