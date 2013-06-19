@@ -29,7 +29,7 @@ import nl.esciencecenter.ptk.task.TaskMonitorAdaptor;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
- * IO read/write helper methods. 
+ * IO helper methods. 
  */ 
 public class IOUtil
 {
@@ -53,7 +53,6 @@ public class IOUtil
      * Since some read() method only read small chunks each time, 
      * this method tries to read until either EOF is reached, or 
      * the desired nrOfBytes has been read. 
-     * 
      */
     public static int syncReadBytes(InputStream inps, long fileOffset, byte[] buffer, int bufferOffset, int nrOfBytes) throws IOException
     {

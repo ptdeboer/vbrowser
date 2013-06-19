@@ -170,37 +170,6 @@ public abstract class FSNode
 	}
 	
     // =======================================================================
-    // Delete/Modify structure
-    // =======================================================================
-
-	/** Perform an (optional recursive) delete in this node */ 
-	public boolean delete(boolean recursive) throws IOException
-	{
-	    if (isFile())
-	        return delete(); 
-	    // directory;
-
-	    FSNode[] nodes = this.listNodes();
-	    if (recursive==false)
-	    {
-	        if  ((nodes==null) || (nodes.length<=0))
-	        {
-	            return delete(); // delete empty directory ! 
-	        }
-	        else
-	        {
-	            throw new IOException("Directory is not empty"); 
-	        }
-	    }
-	    else
-	    {
-	        for (FSNode node:nodes)
-	            node.delete(true);
-	        return this.delete(); 
-	    }
-	}
-	
-    // =======================================================================
     // Abstract Interface 
     // =======================================================================
 

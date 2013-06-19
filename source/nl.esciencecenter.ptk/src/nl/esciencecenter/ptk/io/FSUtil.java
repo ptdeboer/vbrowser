@@ -372,18 +372,53 @@ public class FSUtil
     
     /**
      * Returns new directory FSNode Object. Path might not exist. 
-     * Use create==true to create the directory.   
-     * @param  dirVri - location of new Directory 
-     * @param  create - set to true to create it 
+     * @param  dirUri - location of new Directory 
      * @return - new Local Directory object. 
-     * @throws IOException 
      */
-    public LocalFSNode newLocalDir(URI vri,boolean create) throws IOException
+    public LocalFSNode newLocalDir(URI dirUri)
     {
-        LocalFSNode dir=this.newLocalFSNode(vri.getPath());
-        if ((dir.exists()==false) && (create)) 
+        LocalFSNode dir=this.newLocalFSNode(dirUri.getPath());
+        return dir; 
+    }
+
+    public LocalFSNode createLocalDir(URI uri) throws IOException 
+    {
+        LocalFSNode dir=this.newLocalFSNode(uri.getPath());
+        if (dir.exists()==false)
             dir.mkdir(); 
         return dir; 
+    }
+
+    public void deleteDirectoryContents(URI uri,boolean recursive) throws IOException
+    {
+        LocalFSNode node = newLocalDir(uri); 
+        if (node.exists()==false)
+            throw new FileNotFoundException("Directory does not exist:"+uri); 
+        
+        deleteDirectoryContents(node,recursive); 
+        return; 
+    }
+
+    public void deleteDirectoryContents(FSNode dirNode, boolean recursive) throws IOException
+    {
+        FSNode[] nodes = dirNode.listNodes(); 
+        for (FSNode node:nodes)
+        {
+            if (node.isDirectory() && recursive)
+            {
+                deleteDirectoryContents(node,recursive);
+            }
+            node.delete(); 
+        }
     }   
     
+    public void delete(FSNode node,boolean recursive) throws IOException
+    {
+        if ( (node.isDirectory()) && (recursive) )
+        { 
+            this.deleteDirectoryContents(node,recursive);
+        }
+        
+        node.delete();
+    }
 }

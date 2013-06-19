@@ -30,7 +30,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /** 
- * Local file implementation of FSNode.  
+ * Local file implementation of FSNode based on java.io.File;   
  */ 
 public class LocalFSNode extends FSNode
 {
@@ -46,10 +46,8 @@ public class LocalFSNode extends FSNode
 	// === constructors === 
 	protected LocalFSNode(String path) throws URISyntaxException
 	{
-	    super((URI)null);
-	    // vri not set, use GlobalUserHome to resolve path:
-	    URI vri=FSUtil.getDefault().resolvePathURI(path);
-	    init(vri);
+	    super(FSUtil.getDefault().resolvePathURI(path));
+	    init(getURI());
 	}
 	
 	private void init(URI vri)
@@ -87,12 +85,17 @@ public class LocalFSNode extends FSNode
 	{
 		java.io.File files[]=_file.listFiles(); 
 		if (files==null)
-			return null;
+		{
+		    return null;
+		}
+		
 		int len=files.length;
 		
 		LocalFSNode lfiles[]=new LocalFSNode[len];
 		for (int i=0;i<len;i++)
+		{
 			lfiles[i]=new LocalFSNode(files[i]);
+		}
 		
 		return lfiles; 
 	}
