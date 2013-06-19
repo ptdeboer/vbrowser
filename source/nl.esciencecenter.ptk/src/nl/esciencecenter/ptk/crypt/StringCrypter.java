@@ -90,7 +90,9 @@ public class StringCrypter
     public static Secret getAppKey1()
     {
         // 'legacy app key 1'
-        return new Secret("123CSM34567890ENCRYPTIONC3PR4KEY5678901234567890".toCharArray());
+        return new Secret("123CSM34567890ENCRYPTION".toCharArray());
+        //  return new Secret("123CSM34567890ENCRYPTIONC3PR4KEY5678901234567890".toCharArray());
+
     }
    
     // ========================================================================
@@ -173,7 +175,9 @@ public class StringCrypter
         this.usePlainCharBytes=value;  
     }
     
-    /** Use hashing to create an unsalted key digest from the password/passkey */ 
+    /** 
+     * Use hash algorithm to create an unsalted key digest from the password/passkey.  
+     */ 
     public byte[] createKeyDigest(Secret password)
     {
         ByteBuffer bbuf=password.toByteBuffer(charSet); 
@@ -182,7 +186,7 @@ public class StringCrypter
         if (this.usePlainCharBytes)
             return bbuf.array(); 
         
-        // return MD5 or SHA hash. 
+        // return MD5 or SHA-256 hash. 
         this.keyHasher.reset(); 
         this.keyHasher.update(bbuf);
         byte keyBytes[]=keyHasher.digest();
@@ -193,7 +197,9 @@ public class StringCrypter
     protected void initKey(byte rawKey[],byte IV[],CryptScheme encryptionScheme) throws EncryptionException
     {
         if (rawKey==null)
+        {
             throw new NullPointerException("Encryption key is null!");
+        }
         
         try
         {
@@ -247,7 +253,9 @@ public class StringCrypter
             throw new UnsupportedEncodingException("No such Character encoding:"+charSetStr);
     }
     
-    /** @see #setCharacterEncoding(String) */ 
+    /** 
+     * @see #setCharacterEncoding(String)
+     */ 
     public Charset getCharacterEncoding()
     {
         return this.charSet; 
