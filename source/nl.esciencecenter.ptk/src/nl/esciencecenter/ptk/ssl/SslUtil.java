@@ -27,7 +27,7 @@ public class SslUtil
      */
     public static SSLSocket createSSLv3Socket(CertificateStore cacerts,String host, int port, int timeOut,boolean open) throws Exception
     {
-        SSLContext sslContext = cacerts.createSSLContext("SSLv3");
+        SSLContext sslContext = cacerts.createSSLContext(SslConst.PROTOCOL_SSLv3); 
         return createSSLSocket(sslContext, host, port, timeOut,open);
     }
     
