@@ -609,5 +609,29 @@ public class StringUtil
         boolean val=StringUtil.matchRE(text,"[^ \t\n]+",true,true);// use expensive RE 
         return (val==false);  
     }
+    
+    /** 
+     * Format integer value to Hexadecimal string with optional prefix and a number of digits >= numberOfDigits. 
+     * A zero is prefix for each digits missing.  
+     */
+    public static String toHexString(String prefix, int value, boolean upperCase,int numberOfDigits)
+    {
+        StringBuilder sb=new StringBuilder(); 
+        String hexStr=Integer.toHexString(value);
+        if (prefix!=null)
+        {
+            sb.append(prefix); 
+        }
+        
+        if (hexStr.length()<numberOfDigits)
+        {
+            for (int i=0;i<(numberOfDigits-hexStr.length());i++)
+            {
+                sb.append("0"); 
+            }
+        }
+        sb.append(hexStr);
+        return sb.toString(); 
+    }
  
 }
