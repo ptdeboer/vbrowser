@@ -406,11 +406,14 @@ public class Presentation
     }
 
     /**
-     * Create normalized date time string: [YY]YYYY-DD-MM hh:mm:ss.ms in GMT
-     * TimeZone.
+     * Create normalized Date+time String: [YY]YYYY-DD-MM hh:mm:ss.ms 
+     * in GMT TimeZone.
      */
     public static String createNormalizedDateTimeString(Date date)
     {
+        if (date==null)
+            return null; 
+        
         GregorianCalendar gmtTime = new GregorianCalendar();
         gmtTime.setTime(date);
         // normalize to GMT:
@@ -428,10 +431,35 @@ public class Presentation
         int seconds = gmtTime.get(GregorianCalendar.SECOND);
         int millies = gmtTime.get(GregorianCalendar.MILLISECOND);
 
-        return "" + to4decimals(yearSign*year) + "-" + to2decimals(month) + "-" + to2decimals(day) + " " + to2decimals(hours) + ":"
-                + to2decimals(minutes) + ":" + to2decimals(seconds) + "." + to3decimals(millies);
+        return to4decimals(yearSign*year) + "-" + to2decimals(month) + "-" + to2decimals(day) + " " + to2decimals(hours) + ":"
+               + to2decimals(minutes) + ":" + to2decimals(seconds) + "." + to3decimals(millies);
     }
 
+    /**
+     * Create normalized Date String: [YY]YYYY-DD-MM
+     * in GMT TimeZone.
+     */
+    public static String createNormalizedDateString(Date date)
+    {
+        if (date==null)
+            return null; 
+        
+        GregorianCalendar gmtTime = new GregorianCalendar();
+        gmtTime.setTime(date);
+        // normalize to GMT:
+        gmtTime.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        int yearSign=1; 
+        if (gmtTime.get(GregorianCalendar.ERA)== GregorianCalendar.BC)
+            yearSign=-1; 
+        
+        int year = gmtTime.get(GregorianCalendar.YEAR);
+        int month = 1 + gmtTime.get(GregorianCalendar.MONTH); // January=0!
+        int day = gmtTime.get(GregorianCalendar.DAY_OF_MONTH);
+
+        return to4decimals(yearSign*year) + "-" + to2decimals(month) + "-" + to2decimals(day); 
+    }
+    
     /** Convert Normalized DateTime string to millis since epoch */
     public static long createMillisFromNormalizedDateTimeString(String value)
     {
