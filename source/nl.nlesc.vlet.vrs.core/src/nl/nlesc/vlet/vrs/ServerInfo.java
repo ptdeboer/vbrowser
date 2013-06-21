@@ -35,6 +35,7 @@ import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
+import nl.nlesc.vlet.vrs.ServerInfo.AuthScheme;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.vrms.SecretStore;
 import nl.nlesc.vlet.vrs.vrms.SecretStore.SecretCombi;
@@ -54,6 +55,17 @@ import nl.nlesc.vlet.vrs.vrms.SecretStore.SecretCombi;
  */
 public class ServerInfo
 {
+    private static final ClassLogger logger=ClassLogger.getLogger(ServerInfo.class); 
+    
+    public static enum AuthScheme
+    {
+        NO_AUTH,
+        GSI_AUTH,
+        PASSWORD_AUTH,
+        PASSWORD_OR_IDKEY_AUTH,
+        IDKEY_AUTH
+    }
+    
     /** Unique key used in server info registry ! */ 
     public static final String ATTR_SERVER_ID = "serverID";
     
@@ -87,26 +99,11 @@ public class ServerInfo
 
     public static final String ATTR_NEED_USERINFO = "needUserinfo"; 
 
-    public static final String ATTR_SUPPORT_URI_ATTRS = "supportURIAttributes";
-    
-    // This is not an attribute, but an attribute value 
-    public static final String PASSWORD_AUTH = "Password";
-
-    public static final String PASSWORD_OR_PASSPHRASE_AUTH = "PasswordOrPassPhrase";
-
-    public static final String PASSPHRASE_AUTH = "Passphrase";
+    public static final String ATTR_SUPPORT_URI_ATTRS = "supportURIAttributes";  
 
     public static final String ATTR_DEFAULT_YES_NO_ANSWER = "defaultYesNoAnswer";
 
-    public static final String AUTH_SCHEME = "AUTH_SCHEME"; 
-
-    //  This is not an attribute, bute an attribute value 
-    public static final String GSI_AUTH = "GSI_AUTH";
-
-    //  This is not an attribute, bute an attribute value 
-	public static final String NO_AUTH = "NO_AUTH";
-	
-    public static final String authSchemes[] = { GSI_AUTH, PASSWORD_AUTH };
+    public static final String ATTR_AUTH_SCHEME = "AUTH_SCHEME";
 
     /**
      * Meta Attributes control settings of this Server Info. 
@@ -742,23 +739,25 @@ public class ServerInfo
         return getStringProperty(ATTR_SCHEME);
     }
 
-   
+    public AuthScheme getAuthScheme()
+    {
+        String authScheme = getStringProperty(ServerInfo.ATTR_AUTH_SCHEME);
+        return AuthScheme.valueOf(authScheme); 
+    }
+    
     public boolean usePasswordAuth()
     {
-        String authScheme = getStringProperty(ServerInfo.AUTH_SCHEME);
-
-        if (authScheme == null)
-            return false;
-        // only return true if attribute has been set to PASSWORD_AUTH!
-        if (authScheme.compareToIgnoreCase(PASSWORD_AUTH) == 0)
-            return true;
-
-        return false;
+        AuthScheme authScheme=getAuthScheme();
+        
+        if (authScheme==null)
+            return false; 
+        
+        return (authScheme==AuthScheme.PASSWORD_AUTH) || (authScheme==AuthScheme.PASSWORD_OR_IDKEY_AUTH); 
     }
 
     public void setUsePasswordAuth()
     {
-    	setAttribute(ServerInfo.AUTH_SCHEME, PASSWORD_AUTH,false);
+    	setAttribute(ServerInfo.ATTR_AUTH_SCHEME, ""+AuthScheme.PASSWORD_AUTH,false);
     }
 
     /**
@@ -781,16 +780,11 @@ public class ServerInfo
             }
             else
             {
-                warnPrintf("**** Oopsy: Server attrName[%d]=NULL!\n",i); 
+                logger.warnPrintf("Server attrName[%d]=NULL!\n",i); 
             }
         }
 
         return attrs;
-    }
-
-    private void warnPrintf(String format, Object... args)
-    {
-        ClassLogger.getLogger(ServerInfo.class).warnPrintf(format,args);
     }
     
     /**
@@ -819,13 +813,16 @@ public class ServerInfo
      */
     public ServerInfo store()
     {
-        debug("store()"); 
+        logger.debugPrintf("+++ Storing ServerInfo:%s\n", this);  
         return this.vrsContext.storeServerInfo(this);
     }
 
-    /** Remove matching ServerInfo from persistent ServerInfoRegistry ! */ 
+    /**
+     *  Remove matching ServerInfo from persistent ServerInfoRegistry !
+     */ 
     public void persistentDelete()
-    {	
+    {
+        logger.debugPrintf("--- Deleting ServerInfo:%s\n", this);  
     	this.vrsContext.getServerInfoRegistry().remove(this);
     }
    
@@ -908,12 +905,6 @@ public class ServerInfo
     	// auto update if NOT null  
         return this.setID(serverKey);
     }
-    
-    private void debug(String msg)
-    {
-        // Global.errorPrintln(this, msg);
-        //debugPrintf(this,"%s\n",msg);
-    }
 
     public boolean getUsePassiveMode(boolean defVal)
     {
@@ -925,9 +916,9 @@ public class ServerInfo
         setAttribute(new Attribute(VletConfig.ATTR_PASSIVE_MODE,val),true); 
     }
     
-    public void setAuthScheme(String authStr)
+    public void setAuthScheme(AuthScheme authScheme, boolean isEditable)
     {
-        setAttribute(ServerInfo.AUTH_SCHEME, authStr,true);
+        setAttribute(ServerInfo.ATTR_AUTH_SCHEME, ""+authScheme,isEditable);
     }
 
     /**
@@ -935,45 +926,33 @@ public class ServerInfo
      */
     public void setUseGSIAuth()
     {
-    	Attribute attr = new Attribute(ServerInfo.AUTH_SCHEME,GSI_AUTH);
-    	setAttribute(attr,false);
+        setAuthScheme(ServerInfo.AuthScheme.GSI_AUTH,false); 
     }
 
     public void setUseNoAuth()
     {
-        // only return true if attribute has been set to GSI_AUTH!
-        setAttribute(ServerInfo.AUTH_SCHEME, NO_AUTH,false);
+        setAuthScheme(ServerInfo.AuthScheme.NO_AUTH,false);
     }
     
-    /** Return true if no authentication scheme has been set. */
+    /** 
+     * Return true if no explicit authentication scheme has been set. 
+     */
     public boolean useNoAuth()
     {
-        String authScheme = getAuthScheme();
-        if (StringUtil.isEmpty(authScheme)) 
-            return true; 
-
-        if (authScheme.compareToIgnoreCase(NO_AUTH) == 0)
-            return true;
-
-        return false;
-
-    }
-
-    public String getAuthScheme()
-    {
-        return getStringProperty(ServerInfo.AUTH_SCHEME);
+        AuthScheme authScheme = getAuthScheme();
+        if (authScheme==null)
+            return false; 
+        
+        return (authScheme==AuthScheme.NO_AUTH);
     }
 
     public boolean useGSIAuth()
     {
-        String authScheme = getAuthScheme();
+        AuthScheme authScheme = getAuthScheme();
         if (authScheme == null)
             return false;
 
-        if (authScheme.compareToIgnoreCase(GSI_AUTH) == 0)
-            return true;
-
-        return false;
+        return (authScheme==AuthScheme.GSI_AUTH); 
     }
 
     /**
@@ -987,13 +966,17 @@ public class ServerInfo
         return getStringProperty(ATTR_DEFAULT_PATH);
     }
     
-    /** Default Server (Home) Path */ 
+    /** 
+     * Default Server (Home) Path. 
+     */ 
     public void setDefaultHomePath(String path)
     {
         setAttribute(ATTR_DEFAULT_PATH,path,true);
     }
     
-    /** Default Root Path, if different then "/" */ 
+    /**
+     *  Set Default FileSystem Root Path, if different then "/".  
+     */ 
     public void setRootPath(String path)
     {
         setAttribute(ATTR_ROOT_PATH,path,true);
@@ -1061,14 +1044,16 @@ public class ServerInfo
                 + getUserinfo() + "}";
     }
    
-    /** Do some basic hardcoded checks on the server Attribute */ 
+    /** 
+     * Do some basic checks on current Server Attributes. 
+     */ 
     public static void checkServerAttribute(VRSContext context, Attribute attr)
     {
         if (attr == null)
             return;
 
         // SCHEME part in ServerInfo is never editable 
-        if (attr.hasName(ServerInfo.AUTH_SCHEME))
+        if (attr.hasName(ServerInfo.ATTR_AUTH_SCHEME))
         {
         	attr.setEditable(false); 
         }
@@ -1144,7 +1129,7 @@ public class ServerInfo
 	   	  throw new Error("Server id cannot be NULL or empty"); 
 	   
 	   //check ID
-       debug(">>> New Server ID="+id); 
+       logger.debugPrintf(">>>setId():%s\n",id); 
        this._serverAttributes.put(new Attribute(ATTR_SERVER_ID,id));
        this.serverKey=id; 
        return id; 
@@ -1163,7 +1148,9 @@ public class ServerInfo
        return name; 
    }
    
-   /** Set Server configuration name */ 
+   /** 
+    * Set Server configuration name. 
+    */ 
    public void setName(String val)
    {
        this.setAttribute(ATTR_SERVER_NAME,val);
@@ -1198,20 +1185,27 @@ public class ServerInfo
        }
    }
    
-   /** Whether ServerInfo needs a hostname. */ 
+   /**
+    *  Whether ServerInfo needs a hostname. 
+    */ 
    public void setNeedHostname(boolean val)
    {
      this.setAttribute(ServerInfo.ATTR_NEED_HOSTNAME,val); 
    }
    
-   /** Whether Locataion VRL for this service/server needs a hostname. */ 
+   /** 
+    * Whether Location VRL for this service/server needs a hostname. 
+    */ 
    public boolean getNeedHostname()
    {
        return this.getBoolProperty(ServerInfo.ATTR_NEED_HOSTNAME,true); 
    }
    
 
-   /** Whether Location VRL needs a port. */ 
+   /** 
+    * Whether Location VRL needs a port.
+    * Local FileSystem doesn't need a port for example.  
+    */ 
    public void setNeedPort(boolean val)
    {
      this.setAttribute(ServerInfo.ATTR_NEED_PORT,val);
@@ -1245,8 +1239,7 @@ public class ServerInfo
    {
        return this.getBoolProperty(ServerInfo.ATTR_NEED_PORT,true);    
    }
-   
-   
+      
    /**
     * Whether URI attributes like ?reference or #fragment are supported. 
     */
@@ -1280,6 +1273,8 @@ public class ServerInfo
        
        return rootVrl;
    }
+
+
 
 
 }
