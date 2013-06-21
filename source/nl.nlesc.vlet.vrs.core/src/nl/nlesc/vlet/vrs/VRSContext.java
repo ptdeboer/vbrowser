@@ -815,6 +815,7 @@ public class VRSContext implements Serializable
             logger.debugPrintf("Disconnecting ResourceSystem:%s::%s\n", key, server);
 
             if (server != null)
+            {
                 try
                 {
                     server.disconnect();
@@ -826,6 +827,7 @@ public class VRSContext implements Serializable
                     logger.logException(ClassLogger.DEBUG, this, e,
                             "Exception when disconnecting resource server %s\n", server);
                 }
+            }
         }
 
     }
