@@ -49,13 +49,13 @@ public class URIFactory implements Serializable
     private static final long serialVersionUID = 6425053125412658256L;
 
     /** Path seperator character for URIs = '/' */
-    public final static char SEP_CHAR = '/';
+    public final static char URI_SEP_CHAR = '/';
 
     /** Windows backslash or '\\' */
     public final static char DOS_SEP_CHAR = '\\';
 
     /** Seperator character but as String ( "/" ) */
-    public final static String SEP_CHAR_STR = "" + SEP_CHAR;
+    public final static String URI_SEP_CHAR_STR = "" + URI_SEP_CHAR;
 
     public final static char QUERY_CHAR = '?';
 
@@ -114,27 +114,21 @@ public class URIFactory implements Serializable
         if (orgpath.length() == 0)
             return ""; // default path="";
 
-        //
-        // Ia) If platform seperator char if '\', replace with URI seperator
-        // '/'.
-        //
-
         String newpath = orgpath;
-        // For now convert ALL backslashes:
-        newpath = orgpath.replace('\\', SEP_CHAR);
+        
+        // Ia) If file seperator is '\', replace with URI forward slash. 
+        newpath = orgpath.replace(localSepChar, URI_SEP_CHAR);
 
-        // Ib) strip optional double slashes "c:\subdir\/path" =>
-        // "c:/subdir//path" => c:/subdir/path
-        newpath = newpath.replaceAll(SEP_CHAR + "+", SEP_CHAR_STR);
+        // Ib) strip optional double slashes "c:\subdir\/path" =>  "c:/subdir//path" => c:/subdir/path
+        newpath = newpath.replaceAll(URI_SEP_CHAR + "+", URI_SEP_CHAR_STR);
 
         // II) Convert relative path to absolute by inserting '/'
         // c:/subdir/path => /c:/subdir/path
-
         if (makeAbsolute == true)
         {
-            if (newpath.charAt(0) != SEP_CHAR)
+            if (newpath.charAt(0) != URI_SEP_CHAR)
             {
-                newpath = SEP_CHAR + newpath;
+                newpath = URI_SEP_CHAR + newpath;
             }
         }
 
@@ -152,47 +146,48 @@ public class URIFactory implements Serializable
          * accepts paths like '/c:/dir' !
          */
 
-        // newpath=newpath.replaceAll("(/[a-zA-Z]:)([^/])","\1/\2");
-
-        //
         // IIIa insert '/' if path starts with "C:" or "[a-zA-Z]:"
         // IIIb convert "/c:path => /c:/path"
 
-        String dosPrefixRE = "[/]*[a-zA-Z]:.*";
+        String dosPrefixRE = "[/]*[a-zA-Z]:.*"; // beware of optional slash before path here: 
 
-        // detect DOS path:
+        // Detect DOS path by matching against "C:" like paths. 
+        // Since single character schemes in URIs do not exist, this RE will match against DOS paths: 
+        
         if ((newpath.length() >= 2) && (newpath.matches(dosPrefixRE)))
         {
-            // prefix with '/' to normalize absolute DOS path :
+        	// Since "C:" is already an absolute path, prefix it with "/" as follows "C:" => "/C:"
             if (newpath.charAt(0) != '/')
+            {
                 newpath = "/" + newpath;
-
-            // insert "/" between ":" and path:
-            // "/C:<path>" => "/C:/<path>"
-            if ((newpath.length() >= 4) && (newpath.charAt(2) == ':') && (newpath.charAt(3) != SEP_CHAR))
+            }
+            
+            // insert "/" between ":" and path as follows: "/C:<path>" => "/C:/<path>"
+            if ((newpath.length() >= 4) && (newpath.charAt(2) == ':') && (newpath.charAt(3) != URI_SEP_CHAR))
             {
                 newpath = "/" + newpath.charAt(1) + ":/" + newpath.substring(3);
             }
         }
 
-        // convert: "/C:" => "/C:/"
+        // Convert (exact matching) DOS relative path "/C:" to absolute "/C:/" 
+        // The actual relative path of the drive could be resolved here. 
         if ((newpath.length() == 3) && (newpath.charAt(2) == ':'))
         {
-            newpath = newpath + SEP_CHAR;
+            newpath = newpath + URI_SEP_CHAR;
         }
-        else if ((newpath.length() == 4) && (newpath.charAt(3) == SEP_CHAR))
+        else if ((newpath.length() == 4) && (newpath.charAt(3) == URI_SEP_CHAR))
         {
             // keep "/C:/..."
         }
-        else if ((newpath.length() > 1) && (newpath.charAt(newpath.length() - 1) == SEP_CHAR))
+        else if ((newpath.length() > 1) && (newpath.charAt(newpath.length() - 1) == URI_SEP_CHAR))
         {
             // Strip last '/' if it isn't an absolute (Windows) drive path path
             // like example: '/C:/'
-
             newpath = newpath.substring(0, newpath.length() - 1);
         }
 
-        // finally: now strip multiple slashes '/' to normalise the path
+        // Extra: If during the conversion double slashes "//" have been created, reduced
+        // them to a single one:  
         newpath = newpath.replaceAll("/+", "/");
 
         // Debug("uri path="+newpath);
@@ -281,18 +276,18 @@ public class URIFactory implements Serializable
 
         index = strlen - 1;// start at end of string
 
-        if (path.equalsIgnoreCase(SEP_CHAR_STR))
-            return SEP_CHAR_STR;
+        if (path.equalsIgnoreCase(URI_SEP_CHAR_STR))
+            return URI_SEP_CHAR_STR;
 
         // special case, path ENDS with '/' which must be ignored
 
-        if (path.charAt(index) == SEP_CHAR)
+        if (path.charAt(index) == URI_SEP_CHAR)
         {
             index--;
             strlen--;
         }
 
-        while ((index >= 0) && (path.charAt(index) != SEP_CHAR))
+        while ((index >= 0) && (path.charAt(index) != URI_SEP_CHAR))
         {
             index--;
         }
@@ -334,18 +329,18 @@ public class URIFactory implements Serializable
             return "";
 
         // root path of root is root itself
-        if (path.equalsIgnoreCase(SEP_CHAR_STR))
-            return SEP_CHAR_STR;
+        if (path.equalsIgnoreCase(URI_SEP_CHAR_STR))
+            return URI_SEP_CHAR_STR;
 
         // special case, path ENDS with '/' which must be ignored
-        if (path.charAt(index) == SEP_CHAR)
+        if (path.charAt(index) == URI_SEP_CHAR)
         {
             index--;
             strlen--;
         }
 
         // move backwards to first seperator
-        while ((index >= 0) && (path.charAt(index) != SEP_CHAR))
+        while ((index >= 0) && (path.charAt(index) != URI_SEP_CHAR))
         {
             index--;
         }
@@ -353,7 +348,7 @@ public class URIFactory implements Serializable
         if (index == 0)
         {
             // first char (path[0]) == '/' => special case root dir encountered:
-            return SEP_CHAR_STR;
+            return URI_SEP_CHAR_STR;
         }
         else if (index < 0)
         {
@@ -827,10 +822,10 @@ public class URIFactory implements Serializable
             return null;
 
         // strip starting '/' to avoid empty path as first path element
-        if (path.startsWith(SEP_CHAR_STR))
+        if (path.startsWith(URI_SEP_CHAR_STR))
             path = path.substring(1);
 
-        return path.split(SEP_CHAR_STR);
+        return path.split(URI_SEP_CHAR_STR);
     }
 
     // ========================================================================
@@ -865,17 +860,17 @@ public class URIFactory implements Serializable
         {
             return this; // nothing to append
         }
-        else if (dirname.charAt(0) == SEP_CHAR)
+        else if (dirname.charAt(0) == URI_SEP_CHAR)
         {
             newpath = oldpath + dirname;
         }
         else if (dirname.charAt(0) == DOS_SEP_CHAR)
         {
-            newpath = oldpath + SEP_CHAR + dirname.substring(1);
+            newpath = oldpath + URI_SEP_CHAR + dirname.substring(1);
         }
         else
         {
-            newpath = oldpath + SEP_CHAR + dirname;
+            newpath = oldpath + URI_SEP_CHAR + dirname;
         }
 
         // sanitize path:
@@ -944,8 +939,8 @@ public class URIFactory implements Serializable
         // append kludge file to trigger uri to resolving actual path.
         String kludgePath = this.getPath() + "/dummy.html";
         URI uri = new URI("file", kludgePath, null);
-        // use Encoded path string here!
-        URI newUri = uri.resolve(encode(relpath));
+        // Use encoded path here to allow for strange character
+        URI newUri = uri.resolve(encode(uripath(relpath,false)));
         return newUri.getPath();
     }
 
@@ -1018,7 +1013,7 @@ public class URIFactory implements Serializable
 
         if (hasAuthority())
         {
-            str += SEP_CHAR_STR + SEP_CHAR_STR;
+            str += URI_SEP_CHAR_STR + URI_SEP_CHAR_STR;
 
             if ((userInfo != null) && (userInfo.compareTo("") != 0))
                 str += userInfo + "@";
@@ -1035,17 +1030,17 @@ public class URIFactory implements Serializable
         if (pathOrReference != null)
         {
             // should not be possible: 
-            if ((hasAuthority()) && (pathOrReference.startsWith(SEP_CHAR_STR)==false))
+            if ((hasAuthority()) && (pathOrReference.startsWith(URI_SEP_CHAR_STR)==false))
             {
                 // relative path but there muse be a '/ 'between host and path. 
-                str += SEP_CHAR; // still end with '/' for consistancy !
+                str += URI_SEP_CHAR; // still end with '/' for consistancy !
             }
             
             str += pathOrReference;
         }
         else
         {
-            str += SEP_CHAR; // still end with '/' for consistancy !
+            str += URI_SEP_CHAR; // still end with '/' for consistancy !
         }
         
         if (query != null)
