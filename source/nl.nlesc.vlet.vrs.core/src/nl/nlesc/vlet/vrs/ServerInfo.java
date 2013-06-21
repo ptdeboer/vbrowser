@@ -35,7 +35,6 @@ import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.vrs.ServerInfo.AuthScheme;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 import nl.nlesc.vlet.vrs.vrms.SecretStore;
 import nl.nlesc.vlet.vrs.vrms.SecretStore.SecretCombi;
