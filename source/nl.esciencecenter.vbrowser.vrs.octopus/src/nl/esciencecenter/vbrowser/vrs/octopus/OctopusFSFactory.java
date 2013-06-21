@@ -108,8 +108,8 @@ public class OctopusFSFactory extends VFSFactory
 
 	public ServerInfo updateSSHServerInfo(VRSContext context, ServerInfo info, VRL loc)
     {
-	    
-        info.setIfNotSet(ServerInfo.ATTR_SSH_IDENTITY,"id_rsa"); 
+	    info.setIfNotSet(ServerInfo.ATTR_SSH_IDENTITY,"id_rsa");
+        info.setAuthScheme(ServerInfo.AuthScheme.PASSWORD_OR_IDKEY_AUTH,false);  
         
         return info; 
     }

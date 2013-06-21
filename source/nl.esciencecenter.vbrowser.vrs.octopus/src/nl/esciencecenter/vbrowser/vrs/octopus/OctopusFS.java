@@ -34,7 +34,6 @@ import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.FileSystem;
 import nl.esciencecenter.octopus.files.PathAttributesPair;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
-import nl.esciencecenter.octopus.files.RelativePath;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -46,8 +45,7 @@ import nl.nlesc.vlet.vrs.vfs.VFS;
 import nl.nlesc.vlet.vrs.vfs.VFSNode;
 
 /**
- *  Example Skeleton FileSystemServer implementation 
- *  See Super Class FileSystemNode methods for default implementation. 
+ * Octopus Meta VFileSystem adaptor. 
  */  
 public class OctopusFS extends FileSystemNode
 {
@@ -195,6 +193,7 @@ public class OctopusFS extends FileSystemNode
 
 	public void connect() throws VrsException 
 	{
+	    
 	}
 
 	public void disconnect() throws VrsException

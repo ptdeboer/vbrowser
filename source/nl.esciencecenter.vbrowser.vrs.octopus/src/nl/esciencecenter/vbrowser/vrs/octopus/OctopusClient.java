@@ -45,6 +45,8 @@ import nl.esciencecenter.octopus.files.OpenOption;
 import nl.esciencecenter.octopus.files.PathAttributesPair;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
 import nl.esciencecenter.octopus.files.RelativePath;
+import nl.esciencecenter.ptk.crypt.Secret;
+import nl.esciencecenter.ptk.data.SecretHolder;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -104,6 +106,10 @@ public class OctopusClient
             throw new VrsException(e.getMessage(),e); 
         }
     }
+    
+    /** 
+     * Dummy or Nill PathAttributesPair object to use when fetching the FileAttributes fails.  
+     */
     public static class NillPathAttributesPair implements  PathAttributesPair
     {
         AbsolutePath path; 
@@ -141,6 +147,7 @@ public class OctopusClient
     private Properties octoProperties;
     private VRL userHomeDir;
     private String userName;
+    private VRSContext vrsContext;
 
     /**
      * Protected constructor: Use factory method.
@@ -156,6 +163,7 @@ public class OctopusClient
     {
         this.userName=info.getUsername(); 
         this.userHomeDir=context.getUserHomeLocation();  
+        this.vrsContext=context; 
     }
     
     public String getUsername()
@@ -452,14 +460,17 @@ public class OctopusClient
     {
         String sshUser=info.getUsername(); 
         String ssh_id_key_file=info.getAttributeValue(ServerInfo.ATTR_SSH_IDENTITY);          
-        char passWord[]=null; 
+        boolean useIdFile=false; 
+        char passwordChars[]=null; 
         
         if (StringUtil.isEmpty(ssh_id_key_file)==false)
         {
             // ssh_id_key_file can be absolute here: 
             VRL idFile=getUserHome().resolvePath(".ssh").resolvePath(ssh_id_key_file);  
          
-            if (FSUtil.getDefault().existsFile(idFile.getPath(), true))
+            useIdFile=FSUtil.getDefault().existsFile(idFile.getPath(), true); 
+            
+            if (useIdFile)
             {
                 ssh_id_key_file=idFile.getPath();
             }
@@ -467,32 +478,49 @@ public class OctopusClient
             {
                 ssh_id_key_file=null; // do not use!
             }
-         
         }
-
+        Secret pwd=null;
+        if (useIdFile==false)
+        {
+            // fall back to password 
+            pwd=info.getPassword();
+            if ((pwd==null) || (pwd.isEmpty()))
+            {
+                String serverStr=info.getUserinfo()+"@"+info.getServerVRL().getHostname(); 
+                SecretHolder secretH=new SecretHolder(); 
+                this.vrsContext.getUI().askAuthentication("Provide password for:"+serverStr,secretH); 
+                pwd=secretH.value;
+            }
+        }
+        
+        if ((pwd!=null) && (!pwd.isEmpty()))
+        {
+            passwordChars=pwd.getChars(); 
+        }
+        
         logger.debugPrintf("createSSHCredentials(): Using Username:"+sshUser);
         logger.debugPrintf("createSSHCredentials(): Using ID Key file:%s\n",ssh_id_key_file);
+        logger.debugPrintf("createSSHCredentials(): Using password = %s\n",(passwordChars!=null)?"Yes":"No"); 
+        
         
         Credentials creds = engine.credentials();
         Credential cred;
         
-        if (ssh_id_key_file==null)
-        {
-            cred= creds.newCertificateCredential("ssh", 
-                    null, 
-                    null,
-                    null, 
-                    sshUser, 
-                    passWord);
-        }
-        else
+        if (useIdFile)
         {
             cred= creds.newCertificateCredential("ssh", 
                     null, 
                     ssh_id_key_file, 
                     ssh_id_key_file+".pub",
                     sshUser, 
-                    passWord);
+                    passwordChars);
+        }
+        else
+        {
+            cred= creds.newPasswordCredential("ssh", 
+                    null, 
+                    sshUser, 
+                    passwordChars);
         }
         
         return cred; 
