@@ -26,7 +26,7 @@ import javax.swing.JComboBox;
 /** 
  * String Selection ComboBox. 
  */
-public class SelectionComboBox extends JComboBox
+public class StringSelectionComboBox extends JComboBox
 {
     private static final long serialVersionUID = -8233146785771708020L;
 
@@ -34,13 +34,13 @@ public class SelectionComboBox extends JComboBox
     
     boolean optionsEditable = false; // whether options are editable
 
-    public SelectionComboBox()
+    public StringSelectionComboBox()
     {
         super();
         init();
     }
 
-    public SelectionComboBox(String[] vals)
+    public StringSelectionComboBox(String[] vals)
     {
         super();
         setValues(vals);
