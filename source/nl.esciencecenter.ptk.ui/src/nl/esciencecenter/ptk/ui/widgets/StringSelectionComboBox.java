@@ -24,7 +24,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
 /** 
- * String Selection ComboBox. 
+ * String Selection ComboBox which doesn't use Generic. 
  */
 public class StringSelectionComboBox extends JComboBox
 {
@@ -114,5 +114,18 @@ public class StringSelectionComboBox extends JComboBox
             return null; 
         
         return obj.toString(); 
+    }
+    
+    public void setSelectedItem(Object value)
+    {   
+        if (value==null)
+        {
+            this.setEnabled(false); 
+            return;
+        }
+        
+        // explicit convert to String. 
+        String strValue=value.toString();
+        super.setSelectedItem(strValue); 
     }
 }
