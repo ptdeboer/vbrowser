@@ -117,7 +117,9 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 		return (VFile)node; 
 	}
 	
-	/** Check whether the (remote) path exists and is actual an directory.*/ 
+	/**
+	 * Check whether the (remote) path exists and is actual an directory.
+	 */ 
 	public boolean existsDir(VRL dirVrl) throws VrsException
 	{
 	    VrsException e1=null; 
@@ -147,13 +149,17 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 	    throw e1; // throw original exception  
 	}
 	
-	/** Check wether the (remote) path exists and in an actual file.*/ 
+	/**
+	 *  Check whether the (remote) path exists and in an actual file.
+	 */ 
 	public boolean existsFile(VRL fileVrl) throws VrsException
 	{
 		return newFile(fileVrl).exists(); 
 	}
 
-	/** Check wether the remote path exists. */ 
+	/** 
+	 * Check wether the remote path exists. 
+	 */ 
 	public boolean existsPath(VRL fileVrl) throws VrsException
 	{
 		if (newFile(fileVrl).exists())
@@ -189,7 +195,9 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
         }
 	}
 
-    /** Create Directory on this filesystem. */ 
+    /** 
+     * Create Directory on this filesystem. 
+     */ 
 	public VDir createDir(VRL dirVrl, boolean ignoreExisting) throws VrsException
 	{
 		VDir dir=newDir(dirVrl); 
@@ -210,7 +218,9 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 		return dir; 
 	}
 
-	/** Create file on this filesystem */ 
+	/** 
+	 * Create file on this filesystem.  
+	 */ 
 	public VFile createFile(VRL fileVrl, boolean ignoreExisting) throws VrsException
 	{
 		VFile file=newFile(fileVrl); 
@@ -231,15 +241,22 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 		return file;  
 	}
 	 
+	/** 
+	 * Create new VFile object. Path might not exist on remote FileSystem. 
+	 */
 	public VFile newFile(String path) throws VrsException
 	{
 		return newFile(resolvePath(path)); 
 	}
-	
+
+	/** 
+	 * Create new VDir object. Path might not exist on remote FileSystem.
+	 */
 	public VDir newDir(String path) throws VrsException
 	{
 		return newDir(resolvePath(path)); 
 	}
+	
 	
 	public void dispose()
 	{
