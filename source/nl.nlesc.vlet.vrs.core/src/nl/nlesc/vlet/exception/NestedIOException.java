@@ -29,17 +29,17 @@ public class NestedIOException extends VrsException
 
     public NestedIOException(String message)
     {
-        super(message,null,ExceptionStrings.VLIOEXCEPTION);
+        super(message,null,ExceptionStrings.VRSIOEXCEPTION);
     }
 
     public NestedIOException(String message, Throwable err)
     {
-        super(message,err,ExceptionStrings.VLIOEXCEPTION);
+        super(message,err,ExceptionStrings.VRSIOEXCEPTION);
     }
 
     public NestedIOException(Throwable e)
     {
-        super(e.getMessage(),e,ExceptionStrings.VLIOEXCEPTION);
+        super(e.getMessage(),e,ExceptionStrings.VRSIOEXCEPTION);
     }
 
     protected NestedIOException(String name, String message, Throwable cause)

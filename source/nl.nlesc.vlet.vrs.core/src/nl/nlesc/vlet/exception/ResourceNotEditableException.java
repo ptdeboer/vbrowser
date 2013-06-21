@@ -26,12 +26,12 @@ public class ResourceNotEditableException extends VrsResourceException
 
     public ResourceNotEditableException(String message)
     {
-        super(ExceptionStrings.NOT_EDITABLE_EXCEPTION, message);
+        super(ExceptionStrings.RESOURCE_NOT_EDITABLE_EXCEPTION, message);
     }
 
     /** Constructor which keeps original System Exception */
     public ResourceNotEditableException(String message, Throwable e)
     {
-        super(ExceptionStrings.NOT_EDITABLE_EXCEPTION, message, e);
+        super(ExceptionStrings.RESOURCE_NOT_EDITABLE_EXCEPTION, message, e);
     }
 }

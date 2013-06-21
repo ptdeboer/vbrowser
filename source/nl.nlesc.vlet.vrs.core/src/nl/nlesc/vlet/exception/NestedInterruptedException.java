@@ -27,12 +27,12 @@ public class NestedInterruptedException extends InternalError
 
     public NestedInterruptedException(String message)
     {
-        super(message,null,ExceptionStrings.VLINTERRUPTEDEXCEPTION);
+        super(message,null,ExceptionStrings.VRSINTERRUPTEDEXCEPTION);
     }
     
     public NestedInterruptedException(String message, Exception e)
     {
-        super(message,e,ExceptionStrings.VLINTERRUPTEDEXCEPTION);
+        super(message,e,ExceptionStrings.VRSINTERRUPTEDEXCEPTION);
     }
     
 

@@ -26,7 +26,7 @@ public class ConnectionException extends NetworkCommunicationException
 
     public ConnectionException(String message)
     {
-        super(ExceptionStrings.VLCONNECTIONEXCEPTION, message,null);
+        super(ExceptionStrings.VRSCONNECTIONEXCEPTION, message,null);
     }
 
     /**
@@ -35,12 +35,12 @@ public class ConnectionException extends NetworkCommunicationException
      */
     public ConnectionException(String message, Throwable lastex)
     {
-        super(ExceptionStrings.VLCONNECTIONEXCEPTION, message, lastex);
+        super(ExceptionStrings.VRSCONNECTIONEXCEPTION, message, lastex);
     }
 
     public ConnectionException(Throwable e)
     {
-        super(ExceptionStrings.VLCONNECTIONEXCEPTION, e.getMessage(), e);
+        super(ExceptionStrings.VRSCONNECTIONEXCEPTION, e.getMessage(), e);
     }
 
 }

@@ -26,13 +26,13 @@ public class ResourceAccessDeniedException extends VrsResourceException
 
     public ResourceAccessDeniedException(String message)
     {
-        super(ExceptionStrings.ACCES_DENIED, message);
+        super(ExceptionStrings.RESOURCE_ACCES_DENIED, message);
     }
 
     /** Constructor which keeps original System Exception */
     public ResourceAccessDeniedException(String message, Exception e)
     {
-        super(ExceptionStrings.ACCES_DENIED, message, e);
+        super(ExceptionStrings.RESOURCE_ACCES_DENIED, message, e);
     }
 
     protected ResourceAccessDeniedException(String name, String message)

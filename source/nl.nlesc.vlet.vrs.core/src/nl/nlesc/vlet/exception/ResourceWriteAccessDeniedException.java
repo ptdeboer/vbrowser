@@ -26,12 +26,12 @@ public class ResourceWriteAccessDeniedException extends ResourceAccessDeniedExce
 
     public ResourceWriteAccessDeniedException(String message)
     {
-        super(ExceptionStrings.WRITE_ACCESS_DENIED,message);
+        super(ExceptionStrings.RESOURCE_WRITE_ACCESS_DENIED,message);
     }
 
     /** Constructor which keeps original Exception */
     public ResourceWriteAccessDeniedException(String message, Throwable e)
     {
-        super(ExceptionStrings.WRITE_ACCESS_DENIED,message,e); 
+        super(ExceptionStrings.RESOURCE_WRITE_ACCESS_DENIED,message,e); 
     }
 }

@@ -31,7 +31,7 @@ public class InternalError extends VrsException
 
     public InternalError(String message)
     {
-        super(message,null,ExceptionStrings.VLINTERNALERROR);
+        super(message,null,ExceptionStrings.VRSINTERNALERROR);
     }
 
     /**
@@ -41,12 +41,12 @@ public class InternalError extends VrsException
 
     public InternalError(String message, Throwable e)
     {
-        super(message,e,ExceptionStrings.VLINTERNALERROR);
+        super(message,e,ExceptionStrings.VRSINTERNALERROR);
     }
 
     public InternalError(Throwable e)
     {
-        super(e.getMessage(),e,ExceptionStrings.VLINTERNALERROR);
+        super(e.getMessage(),e,ExceptionStrings.VRSINTERNALERROR);
     }
 
     protected InternalError(String message, Throwable e,String name)
