@@ -96,7 +96,7 @@ public class LFile extends VFile implements VStreamAccessable,
         // windows hack: 'c:' is a relative path
         if (path.charAt(path.length() - 1) == ':')
         {
-            path = path + URIFactory.SEP_CHAR; // make absolute !
+            path = path + URIFactory.URI_SEP_CHAR; // make absolute !
         }
         // Note: on windows the file path gets converted to use BACKSLASHES
         // for URI' use VRL.sepChar, for java Files use File.seperatorChar
@@ -116,7 +116,7 @@ public class LFile extends VFile implements VStreamAccessable,
         // Do this ONLY for the local filesystem !
         //
 
-        if (File.separatorChar != URIFactory.SEP_CHAR)
+        if (File.separatorChar != URIFactory.URI_SEP_CHAR)
             path = URIFactory.uripath(path, true, File.separatorChar);
 
         this.setLocation(new VRL(VRS.FILE_SCHEME,null, path));

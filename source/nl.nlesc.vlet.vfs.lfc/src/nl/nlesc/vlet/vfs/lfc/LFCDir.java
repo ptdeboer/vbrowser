@@ -264,7 +264,7 @@ public class LFCDir extends VDir
         {
 //            newPath = resolvePath(newPath);//this returns the same path    
             thisPath = new VRL(getPath());
-            newPath = resolvePathString(thisPath.getParent().getPath()+URIFactory.SEP_CHAR+newName);    
+            newPath = resolvePathString(thisPath.getParent().getPath()+URIFactory.URI_SEP_CHAR+newName);    
         }
         
         return lfcClient.mv(getPath(), newPath);

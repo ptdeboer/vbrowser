@@ -68,7 +68,7 @@ public class SftpDir extends VDir implements VUnixFileAttributes
             }
             else
             {
-              String filepath=this.getPath()+URIFactory.SEP_CHAR+childs[i];
+              String filepath=this.getPath()+URIFactory.URI_SEP_CHAR+childs[i];
               nodes.add(server.getPath(filepath)); 
             }
         }

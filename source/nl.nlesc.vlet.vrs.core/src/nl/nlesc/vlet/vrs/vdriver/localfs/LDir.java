@@ -79,7 +79,7 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
         // Do this ONLY for the local filesystem !
         //
 
-        if (File.separatorChar != URIFactory.SEP_CHAR)
+        if (File.separatorChar != URIFactory.URI_SEP_CHAR)
             path = URIFactory.uripath(path, true, File.separatorChar);
 
         // under widows: will convert windows path to URI path !
@@ -215,15 +215,15 @@ public class LDir extends nl.nlesc.vlet.vrs.vfs.VDir implements VUnixFileAttribu
 
         for (int i = 0; i < list.length; i++)
         {
-            java.io.File subFile = new java.io.File(path + URIFactory.SEP_CHAR + list[i]);
+            java.io.File subFile = new java.io.File(path + URIFactory.URI_SEP_CHAR + list[i]);
 
             if (subFile.isDirectory() == true)
             {
-                nodes[i] = new LDir(localfs, path + URIFactory.SEP_CHAR + list[i]);
+                nodes[i] = new LDir(localfs, path + URIFactory.URI_SEP_CHAR + list[i]);
             }
             else
             {
-                nodes[i] = new LFile(localfs, path + URIFactory.SEP_CHAR + list[i]);
+                nodes[i] = new LFile(localfs, path + URIFactory.URI_SEP_CHAR + list[i]);
             }
         }
 

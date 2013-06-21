@@ -747,7 +747,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     {
         boolean fullpath=false;
         
-        if (newNameOrPath.startsWith(URIFactory.SEP_CHAR_STR)==true); 
+        if (newNameOrPath.startsWith(URIFactory.URI_SEP_CHAR_STR)==true); 
             fullpath=true; 
         
        return (rename(newNameOrPath,fullpath)!=null);
@@ -757,7 +757,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     {
         boolean fullpath=false;
         
-        if (newNameOrPath.startsWith(URIFactory.SEP_CHAR_STR)==true)
+        if (newNameOrPath.startsWith(URIFactory.URI_SEP_CHAR_STR)==true)
             fullpath=true; 
         
        return (rename(newNameOrPath,fullpath)!=null); 

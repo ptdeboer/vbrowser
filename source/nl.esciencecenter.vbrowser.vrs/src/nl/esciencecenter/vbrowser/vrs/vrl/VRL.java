@@ -353,12 +353,12 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
             return true; 
         
         // "/"
-        if (upath.compareTo(URIFactory.SEP_CHAR_STR)==0) 
+        if (upath.compareTo(URIFactory.URI_SEP_CHAR_STR)==0) 
             return true; 
         
         // uripath normalized windosh root "/X:/" 
         if (upath.length()==4)
-            if ((upath.charAt(0)==URIFactory.SEP_CHAR) && (upath.substring(2,4).compareTo(":/")==0))
+            if ((upath.charAt(0)==URIFactory.URI_SEP_CHAR) && (upath.substring(2,4).compareTo(":/")==0))
                 return true; 
         
         return false; 
@@ -438,7 +438,7 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
             // last part of subpath after '<..>/dir' must be '/' 
             // Debug("subPath.charAt="+subPath.charAt(pathStr.length()));
             
-            if ((subPath.length()>pathStr.length()) && (subPath.charAt(pathStr.length())==URIFactory.SEP_CHAR)) 
+            if ((subPath.length()>pathStr.length()) && (subPath.charAt(pathStr.length())==URIFactory.URI_SEP_CHAR)) 
                 return true; 
         }
         

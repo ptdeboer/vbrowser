@@ -569,7 +569,7 @@ public class ConfigManager
     public VRL getMyVLeLocation()
     {
         VRL homeLoc = vrsContext.getUserHomeLocation(); 
-        return homeLoc.appendPath(VletConfig.USER_VLETRC_DIRNAME+URIFactory.SEP_CHAR_STR+MyVLe.MYVLE_SUBDIR_NAME);
+        return homeLoc.appendPath(VletConfig.USER_VLETRC_DIRNAME+URIFactory.URI_SEP_CHAR_STR+MyVLe.MYVLE_SUBDIR_NAME);
     }
 
     public String getProperty(String name)

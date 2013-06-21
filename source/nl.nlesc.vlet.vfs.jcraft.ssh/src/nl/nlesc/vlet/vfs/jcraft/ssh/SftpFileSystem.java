@@ -1083,7 +1083,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         String newPath = null;
 
         if (nameIsPath == false)
-            newPath = URIFactory.dirname(path) + URIFactory.SEP_CHAR + newName;
+            newPath = URIFactory.dirname(path) + URIFactory.URI_SEP_CHAR + newName;
         else
             newPath = newName;
 
@@ -1648,12 +1648,12 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
 
     public String getDefaultKnownHostsFile()
     {
-        return getDefaultSSHDir() + URIFactory.SEP_CHAR_STR+JCraftClient.SSH_KNOWN_HOSTS;
+        return getDefaultSSHDir() + URIFactory.URI_SEP_CHAR_STR+JCraftClient.SSH_KNOWN_HOSTS;
     }
 
     public String getDefaultSSHDir()
     {
-        return vrsContext.getLocalUserHome() + URIFactory.SEP_CHAR_STR + JCraftClient.SSH_CONFIG_SIBDUR;
+        return vrsContext.getLocalUserHome() + URIFactory.URI_SEP_CHAR_STR + JCraftClient.SSH_CONFIG_SIBDUR;
     }
 
     void setFinalUserSubject(VRSContext newContext) throws AuthenticationException

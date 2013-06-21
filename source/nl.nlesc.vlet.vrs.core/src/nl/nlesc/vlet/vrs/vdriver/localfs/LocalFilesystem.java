@@ -174,11 +174,11 @@ public class LocalFilesystem extends FileSystemNode
         // resolve ~:
         if (path.startsWith("~"))
         {
-            path = GlobalProperties.getProperty("user.home") + URIFactory.SEP_CHAR_STR + path.substring(1);
+            path = GlobalProperties.getProperty("user.home") + URIFactory.URI_SEP_CHAR_STR + path.substring(1);
         }
         else if (path.startsWith("/~"))
         {
-            path = GlobalProperties.getProperty("user.home") + URIFactory.SEP_CHAR_STR + path.substring(2);
+            path = GlobalProperties.getProperty("user.home") + URIFactory.URI_SEP_CHAR_STR + path.substring(2);
         }
 
         File file = new File(path);
@@ -272,7 +272,7 @@ public class LocalFilesystem extends FileSystemNode
         }
         else
         {
-            fullname = URIFactory.dirname(filepath) + URIFactory.SEP_CHAR + newname;
+            fullname = URIFactory.dirname(filepath) + URIFactory.URI_SEP_CHAR + newname;
         }
 
         Debug("newfilename=" + fullname);

@@ -312,7 +312,7 @@ public final class VFSClient extends VRSClient
         
         VFSNode node=getVFSNode(vrl);
         
-        if ((pathOrName!=null) && (pathOrName.charAt(0)==URIFactory.SEP_CHAR))
+        if ((pathOrName!=null) && (pathOrName.charAt(0)==URIFactory.URI_SEP_CHAR))
             nameIsPath=true; 
         
         return node.renameTo(pathOrName,nameIsPath); 

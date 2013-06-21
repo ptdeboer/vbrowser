@@ -1009,7 +1009,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         if (nameIsPath)
             newpath = newName;
         else
-            newpath = URIFactory.dirname(filepath) + URIFactory.SEP_CHAR + newName;
+            newpath = URIFactory.dirname(filepath) + URIFactory.URI_SEP_CHAR + newName;
 
         try
         {

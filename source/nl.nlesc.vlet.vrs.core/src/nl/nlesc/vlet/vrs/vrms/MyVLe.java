@@ -1110,7 +1110,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         String path = location.getPath();
 
         // root node = me !
-        if ((path == null) || (path.equalsIgnoreCase("")) || path.equalsIgnoreCase(URIFactory.SEP_CHAR_STR))
+        if ((path == null) || (path.equalsIgnoreCase("")) || path.equalsIgnoreCase(URIFactory.URI_SEP_CHAR_STR))
         {
             return this;
         }
@@ -1125,7 +1125,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         }
 
         String ref = els[0];
-        if (ref.charAt(0) == URIFactory.SEP_CHAR)
+        if (ref.charAt(0) == URIFactory.URI_SEP_CHAR)
         {
             ref = ref.substring(1);
         }
