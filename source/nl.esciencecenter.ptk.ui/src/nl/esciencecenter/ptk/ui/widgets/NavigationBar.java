@@ -36,7 +36,7 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 import java.awt.dnd.DropTarget;
 
-public class NavigationBar extends JToolBar
+public class NavigationBar extends JToolBar implements URIDropTargetLister
 {
     private static final long serialVersionUID = -7147394442677763506L;
 
@@ -263,8 +263,8 @@ public class NavigationBar extends JToolBar
         
         try
         { 
-            dt1.addDropTargetListener(new NavigationBarDropHandler(this));
-            dt2.addDropTargetListener(new NavigationBarDropHandler(this));
+            dt1.addDropTargetListener(new URIDropHandler(this));
+            dt2.addDropTargetListener(new URIDropHandler(this));
         }
         catch (TooManyListenersException e)
         {

@@ -1,13 +1,17 @@
 package nl.esciencecenter.ptk.ui.widgets;
 
 import java.awt.Font;
+import java.awt.dnd.DropTarget;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.TooManyListenersException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -17,9 +21,63 @@ import java.awt.Color;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class LocationSelectionField extends JPanel
+import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
+
+public class LocationSelectionField extends JPanel implements URIDropTargetLister
 {
     private static final long serialVersionUID = 7668815810402466501L;
+ 
+    public class FileLocationEvaluator implements ActionListener, FocusListener
+    {
+    	private JTextField locationTF;
+    	//Color originalBGColor; 
+    	
+    	public FileLocationEvaluator(JTextField textField)
+    	{
+    		this.locationTF=textField;
+    		//originalBGColor=textField.getBackground(); 
+    	}
+
+    	@Override
+    	public void actionPerformed(ActionEvent e) 
+    	{
+    		evaluate(); 
+    	}
+    	
+    	public void evaluate()
+    	{
+    		String text=locationTF.getText(); 
+    		
+    		try
+    		{
+    			java.net.URI uri;
+    			uri = FSUtil.getDefault().resolvePathURI(text);
+    			locationTF.setText(uri.getPath());
+    			//locationTF.setBackground(originalBGColor);
+    		}
+    		catch (URISyntaxException e1) 
+    		{
+    			//locationTF.setBackground(Color.RED);
+    			e1.printStackTrace();
+    		}
+    	}
+
+		@Override
+		public void focusGained(FocusEvent e) 
+		{
+		}
+
+		@Override
+		public void focusLost(FocusEvent e)
+		{
+			evaluate(); 
+		}
+    }
+
+    // ========
+    // Instance 
+    // ========
     
     private JTextField locationTF;
     
@@ -28,6 +86,7 @@ public class LocationSelectionField extends JPanel
     public LocationSelectionField() 
     {
         initGui();
+        initDnD();
     }
 
     public void initGui()
@@ -47,10 +106,13 @@ public class LocationSelectionField extends JPanel
             add(locationTF);
             locationTF.setColumns(10);
             locationTF.setBorder(new EmptyBorder(2,2,2,2)); 
+            FileLocationEvaluator evaluator=new FileLocationEvaluator(locationTF);
+            locationTF.addActionListener(evaluator);
+            locationTF.addFocusListener(evaluator);
         }
         
         {
-            JLabel fileSelectorIconLbl = new JLabel("X");   
+            JLabel fileSelectorIconLbl = new JLabel("|");   
             add(fileSelectorIconLbl);
         }
     }
@@ -74,9 +136,21 @@ public class LocationSelectionField extends JPanel
     }
 
     public java.net.URI getLocationURI() throws URISyntaxException
+    {	
+    	// Use FSUtil to resolve URI: 
+    	return FSUtil.getDefault().resolvePathURI(locationTF.getText()); 
+    }
+    
+    public boolean isURI()
     {
-        // try to parse string as is:
-        return new java.net.URI(locationTF.getText()); 
+    	try
+    	{
+    		return (getLocationURI()!=null); 
+    	}
+    	catch (URISyntaxException e)
+    	{
+    		return false; 
+    	}
     }
     
     public void setIcon(Icon icon)
@@ -114,4 +188,32 @@ public class LocationSelectionField extends JPanel
         locationTF.setEditable(value); 
     }
 
+    
+    /** 
+     * Adds default support for dropped URI and URls. 
+     */
+    protected void initDnD()
+    {
+        DropTarget dt1=new DropTarget(); 
+        DropTarget dt2=new DropTarget(); 
+
+        // enable toolbar and icontext field:  
+        this.fileIconLbl.setDropTarget(dt1);
+        this.locationTF.setDropTarget(dt2); 
+        
+        try
+        { 
+            dt1.addDropTargetListener(new URIDropHandler(this));
+            dt2.addDropTargetListener(new URIDropHandler(this));
+        }
+        catch (TooManyListenersException e)
+        {
+            ClassLogger.getLogger(this.getClass()).logException(ClassLogger.ERROR, e, "TooManyListenersException:"+e);
+        }
+    }
+
+    public void notifyDnDDrop(String txt)
+    {
+        this.locationTF.setText(txt);         
+    }
 }

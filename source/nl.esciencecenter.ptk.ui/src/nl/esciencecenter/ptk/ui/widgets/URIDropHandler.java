@@ -17,18 +17,18 @@ import nl.esciencecenter.ptk.net.URIUtil;
 /** 
  * Handle drops on the Navigation Bar. 
  */
-public class NavigationBarDropHandler implements DropTargetListener
+public class URIDropHandler implements DropTargetListener
 {
     public static DataFlavor flavorURIList = new DataFlavor("text/uri-list;class=java.lang.String", "uri list");
     public static DataFlavor stringFlavor = DataFlavor.stringFlavor; 
     
     public static DataFlavor myFlavors[]={stringFlavor,flavorURIList};
     
-    private NavigationBar navigationBar;
+    private URIDropTargetLister uriDropTargetListener;
 
-    public NavigationBarDropHandler(NavigationBar navigationBar)
+    public URIDropHandler(URIDropTargetLister uriDropListener)
     {
-        this.navigationBar=navigationBar;
+        this.uriDropTargetListener=uriDropListener;
     }
 
     public void dragEnter(DropTargetDragEvent dtde)
@@ -75,7 +75,7 @@ public class NavigationBarDropHandler implements DropTargetListener
                 dtde.getDropTargetContext().dropComplete(true);
 
                 if ((uris!=null) && (uris.size()>0))
-                    navigationBar.notifyDnDDrop(uris.get(0).toString());
+                	uriDropTargetListener.notifyDnDDrop(uris.get(0).toString());
                 dtde.dropComplete(true);
             }
             else if (t.isDataFlavorSupported(DataFlavor.stringFlavor))
@@ -84,7 +84,7 @@ public class NavigationBarDropHandler implements DropTargetListener
                 dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
                 String txt = (String) t.getTransferData(DataFlavor.stringFlavor);
                 dtde.getDropTargetContext().dropComplete(true);
-                navigationBar.notifyDnDDrop(txt);
+                uriDropTargetListener.notifyDnDDrop(txt);
                 dtde.dropComplete(true);
             }
             
