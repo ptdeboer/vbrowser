@@ -194,6 +194,7 @@ public class StringCrypter
         return keyBytes;
     }
 
+    @SuppressWarnings("deprecation")
     protected void initKey(byte rawKey[],byte IV[],CryptScheme encryptionScheme) throws EncryptionException
     {
         if (rawKey==null)

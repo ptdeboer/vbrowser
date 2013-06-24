@@ -1,6 +1,5 @@
 package nl.esciencecenter.ptk.ssl;
 
-import java.security.MessageDigest;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -8,7 +7,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 
 import nl.esciencecenter.ptk.ssl.CertificateStore.CaCertOptions;
-import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 public class ImportCertificates

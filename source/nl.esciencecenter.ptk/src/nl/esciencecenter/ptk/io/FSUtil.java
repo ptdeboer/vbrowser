@@ -26,9 +26,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.logging.Level;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.net.URIUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
@@ -75,13 +75,13 @@ public class FSUtil
     {
         try
         {
-            this.userHome = new URI("file", null, null, 0, GlobalProperties.getGlobalUserHome(), null, null);
-            this.workingDir=new URI("file", null, null, 0, GlobalProperties.getGlobalUserHome(), null, null);
-            this.tmpDir=new URI("file", null, null, 0, GlobalProperties.getGlobalTempDir(), null, null);
+            this.userHome = new java.io.File(GlobalProperties.getGlobalUserHome()).toURI(); 
+            this.workingDir=new java.io.File(GlobalProperties.getGlobalUserHome()).toURI(); 
+            this.tmpDir=new java.io.File(GlobalProperties.getGlobalTempDir()).toURI();
         }
-        catch (URISyntaxException e)
+        catch (Throwable e)
         {
-            e.printStackTrace();
+            logger.logException(ClassLogger.FATAL, e, "Initialization Exception:%s\n", e);
         }
     }
    
@@ -89,40 +89,42 @@ public class FSUtil
      * Check syntax and decode optional (relative) URL or path to an absolute
      * normalized path. 
      * If an exception occurs (syntax error) the path is returned "as is" !
-     * Use resolvePathURI(path) for URI.
+     * Use resolveURI(path) to resolve to an absolute and normalized URI.
+     * 
+     * @throws FileURISyntaxException if the path contains invalid characters.  
      */
-    public String resolvePath(String path)
+    public String resolvePath(String path) throws FileURISyntaxException 
+    {
+        return resolveURI(path).getPath(); 
+    }
+    
+    /** 
+     * Resolve relative path to absolute URI. 
+     */
+    public URI resolveURI(String path) throws FileURISyntaxException
     {
         try
         {
-            return resolvePathURI(path).getPath(); 
+            return URIUtil.resolvePathURI(workingDir,path);
         }
         catch (URISyntaxException e)
         {
-
-            logger.logException(Level.WARNING,e,"Couldn't resolve path:%s\n",path); 
-        } 
-        // return unchecked path! 
-        return path;
+            throw new FileURISyntaxException(e.getMessage(),path,e);
+        }
     }
     
-    public URI resolvePathURI(String path) throws URISyntaxException
+    public boolean existsPath(String path) throws FileURISyntaxException
     {
-        return URIUtil.resolvePathURI(workingDir,path); 
-    }
-    
-    public boolean existsPath(String path)
-    {
-        return newLocalFSNode(path).exists();
+        return newFSNode(resolvePath(path)).exists();
     }
 
     /** 
-     * Simple Copy File.  
+     * Simple Copy File uses URIs to ensure absolute and normalized Paths. 
      */
-    public void copyFile(String source, String destination) throws IOException
+    public void copyFile(URI source, URI destination) throws IOException
     {
-        InputStream finput = newLocalFSNode(source).createInputStream();
-        OutputStream foutput = newLocalFSNode(destination).createOutputStream();
+        InputStream finput = newFSNode(source).createInputStream();
+        OutputStream foutput = newFSNode(destination).createOutputStream();
 
         IOUtil.copyStreams(finput, foutput,false);
 
@@ -146,39 +148,76 @@ public class FSUtil
         return;
     }
 
-    /** Whether paths exists and is a file */
+    /**
+     * Checks whether paths exists and is a file. 
+     * If the filePath contains invalid characters, this method will also return false. 
+     */
     public boolean existsFile(String filePath, boolean mustBeFileType)
     {
         if (filePath == null)
             return false;
 
-        LocalFSNode file = newLocalFSNode(filePath);
-        if (file.exists() == false)
-            return false;
-
-        if (mustBeFileType)
-            if (file.isFile())
-                return true;
-            else
+        try
+        {
+            FSNode file = newFSNode(filePath);
+            if (file.exists() == false)
                 return false;
-        else
-            return true;
+    
+            if (mustBeFileType)
+                if (file.isFile())
+                    return true;
+                else
+                    return false;
+            else
+                return true;
+        }
+        catch (FileURISyntaxException e)
+        {
+            return false; 
+        }
     }
 
-    /** Whether dirPath paths exists and is a directory */
-    public boolean existsDir(String dirPath)
+    /**
+     * Checks whether directoryPath paths exists and is a directory.
+     * If the directory path contains invalid characters the method will also return false.  
+     */
+    public boolean existsDir(String directoryPath) 
     {
-        if (dirPath == null)
+        if (directoryPath == null)
             return false;
 
-        LocalFSNode file = newLocalFSNode(dirPath);
-        if (file.exists() == false)
-            return false;
+        try
+        {
+            FSNode file = newFSNode(directoryPath);
+            if (file.exists() == false)
+                return false;
 
-        if (file.isDirectory())
-            return true;
+            if (file.isDirectory())
+                return true;
+        }
+        catch (FileURISyntaxException e)
+        {
+            return false; 
+        }
 
         return false;
+    }
+
+    public FSNode newFSNode(String path) throws FileURISyntaxException
+    {
+        return new LocalFSNode(resolveURI(path));
+    }
+    
+    /**
+     * Return new FileSystem Node specified by the URI. 
+     * Currently only local files are supported. 
+     * 
+     * @param uri - uri of the file. 
+     * @return Lofical FileSystem Node. 
+     */
+    public FSNode newFSNode(URI uri)
+    {
+        return new LocalFSNode(uri);
     }
 
     /**
@@ -187,15 +226,20 @@ public class FSUtil
      * @param path -  the relative,logical or absolute path to resolve on the
      *                local file system.
      */
-    public LocalFSNode newLocalFSNode(String path)
+    public LocalFSNode newLocalFSNode(URI localFileURI)
     {
-        return new LocalFSNode(new java.io.File(resolvePath(path)));
+        return new LocalFSNode(new java.io.File(localFileURI));
     }
 
-    /** list directory: returns (URI) normalized paths */
-    public String[] list(String dirPath)
+    /** 
+     * List directory: returns (URI) normalized paths. 
+     * 
+     * @throws IOException 
+     * @throws URISyntaxException 
+     */
+    public String[] list(String dirPath) throws IOException, FileURISyntaxException
     {
-        LocalFSNode file = newLocalFSNode(dirPath);
+        FSNode file = newFSNode(resolveURI(dirPath));
         if (file.exists() == false)
             return null;
 
@@ -213,9 +257,9 @@ public class FSUtil
         return strs;
     }
 
-    public boolean deleteFile(String filename) throws IOException
+    public boolean deleteFile(String filename) throws IOException, FileURISyntaxException
     {
-        LocalFSNode file = newLocalFSNode(filename);
+        FSNode file = newFSNode(filename);
         if (file.exists() == false)
             return false;
         return file.delete();
@@ -227,36 +271,41 @@ public class FSUtil
      * @param filename
      *            - relative or absolute file path (resolves to absolute path on
      *            local filesystem)
+     * @throws URISyntaxException 
+     * @throws IOException 
      */
-    public InputStream getInputStream(String filename) throws FileNotFoundException
+    public InputStream getInputStream(String filename) throws IOException, FileURISyntaxException
     {
-        return newLocalFSNode(filename).createInputStream();
+        return newFSNode(filename).createInputStream();
     }
 
     /**
-     * Open local file and return outputstream to write to.
-     * 
+     * Open local file and return OutputStream to write to.
+     * The default implementation is to creat a new File if it doesn't exists or 
+     * replace an existing file with the new contents if it exists.  
      * @param filename
      *            - relative or absolute file path (resolves to absolute path on
      *            local fileystem)
+     * @throws URISyntaxException 
+     * @throws IOException 
      */
-    public OutputStream createOutputStream(String filename) throws FileNotFoundException
+    public OutputStream createOutputStream(String filename) throws IOException, FileURISyntaxException
     {
-        return newLocalFSNode(filename).createOutputStream();
+        return newFSNode(filename).createOutputStream();
     }
 
     /**
      * Read file and return as UTF8 String.
      * @param filename
      *            - path to resolve and read.
+     * @throws URISyntaxException 
      */
-    public String readText(String filename) throws IOException
+    public String readText(String filename) throws IOException, FileURISyntaxException
     {
         return readText(filename, ENCODING_UTF8);
     }
-
     
-    public String readText(String filename, String encoding) throws IOException
+    public String readText(String filename, String encoding) throws IOException, FileURISyntaxException
     {
         return readText(filename,encoding,1024*1024); 
     }    
@@ -269,13 +318,15 @@ public class FSUtil
      *          - optional encoding. Use null for default.
      * @param maxSize
      *          - limit size of number of bytes read (not the String size).   
+     * @throws FileURISyntaxException 
+     *          - when the filename contains invalid characters.
      */
-    public String readText(String filename, String encoding, int maxSize) throws IOException
+    public String readText(String filename, String encoding, int maxSize) throws IOException, FileURISyntaxException
     {
         if (encoding == null)
             encoding = ENCODING_UTF8;
 
-        LocalFSNode file = newLocalFSNode(filename);
+        FSNode file = newFSNode(filename);
         int len = (int) file.length();
         if (len > maxSize)
             len = maxSize;
@@ -294,17 +345,17 @@ public class FSUtil
         return new String(buffer, encoding);
     }
 
-    public void writeText(String path,String txt) throws IOException
+    public void writeText(String path,String txt) throws IOException, FileURISyntaxException
     {
         writeText(path,txt,ENCODING_UTF8);
     }
 
-    public void writeText(String filename,String txt, String encoding) throws IOException
+    public void writeText(String filename,String txt, String encoding) throws IOException, FileURISyntaxException
     {
         if (encoding == null)
             encoding = ENCODING_UTF8;
 
-        LocalFSNode file = newLocalFSNode(filename);
+        FSNode file = newFSNode(filename);
 
         OutputStream foutps = file.createOutputStream();
         byte bytes[]=txt.getBytes(encoding); 
@@ -315,33 +366,35 @@ public class FSUtil
         
         long fileLen=file.length();
         if (len!=fileLen) 
-            logger.warnPrintf("After writing %d byte to '%s', file length is:%d!\n",filename,len,fileLen);
-            
+        {
+            logger.warnPrintf("File NOT truncated: After writing %d byte to '%s', file length is:%d!\n",filename,len,fileLen);
+        }
+        
         return; 
     }
 
-    public LocalFSNode mkdir(String path) throws IOException
+    public FSNode mkdir(String path) throws IOException, FileURISyntaxException
     {
-        LocalFSNode dir = this.newLocalFSNode(path);
+        FSNode dir = this.newFSNode(path);
         dir.mkdir();
         return dir;
     }
 
-    public LocalFSNode mkdirs(String path) throws IOException
+    public FSNode mkdirs(String path) throws IOException, FileURISyntaxException
     {
-        LocalFSNode dir = this.newLocalFSNode(path);
+        FSNode dir = this.newFSNode(path);
         dir.mkdirs();
         return dir;
     }
    
     public LocalFSNode getLocalTempDir()
     {
-        return this.newLocalFSNode(this.tmpDir.getPath());
+        return this.newLocalFSNode(this.tmpDir);
     }
     
     public LocalFSNode getWorkingDir()
     {
-        return this.newLocalFSNode(this.workingDir.getPath());
+        return this.newLocalFSNode(this.workingDir);
     }
     
     public URI getUserHome()
@@ -349,9 +402,9 @@ public class FSUtil
         return userHome;
     }
     
-    public LocalFSNode getUserHomeDir()
+    public FSNode getUserHomeDir()
     {
-        return this.newLocalFSNode(this.userHome.getPath());
+        return newFSNode(this.userHome);
     }
     
     public URI getUserHomeURI()
@@ -377,10 +430,17 @@ public class FSUtil
      */
     public LocalFSNode newLocalDir(URI dirUri)
     {
-        LocalFSNode dir=this.newLocalFSNode(dirUri.getPath());
+        LocalFSNode dir=this.newLocalFSNode(dirUri);
         return dir; 
     }
 
+    public LocalFSNode newLocalFSNode(String fileUri) throws FileURISyntaxException
+    {
+        LocalFSNode file=this.newLocalFSNode(resolveURI(fileUri));
+        
+        return file; 
+    }
+    
     public void deleteDirectoryContents(URI uri,boolean recursive) throws IOException
     {
         LocalFSNode node = newLocalDir(uri); 
@@ -413,4 +473,29 @@ public class FSUtil
         
         node.delete();
     }
+
+    public boolean isValidPath(String relPath, StringHolder reasonH)
+    {
+        try
+        {
+            URI uri=this.resolveURI(relPath); 
+            FSNode node=newFSNode(uri);
+            // should trigger file system check on path. 
+            boolean exists=node.exists();
+            if (reasonH!=null)
+            {
+                reasonH.value="File path is ok. Exists="+exists;
+            }
+            return true ;
+        }
+        catch (FileURISyntaxException ex)
+        {
+            if (reasonH!=null)
+            {
+                reasonH.value="Syntax Error:"+ex.getMessage()+", input="+ex.getInput();
+            }
+            return false; 
+        }        
+    }
+  
 }

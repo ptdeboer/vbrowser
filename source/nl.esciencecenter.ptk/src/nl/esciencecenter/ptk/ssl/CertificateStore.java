@@ -42,6 +42,7 @@ import javax.net.ssl.X509TrustManager;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.io.FileURISyntaxException;
 import nl.esciencecenter.ptk.io.LocalFSNode;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -479,44 +480,53 @@ public class CertificateStore
 
             LocalFSNode keyStoreFile = null;
 
-            if (keystoreLocation != null)
+            try
             {
-                keyStoreFile = FSUtil.getDefault().newLocalFSNode(keystoreLocation);
-            }
-            
-            // check user copy of cacerts
-            if ((keyStoreFile != null) && (keyStoreFile.exists()))
-            {
-                logger.debugPrintf("Loading Existing KeyStore: %s\n", keyStoreFile);
-                _keyStore = null;
-
-                // Try to load:
-                if (fsUtil.existsFile(keyStoreLocation, true))
+                if (keystoreLocation != null)
                 {
-                    InputStream in = null;
-
-                    try
+                    keyStoreFile = FSUtil.getDefault().newLocalFSNode(keystoreLocation);
+                }
+                
+                // check user copy of cacerts
+                if ((keyStoreFile != null) && (keyStoreFile.exists()))
+                {
+                    logger.debugPrintf("Loading Existing KeyStore: %s\n", keyStoreFile);
+                    _keyStore = null;
+    
+                    // Try to load:
+                    if (fsUtil.existsFile(keyStoreLocation, true))
                     {
-                        _keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-
-                        in = fsUtil.getInputStream(keyStoreLocation);
-                        _keyStore.load(in, passphrase);
-                        in.close();
-                    }
-                    catch (Exception e1)
-                    {
-                        logger.logException(ClassLogger.WARN, e1, "Warning: Couldn't read keystore\n");
-                        // password error: DO NOT AUTOINITIALIZE;
-                        _keyStore = null;
-
-                        if (isPasswordException(e1))
+                        InputStream in = null;
+    
+                        try
                         {
-                            throw new CertificateStoreException("Invalid password for keystore."
-                                    + "please update password or remove keystore file:" + keystoreLocation, e1);
+                            _keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+    
+                            in = fsUtil.getInputStream(keyStoreLocation);
+                            _keyStore.load(in, passphrase);
+                            in.close();
+                        }
+                        catch (Exception e1)
+                        {
+                            logger.logException(ClassLogger.WARN, e1, "Warning: Couldn't read keystore\n");
+                            // password error: DO NOT AUTOINITIALIZE;
+                            _keyStore = null;
+    
+                            if (isPasswordException(e1))
+                            {
+                                throw new CertificateStoreException("Invalid password for keystore."
+                                        + "please update password or remove keystore file:" + keystoreLocation, e1);
+                            }
                         }
                     }
                 }
             }
+            catch (FileURISyntaxException e)
+            {
+                throw new CertificateStoreException("Syntax Error: Invalid keyStore location:"+keystoreLocation, e);
+            }
+            
+            // pass CertificateStoreExceptions
 
             if (_keyStore == null)
             {
@@ -571,8 +581,23 @@ public class CertificateStore
                 logger.warnPrintf(" - ignoring non existing custom certificate folder:%s\n", dir);
                 continue; 
             }
+           
+            String files[]=null;
             
-            String files[] = fsUtil.list(dir);
+            try
+            {
+                files = fsUtil.list(dir);
+            }
+            catch (FileURISyntaxException e)
+            {
+               logger.logException(ClassLogger.ERROR, e,"Syntax Error on location:%s", dir);
+               return; 
+            }
+            catch (IOException e1)
+            {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
             
             if ((files == null) || (files.length<=0)) 
             {

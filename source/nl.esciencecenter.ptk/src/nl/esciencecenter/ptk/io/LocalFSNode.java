@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /** 
  * Local file implementation of FSNode based on java.io.File;   
@@ -36,24 +35,22 @@ public class LocalFSNode extends FSNode
 {
 	private java.io.File _file;
 	
-	// === constructors === 
 	public LocalFSNode(java.io.File file)
 	{
 	    super(file.toURI()); 
 	    init(getURI()); 
 	}
-	
-	// === constructors === 
-	protected LocalFSNode(String path) throws URISyntaxException
+ 
+	protected LocalFSNode(String path) throws FileURISyntaxException
 	{
-	    super(FSUtil.getDefault().resolvePathURI(path));
+	    super(FSUtil.getDefault().resolveURI(path));
 	    init(getURI());
 	}
 	
-	private void init(URI vri)
+	private void init(URI uri)
 	{
-	    setURI(vri); 
-		this._file=new java.io.File(vri.getPath());   
+	    setURI(uri); 
+		this._file=new java.io.File(uri.getPath());   
 	}
 	
 	public LocalFSNode(URI loc) 
@@ -164,7 +161,7 @@ public class LocalFSNode extends FSNode
 	}
 
 	@Override
-	public LocalFSNode newFile(String path) throws Exception 
+	public LocalFSNode newFile(String path) throws FileURISyntaxException 
 	{
 		LocalFSNode lfile=new LocalFSNode(resolvePath(path));  
 		return lfile; 

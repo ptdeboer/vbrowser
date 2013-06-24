@@ -69,21 +69,22 @@ public abstract class FSNode
         return uri.toURL(); 
     }
     
-    public FSNode getNode(String relpath) throws URISyntaxException, Exception
+    public FSNode getNode(String relpath) throws FileURISyntaxException
     {
         return newFile(resolvePath(relpath));  
     } 
         
     /**
      * Whether this file points to a local file. 
-     * Only LocalFile.isLocal() returns true.
      */ 
     public boolean isLocal()
     {
        return false; 
     }
     
-    /** Returns absolute (normalized) URI path indepenend of local file systems paths */ 
+    /** 
+     * Returns absolute and normalized URI path.   
+     */ 
     public String getPath()
     {
     	return uri.getPath(); 
@@ -128,28 +129,42 @@ public abstract class FSNode
     	throw new Error("Not supported: createOutputStream() of:"+this); 
     }
 
-	public FSNode createDir(String subdir) throws Exception 
+	public FSNode createDir(String subdir) throws IOException, FileURISyntaxException
 	{
 		FSNode dir=newFile(resolvePath(subdir)); 
 		dir.mkdir(); 
 		return dir; 
 	}
 
-	public FSNode createFile(String filepath) throws Exception 
+	public FSNode createFile(String filepath) throws IOException, FileURISyntaxException 
 	{
 		FSNode file=newFile(resolvePath(filepath)); 
 		file.create();  
 		return file;
 	}
 	
-	public String resolvePath(String relPath) throws URISyntaxException
+	public String resolvePath(String relPath) throws FileURISyntaxException
 	{
-		return new URIFactory(uri).resolvePath(relPath);
+		try
+        {
+            return new URIFactory(uri).resolvePath(relPath);
+        }
+        catch (URISyntaxException e)
+        {
+            throw new FileURISyntaxException(e.getMessage(),relPath,e);
+        }
 	}
 	
-	public URI resolvePathURI(String relPath) throws URISyntaxException
+	public URI resolvePathURI(String relPath) throws FileURISyntaxException
 	{
-		return new URIFactory(uri).setPath(resolvePath(relPath)).toURI(); 
+	    try
+	    {
+	        return new URIFactory(uri).setPath(resolvePath(relPath)).toURI();
+	    }
+	    catch (URISyntaxException e)
+	    {
+            throw new FileURISyntaxException(e.getMessage(),relPath,e);
+	    }
 	}
 
 	public boolean create() throws IOException 
@@ -175,8 +190,10 @@ public abstract class FSNode
 
 	// === File/Directory methods === // 
 	
-	/** FSNode factory method, optionally resolves path against parent FSNode.*/ 
-	public abstract FSNode newFile(String path) throws Exception; 
+	/** 
+	 * FSNode factory method, optionally resolves path against parent FSNode.
+	 */ 
+	public abstract FSNode newFile(String path) throws FileURISyntaxException; 
 
     /** Whether file/directory exists. */  
 	public abstract boolean exists(); 
