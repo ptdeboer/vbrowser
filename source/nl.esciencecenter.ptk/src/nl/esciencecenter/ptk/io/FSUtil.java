@@ -487,8 +487,9 @@ public class FSUtil
         node.delete();
     }
 
-    public boolean isValidPath(String relPath, StringHolder reasonH)
+    public boolean isValidPathSyntax(String relPath, StringHolder reasonH)
     {
+        
         try
         {
             URI uri=this.resolveURI(relPath); 
