@@ -241,7 +241,15 @@ public class FSUtil
      */
     public LocalFSNode newLocalFSNode(URI localFileURI)
     {
-        return new LocalFSNode(new java.io.File(localFileURI));
+        if (localFileURI.isAbsolute())
+        {
+            return new LocalFSNode(new java.io.File(localFileURI));
+        }
+        else
+        {
+            return new LocalFSNode(new java.io.File(this.workingDir.resolve(localFileURI)));
+        }
+        
     }
 
     /** 
