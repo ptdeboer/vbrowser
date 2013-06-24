@@ -21,7 +21,6 @@
 package test;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -32,7 +31,6 @@ import nl.esciencecenter.octopus.engine.OctopusEngine;
 import nl.esciencecenter.octopus.exceptions.OctopusException;
 import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.DirectoryStream;
-import nl.esciencecenter.octopus.files.AbsolutePath;
 import nl.esciencecenter.octopus.files.FileSystem;
 import nl.esciencecenter.octopus.files.RelativePath;
 

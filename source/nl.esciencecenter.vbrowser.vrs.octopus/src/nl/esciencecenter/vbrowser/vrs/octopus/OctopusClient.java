@@ -393,11 +393,11 @@ public class OctopusClient
 
         if (append)
         {   
-            opts[0]=OpenOption.CREATE;
+            opts[0]=OpenOption.APPEND;
         }
         else
         {
-            opts[0]=OpenOption.APPEND;
+            opts[0]=OpenOption.OPEN_OR_CREATE;
         }
         
         return engine.files().newOutputStream(path, opts); 
@@ -408,18 +408,21 @@ public class OctopusClient
     // old file will be deleted. 
     public OutputStream createNewOutputStream(AbsolutePath path, boolean ignoreExisting) throws IOException
     {
-        OpenOption opts[]=new OpenOption[2];
+        OpenOption opts[];
         
         if (ignoreExisting)
         {
-            opts[0]=OpenOption.CREATE;
+            // replace existing file:  
+            opts=new OpenOption[2];
+            opts[0]=OpenOption.OPEN_OR_CREATE;
+            opts[1]=OpenOption.TRUNCATE;
         }
         else
         {
-            opts[0]=OpenOption.CREATE_NEW;
+            opts=new OpenOption[1];
+            // create new, do not ignore already existing: 
+            opts[0]=OpenOption.CREATE;
         }
-        
-        opts[1]=OpenOption.TRUNCATE_EXISTING;
         
         return engine.files().newOutputStream(path, opts);
         
