@@ -112,6 +112,12 @@
             <fileset dir="${comp.dist}/lib" />
         </copy>
 
+        <!-- icons -->
+        <mkdir dir="${project.dist.lib}/icons" />
+        <copy todir="${project.dist.lib}/icons">
+            <fileset dir="${comp.root}/icons" />
+        </copy>
+        
         <!-- external libs -->
         <mkdir dir="${project.dist.auxlib}" />
         <copy todir="${project.dist.auxlib}/">
