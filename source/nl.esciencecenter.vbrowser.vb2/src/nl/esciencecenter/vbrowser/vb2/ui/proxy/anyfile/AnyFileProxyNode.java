@@ -25,6 +25,7 @@ import java.io.IOException;
 import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.io.FileURISyntaxException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
@@ -49,7 +50,14 @@ public class AnyFileProxyNode extends ProxyNode
     public AnyFileProxyNode(ProxyFactory anyFileProxyFactory, VRL loc) throws ProxyException
     {
         super(anyFileProxyFactory,loc); 
-        file=FSUtil.getDefault().newLocalFSNode(loc.getPath()); 
+        try
+        {
+            file=FSUtil.getDefault().newFSNode(loc.getPath());
+        }
+        catch (FileURISyntaxException e)
+        {
+            throw new ProxyException(e.getMessage(),e); 
+        } 
         init(); 
     } 
     
