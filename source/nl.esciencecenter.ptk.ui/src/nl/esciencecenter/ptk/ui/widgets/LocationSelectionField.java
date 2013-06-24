@@ -21,7 +21,9 @@ import java.awt.Color;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.io.FileURISyntaxException;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 public class LocationSelectionField extends JPanel implements URIDropTargetLister
@@ -45,25 +47,39 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
     		evaluate(); 
     	}
     	
-    	public void evaluate()
+    	public boolean evaluate()
     	{
-    		String text=locationTF.getText(); 
+    		String text=locationTF.getText();
+    		StringHolder reasonH=new StringHolder(); 
+    		boolean isValidPath=FSUtil.getDefault().isValidPath(text,reasonH); 
+    		if (isValidPath==false)
+    		{
+    		    showError(reasonH.value);
+    		    return false; 
+    		}
     		
     		try
     		{
     			java.net.URI uri;
-    			uri = FSUtil.getDefault().resolvePathURI(text);
+    			uri = FSUtil.getDefault().resolveURI(text);
     			locationTF.setText(uri.getPath());
     			//locationTF.setBackground(originalBGColor);
+    			return true; 
     		}
-    		catch (URISyntaxException e1) 
+    		catch (FileURISyntaxException e1) 
     		{
+    		    showError("Syntax Error: Not a valid path or URI:"+e1.getInput());
     			//locationTF.setBackground(Color.RED);
-    			e1.printStackTrace();
+    			return false;
     		}
     	}
 
-		@Override
+    	public void showError(String errorTxt)
+        {
+    	    locationTF.setToolTipText(errorTxt); 
+        }
+
+        @Override
 		public void focusGained(FocusEvent e) 
 		{
 		}
@@ -135,10 +151,10 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
         this.locationTF.setText(uri.toString());  
     }
 
-    public java.net.URI getLocationURI() throws URISyntaxException
+    public java.net.URI getLocationURI() throws FileURISyntaxException
     {	
     	// Use FSUtil to resolve URI: 
-    	return FSUtil.getDefault().resolvePathURI(locationTF.getText()); 
+    	return FSUtil.getDefault().resolveURI(locationTF.getText()); 
     }
     
     public boolean isURI()
@@ -147,7 +163,7 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
     	{
     		return (getLocationURI()!=null); 
     	}
-    	catch (URISyntaxException e)
+    	catch (FileURISyntaxException e)
     	{
     		return false; 
     	}
