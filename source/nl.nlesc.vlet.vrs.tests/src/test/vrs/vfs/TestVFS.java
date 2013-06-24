@@ -795,7 +795,7 @@ public class TestVFS extends VTestCase
         // New Since 0.9.2:
         // create full directory paths in between ! (as default)
         //
-        String pathStr = getRemoteTestDir().getPath() + URIFactory.SEP_CHAR + "testDirF";
+        String pathStr = getRemoteTestDir().getPath() + URIFactory.URI_SEP_CHAR + "testDirF";
         newDir = getRemoteTestDir().createDir(pathStr);
         Assert.assertEquals("Directory should use complete pathname as new directory name", pathStr, newDir.getPath());
         // delete parent of parent !
