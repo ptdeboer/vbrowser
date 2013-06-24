@@ -489,7 +489,14 @@ public class FSUtil
 
     public boolean isValidPathSyntax(String relPath, StringHolder reasonH)
     {
-        
+        if (relPath.matches(".*[!@#$%*()]+"))
+        {
+            if (reasonH!=null)
+            {
+                reasonH.value="Path contains invalid characters!";
+            }   
+          return false;
+        }
         try
         {
             URI uri=this.resolveURI(relPath); 
