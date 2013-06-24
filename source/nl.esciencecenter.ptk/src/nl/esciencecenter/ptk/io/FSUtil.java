@@ -29,6 +29,7 @@ import java.net.URISyntaxException;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringHolder;
+import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.net.URIUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
@@ -58,13 +59,19 @@ public class FSUtil
         return instance;
     }
     
+    public static class FSOptions
+    {
+        public boolean resolve_tilde=true; 
+    }
+   
     // ========================================================================
     // Instance
     // ========================================================================
     
-    private URI userHome;
-    private URI workingDir; 
-    private URI tmpDir; 
+    protected URI userHome;
+    protected URI workingDir; 
+    protected URI tmpDir; 
+    protected FSOptions fsOptions=new FSOptions(); 
     
     public FSUtil()
     {
@@ -103,6 +110,12 @@ public class FSUtil
      */
     public URI resolveURI(String path) throws FileURISyntaxException
     {
+        if ((this.fsOptions.resolve_tilde) && path.contains("~"))
+        {
+            String homePath=URIFactory.uripath(userHome.getPath());
+            path=path.replace("~", homePath); 
+        }
+
         try
         {
             return URIUtil.resolvePathURI(workingDir,path);
