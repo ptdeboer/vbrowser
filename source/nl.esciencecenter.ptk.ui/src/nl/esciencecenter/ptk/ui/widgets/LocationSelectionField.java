@@ -1,23 +1,21 @@
 package nl.esciencecenter.ptk.ui.widgets;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.TooManyListenersException;
 
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.BoxLayout;
-import java.awt.Color;
-
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -51,7 +49,7 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
     	{
     		String text=locationTF.getText();
     		StringHolder reasonH=new StringHolder(); 
-    		boolean isValidPath=FSUtil.getDefault().isValidPath(text,reasonH); 
+    		boolean isValidPath=FSUtil.getDefault().isValidPathSyntax(text,reasonH); 
     		if (isValidPath==false)
     		{
     		    showError(reasonH.value);
@@ -64,6 +62,8 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
     			uri = FSUtil.getDefault().resolveURI(text);
     			locationTF.setText(uri.getPath());
     			//locationTF.setBackground(originalBGColor);
+    			
+    			locationTF.setToolTipText("Enter location."); 
     			return true; 
     		}
     		catch (FileURISyntaxException e1) 
@@ -76,7 +76,7 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
 
     	public void showError(String errorTxt)
         {
-    	    locationTF.setToolTipText(errorTxt); 
+    	    locationTF.setToolTipText("Syntax Error:"+errorTxt); 
         }
 
         @Override
