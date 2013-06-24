@@ -220,24 +220,24 @@ public class UIResourceLoader extends ResourceLoader
         }
     }
 
-    public Icon getMiniBrokenImage()
+    public Icon getMiniBrokenImageIcon()
     {
         // create image on the fly:
         String imageStr=
                  ".x............x.\n"
                 +"xRx..........xRx\n"
-                +".xRx........xRx.\n"
-                +"..xRx......xRx..\n"
-                +"...xRx....xRx...\n"
-                +"....xRx..xRx....\n"
-                +".....xRxxRx.....\n"
-                +"......xRRx......\n"
-                +"......xRRx......\n"
-                +".....xRxxRx.....\n"
-                +"....xRx..xRx....\n"
-                +"...xRx....xRx...\n" 
-                +"..xRx......xRx..\n" 
-                +".xRx........xRx.\n" 
+                +"xRRx........xRRx\n"
+                +".xRRx......xRRx.\n"
+                +"..xRRx....xRRx..\n"
+                +"...xRRx..xRRx...\n"
+                +"....xRRxxRRx....\n"
+                +".....xRRRRx.....\n"
+                +".....xRRRRx.....\n"
+                +"....xRRxxRRx....\n"
+                +"...xRRx..xRRx...\n"
+                +"..xRRx....xRRx..\n" 
+                +".xRRx......xRRx.\n" 
+                +"xRRx........xRRx\n" 
                 +"xRx..........xRx\n" 
                 +".x............x.\n"; 
         

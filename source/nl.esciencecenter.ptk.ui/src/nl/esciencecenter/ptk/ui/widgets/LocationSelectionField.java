@@ -22,6 +22,8 @@ import javax.swing.border.LineBorder;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.io.FileURISyntaxException;
+import nl.esciencecenter.ptk.ui.icons.ImageRenderer;
+import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 public class LocationSelectionField extends JPanel implements URIDropTargetLister
@@ -135,9 +137,10 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
     
     private Icon loadIcon(String iconUrl)
     {
-        URL res = getClass().getClassLoader().getResource(iconUrl);
-        return new ImageIcon(res);
-
+        URL url = getClass().getClassLoader().getResource(iconUrl);
+        if (url==null)
+            return new UIResourceLoader().getMiniBrokenImageIcon(); 
+        return new ImageIcon(url);
     }
 
     // Accepts both URI and non URI text. 
