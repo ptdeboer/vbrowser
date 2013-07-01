@@ -1,21 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>nl.nlesc.vlet</groupId>
+  
+  <name>vlet-grid.globus (${vlet.version})</name>  
+  <groupId>nl.esciencecenter.vlet</groupId>
   <artifactId>vlet-grid.globus</artifactId>
   <version>${vlet.version}</version>
-  <name>grid.globus (${vlet.version})</name>  
 
   <parent>
-      <groupId>nl.nlesc.vlet</groupId>
+      <groupId>nl.esciencecenter.vbrowser</groupId>
       <artifactId>mvnbuild</artifactId>
       <version>dev-1</version>
-      <relativePath>../mvnbuild/pom.xml</relativePath>
+      <relativePath>../../pom.xml</relativePath>
   </parent>
     
   <build>
         <sourceDirectory>src</sourceDirectory>
-        
-        <!--  NOT  <testSourceDirectory>testsrc</testSourceDirectory> -->
         
         <plugins>
             <plugin>
@@ -29,18 +28,13 @@
         </plugins>
  </build>
   <dependencies>
-      <dependency>
-          <groupId>nl.nlesc.vlet</groupId>
-          <artifactId>vlet-vrs.core</artifactId>
-          <version>${vlet.version}</version>
-          <type>jar</type>
-          <scope>compile</scope>
-      </dependency>
+      
       <dependency>
           <groupId>org.globus</groupId>
           <artifactId>cog-jglobus</artifactId>
           <version>1.4</version>
       </dependency>
+      
       <dependency>
           <groupId>org.apache.axis</groupId>
           <artifactId>axis</artifactId>
@@ -48,5 +42,23 @@
           <type>jar</type>
           <scope>compile</scope>
       </dependency>
+      
+      <dependency>
+          <groupId>nl.esciencecenter.vlet</groupId>
+          <artifactId>vlet-vrs.core</artifactId>
+          <version>${vlet.version}</version>
+          <type>jar</type>
+          <scope>compile</scope>
+      </dependency>
+      
+      <dependency>
+          <groupId>nl.esciencecenter.vlet</groupId>
+          <artifactId>vlet-vrs.infors</artifactId>
+          <version>${vlet.version}</version>
+          <type>jar</type>
+          <scope>compile</scope>
+      </dependency>
+      
+      
   </dependencies>
 </project>

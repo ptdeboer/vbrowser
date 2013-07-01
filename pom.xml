@@ -13,12 +13,19 @@
         <vbrowser.dist>${vbrowser.rootdir}/dist</vbrowser.dist>
         <vbrowser.source.subdir>source</vbrowser.source.subdir>  
         <vbrowser.modules.dir>${vbrowser.source.subdir}</vbrowser.modules.dir>
-        <!-- should read nl.esciencecenter.vrs.core/etc/vbrowser.version.prop --> 
-        <vbrowser.version>mvn-1.6.0-rc1</vbrowser.version>
-        <vbrowser.version>mvn-1.6.0-rc1</vbrowser.version>
+
+        <!-- should read project.prop+local.prop here --> 
+        <project.version>1.6.0-rc1</project.version>
+        <vbrowser.version>1.6.0-rc1</vbrowser.version>
+        <vlet.version>1.6.0-rc1</vlet.version>
+        <ptk.version>${vbrowser.version}</ptk.version>
+        <!-- <vbrowser.version>${project.version}</vbrowser.version> 
+        <vlet.version>${project.version}</vlet.version>
+        <ptk.version>${project.version}</ptk.version> --> 
+
     </properties>
 
-    <!-- Toplevel artefact settings --> 
+    <!-- Master build artefact is *this* --> 
 
     <groupId>nl.esciencecenter.vbrowser</groupId>
     <artifactId>mvnbuild</artifactId>
@@ -27,10 +34,25 @@
     <name>mvnbuild (${project.version})</name>
 
     <repositories>
-    
         <repository>
-           <id>repo1</id>
-         <name>repo1</name>
+            <id>vbrowser-local</id>
+            <name>VBrowser local repository</name>
+   	    <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+           <url>file:${vbrowser.rootdir}/maven2</url>
+        </repository>
+
+        <repository>
+           <id>nlesc-1</id>
+         <name>nelsc-1</name>
          <layout>default</layout>
          <releases>
            <enabled>true</enabled>
@@ -50,21 +72,29 @@
     
     <modules>
         <!--  core -->
-        <module>${vbrowser.modules.dir}/nl.esciencecenter.vrs.core</module>
-        <module>${vbrowser.modules.dir}/nl.esciencecenter.vfs.jcraft.ssh</module>
-        <module>${vbrowser.modules.dir}/nl.esciencecenter.grid.globus</module>
-        <module>${vbrowser.modules.dir}/nl.esciencecenter.vfs.gftp</module>
-        <module>${vbrowser.modules.dir}/nl.esciencecenter.lbl.srm</module>
-        <module>${vbrowser.modules.dir}/nl.esciencecenter.vfs.srm</module>
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.ptk</module>
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.vbrowser.vrs</module>
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.vrs.core</module> 
+        <!-- vfs/vrs --> 
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.vrs.infors</module> 
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.vfs.jcraft.ssh</module>
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.grid.globus</module>
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.vfs.gftp</module>
+        <!-- 
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.glite.srm</module>
         <module>${vbrowser.modules.dir}/nl.esciencecenter.glite.lfc</module>
-        <module>${vbrowser.modules.dir}/nl.esciencecenter.vfs.lfc</module>
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.vfs.srm</module>
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.vfs.lfc</module>
+         --> 
         <!--  gui  -->
-        <module>${vbrowser.modules.dir}/nl.esciencecenter.gui.utils</module>
-        <module>${vbrowser.modules.dir}/nl.esciencecenter.gui.vbrowser</module>
+	<module>${vbrowser.modules.dir}/nl.esciencecenter.ptk.ui</module>
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.gui.utils</module>
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.gui.vbrowser</module>
+
         <!-- Viewers --> 
         <!-- <module>${vbrowser.modules.dir}/nl.esciencecenter.gui.lobo.viewer</module> -->
         <!-- Distribution  -->
-        <module>${vbrowser.rootdir.dir}/mvndist</module>
+        <module>${vbrowser.rootdir}/mvndist</module>
            
     </modules>
 
