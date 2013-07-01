@@ -1,4 +1,4 @@
-VBbowser
+VBrowser
 ========
 
 Development version of the VBrowser. 
