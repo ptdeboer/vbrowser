@@ -3,7 +3,7 @@
 ===============================================================================
 # Project: VLET LFC
 # Package: nl.nlesc.glite.lfc
-# Version: 1.0.2
+# Version: 1.2
 # 
 
 Authors:
@@ -29,7 +29,12 @@ Version 1.0.1:
 ===
  - Updated text and comments after moving source to sourceforge.net. 
 
-Verseion 1.0.2
+
+Version 1.1: 
 === 
 Move to NLeSC repository. 
+
+Version 1.2:
+=== 
+Updated package names and scripts. 
 

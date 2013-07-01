@@ -18,13 +18,14 @@
 ##
 # lfc package properties. 
 
-lfcj.package=nl.nlesc.glite.lfc
+lfcj.package=nl.esciencecenter.glite.lfc
+lfcj.package.dir=nl/esciencecenter/glite/lfc
 # name for distribution to use 
-lfcj.name=vlet-glite.lfc
-lfcj.version=1.1
+lfcj.name=nlesc-glite.lfc
+lfcj.version=1.2
 
 ###
-# Java Compiler options : Updated to 1.6 
+# Java Compiler options : Use 1.6 for backwards compatibility 
 javac.debug=true
 javac.target=1.6
 javac.source=1.6

@@ -1,4 +1,4 @@
-<project name="vlet-glite.lfc" default="dist" basedir=".">
+<project name="nlesc-glite.lfc" default="dist" basedir=".">
     <description>
         Project   : VLET/LFCJ
         Component : LFC API 
@@ -85,19 +85,19 @@
         <!-- Create application JAR file -->
         <jar jarfile="${dist.package.jar}"
             basedir="${build}"
-            includes="nl/nlesc/glite/lfc/**"
+            includes="${lfcj.package.dir}/**"
             >
                 
             <!-- Add Source --> 
             <fileset dir="src"/>
                 
             <manifest>
-            <attribute name="Built-By" value="nl.esciencenter.com" />
-                   <attribute name="Main-Class" value="nl.nlesc.glite.lfc.main.Lfcls" />
+            <attribute name="Built-By" value="eScienceCenter.NL" />
+                   <attribute name="Main-Class" value="${lfcj.package}.main.Lfcls" />
                    <section name="common">
                     <attribute name="Specification-Title" value="LFC Java Implementation" />
                          <attribute name="Specification-Version" value="${lfcj.version}" />
-                         <attribute name="Specification-Vendor" value="www.esciencecenter.nl" />
+                         <attribute name="Specification-Vendor" value="www.eScienceCenter.nl" />
                          <attribute name="Implementation-Title" value="lfc for java" />
                      <attribute name="Implementation-Version" value="${lfcj.version}" />
                      <attribute name="Implementation-Vendor" value="VLET" />
