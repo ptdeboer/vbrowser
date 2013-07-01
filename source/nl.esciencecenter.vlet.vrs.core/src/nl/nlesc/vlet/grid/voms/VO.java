@@ -69,7 +69,7 @@ public class VO
         init(voName,voRoles,host,port,hostDN); 
     }
 
-	protected VO(String name)
+	public VO(String name)
 	{
 		this.voName=name; 
 	}
