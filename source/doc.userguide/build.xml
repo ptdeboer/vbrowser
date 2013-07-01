@@ -1,6 +1,6 @@
-<project name="UserGuide" default="dist" basedir=".">
+<project name="vlet-userguide" default="dist" basedir=".">
     <description>
-        Project   : VL-e Toolkit
+        Project   : VBrowser
         Component : UserGuide
                 
         Wrapper for the Makefile which compiles the LaTeX document 
