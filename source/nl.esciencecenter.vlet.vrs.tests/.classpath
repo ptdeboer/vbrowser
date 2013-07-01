@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.gftp"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.jcraft.ssh"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.lfc"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.srm"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vrs.core"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.grid.globus"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vrs.vdriver.infors"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vbrowser.vrs.octopus"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

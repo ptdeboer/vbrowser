@@ -83,13 +83,13 @@
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.vlet.vrs.core"/>
+            <param name="name" value="nl.esciencecenter.vlet.vrs.core"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.vlet.vrs.infors"/>
+            <param name="name" value="nl.esciencecenter.vlet.vrs.infors"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
@@ -104,13 +104,13 @@
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.vlet.grid.globus"/>
+            <param name="name" value="nl.esciencecenter.vlet.grid.globus"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.vlet.vfs.gftp"/>
+            <param name="name" value="nl.esciencecenter.vlet.vfs.gftp"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
@@ -130,31 +130,31 @@
     <target name="vlet-vfs-lfc-srm" depends="vlet-vfs-globus">
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.vlet.vfs.jcraft.ssh"/>
+            <param name="name" value="nl.esciencecenter.vlet.vfs.jcraft.ssh"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.glite.srm"/>
+            <param name="name" value="nl.esciencecenter.glite.srm"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.vlet.vfs.srm"/>
+            <param name="name" value="nl.esciencecenter.vlet.vfs.srm"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.glite.lfc"/>
+            <param name="name" value="nl.esciencecenter.glite.lfc"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.vlet.vfs.lfc"/>
+            <param name="name" value="nl.esciencecenter.vlet.vfs.lfc"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
@@ -172,13 +172,13 @@
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.vlet.gui.utils"/>
+            <param name="name" value="nl.esciencecenter.vlet.gui.utils"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.vlet.gui.vbrowser"/>
+            <param name="name" value="nl.esciencecenter.vlet.gui.vbrowser"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
@@ -188,13 +188,13 @@
     <target name="vlet-vbrowser-viewers" depends="vlet-core,vlet-vbrowser">
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.vlet.gui.lobo.viewer"/>
+            <param name="name" value="nl.esciencecenter.vlet.gui.lobo.viewer"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.nlesc.vlet.gui.pedal"/>
+            <param name="name" value="nl.esciencecenter.vlet.gui.pedal"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
