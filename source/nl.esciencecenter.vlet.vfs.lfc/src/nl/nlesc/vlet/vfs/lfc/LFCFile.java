@@ -25,6 +25,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import nl.esciencecenter.glite.lfc.internal.FileDesc;
+import nl.esciencecenter.glite.lfc.internal.ReplicaDesc;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
@@ -33,8 +35,6 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.glite.lfc.internal.FileDesc;
-import nl.nlesc.glite.lfc.internal.ReplicaDesc;
 import nl.nlesc.vlet.exception.ResourceLinkIsBorkenException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 import nl.nlesc.vlet.exception.InternalError;

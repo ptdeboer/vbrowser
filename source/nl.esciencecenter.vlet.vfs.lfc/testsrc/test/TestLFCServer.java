@@ -3,8 +3,8 @@ package test;
 import java.io.PrintStream;
 import java.net.URI;
 
-import nl.nlesc.glite.lfc.LFCServer;
-import nl.nlesc.glite.lfc.internal.FileDesc;
+import nl.esciencecenter.glite.lfc.LFCServer;
+import nl.esciencecenter.glite.lfc.internal.FileDesc;
 import nl.nlesc.vlet.vrs.VRS;
 
 public class TestLFCServer

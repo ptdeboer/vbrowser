@@ -6,9 +6,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import nl.nlesc.glite.lfc.LFCServer;
-import nl.nlesc.glite.lfc.internal.FileDesc;
-import nl.nlesc.glite.lfc.internal.ReplicaDesc;
+import nl.esciencecenter.glite.lfc.LFCServer;
+import nl.esciencecenter.glite.lfc.internal.FileDesc;
+import nl.esciencecenter.glite.lfc.internal.ReplicaDesc;
 
 
 

@@ -30,9 +30,9 @@ import gov.lbl.srm.v22.stubs.TStatusCode;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import nl.esciencecenter.glite.lbl.srm.SRMException;
+import nl.esciencecenter.glite.lbl.srm.status.SRMPutRequest;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.glite.lbl.srm.SRMException;
-import nl.nlesc.glite.lbl.srm.status.SRMPutRequest;
 import nl.nlesc.vlet.exception.ResourceCreationFailedException;
 import nl.nlesc.vlet.exception.ResourceNotFoundException;
 

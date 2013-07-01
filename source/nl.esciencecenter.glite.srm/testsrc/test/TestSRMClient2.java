@@ -26,8 +26,8 @@ import gov.lbl.srm.v22.stubs.TMetaDataPathDetail;
 
 import java.util.ArrayList;
 
-import nl.nlesc.glite.lbl.srm.SRMClientV2;
-import nl.nlesc.glite.lbl.srm.SRMException;
+import nl.esciencecenter.glite.lbl.srm.SRMClientV2;
+import nl.esciencecenter.glite.lbl.srm.SRMException;
 
 import org.apache.axis.types.URI.MalformedURIException;
 

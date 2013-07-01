@@ -24,8 +24,8 @@ import gov.lbl.srm.v22.stubs.TMetaDataPathDetail;
 
 import java.util.ArrayList;
 
-import nl.nlesc.glite.lbl.srm.SRMClient;
-import nl.nlesc.glite.lbl.srm.SRMClientV2;
+import nl.esciencecenter.glite.lbl.srm.SRMClient;
+import nl.esciencecenter.glite.lbl.srm.SRMClientV2;
 
 public class SRMExample
 {

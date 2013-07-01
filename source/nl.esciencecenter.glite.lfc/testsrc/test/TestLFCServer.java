@@ -5,8 +5,8 @@ import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import nl.nlesc.glite.lfc.LFCServer;
-import nl.nlesc.glite.lfc.internal.FileDesc;
+import nl.esciencecenter.glite.lfc.LFCServer;
+import nl.esciencecenter.glite.lfc.internal.FileDesc;
 
 
 

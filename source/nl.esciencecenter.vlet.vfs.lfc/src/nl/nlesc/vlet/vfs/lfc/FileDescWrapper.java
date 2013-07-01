@@ -20,12 +20,12 @@
 
 package nl.nlesc.vlet.vfs.lfc;
 
+import nl.esciencecenter.glite.lfc.internal.FileDesc;
+import nl.esciencecenter.glite.lfc.internal.ReplicaDesc;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
-import nl.nlesc.glite.lfc.internal.FileDesc;
-import nl.nlesc.glite.lfc.internal.ReplicaDesc;
 import nl.nlesc.vlet.vrs.data.VAttributeConstants;
 
 public class FileDescWrapper

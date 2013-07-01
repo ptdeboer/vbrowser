@@ -1,8 +1,8 @@
 package test;
 
+import nl.esciencecenter.glite.lbl.srm.SRMClientV2;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.glite.lbl.srm.SRMClientV2;
 import nl.nlesc.vlet.vfs.srm.SRMDir;
 import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
 import nl.nlesc.vlet.vfs.srm.SRMFileSystem;

@@ -20,8 +20,8 @@
 
 package nl.nlesc.vlet.vfs.lfc;
 
+import nl.esciencecenter.glite.lfc.LFCException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.glite.lfc.LFCException;
 import nl.nlesc.vlet.exception.NestedIOException;
 
 /**
