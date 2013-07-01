@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>nl.nlesc.vlet.vrs.core</name>
+	<name>nl.esciencecenter.glite.srm</name>
 	<comment></comment>
 	<projects>
+		<project>org.globus.wsclient-4.1.0</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
