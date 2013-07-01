@@ -1,8 +1,8 @@
 ===============================================================================
   RELEASE NOTES 
 ===============================================================================
-# Project: VLET LFC
-# Package: nl.nlesc.glite.lfc
+# Project: VBrowser/glite 
+# Module: glite LFC 
 # Version: 1.2
 # 
 

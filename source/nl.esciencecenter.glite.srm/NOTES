@@ -1,5 +1,18 @@
 ====================================
 Developer Notes for the SRM Client. 
 ====================================
+ 
+# Project: VBrowser/glite 
+# Module: glite SRM 
+# Version: 1.2
+#
+# Java Client for SRM 2.2 
 
-
+Authors:
+ - Spiros Koulouzis 
+ - Piter T. de Boer 
+ 
+Version 1.2:
+=== 
+Moved to NLeSc repository
+Renamed and updated package names. 

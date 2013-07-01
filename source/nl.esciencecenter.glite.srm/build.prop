@@ -14,19 +14,19 @@
 ##
 # Project. 
 
-project.name=nl.nlesc.glite.lbl.srm
+project.name=nl.esciencecenter.glite.lbl.srm
 
 ##
 # srm package properties. 
 
-srm.package=nl.nlesc.glite.lbl.srm
+srm.package=nl.esciencecenter.glite.lbl.srm
 # name for distribution to use 
-srm.name=vlet-lbl.srm
+srm.name=nlesc-glite.lbl.srm
 # version
-srm.version=0.5
+srm.version=1.2
 
 ###
-# Java Compiler options : Explicitly use java 1.6
+# Java Compiler options : Java 1.6 for backwards compatibility 
 #disabled: 
 #javac.debug=true
 javac.target=1.6

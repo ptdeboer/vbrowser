@@ -1,6 +1,6 @@
-<project name="vlet-glite.lbl.srm" default="dist" basedir=".">
+<project name="nlesc-glite.lbl.srm" default="dist" basedir=".">
     <description>
-        Project   : VLET/srm
+        Project   : VBrowser/glite 
         Component : SRM API  
                 
         Configuring: 
