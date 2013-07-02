@@ -70,18 +70,15 @@ public class ViewerRegistry
      */
     public static String defaultViewers[] =
     {
-            "nl.nlesc.vlet.gui.viewers.HexViewer",
-            "nl.nlesc.vlet.gui.viewers.TextViewer",
-            "nl.nlesc.vlet.gui.viewers.ImageViewer",
-            "nl.nlesc.vlet.gui.viewers.VHTMLViewer",
-            // "nl.nlesc.vlet.gui.viewers.DefaultImageViewer",
-            // Separate plugin(s):
-            // "nl.nlesc.vlet.gui.viewers.JPedalPDFViewer",
-            "nl.nlesc.vlet.gui.viewers.grid.replicaviewer.ReplicaEditor",
-            "nl.nlesc.vlet.gui.viewers.external.JavaWebStarter", 
-            "nl.nlesc.vlet.gui.viewers.x509viewer.ViewerX509",
-            "nl.nlesc.vlet.gui.viewers.VLTermStarter", 
-            "nl.nlesc.vlet.gui.viewers.grid.jobmonitor.JobMonitor" };
+            "nl.esciencecenter.vlet.gui.viewers.HexViewer",
+            "nl.esciencecenter.vlet.gui.viewers.TextViewer",
+            "nl.esciencecenter.vlet.gui.viewers.ImageViewer",
+            "nl.esciencecenter.vlet.gui.viewers.VHTMLViewer",
+            "nl.esciencecenter.vlet.gui.viewers.grid.replicaviewer.ReplicaEditor",
+            "nl.esciencecenter.vlet.gui.viewers.external.JavaWebStarter", 
+            "nl.esciencecenter.vlet.gui.viewers.x509viewer.ViewerX509",
+            "nl.esciencecenter.vlet.gui.viewers.VLTermStarter", 
+            "nl.esciencecenter.vlet.gui.viewers.grid.jobmonitor.JobMonitor" };
 
     /** Single Class Object: single registry per class */
     private static ViewerRegistry _viewerRegistry = new ViewerRegistry();
