@@ -1,7 +1,7 @@
 <project name="vlet-vrs.core" default="dist" basedir=".">
     <description>
-        Project        : VL-e Toolkit
-        Component      : VRS/Vlet Main
+        Project        : VBrowser
+        Component      : VLET VRS Core
         Eclipse target : dist
             	
         Configuring: 
@@ -23,8 +23,8 @@
     <property name="comp.root" location="." />
     <property file="build.prop" />
 
-    <property name="package.prefix" value="nl.nlesc.vlet" />
-    <property name="package.dir" value="nl/nlesc/vlet" />
+    <property name="package.prefix" value="nl.esciencecenter.vlet" />
+    <property name="package.dir" value="nl/esciencecenter/vlet" />
 
     <!-- Target: init -->
 
