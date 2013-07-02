@@ -10,14 +10,11 @@
       <groupId>nl.esciencecenter.vbrowser</groupId>
       <artifactId>mvnbuild</artifactId>
       <version>dev-1</version>
-      <relativePath>../mvnbuild/pom.xml</relativePath>
+      <relativePath>../../pom.xml</relativePath>
   </parent>
     
   <build>
         <sourceDirectory>src</sourceDirectory>
-        
-        <!--  NOT  <testSourceDirectory>testsrc</testSourceDirectory> -->
-        
         <plugins>
             <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -30,19 +27,22 @@
         </plugins>
  </build>
   <dependencies>
+  
       <dependency>
           <groupId>nl.esciencecenter.vlet</groupId>
           <artifactId>vlet-vrs.core</artifactId>
           <version>${vlet.version}</version>
           <type>jar</type>
           <scope>compile</scope>
-      </dependency>
-    	<dependency>
-  		<groupId>nl.esciencecenter.vlet</groupId>
-  		<artifactId>vlet-gui.utils</artifactId>
-  		<version>${vlet.version}</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  	</dependency>
+       </dependency>
+      
+  	  <dependency>
+  		  <groupId>nl.esciencecenter.vlet</groupId>
+  		  <artifactId>vlet-gui.utils</artifactId>
+  		  <version>${vlet.version}</version>
+  		  <type>jar</type>
+  		  <scope>compile</scope>
+  	  </dependency>
+  	  
   </dependencies>
 </project>
