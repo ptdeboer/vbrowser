@@ -6,7 +6,6 @@
 	<classpathentry kind="src" path="testsrc"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk.ui"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencenter.vlet.gui.utils"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vrs.infors"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vrs.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.glite.lfc"/>
@@ -16,5 +15,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.jcraft.ssh"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.lfc"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.srm"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.gui.utils"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

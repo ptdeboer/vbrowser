@@ -5,8 +5,8 @@
 	<classpathentry kind="lib" path="lib/org.pedal/jai_codec.jar"/>
 	<classpathentry kind="lib" path="lib/org.pedal/jai_core.jar"/>
 	<classpathentry kind="lib" path="lib/org.pedal/jpedalSTD.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencenter.vlet.gui.utils"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.gui.vbrowser"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vrs.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.gui.utils"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
