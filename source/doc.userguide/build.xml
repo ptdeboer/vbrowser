@@ -41,7 +41,7 @@
     <target name="dist-install" depends="dist" description="Copy document">
 
         <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
-        <copy todir="${project.doc}" file="${comp.dist}/UserGuide.pdf" />
+        <copy todir="${project.dist.doc}" file="${comp.dist}/UserGuide.pdf" />
         
     </target>
 
