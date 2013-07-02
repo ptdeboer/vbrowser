@@ -26,19 +26,12 @@ import nl.esciencecenter.vlet.VletConfig;
  *  Class to hold the String Messages used in the VBrowser.
  *  Not all messages have been moved to this location yet.
  */ 
-
 public class Messages
 {
     // Questions 
     
 	public static  String Q_do_you_want_to_recursive_delete_resource 
     	= "Delete resource and contents of";
-
-    public static  String Q_overwrite_existing_resource 
-        = "Resource exists. Overwrite existing resource ?";
-
-    public static  String M_gridproxy_is_valid_configure_cog_might_not_be_needed 
-        = "You appear to have a valid proxy.\nConfiguring the certificates might not be needed.\n";
 
 
     // Messages 
@@ -56,30 +49,19 @@ public class Messages
     public static  String E_renameble_interface_not_implemented = 
         "This resource cannot be renamed or doesn't implement the rename method";
 
-    public static  String Q_cog_init_wizard_will_exit_proceed = 
-        "If you continue, the VBrowser will exit after you have configured the certificates.\n"
-        + "Proceed?";
-
-    public static  String M_Resource_bigger_than =  
-        "The resource you want to view is larger than:";
-
-    public static  String Q_Do_you_want_to_continue = 
-        "Do you want to continue?"; 
-    
     // Misc Texts 
     public static String aboutText=
          "<html><body><a name=top>"
-        +"<center><h1> About the VL-e Toolkit </h1>"
+        +"<center><h1> About the VBrowser </h1>"
         +"("+VletConfig.getVletVersion()+")<br>"
         +"</center>"
         +"<p>"
         +"<center>The VBrowser is part of the VL-e Toolkit.<br>" 
-        +"This Toolkit is currently under construction.<br><p>"
         +"This toolkit is licensed under the Apache License, Version 2.0<br>"
         +"<p>"
         +" <table>"
         +"  <tr><td> For more info mailto:</td>"  + "<td> vlet-develop@lists.sourceforge.net</td></tr>"  
-        +"  <tr><td> See also:</td>"              + "<td> <a href=http://www.vl-e.nl/vbrowser>www.vl-e.nl/vbrowser</a> </td></tr>"
+        +"  <tr><td> See also:</td>"              + "<td> <a href=https://github.com/NLeSC/vbrowser/wiki>github.com/NLeSC/vbrowser/wiki</a> </td></tr>"
         +"  <tr><td></td> <td></td> </tr>" 
         +"  <tr><td> This about text:</td>"       + "<td> <a href=\"about:/\">about:/</a> </td></tr>"
         +"  <tr><td> Plugin information:</td>"    + "<td> <a href=\"about:/plugins\">about:/plugins</a> </td></tr>" 
@@ -146,20 +128,12 @@ public class Messages
 
     public static String TT_EDIT_ACL = "Edit the Access Control List properties";
 
-    public static String TT_SCHEDULE_RFT_COPY = "Copy file using RFT";
-
     public static String TT_CLICK_ON_VRL = "Click on the URI to open the location";
 
     public static String TT_VIEW_AS_ICONS = "View contents as icons (icon view)";
     
     public static String TT_VIEW_AS_TABLE = "View contents as detailed list (table view)";
-
-    public static String TT_TOGGLE_RESOURCE_TREE_VIEW = "Toggle visibility of Resource Tree Panel";
         
-    public static String TT_TOGGLE_LOG_VIEW = "Toggle visibility of log Panel";
-    
-    public static String TT_TOGGLE_HIDDEN_FILE_FILTER = "Toggle hidden file filter";
-
     // =============
     // Resource Editor Messages  
     // ==============
