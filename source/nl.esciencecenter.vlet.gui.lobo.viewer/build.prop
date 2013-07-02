@@ -12,8 +12,8 @@
 viewer.name=LoboViewer
 viewer.artefactId=vlet-loboviewer
 #
-viewer.package=nl.nlesc.vlet.gui.lobo
-viewer.mainclass=nl.nlesc.vlet.gui.lobo.LoboBrowser
+viewer.package=nl.esciencecenter.vlet.gui.lobo
+viewer.mainclass=nl.esciencecenter.vlet.gui.lobo.LoboBrowser
 
 # build settings 
 viewer.dist=${viewer.root}/dist
