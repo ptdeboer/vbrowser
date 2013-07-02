@@ -12,9 +12,7 @@
   </parent>
   
   <artifactId>distribution</artifactId>
-
   <packaging>pom</packaging>
-
   <name>MVNDistribution</name>
   
   <!-- NOTE: These dependency declarations are only required to sort this project to the 

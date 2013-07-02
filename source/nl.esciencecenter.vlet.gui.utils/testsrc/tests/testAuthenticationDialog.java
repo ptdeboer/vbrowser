@@ -22,9 +22,9 @@ package tests;
 
 import java.util.Properties;
 
-import nl.nlesc.vlet.gui.dialog.AuthenticationDialog;
-import nl.nlesc.vlet.vrs.ServerInfo;
-import nl.nlesc.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.gui.dialog.AuthenticationDialog;
+import nl.esciencecenter.vlet.vrs.ServerInfo;
+import nl.esciencecenter.vlet.vrs.VRS;
 
 public class testAuthenticationDialog
 {

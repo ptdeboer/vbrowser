@@ -22,7 +22,7 @@ package test.vrs.vfs;
 
 import test.TestSettings;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.VRS;
 
 /**
  * Test Local case
@@ -42,7 +42,7 @@ public class TestVFS_LocalFS extends TestVFS
     {
         try
         {
-            VRS.getRegistry().registerVRSDriverClass(nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory.class);
+            VRS.getRegistry().registerVRSDriverClass(nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory.class);
         }
         catch (Exception e)
         {

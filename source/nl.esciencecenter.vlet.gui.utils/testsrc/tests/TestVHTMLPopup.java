@@ -27,7 +27,7 @@ import java.io.PrintStream;
 import javax.swing.JFrame;
 import javax.swing.JTextPane;
 
-import nl.nlesc.vlet.gui.vhtml.VHTMLKit;
+import nl.esciencecenter.vlet.gui.vhtml.VHTMLKit;
 
 
 public class TestVHTMLPopup

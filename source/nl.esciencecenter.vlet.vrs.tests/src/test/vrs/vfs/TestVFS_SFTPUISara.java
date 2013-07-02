@@ -24,8 +24,8 @@ import org.junit.Before;
 
 import test.TestSettings;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+import nl.esciencecenter.vlet.vrs.ServerInfo;
 //import nl.uva.vlet.gui.dialog.AuthenticationDialog;
-import nl.nlesc.vlet.vrs.ServerInfo;
 
 /**
  * Test SRB case

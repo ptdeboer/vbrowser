@@ -24,10 +24,10 @@ package test;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.gui.panels.attribute.AttributeEditorForm;
-import nl.nlesc.vlet.vrs.ServerInfo;
-import nl.nlesc.vlet.vrs.VRSContext;
+import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.gui.panels.attribute.AttributeEditorForm;
+import nl.esciencecenter.vlet.vrs.ServerInfo;
+import nl.esciencecenter.vlet.vrs.VRSContext;
 
 
 public class testAttributeEditor

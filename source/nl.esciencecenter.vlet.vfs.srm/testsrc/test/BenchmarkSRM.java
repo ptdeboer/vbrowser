@@ -4,18 +4,18 @@ import java.util.ArrayList;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.util.bdii.BdiiUtil;
-import nl.nlesc.vlet.util.bdii.StorageArea;
-import nl.nlesc.vlet.vfs.srm.SRMDir;
-import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
-import nl.nlesc.vlet.vfs.srm.SRMFile;
-import nl.nlesc.vlet.vfs.srm.SRMFileSystem;
-import nl.nlesc.vlet.vrs.VNode;
-import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
-import nl.nlesc.vlet.vrs.vfs.VDir;
-import nl.nlesc.vlet.vrs.vfs.VUnixFileMode;
+import nl.esciencecenter.vlet.util.bdii.BdiiUtil;
+import nl.esciencecenter.vlet.util.bdii.StorageArea;
+import nl.esciencecenter.vlet.vfs.srm.SRMDir;
+import nl.esciencecenter.vlet.vfs.srm.SRMFSFactory;
+import nl.esciencecenter.vlet.vfs.srm.SRMFile;
+import nl.esciencecenter.vlet.vfs.srm.SRMFileSystem;
+import nl.esciencecenter.vlet.vrs.VNode;
+import nl.esciencecenter.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.VRSContext;
+import nl.esciencecenter.vlet.vrs.util.VRSResourceLoader;
+import nl.esciencecenter.vlet.vrs.vfs.VDir;
+import nl.esciencecenter.vlet.vrs.vfs.VUnixFileMode;
 
 public class BenchmarkSRM
 {
@@ -280,7 +280,7 @@ public class BenchmarkSRM
                 }
                 catch (Exception ex)
                 {
-                    if (!(ex instanceof nl.nlesc.vlet.exception.ResourceAccessDeniedException))
+                    if (!(ex instanceof nl.esciencecenter.vlet.exception.ResourceAccessDeniedException))
                     {
                         return false;
                     }

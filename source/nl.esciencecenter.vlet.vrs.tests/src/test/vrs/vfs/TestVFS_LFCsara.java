@@ -23,9 +23,9 @@ package test.vrs.vfs;
 import org.junit.Before;
 
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+import nl.esciencecenter.vlet.vrs.ServerInfo;
+import nl.esciencecenter.vlet.vrs.VRS;
 //import nl.uva.vlet.gui.dialog.AuthenticationDialog;
-import nl.nlesc.vlet.vrs.ServerInfo;
-import nl.nlesc.vlet.vrs.VRS;
 
 /**
  * Test LFC. 
@@ -42,7 +42,7 @@ public class TestVFS_LFCsara extends TestVFS
     {
         try
         {
-            VRS.getRegistry().registerVRSDriverClass(nl.nlesc.vlet.vfs.lfc.LFCFSFactory.class);
+            VRS.getRegistry().registerVRSDriverClass(nl.esciencecenter.vlet.vfs.lfc.LFCFSFactory.class);
         }
         catch (Exception e)
         {

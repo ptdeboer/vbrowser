@@ -1,8 +1,8 @@
 package test;
 
-import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
-import nl.nlesc.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.vfs.srm.SRMFSFactory;
+import nl.esciencecenter.vlet.vrs.VRS;
 
 public class TestSRM2Browser
 {

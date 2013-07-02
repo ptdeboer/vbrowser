@@ -1,13 +1,13 @@
 package test;
 
-import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.grid.proxy.GridProxy;
-import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
-import nl.nlesc.vlet.vrs.VNode;
-import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.vfs.VFSClient;
-import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.grid.proxy.GridProxy;
+import nl.esciencecenter.vlet.vfs.srm.SRMFSFactory;
+import nl.esciencecenter.vlet.vrs.VNode;
+import nl.esciencecenter.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.VRSContext;
+import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
+import nl.esciencecenter.vlet.vrs.vfs.VFile;
 
 public class TestSRMSetProxy
 {

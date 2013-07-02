@@ -23,11 +23,11 @@ package voms;
 
 import java.util.Enumeration;
 
-import nl.nlesc.vlet.grid.globus.GlobusUtil;
-import nl.nlesc.vlet.grid.proxy.GridProxy;
-import nl.nlesc.vlet.grid.voms.VO;
-import nl.nlesc.vlet.grid.voms.VomsProxyCredential;
-import nl.nlesc.vlet.grid.voms.VomsProxyCredential.VomsInfo;
+import nl.esciencecenter.vlet.grid.globus.GlobusUtil;
+import nl.esciencecenter.vlet.grid.proxy.GridProxy;
+import nl.esciencecenter.vlet.grid.voms.VO;
+import nl.esciencecenter.vlet.grid.voms.VomsProxyCredential;
+import nl.esciencecenter.vlet.grid.voms.VomsProxyCredential.VomsInfo;
 
 import org.globus.gsi.GlobusCredential;
 

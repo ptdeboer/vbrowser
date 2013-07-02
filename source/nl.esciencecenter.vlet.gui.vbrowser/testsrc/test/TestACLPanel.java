@@ -24,9 +24,9 @@ package test;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.gui.panels.acldialog.ACLPanel;
-import nl.nlesc.vlet.gui.proxynode.impl.direct.ProxyVNodeFactory;
+import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.gui.panels.acldialog.ACLPanel;
+import nl.esciencecenter.vlet.gui.proxynode.impl.direct.ProxyVNodeFactory;
 
 public class TestACLPanel
 {

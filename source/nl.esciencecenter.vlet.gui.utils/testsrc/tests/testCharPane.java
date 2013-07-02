@@ -22,8 +22,8 @@ package tests;
 
 import java.awt.Frame;
 
-import nl.nlesc.vlet.gui.util.charpane.CharPane;
-import nl.uva.vlet.util.vlterm.TermPanel;
+import nl.esciencecenter.vlet.gui.util.charpane.CharPane;
+import nl.esciencecenter.vlet.util.vlterm.TermPanel;
 
 
 public class testCharPane

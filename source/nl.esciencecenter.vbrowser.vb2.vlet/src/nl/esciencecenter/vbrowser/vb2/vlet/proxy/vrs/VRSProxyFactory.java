@@ -26,12 +26,12 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+import nl.esciencecenter.vlet.vrs.VNode;
+import nl.esciencecenter.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.VRSClient;
+import nl.esciencecenter.vlet.vrs.VRSContext;
+import nl.esciencecenter.vlet.vrs.VRSFactory;
 
-import nl.nlesc.vlet.vrs.VNode;
-import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.VRSClient;
-import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.VRSFactory;
 
 
 /** 

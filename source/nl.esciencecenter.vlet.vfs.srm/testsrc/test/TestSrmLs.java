@@ -4,12 +4,12 @@ import nl.esciencecenter.glite.lbl.srm.SRMClientV2;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
-import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.vfs.VFSClient;
-import nl.nlesc.vlet.vrs.vfs.VFSNode;
-import nl.nlesc.vlet.vrs.vfs.VFile;
+import nl.esciencecenter.vlet.vfs.srm.SRMFSFactory;
+import nl.esciencecenter.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.VRSContext;
+import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
+import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
+import nl.esciencecenter.vlet.vrs.vfs.VFile;
 
 public class TestSrmLs
 {

@@ -5,7 +5,7 @@ import java.net.URI;
 
 import nl.esciencecenter.glite.lfc.LFCServer;
 import nl.esciencecenter.glite.lfc.internal.FileDesc;
-import nl.nlesc.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.VRS;
 
 public class TestLFCServer
 {

@@ -53,9 +53,9 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.vrs.ServerInfo;
-import nl.nlesc.vlet.vrs.VRSContext;
+import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.vrs.ServerInfo;
+import nl.esciencecenter.vlet.vrs.VRSContext;
 
 public class OctopusClient
 {

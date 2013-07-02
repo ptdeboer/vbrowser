@@ -3,7 +3,7 @@ package test.vrs.vrl;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.vrl.VRLUtil;
+import nl.esciencecenter.vlet.vrs.vrl.VRLUtil;
 
 import org.junit.Assert;
 import org.junit.Test;

@@ -21,11 +21,11 @@
 package test;
 
 import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
-import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.vfs.VDir;
-import nl.nlesc.vlet.vrs.vfs.VFSClient;
-import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.vfs.VDir;
+import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
+import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 
 public class TestOctopusFS
 {
@@ -37,7 +37,7 @@ public class TestOctopusFS
             return vfs; 
         
         VletConfig.init();
-        VRS.getRegistry().unregisterVRSDriverClass(nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory.class); 
+        VRS.getRegistry().unregisterVRSDriverClass(nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory.class); 
         VRS.getRegistry().registerVRSDriverClass(OctopusFSFactory.class);
         
         VFSClient vfs=VFSClient.getDefault(); 

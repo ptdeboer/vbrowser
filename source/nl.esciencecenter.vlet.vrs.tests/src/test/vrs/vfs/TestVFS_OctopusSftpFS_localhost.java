@@ -21,7 +21,7 @@
 package test.vrs.vfs;
 
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.ServerInfo;
+import nl.esciencecenter.vlet.vrs.ServerInfo;
 import test.TestSettings;
 
 public class TestVFS_OctopusSftpFS_localhost extends TestVFS

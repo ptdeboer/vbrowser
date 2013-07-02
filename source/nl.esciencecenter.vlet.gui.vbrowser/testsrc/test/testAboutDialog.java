@@ -20,7 +20,7 @@
 
 package test;
 
-import nl.nlesc.vlet.gui.dialog.AboutDialog;
+import nl.esciencecenter.vlet.gui.dialog.AboutDialog;
 
 public class testAboutDialog
 {

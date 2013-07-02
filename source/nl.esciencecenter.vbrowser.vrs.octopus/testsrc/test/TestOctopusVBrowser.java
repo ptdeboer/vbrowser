@@ -20,9 +20,9 @@
 
 package test;
 
-import nl.nlesc.vlet.vrs.vfs.VDir;
-import nl.nlesc.vlet.vrs.vfs.VFSClient;
-import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.esciencecenter.vlet.vrs.vfs.VDir;
+import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
+import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 
 public class TestOctopusVBrowser
 {
@@ -31,7 +31,7 @@ public class TestOctopusVBrowser
     {
 	    
 	    // The VBrowser classes must be in the classpath to be able to start this. 
-        nl.nlesc.vlet.gui.startVBrowser.main(args);
+        nl.esciencecenter.vlet.gui.startVBrowser.main(args);
         
         testGetDir(); 
 

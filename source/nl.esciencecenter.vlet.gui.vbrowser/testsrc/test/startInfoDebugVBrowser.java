@@ -23,13 +23,13 @@ package test;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.gui.UIGlobal;
-import nl.nlesc.vlet.gui.UILogger;
-import nl.nlesc.vlet.gui.UIPlatform;
-import nl.nlesc.vlet.gui.dialog.ExceptionForm;
-import nl.nlesc.vlet.gui.vbrowser.VBrowserFactory;
-import nl.nlesc.vlet.gui.vbrowser.VBrowserInit;
+import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.gui.UIGlobal;
+import nl.esciencecenter.vlet.gui.UILogger;
+import nl.esciencecenter.vlet.gui.UIPlatform;
+import nl.esciencecenter.vlet.gui.dialog.ExceptionForm;
+import nl.esciencecenter.vlet.gui.vbrowser.VBrowserFactory;
+import nl.esciencecenter.vlet.gui.vbrowser.VBrowserInit;
 
 /**
  * 

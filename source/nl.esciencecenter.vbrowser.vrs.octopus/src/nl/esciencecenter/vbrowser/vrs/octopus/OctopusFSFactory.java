@@ -24,11 +24,11 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.ServerInfo;
-import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.vfs.VFSFactory;
-import nl.nlesc.vlet.vrs.vfs.VFileSystem;
+import nl.esciencecenter.vlet.vrs.ServerInfo;
+import nl.esciencecenter.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.VRSContext;
+import nl.esciencecenter.vlet.vrs.vfs.VFSFactory;
+import nl.esciencecenter.vlet.vrs.vfs.VFileSystem;
 
 
 /**

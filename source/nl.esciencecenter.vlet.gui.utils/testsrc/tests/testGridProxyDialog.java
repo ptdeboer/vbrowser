@@ -22,7 +22,7 @@ package tests;
 
 import javax.swing.JFrame;
 
-import nl.nlesc.vlet.gui.util.proxy.GridProxyDialog;
+import nl.esciencecenter.vlet.gui.util.proxy.GridProxyDialog;
 
 public class testGridProxyDialog
 {

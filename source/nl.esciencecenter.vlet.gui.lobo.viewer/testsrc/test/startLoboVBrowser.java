@@ -21,7 +21,7 @@
 package test;
 
 
-import nl.nlesc.vlet.gui.lobo.LoboBrowser;
+import nl.esciencecenter.vlet.gui.lobo.LoboBrowser;
 
 
 /** Start Lobo enabled browser */ 
@@ -30,8 +30,8 @@ public class startLoboVBrowser
 	
 	public static void main(String args[])
 	{
-		nl.nlesc.vlet.gui.viewers.ViewerRegistry.getRegistry().registerViewer(LoboBrowser.class);
-		nl.nlesc.vlet.gui.startVBrowser.main(args); 
+		nl.esciencecenter.vlet.gui.viewers.ViewerRegistry.getRegistry().registerViewer(LoboBrowser.class);
+		nl.esciencecenter.vlet.gui.startVBrowser.main(args); 
 		
 	}
 }

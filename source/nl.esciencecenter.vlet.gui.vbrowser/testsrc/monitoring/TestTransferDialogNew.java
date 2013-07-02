@@ -24,7 +24,7 @@ import javax.swing.JFrame;
 
 import nl.esciencecenter.ptk.ui.panels.monitoring.TransferMonitorPanel;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.vfs.VFSTransfer;
+import nl.esciencecenter.vlet.vrs.vfs.VFSTransfer;
 
 public class TestTransferDialogNew
 {

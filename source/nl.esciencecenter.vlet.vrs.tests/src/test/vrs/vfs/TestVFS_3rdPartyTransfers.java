@@ -2,13 +2,13 @@ package test.vrs.vfs;
 
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.tasks.VRSTaskMonitor;
-import nl.nlesc.vlet.vrs.util.VRSResourceLoader;
-import nl.nlesc.vlet.vrs.vfs.VDir;
-import nl.nlesc.vlet.vrs.vfs.VFile;
-import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable;
-import nl.nlesc.vlet.vrs.vfs.VFileSystem;
-import nl.nlesc.vlet.vrs.vfs.VFileActiveTransferable.ActiveTransferType;
+import nl.esciencecenter.vlet.vrs.tasks.VRSTaskMonitor;
+import nl.esciencecenter.vlet.vrs.util.VRSResourceLoader;
+import nl.esciencecenter.vlet.vrs.vfs.VDir;
+import nl.esciencecenter.vlet.vrs.vfs.VFile;
+import nl.esciencecenter.vlet.vrs.vfs.VFileActiveTransferable;
+import nl.esciencecenter.vlet.vrs.vfs.VFileSystem;
+import nl.esciencecenter.vlet.vrs.vfs.VFileActiveTransferable.ActiveTransferType;
 
 import org.junit.Assert;
 import org.junit.Before;

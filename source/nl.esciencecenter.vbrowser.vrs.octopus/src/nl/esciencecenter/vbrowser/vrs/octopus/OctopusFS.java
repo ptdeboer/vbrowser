@@ -38,11 +38,11 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vrs.ServerInfo;
-import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.vfs.FileSystemNode;
-import nl.nlesc.vlet.vrs.vfs.VFS;
-import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.esciencecenter.vlet.vrs.ServerInfo;
+import nl.esciencecenter.vlet.vrs.VRSContext;
+import nl.esciencecenter.vlet.vrs.vfs.FileSystemNode;
+import nl.esciencecenter.vlet.vrs.vfs.VFS;
+import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 
 /**
  * Octopus Meta VFileSystem adaptor. 
@@ -172,7 +172,7 @@ public class OctopusFS extends FileSystemNode
         
         // openDir() must return existing directory: 
         if (dir.exists()==false)
-            throw new nl.nlesc.vlet.exception.ResourceNotFoundException("Directory doesn't exists:"+dir); 
+            throw new nl.esciencecenter.vlet.exception.ResourceNotFoundException("Directory doesn't exists:"+dir); 
         
         return dir; 
     }
@@ -186,7 +186,7 @@ public class OctopusFS extends FileSystemNode
         
         // openFile() must return existing file: 
         if (file.exists()==false)
-            throw new nl.nlesc.vlet.exception.ResourceNotFoundException("File doesn't exists:"+file); 
+            throw new nl.esciencecenter.vlet.exception.ResourceNotFoundException("File doesn't exists:"+file); 
         
         return file; 
     }

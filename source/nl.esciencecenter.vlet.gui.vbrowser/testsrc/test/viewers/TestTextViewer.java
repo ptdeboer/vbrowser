@@ -23,10 +23,10 @@ package test.viewers;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.gui.viewers.HexViewer;
-import nl.nlesc.vlet.gui.viewers.TextViewer;
-import nl.nlesc.vlet.gui.viewers.ViewContext;
-import nl.nlesc.vlet.gui.viewers.ViewerManager;
+import nl.esciencecenter.vlet.gui.viewers.HexViewer;
+import nl.esciencecenter.vlet.gui.viewers.TextViewer;
+import nl.esciencecenter.vlet.gui.viewers.ViewContext;
+import nl.esciencecenter.vlet.gui.viewers.ViewerManager;
 
 public class TestTextViewer
 {

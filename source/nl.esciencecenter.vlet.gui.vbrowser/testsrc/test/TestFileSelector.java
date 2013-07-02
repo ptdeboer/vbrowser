@@ -30,7 +30,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import nl.nlesc.vlet.gui.util.FileSelector;
+import nl.esciencecenter.vlet.gui.util.FileSelector;
 
 
 public class TestFileSelector extends JFrame 

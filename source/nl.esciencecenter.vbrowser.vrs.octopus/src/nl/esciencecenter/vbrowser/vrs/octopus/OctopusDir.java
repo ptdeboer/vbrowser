@@ -29,9 +29,9 @@ import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
-import nl.nlesc.vlet.vrs.vfs.VDir;
-import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.esciencecenter.vlet.exception.ResourceAlreadyExistsException;
+import nl.esciencecenter.vlet.vrs.vfs.VDir;
+import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 
 /**
  * Minimal implementation of the VDir class. 

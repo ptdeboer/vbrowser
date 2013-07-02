@@ -24,8 +24,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
-import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.gui.UIGlobal;
+import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.gui.UIGlobal;
 
 
 public class testIconProvider

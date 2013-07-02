@@ -2,11 +2,11 @@ package test;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.vrs.vfs.VFSClient;
-import nl.nlesc.vlet.vrs.vfs.VFile;
-import nl.nlesc.vlet.vrs.vfs.VReplicatable;
-import nl.nlesc.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
+import nl.esciencecenter.vlet.vrs.vfs.VFile;
+import nl.esciencecenter.vlet.vrs.vfs.VReplicatable;
 
 public class TestReplicaRegistration
 {

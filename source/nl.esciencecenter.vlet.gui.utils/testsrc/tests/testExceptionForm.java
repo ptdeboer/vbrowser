@@ -21,10 +21,10 @@
 package tests;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.nlesc.vlet.exception.ResourceAlreadyExistsException;
-import nl.nlesc.vlet.exception.ResourceReadAccessDeniedException;
-import nl.nlesc.vlet.exception.ResourceToBigException;
-import nl.nlesc.vlet.gui.dialog.ExceptionForm;
+import nl.esciencecenter.vlet.exception.ResourceAlreadyExistsException;
+import nl.esciencecenter.vlet.exception.ResourceReadAccessDeniedException;
+import nl.esciencecenter.vlet.exception.ResourceToBigException;
+import nl.esciencecenter.vlet.gui.dialog.ExceptionForm;
 
 
 public class testExceptionForm

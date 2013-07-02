@@ -3,13 +3,13 @@ package test;
 import nl.esciencecenter.glite.lbl.srm.SRMClientV2;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.nlesc.vlet.vfs.srm.SRMDir;
-import nl.nlesc.vlet.vfs.srm.SRMFSFactory;
-import nl.nlesc.vlet.vfs.srm.SRMFileSystem;
-import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.VRSContext;
-import nl.nlesc.vlet.vrs.vfs.VFSClient;
-import nl.nlesc.vlet.vrs.vfs.VFSNode;
+import nl.esciencecenter.vlet.vfs.srm.SRMDir;
+import nl.esciencecenter.vlet.vfs.srm.SRMFSFactory;
+import nl.esciencecenter.vlet.vfs.srm.SRMFileSystem;
+import nl.esciencecenter.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.VRSContext;
+import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
+import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 
 public class TestSrmLsQuery
 {

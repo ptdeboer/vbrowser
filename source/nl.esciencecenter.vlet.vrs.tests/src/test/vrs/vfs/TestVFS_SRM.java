@@ -20,9 +20,9 @@
 
 package test.vrs.vfs;
 
-import nl.nlesc.vlet.VletConfig;
-import nl.nlesc.vlet.vrs.VRS;
-import nl.nlesc.vlet.vrs.vfs.VFSClient;
+import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
 
 abstract public class TestVFS_SRM extends TestVFS
 {
@@ -45,8 +45,8 @@ abstract public class TestVFS_SRM extends TestVFS
         //    return vfs; 
                 
         VletConfig.init();
-        VRS.getRegistry().registerVRSDriverClass(nl.nlesc.vlet.vfs.gftp.GftpFSFactory.class);
-        VRS.getRegistry().registerVRSDriverClass(nl.nlesc.vlet.vfs.srm.SRMFSFactory.class);
+        VRS.getRegistry().registerVRSDriverClass(nl.esciencecenter.vlet.vfs.gftp.GftpFSFactory.class);
+        VRS.getRegistry().registerVRSDriverClass(nl.esciencecenter.vlet.vfs.srm.SRMFSFactory.class);
         
         VFSClient vfs=VFSClient.getDefault(); 
         return vfs; 

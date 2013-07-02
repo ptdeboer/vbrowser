@@ -25,8 +25,8 @@ package test.data;
 
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
-import nl.nlesc.vlet.exception.XMLDataParseException;
-import nl.nlesc.vlet.vrs.data.xml.XMLData;
+import nl.esciencecenter.vlet.exception.XMLDataParseException;
+import nl.esciencecenter.vlet.vrs.data.xml.XMLData;
 
 import org.w3c.dom.Document;
 
