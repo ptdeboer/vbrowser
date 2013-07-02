@@ -28,11 +28,18 @@ project.dist.doc=${project.dist}/doc
 project.env.ok=ok;
  
 # version
-project.version=1.6.0alpha2
+project.version=1.6.0-rc1a
+ptk.version=${project.version}
+vlet.version=${project.version}
+vbrowser.version=${project.version}
+# Owner/Vendor: 
+project.vendor=eScienceCenter.nl
 
 ##
-#
-project.vendor=eScienceCenter.nl
+# Optional Modules: 
+# Build UserGuide (need LaTeX!) 
+# uncomment to build UserGuide  
+project.build.doc.userguide=true
 
 ###
 # Java Compiler options : Use Java 1.7  

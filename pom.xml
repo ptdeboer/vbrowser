@@ -92,7 +92,7 @@
         <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.gui.vbrowser</module>
 
         <!-- Viewers --> 
-        <!-- <module>${vbrowser.modules.dir}/nl.esciencecenter.gui.lobo.viewer</module> -->
+        <module>${vbrowser.modules.dir}/nl.esciencecenter.gui.lobo.viewer</module> 
         <!-- Distribution  -->
         <module>${vbrowser.rootdir}/mvndist</module>
            
