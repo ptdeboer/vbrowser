@@ -19,11 +19,16 @@
 		Target: init 
 	  -->
     <target name="init">
+        
         <!-- Create the build directory structure used by compile -->
         <mkdir dir="${comp.build}" />
         <mkdir dir="${comp.build.classes}" />
         <mkdir dir="${comp.dist}" />
         <mkdir dir="${comp.dist}/lib" />
+        
+        <property name="ptk.version" value="dev-snapshot"/>
+        <property name="comp.version" value="${ptk.version}"/>
+        
     </target>
 
     <target name="config">

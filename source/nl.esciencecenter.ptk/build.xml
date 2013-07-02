@@ -29,13 +29,17 @@
         <mkdir dir="${comp.dist}" />
 
         <mkdir dir="${comp.dist}/lib" />
+        
+        <property name="ptk.version" value="dev-snapshot"/>
+       <property name="comp.version" value="${ptk.version}"/>
+                    
     </target>
-
-
-    <target name="config" depends="init">
+    
+    <target name="config">
     </target>
-
+    
     <path id="comp.classpath">
+        
         <!-- include project libraries-->
         <fileset dir="${project.dist.lib}">
             <include name="**/*.jar" />
@@ -102,9 +106,8 @@
 
     <!-- build component jar -->
     <target name="jar" depends="build">
+        
         <!-- defaults -->
-        <property name="comp.version" value="dev" />
-        <property name="project.version" value="dev" />
         <property name="project.vendor" value="${user.name}" />
 
         <!-- Create application JAR file -->
@@ -114,7 +117,7 @@
                 <attribute name="Main-Class" value="${comp.mainclass}" />
                 <section name="common">
                     <attribute name="Specification-Title" value="${comp.artefactId}" />
-                    <attribute name="Specification-Version" value="${project.version}" />
+                    <attribute name="Specification-Version" value="${ptk.version}" />
                     <attribute name="Specification-Vendor" value="${project.vendor}" />
                     <attribute name="Implementation-Title" value="${comp.artefactId}" />
                     <attribute name="Implementation-Version" value="${comp.version} ${TODAY}" />

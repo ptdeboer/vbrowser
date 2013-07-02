@@ -14,7 +14,6 @@ comp.groupId=nl.esciencecenter.ptk
 comp.artefactId=nlesc-ptk.ui
 comp.package.prefix=nl.esciencecenter.ptk.ui
 comp.package.dir=nl/esciencecenter/ptk/ui
-comp.version=0.2.0
 
 ##
 # Build environment. 
