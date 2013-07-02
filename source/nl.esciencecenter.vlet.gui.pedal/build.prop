@@ -7,8 +7,8 @@ viewer.name=PedalPDFViewer
 viewer.artefactId=vlet-pedalViewer
 # The Gui will use this classname to start the Viewer
 # it is also used as the jar file name 
-viewer.package=nl.nlesc.vlet.gui.pedal
-viewer.mainclass=nl.nlesc.vlet.gui.pedal.JPedalPDFViewer
+viewer.package=nl.esciencecenter.vlet.gui.pedal
+viewer.mainclass=nl.esciencecenter.vlet.gui.pedal.JPedalPDFViewer
 
 # build 
 viewer.dist=${viewer.root}/dist
