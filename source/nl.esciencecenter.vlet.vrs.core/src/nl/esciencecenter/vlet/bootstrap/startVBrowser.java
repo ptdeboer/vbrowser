@@ -43,7 +43,7 @@ public class startVBrowser
 		
 		try 
 		{
-            boot.launch("nl.nlesc.vlet.gui.startVBrowser",args);
+            boot.launch("nl.esciencecenter.vlet.gui.startVBrowser",args);
 		}
 		catch (Exception e) 
 		{

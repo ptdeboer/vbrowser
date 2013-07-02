@@ -269,23 +269,23 @@ public final class Registry // todo: change to vrs protected class.
             
             registerVRSDriverClassNoError(currentLoader, HTTPFactory.class.getCanonicalName());
             registerVRSDriverClassNoError(currentLoader, HTTPSFactory.class.getCanonicalName());
-            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.vdriver.infors.InfoRSFactory");
+            registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.vdriver.infors.InfoRSFactory");
             
             // auto configuration of octopus vs local adaptors. 
             boolean result=registerVRSDriverClassNoError(currentLoader,"nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory");
             if (result==false)
             {
-                registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.vdriver.localfs.LocalFSFactory");
-                registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vfs.jcraft.ssh.SftpFSFactory");
+                registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory");
+                registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.ssh.jcraft.SftpFSFactory");
             }
 
             // Globus is a plugin. 
-            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vrs.globusrs.GlobusRSFactory");
-            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vfs.gftp.GftpFSFactory");
+            registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.globusrs.GlobusRSFactory");
+            registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.gftp.GftpFSFactory");
 
             // Other VFS/VRS implementations from lib/vdrivers or lib/plugins 
-            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vfs.srm.SRMFSFactory");
-            registerVRSDriverClassNoError(currentLoader, "nl.nlesc.vlet.vfs.lfc.LFCFSFactory");
+            registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.srm.SRMFSFactory");
+            registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.lfc.LFCFSFactory");
 
         }
 

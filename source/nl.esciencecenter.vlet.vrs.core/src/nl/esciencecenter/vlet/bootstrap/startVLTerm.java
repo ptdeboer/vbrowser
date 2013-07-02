@@ -37,7 +37,7 @@ public class startVLTerm
         
 		try 
 		{
-            boot.launch("nl.nlesc.vlet.util.vlterm.VLTerm",args);
+            boot.launch("nl.esciencecenter.vlet.util.vlterm.VLTerm",args);
 		}
 		catch (Exception e) 
 		{
