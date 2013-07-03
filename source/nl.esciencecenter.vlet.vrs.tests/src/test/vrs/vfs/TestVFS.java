@@ -60,12 +60,12 @@ import nl.esciencecenter.vlet.util.bdii.BdiiService;
 import nl.esciencecenter.vlet.util.bdii.BdiiUtil;
 import nl.esciencecenter.vlet.util.bdii.StorageArea;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
-import nl.esciencecenter.vlet.vrs.VCommentable;
+
 import nl.esciencecenter.vlet.vrs.VRSContext;
 import nl.esciencecenter.vlet.vrs.io.VRandomAccessable;
 import nl.esciencecenter.vlet.vrs.io.VRandomReadable;
 import nl.esciencecenter.vlet.vrs.io.VResizable;
-import nl.esciencecenter.vlet.vrs.io.VZeroSizable;
+
 import nl.esciencecenter.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.esciencecenter.vlet.vrs.util.VRSIOUtil;
 import nl.esciencecenter.vlet.vrs.util.VRSResourceLoader;
@@ -2281,9 +2281,9 @@ public class TestVFS extends VTestCase
 
         Assert.assertEquals("New file must have zero length !", 0, file.getLength());
 
-        if (file instanceof VZeroSizable)
+        if (file instanceof VResizable)
         {
-            ((VZeroSizable) file).setLengthToZero();
+            ((VResizable) file).setLengthToZero();
             Assert.assertEquals("after setLengthToZero: New file must still have zero length !", 0, file.getLength());
         }
         else
@@ -2364,45 +2364,6 @@ public class TestVFS extends VTestCase
 
         if (remoteFile.exists())
             remoteFile.delete();
-    }
-
-    @Test public void testVCommentable() throws Exception
-    {
-        VFile file = getRemoteTestDir().createFile("testFile");
-
-        if (file instanceof VCommentable)
-        {
-
-            VCommentable commentableFile = (VCommentable) file;
-
-            Random r = new Random();
-            String expected = "test VCommentable " + r.nextInt();
-            commentableFile.setComment(expected);
-
-            String actual = commentableFile.getComment();
-
-            Assert.assertEquals(expected, actual);
-
-            file.delete();
-
-            try
-            {
-                // getting comments from non-existing file
-                actual = commentableFile.getComment();
-                // todo: exception test.
-            }
-            catch (ResourceNotFoundException ex)
-            {
-                message("Caught expected Exception:" + ex);
-                //Global.debugPrintStacktrace(ex);
-            }
-
-        }
-        else
-        {
-            file.delete();
-        }
-
     }
 
     @Test public void testVChecksum() throws Exception
