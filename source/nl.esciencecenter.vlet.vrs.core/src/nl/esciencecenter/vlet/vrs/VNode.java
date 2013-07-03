@@ -44,6 +44,7 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.util.MimeTypes;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.events.ResourceEvent;
+import nl.esciencecenter.vlet.vrs.vrms.LogicalResourceNode;
 
 /**
  * The VNode class, the super class of all resource nodes in the VRS package. It
@@ -493,12 +494,15 @@ public abstract class VNode // implements IVNode
      * create a deep copy of it's contents and it's children. This default
      * behaviour is different then clone().
      */
-    public VNode duplicate() throws VrsException
+    public VNode duplicate() // throws VrsException
     {
-        throw new nl.esciencecenter.vlet.exception.NotImplementedException("Duplicate method not implemented");
+        throw new RuntimeException(new nl.esciencecenter.vlet.exception.NotImplementedException("Duplicate method not implemented"));
     }
 
-    
+    public VNode duplicate(boolean shallowCopy) // throws VrsException
+    {
+        throw new RuntimeException(new nl.esciencecenter.vlet.exception.NotImplementedException("Duplicate method not implemented"));
+    }
 
     /**
      * Status String for nodes which implemented Status. Returns NULL if not

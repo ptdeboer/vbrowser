@@ -43,6 +43,7 @@ import java.io.OutputStream;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.ptk.object.Duplicatable;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -63,7 +64,6 @@ import nl.esciencecenter.vlet.vrs.ServerInfo;
 import nl.esciencecenter.vlet.vrs.ServerInfoRegistry;
 import nl.esciencecenter.vlet.vrs.VComposite;
 import nl.esciencecenter.vlet.vrs.VDeletable;
-import nl.esciencecenter.vlet.vrs.VDuplicatable;
 import nl.esciencecenter.vlet.vrs.VEditable;
 import nl.esciencecenter.vlet.vrs.VNode;
 import nl.esciencecenter.vlet.vrs.VRS;
@@ -102,7 +102,7 @@ import nl.esciencecenter.vlet.vrs.vrl.VRLUtil;
  * 
  */
 public class LogicalResourceNode extends VNode implements VEditable, VDeletable, Cloneable, VRenamable,
-        VStreamAccessable, VLogicalResource, VResourceLink, VPersistance, VDuplicatable<LogicalResourceNode>,
+        VStreamAccessable, VLogicalResource, VResourceLink, VPersistance, Duplicatable<LogicalResourceNode>,
         IPresentable
 {
     private static ClassLogger logger;
@@ -239,10 +239,32 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         this.resourceAttributes = attrSet.duplicate();
     }
 
-    public LogicalResourceNode duplicate() throws VrsException
+    @Override
+    public boolean shallowSupported()
     {
-        LogicalResourceNode newNode = new LogicalResourceNode(this.getVRSContext(), this.resourceAttributes, (VRL) null);
-        return newNode;
+        return false;
+    }
+    
+    @Override
+    public LogicalResourceNode duplicate() // throws VrsException
+    {
+        return duplicate(false); 
+    }
+    
+    @Override
+    public LogicalResourceNode duplicate(boolean shallowCopy) // throws VrsException
+    {
+        LogicalResourceNode newNode;
+        try
+        {
+            newNode = new LogicalResourceNode(this.getVRSContext(), this.resourceAttributes, (VRL) null);
+            return newNode;
+        }
+        catch (VrsException e)
+        {
+            throw new RuntimeException(e.getMessage(),e); 
+        }
+
     }
 
     // basic initializer: one for all!
@@ -1551,9 +1573,5 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         logger.warnPrintf("%s\n", msg);
     }
 
-    private void errorPrintln(String msg)
-    {
-        logger.errorPrintf("%s\n", msg);
-    }
 
 }

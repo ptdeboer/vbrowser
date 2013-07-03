@@ -32,6 +32,7 @@ import java.io.OutputStream;
 
 import org.w3c.dom.DOMException;
 
+import nl.esciencecenter.ptk.object.Duplicatable;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -46,7 +47,6 @@ import nl.esciencecenter.vlet.vrs.LinkNode;
 import nl.esciencecenter.vlet.vrs.VComposite;
 import nl.esciencecenter.vlet.vrs.VCompositeDeletable;
 import nl.esciencecenter.vlet.vrs.VDeletable;
-import nl.esciencecenter.vlet.vrs.VDuplicatable;
 import nl.esciencecenter.vlet.vrs.VEditable;
 import nl.esciencecenter.vlet.vrs.VNode;
 import nl.esciencecenter.vlet.vrs.VRS;
@@ -71,7 +71,7 @@ import nl.esciencecenter.vlet.vrs.vfs.VFile;
  * that ResourceFolder is composite and LogicalNode is singular)
  */
 public class ResourceFolder extends LogicalFolderNode<VNode> implements VCompositePersistance, VEditable, VRenamable,
-        VDuplicatable<ResourceFolder>, VDeletable, VCompositeDeletable, VStreamReadable, IPresentable
+        Duplicatable<ResourceFolder>, VDeletable, VCompositeDeletable, VStreamReadable, IPresentable
 {
     AttributeSet attributes = new AttributeSet();
 
@@ -105,24 +105,39 @@ public class ResourceFolder extends LogicalFolderNode<VNode> implements VComposi
         init(attrSet);
     }
 
-    public ResourceFolder duplicate() throws VrsException
+    public ResourceFolder duplicate()
     {
-        // VlException lastException;
-
-        // duplicate attributes:
-        ResourceFolder group = new ResourceFolder(this.getVRSContext(), this.attributes, (VRL) null);
-
-        VNode nodes[] = this.getNodes();
-
-        if (nodes != null)
+        return duplicate(false);
+    }
+    
+    public boolean shallowSupported()
+    {
+        return false;
+    }
+    
+    public ResourceFolder duplicate(boolean shallowCopy)
+    {
+        try
         {
-            for (VNode node : this.getNodes())
+            // duplicate attributes:
+            ResourceFolder group = new ResourceFolder(this.getVRSContext(), this.attributes, (VRL) null);
+    
+            VNode nodes[] = this.getNodes();
+    
+            if (nodes != null)
             {
-                group.addSubNode(node.duplicate());
+                for (VNode node : this.getNodes())
+                {
+                    group.addSubNode(node.duplicate());
+                }
             }
+    
+            return group;
         }
-
-        return group;
+        catch(VrsException e)
+        {
+            throw new RuntimeException(e.getMessage(),e); 
+        }
     }
 
     private void init(AttributeSet attrSet)
