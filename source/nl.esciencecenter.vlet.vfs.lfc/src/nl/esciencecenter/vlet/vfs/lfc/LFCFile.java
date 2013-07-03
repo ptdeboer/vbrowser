@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import nl.esciencecenter.glite.lfc.internal.FileDesc;
 import nl.esciencecenter.glite.lfc.internal.ReplicaDesc;
 import nl.esciencecenter.ptk.data.BooleanHolder;
-import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -38,14 +37,12 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.InternalError;
 import nl.esciencecenter.vlet.exception.ResourceLinkIsBorkenException;
 import nl.esciencecenter.vlet.exception.ResourceNotFoundException;
-import nl.esciencecenter.vlet.vrs.VCommentable;
 import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.data.VAttributeConstants;
 import nl.esciencecenter.vlet.vrs.util.VRSIOUtil;
 import nl.esciencecenter.vlet.vrs.vfs.VFS;
 import nl.esciencecenter.vlet.vrs.vfs.VFSTransfer;
 import nl.esciencecenter.vlet.vrs.vfs.VFile;
-import nl.esciencecenter.vlet.vrs.vfs.VFileActiveTransferable;
 import nl.esciencecenter.vlet.vrs.vfs.VGlobalUniqueID;
 import nl.esciencecenter.vlet.vrs.vfs.VLinkListable;
 import nl.esciencecenter.vlet.vrs.vfs.VLogicalFileAlias;
@@ -55,7 +52,7 @@ import nl.esciencecenter.vlet.vrs.vfs.VUnixFileAttributes;
 
 public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttributes,
         ILFCLocation, VReplicatable, VGlobalUniqueID,
-        VLinkListable, VCommentable// , VChecksum
+        VLinkListable// , VChecksum
 {
     private FileDescWrapper wrapperDesc;
     private LFCClient lfcClient;

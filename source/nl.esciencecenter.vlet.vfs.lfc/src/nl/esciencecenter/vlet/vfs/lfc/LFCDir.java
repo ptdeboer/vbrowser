@@ -32,19 +32,15 @@ import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.ResourceAlreadyExistsException;
-import nl.esciencecenter.vlet.vrs.VCommentable;
-import nl.esciencecenter.vlet.vrs.VRSContext;
-import nl.esciencecenter.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.esciencecenter.vlet.vrs.vfs.VDir;
 import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 import nl.esciencecenter.vlet.vrs.vfs.VFile;
 import nl.esciencecenter.vlet.vrs.vfs.VReplicatableDirectory;
 import nl.esciencecenter.vlet.vrs.vfs.VUnixFileAttributes;
-import nl.esciencecenter.vlet.vrs.vfs.VUnixFileMode;
 
 
 public class LFCDir extends VDir 
-    implements VUnixFileAttributes,ILFCLocation,VCommentable,VReplicatableDirectory
+    implements VUnixFileAttributes,ILFCLocation, VReplicatableDirectory
 {
     private LFCClient lfcClient;
     private FileDescWrapper fileDisc=null;
