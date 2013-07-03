@@ -38,7 +38,6 @@ import nl.esciencecenter.vlet.vrs.VRSContext;
 import nl.esciencecenter.vlet.vrs.io.VRandomReadable;
 import nl.esciencecenter.vlet.vrs.io.VResizable;
 import nl.esciencecenter.vlet.vrs.io.VStreamWritable;
-import nl.esciencecenter.vlet.vrs.io.VZeroSizable;
 import nl.esciencecenter.vlet.vrs.vfs.VFile;
 
 /** 
@@ -127,9 +126,9 @@ public class VRSResourceLoader extends ResourceLoader
                 file.delete();
             }
         }
-        else if (node instanceof VZeroSizable)
+        else if (node instanceof VResizable)
         {
-            ((VZeroSizable)node).setLengthToZero(); 
+            ((VResizable)node).setLengthToZero(); 
         }
         
         if (node instanceof VStreamWritable)

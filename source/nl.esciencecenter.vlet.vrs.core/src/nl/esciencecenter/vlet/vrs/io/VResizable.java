@@ -27,7 +27,7 @@ import java.io.IOException;
  *  
  * @author Piter T. de Boer 
  */
-public interface VResizable extends VZeroSizable, VSize
+public interface VResizable extends VSize
 {
     // Explicit inheritance from  VSize 
     public long getLength() throws IOException; 

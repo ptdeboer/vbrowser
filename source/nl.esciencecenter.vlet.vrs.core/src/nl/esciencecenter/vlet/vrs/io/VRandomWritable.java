@@ -28,16 +28,10 @@ import java.io.IOException;
  * @author P.T. de Boer 
  *
  */
-public interface VRandomWritable extends VZeroSizable
+public interface VRandomWritable
 {
     // Explicit inheritance from VSize 
     public long getLength() throws IOException; 
-
-    // Explicit inheritance from VZeroSizable 
-    public void setLengthToZero()  throws IOException;
-    
-    // Not yet implemented by all file systems! 
-    //public void setLength(long newLength)  throws IOException;
    
     /**
      * Writes <code>nrBytes</code> to the file starting  

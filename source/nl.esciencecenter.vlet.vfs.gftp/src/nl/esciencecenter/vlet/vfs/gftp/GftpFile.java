@@ -24,26 +24,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
-import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.NestedIOException;
-import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.io.VRandomAccessable;
 import nl.esciencecenter.vlet.vrs.io.VStreamReadable;
 import nl.esciencecenter.vlet.vrs.io.VStreamWritable;
-import nl.esciencecenter.vlet.vrs.io.VZeroSizable;
 import nl.esciencecenter.vlet.vrs.vfs.VChecksum;
 import nl.esciencecenter.vlet.vrs.vfs.VDir;
 import nl.esciencecenter.vlet.vrs.vfs.VFSTransfer;
 import nl.esciencecenter.vlet.vrs.vfs.VFile;
-import nl.esciencecenter.vlet.vrs.vfs.VFileActiveTransferable;
-
 
 import org.globus.ftp.MlsxEntry;
 
@@ -52,7 +44,7 @@ import org.globus.ftp.MlsxEntry;
  * 
  * @author P.T. de Boer
  */
-public class GftpFile extends VFile implements VStreamReadable, VStreamWritable, VRandomAccessable, VZeroSizable,
+public class GftpFile extends VFile implements VStreamReadable, VStreamWritable, VRandomAccessable, 
        VChecksum // VSizeAdjustable
 {
     /** GridServer handler */
