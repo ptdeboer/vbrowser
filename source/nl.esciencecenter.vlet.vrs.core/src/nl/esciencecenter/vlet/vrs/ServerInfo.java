@@ -741,6 +741,9 @@ public class ServerInfo
     public AuthScheme getAuthScheme()
     {
         String authScheme = getStringProperty(ServerInfo.ATTR_AUTH_SCHEME);
+        if ((authScheme==null) || (authScheme=="")) 
+        	return null;
+        
         return AuthScheme.valueOf(authScheme); 
     }
     
