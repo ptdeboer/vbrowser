@@ -1,15 +1,15 @@
 #!/bin/bash 
 ##
-#                (C) Netherlands eScienceCenter
+# (C) 2012 - 2013 Netherlands eScience Center
 #
-# Project : VLET
+# Project : VBrowser
 # File    : vletenv.sh
-# Author : Piter T. de Boer 
-# Info:
-#           This script sets the VLeT environment. 
+# Author  : Piter T. de Boer 
+# Info    :
+#           This script sets the VBrowser's VLET environment. 
 #           Most functionality has moved to the bootstrap class
 #           which finds the libraries and sets the classpath. 
-#           See: nl.uva.vlet.bootstrap.* package 
+#           See: nl.esciencecenter.vlet.bootstrap.* package 
 #           Note: this file is sourced, do not use 'exit' 
 #
  
@@ -156,7 +156,7 @@ if [ -n "$JAVA_HOME" ] ; then
    debug "java=$JAVA_HOME/bin/java"
 else
    # use default java command from path
-   if which java ; then 
+   if which java > /dev/null ; then 
        debug "java:using default java command from path." 
    else 
        println "*** Error: No Java Found ***"
