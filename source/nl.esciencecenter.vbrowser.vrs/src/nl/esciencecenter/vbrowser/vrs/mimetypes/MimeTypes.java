@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.esciencecenter.vbrowser.vrs.util;
+package nl.esciencecenter.vbrowser.vrs.mimetypes;
 
 import java.io.File;
 import java.io.IOException;

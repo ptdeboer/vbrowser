@@ -31,8 +31,8 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.dummy.DummyProxyFactory;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.mimetypes.MimeTypes;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
-import nl.esciencecenter.vbrowser.vrs.util.MimeTypes;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 
