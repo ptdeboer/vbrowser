@@ -1,6 +1,6 @@
 #!/bin/bash 
 ###
-# (C) www.vl-e 2005-2010 
+# (C) 2012-2013 Netherlands eScienceCenter
 #
 # file  : vbrowser.sh: 
 # info  : VBrowser startup script. 

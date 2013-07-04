@@ -1,10 +1,10 @@
 #!/bin/bash 
 ##
-# Project : VLET
+# Project : VBrowser
 # File    : urils.sh  
 # Author  : P.T. de boer 
 # Info    : 
-#      script interface to the VFSClient of VLET.
+#      script interface to the Virtual File System of the VBrowser.  
 
 ##
 #Usage: 
@@ -50,7 +50,7 @@ fi
 
 ##
 # java class to start
-CLASS=nl.nlesc.vlet.vrs.tools.URILs
+CLASS=nl.esciencecenter.vlet.vrs.tools.URILs
 
 # Start bootstrapper which does the rest 
 $JAVA -Dvlet.install.sysconfdir=$VLET_SYSCONFDIR -jar $BASE_DIR/bin/bootstrapper.jar  $CLASS $@

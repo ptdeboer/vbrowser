@@ -1,10 +1,10 @@
 #!/bin/bash 
 ##
-# Project : VLET
+# Project : VBrowser
 # File    : uricopy.sh 
 # Author  : P.T. de boer 
 # Info    : 
-#      script interface to the VFSClient of VLET.
+#      Script interface to the Virtual File System (VFS) of the VBrowser.
 
 ##
 #Usage: 
@@ -55,7 +55,7 @@ fi
 
 ##
 # java class to start
-CLASS=nl.nlesc.vlet.vrs.tools.URICopy
+CLASS=nl.esciencecenter.vlet.vrs.tools.URICopy
 
 # Start bootstrapper which does the rest 
 $JAVA -Dvlet.install.sysconfdir=$VLET_SYSCONFDIR -jar $BASE_DIR/bin/bootstrapper.jar  $CLASS $@

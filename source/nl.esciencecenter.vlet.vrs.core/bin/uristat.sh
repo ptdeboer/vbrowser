@@ -1,10 +1,10 @@
 #!/bin/bash 
 ##
-# Project : VLET
+# Project : VBrowser 
 # File    : uristat.sh  
 # Author  : P.T. de boer 
 # Info    : 
-#      script interface to the VFSClient of VLET.
+#      script interface to the VFSClient of the VBrowser 
 
 ##
 #Usage: 
@@ -52,7 +52,7 @@ fi
 
 ##
 # java class to start
-CLASS=nl.nlesc.vlet.vrs.tools.URIStat
+CLASS=nl.esciencecenter.vlet.vrs.tools.URIStat
 
 # Start bootstrapper which does the rest 
 $JAVA -Dvlet.install.sysconfdir=$VLET_SYSCONFDIR -jar $BASE_DIR/bin/bootstrapper.jar  $CLASS $@
