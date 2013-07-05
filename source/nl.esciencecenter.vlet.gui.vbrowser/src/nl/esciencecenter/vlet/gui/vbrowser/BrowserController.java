@@ -189,7 +189,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 	// =======================================================================
 
 	/** The VBrowser I am Controlling */
-	protected VBrowser vbrowser = null;
+	protected VBrowserFrame vbrowser = null;
 
 	private int browserId = -1;
 
@@ -243,7 +243,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 	 * @param factory 
 	 */
 
-	public BrowserController(VBrowser sbrowser, VBrowserFactory factory)
+	public BrowserController(VBrowserFrame sbrowser, VBrowserFactory factory)
 	{
 		this.vbrowser = sbrowser;
 		this.factory=factory; 
@@ -967,7 +967,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 		if (this.vbrowser == null)
 			return; // browser already closed ! 
 
-		final VBrowser vb = this.vbrowser;
+		final VBrowserFrame vb = this.vbrowser;
 
 		vb.setBusy(val);  
 		

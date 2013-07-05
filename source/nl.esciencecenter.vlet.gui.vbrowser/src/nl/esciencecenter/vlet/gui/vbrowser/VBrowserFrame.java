@@ -25,12 +25,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.net.URL;
-import java.util.TooManyListenersException;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -79,7 +77,7 @@ import nl.esciencecenter.vlet.gui.viewers.ViewerRegistry.ViewerList;
  * 
  * @see BrowserController
  */
-public class VBrowser extends javax.swing.JFrame
+public class VBrowserFrame extends javax.swing.JFrame
 {
     private static final long serialVersionUID = -4261195481107309909L;
 
@@ -90,7 +88,7 @@ public class VBrowser extends javax.swing.JFrame
     
     static
     {
-        logger=ClassLogger.getLogger(VBrowser.class); 
+        logger=ClassLogger.getLogger(VBrowserFrame.class); 
     }
     
     // ========================================================================
@@ -129,7 +127,7 @@ public class VBrowser extends javax.swing.JFrame
     JMenuItem pasteAsLinkMenuItem;
     private JMenu cogUtilsMenu;
     private JMenu toolsMenu;
-    private JMenuItem cogProxyInitMenuItem;
+    //private JMenuItem cogProxyInitMenuItem;
     private JMenuItem proxyDialogMenuItem;
     private JMenu proxyMenu;
     JCheckBoxMenuItem singleClickActionMenuItem;
@@ -217,7 +215,7 @@ public class VBrowser extends javax.swing.JFrame
     private boolean logVisible = true;
     private boolean isBusy;
     
-    VBrowser(VBrowserFactory factory)
+    VBrowserFrame(VBrowserFactory factory)
     {
         super();
         
@@ -975,15 +973,15 @@ public class VBrowser extends javax.swing.JFrame
 
                     gridstartMenuItem.addActionListener(bcActionListener);
                 }
-                {
-                    cogProxyInitMenuItem = new JMenuItem();
-                    cogUtilsMenu.add(cogProxyInitMenuItem);
-
-                    cogProxyInitMenuItem.setText("COG Configure Certificates");
-                    cogProxyInitMenuItem.setActionCommand(ActionCommandType.COGINITPROXY.toString());
-
-                    cogProxyInitMenuItem.addActionListener(bcActionListener);
-                }
+//                {
+//                    cogProxyInitMenuItem = new JMenuItem();
+//                    cogUtilsMenu.add(cogProxyInitMenuItem);
+//
+//                    cogProxyInitMenuItem.setText("COG Configure Certificates");
+//                    cogProxyInitMenuItem.setActionCommand(ActionCommandType.COGINITPROXY.toString());
+//
+//                    cogProxyInitMenuItem.addActionListener(bcActionListener);
+//                }
             }
             // Tools->VLTerm
             {
@@ -1030,7 +1028,7 @@ public class VBrowser extends javax.swing.JFrame
                 {
                     public void actionPerformed(ActionEvent evt)
                     {
-                        AboutDialog.showMe(VBrowser.this.browserController);
+                        AboutDialog.showMe(VBrowserFrame.this.browserController);
                     }
                 });
 

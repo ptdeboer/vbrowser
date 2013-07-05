@@ -70,7 +70,7 @@ public class VBrowserFactory implements BrowserFactory
     @Override
     public BrowserController createBrowser(VRL vrl)
     {
-        VBrowser vb = new VBrowser(this);
+        VBrowserFrame vb = new VBrowserFrame(this);
 
         Point p=GuiSettings.getScreenCenter();
         Dimension size=vb.getSize(); 
