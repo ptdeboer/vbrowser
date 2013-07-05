@@ -28,6 +28,7 @@ import java.util.Vector;
 import javax.swing.Icon;
 
 import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.ptk.presentation.Presentation.SortOption;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -688,20 +689,46 @@ public final class ProxyVNode extends ProxyNode
                 }
                 
                 //Presentation can overrule default View Filter: 
-                if ((pres!=null) && (pres.getAutoSort()))
-            	{
-                    if (pres.getSortFields()!=null)
-                        sortFields=pres.getSortFields().toArray();
-                    doSort=true; //getAutoSort()==true  
-            	}
+                if (pres!=null) 
+                {
+                	if (pres.getAllowSort()==false)
+                	{
+                		doSort=false;
+                		sortFields=null;
+                	}
+                	else if (pres.getSortOption()==SortOption.DEFAULT) 
+            		{
+                		// doSort=pres.getDoSort();
+                		// override fields: 
+                		if (pres.getSortFields()!=null)
+                		{
+                			sortFields=pres.getSortFields().toArray();
+                		}
+                	}
+                	else
+            		{
+                		// use presentation: 
+                		doSort=pres.getDoSort();
+                		if (pres.getSortFields()!=null)
+                		{
+                			sortFields=pres.getSortFields().toArray();
+                		}
+            		}
+                }
             	
                 // actual sort: 
         		if (doSort)
-        		    if (sortFields!=null)
+        		{
+        			if (sortFields!=null)
+        			{
         		        VRSSort.sortVNodes(nodes,sortFields,true);
+        			}
         		    else
-        		        VRSSort.sortVNodesByTypeName(nodes,true,true); //faster
-                   
+        		    {
+        		        VRSSort.sortVNodesByTypeName(nodes,true,true); 
+        		    }
+        		}
+        		
             	if (nodes == null)
             	{
             	    logger.debugPrintf("*** --- --- getChilds() RETURNING NULL childs node (IIa) for:%s\n",this); 

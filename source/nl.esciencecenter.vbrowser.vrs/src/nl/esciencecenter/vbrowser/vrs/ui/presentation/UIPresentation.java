@@ -40,7 +40,9 @@ public class UIPresentation extends Presentation
         return new UIPresentation(); // return default object;
     }
 
-    /** @see getPresentationFor(String, String, String, boolean) */
+    /** 
+     * @see getPresentationFor(String, String, String, boolean)
+     */
     public static UIPresentation getPresentation(String key, boolean autoCreate)
     {
         synchronized (presentationStore)
@@ -234,5 +236,20 @@ public class UIPresentation extends Presentation
     public void setColumnsAutoResizeMode(int value)
     {
         this.columnsAutoResizeMode = value;
+    }
+    
+    public String toString()
+    {
+    	String str="<UIPresentation>{sortOption="+this.sortOption;
+    	if (sortFields==null)
+    	{
+    		str+=",sortFields=<null>";
+    	}
+    	else
+    	{
+    		str+=",sortFields="+sortFields.toString(",");
+    	}
+    	str+="}";
+    	return str; 
     }
 }

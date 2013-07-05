@@ -37,6 +37,7 @@ import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_STATUS;
 
+import nl.esciencecenter.ptk.presentation.Presentation.SortOption;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.VRS;
@@ -145,7 +146,7 @@ public class VRSPresentation
             return null;
 
         pres = createDefault(); 
-        UIPresentation.putUIPresentation(id,pres); 
+        
         //
         // Set defaults:
         //
@@ -153,8 +154,8 @@ public class VRSPresentation
         if (scheme.compareTo(VRS.MYVLE_SCHEME) == 0)
         {
             pres.setChildAttributeNames(myvleAttributeNames);
-            // dont sort MyVle !
-            pres.setAutoSort(false);
+            // don not sort MyVle !
+            pres.setSortOption(SortOption.NEVER);
         }
         else if (scheme.compareTo(VRS.SRB_SCHEME) == 0)
         {
@@ -169,6 +170,8 @@ public class VRSPresentation
             pres.setChildAttributeNames(VRSPresentation.defaultNodeAttributeNames);
         }
 
+        UIPresentation.putUIPresentation(id,pres);
+        
         return pres;
     }
 

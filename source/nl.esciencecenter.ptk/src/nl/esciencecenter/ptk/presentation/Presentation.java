@@ -36,6 +36,46 @@ import nl.esciencecenter.ptk.data.StringList;
 public class Presentation
 {
     // =======================================================================
+    // Static 
+    // =======================================================================
+	public static enum SortOption
+	{
+		NEVER(false,false),
+		DEFAULT(true,false), 
+		SORT(true,false),
+		SORT_IGNORE_CASE(true,true)
+		;
+		
+		private boolean ignoreCase=false;
+		
+		private boolean doSort=true; 
+		
+		private SortOption(boolean doSort,boolean ignoreCase)
+		{
+			this.doSort=doSort; 
+			this.ignoreCase=ignoreCase; 
+		}
+		
+		public boolean getIgnoreCase()
+		{
+			return this.ignoreCase; 
+		}
+		
+		public boolean getDoSort()
+		{
+			return this.doSort;  
+		}
+		
+		public boolean getAllowSort()
+		{
+			if (this==NEVER)
+				return false;
+			
+			return true; 
+		}
+	}
+	
+    // =======================================================================
     // Static Fields
     // =======================================================================
 
@@ -507,10 +547,7 @@ public class Presentation
     /** KiB/Mib versus KB and MB */ 
     protected Boolean useBase1024 = true;
 
-    /** Whether to sort contents */ 
-    protected Boolean allowSort = null;
-
-    protected Boolean sortIgnoreCase = true;
+    protected SortOption sortOption=null; 
 
     /** Attribute names from child (contents) to show by default. See also UIPresentation */ 
     protected StringList childAttributeNames = null;
@@ -562,13 +599,17 @@ public class Presentation
         return childAttributeNames.toArray();
     }
 
-    /** Set which child attribute to show */
+    /** 
+     * Set which child attribute to show.  
+     */
     public void setChildAttributeNames(String names[])
     {
         childAttributeNames = new StringList(names);
     }
 
-    /** Returns sizeString +"[KMG]&lt;uni&gt;>" from "size" bytes per second */
+    /** 
+     * Returns sizeString +"[KMG]&lt;uni&gt;>" from "size" bytes per second 
+     */
     public String speedString(long size, String unit)
     {
         return sizeString(size) + unit;
@@ -633,37 +674,53 @@ public class Presentation
      * Whether automatic sorting is allowed or that the returned order of this
      * node should be kept as-is.
      */
-    public boolean getAutoSort()
+    public boolean getAllowSort()
     {
-        if (this.allowSort == null)
-            return true;
-
-        return this.allowSort;
+        if (sortOption==null)
+        		return true; 
+        
+        return sortOption.getAllowSort();  
     }
 
     /**
-     * Specify whether nodes should be sorted automatically when fetched from
-     * this resource, or nodes should be displayed 'in order'.
+     * Whether the contents should be preferably sorted.
+     * Note: If getAllowSort()==false the contents may never be sorted.  
      */
-    public void setAutoSort(boolean newVal)
+    public boolean getDoSort()
     {
-        this.allowSort = newVal;
+        if (this.sortOption == null)
+            return true;
+        
+        return this.sortOption.getDoSort(); 
     }
-
-    /** Whether to ignore case when sorting files */
+    
+    /**
+     * Set Sort Option. 
+     */
+    public void setSortOption(SortOption sort)
+    {
+        this.sortOption=sort; 
+    }
+    
+    /**
+     * Get Sort Option. 
+     */
+    public SortOption getSortOption() 
+    {
+    	return this.sortOption;  
+    }
+    
+    /** 
+     * Whether to ignore case when sorting files.
+     */
     public boolean getSortIgnoreCase()
     {
-        if (sortIgnoreCase == null)
-            return false;
-
-        return this.sortIgnoreCase;
+    	if (this.sortOption==null)
+    		return false; 
+    				
+    	return this.sortOption.getIgnoreCase(); 
     }
-
-    public void setSortIgnoreCase(boolean val)
-    {
-        this.sortIgnoreCase = val;
-    }
-
+    
     public Locale getLocale()
     {
         if (this.locale != null)
@@ -700,7 +757,6 @@ public class Presentation
             }
         }
         return -1;
-
     }
 
     /**
@@ -723,7 +779,5 @@ public class Presentation
     {
         this.sortFields = new StringList(fields);
     }
-
-   
 
 }
