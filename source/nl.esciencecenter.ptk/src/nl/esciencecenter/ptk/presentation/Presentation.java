@@ -196,7 +196,9 @@ public class Presentation
         return tstr;
     }
 
-    /** @see getPresentationFor(String, String, String, boolean) */
+    /** 
+     * @see getPresentationFor(String, String, String, boolean) 
+     */
     public static Presentation getPresentation(String key, boolean autoCreate)
     {
         synchronized (presentationStore)
@@ -346,10 +348,11 @@ public class Presentation
         return 42;
     }
 
-    /** Convert millis since Epoch to Date object */
+    /** 
+     * Convert millis since Epoch to Date object. 
+     */
     public static Date createDate(long millis)
     {
-
         if (millis < 0)
             return null;
 
@@ -359,7 +362,9 @@ public class Presentation
         return cal.getTime();
     }
 
-    /** Convert System millies to Date */
+    /** 
+     * Convert System millies to Date. 
+     */
     public static Date now()
     {
         long millis = System.currentTimeMillis();
@@ -409,8 +414,15 @@ public class Presentation
         int year = new Integer(strs[0]);
         int month = new Integer(strs[1]) - 1; // January=0!
         int day = new Integer(strs[2]);
-        int hours = new Integer(strs[3]);
-        int minutes = new Integer(strs[4]);
+        
+        int hours =0;
+        if (strs.length>3)
+            hours=new Integer(strs[3]);
+        
+        int minutes = 0;
+        if (strs.length>4)
+            hours=new Integer(strs[4]);
+        
         double secondsD = 0;
         if (strs.length > 5)
             secondsD = new Double(strs[5]);
@@ -500,7 +512,9 @@ public class Presentation
         return to4decimals(yearSign*year) + "-" + to2decimals(month) + "-" + to2decimals(day); 
     }
     
-    /** Convert Normalized DateTime string to millis since epoch */
+    /**
+     *  Convert Normalized DateTime string to millis since epoch.  
+     */
     public static long createMillisFromNormalizedDateTimeString(String value)
     {
         if (value == null)
@@ -514,6 +528,11 @@ public class Presentation
         return date.getTime();
     }
 
+//    public static Date createDateFromString(String sessionDateString)
+//    {
+//        return null; 
+//    }
+    
     // =======================================================================
     // Static Initializer!
     // =======================================================================
@@ -779,5 +798,7 @@ public class Presentation
     {
         this.sortFields = new StringList(fields);
     }
+
+    
 
 }
