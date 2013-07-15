@@ -40,20 +40,23 @@ public class Presentation
     // =======================================================================
 	public static enum SortOption
 	{
-		NEVER(false,false),
-		DEFAULT(true,false), 
-		SORT(true,false),
-		SORT_IGNORE_CASE(true,true)
+		NEVER(false,false,false),
+		DEFAULT(true,false,false), 
+		SORT(true,false,false),
+		SORT_REVERSE(true,false,true),
+		SORT_IGNORE_CASE(true,true,false), 
+		SORT_REVERSE_IGNORE_CASE(true,true,true)
 		;
 		
-		private boolean ignoreCase=false;
+	    private boolean doSort=true;
+	    private boolean ignoreCase=false;
+	    private boolean reverseSort=false;  
 		
-		private boolean doSort=true; 
-		
-		private SortOption(boolean doSort,boolean ignoreCase)
+		private SortOption(boolean doSort,boolean ignoreCase,boolean reverseSort)
 		{
 			this.doSort=doSort; 
-			this.ignoreCase=ignoreCase; 
+			this.ignoreCase=ignoreCase;
+			this.reverseSort=reverseSort;
 		}
 		
 		public boolean getIgnoreCase()
@@ -71,7 +74,12 @@ public class Presentation
 			if (this==NEVER)
 				return false;
 			
-			return true; 
+			return doSort; 
+		}
+		
+		public boolean getReverseSort()
+		{
+		    return this.reverseSort; 
 		}
 	}
 	
@@ -81,7 +89,9 @@ public class Presentation
 
     protected static Hashtable<String, Presentation> presentationStore = new Hashtable<String, Presentation>();
 
-    /** format number to 00-99 format */
+    /** 
+     * Format number to 00-99 format. 
+     */
     public static String to2decimals(long val)
     {
         String str = "";
@@ -738,6 +748,17 @@ public class Presentation
     		return false; 
     				
     	return this.sortOption.getIgnoreCase(); 
+    }
+    
+    /** 
+     * Whether to reverse the sort order. 
+     */
+    public boolean getReverseSort()
+    {
+        if (this.sortOption==null)
+            return false; 
+                    
+        return this.sortOption.getReverseSort(); 
     }
     
     public Locale getLocale()
