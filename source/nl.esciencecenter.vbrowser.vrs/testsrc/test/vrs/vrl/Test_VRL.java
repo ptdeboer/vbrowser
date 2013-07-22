@@ -683,4 +683,33 @@ public class Test_VRL
         newLoc = loc.appendPath("\\testpath");
         Assert.assertEquals("added path didn't result in expected path", "/a:/testpath", newLoc.getPath());
     }
+    
+    
+    @Test
+    public void testJDBCvrls() throws Exception
+    {
+        String uristrs[]=new String[] { 
+                    "jdbc:mysql://host:13/dbname",
+                    "jdbc:mysql://host:13/dbname",
+                    "jdbc:postgresql://localhost/test",
+                    "jdbc:dbproto:localdb",
+                    "jdbc:dbproto:localdb?parameter1=value1&parameter2=value2",
+                    "jdbc:oracle:thin:@server.domain:1521:dbclass1"
+                };  
+        
+        for (String uristr:uristrs)
+        {
+            java.net.URI uri1=new java.net.URI(uristr);
+            Assert.assertEquals("JDBC URI must match with original String value.",uristr,uri1.toString());
+            
+            // jdbc URIs must be treated as Opaque: 
+            VRL vrl1 =VRL.createOpaque(uristr);
+            Assert.assertTrue("JDBC VRL must be Opaque",vrl1.isOpaque());
+            Assert.assertEquals("Opaque JDBC VRL must match with opaque URI",uristr,vrl1.toString());
+        }
+        
+    }
+        
+        
+    
 }

@@ -61,6 +61,16 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         // constructor might change ! 
         return new VRL(newStr); 
     }
+
+    /** 
+     * Create Opaque VRL from Opaque URI String. 
+     * @param opaqueUriStr
+     * @return
+     */
+    public static VRL createOpaque(String opaqueUriStr)
+    {
+        return new VRL(URIFactory.createOpaque(opaqueUriStr)); 
+    }
     
     // ========
     // Instance 
@@ -82,6 +92,18 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         init(uristr); 
     }
 
+    /** 
+     * Construct Opaque VRL. keep schemeSpecificPart 'as-is' and do not parse the schemeSpecificPath. 
+     * getPath(),getReference() and getSchemeSpecificPart() return the String part after the    
+     * @param scheme
+     * @param schemeSpecificPart
+     * @throws VRLSyntaxException
+     */
+    public VRL(String scheme,String schemeSpecificPart) throws VRLSyntaxException
+    {
+        init(scheme,schemeSpecificPart); 
+    }
+    
     public VRL(URL url) throws VRLSyntaxException
     {
         try
@@ -145,6 +167,11 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
         {
             throw new VRLSyntaxException("Cannot create URIFactory from:uristr",e);
         } 
+    }
+    
+    private void init(String scheme,String schemeSpecificPart) throws VRLSyntaxException
+    {
+        this.uriFactory=new URIFactory(scheme,schemeSpecificPart);
     }
     
     private void init(URI uri)
@@ -567,6 +594,11 @@ public final class VRL implements Cloneable,Comparable<VRL>, Duplicatable<VRL>, 
     public boolean hasAuthority()
     {
         return uriFactory.hasAuthority(); 
+    }
+
+    public boolean isOpaque()
+    {
+        return uriFactory.isOpaque();
     }
     
 }

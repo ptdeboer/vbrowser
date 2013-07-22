@@ -362,6 +362,29 @@ public class URIFactory implements Serializable
         return path.substring(0, index);
     }
 
+    /** 
+     * Create URIFactory from Opaque URI. 
+     * Only the scheme is parsed. The part after the scheme is used as-is. 
+     * 
+     * @param opaqueUri - Opaque URI String. 
+     * @return URIFactory constructed from Opaque URI. 
+     */
+    public static URIFactory createOpaque(String opaqueUri)
+    {
+        int index=opaqueUri.indexOf(':');
+        if (index<0)
+        {
+            return new URIFactory(null,opaqueUri); // relative URI)
+        }
+        
+        String scheme=opaqueUri.substring(0,index); 
+        String ssp=opaqueUri.substring(index+1,opaqueUri.length());
+        //Initialize with scheme + schemespefic part only. 
+        URIFactory uriFac=new URIFactory();
+        uriFac.init(scheme, null, null, 0,ssp,null,null,true); 
+        return uriFac; 
+    }
+    
     // =======================================================================
     // Instance
     // =======================================================================
@@ -385,7 +408,7 @@ public class URIFactory implements Serializable
 
     // === Field guards === //
 
-    private boolean isReference = false;
+    private boolean isOpaque = false;
 
     public URIFactory(URI uri)
     {
@@ -402,24 +425,29 @@ public class URIFactory implements Serializable
         init(uristr);
     }
 
+    /**
+     * Constructs Opaque URI, keeping schemeSpecificPart 'as-is'.
+     * URI Fields may be parsed.   
+     */
     public URIFactory(String scheme, String schemeSpecificPart)
     {
-        init(scheme, null, null, -1, schemeSpecificPart, null, null);
+        init(scheme, null, null, -1, schemeSpecificPart, null, null,true);
     }
+  
 
     public URIFactory(String scheme, String host, int port, String path)
     {
-        init(scheme, null, host, port, path, null, null);
+        init(scheme, null, host, port, path, null, null,false);
     }
 
     public URIFactory(String scheme, String userInfo, String host, int port, String path)
     {
-        init(scheme, userInfo, host, port, path, null, null);
+        init(scheme, userInfo, host, port, path, null, null,false);
     }
 
     public URIFactory(String scheme, String userInfo, String host, int port, String path, String query, String fragment)
     {
-        init(scheme, userInfo, host, port, path, query, fragment);
+        init(scheme, userInfo, host, port, path, query, fragment,false);
     }
 
     public URIFactory(final URL url) throws URISyntaxException
@@ -560,7 +588,7 @@ public class URIFactory implements Serializable
         // ================================
         // use normalized initializer
         // ================================
-        init(newScheme, newUserInf, newHost, newPort, pathOrRef, newQuery, newFraq);
+        init(newScheme, newUserInf, newHost, newPort, pathOrRef, newQuery, newFraq,false);
     }
 
     /**
@@ -569,9 +597,10 @@ public class URIFactory implements Serializable
      * normalized with forward slashes.
      */
     private void init(String newscheme, String userinf, String newhost, int newport, String newpath, String newquery,
-            String newfrag)
+            String newfrag, boolean isOpaque)
     {
-
+        this.isOpaque=isOpaque;  
+        
         // must be null or uri will add empty values
         if (StringUtil.isEmpty(newhost))
             newhost = null; // null => no hostname
@@ -613,7 +642,10 @@ public class URIFactory implements Serializable
         // Sanitize path, but keep relative paths or reference paths intact
         // if there is no authority !
         
-        newpath = uripath(newpath, this.hasAuthority());
+        if (isOpaque==false)
+        {
+            newpath = uripath(newpath, this.hasAuthority());
+        }
 
         // parts 
         this.pathOrReference = StringUtil.duplicate(newpath);
@@ -695,7 +727,7 @@ public class URIFactory implements Serializable
 
     protected void copyFrom(URIFactory loc)
     {
-        this.isReference = loc.isReference;
+        this.isOpaque = loc.isOpaque;
 
         // duplicate Strings !
         this.scheme = StringUtil.duplicate(loc.scheme);
@@ -755,7 +787,7 @@ public class URIFactory implements Serializable
     {
         return pathOrReference;
     }
-
+        
     public boolean isAbsolute()
     {
         return (scheme != null);
@@ -764,6 +796,17 @@ public class URIFactory implements Serializable
     public boolean isRelative()
     {
         return (scheme == null);
+    }
+
+    /** 
+     * Returns true if the URI is Opaque. This means the scheme specific part
+     * isn't parsed and must be used 'as-is'. 
+     * 
+     * @return true if the URI is opaque, false otherwise. 
+     */
+    public boolean isOpaque()
+    {
+        return this.isOpaque;
     }
 
     public boolean hasScheme(String otherScheme)
@@ -957,6 +1000,12 @@ public class URIFactory implements Serializable
 
     public URI toURI() throws URISyntaxException
     {
+        if (this.isOpaque)
+        {
+            // Apparently 'fragment' is not part of the schemeSpecificPart
+            new URI(this.scheme,this.pathOrReference,this.fragment); 
+        }
+        
         if (this.hasAuthority())
         {
             return new URI(this.scheme, 
