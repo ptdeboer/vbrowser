@@ -50,12 +50,14 @@
             <param name="name" value="nl.esciencecenter.ptk"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
-
         </antcall>
 
     </target>
 
     <target name="vlet-all" depends="init,vlet-core,vlet-vfs-adaptors,vlet-vbrowser,vlet-vbrowser-viewers,vlet-doc.userguide">
+    </target>
+
+    <target name="vlet-octo-all" depends="init,vlet-core,vlet-vfs-adaptors,vlet-vrs-octopus,vlet-vbrowser,vlet-vbrowser-viewers,vlet-doc.userguide">
     </target>
 
     <target name="vlet-auxlibs" depends="init">
@@ -127,13 +129,17 @@
 
     </target>
 
-    <target name="vlet-vfs-lfc-srm" depends="vlet-vfs-globus">
+    <target name="vlet-vfs-ssh" depends="vlet-core">
 
         <antcall target="module-build">
             <param name="name" value="nl.esciencecenter.vlet.vfs.jcraft.ssh"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
+
+    </target>
+
+    <target name="vlet-vfs-lfc-srm" depends="vlet-vfs-globus">
 
         <antcall target="module-build">
             <param name="name" value="nl.esciencecenter.glite.srm"/>
@@ -161,7 +167,8 @@
 
     </target>
 
-    <target name="vlet-vfs-adaptors" depends="vlet-vrs-octopus,vlet-vfs-globus,vlet-vfs-lfc-srm"/>
+    <!-- <target name="vlet-vfs-adaptors" depends="vlet-vrs-octopus,vlet-vfs-globus,vlet-vfs-lfc-srm"/> -->
+    <target name="vlet-vfs-adaptors" depends="vlet-vfs-ssh,vlet-vfs-globus,vlet-vfs-lfc-srm"/>
 
     <target name="vlet-vbrowser" depends="vlet-core">
 
