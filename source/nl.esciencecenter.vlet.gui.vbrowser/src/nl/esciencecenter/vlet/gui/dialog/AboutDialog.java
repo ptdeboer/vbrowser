@@ -28,8 +28,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -156,9 +158,7 @@ public class AboutDialog extends javax.swing.JDialog implements ActionListener, 
                     {
                         vleImageLabel = new JLabel();
                         topPanel.add(vleImageLabel);
-                        vleImageLabel.setIcon(new ImageIcon(getClass()
-                                .getClassLoader().getResource(
-                                "images/vle_logo_black_large.gif")));
+                        vleImageLabel.setIcon(loadIcon("images/nlesc_logo_medium.png"));
                     }
                 }
                 {
@@ -204,6 +204,13 @@ public class AboutDialog extends javax.swing.JDialog implements ActionListener, 
         }
     }
     
+    private Icon loadIcon(String urlStr)
+    {
+        URL url = getClass().getClassLoader().getResource(urlStr); 
+        return new ImageIcon(url);
+        
+    }
+
     public void actionPerformed(ActionEvent e)
     {
         Exit();  
