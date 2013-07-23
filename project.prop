@@ -30,7 +30,7 @@ project.dist.doc=${project.dist}/doc
 project.env.ok=ok;
  
 ## version
-project.version=1.6.0-rc1a
+project.version=1.6.0-rc1b
 ptk.version=${project.version}
 vlet.version=${project.version}
 vbrowser.version=${project.version}
