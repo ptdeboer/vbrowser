@@ -3,13 +3,16 @@ package nl.esciencecenter.ptk.ssl;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
 import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.io.FileURISyntaxException;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 
@@ -25,8 +28,10 @@ public class CertUtil
      * -----END CERTIFICATE-----
      * </pre>
      * @return X509Certificate
+     * @throws UnsupportedEncodingException 
+     * @throws CertificateException 
      */
-    public static X509Certificate createDERCertificateFromString(String derEncodedString) throws Exception
+    public static X509Certificate createDERCertificateFromString(String derEncodedString) throws UnsupportedEncodingException, CertificateException 
     {
         byte bytes[] = derEncodedString.getBytes("ASCII"); // plain aksii
         ByteArrayInputStream binps = new ByteArrayInputStream(bytes);
@@ -40,8 +45,11 @@ public class CertUtil
     /** 
      * Load .pem Certificate file 
      * @return X509Certificate
+     * @throws IOException 
+     * @throws FileURISyntaxException 
+     * @throws CertificateException 
      */
-    public static X509Certificate loadPEMCertificate(String filename) throws Exception
+    public static X509Certificate loadPEMCertificate(String filename) throws FileURISyntaxException, IOException, CertificateException 
     {
         CertificateStore.logger.debugPrintf("Loading (PEM) Certificate :%s\n", filename);
     
@@ -60,8 +68,11 @@ public class CertUtil
     /**
      * Load DER encoded Certificate .cer .crt .der
      * @return X509Certificate 
+     * @throws IOException 
+     * @throws FileURISyntaxException 
+     * @throws CertificateException 
      */
-    public static X509Certificate loadDERCertificate(String filename) throws Exception
+    public static X509Certificate loadDERCertificate(String filename) throws FileURISyntaxException, IOException, CertificateException 
     {
         CertificateStore.logger.debugPrintf("Loading (DER ENCODED) Certificate :%s\n", filename);
     
