@@ -58,8 +58,8 @@ public class Test_CertificateStore
         // test defaults: 
         CertificateStore certs = createEmpty();
         
-        java.net.URL url=this.getClass().getClassLoader().getResource("certificates/TestCert.crt");
-        Assert.assertNotNull("FATAL: Could get test certificate!",url); 
+        java.net.URL url=ClassLoader.getSystemResource("certificates/TestCert.crt");
+        Assert.assertNotNull("FATAL: Could not get test certificate!",url); 
         
         X509Certificate cert = certs.addDERCertificate(url.getPath(), false);  
         Assert.assertNotNull("Added Certificate may not be null",cert); 
