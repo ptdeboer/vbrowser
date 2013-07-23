@@ -245,6 +245,7 @@ public class Test_Attribute
     public void doTestPresentationDateTimeString(String datestr)
     {
         Date date=Presentation.createDateFromNormalizedDateTimeString(datestr);
+        System.err.printf(">>>  DateTimeString=%s -> Date=%s \n",datestr,date); 
         String reversestr=Presentation.createNormalizedDateTimeString(date); 
         Assert.assertEquals("Normalized datetime strings should be the same",datestr,reversestr); 
     }
@@ -315,26 +316,7 @@ public class Test_Attribute
     // ========================================================================
     // Actual Tests
     // ========================================================================
-    
-    @Test
-    public void testPresentationDateTimeString_noTimezone() 
-    {
-        // text exception: 
-        //testPresentationDateTimeString("000000-00-00 00:00:00.000");
-        doTestPresentationDateTimeString("0001-01-01 00:00:00.000");
-        doTestPresentationDateTimeString("1970-01-13 01:23:45.678");  
-        doTestPresentationDateTimeString("999999-12-31 23:59:59.999");  
-    }
-    
-    @Test
-    public void testPresentationDateTimeString_NeagtiveNoTimezone() 
-    {
-        // negative time is B.C. 
-        doTestPresentationDateTimeString("-0001-01-01 00:00:00.000");
-        doTestPresentationDateTimeString("-1970-01-13 01:23:45.678");  
-        doTestPresentationDateTimeString("-999999-12-31 23:59:59.999");  
-    }
-      
+  
     @Test 
     public void testValueConstructors()
     {

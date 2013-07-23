@@ -400,7 +400,7 @@ public class Presentation
     }
 
     /**
-     * Normalized date time string: "YYYYYY-MM-DD hh:mm:ss.milllis".<br>
+     * Normalized date time string: "[-]YYYYYY-MM-DD hh:mm:ss.milllis".<br>
      * Normalized Timezone is GMT.<br>
      */
     public static Date createDateFromNormalizedDateTimeString(String value)
@@ -427,18 +427,29 @@ public class Presentation
         
         int hours =0;
         if (strs.length>3)
+        {
             hours=new Integer(strs[3]);
+        }
         
         int minutes = 0;
         if (strs.length>4)
-            hours=new Integer(strs[4]);
+        {
+            minutes=new Integer(strs[4]);
+        }
         
         double secondsD = 0;
         if (strs.length > 5)
             secondsD = new Double(strs[5]);
-
+        
         // String tzStr=null;
-        TimeZone storedTimeZone = TimeZone.getTimeZone("GMT");
+        TimeZone timeZone = TimeZone.getTimeZone("GMT");
+
+        // Optional TimeZone! 
+        if (strs.length > 6)
+        {
+            String timeZonestr=strs[6];
+            timeZone=TimeZone.getTimeZone(timeZonestr); 
+        }
 
         /*
          * if (strs.length>6) { tzStr=strs[6];
@@ -455,7 +466,7 @@ public class Presentation
 
         now.clear();
         // respect timezone:
-        now.setTimeZone(storedTimeZone);
+        now.setTimeZone(timeZone);
         if (yearSign<0)
             now.set(GregorianCalendar.ERA, GregorianCalendar.BC);
         
@@ -472,6 +483,11 @@ public class Presentation
      * in GMT TimeZone.
      */
     public static String createNormalizedDateTimeString(Date date)
+    {
+        return createNormalizedDateTimeString(date,false); 
+    }
+    
+    public static String createNormalizedDateTimeString(Date date,boolean addTimeZone)
     {
         if (date==null)
             return null; 
@@ -493,9 +509,17 @@ public class Presentation
         int seconds = gmtTime.get(GregorianCalendar.SECOND);
         int millies = gmtTime.get(GregorianCalendar.MILLISECOND);
 
-        return to4decimals(yearSign*year) + "-" + to2decimals(month) + "-" + to2decimals(day) + " " + to2decimals(hours) + ":"
+        String timeStr= to4decimals(yearSign*year) + "-" + to2decimals(month) + "-" + to2decimals(day) + " " + to2decimals(hours) + ":"
                + to2decimals(minutes) + ":" + to2decimals(seconds) + "." + to3decimals(millies);
+        
+        if (addTimeZone)
+        {
+            timeStr+=" GMT"; 
+        }
+        
+        return timeStr; 
     }
+    
 
     /**
      * Create normalized Date String: [YY]YYYY-DD-MM
