@@ -836,7 +836,7 @@ public class CertificateStore
      * DER encoded Certificate .cer .crt .der
      * @throws Exception 
      */
-    public void addDERCertificate(String filename, boolean autoSave) throws CertificateStoreException  
+    public X509Certificate addDERCertificate(String filename, boolean autoSave) throws CertificateStoreException  
     {
         X509Certificate x590;
         
@@ -844,7 +844,8 @@ public class CertificateStore
         {
             x590 = CertUtil.loadDERCertificate(filename);
             String alias = URIFactory.basename(filename);
-            addCertificate(alias, x590, autoSave);
+            return addCertificate(alias, x590, autoSave);
+            
         }
         catch (FileURISyntaxException e)
         {
@@ -865,14 +866,14 @@ public class CertificateStore
      * 
      * @param save
      */
-    public void addPEMCertificate(String filename, boolean autoSave) throws CertificateStoreException
+    public X509Certificate addPEMCertificate(String filename, boolean autoSave) throws CertificateStoreException
     {
         X509Certificate x590;
         try
         {
             x590 = CertUtil.loadPEMCertificate(filename);
             String alias = URIFactory.basename(filename);
-            addCertificate(alias, x590,autoSave);
+            return addCertificate(alias, x590,autoSave);
         }
         catch (FileURISyntaxException e)
         {
@@ -891,12 +892,12 @@ public class CertificateStore
     /**
      * Add String encoded DER certificate to certificate store.
      */
-    public void addDERCertificate(String alias, String derEncodedString, boolean autoSave) throws CertificateStoreException
+    public X509Certificate addDERCertificate(String alias, String derEncodedString, boolean autoSave) throws CertificateStoreException
     {
         try
         {
             X509Certificate x590 = CertUtil.createDERCertificateFromString(derEncodedString);
-            addCertificate(alias, x590, autoSave);
+            return addCertificate(alias, x590, autoSave);
         }
         catch (CertificateException e)
         { 
@@ -914,12 +915,12 @@ public class CertificateStore
      * @param autoSave
      * @throws CertificateStoreException 
      */
-    public void addCertificate(String alias, X509Certificate x590, boolean autoSave) throws CertificateStoreException
+    public X509Certificate addCertificate(String alias, X509Certificate x590, boolean autoSave) throws CertificateStoreException
     {
-        _addCertificate(alias, x590, autoSave);
+        return _addCertificate(alias, x590, autoSave);
     }
 
-    protected void _addCertificate(String alias, X509Certificate x590, boolean autoSave) throws CertificateStoreException 
+    protected X509Certificate _addCertificate(String alias, X509Certificate x590, boolean autoSave) throws CertificateStoreException 
     {
         try
         {
@@ -939,7 +940,10 @@ public class CertificateStore
     
             // only autosav when this is a persistant keystore 
             if (autoSave && this.isPersistent)
+            {
                 autoSaveKeystore();
+            }
+            return x590; 
         }
         catch (KeyStoreException e)
         {
