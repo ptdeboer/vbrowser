@@ -41,6 +41,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 
+import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.esciencecenter.ptk.ssl.PrivateX509KeyManager;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -113,9 +114,13 @@ public class SSLContextManager
     // =======================================================================
     
     
-    private String getPrivateKeystorePasswd()
+    private Secret getPrivateKeystorePasswd()
     {
-        return getConfigProperty(PROP_PRIVATE_KEYSTORE_PASSWD,KEYSTORE_DEFAULT_PASSWD); 
+        String str=getConfigProperty(PROP_PRIVATE_KEYSTORE_PASSWD,KEYSTORE_DEFAULT_PASSWD);
+        if (str==null)
+            return null;
+        
+        return new Secret(str.toCharArray());  
     }
 
     public String getPrivateKeystoreLocation()
@@ -143,9 +148,9 @@ public class SSLContextManager
         return getConfigProperty(PROP_CACERTS_LOCATION,null); 
     }
     
-    public String getCaCertsPassword()
-    {
-        return getConfigProperty(PROP_CACERTS_PASSWORD,"changeit"); 
+    public Secret getCaCertsPassword()
+    {   
+        return new Secret(getConfigProperty(PROP_CACERTS_PASSWORD,"changeit").toCharArray());  
     }
 
     /** 
@@ -190,7 +195,7 @@ public class SSLContextManager
         logger.debugPrintf("--- initCertificateStore() ---\n");
 
         String loc=this.getCaCertsLocation();
-        String passwd=this.getCaCertsPassword(); 
+        Secret passwd=this.getCaCertsPassword(); 
             
         if (StringUtil.isEmpty(loc)==false)
         {
@@ -202,7 +207,6 @@ public class SSLContextManager
             this.caCertificateStore=CertificateStore.getDefault(true);
             logger.infoPrintf("Loaded default cacerts file from:%s\n",caCertificateStore.getKeyStoreLocation());
         }
-        
     }
 
     public SSLServerSocketFactory getServerSocketFactory() throws SSLException
@@ -247,7 +251,7 @@ public class SSLContextManager
 
             KeyStore keyStore=this.getPrivateKeyStore(); 
             String privKeyAlias=this.getPrivateKeyAlias();
-            String privKeyPasswd=this.getPrivateKeystorePasswd();
+            Secret privKeyPasswd=this.getPrivateKeystorePasswd();
             
             if (keyStore!=null)
                 identityKeyManager=createSingleKeyManager(keyStore,privKeyAlias,privKeyPasswd); 
@@ -271,7 +275,8 @@ public class SSLContextManager
     }
     
     /**
-     * Returns private key manager if not yet initialized.
+     * Returns private key manager. 
+     * Auto initializes the PrivateKeyManegers if not yet initialized.
      */  
     public KeyManager getPrivateKeyManager() throws Exception
     {
@@ -281,7 +286,7 @@ public class SSLContextManager
         return this.identityKeyManager;
     }
     
-    public void setPrivateKeystore(KeyStore keystore,String privateKeyAlias,String passwd)
+    public void setPrivateKeystore(KeyStore keystore,String privateKeyAlias,Secret passwd)
     {
         _updatePrivateKeyStore(keystore,privateKeyAlias,passwd,null); 
     }
@@ -289,29 +294,31 @@ public class SSLContextManager
     /**
      *  Initialize Private Key store with one private Key
      */ 
-    public void setPrivateKey(PrivateKey privKey, Certificate[] certificates, String alias,
-            String passwd) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException
+    public void setPrivateKey(PrivateKey privKey, 
+            Certificate[] certificates, 
+            String alias,
+            Secret passwd) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException
     {
         KeyStore keyStore=newKeyStore(passwd); 
-        keyStore.setKeyEntry(alias,privKey,passwd.toCharArray(),certificates);  
+        keyStore.setKeyEntry(alias,privKey,passwd.getChars(),certificates);  
         this._updatePrivateKeyStore(keyStore,alias,passwd,null); 
     }
 
-    public static KeyStore newKeyStore(String passwd) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException
+    public static KeyStore newKeyStore(Secret passwd) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException
     {
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-        keyStore.load(null,passwd.toCharArray());
+        keyStore.load(null,passwd.getChars());
         return keyStore; 
     }
     
-    public void setPrivateKeystore(String keystoreLocation,String privateKeyAlias,String passwd) throws Exception
+    public void setPrivateKeystore(String keystoreLocation,String privateKeyAlias,Secret passwd) throws Exception
     {
         CertificateStore certStore = CertificateStore.loadCertificateStore(keystoreLocation,passwd,false,false);
         this._updatePrivateKeyStore(certStore.getKeyStore(),privateKeyAlias,passwd,keystoreLocation);  
     }
     
     /**
-     * Get current configured private keystore. 
+     * Get current configured private KeyStore. 
      * Loads/creates keyStore if not yet initialized. 
      */ 
     public KeyStore getPrivateKeyStore() throws Exception
@@ -320,7 +327,7 @@ public class SSLContextManager
         {
             //String alias=this.getPrivateKeyAlias(); 
             String keystoreLocation=this.getPrivateKeystoreLocation();
-            String passwd=this.getPrivateKeystorePasswd();
+            Secret passwd=this.getPrivateKeystorePasswd();
             String keyalias=this.getPrivateKeyAlias(); 
             
             // If there is a private keystore and Proxy Identity is not enabled: load keystore: 
@@ -343,25 +350,29 @@ public class SSLContextManager
         return _privateKeystore; 
     }
 
-    /** Whether to use the proxy as identity when contacting remote services.*/ 
+    /**
+     *  Whether to use the proxy as identity when contacting remote services.
+     */ 
     public boolean getEnableProxyIdentity()
     {
         return this.getConfigBool(PROP_USE_PROXY_AS_IDENTITY,false); 
     }
 
-    /** Create key manager which manages one single key */ 
-    private KeyManager createSingleKeyManager(KeyStore keyStore,String alias,String passwd) throws Exception
+    /** 
+     * Create a key manager which manages one single key.  
+     */ 
+    private KeyManager createSingleKeyManager(KeyStore keyStore,String alias,Secret privKeyPasswd) throws Exception
     {
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
 
-        keyManagerFactory.init(keyStore, passwd.toCharArray());
+        keyManagerFactory.init(keyStore, privKeyPasswd.getChars());
         X509KeyManager managerImpl = (X509KeyManager)keyManagerFactory.getKeyManagers()[0];
         X509Certificate[] chain = managerImpl.getCertificateChain(alias); 
 
         // === //
         
         PrivateKey privKey ;
-        privKey=(PrivateKey)keyStore.getKey(alias,passwd.toCharArray());
+        privKey=(PrivateKey)keyStore.getKey(alias,privKeyPasswd.getChars());
         
         PrivateX509KeyManager manager=new PrivateX509KeyManager(chain,privKey); 
        
@@ -390,20 +401,15 @@ public class SSLContextManager
         
         return Boolean.parseBoolean(value);
     }
-
-//    public GridProxy loadProxy() throws Exception
-//    {
-//        return GridProxy.loadFrom(this.getProxyFilename());  
-//    }
     
     // ========================================================================
     // Private and mutex protected setters/getters!  
     // ========================================================================
 
-    private void _updatePrivateKeyStore(KeyStore keystore,String privateKeyAlias,String passwd,String keystoreLocation) 
+    private void _updatePrivateKeyStore(KeyStore keystore,String privateKeyAlias,Secret passwd,String keystoreLocation) 
     {
         this.config.setProperty(PROP_PRIVATE_KEYSTORE_KEY_ALIAS,privateKeyAlias);
-        this.config.setProperty(PROP_PRIVATE_KEYSTORE_PASSWD,passwd);
+        this.config.setProperty(PROP_PRIVATE_KEYSTORE_PASSWD,new String(passwd.getChars()));
         if (StringUtil.isEmpty(keystoreLocation)) 
             this.config.remove(PROP_PRIVATE_KEYSTORE_LOCATION); 
         else
@@ -412,7 +418,11 @@ public class SSLContextManager
         this._privateKeystore=keystore;
     }
 
-    /** Set/Change property. Make sure to call initSSLContext() after changing properties ! */
+    /**
+     *  Set/Change property.
+     *   
+     *  Make sure to call initSSLContext() after changing properties ! 
+     */
     public void setProperty(String name,String value) 
     {
         if (value==null)

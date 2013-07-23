@@ -34,6 +34,7 @@ import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -101,7 +102,7 @@ class GridProxyDialogController implements ActionListener, WindowListener, Focus
                try
                {
             	   //Debug("GridProxy.createWithPasswd"); 
-                   boolean result=gridProxy.createWithPassword(new String(chars));
+                   boolean result=gridProxy.createWithPassword(new Secret(chars)); 
                    // clear password chars from memory 
                    for (int i=0;i<chars.length;i++) 
                 	   chars[i]=0; 

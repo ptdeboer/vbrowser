@@ -34,6 +34,7 @@ import java.util.Properties;
 
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.ssl.CertificateStore;
@@ -789,7 +790,10 @@ public class ConfigManager
         {
             if (this.certificateStore==null)
             {
-                certificateStore=CertificateStore.loadCertificateStore(usercerts, CertificateStore.DEFAULT_PASSPHRASE, true,true); 
+                certificateStore=CertificateStore.loadCertificateStore(usercerts, 
+                        new Secret(CertificateStore.DEFAULT_PASSPHRASE.toCharArray()), 
+                        true,
+                        true); 
     
                 VRL[] certDirs = VletConfig.getCACertificateLocations(true);
                 java.net.URL[] urls=new URL[certDirs.length];

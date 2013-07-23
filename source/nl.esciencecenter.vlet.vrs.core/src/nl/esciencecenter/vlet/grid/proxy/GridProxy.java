@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import javax.net.ssl.SSLContext;
 
+import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
@@ -208,8 +209,8 @@ public class GridProxy
        
     private String privateUserKeyAlias="grid-private-userkey";
 
-    private String privateKeystorePasswd="internal"; 
-
+    private Secret privateKeystorePasswd=new Secret("internal".toCharArray());  
+    
     private SSLContextManager sslCtxManager=null;
 
     // cached values: 
@@ -603,7 +604,7 @@ public class GridProxy
      * @return
      * @throws VrsException
      */
-    public synchronized boolean createWithPassword(final String passwdstr) throws VrsException
+    public synchronized boolean createWithPassword(final Secret passwd) throws VrsException
     {
         VGridCredentialProvider provider;
         
@@ -616,12 +617,14 @@ public class GridProxy
 
         try
         {
-            this.credential=provider.createCredential(passwdstr);
+            this.credential=provider.createCredential(passwd);
             this.saveProxy(); 
 
             if (this.autoUpdatePrivateKey)
-                updatePrivateKey(passwdstr);
-                
+            {
+                updatePrivateKey(passwd);
+            }
+            
             return checkAndNotifyAttributes();  
         }
         catch (Exception e)
@@ -768,9 +771,9 @@ public class GridProxy
         
     }
 
-    
-    
-    /** Get current provider or use default provider */ 
+    /** 
+     * Get current provider or use default provider.
+     */ 
     public VGridCredentialProvider getProvider() 
     {
         VGridCredentialProvider prov = this._getProvider();
@@ -1260,12 +1263,12 @@ public class GridProxy
         return CertUtil.loadPEMCertificate(this.getUserCertFile());
     }
     
-    public void setPrivateKeystorePassword(String passwd)
+    public void setPrivateKeystorePassword(Secret passwd)
     {
         this.privateKeystorePasswd=passwd; 
     }
     
-    public void updatePrivateKey(String passwd) throws Exception 
+    public void updatePrivateKey(Secret passwd) throws Exception 
     {
         try
         {
@@ -1315,7 +1318,7 @@ public class GridProxy
     /**
      * Convert proxy into password protected keystore including the proxy certificate chain.
      */ 
-    public KeyStore getProxyAsKeystore(String keyAlias,String passwd) throws VrsException
+    public KeyStore getProxyAsKeystore(String keyAlias,Secret passwd) throws VrsException
     {
         if (this.credential==null)
             return null;
@@ -1327,7 +1330,7 @@ public class GridProxy
             
             // Use CertificateStore as KeyStore factory 
             
-            CertificateStore certStore = CertificateStore.createInternal(passwd); 
+            CertificateStore certStore = CertificateStore.createInternal(passwd);  
             certStore.addUserPrivateKey(keyAlias,privKey,certChain); 
             
             return certStore.getKeyStore(); 

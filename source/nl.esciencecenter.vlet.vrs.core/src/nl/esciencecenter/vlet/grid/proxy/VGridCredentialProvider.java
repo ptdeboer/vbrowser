@@ -24,6 +24,7 @@ package nl.esciencecenter.vlet.grid.proxy;
 import java.security.PrivateKey;
 import java.util.List;
 
+import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.vlet.grid.voms.VO;
 
 /** 
@@ -43,7 +44,7 @@ public interface VGridCredentialProvider
     public boolean canCreateCredential(VGridCredential sourceCred,String type);
 
     /** Create credential using the passprhase string */ 
-    public VGridCredential createCredential(String passwdstr)  throws Exception;
+    public VGridCredential createCredential(Secret passwd)  throws Exception;
     
     /** Convert or create Credential from the source Credential 
      * @throws VrsException */ 
@@ -60,10 +61,14 @@ public interface VGridCredentialProvider
 
     // === Attributes === // 
     
-    /** Return the default location of the user (pivate) key file (userkey.pem) */ 
+    /**
+     * Return the default location of the user (private) key file (userkey.pem).
+     */ 
     public String getDefaultUserKeyLocation();
    
-    /** Return the default location of the user certificate file (usercert.pem) */ 
+    /** 
+     * Return the default location of the user certificate file (usercert.pem).
+     */ 
     public String getDefaultUserCertLocation();
 
     /**
@@ -76,16 +81,24 @@ public interface VGridCredentialProvider
      * value to implementation default. */  
     public void setDefaultUserKeyFile(String userkeyFilename);
 
-    /** List of directories containing Root (CA) Certificates. */ 
+    /**
+     *  List of directories containing Root (CA) Certificates. 
+     */ 
     public void setRootCertificateLocations(List<String> directories);
     
-    /** Return location which directories will be searched for root) CA certificates */ 
+    /** 
+     * Return location which directories will be searched for root) CA certificates 
+     */ 
     public List<String> getRootCertificateLocations();
 
-    /** Return Limetime in Hours! */ 
+    /**
+     * Return Credential Limetime in Hours.
+     */ 
     public int getDefaultLifetime();
 
-    /** Specificy default life time in Hours! */ 
+    /**
+     * Specify default Credential life time in Hours. 
+     */ 
     public void setDefaultLifetime(int time);
     
     /**
@@ -106,7 +119,9 @@ public interface VGridCredentialProvider
      */
     public void setDefaultVOName(String voName);
     
-    /** Set optional VO Role */ 
+    /** 
+     * Set optional VO Role.
+     */ 
     public void setDefaultVORole(String voName);
     
     /**
@@ -115,20 +130,31 @@ public interface VGridCredentialProvider
      */
     public String getDefaultVOName();
     
-    /** Get optional VO Role */ 
+    /**
+     *  Get optional VO Role, if configured.  
+     */ 
     public String getDefaultVORole();
 
-    /** Enable/disable VOMS proxy creation. */ 
+    /** 
+     * Enable/disable VOMS proxy creation.
+     */ 
     public void setEnableVoms(Boolean boolean1);
 
-    /** Whether VOMS proxy creation is enabled */ 
+    /**
+     *  Whether VOMS proxy creation is enabled.  
+     */ 
     public boolean getEnableVoms();
 
-    /** Tries to resolve voName and return VO Info Object.  */  
+    /**
+     *  Tries to resolve voName and return VO Info Object.  
+     */  
     public VO getVO(String voName) throws Exception; 
     
-    /** If possible return DECRYPTED PrivateKey */  
-    public PrivateKey getUserPrivateKey(String passphrase) throws Exception;
+    /**
+     * If possible return DECRYPTED PrivateKey.
+     * Not all credential providers support this.   
+     */  
+    public PrivateKey getUserPrivateKey(Secret passphrase) throws Exception;
 
     
 }

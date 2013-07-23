@@ -29,6 +29,7 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Vector;
 
+import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.ssl.CertificateStore;
@@ -372,7 +373,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
     private CertificateStore getCertStore() throws CertificateStoreException
     {
         String cacertsLoc=VletConfig.getDefaultUserCACertsLocation(); 
-        return CertificateStore.loadCertificateStore(cacertsLoc, CertificateStore.DEFAULT_PASSPHRASE, true,false); 
+        return CertificateStore.loadCertificateStore(cacertsLoc, new Secret(CertificateStore.DEFAULT_PASSPHRASE.toCharArray()), true,false); 
     }
 
     public X509Certificate[] getTrustedCertificates()
@@ -510,7 +511,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         this.defaultUserKeyFile=path; 
     }
 
-    public GlobusCredentialWrapper createCredential(final String passwdstr) throws Exception
+    public GlobusCredentialWrapper createCredential(final Secret passwd) throws Exception
     {
         GridProxyModel staticModel = staticGetModel();
         GlobusCredential credential;
@@ -526,7 +527,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         props.setUserKeyFile(keyFile); 
         props.setUserCertFile(certFile);
         
-        credential = staticModel.createProxy(passwdstr);
+        credential = staticModel.createProxy(new String(passwd.getChars()));
         
         // vomsify 
         if (this.getEnableVoms())
@@ -599,12 +600,12 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         return VomsUtil.getVO(voName);
     }
     
-    public PrivateKey getUserPrivateKey(String passprhase) throws Exception
+    public PrivateKey getUserPrivateKey(Secret passprhase) throws Exception
     {
         return this.getPrivateKey(this.getDefaultUserKeyLocation(),passprhase);
     }
     
-    public PrivateKey getPrivateKey(String userkeyfile,String passprhase) throws Exception
+    public PrivateKey getPrivateKey(String userkeyfile,Secret passprhase) throws Exception
     {
         return GlobusUtil.getPrivateKey(this.getDefaultUserKeyLocation(), passprhase);
     }

@@ -30,6 +30,7 @@ import org.globus.gsi.bc.BouncyCastleOpenSSLKey;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.ietf.jgss.GSSCredential;
 
+import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vlet.VletConfig;
 import nl.esciencecenter.vlet.exception.AuthenticationException;
@@ -186,21 +187,26 @@ public class GlobusUtil
      * </pre>
      * @throws Exception 
      */
-    public static PrivateKey getPrivateKey(String filename,String passprut) throws Exception
+    public static PrivateKey getPrivateKey(String filename,Secret passprhase) throws Exception
     {
         // X509Certificate userCert = CertUtil.loadCertificate(this.getDefaultUserCertLocation());
         OpenSSLKey key = new BouncyCastleOpenSSLKey(filename); 
+        // String charSet="UTF-8";
         
         if(key.isEncrypted())
+        {
             try
             {
-                key.decrypt(passprut);
+                //byte[] bytes=passprhase.toByteBuffer("UTF-8").array();  
+                //key.decrypt(bytes); 
+                key.decrypt(new String(passprhase.getChars()));
             }
             catch(GeneralSecurityException e)
             {
                 throw new Exception("Wrong password or other security error");
             }
-            
+        }
+        
         java.security.PrivateKey userKey = key.getPrivateKey();
         return userKey; 
     }
