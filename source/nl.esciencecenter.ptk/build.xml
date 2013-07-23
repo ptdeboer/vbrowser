@@ -66,6 +66,7 @@
         </fileset>
 
         <pathelement location="${comp.build.classdir}" />
+        <pathelement location="${comp.src}" />
 
     </path>
 
