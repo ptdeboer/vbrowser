@@ -59,12 +59,13 @@ public class Test_CertificateStore
         CertificateStore certs = createEmpty();
         
         java.net.URL url=this.getClass().getClassLoader().getResource("certificates/TestCert.crt");
+        Assert.assertNotNull("FATAL: Could get test certificate!",url); 
+        
         X509Certificate cert = certs.addDERCertificate(url.getPath(), false);  
-     
         Assert.assertNotNull("Added Certificate may not be null",cert); 
         
         Principal principal = cert.getSubjectDN(); 
-        System.out.println(" - subjectDN name="+principal.getName());
+        infoPrintf(" - subjectDN name=%s\n",principal.getName());
         
         List<String> aliases = certs.getAliases();
         Assert.assertEquals("CertificateStore with one certicate, must have only one aliasses.",1,aliases.size()); 
