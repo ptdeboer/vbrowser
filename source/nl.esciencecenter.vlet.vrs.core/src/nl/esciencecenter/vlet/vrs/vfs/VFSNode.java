@@ -507,10 +507,10 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
 
     public VDir getParent() throws VrsException
     {
-        VNode vnode=vrsContext.openLocation(getParentLocation()); 
+        VFSNode vfsnode = this.getFileSystem().openLocation(getParentLocation());
         
-        if (vnode instanceof VDir) 
-            return (VDir)vnode;
+        if (vfsnode instanceof VDir) 
+            return (VDir)vfsnode;
             
         throw new nl.esciencecenter.vlet.exception.ResourceTypeMismatchException("Parent of VFSNode is not of VDir type:"+this);
     }
