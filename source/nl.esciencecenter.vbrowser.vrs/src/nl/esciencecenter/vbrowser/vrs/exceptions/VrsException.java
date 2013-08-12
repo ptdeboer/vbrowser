@@ -68,7 +68,7 @@ public class VrsException extends Exception
     /**
      *  Short Human Readable Error Description of this Exception. 
      */
-    protected String name = "Vrs Exception"; 
+    protected String name = "Exception"; 
 
     /** 
      * Default contructor. For subclasses only.
@@ -98,7 +98,7 @@ public class VrsException extends Exception
     public VrsException(String message)
     {
         super(message);
-        this.name = "VlException";
+        this.name = "Exception";
     };
 
     /** 
