@@ -30,7 +30,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import nl.esciencecenter.octopus.Octopus;
@@ -70,7 +69,7 @@ public class OctopusClient
     }
     
     /** 
-     * Create OctopusClient and initalize Octopuse Engine for the specfied VRSContext. 
+     * Create OctopusClient and initialize Octopus Engine for the specified VRSContext. 
      * Optionally add properties from ServerInfo to the initialization. 
      * 
      * @param vrsContext - The VRSContext  
@@ -233,7 +232,6 @@ public class OctopusClient
         
         List<PathAttributesPair> paths=new ArrayList<PathAttributesPair>(); 
         
-        Exception lastException=null;  
         int count=0; 
         
         while(iterator.hasNext())
@@ -247,8 +245,8 @@ public class OctopusClient
             }
             catch (Exception e)
             {
-                // happens when file is a borken link. but can check that here. 
-                lastException=e;
+                // happens when file is a borken link. but can not check that here. 
+                // lastException=e;
                 paths.add(new NillPathAttributesPair(octoPath.resolve(new RelativePath("?#"+count)),null,e));
                 logger.logException(ClassLogger.ERROR, this, e, "Couldn't get next when listing directory:"+octoPath);
             }
@@ -503,9 +501,9 @@ public class OctopusClient
             passwordChars=pwd.getChars(); 
         }
         
-        logger.debugPrintf("createSSHCredentials(): Using Username:"+sshUser);
-        logger.debugPrintf("createSSHCredentials(): Using ID Key file:%s\n",ssh_id_key_file);
-        logger.debugPrintf("createSSHCredentials(): Using password = %s\n",(passwordChars!=null)?"Yes":"No"); 
+//        logger.debugPrintf("createSSHCredentials(): Using Username:"+sshUser);
+//        logger.debugPrintf("createSSHCredentials(): Using ID Key file:%s\n",ssh_id_key_file);
+//        logger.debugPrintf("createSSHCredentials(): Using password = %s\n",(passwordChars!=null)?"Yes":"No"); 
         
         
         Credentials creds = engine.credentials();
