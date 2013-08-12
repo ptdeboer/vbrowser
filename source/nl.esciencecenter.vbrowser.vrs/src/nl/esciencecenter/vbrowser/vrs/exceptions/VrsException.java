@@ -107,7 +107,7 @@ public class VrsException extends Exception
     public VrsException(String message, Throwable cause)
     {
         super(message, cause);
-        this.name = "VlException";
+        this.name = "Exception";
     };
 
     // ===
