@@ -21,7 +21,9 @@
 package test;
 
 import java.net.URI;
+import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Assert;
@@ -73,9 +75,9 @@ public class TestOctopus
 
     public static Octopus createEngine() throws OctopusException
     {
-        Properties octoProperties = new Properties(); 
+        Map<String,String> props=new Hashtable<String,String>();  
         //Credentials octoCredentials = new Credentials(); 
-        Octopus engine = OctopusEngine.newOctopus(octoProperties); 
+        Octopus engine = OctopusEngine.newOctopus(props); 
         
         return engine; 
         

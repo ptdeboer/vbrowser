@@ -26,8 +26,10 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -81,7 +83,7 @@ public class OctopusClient
         // check shared clients here. 
         try
         {
-            Properties props=new Properties();
+            Map<String,String> props=new Hashtable<String,String>(); 
 
             // lib subdirs. when started from eclipse, these might not exist!
             String subDirs[]={"octopus","auxlib/octopus","vdriver/octopus"};
@@ -144,7 +146,7 @@ public class OctopusClient
     // === instance == 
     
     private Octopus engine;
-    private Properties octoProperties;
+    private Map<String, String> octoProperties;
     private VRL userHomeDir;
     private String userName;
     private VRSContext vrsContext;
@@ -152,7 +154,7 @@ public class OctopusClient
     /**
      * Protected constructor: Use factory method.
      */
-    protected OctopusClient(Properties props) throws OctopusException
+    protected OctopusClient(Map<String,String> props) throws OctopusException
     {
         octoProperties=props;
         //octoCredentials=new Credentials(); 
@@ -509,21 +511,20 @@ public class OctopusClient
         Credentials creds = engine.credentials();
         Credential cred;
         
+        
         if (useIdFile)
         {
             cred= creds.newCertificateCredential("ssh", 
-                    null, 
                     ssh_id_key_file, 
-                    ssh_id_key_file+".pub",
                     sshUser, 
-                    passwordChars);
+                    passwordChars,null);
         }
         else
         {
             cred= creds.newPasswordCredential("ssh", 
-                    null, 
                     sshUser, 
-                    passwordChars);
+                    passwordChars,
+                    null);
         }
         
         return cred; 
