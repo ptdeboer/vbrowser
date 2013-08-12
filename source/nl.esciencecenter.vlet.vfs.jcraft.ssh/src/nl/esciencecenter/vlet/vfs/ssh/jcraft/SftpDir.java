@@ -109,7 +109,7 @@ public class SftpDir extends VDir implements VUnixFileAttributes
     }
 
     @Override
-    public String getSymbolicLinkTarget() throws VrsException
+    public String getSymbolicLinkTargetPath() throws VrsException
     {
     	return server.getLinkTarget(getPath()); 
     }

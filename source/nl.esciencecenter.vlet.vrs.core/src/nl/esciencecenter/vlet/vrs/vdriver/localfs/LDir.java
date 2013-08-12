@@ -327,7 +327,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
     }
 
     @Override
-    public String getSymbolicLinkTarget() throws VrsException
+    public String getSymbolicLinkTargetPath() throws VrsException
     {
         if (isSymbolicLink() == false)
         {

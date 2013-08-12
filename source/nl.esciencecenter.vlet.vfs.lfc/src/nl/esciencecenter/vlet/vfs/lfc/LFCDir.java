@@ -280,7 +280,7 @@ public class LFCDir extends VDir
     }
     
     @Override
-    public String getSymbolicLinkTarget() throws VrsException
+    public String getSymbolicLinkTargetPath() throws VrsException
     {
         // do not query remote server if this isn't a link: 
         if (getWrapperDesc().getFileDesc().isSymbolicLink()==false)

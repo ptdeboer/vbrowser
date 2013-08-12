@@ -471,7 +471,7 @@ public class LFile extends VFile implements VStreamAccessable,
     }
 
     @Override
-    public String getSymbolicLinkTarget() throws VrsException
+    public String getSymbolicLinkTargetPath() throws VrsException
     {
         if (isSymbolicLink() == false)
         {

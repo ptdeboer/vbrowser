@@ -277,29 +277,27 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
      * Filesystem implementations might differ how they handle symbolic links.  
      * @throws VrsException 
      */
-    public String getSymbolicLinkTarget() throws VrsException
+    public VFSNode getSymbolicLinkTarget() throws VrsException
     {
-        return null;
+        String path=this.getSymbolicLinkTargetPath();
+        if (path==null)
+            return null;
+        
+        return this.getNode(path); 
     };
 
     /**
-     * Returns Symbolic LinkTarget as VRL 
-     * (if this resource is an symbolic link) NULL otherwise.  
-     *  
-     * Filesystem implementations might differ how they handle symbolic links.
-     *   
+     * Optional method to resolve  links if this VFS Implementation
+     * supports it. Use isSymbolicLink() first to check whether this file is a
+     * (soft) link or a windows shortcut. 
+     * Filesystem implementations might differ how they handle symbolic links.  
      * @throws VrsException 
      */
-    public VRL getSymbolicLinkTargetVRL() throws VrsException
+    public String getSymbolicLinkTargetPath() throws VrsException
     {
-        String targetPath=getSymbolicLinkTarget();
-        
-        if (targetPath==null)
-            return null; 
-    
-        return new VRL(getLocation().replacePath(targetPath));
+        return null;
     };
-
+        
     /**
      * Whether the location points to a local available path ! <br>
      * To get the actual local path, do a getPath().<br>
@@ -435,7 +433,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         else if (name.compareTo(ATTR_ISSYMBOLICLINK) == 0)
             return new Attribute(name, isSymbolicLink()); 
         else if (name.compareTo(ATTR_SYMBOLICLINKTARGET) == 0)
-            return new Attribute(name, getSymbolicLinkTarget());
+            return new Attribute(name, getSymbolicLinkTargetPath());
      
         else if ( (name.compareTo(ATTR_CHECKSUM) == 0) &&   (this instanceof VChecksum) )
         {
@@ -507,6 +505,13 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         if (vfsnode instanceof VDir) 
             return (VDir)vfsnode;
             
+        if (vfsnode.isSymbolicLink())
+        {
+            VFSNode target=vfsnode.getSymbolicLinkTarget();
+            if (target instanceof VDir)
+                return (VDir)target; 
+        }
+        
         throw new nl.esciencecenter.vlet.exception.ResourceTypeMismatchException("Parent of VFSNode is not of VDir type:"+this);
     }
 

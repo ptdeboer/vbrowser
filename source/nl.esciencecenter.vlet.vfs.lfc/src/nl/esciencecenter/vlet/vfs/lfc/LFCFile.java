@@ -329,7 +329,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     }
 
     @Override
-    public String getSymbolicLinkTarget() throws VrsException
+    public String getSymbolicLinkTargetPath() throws VrsException
     {
         // do not query remote server if this isn't a link:
         if (isSymbolicLink() == false)
@@ -440,7 +440,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
     public VRL getAliasTarget() throws VrsException
     {
         // return as VRL
-        return getVRL().replacePath(getSymbolicLinkTarget());
+        return getVRL().replacePath(getSymbolicLinkTargetPath());
     }
 
     /**
@@ -838,6 +838,16 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         {
             throw new VrsException(e.getMessage(),e); 
         }
+    }
+
+    @Override
+    public VRL getSymbolicLinkTargetVRL() throws VrsException
+    {
+        String path=this.getSymbolicLinkTargetPath(); 
+        if (path==null)
+            return null;
+        
+        return this.resolvePath(path); 
     }    
 
 }
