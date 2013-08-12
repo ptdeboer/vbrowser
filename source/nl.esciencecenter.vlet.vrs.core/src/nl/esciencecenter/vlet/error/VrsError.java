@@ -26,16 +26,16 @@ package nl.esciencecenter.vlet.error;
  * paradigm. Similar to the Java Convention to throw java.lang.Error in the case
  * of programming errors.
  */
-public class VlError extends Error
+public class VrsError extends Error
 {
     private static final long serialVersionUID = 6510047961863859404L;
 
-    public VlError(String msg)
+    public VrsError(String msg)
     {
         super(msg);
     }
 
-    public VlError(String msg, Throwable cause)
+    public VrsError(String msg, Throwable cause)
     {
         super(msg, cause);
     }

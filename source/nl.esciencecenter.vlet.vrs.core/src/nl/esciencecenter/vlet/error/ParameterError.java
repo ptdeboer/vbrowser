@@ -24,7 +24,7 @@ package nl.esciencecenter.vlet.error;
 /**
  * Runtime Parameter/argument error 
  */ 
-public class ParameterError extends VlError
+public class ParameterError extends VrsError
 {
     private static final long serialVersionUID = -6434835821934089158L;
 

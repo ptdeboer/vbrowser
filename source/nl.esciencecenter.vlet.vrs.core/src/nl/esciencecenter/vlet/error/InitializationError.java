@@ -21,7 +21,7 @@
 
 package nl.esciencecenter.vlet.error;
 
-public class InitializationError extends VlError
+public class InitializationError extends VrsError
 {
     private static final long serialVersionUID = -6434835821934089158L;
 
