@@ -240,12 +240,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
     {
         // resolve absolute or relative path: 
         VRL loc=getLocation().resolvePath(path); 
-        VNode node=vrsContext.openLocation(loc);
-        
-        if (node instanceof VFSNode)
-            return (VFSNode)node;
-            
-        throw new ResourceTypeMismatchException("Path is not a File path:"+loc); 
+        return this.getFileSystem().openLocation(loc); 
     }
 
     /**
