@@ -32,11 +32,11 @@ import org.junit.Assert;
 import nl.esciencecenter.octopus.Octopus;
 import nl.esciencecenter.octopus.engine.OctopusEngine;
 import nl.esciencecenter.octopus.exceptions.OctopusException;
-import nl.esciencecenter.octopus.files.AbsolutePath;
+import nl.esciencecenter.octopus.files.Path;
 import nl.esciencecenter.octopus.files.DirectoryStream;
-import nl.esciencecenter.octopus.files.AbsolutePath;
+import nl.esciencecenter.octopus.files.Path;
 import nl.esciencecenter.octopus.files.FileSystem;
-import nl.esciencecenter.octopus.files.RelativePath;
+import nl.esciencecenter.octopus.files.Pathname;
 
 public class TestOctopusSftp
 {
@@ -61,16 +61,16 @@ public class TestOctopusSftp
         FileSystem fs = oct.files().newFileSystem(fsUri, null, null); 
         Assert.assertNotNull("FileSystem is null",fs); 
         
-        RelativePath relPath=new RelativePath(pathStr);
-        AbsolutePath path = oct.files().newPath(fs, relPath); 
-        DirectoryStream<AbsolutePath> dirStream = oct.files().newDirectoryStream(path); 
+        Pathname relPath=new Pathname(pathStr);
+        Path path = oct.files().newPath(fs, relPath); 
+        DirectoryStream<Path> dirStream = oct.files().newDirectoryStream(path); 
         
-        Iterator<AbsolutePath> iterator = dirStream.iterator(); 
+        Iterator<Path> iterator = dirStream.iterator(); 
         
         while (iterator.hasNext())
         {
-            AbsolutePath el = iterator.next();
-            System.out.printf("> Path:%s\n",el.getPath()); 
+            Path el = iterator.next();
+            System.out.printf("> Path:%s\n",el.getPathname()); 
         }
         
     }

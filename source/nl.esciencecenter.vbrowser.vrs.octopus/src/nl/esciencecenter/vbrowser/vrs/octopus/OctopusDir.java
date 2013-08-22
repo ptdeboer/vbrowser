@@ -23,7 +23,7 @@ package nl.esciencecenter.vbrowser.vrs.octopus;
 import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
 import nl.esciencecenter.octopus.exceptions.OctopusIOException;
 import nl.esciencecenter.octopus.files.FileAttributes;
-import nl.esciencecenter.octopus.files.AbsolutePath;
+import nl.esciencecenter.octopus.files.Path;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
@@ -39,9 +39,9 @@ import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 public class OctopusDir extends VDir
 {
 	private FileAttributes fileAttrs;
-    private AbsolutePath octoPath;
+    private Path octoPath;
 
-    public OctopusDir(OctopusFS vfs, FileAttributes attrs, AbsolutePath path)
+    public OctopusDir(OctopusFS vfs, FileAttributes attrs, Path path)
 	{
 		super(vfs, vfs.createVRL(path));
 		this.fileAttrs=attrs;

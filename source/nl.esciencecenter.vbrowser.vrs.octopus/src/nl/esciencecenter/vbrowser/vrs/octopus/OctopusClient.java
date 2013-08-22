@@ -38,14 +38,14 @@ import nl.esciencecenter.octopus.credentials.Credentials;
 import nl.esciencecenter.octopus.engine.OctopusEngine;
 import nl.esciencecenter.octopus.exceptions.OctopusException;
 import nl.esciencecenter.octopus.exceptions.OctopusIOException;
-import nl.esciencecenter.octopus.files.AbsolutePath;
+import nl.esciencecenter.octopus.files.Path;
 import nl.esciencecenter.octopus.files.DirectoryStream;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.octopus.files.FileSystem;
 import nl.esciencecenter.octopus.files.OpenOption;
 import nl.esciencecenter.octopus.files.PathAttributesPair;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
-import nl.esciencecenter.octopus.files.RelativePath;
+import nl.esciencecenter.octopus.files.Pathname;
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.SecretHolder;
 import nl.esciencecenter.ptk.io.FSUtil;
@@ -113,17 +113,17 @@ public class OctopusClient
      */
     public static class NillPathAttributesPair implements  PathAttributesPair
     {
-        AbsolutePath path; 
+        Path path; 
         FileAttributes fileAttrs; 
         Exception exception; 
         
-        NillPathAttributesPair(AbsolutePath octoPath, FileAttributes attrs)
+        NillPathAttributesPair(Path octoPath, FileAttributes attrs)
         {
             this.path=octoPath; 
             this.fileAttrs=attrs;  
         }
 
-        NillPathAttributesPair(AbsolutePath octoPath, FileAttributes attrs, Exception e)
+        NillPathAttributesPair(Path octoPath, FileAttributes attrs, Exception e)
         {
             this.path=octoPath; 
             this.fileAttrs=attrs;  
@@ -131,7 +131,7 @@ public class OctopusClient
         }
 
         @Override
-        public AbsolutePath path()
+        public Path path()
         {
             return path;
         }
@@ -177,7 +177,7 @@ public class OctopusClient
         return this.userHomeDir; 
     }
     
-    public AbsolutePath resolvePath(FileSystem octoFS,String pathString) throws OctopusIOException, OctopusException
+    public Path resolvePath(FileSystem octoFS,String pathString) throws OctopusIOException, OctopusException
     {
         boolean startsWithTilde=false;  
                 
@@ -195,13 +195,13 @@ public class OctopusClient
             startsWithTilde=true; 
         }
         
-        RelativePath relativePath=new RelativePath(pathString);
-        AbsolutePath path=engine.files().newPath(octoFS, relativePath); 
+        Pathname relativePath=new Pathname(pathString);
+        Path path=engine.files().newPath(octoFS, relativePath); 
 
         return path; 
     }
     
-    public AbsolutePath resolvePath(FileSystem octoFS, RelativePath relativePath) throws OctopusIOException, OctopusException
+    public Path resolvePath(FileSystem octoFS, Pathname relativePath) throws OctopusIOException, OctopusException
     {
         return engine.files().newPath(octoFS, relativePath); 
     }
@@ -216,15 +216,16 @@ public class OctopusClient
         return engine.files().newFileSystem(uri, cred, octoProperties);
     }
     
-    public FileAttributes statPath(AbsolutePath path) throws OctopusIOException
+    public FileAttributes statPath(Path path) throws OctopusIOException
     {
         return engine.files().getAttributes(path); 
     }
 
     /**
      *  Stat Directory including attributes
+     * @throws OctopusException 
       */ 
-    public List<PathAttributesPair> statDir(AbsolutePath octoPath) throws OctopusIOException
+    public List<PathAttributesPair> statDir(Path octoPath) throws OctopusIOException, OctopusException
     {
         DirectoryStream<PathAttributesPair> dirIterator = engine.files().newAttributesDirectoryStream(octoPath); 
 
@@ -247,7 +248,9 @@ public class OctopusClient
             {
                 // happens when file is a borken link. but can not check that here. 
                 // lastException=e;
-                paths.add(new NillPathAttributesPair(octoPath.resolve(new RelativePath("?#"+count)),null,e));
+                //Pathname dummyPath=octoPath.getPathname().resolve("?#"+count);
+                Path dummyPath = resolvePath(octoPath.getFileSystem(),"?#"+count); 
+                paths.add(new NillPathAttributesPair(dummyPath,null,e));
                 logger.logException(ClassLogger.ERROR, this, e, "Couldn't get next when listing directory:"+octoPath);
             }
             count++;
@@ -262,19 +265,19 @@ public class OctopusClient
     /** 
      * list files only without attributes 
      */ 
-    public List<AbsolutePath> listDir(AbsolutePath octoAbsolutePath) throws OctopusIOException
+    public List<Path> listDir(Path octoPath) throws OctopusIOException
     {
-        DirectoryStream<AbsolutePath> dirIterator = engine.files().newDirectoryStream(octoAbsolutePath); 
+        DirectoryStream<Path> dirIterator = engine.files().newDirectoryStream(octoPath); 
 
-        Iterator<AbsolutePath> iterator = dirIterator.iterator(); 
+        Iterator<Path> iterator = dirIterator.iterator(); 
         
-        List<AbsolutePath> paths=new ArrayList<AbsolutePath>(); 
+        List<Path> paths=new ArrayList<Path>(); 
         
         while(iterator.hasNext())
         {
-            AbsolutePath el = iterator.next();
+            Path el = iterator.next();
             paths.add(el); 
-            System.err.printf("***>> adding:%s\n",el.getPath());
+            System.err.printf("***>> adding:%s\n",el.getPathname());
         }
         
         if (paths.size()==0)
@@ -283,25 +286,25 @@ public class OctopusClient
         return paths;
     }
 
-    public FileAttributes getFileAttributes(AbsolutePath octoAbsolutePath) throws OctopusIOException
+    public FileAttributes getFileAttributes(Path octoPath) throws OctopusIOException
     {
-        return engine.files().getAttributes(octoAbsolutePath); 
+        return engine.files().getAttributes(octoPath); 
     }
 
-    public boolean deleteFile(AbsolutePath octoAbsolutePath, boolean force) throws OctopusIOException
+    public boolean deleteFile(Path octoPath, boolean force) throws OctopusIOException
     {
-        engine.files().delete(octoAbsolutePath); 
+        engine.files().delete(octoPath); 
         return true; // no exceptions 
     }
     
-    public boolean exists(AbsolutePath octoAbsolutePath) throws OctopusIOException
+    public boolean exists(Path octoPath) throws OctopusIOException
     {
-        return engine.files().exists(octoAbsolutePath); 
+        return engine.files().exists(octoPath); 
     }
 
-    public AbsolutePath mkdir(AbsolutePath octoAbsolutePath) throws OctopusIOException
+    public Path mkdir(Path octoPath) throws OctopusIOException
     {
-        return engine.files().createDirectory(octoAbsolutePath); //,getDefaultDirPermissions());
+        return engine.files().createDirectory(octoPath); //,getDefaultDirPermissions());
     }
 
     public Set<PosixFilePermission> createPermissions(int mode)
@@ -375,19 +378,19 @@ public class OctopusClient
         return createPermissions(0755); // octal 
     }
      
-    public AbsolutePath createFile(AbsolutePath octoAbsolutePath) throws OctopusIOException
+    public Path createFile(Path octoPath) throws OctopusIOException
     {
-        return engine.files().createFile(octoAbsolutePath); //, getDefaultFilePermissions());
+        return engine.files().createFile(octoPath); //, getDefaultFilePermissions());
     }
 
-    public InputStream createInputStream(AbsolutePath octoAbsolutePath) throws OctopusIOException
+    public InputStream createInputStream(Path octoPath) throws OctopusIOException
     {
-        return engine.files().newInputStream(octoAbsolutePath);
+        return engine.files().newInputStream(octoPath);
     }
 
     // Open existing file and rewrite contents. If appen==true the OutputStream
     // will start at the end of the file. 
-    public OutputStream createAppendingOutputStream(AbsolutePath path, boolean append) throws IOException
+    public OutputStream createAppendingOutputStream(Path path, boolean append) throws IOException
     {
         OpenOption opts[]=new OpenOption[1];
 
@@ -406,7 +409,7 @@ public class OctopusClient
 
     // Create new OutputStream, optionally create new file if it doesn exists,
     // old file will be deleted. 
-    public OutputStream createNewOutputStream(AbsolutePath path, boolean ignoreExisting) throws IOException
+    public OutputStream createNewOutputStream(Path path, boolean ignoreExisting) throws IOException
     {
         OpenOption opts[];
         
@@ -428,24 +431,24 @@ public class OctopusClient
         
     }
     
-    public void rmdir(AbsolutePath octoAbsolutePath) throws OctopusIOException
+    public void rmdir(Path octoPath) throws OctopusIOException
     {
         //DeleteOption options;
-        engine.files().delete(octoAbsolutePath) ;; // (octoAbsolutePath,options);  
+        engine.files().delete(octoPath) ;; // (octoPath,options);  
     }
 
-    public AbsolutePath rename(AbsolutePath oldAbsolutePath, AbsolutePath newAbsolutePath) throws VrsException, OctopusIOException
+    public Path rename(Path oldPath, Path newPath) throws VrsException, OctopusIOException
     {
         // Move must here be a rename on the same filesystem!
 
-        if (checkSameFilesystem(oldAbsolutePath,newAbsolutePath)==false)
-            throw new VrsException("Cannot rename file when new file is on other file system:"+oldAbsolutePath+"=>"+newAbsolutePath); 
+        if (checkSameFilesystem(oldPath,newPath)==false)
+            throw new VrsException("Cannot rename file when new file is on other file system:"+oldPath+"=>"+newPath); 
         
-        AbsolutePath actualAbsolutePath=engine.files().move(oldAbsolutePath, newAbsolutePath);
-        return actualAbsolutePath;
+        Path actualPath=engine.files().move(oldPath, newPath);
+        return actualPath;
     }
 
-    public boolean checkSameFilesystem(AbsolutePath path1, AbsolutePath path2)
+    public boolean checkSameFilesystem(Path path1, Path path2)
     {
         URI uri1 = path1.getFileSystem().getUri(); 
         URI uri2 = path2.getFileSystem().getUri(); 

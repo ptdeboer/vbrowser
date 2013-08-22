@@ -30,7 +30,7 @@ import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
 import nl.esciencecenter.octopus.exceptions.OctopusException;
 import nl.esciencecenter.octopus.exceptions.OctopusIOException;
 import nl.esciencecenter.octopus.files.FileAttributes;
-import nl.esciencecenter.octopus.files.AbsolutePath;
+import nl.esciencecenter.octopus.files.Path;
 import nl.esciencecenter.octopus.files.FileSystem;
 import nl.esciencecenter.octopus.files.PathAttributesPair;
 import nl.esciencecenter.octopus.files.PosixFilePermission;
@@ -65,7 +65,7 @@ public class OctopusFS extends FileSystemNode
 	
 	protected FileSystem octoFS;
 
-    private AbsolutePath entryPath;
+    private Path entryPath;
 
 
     public OctopusFS(VRSContext context, ServerInfo info,VRL location) throws VrsException 
@@ -121,7 +121,7 @@ public class OctopusFS extends FileSystemNode
     /** 
      * Resolve VRL against this FileSystem 
      */ 
-    public AbsolutePath createPath(VRL vrl) throws VrsException
+    public Path createPath(VRL vrl) throws VrsException
     {
         try
         {
@@ -137,10 +137,10 @@ public class OctopusFS extends FileSystemNode
     /** 
      * Convert Octopus path to (absolute) VRL 
      */ 
-    public VRL createVRL(AbsolutePath path)
+    public VRL createVRL(Path path)
     {
         FileSystem fs = path.getFileSystem(); 
-        String pathstr=path.getPath(); 
+        String pathstr=path.getPathname().getAbsolutePath(); 
         
         VRL fsVrl=new VRL(fs.getUri()); 
         return fsVrl.replacePath(pathstr); 
@@ -212,7 +212,7 @@ public class OctopusFS extends FileSystemNode
 	    // openLocation: remote object must exist. 
 	    try
 	    {
-    	    AbsolutePath path = createPath(vrl); 
+    	    Path path = createPath(vrl); 
     	    FileAttributes attrs = octoClient.statPath(path); 
     
     	    return newVFSNode(path,attrs); 
@@ -224,7 +224,7 @@ public class OctopusFS extends FileSystemNode
 	    }
 	}
 
-	protected VFSNode newVFSNode(AbsolutePath path,FileAttributes optFileattrs) throws VrsException
+	protected VFSNode newVFSNode(Path path,FileAttributes optFileattrs) throws VrsException
     {
 	    try
 	    {
@@ -255,13 +255,13 @@ public class OctopusFS extends FileSystemNode
 	
 
     /** List nodes without fetching file attributes. All node are 'VFile' */ 
-    public VFSNode[] listNodes(AbsolutePath octoAbsolutePath) throws VrsException
+    public VFSNode[] listNodes(Path octoPath) throws VrsException
     {
-        List<AbsolutePath> paths=null; 
+        List<Path> paths=null; 
         
         try
         {
-            paths = octoClient.listDir(octoAbsolutePath);
+            paths = octoClient.listDir(octoPath);
             if ((paths==null) || (paths.size()==0))
                     return null; 
                 
@@ -269,7 +269,7 @@ public class OctopusFS extends FileSystemNode
             
             for (int i=0;i<paths.size();i++)
             {
-                AbsolutePath path=paths.get(i); 
+                Path path=paths.get(i); 
                 nodes[i]=newVFSNode(path,null);
             }
             
@@ -281,13 +281,13 @@ public class OctopusFS extends FileSystemNode
         } 
     }
 
-    public VFSNode[] listNodesAndAttrs(AbsolutePath octoAbsolutePath) throws VrsException
+    public VFSNode[] listNodesAndAttrs(Path octoPath) throws VrsException
     {
         List<PathAttributesPair> paths=null; 
         
         try
         {
-            paths = octoClient.statDir(octoAbsolutePath);
+            paths = octoClient.statDir(octoPath);
             if ((paths==null) || (paths.size()==0))
                     return null; 
                 
@@ -303,6 +303,10 @@ public class OctopusFS extends FileSystemNode
             return nodes; 
         }
         catch (OctopusIOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        } 
+        catch (OctopusException e)
         {
             throw new VrsException(e.getMessage(),e); 
         } 
@@ -358,29 +362,29 @@ public class OctopusFS extends FileSystemNode
         }
     }
 
-    public VRL rename(AbsolutePath octoAbsolutePath, boolean isDir, String newName, boolean renameFullAbsolutePath) throws VrsException
+    public VRL rename(Path octoPath, boolean isDir, String newName, boolean renameFullPath) throws VrsException
     {
-        AbsolutePath newAbsolutePath=null; 
-        VRL baseVRL=createVRL(octoAbsolutePath); 
+        Path newPath=null; 
+        VRL baseVRL=createVRL(octoPath); 
         VRL newVRL; 
         
-        if (renameFullAbsolutePath==false)
+        if (renameFullPath==false)
         {
             newVRL=baseVRL.getParent().resolvePath(newName);
         }
         else
         {
             // resolve against root: 
-            VRL oldVRL=createVRL(octoAbsolutePath); 
+            VRL oldVRL=createVRL(octoPath); 
             newVRL= oldVRL.replacePath(newName); 
         }
         
-        newAbsolutePath=createPath(newVRL); 
+        newPath=createPath(newVRL); 
         
         try
         {
-            AbsolutePath actualAbsolutePath=octoClient.rename(octoAbsolutePath,newAbsolutePath);
-            return createVRL(actualAbsolutePath);
+            Path actualPath=octoClient.rename(octoPath,newPath);
+            return createVRL(actualPath);
         }
         catch (OctopusIOException e)
         {

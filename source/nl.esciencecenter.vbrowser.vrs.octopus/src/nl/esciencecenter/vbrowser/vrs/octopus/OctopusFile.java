@@ -26,7 +26,7 @@ import java.io.OutputStream;
 
 import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
 import nl.esciencecenter.octopus.exceptions.OctopusIOException;
-import nl.esciencecenter.octopus.files.AbsolutePath;
+import nl.esciencecenter.octopus.files.Path;
 import nl.esciencecenter.octopus.files.FileAttributes;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
@@ -42,9 +42,9 @@ import nl.esciencecenter.vlet.vrs.vfs.VFile;
 public class OctopusFile extends VFile
 {
     private FileAttributes fileAttrs;
-    private AbsolutePath octoPath;
+    private Path octoPath;
 
-    public OctopusFile(OctopusFS octopusFS, FileAttributes attrs, AbsolutePath path)
+    public OctopusFile(OctopusFS octopusFS, FileAttributes attrs, Path path)
     {
        super(octopusFS,octopusFS.createVRL(path));
        this.fileAttrs=attrs; 
@@ -103,7 +103,7 @@ public class OctopusFile extends VFile
 		try
         {
 	        // Path is immutable, update it here ? 
-            AbsolutePath newPath = this.getOctoClient().createFile(octoPath);
+            Path newPath = this.getOctoClient().createFile(octoPath);
             return true;
         }
         catch (OctopusIOException e)
