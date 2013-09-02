@@ -38,6 +38,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.DESedeKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import nl.esciencecenter.ptk.util.StringUtil;
 
@@ -222,6 +223,33 @@ public class StringCrypter
                 keyFactory = SecretKeyFactory.getInstance(encryptionScheme.getSchemeName());
                 cipher = Cipher.getInstance(encryptionScheme.getConfigString());
             }
+            else if ( encryptionScheme.equals(CryptScheme.AES128_ECB_PKCS5) ||  encryptionScheme.equals(CryptScheme.AES256_ECB_PKCS5) )
+            {
+                byte subkey[]=null; 
+                int k=16; 
+                
+                if (encryptionScheme.equals(CryptScheme.AES256_ECB_PKCS5))
+                {
+                    k=32;
+                }
+                
+                if (rawKey.length<k)
+                {
+                    throw new EncryptionException ("AES Key length to short. Length="+rawKey.length+", must be at least:"+k,null); 
+                }
+                
+                subkey=new byte[k];  
+                for (int i=0;i<k;i++)
+                {
+                        subkey[i]=rawKey[i];
+                }
+                
+                keySpec = new SecretKeySpec(subkey,"AES");
+                // Not needed. Directly use keysSpec as SecretKey for AES ! 
+                // SecretKeyFactory.getInstance(encryptionScheme.getSchemeName());
+                keyFactory = null;
+                cipher = Cipher.getInstance(encryptionScheme.getConfigString());
+            }
             else
             {
                 throw new IllegalArgumentException("Encryption scheme not supported: " + encryptionScheme);
@@ -289,7 +317,21 @@ public class StringCrypter
     {
         try
         {
-            SecretKey key = keyFactory.generateSecret(keySpec);
+            SecretKey key = null;
+            
+            if (keyFactory!=null)
+            {
+                key=keyFactory.generateSecret(keySpec);
+            }
+            else if (keySpec instanceof SecretKey)
+            {
+                key=(SecretKey)keySpec; // key is already a SecretKey ! (for example an AES key) 
+            }
+            else
+            {
+                throw new NullPointerException("KeyFactory isn't initialized and key specification is not a valid SecretKey!"); 
+            }
+            
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] ciphertext = cipher.doFinal(bytes);
             return ciphertext;
@@ -362,9 +404,24 @@ public class StringCrypter
             throw new NullPointerException("Byte array can't be null."); 
         }
         
+        
         try
         {
-            SecretKey key = keyFactory.generateSecret(keySpec);
+            SecretKey key =null; 
+            
+            if (keyFactory!=null)
+            {
+                key=keyFactory.generateSecret(keySpec);
+            }
+            else if (keySpec instanceof SecretKey)
+            {
+                key=(SecretKey)keySpec; // key is already a SecretKey ! (for example an AES key) 
+            }
+            else
+            {
+                throw new NullPointerException("KeyFactory isn't initialized and key specification is not a valid SecretKey!"); 
+            }
+            
             cipher.init(Cipher.DECRYPT_MODE, key);
             return cipher.doFinal(crypt);
         }

@@ -21,6 +21,7 @@
 package nl.esciencecenter.ptk.crypt;
 
 import java.nio.charset.Charset;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 
 import javax.crypto.Cipher;
@@ -130,6 +131,43 @@ public class Test_StringCrypter
                 CryptScheme.DESEDE_ECB_PKCS5, "SHA-256", StringCrypter.CHARSET_UTF8);
     }
 
+    @Test
+    public void test_CryptAES128ECB_SHA256_12345() throws Throwable
+    { 
+        // echo -n 12345 | openssl enc -aes-128-ecb -nosalt -pass pass:12345 -base64 -md sha256 -p
+        // key=5994471ABB01112AFCC18159F6CC74B4
+        // sMLZyY92elQmQpxtEzCSmg==
+
+        testEncrypt("12345", "12345", "sMLZyY92elQmQpxtEzCSmg==", CryptScheme.AES128_ECB_PKCS5, "SHA-256", StringCrypter.CHARSET_UTF8);
+        
+        // echo -n 0123456789012345678901234 | openssl enc -aes-128-ecb -nosalt -pass pass:12345 -base64 -md sha256 -p
+        // key=5994471ABB01112AFCC18159F6CC74B4
+        // 2dWhGz7KaPo3WO7u5+rrWFNvcxxBcHY8TQ/OF12YSmg=
+        
+        testEncrypt("12345", "0123456789012345678901234", "2dWhGz7KaPo3WO7u5+rrWFNvcxxBcHY8TQ/OF12YSmg=", CryptScheme.AES128_ECB_PKCS5, "SHA-256", StringCrypter.CHARSET_UTF8);
+    }
+    
+    @Test
+    public void test_CryptAES256ECB_SHA256_12345() throws Throwable
+    { 
+        try
+        {
+            // echo -n 12345 | openssl enc -aes-256-ecb -nosalt -pass pass:12345 -base64 -md sha256 -p
+            // key=5994471ABB01112AFCC18159F6CC74B4F511B99806DA59B3CAF5A9C173CACFC5
+            // yy7m98PdS/LxdH6XI32Z6g==
+            testEncrypt("12345", "12345", "yy7m98PdS/LxdH6XI32Z6g==", CryptScheme.AES256_ECB_PKCS5, "SHA-256", StringCrypter.CHARSET_UTF8);
+        }
+        catch (InvalidKeyException e)
+        {
+            throw new Exception("Got invalid key exception. Unlimited Key length Encryption might not be supported. ",e); 
+        }
+        // echo -n 0123456789012345678901234 | openssl enc -des-ede3 -nosalt -pass pass:12345 -base64 -md sha256 -p
+        // key=5994471ABB01112AFCC18159F6CC74B4F511B99806DA59B3
+        // 3FpToewkL3fDIeGFWHCj9olKRKuErWn33oCk2oQdQdQ=
+        //testEncrypt("12345", "0123456789012345678901234", "3FpToewkL3fDIeGFWHCj9olKRKuErWn33oCk2oQdQdQ=",
+        //        CryptScheme.DESEDE_ECB_PKCS5, "SHA-256", StringCrypter.CHARSET_UTF8);
+    }
+    
     @Test
     public void test_CryptLegacyAppKey1() throws Exception
     {

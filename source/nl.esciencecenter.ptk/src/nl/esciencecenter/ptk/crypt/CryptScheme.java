@@ -16,9 +16,19 @@ public enum CryptScheme
      * Single DES, Electronic Coockbook and PKC5 Padding. 
      * @deprecated Do not use single DES
      */ 
-    DES_ECB_PKCS5("DES","DES/ECB/PKCS5Padding",16)
-    ;
+    DES_ECB_PKCS5("DES","DES/ECB/PKCS5Padding",16),
     
+    /** 
+     * AES Encryption, 
+     */
+    AES128_ECB_PKCS5("AES","AES/ECB/PKCS5Padding",16),
+    
+    /** 
+     * AES Encryption, 
+     */
+    AES256_ECB_PKCS5("AES","AES/ECB/PKCS5Padding",32),
+
+    ; 
     // === //
     
     /** Short name or alias */ 
