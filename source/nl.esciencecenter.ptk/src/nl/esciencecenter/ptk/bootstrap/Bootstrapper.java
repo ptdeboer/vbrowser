@@ -142,7 +142,7 @@ public class Bootstrapper
     }
 
     /**
-     * Set this before booting to ensure correct base URL environemnt in the case
+     * Set this before booting to ensure correct base URL environment in the case
      * of Applet of Webstart setup. 
      * 
      * More secure runtime environments might restrict access only to resources which are
@@ -184,7 +184,10 @@ public class Bootstrapper
     public void checkSetAppEnvironment() throws Exception
     {
         String versionStr = System.getProperty("java.version");
+        String javaHome= System.getProperty("java.home"); 
+        
         debugPrintf(" - java version=%s\n", versionStr);
+        debugPrintf(" - java home   =%s\n", javaHome);
 
         // Warning: doing string compare where int compare should be used:
         if ((versionStr != null) && (versionStr.compareToIgnoreCase(bootOptions.javaVersion) < 0))
@@ -367,19 +370,42 @@ public class Bootstrapper
         }
 
         addDirToClasspath(installDir + "/"); // APP_INSTALL
+        
         // add directory structure (without jars!)
         addDirToClasspath(sysconfDir + "/"); // APP_INSTALL/etc
 
         addDirToClasspath(libDir + "/"); // APP_INSTALL/lib
-
+        
+ 
         for (String subDir : bootOptions.libSubDirs)
+        {
             addDirToClasspath(libDir + "/" + subDir);
-
+        }
+        
         // recursive read jars from:
         addJarsToLibUrls(libDir, true, 0);
 
+        // JFX patch:
+        addJarToLibUrl(javaHome+"/lib/jfxrt.jar",true);
+
         // Add java.libary.path
         setJavaLibraryPath(appProps);
+    }
+
+    private void addJarToLibUrl(String filePath, boolean mustExist) throws MalformedURLException
+    {
+        java.io.File jarFile=new File(filePath); 
+        if (mustExist)
+        {
+            if (jarFile.exists()==false)
+            {
+                errorPrintf("*** Mandatory jar file not found:%s\n",filePath); 
+            }
+        }
+        
+        
+        debugPrintf(" - adding jarfile  =%s\n", jarFile.toURI().toURL());
+        this.classpathUrls.add(jarFile.toURI().toURL()); 
     }
 
     String resolve(String parent, String rel_path, BooleanHolder bool)
