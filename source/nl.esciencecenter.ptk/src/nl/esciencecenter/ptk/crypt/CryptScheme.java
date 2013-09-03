@@ -19,47 +19,70 @@ public enum CryptScheme
     DES_ECB_PKCS5("DES","DES/ECB/PKCS5Padding",16),
     
     /** 
-     * AES Encryption, 
+     * AES-128 Encryption, ECB and PKC5 PAddding. 
      */
     AES128_ECB_PKCS5("AES","AES/ECB/PKCS5Padding",16),
-    
-    /** 
-     * AES Encryption, 
+
+    ///** 
+    // * AES-192 Encryption. Need unlimited policy files for bit keys > 128  
+    // */
+    //AES192_ECB_PKCS5("AES","AES/ECB/PKCS5Padding",24),
+
+    /**
+     * AES-192 Encryption. Need unlimited policy files for bit keys > 128 
      */
     AES256_ECB_PKCS5("AES","AES/ECB/PKCS5Padding",32),
 
     ; 
     // === //
     
-    /** Short name or alias */ 
+    /** 
+     * Encryption Scheme
+     */ 
     protected String schemeName;
     
-    /** Full Configuration String */ 
+    /** 
+     * Full Configuration String 
+     */ 
     protected String configString;
     
-    /** Minimal key length in bytes. For Triple Des, this is 24 */ 
-    protected int minimalKeyLength; 
-    
-    
-    private CryptScheme(String name,String configName,int minimalKeyLength)
+    /**
+     * Significant key length in bytes. For Triple DES, this is 24 
+     * For AES-128 this is 16, for AES-256 this 32.
+     * Keys longer than this length might be truncated. 
+     */ 
+    protected int keyLength; 
+        
+    private CryptScheme(String cryptScheme,String configName,int keyLength)
     {
-        this.schemeName=name; 
+        this.schemeName=cryptScheme; 
         this.configString=configName;
-        this.minimalKeyLength=minimalKeyLength; 
+        this.keyLength=keyLength; 
     }
     
+    /** 
+     * @return Used encryption Scheme. 
+     */
     public String getSchemeName()
     {
         return schemeName; 
     }
     
+    /** 
+     * Full configuration string for this Encryption scheme. 
+     * @return
+     */
     public String getConfigString()
     {
         return configString; 
     }
     
-    public int getMinimalKeyLength()
+    /** 
+     * @return Significant Key Length in bytes.  
+     */
+    public int getKeyLength()
     {
-        return minimalKeyLength;
+        return keyLength;
     }
+    
 }
