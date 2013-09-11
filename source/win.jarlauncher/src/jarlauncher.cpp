@@ -110,15 +110,15 @@ int readini(char *filename)
     fclose(fp);
 }
 
-#define JAVA_JRE_REGISTRY_KEY "Software\\JavaSoft\\Java Runtime Environment";
-#define JAVA_JDK_REGISTRY_KEY "Software\\JavaSoft\\Java Development Kit"; 
-#define JAVA_REGISTRY_CURRENT_VERSION "CurrentVersion"; 
+#define JAVA_JRE_REGISTRY_KEY "SOFTWARE\\JavaSoft\\Java Runtime Environment"
+#define JAVA_JDK_REGISTRY_KEY "SOFTWARE\\JavaSoft\\Java Development Kit"
+#define JAVA_REGISTRY_CURRENT_VERSION "CurrentVersion"
 
 const char* getRegistryJavaHome()
 {
-    const char *javaRegKey = JAVA_JRE_REGISTRY_KEY
-    ;
+    const char *javaRegKey = JAVA_JRE_REGISTRY_KEY; 
     //const char *javaRegKey =JAVA_JDK_REGISTRY_KEY ;
+   
     int result = 0;
     char value[MAX_TEXT_BUFFER];
 
@@ -134,7 +134,19 @@ const char* getRegistryJavaHome()
     // Could search for Java here:
     DEBUGPRINTF(" - Windows SystemRoot='%s' (result=%d)\n",value,result);
 
-    // Java Current Version
+    // JDK Java Current Version
+    value[0] = 0;
+    bufferSize = (DWORD) MAX_TEXT_BUFFER;
+    result = RegGetValue(HKEY_LOCAL_MACHINE, JAVA_JDK_REGISTRY_KEY, "CurrentVersion",
+                         RRF_RT_ANY,
+                         NULL,
+                         (PVOID) &value,
+                         &bufferSize);
+
+    DEBUGPRINTF(" - JDK Java Version='%s' (result=%d) \n",value,result);
+    const char* javaVersion = Sduplicate(value);
+
+    // JRE Java Current Version
     value[0] = 0;
     bufferSize = (DWORD) MAX_TEXT_BUFFER;
     result = RegGetValue(HKEY_LOCAL_MACHINE, javaRegKey, "CurrentVersion",
@@ -143,12 +155,11 @@ const char* getRegistryJavaHome()
                          (PVOID) &value,
                          &bufferSize);
 
-    DEBUGPRINTF(" - JavaVersion='%s'\n",value);
-    const char* javaVersion = Sduplicate(value);
-
+    DEBUGPRINTF(" - JRE Java Version='%s' (result=%d) \n",value,result);
+    
     // <Current Version>\\Java Home
     std::string javaCurrentRegKey = std::string(javaRegKey) + "\\" + javaVersion;
-    DEBUGPRINTF(" - javaCurrentRegKey='%s'\n",javaCurrentRegKey.c_str());
+    DEBUGPRINTF(" - javaCurrentRegKey (jre)='%s'\n",javaCurrentRegKey.c_str());
 
     value[0] = 0;
     bufferSize = (DWORD) MAX_TEXT_BUFFER;

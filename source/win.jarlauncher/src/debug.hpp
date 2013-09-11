@@ -1,6 +1,6 @@
 // Debugging 
 
-//#define DEBUG 1
+// #define DEBUG 1
 
 #ifdef DEBUG
   #define DEBUGPRINTF(format, args...) fprintf(stderr, format, args)
