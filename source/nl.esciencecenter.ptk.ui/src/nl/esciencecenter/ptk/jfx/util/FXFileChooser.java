@@ -12,8 +12,8 @@ public class FXFileChooser implements Runnable
     public static enum ChooserType
     {
         OPEN_FILE,
-        SAVE_FILE,
-        OPEN_DIR
+        OPEN_DIR, 
+        SAVE_FILE
      }; 
     
     protected String filePath=null; 

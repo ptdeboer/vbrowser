@@ -1,12 +1,16 @@
 package nl.esciencecenter.ptk.ui.widgets;
 
 import java.awt.Color;
+import java.awt.Event;
 import java.awt.Font;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URI;
 import java.net.URL;
 import java.util.TooManyListenersException;
 
@@ -14,7 +18,9 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -22,7 +28,8 @@ import javax.swing.border.LineBorder;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.io.FileURISyntaxException;
-import nl.esciencecenter.ptk.ui.icons.ImageRenderer;
+import nl.esciencecenter.ptk.jfx.util.FXFileChooser;
+import nl.esciencecenter.ptk.jfx.util.FXFileChooser.ChooserType;
 import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
@@ -30,6 +37,8 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
 {
     private static final long serialVersionUID = 7668815810402466501L;
  
+    public static enum LocationType { FileType, DirType, URIType }; 
+    
     public class FileLocationEvaluator implements ActionListener, FocusListener
     {
     	private JTextField locationTF;
@@ -44,7 +53,7 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
     	@Override
     	public void actionPerformed(ActionEvent e) 
     	{
-    		evaluate(); 
+    	    evaluate();
     	}
     	
     	public boolean evaluate()
@@ -62,7 +71,14 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
     		{
     			java.net.URI uri;
     			uri = FSUtil.getDefault().resolveURI(text);
-    			locationTF.setText(uri.getPath());
+    			if (locationType==LocationType.URIType)
+    			{
+    			    locationTF.setText(uri.toString());
+    			}
+    			else
+    			{
+    			    locationTF.setText(uri.getPath());
+    			}
     			//locationTF.setBackground(originalBGColor);
     			
     			locationTF.setToolTipText("Enter location."); 
@@ -93,16 +109,43 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
 		}
     }
 
+    public class LSFMouseListener extends MouseAdapter
+    {
+        public LSFMouseListener() {}
+
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+            if ( (isLocationEnabled()==false) || (isLocationEditable()==false) )
+                return; 
+            
+            if (enableMetaMenu==false)
+                return; 
+            
+            if ( (e.getModifiers() & Event.META_MASK)>0)
+            {
+                showMetaMenu(e.getX(),e.getY()); 
+            }
+        }
+    }
+    
     // ========
     // Instance 
     // ========
     
     private JTextField locationTF;
     
-    JLabel fileIconLbl; 
+    private JLabel fileIconLbl;
+
+    protected LocationType locationType=LocationType.FileType; 
     
-    public LocationSelectionField() 
+    protected String fileExtensions[]=null;
+    
+    protected boolean enableMetaMenu=true; 
+    
+    public LocationSelectionField(LocationType type)
     {
+        this.locationType=type; 
         initGui();
         initDnD();
     }
@@ -123,7 +166,9 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
             locationTF.setForeground(Color.BLACK);
             add(locationTF);
             locationTF.setColumns(10);
-            locationTF.setBorder(new EmptyBorder(2,2,2,2)); 
+            locationTF.setBorder(new EmptyBorder(2,2,2,2));
+            locationTF.addMouseListener(new LSFMouseListener());
+            
             FileLocationEvaluator evaluator=new FileLocationEvaluator(locationTF);
             locationTF.addActionListener(evaluator);
             locationTF.addFocusListener(evaluator);
@@ -202,12 +247,21 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
         locationTF.setEnabled(value); 
     }
     
+    public boolean isLocationEnabled()
+    {
+        return locationTF.isEnabled(); 
+    }
+    
     public void setLocationEditable(boolean value)
     {
         locationTF.setEditable(value); 
     }
 
-    
+    public boolean isLocationEditable()
+    {
+        return locationTF.isEditable(); 
+    }
+
     /** 
      * Adds default support for dropped URI and URls. 
      */
@@ -234,5 +288,38 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
     public void notifyDnDDrop(String txt)
     {
         this.locationTF.setText(txt);         
+    }
+
+    public void showMetaMenu(int relX,int relY)
+    {
+        JPopupMenu popUp=new JPopupMenu();  
+        
+        JMenuItem mi=new JMenuItem("Browse"); 
+        mi.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    showFileSelector(); 
+                }    
+            });
+        
+        mi.setActionCommand("Browse");
+        popUp.add(mi); 
+        popUp.show(this, relX, relY);
+    }
+    
+    public void showFileSelector()
+    {
+        try
+        {
+            URI path = FXFileChooser.staticStartFileChooser(ChooserType.OPEN_DIR,this.getLocationURI().getPath());
+            if (path!=null)
+            {
+                this.setLocationURI(path);
+            }
+        }
+        catch (FileURISyntaxException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

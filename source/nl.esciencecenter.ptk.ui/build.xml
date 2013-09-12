@@ -48,7 +48,7 @@
         </fileset>
         
         <!-- not by default on the classpath --> 
-		<!-- <fileset file="${java.home}/lib/jfxrt.jar"/>  -->
+		<fileset file="${java.home}/lib/jfxrt.jar"/>
 		    
         <!-- add local paths settings -->
         <pathelement location="${comp.build.classes}" />
