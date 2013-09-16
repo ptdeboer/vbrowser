@@ -38,8 +38,8 @@ import java.util.Properties;
 import javax.swing.JOptionPane;
 
 /**
- * Universal Bootstrapper class for both Windows and Linux. <br>
- * This class must be able work as a standalone class!<b2>
+ * Universal Bootstrapper class for both Windows, Linux and Mac Os. <br>
+ * This class must be able work as a stand-alone class!<b2>
  * Cannot reference external classes if not in the same bootstrapper jar !
  * 
  * @author Piter T. de Boer
@@ -71,7 +71,7 @@ public class Bootstrapper
         public String libSubDir = "lib";
 
         public String binSubDir = "bin";
-
+ 
         public String javaVersion = "1.6";
 
         /**
@@ -84,16 +84,17 @@ public class Bootstrapper
                 "win32", 
                 "win64", 
                 "mac", 
-                "linux" };
+                "linux"
+             };
 
         /**
          * Library subdirectories explicitly ignored when scanning the lib/
          * directory for jar files.
          */
         public String libIgnoreDirs[] =
-                { 
+            { 
                     "plugins" 
-                };
+            };
     }
 
     protected static boolean debug = false;
@@ -184,8 +185,10 @@ public class Bootstrapper
      */
     public void checkSetAppEnvironment() throws Exception
     {
+        String javaHome = System.getProperty("java.home");
+        debugPrintf(" - java home    =%s\n", javaHome);
         String versionStr = System.getProperty("java.version");
-        debugPrintf(" - java version=%s\n", versionStr);
+        debugPrintf(" - java version =%s\n", versionStr);
 
         // Warning: doing string compare where int compare should be used:
         if ((versionStr != null) && (versionStr.compareToIgnoreCase(bootOptions.javaVersion) < 0))
@@ -196,10 +199,10 @@ public class Bootstrapper
             JOptionPane.showMessageDialog(null, "Wrong java version. Need " + bootOptions.javaVersion + " or higher.\n"
                     + "If java " + bootOptions.javaVersion + " is installed "
                     + "set your JAVA_HOME to the right location.\n" + "This version  =" + versionStr + "\n"
-                    + "Java location =" + System.getProperty("java.home") + "\n"
+                    + "Java location =" + javaHome + "\n"
                     + "The Program will try to continue ...", "Error", JOptionPane.ERROR_MESSAGE);
 
-            // Continue!
+            // Continue anyway. 
         }
 
         // java property: -DAPP_PREFIX.install=
@@ -223,7 +226,7 @@ public class Bootstrapper
 
             // getProtectionDomain???
             URL url = this.getClass().getProtectionDomain().getCodeSource().getLocation();
-            debugPrintf(" - source location URL = %s\n", url);
+            debugPrintf(" - source location URL   = %s\n", url);
 
             // parent dir of code base location
             // URL has FORWARD slashes!
@@ -379,8 +382,11 @@ public class Bootstrapper
         // recursive read jars from:
         addJarsToLibUrls(libDir, true, 0);
 
+        addJarToLibUrls(javaHome+"/lib/jfxrt.jar",true); 
+        
         // Add java.libary.path
         setJavaLibraryPath(appProps);
+        
     }
 
     String resolve(String parent, String rel_path, BooleanHolder bool)
@@ -496,45 +502,69 @@ public class Bootstrapper
         return props;
     }
 
-    public File getDirectory(String dirstr, boolean mustExist) throws Exception
+    public File getPath(String filePath,boolean isDir, boolean mustExist) throws Exception
     {
         // if dir is a remote url, FILE will complain:
 
-        File dir = new File(dirstr);
+        File javaFile = new File(filePath);
 
         // do some sanity checks:
 
-        if (!dir.exists() || !dir.isDirectory() || !dir.canRead())
+        if (isDir)
         {
-            if (mustExist)
+            if (!javaFile.exists() || !javaFile.isDirectory() || !javaFile.canRead())
             {
-                JOptionPane.showMessageDialog(null, 
-                    "Cannot find directory:'" + dirstr + "' "
-                    + "Installation might be corrupt or misconfigured.", 
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            
-                throw new Exception("BootrapException:Directory does not exist or is unreadable: " + dirstr);
+                if (mustExist)
+                {
+                    JOptionPane.showMessageDialog(null, 
+                        "Cannot find directory:'" + javaFile + "' "
+                        + "Installation might be corrupt or misconfigured.", 
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                
+                    throw new Exception("BootrapException:Directory does not exist or is unreadable: " + javaFile);
+                }
+                else
+                {
+                    errorPrintf("***Error: Can't find directory:%s\n",javaFile); 
+                }
             }
-            else
+        }
+        else
+        {
+            if (!javaFile.exists() || !javaFile.isFile() || !javaFile.canRead())
             {
-                errorPrintf("***Error: Can't find directory:%s\n",dirstr); 
+                if (mustExist)
+                {
+                    JOptionPane.showMessageDialog(null, 
+                        "Cannot find file:'" + javaFile + "' "
+                        + "Installation might be corrupt or misconfigured.", 
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                
+                    throw new Exception("BootrapException:Directory does not exist or is unreadable: " + javaFile);
+                }
+                else
+                {
+                    errorPrintf("***Error: Can't find directory:%s\n",javaFile); 
+                }
             }
         }
         
         try
         {
-            return dir.getCanonicalFile();
+            // resolve File. 
+            return javaFile.getCanonicalFile();
         }
         catch (IOException e)
         {
             if (mustExist)
             {
-                throw new Exception("IOException: Failed to get the canonical path of of " + dir);
+                throw new Exception("IOException: Failed to get the canonical path of of " + javaFile);
             }
             else
             {
-                errorPrintf("***Error: getCanonicalFile() Failed for directory:%s\n",dir); 
+                errorPrintf("***Error: getCanonicalFile() Failed for directory:%s\n",javaFile); 
                 return null; 
             }
         }
@@ -542,7 +572,7 @@ public class Bootstrapper
 
     public void addDirToClasspath(String dir)
     {
-        // User URL convention for dir URLs/Paths:
+        // Use URL convention for directory URLs/Paths:
 
         if (dir.endsWith("/") == false)
             dir = dir + "/";
@@ -559,12 +589,43 @@ public class Bootstrapper
             e.printStackTrace();
         }
     }
-
+    
+    public boolean addJarToLibUrls(String jarPath, boolean mustExist) throws Exception
+    {
+        java.io.File jarFile=getPath(jarPath,false,mustExist);
+        
+        if (mustExist) 
+        {
+            if ( (jarFile==null) || (jarFile.exists()==false) )
+            {
+                  errorPrintf("***Error: can not find mandatory jar file:%s\n",jarFile); 
+                  return false; 
+            }
+        }
+        
+        if (jarFile==null)
+        {  
+            debugPrintf(" - warning: jarFile is null for:%s\n"+jarPath);
+            return false; 
+        }
+        
+        URL url = jarFile.toURI().toURL();
+        if (url==null)
+        {
+            errorPrintf("***Error: URL of jarFile is null for:%s\n"+jarPath);
+            return false;
+        }
+        
+        this.classpathUrls.add(url);
+        debugPrintf(" - adding jarurl:%s\n", url);
+        return true; 
+    }
+    
     public boolean addJarsToLibUrls(String libDir, boolean recurse, int dirLevel) throws Exception
     {
         debugPrintf(" > [%2d] Scanning directory for jar files: %s\n", dirLevel, libDir);
 
-        File dir = getDirectory(libDir,true);
+        File dir = getPath(libDir,true,true);
 
         if ( (dir==null) || (dir.exists()==false)  || (dir.isDirectory()==false) || (dir.canRead()==false))
         {
@@ -612,7 +673,6 @@ public class Bootstrapper
     public void launch(String launchClass, String[] launchArgs) throws Exception
     {
         // set the whole APP environment:
-
         this.checkSetAppEnvironment();
 
         URL[] urlJars = new URL[this.classpathUrls.size()];
