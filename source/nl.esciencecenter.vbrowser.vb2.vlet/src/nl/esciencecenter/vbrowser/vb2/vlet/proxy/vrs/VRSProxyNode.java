@@ -35,9 +35,10 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentable;
 import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.esciencecenter.vlet.gui.presentation.VRSPresentation;
+
 import nl.esciencecenter.vlet.vrs.VComposite;
 import nl.esciencecenter.vlet.vrs.VNode;
+import nl.esciencecenter.vlet.vrs.presentation.VRSPresentation;
 import nl.esciencecenter.vlet.vrs.vrms.LogicalResourceNode;
 import nl.esciencecenter.vlet.vrs.vrms.VResourceLink;
 

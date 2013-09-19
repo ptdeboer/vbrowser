@@ -21,6 +21,5 @@
 	<classpathentry kind="lib" path="lib/ext/xpp3-1.1.3.4.M.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vrs.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.gui.vbrowser"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.gui.utils"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
