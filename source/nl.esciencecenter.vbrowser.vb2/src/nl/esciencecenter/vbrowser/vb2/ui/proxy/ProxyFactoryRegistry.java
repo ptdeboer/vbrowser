@@ -72,6 +72,7 @@ public class ProxyFactoryRegistry
     		for (ProxyFactory fac:factories)
     		{
     		    StringHolder reason=new StringHolder(); 
+    		    
     			if (fac.canOpen(locator,reason))
     			{
     				return fac;

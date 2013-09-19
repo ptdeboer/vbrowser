@@ -42,6 +42,7 @@ public class ResourceTreeUpdater implements ProxyNodeEventListener
 	static
 	{
 		logger=ClassLogger.getLogger(ResourceTreeUpdater.class); 
+		logger.setLevelToDebug();
 	}
 	  
 	private ResourceTree tree;

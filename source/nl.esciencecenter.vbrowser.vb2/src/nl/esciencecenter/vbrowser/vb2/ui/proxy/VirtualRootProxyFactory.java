@@ -9,7 +9,6 @@ public class VirtualRootProxyFactory extends ProxyFactory
     public static final String VROOT_VRL="virtual:0"; 
     
     private static VirtualRootNode rootNode;
-
     
     public VirtualRootProxyFactory()
     {
@@ -21,38 +20,80 @@ public class VirtualRootProxyFactory extends ProxyFactory
     // ========
 
     @Override
-    public VirtualRootNode doOpenLocation(VRL locator) throws ProxyException
+    public ProxyNode doOpenLocation(VRL locator) throws ProxyException
+    {
+        if (locator.toString().equals(VROOT_VRL))
+        {
+            return this.getRoot();
+        }
+        
+        if (getRoot().hasChild(locator))
+        {
+            return getRoot().getChild(locator); 
+        }
+        
+        // delegate to ProxyNodeFactories of children: 
+        ProxyNode[] nodes = getRoot().getChilds(); 
+
+        String reasons="=== reasons ===\n";
+        for (ProxyNode node:nodes)
+        {
+            ProxyFactory fac = node.getProxyFactory();
+            StringHolder reason=new StringHolder();
+            if (fac.canOpen(locator, reason)==true)
+            {
+                return fac.openLocation(locator); 
+            }
+            reasons+=reason.value+"\n"; 
+        }
+        
+        throw new ProxyException("Unknown Virtual Node or Node not a child node:"+locator+"\n"+reasons); 
+            
+    }
+
+    @Override
+    public boolean canOpen(VRL locator, StringHolder reasonHolder) 
+    {
+        if (locator.toString().equals(VROOT_VRL))
+            return true;
+        
+        ProxyNode[] nodes;
+        try
+        {
+            nodes = getRoot().getChilds();
+            for (ProxyNode node:nodes)
+            {
+                if (node.getProxyFactory().canOpen(locator, reasonHolder))
+                    return true;
+            }
+        }
+        catch (ProxyException e)
+        {
+            if (reasonHolder!=null)
+            {
+                reasonHolder.value="Got Exception:"+e+"\n"+e.getStackTrace();
+                return false; 
+            }
+        }
+        
+        return false; 
+    }
+
+    public VirtualRootNode getRoot() throws ProxyException
     {
         try
         {
-            return this.getRoot();
+            if (rootNode == null)
+            {
+                rootNode = new VirtualRootNode(this, new VRL(VROOT_VRL));
+            }
+    
+            return rootNode;
         }
         catch (VRLSyntaxException e)
         {
             throw new ProxyException("VRL Syntax Exception:" + e, e);
         }
-    }
-
-    @Override
-    public boolean canOpen(VRL locator, StringHolder reason)
-    {
-        if (locator.toString().equals(VROOT_VRL))
-            return true;
-        
-        if (reason != null)
-            reason.value = "Can only open one root node per factory";
-
-        return false;
-    }
-
-    public VirtualRootNode getRoot() throws VRLSyntaxException
-    {
-        if (rootNode == null)
-        {
-            rootNode = new VirtualRootNode(this, new VRL(VROOT_VRL));
-        }
-
-        return rootNode;
     }
 
 }

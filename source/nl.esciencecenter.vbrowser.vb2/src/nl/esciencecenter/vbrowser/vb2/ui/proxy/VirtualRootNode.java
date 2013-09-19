@@ -104,4 +104,21 @@ public class VirtualRootNode extends ProxyNode
        this.childs=new ArrayList<ProxyNode>(nodes);
     }
 
+    public boolean hasChild(VRL locator)
+    {
+        return (this.getChild(locator)!=null); 
+    }
+
+    public ProxyNode getChild(VRL locator)
+    {
+        for (ProxyNode node:this.childs)
+        {
+            if (node.hasLocator(locator))
+                return node; 
+        }
+        
+        return null; 
+    }
+    
+
 }
