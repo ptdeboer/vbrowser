@@ -139,7 +139,9 @@ public class ActionMenu extends JPopupMenu
 
 	}
 	
-	/** Translates pop action events to MenuActions */ 
+	/** 
+	 * Translates pop action events to MenuActions 
+	 */ 
 	public class PopupHandler implements ActionListener
 	{
 		private ActionMenuListener menuActionListener;

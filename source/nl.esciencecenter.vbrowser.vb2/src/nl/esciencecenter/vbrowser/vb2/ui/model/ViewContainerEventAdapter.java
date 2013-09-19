@@ -29,6 +29,7 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPopupMenu;
 
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.UIGlobal;
 import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.Action;
 
@@ -38,6 +39,8 @@ import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.Action;
 public class ViewContainerEventAdapter implements MouseListener, MouseMotionListener, FocusListener// ,
                                                                                                    // DragSourceListener
 {
+    private static final ClassLogger logger=ClassLogger.getLogger(ViewContainerEventAdapter.class);
+    
     private ViewNodeContainer viewComp;
 
     private ViewNodeActionListener nodeActionListener;
@@ -67,13 +70,13 @@ public class ViewContainerEventAdapter implements MouseListener, MouseMotionList
     @Override
     public void focusGained(FocusEvent event)
     {
-        debugPrintf("focusGained:%s\n", event);
+        logger.debugPrintf("focusGained:%s\n", event);
     }
 
     @Override
     public void focusLost(FocusEvent event)
     {
-        debugPrintf("focusLost:%s\n",event);
+        logger.debugPrintf("focusLost:%s\n",event);
     }
 
     @Override
@@ -103,13 +106,13 @@ public class ViewContainerEventAdapter implements MouseListener, MouseMotionList
     @Override
     public void mouseExited(MouseEvent event)
     {
-        debugPrintf("mouseClicked:%s\n", event);
+        logger.debugPrintf("mouseClicked:%s\n", event);
     }
 
     @Override
     public void mouseReleased(MouseEvent event)
     {
-        debugPrintf("mouseClicked:%s\n", event);
+        logger.debugPrintf("mouseClicked:%s\n", event);
     }
 
     public void mousePressed(MouseEvent e)
@@ -335,7 +338,7 @@ public class ViewContainerEventAdapter implements MouseListener, MouseMotionList
 
     private void debugPrintf(String format, Object... args)
     {
-        System.err.printf("ViewComponentEventAdapter:" + format, args);
+        ;
     }
 
 }
