@@ -26,6 +26,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.model.ExtendedDataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
@@ -152,7 +153,7 @@ public class ProxyNodeDataSource implements ExtendedDataSource
     }
 
     @Override
-    public Presentation getPresentation() throws ProxyException
+    public UIPresentation getPresentation() throws ProxyException
     {
         return rootNode.getPresentation();
     }

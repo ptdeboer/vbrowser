@@ -659,6 +659,8 @@ public class Presentation
     {
         childAttributeNames = new StringList(names);
     }
+    
+   
 
     /** 
      * Returns sizeString +"[KMG]&lt;uni&gt;>" from "size" bytes per second 

@@ -63,12 +63,10 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
 
         private ViewNode viewNode;
 
-        // private ViewNode viewItem;
-
-        public RowData(String rowKey, AttributeSet attrs)
+        public RowData(ViewNode viewNode,String rowKey, AttributeSet attrs)
         {
             this.rowKey = rowKey;
-
+            this.viewNode=viewNode; 
             if (attrs != null)
                 this.rowAttributes = attrs.duplicate(); // empty set!
         }
@@ -185,7 +183,9 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
 
     private ViewNode rootViewNode;
 
-    /** For Testing */
+    private String iconHeaderName="icon"; 
+
+    // For Testing
     protected ResourceTableModel(String[] headers)
     {
         super();
@@ -197,6 +197,15 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
         this.headers = new HeaderModel(headers);
     }
 
+    /** 
+     * Specify icon column header name.
+     * For this column the ViewNode will provide the Icon. 
+     */ 
+    public void setIconHeaderName(String iconName)
+    {
+        this.iconHeaderName=iconName; 
+    }
+    
     public ResourceTableModel()
     {
         super();
@@ -206,7 +215,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
         AttributeSet dummySet = new AttributeSet();
         dummySet.set("", "");
 
-        this.rows.add(new RowData("", dummySet));
+        this.rows.add(new RowData(null,"", dummySet));
     }
 
     public void setHeaders(String[] headers)
@@ -246,7 +255,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
     }
 
     @Override
-    public Attribute getValueAt(int rowIndex, int columnIndex)
+    public Object getValueAt(int rowIndex, int columnIndex)
     {
         synchronized (rows)
         {
@@ -269,8 +278,17 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
             Attribute attr = rowObj.getAttribute(header);
 
             if (attr == null)
+            {
+                if (header.equals(this.iconHeaderName))
+                {
+                    ViewNode viewNode = rowObj.getViewNode();
+                    if(viewNode!=null)
+                        return viewNode.getIcon(); 
+                }
+                
                 return null;
-
+            }
+            
             return attr;
         }
     }
@@ -297,12 +315,10 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
             if ((rowIndex < 0) || rowIndex >= this.rows.size())
                 return null;
 
-            Attribute attr = this.rows.get(rowIndex).getAttribute(attrName);
-
-            if (attr == null)
-                return null;
-
-            return attr.getValue();
+            RowData row = rows.get(rowIndex); 
+            Attribute attr = row.getAttribute(attrName);
+            // parsing checking ? 
+            return attr; // attr.getValue();
         }
     }
 
@@ -420,7 +436,9 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
         return headers.toArray();
     }
 
-    /** Create new Rows with empty Row Data */
+    /** 
+     * Create new Rows with empty Row Data 
+     */
     public void setRows(List<String> rowKeys)
     {
         synchronized (rows)
@@ -430,24 +448,26 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
             for (String key : rowKeys)
             {
                 // add to internal data structure only
-                _addRow(key, new AttributeSet());
+                _addRow(null,key, new AttributeSet());
             }
         }
 
         this.fireTableDataChanged();
     }
 
-    /** Add new Row and return index to row */
-    public int addRow(String key, AttributeSet attrs)
+    /** 
+     * Add new Row and return index to row.
+     */
+    public int addRow(ViewNode viewNode,String key, AttributeSet attrs)
     {
-        int index = this._addRow(key, attrs);
+        int index = this._addRow(viewNode,key, attrs);
         this.fireTableRowsInserted(index, index);
         return this.rows.size() - 1;
     }
 
     public int addEmptyRow(String key)
     {
-        return this.addRow(key, new AttributeSet());
+        return this.addRow(null,key, new AttributeSet());
     }
 
     public int delRow(String key)
@@ -496,12 +516,12 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
     }
 
     // add row to internal data structure
-    private int _addRow(String key, AttributeSet attrs)
+    private int _addRow(ViewNode node,String key, AttributeSet attrs)
     {
         synchronized (rows)
         {
             int index = rows.size();
-            this.rows.add(new RowData(key, attrs));
+            this.rows.add(new RowData(node,key, attrs));
             this.rowKeyIndex.put(key, new Integer(index));
             return index;
         }
@@ -796,7 +816,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
 
         return row.getViewNode();
     }
-
+    
     public ViewNode getRootViewNode()
     {
         return rootViewNode;

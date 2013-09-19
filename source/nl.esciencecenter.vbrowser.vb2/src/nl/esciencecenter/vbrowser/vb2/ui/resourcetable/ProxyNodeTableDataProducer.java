@@ -32,6 +32,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTableModel.RowDat
 import nl.esciencecenter.vbrowser.vb2.ui.tasks.UITask;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
+import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public class ProxyNodeTableDataProducer implements TableDataProducer 
@@ -97,7 +98,7 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 
 		
 		// Custom Presentation: 
-		Presentation pres=null;
+		UIPresentation pres=null;
 		
 		try 
 		{
@@ -113,16 +114,20 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 		if (pres==null)
 		{
 		    // presentation store: 
-			pres= Presentation.getPresentationForSchemeType(rootNode.getVRL().getScheme(),
+			pres= UIPresentation.getPresentationForSchemeType(rootNode.getVRL().getScheme(),
 					rootNode.getResourceType(),false);
 		}
 
 		String[] names=null;
+
+		String iconAttributeName=null; 
 		
 		// set default attributes
 		if (pres!=null)
 		{
 			names=pres.getChildAttributeNames();
+		     // update icon attribute name:
+			iconAttributeName=pres.getIconAttributeName(); 
 		}
 		
 		if (names==null)
@@ -142,6 +147,12 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 
 		tableModel.setHeaders(headers.toArray()); 
 		tableModel.setAllHeaders(headers); 
+		
+		// Specify icon column:
+		if (iconAttributeName!=null)
+		{
+		    tableModel.setIconHeaderName(iconAttributeName);
+		}
 	}
 
 	protected ViewNode getRootViewNode() throws ProxyException 
@@ -345,16 +356,17 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 		attrs=dataSource.getAttributes(viewNode.getVRL(),attrNames); 
 		
 		RowData row=tableModel.getRow(viewNode.getVRL().toString());
+		
 		if (row==null)
 			return; 
-
+		row.setViewNode(viewNode); 
 		row.setValues(attrs);
 	}
 
-	private void createRow(ViewNode node) throws ProxyException
+	private void createRow(ViewNode viewNode) throws ProxyException
 	{
 		AttributeSet set=new AttributeSet();
-		int index=tableModel.addRow(node.getVRL().toString(),set);
+		int index=tableModel.addRow(viewNode,viewNode.getVRL().toString(),set);
 		
 		//RowData row = tableModel.getRow(index); 
 		//row.setObjectValue(RESOURCE,node); 

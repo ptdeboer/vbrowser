@@ -96,7 +96,9 @@ public class UIPresentation extends Presentation
     protected int columnsAutoResizeMode = JTable.AUTO_RESIZE_ALL_COLUMNS; // .AUTO_RESIZE_OFF;
 
     protected Map<String, AttributePresentation> attributePresentations = new Hashtable<String, AttributePresentation>();
-
+    
+    protected String iconAttributeName="icon"; 
+        
     public UIPresentation()
     {
         super();
@@ -251,5 +253,15 @@ public class UIPresentation extends Presentation
     	}
     	str+="}";
     	return str; 
+    }
+    
+    public void setIconAttributeName(String name)
+    {
+        iconAttributeName=name; 
+    }
+
+    public String getIconAttributeName()
+    {
+        return iconAttributeName; 
     }
 }

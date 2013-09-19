@@ -53,47 +53,31 @@ public class ResourceTableCellRenderer extends DefaultTableCellRenderer
         
 	    if (value==null)
 	    {
-	       value="?";
+	       value="";
 	    }
 
+	    String columnName=null; 
+	    
 	    // 
 	    // Some predefined render options. 
 	    // Check for icon types here. 
 	    // 
-
+	    if (value instanceof Attribute)
+        {
+            Attribute attr=(Attribute)value; 
+            value=attr.getValue(); 
+        }
+	    
 	    if (value instanceof Icon)
 	    {
 	    	return renderIcon(this,uiModel,(Icon)value,"",isSelected,hasFocus); 
 	    }
+	    else if (value instanceof ViewNode)
+        {
+            ViewNode viewNode=(ViewNode)value; 
+            return renderIcon(this,uiModel,viewNode.getIcon(),viewNode.getName(),isSelected,hasFocus);
+        }
 	    
-	    if (value instanceof Attribute)
-	    {
-	        Attribute attr=(Attribute)value; 
-	        
-	        Object attrVal=attr.getValue();
-	        
-	        // =====================
-	        // Render Icon Attribute 
-	        // =====================
-	        
-		    if (attrVal instanceof Icon)
-		    {
-		    	return renderIcon(this,uiModel,(Icon)attrVal,"",isSelected,hasFocus); 
-		    }
-
-		    // ================
-		    // Render ViewNode!
-		    // ================
-		    
-		    if (attrVal instanceof ViewNode)
-		    {
-		    	ViewNode viewNode=(ViewNode)attrVal; 
-		    	return renderIcon(this,uiModel,viewNode.getIcon(),viewNode.getName(),isSelected,hasFocus);
-		    }
-
-	        // Default to String value... 
-	        value=attr.getStringValue(); 
-	    }
 	    
 	    // thiz should be *this* 
 	    Component thiz = super.getTableCellRendererComponent(table,value, isSelected, hasFocus, row, column);

@@ -169,7 +169,9 @@ public class VRSPresentation
         {
             pres.setChildAttributeNames(VRSPresentation.defaultNodeAttributeNames);
         }
-
+        
+        pres.setIconAttributeName(ATTR_ICON);
+        
         UIPresentation.putUIPresentation(id,pres);
         
         return pres;
