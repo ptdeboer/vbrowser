@@ -179,12 +179,6 @@
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vlet.gui.utils"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
-        </antcall>
-
-        <antcall target="module-build">
             <param name="name" value="nl.esciencecenter.vlet.gui.vbrowser"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
