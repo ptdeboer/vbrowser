@@ -42,7 +42,7 @@ public class testVRSBrowser
 		    
     		ProxyNode root = fac.openLocation("myvle:/"); 
     		
-			frame.setRoot(root,true); 
+			frame.setRoot(root,true,true); 
 		}
 		catch (Exception e) 
 		{

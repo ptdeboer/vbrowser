@@ -309,10 +309,17 @@ public class ResourceTree extends JTree implements ViewNodeContainer
 		return nodes.toArray(_nodes); 
 	}
 	
-	 public void setDataSource(DataSource viewNodeSource,boolean update)
-     {
-		 this.getUpdater().setDataSource(viewNodeSource,update); 
-     }
+	public void setRoot(DataSource viewNodeSource,boolean update, boolean showAsRoot)
+	{
+	    this.setRootVisible(showAsRoot); 
+	    this.setShowsRootHandles(showAsRoot==false);
+	    this.setDataSource(viewNodeSource,update);
+	}
+	
+	protected void setDataSource(DataSource viewNodeSource,boolean update)
+	{
+	    this.getUpdater().setDataSource(viewNodeSource,update);
+	}
 
 	public ResourceTreeUpdater getUpdater()
 	{

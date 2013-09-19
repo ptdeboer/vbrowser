@@ -51,7 +51,7 @@ public class testDummyBrowser
 		    
 			ProxyNode root = dummyFac.openLocation("proxy:///");
 		
-			frame.setRoot(root,true); 
+			frame.setRoot(root,true,true); 
 			
 			
 		}

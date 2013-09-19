@@ -50,7 +50,7 @@ public class testFSNodeBrowser
 		    
 			ProxyNode root = fac.openLocation("file:/home/");
 		
-			frame.setRoot(root,true); 
+			frame.setRoot(root,true,true); 
 		}
 		catch (Exception e) 
 		{

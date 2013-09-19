@@ -91,6 +91,8 @@ public class BrowserFrame extends JFrame
 
     private JPanel uiToolBarPanel;
 
+  
+
 	public BrowserFrame(BrowserInterface controller,ActionListener actionListener)
 	{
 		this.browserController=controller;
@@ -200,7 +202,7 @@ public class BrowserFrame extends JFrame
 					// ... iconsPanel 
                     {
                     	IconsPanel iconsPanel = new IconsPanel(this.browserController,null); 
-                    	addTab("Icons",iconsPanel); 
+                    	addTab("Icons",iconsPanel,false); 
                        
                         
                     }
@@ -218,10 +220,28 @@ public class BrowserFrame extends JFrame
 		this.setSize(800,600); 
 	}
 
-	protected TabContentPanel addTab(String name, JComponent comp)
+	protected TabContentPanel addTab(String name, JComponent comp, boolean setFocus)
     {
     	 TabContentPanel tabPanel = TabContentPanel.createTab(name,comp,this.actionListener); 
-         uiRightTabPane.add(tabPanel);
+    	 int newIndex=uiRightTabPane.getTabCount(); 
+         uiRightTabPane.add(tabPanel,newIndex);
+         
+         TabTopLabelPanel topTapPnl=new TabTopLabelPanel(uiRightTabPane,tabPanel);
+         uiRightTabPane.setTabComponentAt(newIndex, topTapPnl); 
+         topTapPnl.setActionListener(this.actionListener); 
+         
+         if (newIndex>0)
+         {
+             Component tabComp = uiRightTabPane.getTabComponentAt(newIndex-1); 
+             if (tabComp instanceof TabTopLabelPanel)
+             {
+                 ((TabTopLabelPanel)tabComp).setEnableAddButton(false); 
+             }
+         }
+         if (setFocus)
+         {
+             uiRightTabPane.setSelectedIndex(newIndex); 
+         }
          return tabPanel;
 	}
 
@@ -239,7 +259,7 @@ public class BrowserFrame extends JFrame
 			if (autoCreate==false)
 				return null; 
 			
-			tab=this.addTab("Icons",null); 
+			tab=this.addTab("Icons",null,false); 
 		}
 		
 		JComponent comp = tab.getContent(); 
@@ -258,9 +278,9 @@ public class BrowserFrame extends JFrame
 		return pnl; 	
 	}
 	
-	protected TabContentPanel createIconsPanelTab(ProxyNode node) 
+	protected TabContentPanel createIconsPanelTab(ProxyNode node,boolean setFocus) 
 	{
-		TabContentPanel tab=this.addTab("Icons",null);
+		TabContentPanel tab=this.addTab("Icons",null,setFocus);
 		IconsPanel pnl = new IconsPanel(this.browserController,null); 
 		pnl.setDataSource(node,true); 
 		tab.setContent(pnl); 
@@ -280,7 +300,7 @@ public class BrowserFrame extends JFrame
 			if (autoCreate==false)
 				return null; 
 			
-			tab=this.addTab("Table",null); 
+			tab=this.addTab("Table",null,false); 
 		}
 		
 		JComponent comp = tab.getContent(); 
@@ -356,6 +376,23 @@ public class BrowserFrame extends JFrame
 	            JSeparator jSeparator = new JSeparator();
 	            mainMenu.add(jSeparator);
 		 }
+		 
+		 // "View" Menu
+         {
+             JMenu viewMenu = new JMenu();
+             menu.add(viewMenu);
+             viewMenu.setText("Tools");
+             viewMenu.setMnemonic(KeyEvent.VK_T);
+             {
+                 JMenuItem viewMI = new JMenuItem();
+                 viewMenu.add(viewMI);
+                 viewMI.setText("Tools");
+                 //viewMI.setMnemonic(KeyEvent.VK_W);
+                 viewMI.addActionListener(actionListener);
+                 //viewNewWindowMenuItem.setActionCommand(ActionMethod.CREATE_NEW_WINDOW.toString());
+             }
+         }
+         
 		 // "View" Menu
 		 {
              JMenu viewMenu = new JMenu();
@@ -372,6 +409,30 @@ public class BrowserFrame extends JFrame
              }
 		 }
 		 
+		// "View" Menu
+         {
+             JMenu viewMenu = new JMenu();
+             menu.add(viewMenu);
+             viewMenu.setText("Help");
+             viewMenu.setMnemonic(KeyEvent.VK_H);
+             {
+                 JMenuItem viewMI = new JMenuItem();
+                 viewMenu.add(viewMI);
+                 viewMI.setText("Help");
+                 //viewMI.setMnemonic(KeyEvent.VK_W);
+                 viewMI.addActionListener(actionListener);
+                 viewMI.setActionCommand(ActionMethod.GLOBAL_HELP.toString());
+             }
+             {
+                 JMenuItem viewMI = new JMenuItem();
+                 viewMenu.add(viewMI);
+                 viewMI.setText("About");
+                 //viewMI.setMnemonic(KeyEvent.VK_W);
+                 viewMI.addActionListener(actionListener);
+                 viewMI.setActionCommand(ActionMethod.GLOBAL_ABOUT.toString());
+             }
+
+         }
 		return menu; 
 	}
 
@@ -416,6 +477,12 @@ public class BrowserFrame extends JFrame
     public void closeTab(TabContentPanel tab)
     {
         this.uiRightTabPane.removeTabAt(uiRightTabPane.indexOfComponent(tab));  
+        int index=this.uiRightTabPane.getTabCount();
+        Component comp = this.uiRightTabPane.getTabComponentAt(index-1); 
+        if (comp instanceof TabTopLabelPanel)
+        {
+            ((TabTopLabelPanel)comp).setEnableAddButton(true); // always enable last + button.
+        }
     }
     
 	public TabContentPanel getTab(int index) 
@@ -434,7 +501,7 @@ public class BrowserFrame extends JFrame
 		return this.uiNavigationBar; 
 	}
 	
-	private Icon loadIcon(String urlstr)
+	private ImageIcon loadIcon(String urlstr)
 	{
 	    return new ImageIcon(getClass().getClassLoader().getResource(urlstr)); 
 	}

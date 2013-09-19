@@ -73,8 +73,21 @@ public class ActionMenu extends JPopupMenu
 		
 		JSeparator sep=new JSeparator(); 
 		menu.add(sep); 
-		menu.add(menu.createItem(viewNode,"Open",ActionMethod.OPEN_LOCATION)); 
-		menu.add(sep); 
+		menu.add(menu.createItem(viewNode,"Open ",ActionMethod.OPEN_LOCATION)); 
+		
+		{
+		    JMenu openMenu=new JMenu("Open in"); 
+		    menu.add(openMenu); 
+		    JMenuItem mi=new JMenuItem("New Window"); 
+		    openMenu.add(mi);
+		    mi.setActionCommand(""+ActionMethod.OPEN_IN_NEW_WINDOW); 
+		    mi=new JMenuItem("New Tab"); 
+            openMenu.add(mi); 
+            mi.setActionCommand(""+ActionMethod.OPEN_IN_NEW_TAB); 
+		}
+		
+        menu.add(sep); 
+		
         menu.add(menu.createItem(viewNode,"Create",ActionMethod.CREATE)); 
         if (multiSelection)
         	menu.add(menu.createItem(viewNode,"Delete All",ActionMethod.DELETE_SELECTION));

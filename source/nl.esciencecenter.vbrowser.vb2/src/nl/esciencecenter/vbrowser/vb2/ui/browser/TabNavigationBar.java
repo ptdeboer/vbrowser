@@ -48,29 +48,29 @@ public class TabNavigationBar extends JPanel
 	{
 		this.setLayout(new FlowLayout()); 
 		{
-			closeBut = new JButton("x"); 
-			closeBut.setSize(16,16); 
-			this.add(closeBut); 
-			closeBut.setActionCommand(ActionMethod.CLOSE_TAB.toString());
-			
-			cloneBut = new JButton("+"); 
-			cloneBut.setSize(16,16); 
-			this.add(cloneBut); 
-			cloneBut.setActionCommand(ActionMethod.NEW_TAB.toString());
+//			closeBut = new JButton("x"); 
+//			closeBut.setSize(16,16); 
+//			this.add(closeBut); 
+//			closeBut.setActionCommand(ActionMethod.CLOSE_TAB.toString());
+//			
+//			cloneBut = new JButton("+"); 
+//			cloneBut.setSize(16,16); 
+//			this.add(cloneBut); 
+//			cloneBut.setActionCommand(ActionMethod.NEW_TAB.toString());
 		}
 	}
 
 	public void addActionListener(ActionListener listener) 
 	{	
-		this.closeBut.addActionListener(listener); 
-		this.cloneBut.addActionListener(listener); 
+//		this.closeBut.addActionListener(listener); 
+//		this.cloneBut.addActionListener(listener); 
 	}
 	
 
 	public void removeActionListener(ActionListener listener) 
 	{	
-		this.closeBut.removeActionListener(listener); 
-		this.cloneBut.removeActionListener(listener); 
+//		this.closeBut.removeActionListener(listener); 
+//		this.cloneBut.removeActionListener(listener); 
 	}
 
 }

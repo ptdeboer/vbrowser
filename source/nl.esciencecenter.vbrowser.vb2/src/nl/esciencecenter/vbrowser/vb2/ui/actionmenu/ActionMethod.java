@@ -57,7 +57,10 @@ public enum ActionMethod
     CLOSE_TAB("CloseTab"),
     // Selections
     DELETE_SELECTION("DeleteSelection"),
-    COPY_SELECTION("CopySelection")
+    COPY_SELECTION("CopySelection"),
+    // 
+    GLOBAL_HELP("Help"),
+    GLOBAL_ABOUT("About")
     ;
     
 	// === Instance === 

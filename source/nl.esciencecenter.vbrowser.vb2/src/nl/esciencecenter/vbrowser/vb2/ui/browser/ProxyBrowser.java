@@ -181,18 +181,22 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
         return ActionMenu.createSimpleMenu(this,container, viewNode, canvasMenu);
     }
 
-    /** Set Root Node and update UI */
-    public void setRoot(ProxyNode root, boolean update)
+    /** 
+     * Set Root Node and update UI.
+     */
+    public void setRoot(ProxyNode root, boolean update, boolean showAsRoot)
     {
         this.rootNode = root;
         ProxyNodeDataSource dataSource = new ProxyNodeDataSource(root);
-        this.browserFrame.getResourceTree().setDataSource(dataSource, update);
+        this.browserFrame.getResourceTree().setRoot(dataSource, update,showAsRoot);
         IconsPanel iconsPnl = browserFrame.getIconsPanel();
         if (iconsPnl!=null)
         	iconsPnl.setDataSource(dataSource, update);
     }
 
-    /** Event from Menu Bar */
+    /** 
+     * Event from Menu Bar
+     */
     public void handleMenuEvent(ActionEvent e)
     {
         String cmdStr = e.getActionCommand();
@@ -488,7 +492,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     	}
     	else
     	{
-    		tab=browserFrame.createIconsPanelTab(node); 
+    		tab=browserFrame.createIconsPanelTab(node,true); 
     	}
     	
     	browserFrame.setTabTitle(tab,node.getName()); 
@@ -571,7 +575,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     {
         // clone browser and update ViewNode
         ProxyBrowser newB = new ProxyBrowser(this.platform, true);
-        newB.setRoot(this.rootNode, true);
+        newB.setRoot(this.rootNode, true,true);
         newB.setCurrentViewNode(node);
 
         return newB;
