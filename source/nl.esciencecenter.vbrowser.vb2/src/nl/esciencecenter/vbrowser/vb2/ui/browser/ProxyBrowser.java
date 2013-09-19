@@ -452,7 +452,11 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     private void setViewedNode(ProxyNode node, Icon icon, boolean addHistory, boolean newTab)
     {
     	TabContentPanel tab; 
-    	
+        tab = this.browserFrame.getCurrentTab(); 
+
+        if (tab==null)
+            newTab=true; // auto add ! 
+        
     	if (newTab==false)
     	{
     		tab = this.browserFrame.getCurrentTab(); 
@@ -486,6 +490,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     	{
     		tab=browserFrame.createIconsPanelTab(node); 
     	}
+    	
     	browserFrame.setTabTitle(tab,node.getName()); 
     	
         updateNavBar(node.getVRL(),icon); 
