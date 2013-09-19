@@ -478,11 +478,16 @@ public class BrowserFrame extends JFrame
     {
         this.uiRightTabPane.removeTabAt(uiRightTabPane.indexOfComponent(tab));  
         int index=this.uiRightTabPane.getTabCount();
-        Component comp = this.uiRightTabPane.getTabComponentAt(index-1); 
-        if (comp instanceof TabTopLabelPanel)
+        
+        if (index>0)
         {
-            ((TabTopLabelPanel)comp).setEnableAddButton(true); // always enable last + button.
+            Component comp = this.uiRightTabPane.getTabComponentAt(index-1); 
+            if (comp instanceof TabTopLabelPanel)
+            {
+                ((TabTopLabelPanel)comp).setEnableAddButton(true); // always enable last + button.
+            }
         }
+        
     }
     
 	public TabContentPanel getTab(int index) 
