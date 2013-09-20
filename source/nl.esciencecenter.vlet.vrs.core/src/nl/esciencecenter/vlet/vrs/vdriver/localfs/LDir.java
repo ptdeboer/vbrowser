@@ -24,19 +24,23 @@ package nl.esciencecenter.vlet.vrs.vdriver.localfs;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
 
 import java.io.File;
+import java.io.IOException;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.LocalFSNode;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+import nl.esciencecenter.vlet.exception.ResourceAlreadyExistsException;
 import nl.esciencecenter.vlet.exception.ResourceReadAccessDeniedException;
 import nl.esciencecenter.vlet.vrs.VNode;
 import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.esciencecenter.vlet.vrs.vfs.VDir;
+import nl.esciencecenter.vlet.vrs.vfs.VFS;
 import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 import nl.esciencecenter.vlet.vrs.vfs.VUnixFileAttributes;
 
@@ -46,110 +50,59 @@ import nl.esciencecenter.vlet.vrs.vfs.VUnixFileAttributes;
  */
 public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFileAttributes
 {
-    /**
-     * The local path into the local filesystem, this MIGHT differ from the URI
-     * path !
-     */
-    private String path = null;
-
-    /** In Java a directory is implemented as a file also */
-    private java.io.File _file = null;
-
-    private StatInfo statInf;
-
-    // public boolean ignoreErrors=false;
     private LocalFilesystem localfs;
-
+    private LocalFSNode fsNode; 
+    
     // =================================================================
     // Constructors
     // =================================================================
 
-    /**
-     * Contructs new local LDir reference (Not the directory itself).
-     * 
-     * @throws VrsException
-     * @throws VrsException
-     */
-    private void init(File file) throws VrsException
+//    /**
+//     * Constructs new local LDir reference (Not the directory itself).
+//     * 
+//     * @throws VrsException
+//     * @throws VrsException
+//     */
+//    private void init(File file) throws VrsException
+//    {
+//        // under windows: will return windows path
+//        String path = file.getAbsolutePath();
+//
+//        //
+//        // Forward Flip backslashes !
+//        // Do this ONLY for the local filesystem !
+//        //
+//
+//        if (File.separatorChar != URIFactory.URI_SEP_CHAR)
+//            path = URIFactory.uripath(path, true, File.separatorChar);
+//
+//        // under widows: will convert windows path to URI path !
+//        setLocation(new VRL(VRS.FILE_SCHEME, null, path));
+//        this.path = getPath(); // use URI path !
+//
+//        _file = file;
+//    }
+
+    public LDir(LocalFilesystem local, LocalFSNode node) throws VrsException
     {
-        // under windows: will return windows path
-        String path = file.getAbsolutePath();
-
-        //
-        // Forward Flip backslashes !
-        // Do this ONLY for the local filesystem !
-        //
-
-        if (File.separatorChar != URIFactory.URI_SEP_CHAR)
-            path = URIFactory.uripath(path, true, File.separatorChar);
-
-        // under widows: will convert windows path to URI path !
-        setLocation(new VRL(VRS.FILE_SCHEME, null, path));
-        this.path = getPath(); // use URI path !
-
-        _file = file;
+        super(local, new VRL(node.getURI())); 
+        init(node);
+        this.localfs=local;
     }
 
-    public LDir(LocalFilesystem local, String path) throws VrsException
+    private void init(LocalFSNode node)
     {
-        // VRL creation is done in init as well
-        super(local, new VRL(VRS.FILE_SCHEME + ":///" + URIFactory.uripath(path, true, java.io.File.separatorChar)));
-        this.localfs = local;
-        _file = new java.io.File(path);
-        init(_file);
-    }
-
-    public LDir(LocalFilesystem local, java.io.File file) throws VrsException
-    {
-        super(local, new VRL(file.toURI()));
-        this.localfs = local;
-        init(file);
-    }
-
-    private StatInfo getStat() throws VrsException
-    {
-        synchronized (_file)
-        {
-            if (statInf == null)
-            {
-                statInf = this.localfs.stat(_file);
-            }
-        }
-
-        return statInf;
+        fsNode=node; 
     }
 
     public boolean sync()
     {
-        this.statInf = null;
-        return true;
+        return fsNode.sync(); 
     }
 
-    // *** Instance Attributes ***
-
-    /**
-     * @throws VrsException
-     * @see nl.uva.vlet.vfs.localfs.i.VNode#getParent()
-     */
     public VDir getParentDir() throws VrsException
     {
-        // Debug("LDir:Getting parent of:"+_file.getPath());
-
-        String parentpath = null;
-
-        if (_file.getPath().compareTo("/") == 0)
-        {
-            // Root of root is root. _file.getParent returns NULL otherwise
-            // Optional provide root of root as root:
-            // path="/";
-        }
-        else
-            parentpath = _file.getParent();
-
-        if (parentpath == null)
-            return null;
-
-        return new LDir(localfs, parentpath);
+        return new LDir(localfs,fsNode.getParent()); 
     }
 
     /** Returns all default attributes names */
@@ -189,20 +142,36 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 
     public long getNrOfNodes()
     {
-        if (_file == null)
+        if (fsNode == null)
             return 0;
 
-        String list[] = _file.list();
-
-        if (list != null)
-            return list.length;
-
+        String list[];
+        try
+        {
+            list = fsNode.list();
+            if (list != null)
+                return list.length;
+        }
+        catch (IOException e)
+        {
+            return 0; 
+        }
+        
         return 0;
     }
 
     public VFSNode[] list() throws VrsException
     {
-        String list[] = _file.list();
+        LocalFSNode[] list;
+        try
+        {
+            list = fsNode.listNodes();
+        }
+        catch (IOException e)
+        {
+
+            throw new VrsException(e.getMessage(),e); 
+        }
 
         if (list == null)
         {
@@ -216,15 +185,14 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 
         for (int i = 0; i < list.length; i++)
         {
-            java.io.File subFile = new java.io.File(path + URIFactory.URI_SEP_CHAR + list[i]);
-
-            if (subFile.isDirectory() == true)
+            LocalFSNode subNode=list[i];
+            if (subNode.isDirectory() == true)
             {
-                nodes[i] = new LDir(localfs, path + URIFactory.URI_SEP_CHAR + list[i]);
+                nodes[i] = new LDir(localfs, subNode);
             }
             else
             {
-                nodes[i] = new LFile(localfs, path + URIFactory.URI_SEP_CHAR + list[i]);
+                nodes[i] = new LFile(localfs, subNode);
             }
         }
 
@@ -235,23 +203,43 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 
     public boolean exists()
     {
-        return _file.isDirectory();
+        return fsNode.exists() && fsNode.isDirectory();
     }
 
     public boolean isReadable()
     {
-        return _file.canRead();
+        return fsNode.isReadable();
     }
 
     public boolean isWritable()
     {
-        return _file.canWrite();
+        return fsNode.isReadable();
     }
 
     public boolean create(boolean ignoreExisting) throws VrsException
     {
-        VDir dir = this.localfs.createDir(this.path, ignoreExisting);
-        return (dir != null);
+        if (fsNode.exists())
+        {
+            if (ignoreExisting)
+            {
+                return true;
+            }
+            else
+            {
+                throw new ResourceAlreadyExistsException("Directory already exists:"+this); 
+            }
+        }
+        
+        try
+        {
+            fsNode.mkdir();
+            return true;
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
+
     }
 
     public boolean delete(boolean recurse) throws VrsException
@@ -264,18 +252,18 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 
         // delete children first.
         if (recurse == true)
+        {
             this.getVRSContext().getTransferManager().recursiveDeleteDirContents(monitor,this, true); 
-
-        // delete myself
-        result = result && _file.delete();
-
-        if (result)
-        {
-             //* sendNotification(new VRSEvent(this,VRSEvent.NODE_DELETED));
         }
-        else
+        
+        // delete myself
+        try
         {
-            //Global.warnPrintf(this, "Deletion returned FALSE for:%s\n", this);
+            fsNode.delete();
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
         }
 
         return result;
@@ -301,19 +289,25 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 
     public boolean isHidden()
     {
-        return _file.isHidden();
+        return fsNode.isHidden();
     }
-
-    /** Must overide isLocal() since a Local Directory is accessable locally ! */
+    
     public boolean isLocal()
     {
-        return true;
+        return true; // by definition.
     }
 
     public void setMode(int mode) throws VrsException
     {
-        this.localfs.setMode(getPath(), mode);
-        sync();
+        try
+        {
+            fsNode.setUnixFileMode(mode);
+            sync();
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
     }
 
     // ===
@@ -323,7 +317,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
     @Override
     public boolean isSymbolicLink() throws VrsException
     {
-        return this.getStat().isSoftLink();
+        return fsNode.isSymbolicLink(); 
     }
 
     @Override
@@ -331,46 +325,70 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
     {
         if (isSymbolicLink() == false)
         {
-            // not a link
             return null;
         }
-
-        // windows lnk or shortcut (.lnk under *nix is also windows link!)
-        /*
-         * Directories can not be .lnks if ((Global.isWindows()) ||
-         * (getPath().endsWith(".lnk"))) return
-         * localfs.getWindowsLinkTarget(this._file); else
-         */
-        if (localfs.isUnixFS())
-            return localfs.getSoftLinkTarget(this.getPath());
-
-        //Global.warnPrintf(this, "getLinkTarget(): could not resolve local filesystem's link:%s\n", this);
-
-        return null;
+        
+        try
+        {
+            LocalFSNode targetNode = fsNode.getSymbolicLinkTarget();
+            return targetNode.getPath();
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
     }
 
     public String getGid() throws VrsException
     {
-        return this.getStat().getGroupName();
+        try
+        {
+            return fsNode.getPosixAttributes().group().getName();
+        }
+        catch (IOException e)
+        {
+           throw new VrsException(e.getMessage(),e); 
+        }   
     }
 
     public String getUid() throws VrsException
     {
-        return this.getStat().getUserName();
+        try
+        {
+            return fsNode.getPosixAttributes().owner().getName();
+        }
+        catch (IOException e)
+        {
+           throw new VrsException(e.getMessage(),e); 
+        } 
     }
 
     public int getMode() throws VrsException
     {
-        return this.getStat().getMode();
+        try
+        {
+            return fsNode.getUnixFileMode();
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
     }
 
     public long getModificationTime() throws VrsException
     {
-        return this.getStat().getModTime();
+        try
+        {
+            return fsNode.getModificationTime();
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
     }
 
     public String getPermissionsString() throws VrsException
     {
-        return this.getStat().getPermissions();
+        return VFS.modeToString(this.getMode(), true); 
     }
 }

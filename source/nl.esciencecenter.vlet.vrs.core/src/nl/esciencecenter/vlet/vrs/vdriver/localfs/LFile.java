@@ -31,9 +31,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.nio.file.attribute.GroupPrincipal;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.LocalFSNode;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
@@ -72,11 +74,8 @@ public class LFile extends VFile implements VStreamAccessable,
         logger=ClassLogger.getLogger(LFile.class); 
     }
     
-    // ** local LFile implementation
-    private String path = null;
-    private java.io.File _file = null;
     private LocalFilesystem localfs;
-    private StatInfo statInf; 
+    private LocalFSNode fsNode; 
     
     // =================================================================
     // Constructors
@@ -88,50 +87,27 @@ public class LFile extends VFile implements VStreamAccessable,
      * @param path
      * @throws VrsException
      */
-    public LFile(LocalFilesystem localFS, String path) throws VrsException
+    public LFile(LocalFilesystem localFS, LocalFSNode node) throws VrsException
     {
-        super(localFS, new VRL("file:///"
-                + URIFactory.uripath(path, true, java.io.File.separatorChar)));
+        super(localFS, new VRL(node.getURI()));  
         this.localfs = localFS;
-
-        // windows hack: 'c:' is a relative path
-        if (path.charAt(path.length() - 1) == ':')
-        {
-            path = path + URIFactory.URI_SEP_CHAR; // make absolute !
-        }
-        // Note: on windows the file path gets converted to use BACKSLASHES
-        // for URI' use VRL.sepChar, for java Files use File.seperatorChar
-        java.io.File file = new File(path);
-        init(file);
+//
+//        // windows hack: 'c:' is a relative path
+//        if (path.charAt(path.length() - 1) == ':')
+//        {
+//            path = path + URIFactory.URI_SEP_CHAR; // make absolute !
+//        }
+//        // Note: on windows the file path gets converted to use BACKSLASHES
+//        // for URI' use VRL.sepChar, for java Files use File.seperatorChar
+//        java.io.File file = new File(path);
+        init(node);
     }
 
-    /** Initiliaze with Java File object */
-    private void init(java.io.File file) throws VrsException
+    private void init(LocalFSNode node) throws VrsException
     {
-        logger.debugPrintf("init():new file:%s\n",file); 
-        
-        String path = file.getAbsolutePath();
-
-        //
-        // Forward Flip backslashes !
-        // Do this ONLY for the local filesystem !
-        //
-
-        if (File.separatorChar != URIFactory.URI_SEP_CHAR)
-            path = URIFactory.uripath(path, true, File.separatorChar);
-
-        this.setLocation(new VRL(VRS.FILE_SCHEME,null, path));
-        this.path = path;
-        this._file = file;
-
-    }
-
-    /** Construct new LocalFS File object from Java File */
-    public LFile(LocalFilesystem localFS, java.io.File file) throws VrsException
-    {
-        super(localFS, new VRL(file.toURI()));
-        this.localfs = localFS;
-        init(file);
+        logger.debugPrintf("init():new file:%s\n",node);
+        this.setLocation(new VRL(node.getURI()));
+        this.fsNode=node; 
     }
 
     /** Returns all default attributes names */
@@ -148,19 +124,6 @@ public class LFile extends VFile implements VStreamAccessable,
         }
 
         return superNames;
-    }
-
-    private StatInfo getStat() throws VrsException
-    {
-        synchronized(_file)
-        {
-            if (statInf==null)
-            {
-                statInf=this.localfs.stat(_file); 
-            }
-        }
-        
-        return statInf; 
     }
 
     /**
@@ -193,15 +156,19 @@ public class LFile extends VFile implements VStreamAccessable,
 
     public VDir getParentDir() throws VrsException
     {
-        String pstr = _file.getParent();
-        VDir dir = new LDir(localfs, pstr);
-
-        return dir;
+        return new LDir(localfs,fsNode.getParent());  
     }
 
     public long getSize() throws VrsException
     {
-        return getStat().getSize(); 
+        try
+        {
+            return fsNode.getBasicAttributes().size();
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }  
     }
 
     public String toString()
@@ -211,27 +178,22 @@ public class LFile extends VFile implements VStreamAccessable,
 
     public boolean exists()
     {
-        // Must exist and must be a file 
-        return (_file.isFile()&&_file.exists()); 
+        return fsNode.exists() && fsNode.isFile(); 
     }
 
     public boolean isReadable()
     {
-        // a file is readable, it can not read...
-        return _file.canRead(); 
+        return fsNode.isReadable();  
     }
 
-    /** returns true is 'file is writable' */
     public boolean isWritable()
     {
-        // a file is writable, it can not write ...
-        return _file.canWrite();
+        return fsNode.isWritable();
     }
 
     public boolean create() throws VrsException
     {
         boolean result = create(true);
-
         return result;
     }
 
@@ -239,9 +201,9 @@ public class LFile extends VFile implements VStreamAccessable,
     {
         try
         {
-            if (_file.exists())
+            if (fsNode.exists())
             {
-                if (this._file.isDirectory())
+                if (fsNode.isDirectory())
                 {
                     throw new ResourceAlreadyExistsException(
                             "path already exists but is a directory:" + this);
@@ -260,28 +222,27 @@ public class LFile extends VFile implements VStreamAccessable,
             }
 
             // check parent:
-            if (_file.getParentFile().exists() == false)
+            if (fsNode.getParent().exists() == false)
             {
                 throw new ResourceCreationFailedException(
-                        "Parent directory doesn't exist for file:" + path);
+                        "Parent directory doesn't exist for file:" +fsNode);
             }
 
-            return _file.createNewFile();
+            return fsNode.create();
         }
         catch (IOException e)
         {
             throw new ResourceCreationFailedException("Couldn't create file:"
-                    + path, e);
+                    + fsNode, e);
         }
     }
 
-    public boolean delete() throws ResourceWriteAccessDeniedException,
-            ResourceNotFoundException
+    public boolean delete() throws VrsException
     {
         // _File.delete doesn't provide much information
         // so precheck delete conditions:
 
-        if (this._file.exists() == false)
+        if (this.fsNode.exists() == false)
         {
             throw new ResourceNotFoundException("File doesn't exist:" + this);
         }
@@ -290,7 +251,17 @@ public class LFile extends VFile implements VStreamAccessable,
             throw new ResourceWriteAccessDeniedException(
                     "No permissions to delete this file:" + this);
         }
-        return _file.delete();
+        
+        try
+        {
+            fsNode.delete();
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
+        
+        return true; 
     }
 
     public VRL rename(String newname, boolean nameIsPath)
@@ -306,21 +277,26 @@ public class LFile extends VFile implements VStreamAccessable,
         return null;  
     }
 
-    public long getLength() 
+    public long getLength() throws IOException 
     {
-        // do not cache 
-        return _file.length(); 
-        //return this.getStat().getSize(); 
+        return fsNode.length();
     }
 
     public long getModificationTime() throws VrsException
     {
-        return this.getStat().getModTime(); 
+        try
+        {
+            return fsNode.getModificationTime();
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
     }
 
     public boolean isHidden()
     {
-        return _file.isHidden();
+        return fsNode.isHidden();
     }
 
     /** Local File is local */ 
@@ -331,49 +307,23 @@ public class LFile extends VFile implements VStreamAccessable,
 
     public InputStream createInputStream() throws IOException
     {
-        try
-        {
-            return new FileInputStream(this._file);
-        }
-        catch (FileNotFoundException e)
-        {
-            if ((this.exists() == true) && (this.isReadable() == false))
-            {
-                throw new NestedFileNotFoundException(
-                        "Could not read file:" + this, e);
-            }
-
-            throw new NestedFileNotFoundException("File not found:" + this, e);
-        }
+        return fsNode.createInputStream(); 
     }
 
     public OutputStream createOutputStream() throws IOException 
     {
-        try
-        {
-            return new FileOutputStream(this._file, false);
-        }
-        catch (FileNotFoundException e)
-        {
-            if (_file.canWrite() == false)
-                throw new ResourceNotWritableException(
-                        "No write permissions for:" + this, e);
-            else
-                throw new NestedFileNotFoundException(
-                        "File not found or open error for:" + this, e);
-        }
+        return fsNode.createOutputStream(); 
     }
 
     // Method from VRandomAccessable:
     public void setLength(long newLength) throws IOException
     {
         RandomAccessFile afile = null;
-
+        
         try
         {
-            afile = new RandomAccessFile(this._file, "rw");
+            afile = new RandomAccessFile(fsNode.toJavaFile(), "rw");
             afile.setLength(newLength);
-            this.statInf=null; 
         }
         finally
         {
@@ -398,10 +348,10 @@ public class LFile extends VFile implements VStreamAccessable,
             int nrBytes) throws IOException
     {
         RandomAccessFile afile = null;
-
+        
         try
         {
-            afile = new RandomAccessFile(this._file, "r");
+            afile = new RandomAccessFile(fsNode.toJavaFile(), "r");
             afile.seek(fileOffset);
             int nrRead = afile.read(buffer, bufferOffset, nrBytes);
          
@@ -436,7 +386,7 @@ public class LFile extends VFile implements VStreamAccessable,
 
         try
         {
-            afile = new RandomAccessFile(this._file, "rw");
+            afile = new RandomAccessFile(fsNode.toJavaFile(), "rw");
             afile.seek(fileOffset);
             afile.write(buffer, bufferOffset, nrBytes);
             afile.close(); // MUST CLOSE !
@@ -479,32 +429,43 @@ public class LFile extends VFile implements VStreamAccessable,
             return null;
         }
 
-        // windows lnk or shortcut (.lnk under *nix is also windows link!)
-        if ((GlobalProperties.isWindows()) || (getPath().endsWith(".lnk")))
-            return localfs.getWindowsLinkTarget(this._file);
-        else if (localfs.isUnixFS())
-            return localfs.getSoftLinkTarget(this.getPath());
-
-        logger.debugPrintf("*** WARNING: getLinkTarget: could not resolv local filesystem's link:%s\n",this);
-
-        return null;
+        try
+        {
+            LocalFSNode targetNode = fsNode.getSymbolicLinkTarget();
+            if (targetNode==null)
+                return null; 
+            
+            return targetNode.getPath(); 
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        } 
+        
     }
 
     public boolean isSymbolicLink() throws VrsException
     {
-        // only Ux style soft links supported. 
-        return this.getStat().isUxSofLink(); 
-    };
+        return fsNode.isSymbolicLink(); 
+    }
+
 
     public void setMode(int mode) throws VrsException
     {
-        this.localfs.setMode(getPath(), mode);
+        try
+        {
+            fsNode.setUnixFileMode(mode);
+            sync();
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
     }
 
     public boolean sync()
     {
-        this.statInf=null;
-        return true; 
+        return fsNode.sync(); 
     }
     
     public String getChecksum(String algorithm) throws VrsException
@@ -539,27 +500,39 @@ public class LFile extends VFile implements VStreamAccessable,
 
     public String getGid() throws VrsException
     {
-        return this.getStat().getGroupName(); 
+        try
+        {
+            return fsNode.getPosixAttributes().group().getName();
+        }
+        catch (IOException e)
+        {
+           throw new VrsException(e.getMessage(),e); 
+        }   
     }
 
     public String getUid() throws VrsException
     {
-        return this.getStat().getUserName(); 
+        try
+        {
+            return fsNode.getPosixAttributes().owner().getName();
+        }
+        catch (IOException e)
+        {
+           throw new VrsException(e.getMessage(),e); 
+        } 
     }
 
     public int getMode() throws VrsException
     {
-        return this.getStat().getMode(); 
-    }
-    
-    public String getPermissionsString() throws VrsException
-    {
-        return this.getStat().getPermissions();  
+        try
+        {
+            return fsNode.getUnixFileMode();
+        }
+        catch (IOException e)
+        {
+           throw new VrsException(e.getMessage(),e); 
+        } 
     }
 
-    protected void setStatInfo(StatInfo stat)
-    {
-        this.statInf=stat; 
-    }
   
 }
