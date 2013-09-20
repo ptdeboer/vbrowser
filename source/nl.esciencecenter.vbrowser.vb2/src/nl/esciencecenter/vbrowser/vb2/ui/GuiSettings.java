@@ -27,7 +27,7 @@ import java.net.URI;
 public class GuiSettings
 {
     // ========================================================================
-    // Constans 
+    // Constants 
 	// ========================================================================
     
 	public static final String MOUSE_SELECTION_BUTTON = "ui.mouse_selection_button";
@@ -71,7 +71,9 @@ public class GuiSettings
     } 
     
    
-    /** This method exists because the e.isPopupTrigger() doesn't work under windows */ 
+    /**
+     *  This method exists because the e.isPopupTrigger() doesn't always work under windows 
+     */ 
     public boolean isPopupTrigger(MouseEvent e)
     {
         if (e.isPopupTrigger())
