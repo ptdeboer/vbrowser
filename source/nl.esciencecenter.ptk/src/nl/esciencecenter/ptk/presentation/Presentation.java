@@ -24,7 +24,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
+
+import javax.swing.JTable;
 
 import nl.esciencecenter.ptk.data.StringList;
 
@@ -519,7 +522,6 @@ public class Presentation
         
         return timeStr; 
     }
-    
 
     /**
      * Create normalized Date String: [YY]YYYY-DD-MM
@@ -610,9 +612,16 @@ public class Presentation
     /** Parent Presentation object. */
     protected Presentation parent = null; // No hierarchical presentation (yet)
 
-    /** Unless set this to override platform Locale */  
+    /** Set this to override platform Locale */  
     protected Locale locale = null; 
     
+    // Attribute/Table resize mode 
+    protected int columnsAutoResizeMode = JTable.AUTO_RESIZE_ALL_COLUMNS; // .AUTO_RESIZE_OFF;
+
+    protected Map<String, AttributePresentation> attributePresentations = new Hashtable<String, AttributePresentation>();
+    
+    protected String iconAttributeName="icon"; 
+            
     /** Default Presentation. */ 
     public Presentation()
     {
@@ -621,22 +630,20 @@ public class Presentation
 
     private void initDefaults()
     {
-        // this.childAttributeNames=new StringList();
-        //
-        // setAttributePreferredWidth(ICON, 32);
-        // setAttributePreferredWidth("Index", 32);
-        // setAttributePreferredWidth(NAME, 200);
-        // setAttributePreferredWidth("Type", 90);
-        // setAttributePreferredWidth(SCHEME, 48);
-        // setAttributePreferredWidth(HOSTNAME, 120);
-        // setAttributePreferredWidth(LENGTH, 70);
-        // setAttributePreferredWidth(PATH, 200);
-        // setAttributePreferredWidth("Status",48);
-        // setAttributePreferredWidth("ResourceStatus",48);
-        // setAttributePreferredWidth(ACCESS_TIME, 120);
-        // setAttributePreferredWidth(MODIFICATION_TIME, 120);
-        // setAttributePreferredWidth(CREATION_TIME, 120);
-    }
+        this.childAttributeNames=new StringList();
+            
+//        setAttributePreferredWidth(ATTR_ICON, 32);
+//        setAttributePreferredWidth(ATTR_NAME, 200);
+//        setAttributePreferredWidth(ATTR_RESOURCETTYPE, 90);
+//        setAttributePreferredWidth(ATTR_SCHEME, 48);
+//        setAttributePreferredWidth(ATTR_HOSTNAME, 120);
+//        setAttributePreferredWidth(ATTR_FILELENGTH, 70);
+//        setAttributePreferredWidth(ATTR_PATH, 200);
+//        setAttributePreferredWidth(ATTR_RESOURCE_STATUS,48);
+//        setAttributePreferredWidth(ATTR_ACCESSTIME, 120);
+//        setAttributePreferredWidth(ATTR_MODIFICATION_TIME, 120);
+//        setAttributePreferredWidth(ATTR_CREATION_TIME, 120);
+    }   
 
     /**
      * Get which Child Attribute to show by default. Note that it is the PARENT
@@ -659,8 +666,6 @@ public class Presentation
     {
         childAttributeNames = new StringList(names);
     }
-    
-   
 
     /** 
      * Returns sizeString +"[KMG]&lt;uni&gt;>" from "size" bytes per second 
@@ -845,7 +850,138 @@ public class Presentation
     {
         this.sortFields = new StringList(fields);
     }
-
     
+    /** 
+     * Method will return null if information hasn't been stored ! 
+     */
+    public Integer getAttributePreferredWidth(String name)
+    {
+        AttributePresentation attrPres = this.attributePresentations.get(name);
+        if (attrPres == null)
+            return null;
 
+        if (attrPres.widths == null)
+            return null;
+
+        if (attrPres.widths.preferred < 0)
+            return null;
+
+        return new Integer(attrPres.widths.preferred);
+    }
+
+    /**
+     * Returns Integer[]{<Minimum>,<Preferred>,<Maximum>} Triple. Integer value
+     * is NULL is it isn't defined. Method will always return an Integer array
+     * of size 3, but actual values may be null.
+     * 
+     */
+    public Integer[] getAttributePreferredWidths(String name)
+    {
+        Integer vals[] = new Integer[3];
+
+        AttributePresentation attrPres = this.attributePresentations.get(name);
+        if (attrPres == null)
+            return vals;
+
+        if (attrPres.widths == null)
+            return vals;
+
+        if (attrPres.widths.minimum >= 0)
+            vals[0] = new Integer(attrPres.widths.minimum);
+
+        if (attrPres.widths.preferred >= 0)
+            vals[1] = new Integer(attrPres.widths.preferred);
+
+        if (attrPres.widths.maximum >= 0)
+            vals[2] = new Integer(attrPres.widths.maximum);
+
+        return vals;
+    }
+
+    public void setAttributePreferredWidth(String attrname, int minWidth, int prefWidth, int maxWidth)
+    {
+        AttributePresentation pres = this.attributePresentations.get(attrname);
+
+        if (pres == null)
+            pres = new AttributePresentation();
+
+        pres.widths = new AttributePresentation.PreferredSizes(minWidth, prefWidth, maxWidth);
+
+        this.attributePresentations.put(attrname, pres);
+    }
+
+    public void setAttributePreferredWidth(String attrname, int w)
+    {
+        AttributePresentation pres = this.attributePresentations.get(attrname);
+
+        if (pres == null)
+            pres = new AttributePresentation();
+
+        if (pres.widths == null)
+            pres.widths = new AttributePresentation.PreferredSizes(-1, w, -1);
+        else
+            pres.widths.preferred = w;
+
+        this.attributePresentations.put(attrname, pres);// update
+    }
+
+    public void setAttributePreferredWidths(String attrname, int[] values)
+    {
+        AttributePresentation pres = this.attributePresentations.get(attrname);
+
+        if (pres == null)
+            pres = new AttributePresentation();
+
+        if (pres.widths == null)
+            pres.widths = new AttributePresentation.PreferredSizes(values[0], values[1], values[2]);
+        else
+            pres.widths.setValues(values);
+
+        this.attributePresentations.put(attrname, pres);// update
+    }
+
+    public boolean getAttributeFieldResizable(String attrname)
+    {
+        AttributePresentation pres = this.attributePresentations.get(attrname);
+
+        if (pres == null)
+            return true;
+
+        return pres.attributeFieldResizable;
+    }
+
+    public int getColumnsAutoResizeMode()
+    {
+        return this.columnsAutoResizeMode;
+    }
+
+    public void setColumnsAutoResizeMode(int value)
+    {
+        this.columnsAutoResizeMode = value;
+    }
+    
+    public String toString()
+    {
+        String str="<UIPresentation>{sortOption="+this.sortOption;
+        if (sortFields==null)
+        {
+            str+=",sortFields=<null>";
+        }
+        else
+        {
+            str+=",sortFields="+sortFields.toString(",");
+        }
+        str+="}";
+        return str; 
+    }
+    
+    public void setIconAttributeName(String name)
+    {
+        iconAttributeName=name; 
+    }
+
+    public String getIconAttributeName()
+    {
+        return iconAttributeName; 
+    }
 }

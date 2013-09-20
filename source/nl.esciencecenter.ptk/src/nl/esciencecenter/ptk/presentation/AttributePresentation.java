@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.esciencecenter.vbrowser.vrs.ui.presentation;
+package nl.esciencecenter.ptk.presentation;
 
 import java.awt.Color;
 import java.util.Map;
@@ -83,6 +83,10 @@ public class AttributePresentation
         return widths; 
     }
     
+    /**
+     * Return {Minimal,Preferred, and Maximum} size triple. 
+     * @return
+     */
     public int[] getWidthValues()
     {   
         if (widths==null)
