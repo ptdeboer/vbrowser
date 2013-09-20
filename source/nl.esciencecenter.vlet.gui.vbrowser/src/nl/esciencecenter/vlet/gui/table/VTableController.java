@@ -33,9 +33,9 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.gui.GuiSettings;
 import nl.esciencecenter.vlet.gui.actions.ActionCommand;
@@ -211,7 +211,7 @@ public class VTableController implements MouseListener, MouseMotionListener
             else
             {
                 // action click on BIG attribute text, show:  
-                if ((attr!=null) &&(attr.getStringValue().length()>UIPresentation.getBigStringSize())) 
+                if ((attr!=null) &&(attr.getStringValue().length()>Presentation.getBigStringSize())) 
                     AttributeViewer.viewAttribute(attr);
             }
             

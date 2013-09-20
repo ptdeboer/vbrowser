@@ -36,11 +36,10 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vlet.gui.UILogger;
 
 /** 
@@ -54,7 +53,7 @@ public class ResourceTable extends JTable
 	private static final long serialVersionUID = -8190587704685619938L;
   
     // default presentation
-    private UIPresentation presentation=null; 
+    private Presentation presentation=null; 
     private TablePopupMenu popupMenu=null;
     private boolean isEditable=true;
     protected int defaultColumnWidth=80;
@@ -75,7 +74,7 @@ public class ResourceTable extends JTable
         init(); 
     }
     
-    public ResourceTable(ResourceTableModel dataModel,UIPresentation presentation)
+    public ResourceTable(ResourceTableModel dataModel,Presentation presentation)
     {
         // defaults 
         super(dataModel);
@@ -395,10 +394,10 @@ public class ResourceTable extends JTable
         return getModel().getRowKey(row); 
     }
 
-    public UIPresentation getPresentation()
+    public Presentation getPresentation()
     {
         if (this.presentation==null)
-            presentation=new UIPresentation(); 
+            presentation=new Presentation(); 
         
        return this.presentation; 
     }
@@ -408,7 +407,7 @@ public class ResourceTable extends JTable
         
     }
 
-    public void setPresentation(UIPresentation newPresentation)
+    public void setPresentation(Presentation newPresentation)
     {
         this.presentation=newPresentation;
         this.refreshAll();

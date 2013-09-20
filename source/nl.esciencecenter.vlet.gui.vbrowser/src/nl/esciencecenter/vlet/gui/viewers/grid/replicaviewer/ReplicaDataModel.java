@@ -21,17 +21,7 @@
 
 package nl.esciencecenter.vlet.gui.viewers.grid.replicaviewer;
 
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM_TYPE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM_TYPES;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ERROR_TEXT;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_INDEX;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_LENGTH;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_LOCATION;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_STATUS;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_STORAGE_ELEMENT;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.*; 
 
 import java.util.Vector;
 
@@ -58,7 +48,7 @@ public class ReplicaDataModel extends ResourceTableModel
     public static final String replicaAttrNames[]=
         {
             ATTR_PATH,
-            ATTR_LENGTH, 
+            ATTR_FILE_LENGTH, 
             ATTR_LOCATION,
             ATTR_CHECKSUM,
             ATTR_CHECKSUM_TYPE,
@@ -87,7 +77,7 @@ public class ReplicaDataModel extends ResourceTableModel
         headers.add(ATTR_INDEX);
         headers.add(ATTR_STORAGE_ELEMENT);
         headers.add(ATTR_PATH);
-        headers.add(ATTR_LENGTH);
+        headers.add(ATTR_FILE_LENGTH);
         headers.add(ATTR_STATUS);
         headers.add(ATTR_ERROR_TEXT);
         
@@ -96,7 +86,7 @@ public class ReplicaDataModel extends ResourceTableModel
         
         // Add extra header to data model:
         headers.add(ATTR_LOCATION);
-        headers.add(ATTR_PERMISSIONS_STRING);
+        headers.add(ATTR_PERMISSIONSTRING);
         headers.add(ATTR_CHECKSUM);
         headers.add(ATTR_CHECKSUM_TYPE);
         headers.add(ATTR_CHECKSUM_TYPES);
@@ -159,13 +149,13 @@ public class ReplicaDataModel extends ResourceTableModel
                 attrs.put(ATTR_STATUS,""+ReplicaStatus.OK);
                 attrs.put(ATTR_ERROR_TEXT,"");
                 if (info.getLength()>=0) 
-                    attrs.put(new Attribute(ATTR_LENGTH,info.getLength()));
+                    attrs.put(new Attribute(ATTR_FILE_LENGTH,info.getLength()));
             }
             else
             {
                 attrs.put(ATTR_STATUS,""+ReplicaStatus.ERROR);
                 attrs.put(ATTR_ERROR_TEXT,info.getException().getMessage());
-                attrs.put(new Attribute(ATTR_LENGTH,"?")); 
+                attrs.put(new Attribute(ATTR_FILE_LENGTH,"?")); 
             }
             
             this.setValues(host,attrs.toArray(new Attribute[0])); 

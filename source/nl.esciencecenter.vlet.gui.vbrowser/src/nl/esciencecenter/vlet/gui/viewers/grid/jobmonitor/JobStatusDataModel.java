@@ -28,6 +28,7 @@ import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_JOB_STATU
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_LOCATION;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_STATUS;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -35,7 +36,6 @@ import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.gui.UILogger;
 import nl.esciencecenter.vlet.gui.panels.resourcetable.ResourceTableModel;
@@ -65,7 +65,7 @@ public class JobStatusDataModel extends ResourceTableModel
     
     private StringList jobIds;
     private JobMonitorController jobController;
-    private UIPresentation presentation;
+    private Presentation presentation;
     private ActionTask updateTask;
     // private JobStatusUpdater statusUpdater; 
     
@@ -154,11 +154,11 @@ public class JobStatusDataModel extends ResourceTableModel
         this.setValue(jobid,ATTR_INDEX,""+index);
     }
 
-    public UIPresentation getPresentation()
+    public Presentation getPresentation()
     {
         if (this.presentation==null)
         {
-            this.presentation=new UIPresentation();
+            this.presentation=new Presentation();
             
             presentation.setAttributePreferredWidth(ATTR_JOBID,100,200,300); 
             presentation.setAttributePreferredWidth(ATTR_JOBNAME,100,200,300); 

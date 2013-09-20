@@ -37,6 +37,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserInterface;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
@@ -46,7 +47,6 @@ import nl.esciencecenter.vbrowser.vb2.ui.object.UIDisposable;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 
 /** 
  * Generic Resource Table. 
@@ -60,7 +60,7 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
   
     // default presentation
 	
-    private UIPresentation presentation=null; 
+    private Presentation presentation=null; 
     
     private TablePopupMenu popupMenu=new TablePopupMenu();
     
@@ -403,20 +403,19 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
         return getModel().getRowKey(row); 
     }
 
-    public UIPresentation getPresentation()
+    public Presentation getPresentation()
     {
         if (this.presentation==null)
-            presentation=new UIPresentation(); 
+            presentation=Presentation.createDefault();             
         
        return this.presentation; 
     }
 
     public void dispose()
     {
-        
     }
 
-    public void setPresentation(UIPresentation newPresentation)
+    public void setPresentation(Presentation newPresentation)
     {
         this.presentation=newPresentation;
         this.refreshAll();
@@ -430,7 +429,7 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
     	ResourceTableModel model = new ResourceTableModel(); 
     	this.setModel(model); 
         setDataProducer(new ProxyNodeTableDataProducer(node,model),true); 
-        UIPresentation pres = node.getPresentation(); 
+        Presentation pres = node.getPresentation(); 
         if (pres!=null)
             this.setPresentation(pres); 
     }

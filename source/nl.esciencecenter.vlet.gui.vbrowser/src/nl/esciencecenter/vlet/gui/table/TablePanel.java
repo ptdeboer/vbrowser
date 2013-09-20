@@ -37,11 +37,11 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.presentation.IPresentable;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentable;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.gui.MasterBrowser;
 import nl.esciencecenter.vlet.gui.UIGlobal;
@@ -72,7 +72,7 @@ import nl.esciencecenter.vlet.gui.view.ViewModel;
  * @author Piter T. de Boer
  *
  */
-public class TablePanel extends JTable implements VContainer,UIPresentable
+public class TablePanel extends JTable implements VContainer,IPresentable
 {
     /**  */
 	private static final long serialVersionUID = 8205670384033614004L;
@@ -95,7 +95,7 @@ public class TablePanel extends JTable implements VContainer,UIPresentable
     private boolean reversedSort;
     MasterBrowser browserController;
     private TableDataProducer dataProducer;
-    private UIPresentation presentation=null;
+    private Presentation presentation=null;
 	private DragSource dragSource;
 	private VDragGestureListener dgListener;
 
@@ -347,7 +347,7 @@ public class TablePanel extends JTable implements VContainer,UIPresentable
         // keep copy since, even when removed!, the listeners STILL receive change events ! 
         // (And the hashtable get modified)
         
-        UIPresentation pres=this.presentation; 
+        Presentation pres=this.presentation; 
         this.presentation=null; // block presentation changes during createTable ! 
         
         // remove previous listener to protect it from a overload: 
@@ -637,7 +637,7 @@ public class TablePanel extends JTable implements VContainer,UIPresentable
             presentation.setAttributePreferredWidth(name,w);
     }
 
-    public UIPresentation getPresentation()
+    public Presentation getPresentation()
     {
        return presentation; 
     }

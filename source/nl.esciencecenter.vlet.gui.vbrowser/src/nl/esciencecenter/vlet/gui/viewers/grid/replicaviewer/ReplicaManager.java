@@ -145,7 +145,7 @@ public class ReplicaManager
     {
         StringList attrNames=new StringList(); 
         attrNames.add(VAttributeConstants.ATTR_TRANSPORT_URI);
-        attrNames.add(VAttributeConstants.ATTR_LENGTH);
+        attrNames.add(VAttributeConstants.ATTR_FILE_LENGTH);
         attrNames.add(VAttributeConstants.ATTR_EXISTS);
         
         if (checksumInfo)

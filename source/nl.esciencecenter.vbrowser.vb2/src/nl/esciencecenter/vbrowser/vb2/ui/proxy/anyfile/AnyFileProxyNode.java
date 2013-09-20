@@ -26,13 +26,13 @@ import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.io.FileURISyntaxException;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.dummy.DummyProxyFactory;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.mimetypes.MimeTypes;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 
@@ -198,7 +198,7 @@ public class AnyFileProxyNode extends ProxyNode
     }
 
     @Override
-    protected UIPresentation doGetPresentation()
+    protected Presentation doGetPresentation()
     {
         // redirect to meta file 
         return metaFile.getPresentation();

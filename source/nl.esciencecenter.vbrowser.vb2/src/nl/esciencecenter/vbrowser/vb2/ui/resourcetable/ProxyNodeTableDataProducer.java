@@ -32,7 +32,6 @@ import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTableModel.RowDat
 import nl.esciencecenter.vbrowser.vb2.ui.tasks.UITask;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public class ProxyNodeTableDataProducer implements TableDataProducer 
@@ -98,7 +97,7 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 
 		
 		// Custom Presentation: 
-		UIPresentation pres=null;
+		Presentation pres=null;
 		
 		try 
 		{
@@ -114,7 +113,7 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 		if (pres==null)
 		{
 		    // presentation store: 
-			pres= UIPresentation.getPresentationForSchemeType(rootNode.getVRL().getScheme(),
+			pres= Presentation.getPresentationForSchemeType(rootNode.getVRL().getScheme(),
 					rootNode.getResourceType(),false);
 		}
 

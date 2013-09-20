@@ -21,16 +21,15 @@
 package nl.esciencecenter.vbrowser.vb2.ui.proxy.anyfile;
 
 import nl.esciencecenter.ptk.io.FSNode;
+import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSource;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentable;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 
 /**
  * combined Attribute+Presentation interface for AnyFile;   
  */
-public class AnyFileAttributes implements AttributeSource,UIPresentable
+public class AnyFileAttributes implements AttributeSource, IPresentable
 {
     public static enum FileAttribute
     {
@@ -65,7 +64,8 @@ public class AnyFileAttributes implements AttributeSource,UIPresentable
             return strValues; 
         }
     }
-    private static UIPresentation defaultPresentation;
+    
+    private static Presentation defaultPresentation;
 
     static
     {
@@ -74,7 +74,7 @@ public class AnyFileAttributes implements AttributeSource,UIPresentable
     
     private static void initStatic()
     {
-        defaultPresentation=UIPresentation.createDefault(); 
+        defaultPresentation=Presentation.createDefault(); 
         
         defaultPresentation.setChildAttributeNames(FileAttribute.getStringValues()); 
 //        Presentation.storeSchemeType(FSNode.FILE_SCHEME,ResourceType.FILE.toString(),defaultPresentation);
@@ -143,7 +143,7 @@ public class AnyFileAttributes implements AttributeSource,UIPresentable
     }
 
     @Override
-    public UIPresentation getPresentation()
+    public Presentation getPresentation()
     {
       return defaultPresentation; 
     }

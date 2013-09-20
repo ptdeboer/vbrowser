@@ -24,11 +24,11 @@ package nl.esciencecenter.vlet.gui.table;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.gui.MasterBrowser;
 import nl.esciencecenter.vlet.gui.UIGlobal;
@@ -141,7 +141,7 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
         if (nodes != null)
             rows = nodes.length;
 
-        UIPresentation pres = getPresentation();
+        Presentation pres = getPresentation();
         String names[] = pres.getChildAttributeNames();
 
         // ---
@@ -796,15 +796,9 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
         }
     }
 
-    public UIPresentation getPresentation()
+    public Presentation getPresentation()
     {
         return this.rootNode.getPresentation();
-
-        // current presentation is stored for Scheme/Host/ResourceType
-        // return Presentation.getPresentationFor(
-        // this.rootNode.getVRL().getScheme(),
-        // this.rootNode.getVRL().getHostname(),
-        // this.rootNode.getType());
     }
 
     @Override

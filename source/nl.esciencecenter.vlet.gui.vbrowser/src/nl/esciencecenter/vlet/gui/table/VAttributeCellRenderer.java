@@ -31,10 +31,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import nl.esciencecenter.ptk.presentation.IPresentable;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentable;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vlet.gui.Messages;
 import nl.esciencecenter.vlet.gui.icons.LabelIcon;
 import nl.esciencecenter.vlet.vrs.data.VAttributeConstants;
@@ -116,14 +116,14 @@ public class VAttributeCellRenderer implements TableCellRenderer
             Attribute attr=(Attribute)value;
             String strval=attr.getStringValue();
             
-            UIPresentation pres=null; 
+            Presentation pres=null; 
             
-            if (tablePanel instanceof UIPresentable)
-            	pres=((UIPresentable)tablePanel).getPresentation();
+            if (tablePanel instanceof IPresentable)
+            	pres=((IPresentable)tablePanel).getPresentation();
             
             if (pres==null) 
             {
-                pres=UIPresentation.createDefault(); 
+                pres=Presentation.createDefault(); 
             }
             
             // When enabling the EnumCellRenderer, enum type
@@ -167,13 +167,13 @@ public class VAttributeCellRenderer implements TableCellRenderer
                 //}
                else if (attr.getType()==AttributeType.DATETIME)
                {
-                   label.setText(UIPresentation.relativeTimeString(attr.getDateValue()));  
+                   label.setText(Presentation.relativeTimeString(attr.getDateValue()));  
                }
-               else if (attr.getName()==VAttributeConstants.ATTR_LENGTH)
+               else if (attr.getName()==VAttributeConstants.ATTR_FILE_LENGTH)
                {
                    label.setText(pres.sizeString(attr.getLongValue())); 
                }
-               else if ((strval!=null) && (strval.length()>UIPresentation.getBigStringSize()))
+               else if ((strval!=null) && (strval.length()>Presentation.getBigStringSize()))
                {
                    // add dialog icon to string ?:
                    //label.setIcon(GuiSettings.getIcon"get());

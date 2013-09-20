@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.esciencecenter.ptk.data.LongHolder;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public class VirtualRootNode extends ProxyNode
@@ -86,7 +86,7 @@ public class VirtualRootNode extends ProxyNode
     }
 
     @Override
-    protected UIPresentation doGetPresentation()
+    protected Presentation doGetPresentation()
     {
         return null;
     }

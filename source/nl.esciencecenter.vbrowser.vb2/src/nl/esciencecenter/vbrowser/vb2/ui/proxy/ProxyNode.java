@@ -23,13 +23,13 @@ package nl.esciencecenter.vbrowser.vb2.ui.proxy;
 import javax.swing.Icon;
 
 import nl.esciencecenter.ptk.data.LongHolder;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.UIGlobal;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
@@ -487,7 +487,7 @@ public abstract class ProxyNode
     // Presentation 
     // ============
    
-    public UIPresentation getPresentation() 
+    public Presentation getPresentation() 
     {
         return doGetPresentation(); 
     }
@@ -554,6 +554,6 @@ public abstract class ProxyNode
 
     abstract protected Attribute[] doGetAttributes(String[] names) throws ProxyException;
 
-    abstract protected UIPresentation doGetPresentation(); 
+    abstract protected Presentation doGetPresentation(); 
     
 }

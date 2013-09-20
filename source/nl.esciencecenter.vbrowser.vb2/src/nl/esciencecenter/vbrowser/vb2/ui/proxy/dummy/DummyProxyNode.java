@@ -25,18 +25,17 @@ import java.util.List;
 
 import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-
 
 public class DummyProxyNode extends ProxyNode
 {
-    static private UIPresentation dummyPresentation;
+    static private Presentation dummyPresentation;
 
     static private StringList attrNames=null; 
     
@@ -44,7 +43,7 @@ public class DummyProxyNode extends ProxyNode
     {
         attrNames=new StringList(new String[]{"attr1","attr2","attr3","attr4"});
         
-        dummyPresentation=UIPresentation.createDefault();
+        dummyPresentation=Presentation.createDefault();
         for (int i=0;i<attrNames.size();i++)
             dummyPresentation.setAttributePreferredWidths(attrNames.get(i),new int[]{42,42+i*42,42+4*42}); 
         dummyPresentation.setChildAttributeNames(attrNames.toArray()); 
@@ -218,7 +217,7 @@ public class DummyProxyNode extends ProxyNode
     }
 
     @Override
-    protected UIPresentation doGetPresentation()
+    protected Presentation doGetPresentation()
     {
         return dummyPresentation; 
     }

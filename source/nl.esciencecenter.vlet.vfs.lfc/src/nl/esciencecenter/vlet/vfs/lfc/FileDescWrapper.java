@@ -151,18 +151,18 @@ public class FileDescWrapper
 
         Attribute attr = null;
 
-        if (StringUtil.equals(name, VAttributeConstants.ATTR_GID))
+        if (StringUtil.equals(name, VAttributeConstants.ATTR_GROUPID))
         {
             attr = new Attribute(name, getFileDesc().getGid());
         }
-        else if (StringUtil.equals(name, VAttributeConstants.ATTR_UID))
+        else if (StringUtil.equals(name, VAttributeConstants.ATTR_USERID))
         {
             attr = new Attribute(name, getFileDesc().getUid());
         }
 
         // Permission as String
         else if (StringUtil.equals(name,
-                VAttributeConstants.ATTR_PERMISSIONS_STRING))
+                VAttributeConstants.ATTR_PERMISSIONSTRING))
         {
             attr = new Attribute(name, getFileDesc().getPermissions());
         }

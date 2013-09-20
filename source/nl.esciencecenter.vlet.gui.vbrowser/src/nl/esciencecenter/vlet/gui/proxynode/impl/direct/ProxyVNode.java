@@ -28,14 +28,14 @@ import java.util.Vector;
 import javax.swing.Icon;
 
 import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.ptk.presentation.IPresentable;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.presentation.Presentation.SortOption;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentable;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.InternalError;
 import nl.esciencecenter.vlet.exception.NotImplementedException;
@@ -153,7 +153,7 @@ public final class ProxyVNode extends ProxyNode
         
         //public ImageIcon imageIcon=null;
 
-        public UIPresentation presentation=null; 
+        public Presentation presentation=null; 
 
         // == Various Interfaces == 
         
@@ -676,7 +676,7 @@ public final class ProxyVNode extends ProxyNode
             	VNode nodes[] = ((VComposite) targetNode).getNodes();
 
             	// do not sort for MyVLe !
-            	UIPresentation pres=this.getPresentation(); 
+            	Presentation pres=this.getPresentation(); 
  
             	boolean doSort=false;
                 String sortFields[]=null; 
@@ -1502,7 +1502,7 @@ public final class ProxyVNode extends ProxyNode
     {
     }
 
-    public UIPresentation getPresentation()
+    public Presentation getPresentation()
     {
     	if  (cache.presentation!=null)
     		return cache.presentation; 
@@ -1511,9 +1511,9 @@ public final class ProxyVNode extends ProxyNode
     	// Instance Presentation object ! 
     	//
     	
-    	if (vnode instanceof UIPresentable)
+    	if (vnode instanceof IPresentable)
     	{
-    		cache.presentation=((UIPresentable)vnode).getPresentation();
+    		cache.presentation=((IPresentable)vnode).getPresentation();
     		
     		if (cache.presentation!=null) 
     			return cache.presentation;
@@ -1524,7 +1524,7 @@ public final class ProxyVNode extends ProxyNode
     	// (Only stores Presentation per {Scheme,Host,Type} 
     	// 
     	
-    	UIPresentation pres=null; 
+    	Presentation pres=null; 
 
     	// Check existing for {Scheme,Host,Type} triple !
        	pres=VRSPresentation.getPresentationFor(

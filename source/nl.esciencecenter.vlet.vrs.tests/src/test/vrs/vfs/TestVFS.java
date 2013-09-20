@@ -21,16 +21,16 @@
 
 package test.vrs.vfs;
 
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_FILE_LENGTH;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_HOSTNAME;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_MIMETYPE;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_PATH;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_PORT;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_RESOURCE_TYPE;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_SCHEME;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_EXISTS;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_LENGTH;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_LOCATION;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_MIMETYPE;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_NAME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,12 +40,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.IntegerHolder;
-import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -54,22 +51,17 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.ResourceAlreadyExistsException;
 import nl.esciencecenter.vlet.exception.ResourceCreationFailedException;
-import nl.esciencecenter.vlet.exception.ResourceNotFoundException;
 import nl.esciencecenter.vlet.exception.ResourceWriteAccessDeniedException;
 import nl.esciencecenter.vlet.exception.VrsResourceException;
 import nl.esciencecenter.vlet.util.bdii.BdiiService;
 import nl.esciencecenter.vlet.util.bdii.BdiiUtil;
 import nl.esciencecenter.vlet.util.bdii.StorageArea;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
-
 import nl.esciencecenter.vlet.vrs.VRSContext;
 import nl.esciencecenter.vlet.vrs.io.VRandomAccessable;
 import nl.esciencecenter.vlet.vrs.io.VRandomReadable;
 import nl.esciencecenter.vlet.vrs.io.VResizable;
-
-import nl.esciencecenter.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.esciencecenter.vlet.vrs.util.VRSIOUtil;
-import nl.esciencecenter.vlet.vrs.util.VRSResourceLoader;
 import nl.esciencecenter.vlet.vrs.vdriver.localfs.ChecksumUtil;
 import nl.esciencecenter.vlet.vrs.vdriver.localfs.LFile;
 import nl.esciencecenter.vlet.vrs.vfs.VChecksum;
@@ -77,15 +69,10 @@ import nl.esciencecenter.vlet.vrs.vfs.VDir;
 import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
 import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 import nl.esciencecenter.vlet.vrs.vfs.VFile;
-import nl.esciencecenter.vlet.vrs.vfs.VFileActiveTransferable;
 import nl.esciencecenter.vlet.vrs.vfs.VFileSystem;
 import nl.esciencecenter.vlet.vrs.vfs.VLogicalFileAlias;
 import nl.esciencecenter.vlet.vrs.vfs.VReplicatable;
 import nl.esciencecenter.vlet.vrs.vfs.VUnixFileAttributes;
-import nl.esciencecenter.vlet.vrs.vfs.VFileActiveTransferable.ActiveTransferType;
-
-
-
 
 import org.junit.After;
 import org.junit.Assert;
@@ -662,7 +649,7 @@ public class TestVFS extends VTestCase
             {
                 VFile file = (VFile) newFile;
                 Assert.assertEquals("Both getLength() and getAttribute(ATTR_LENGTH) must return same value", file
-                        .getLength(), newFile.getAttribute(ATTR_LENGTH).getLongValue());
+                        .getLength(), newFile.getAttribute(ATTR_FILE_LENGTH).getLongValue());
             }
         }
 

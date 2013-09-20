@@ -35,7 +35,7 @@ import javax.swing.border.BevelBorder;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.ui.widgets.NavigationBar;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
+
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.gui.panels.resourcetable.ResourceTable;
 import nl.esciencecenter.vlet.gui.viewers.ViewerPlugin;
@@ -290,7 +290,7 @@ public class JobMonitor extends ViewerPlugin
         {
             // empty model:
             JobStatusDataModel model = new JobStatusDataModel(controller);
-            UIPresentation pres = model.getPresentation();
+            Presentation pres = model.getPresentation();
             jobTable = new ResourceTable(model, pres);
 
             // jobTable.setPresentation(model.getPresentation());

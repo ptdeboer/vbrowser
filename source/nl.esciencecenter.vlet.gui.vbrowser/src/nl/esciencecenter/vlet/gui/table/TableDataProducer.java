@@ -21,7 +21,7 @@
 
 package nl.esciencecenter.vlet.gui.table;
 
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vlet.gui.proxyvrs.ProxyNode;
 import nl.esciencecenter.vlet.gui.view.ViewNode;
 
@@ -47,7 +47,7 @@ public interface TableDataProducer
    
     public void dispose();
     
-    public UIPresentation getPresentation(); 
+    public Presentation getPresentation(); 
     
     public String[] getAllHeaderNames();
 

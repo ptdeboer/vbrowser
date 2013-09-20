@@ -25,17 +25,15 @@ package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
 import java.net.URISyntaxException;
 
 import nl.esciencecenter.ptk.data.LongHolder;
+import nl.esciencecenter.ptk.presentation.IPresentable;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
-import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentable;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-
 import nl.esciencecenter.vlet.vrs.VComposite;
 import nl.esciencecenter.vlet.vrs.VNode;
 import nl.esciencecenter.vlet.vrs.presentation.VRSPresentation;
@@ -329,11 +327,11 @@ public class VRSProxyNode extends ProxyNode
    }
     
     @Override
-    protected UIPresentation doGetPresentation()
+    protected Presentation doGetPresentation()
     {
-        if (vnode instanceof UIPresentable)
+        if (vnode instanceof IPresentable)
         {
-            return ((UIPresentable) vnode).getPresentation();
+            return ((IPresentable) vnode).getPresentation();
         }
         
         String type=vnode.getResourceType();  

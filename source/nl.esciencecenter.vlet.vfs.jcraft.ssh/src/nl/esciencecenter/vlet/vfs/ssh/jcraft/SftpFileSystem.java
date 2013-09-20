@@ -21,12 +21,7 @@
 
 package nl.esciencecenter.vlet.vfs.ssh.jcraft;
 
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ACCESS_TIME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_GID;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_LENGTH;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_MODIFICATION_TIME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UID;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -1308,15 +1303,15 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         {
             return new Attribute(AttributeType.DATETIME, name, getAccessTime(attrs));
         }
-        else if (name.compareTo(ATTR_LENGTH) == 0)
+        else if (name.compareTo(ATTR_FILE_LENGTH) == 0)
         {
             return new Attribute(name, attrs.getSize());
         }
-        else if (name.compareTo(ATTR_UID) == 0)
+        else if (name.compareTo(ATTR_USERID) == 0)
         {
             return new Attribute(name, attrs.getUId());
         }
-        else if (name.compareTo(ATTR_GID) == 0)
+        else if (name.compareTo(ATTR_GROUPID) == 0)
         {
             return new Attribute(name, attrs.getGId());
         }

@@ -21,15 +21,10 @@
 
 package nl.esciencecenter.vlet.vrs.data;
 
-public class VAttributeConstants
-{
-    /**
-     * Resource's last access time (if supported). The type of returned
-     * attribute is compatible with the Date class. milliseconds or
-     * "time since epoch" is converted to allow all Date types.
-     */
-    public static final String ATTR_ACCESS_TIME = "accessTime";
+import nl.esciencecenter.vbrowser.vrs.data.AttributeNames;
 
+public class VAttributeConstants extends AttributeNames 
+{
     public static final String ATTR_ALLOW_3RD_PARTY = "allow3rdParty";
 
     public static final String ATTR_ATTEMPTS = "attempts";
@@ -60,15 +55,6 @@ public class VAttributeConstants
      */
     public static final String ATTR_CHECKSUM_TYPES = "checksumTypes";
 
-    /**
-     * Resource's creation time The type of returned attribute is compatible
-     * with the Date class. milliseconds or "time since epoch" is converted to
-     * allow all Date types.
-     */
-    public static final String ATTR_CREATION_TIME = "creationTime";
-
-    public static final String ATTR_DATA_TYPE = "dataType";
-
     /** Destination directory used by Reliable File Transfers (RFT) */
     public static final String ATTR_DEST_DIRNAME = "destDirname";
 
@@ -84,14 +70,6 @@ public class VAttributeConstants
     public static final String ATTR_DEST_URL = "destinationUrl";
 
     /**
-     * Normally for files this attribute means the parent directory, but for
-     * some implementation for directory resources the actual directory is
-     * returned and NOT the "parent" directory name. Use parentDirname to
-     * unambiguously get the real parent directory.
-     */
-    public static final String ATTR_DIRNAME = "dirname";
-
-    /**
      * Extra error text if the resource has an error or an exceptio has been
      * thrown.
      */
@@ -100,21 +78,10 @@ public class VAttributeConstants
     /** Value of exists() method if implemented. */
     public static final String ATTR_EXISTS = "exists";
 
-    public static final String ATTR_GID = "groupID";
-
     /** Spell out as Grid UID instead of confusinf GUID */
     public static final String ATTR_GRIDUID = "gridUniqueID";
 
     public static final String ATTR_GROUP = "group";
-
-    /** Hostname of location URI. */
-    public static final String ATTR_HOSTNAME = "hostname";
-
-    /** Binary icons types currently not supported, only ICONURL. */
-    public static final String ATTR_ICON = "icon";
-
-    /** Icon URL, can be relative or point to remote location on the web. */
-    public static final String ATTR_ICONURL = "iconURL";
 
     public static final String ATTR_ID = "id";
 
@@ -191,13 +158,6 @@ public class VAttributeConstants
     public static final String ATTR_JOBURI = "jobUri";
 
     /**
-     * Length or size of resource if applicable.
-     * 
-     * @see nl.esciencecenter.vlet.vrs.vfs.VFile#getLength() VFile.getLenght()
-     */
-    public static final String ATTR_LENGTH = "length";
-
-    /**
      * Virtual Resource Location URI or VRL.
      * 
      * @see nl.esciencecenter.vlet.vrs.VNode#getVRL() VNode.getVRL()
@@ -205,12 +165,6 @@ public class VAttributeConstants
     public static final String ATTR_LOCATION = "location";
 
     public static final String ATTR_MAX_WALL_TIME = "maxWallTime";
-
-    /** Content 'mime' type if it has one. */
-    public static final String ATTR_MIMETYPE = "mimeType";
-
-    public static final String ATTR_MODIFICATION_TIME = "modificationTime";
-
     /**
      * Logical Resource name. For files and directories this is the basename of
      * the path.
@@ -240,24 +194,9 @@ public class VAttributeConstants
     // public static final String ATTR_PASSIVE_MODE =
     // GlobalConfig.PROP_PASSIVE_MODE;
 
-    public static final String ATTR_PASSPHRASE = "passphrase";
 
-    /** Password part in location URI */
-    public static final String ATTR_PASSWORD = "password";
-
-    /** Path part of location URI. */
-    public static final String ATTR_PATH = "path";
-
-    /**
-     * Unix style permissions string: drwxr-xr-x+ etc, enhanced with '[]'
-     * attributes
-     */
-    public static final String ATTR_PERMISSIONS_STRING = "permissionsString";
 
     public static final String ATTR_PERSISTANT = "persistant";
-
-    /** Port of location URI. */
-    public static final String ATTR_PORT = "port";
 
     public static final String ATTR_QUEUE_NAME = "queueName";
 
@@ -268,9 +207,6 @@ public class VAttributeConstants
     public static final String ATTR_RESOURCE_CLASS = "resourceClass";
 
     public static final String ATTR_RESOURCE_TYPES = "resourceTypes";
-
-    /** Scheme part of protocol part of location URI. */
-    public static final String ATTR_SCHEME = "scheme";
 
     public static final String ATTR_SHELL_PATH = "shellPath";
 
@@ -304,29 +240,9 @@ public class VAttributeConstants
 
     public static final String ATTR_TRANSPORT_URI = "transportUri";
 
-    /**
-     * Resource Type. For example "File" or "Directory". No abstract type are
-     * allow here.
-     * 
-     * @see nl.esciencecenter.vlet.vrs.VNode#getType() VNode.getType()
-     */
-    public static final String ATTR_RESOURCE_TYPE = "resourceType";
-
-    public static final String ATTR_UID = "userID";
-
-    public static final String ATTR_UNIQUE = "unique";
+    public static final String ATTR_GFTPUNIQUE = "gftpUnique";
 
     /** Unix style octal file mode value. For example "0755" */
     public static final String ATTR_UNIX_FILE_MODE = "unixFileMode";
-
-    /** Fragment part, part after a hash '#', in the location URI. */
-    public static final String ATTR_URI_FRAGMENT = "fragment";
-
-    /** Query part, part after a question mark '?', in the location URI. */
-    public static final String ATTR_URI_QUERY = "query";
-
-    public static final String ATTR_USERNAME = "username";
-
-    public static final String ATTR_VO_NAME = "voName";
 
 }

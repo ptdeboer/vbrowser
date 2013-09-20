@@ -21,20 +21,7 @@
 
 package nl.esciencecenter.vlet.vrs.tools;
 
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM_TYPE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM_TYPES;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_CREATION_TIME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_GID;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ISSYMBOLICLINK;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_LENGTH;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_MODIFICATION_TIME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_SYMBOLICLINKTARGET;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UID;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.*;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -69,8 +56,8 @@ public class URIStat
 
     static String commonFileAttrNames[] =
             { 
-              ATTR_PATH, ATTR_RESOURCE_TYPE, ATTR_LENGTH, ATTR_PERMISSIONS_STRING, ATTR_UNIX_FILE_MODE, ATTR_CREATION_TIME,
-              ATTR_MODIFICATION_TIME, ATTR_UID, ATTR_GID, ATTR_ISSYMBOLICLINK, ATTR_SYMBOLICLINKTARGET 
+              ATTR_PATH, ATTR_RESOURCE_TYPE, ATTR_FILE_LENGTH, ATTR_PERMISSIONSTRING, ATTR_UNIX_FILE_MODE, ATTR_CREATION_TIME,
+              ATTR_MODIFICATION_TIME, ATTR_USERID, ATTR_GROUPID, ATTR_ISSYMBOLICLINK, ATTR_SYMBOLICLINKTARGET 
             };
 
     public static void Usage()

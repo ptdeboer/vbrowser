@@ -25,11 +25,11 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.gui.UILogger;
 import nl.esciencecenter.vlet.gui.data.ResourceRef;
@@ -383,7 +383,7 @@ public abstract class ProxyNode
 
     abstract public void setAttributes(Attribute[] attrs, boolean refresh) throws VrsException;
 
-    abstract public UIPresentation getPresentation();
+    abstract public Presentation getPresentation();
 
     abstract public Attribute[][] getACL() throws VrsException;
 

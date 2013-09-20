@@ -21,24 +21,10 @@
 
 package nl.esciencecenter.vlet.vrs.presentation;
 
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_CREATION_TIME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ICON;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_INDEX;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_LENGTH;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_MAX_WALL_TIME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_MIMETYPE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_MODIFICATION_TIME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_NAME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_NODE_TEMP_DIR;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_STATUS;
-
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.*; 
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.presentation.Presentation.SortOption;
-import nl.esciencecenter.vbrowser.vrs.ui.presentation.UIPresentation;
+
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.vfs.VFS;
@@ -53,14 +39,16 @@ public class VRSPresentation
             ATTR_ICON, 
             ATTR_NAME, 
             ATTR_RESOURCE_TYPE, 
-            ATTR_LENGTH,
+            ATTR_FILE_LENGTH,
             // ATTR_MODIFICATION_TIME_STRING,
-            ATTR_MODIFICATION_TIME, ATTR_MIMETYPE, ATTR_PERMISSIONS_STRING,
+            ATTR_MODIFICATION_TIME, 
+            ATTR_MIMETYPE, 
+            ATTR_PERMISSIONSTRING,
             // ATTR_ISHIDDEN,
             // ATTR_ISLINK
             // VFS.ATTR_ISFILE,
             // VFS.ATTR_ISDIR
-    };
+        };
 
     /** 
      * Default Attribute Name to show for VFSNodes 
@@ -70,7 +58,7 @@ public class VRSPresentation
             ATTR_ICON, 
             ATTR_NAME, 
             ATTR_RESOURCE_TYPE,
-            ATTR_LENGTH, 
+            ATTR_FILE_LENGTH, 
             "Resource",
             // ATTR_MODIFICATION_TIME_STRING,
             ATTR_MODIFICATION_TIME, ATTR_MIMETYPE,
@@ -107,13 +95,13 @@ public class VRSPresentation
         };
 
     /** @see getPresentationFor(String, String, String, boolean) */
-    public static UIPresentation getPresentationFor(String scheme, String host, String type)
+    public static Presentation getPresentationFor(String scheme, String host, String type)
     {
         return getPresentationFor(scheme, host, type, true);
     }
 
     /** @see getPresentationFor(String, String, String, boolean) */
-    public static UIPresentation getPresentationFor(VRL vrl, String type, boolean autocreate)
+    public static Presentation getPresentationFor(VRL vrl, String type, boolean autocreate)
     {
         return getPresentationFor(vrl.getScheme(), vrl.getHostname(), type, autocreate);
     }
@@ -133,12 +121,12 @@ public class VRSPresentation
      *            whether to initialize a default Presentation object
      * @return
      */
-    public static UIPresentation getPresentationFor(String scheme, String host, String type, boolean autocreate)
+    public static Presentation getPresentationFor(String scheme, String host, String type, boolean autocreate)
     {
         String id = createID(scheme, host, type);
-        UIPresentation pres = null;
+        Presentation pres = null;
 
-        pres=UIPresentation.getPresentation(id,false); 
+        pres=Presentation.getPresentation(id,false); 
         if (pres!=null)
             return pres; 
 
@@ -150,11 +138,11 @@ public class VRSPresentation
         //
         // Set defaults:
         //
-
+        
         if (scheme.compareTo(VRS.MYVLE_SCHEME) == 0)
         {
             pres.setChildAttributeNames(myvleAttributeNames);
-            // don not sort MyVle !
+            // do not sort MyVle !
             pres.setSortOption(SortOption.NEVER);
         }
         else if (scheme.compareTo(VRS.SRB_SCHEME) == 0)
@@ -172,34 +160,34 @@ public class VRSPresentation
         
         pres.setIconAttributeName(ATTR_ICON);
         
-        UIPresentation.putUIPresentation(id,pres);
+        Presentation.storePresentation(id,pres);
         
         return pres;
     }
-
-    public static void putUIPresentation(VRL vrl, String type, UIPresentation pres)
-    {
-        if (pres == null)
-            return;
-
-        String id = createID(vrl.getScheme(), vrl.getHostname(), type);
-        UIPresentation.putUIPresentation(id, pres);
-        
-    }
-
+    
     private static String createID(String scheme, String host, String type)
     {
-        return scheme + "-" + host + "-" + type;
+        if (scheme==null)
+            throw new NullPointerException("Presentation must have at least a scheme"); 
+        
+        if (host==null)
+            host="";
+        
+        if (type==null)
+            type="";
+        
+        String id= scheme + "-" + host + "-" + type;
+        return id; 
     }
     
-    public static UIPresentation createDefault()
+    public static Presentation createDefault()
     {
-        UIPresentation pres=new UIPresentation(); 
+        Presentation pres=new Presentation(); 
         initDefaults(pres);
         return pres; 
     }
     
-    public static void initDefaults(UIPresentation pres)
+    public static void initDefaults(Presentation pres)
     {
         pres.setAttributePreferredWidth(ATTR_ICON, 32);
         pres.setAttributePreferredWidth(ATTR_INDEX, 32);
@@ -207,7 +195,7 @@ public class VRSPresentation
         pres.setAttributePreferredWidth(ATTR_RESOURCE_TYPE, 140);
         pres.setAttributePreferredWidth(ATTR_SCHEME, 60);
         pres.setAttributePreferredWidth(ATTR_HOSTNAME, 140);
-        pres.setAttributePreferredWidth(ATTR_LENGTH, 70);
+        pres.setAttributePreferredWidth(ATTR_FILE_LENGTH, 70);
         pres.setAttributePreferredWidth(ATTR_PATH, 200);
         pres.setAttributePreferredWidth(ATTR_STATUS, 48);
         pres.setAttributePreferredWidth(ATTR_MODIFICATION_TIME, 120);

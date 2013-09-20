@@ -21,11 +21,11 @@
 
 package nl.esciencecenter.vlet.vrs.vdriver.localfs;
 
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_GID;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_GROUPID;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_SYMBOLICLINKTARGET;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UID;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_USERID;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
 
 import nl.esciencecenter.ptk.data.StringList;
@@ -78,8 +78,8 @@ public class LocalFSFactory extends VFSFactory
 	{
 		ATTR_UNIX_FILE_MODE,
 		ATTR_SYMBOLICLINKTARGET,
-		ATTR_GID,
-		ATTR_UID
+		ATTR_GROUPID,
+		ATTR_USERID
 	};
 	
 	public static String serverAttributes[]=

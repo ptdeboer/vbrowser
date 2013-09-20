@@ -22,14 +22,7 @@
 package nl.esciencecenter.vlet.vfs.gftp;
 
 import static nl.esciencecenter.vlet.VletConfig.ATTR_PASSIVE_MODE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ALLOW_3RD_PARTY;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_CREATION_TIME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_GROUP;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_LENGTH;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_MODIFICATION_TIME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_OWNER;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UNIQUE;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -2698,7 +2691,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             throws VrsException
     {
 
-        if (name.compareTo(ATTR_PERMISSIONS_STRING) == 0)
+        if (name.compareTo(ATTR_PERMISSIONSTRING) == 0)
         {
             boolean isDir = _isDir(entry);
 
@@ -2745,7 +2738,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
          * new VAttribute(name,millisToDateTimeString(
          * GftpServer._getModificationTime(entry))); }
          **********************************************************************/
-        else if (name.compareTo(ATTR_LENGTH) == 0)
+        else if (name.compareTo(ATTR_FILE_LENGTH) == 0)
         {
             return new Attribute(name, GftpFileSystem._getLength(entry));
 
@@ -2760,7 +2753,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             return new Attribute(name, GftpFileSystem._getGroup(entry));
 
         }
-        else if (name.compareTo(ATTR_UNIQUE) == 0)
+        else if (name.compareTo(ATTR_GFTPUNIQUE) == 0)
         {
             return new Attribute(name, GftpFileSystem._getUnique(entry));
 

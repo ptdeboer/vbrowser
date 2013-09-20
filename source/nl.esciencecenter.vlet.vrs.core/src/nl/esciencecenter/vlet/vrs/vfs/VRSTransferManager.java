@@ -386,12 +386,12 @@ public final class VRSTransferManager
         		
         		VFile sourceFile=(VFile)source;
         		
-        		sourceAttrs[0]=sourceFile.getAttribute(VAttributeConstants.ATTR_LENGTH);  
+        		sourceAttrs[0]=sourceFile.getAttribute(VAttributeConstants.ATTR_FILE_LENGTH);  
         		sourceAttrs[1]=sourceFile.getAttribute(VAttributeConstants.ATTR_MODIFICATION_TIME);
         	}
         	
         	targetAttrs=new Attribute[2];
-        	targetAttrs[0]=targetFile.getAttribute(VAttributeConstants.ATTR_LENGTH);  
+        	targetAttrs[0]=targetFile.getAttribute(VAttributeConstants.ATTR_FILE_LENGTH);  
         	targetAttrs[1]=targetFile.getAttribute(VAttributeConstants.ATTR_MODIFICATION_TIME);
         	
             StringHolder newName=new StringHolder(targetVRL.getBasename());

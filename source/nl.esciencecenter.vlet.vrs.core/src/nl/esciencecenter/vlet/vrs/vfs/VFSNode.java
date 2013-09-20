@@ -21,32 +21,7 @@
 
 package nl.esciencecenter.vlet.vrs.vfs;
 
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM_TYPE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_CHECKSUM_TYPES;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_EXISTS;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_GID;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ISDIR;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ISFILE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ISHIDDEN;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ISREADABLE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ISSYMBOLICLINK;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ISWRITABLE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_LENGTH;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_MIMETYPE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_MODIFICATION_TIME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_NAME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_NRCHILDS;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PARENT_DIRNAME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PATH;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PERMISSIONS_STRING;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_RESOURCE_TYPE;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_SCHEME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_SYMBOLICLINKTARGET;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UID;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_USERNAME;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.*;
 
 import java.io.IOException;
 import java.util.Vector;
@@ -101,7 +76,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         ATTR_ISFILE, 
         ATTR_ISDIR, 
         ATTR_NRCHILDS, 
-        ATTR_LENGTH,
+        ATTR_FILE_LENGTH,
         // minimal time wich must be supported
         ATTR_MODIFICATION_TIME,
         // stringifying is now done in GUI !  
@@ -112,7 +87,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         // not all implementation support the OWNER attribute
         //ATTR_OWNER, 
         ATTR_ISSYMBOLICLINK,
-        ATTR_PERMISSIONS_STRING // implementation specific permissions string
+        ATTR_PERMISSIONSTRING // implementation specific permissions string
     };
 
     public static final  String linkAttributeNames[]=
@@ -369,7 +344,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
             return new Attribute(name, isDir());
         else if (name.compareTo(ATTR_ISFILE) == 0)
             return new Attribute(name, isFile());
-        else if (name.compareTo(ATTR_LENGTH) == 0)
+        else if (name.compareTo(ATTR_FILE_LENGTH) == 0)
         {
             if (this instanceof VFile)
             {
@@ -385,14 +360,14 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
             // getLength for VDir not supported
             return new Attribute(name, 0);
         }
-        else if (name.compareTo(ATTR_GID) == 0)
+        else if (name.compareTo(ATTR_GROUPID) == 0)
         {
             if (this instanceof VUnixGroupMode)
                 return new Attribute(name, ((VUnixGroupMode) this).getGid());
             // getLength for VDir not supported
             return new Attribute(name, "");
         }
-        else if (name.compareTo(ATTR_UID) == 0)
+        else if (name.compareTo(ATTR_USERID) == 0)
         {
             if (this instanceof VUnixUserMode)
                 return new Attribute(name, ((VUnixUserMode) this).getUid());
@@ -426,7 +401,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         {
             return new VAttribute(name,millisToDateTimeString(getModificationTime())); 
         }*/
-        else if (name.compareTo(ATTR_PERMISSIONS_STRING) == 0)
+        else if (name.compareTo(ATTR_PERMISSIONSTRING) == 0)
         {
             return new Attribute(name,getPermissionsString()); 
         }

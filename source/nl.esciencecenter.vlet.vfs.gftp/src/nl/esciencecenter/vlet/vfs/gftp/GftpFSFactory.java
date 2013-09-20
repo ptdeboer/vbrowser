@@ -28,7 +28,7 @@ import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_GROUP;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_OWNER;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UNIQUE;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_GFTPUNIQUE;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
@@ -57,7 +57,7 @@ public class GftpFSFactory extends VFSFactory
     { 
         ATTR_OWNER, 
         ATTR_GROUP,
-        ATTR_UNIQUE
+        ATTR_GFTPUNIQUE
     };
     
     // =================================================================
