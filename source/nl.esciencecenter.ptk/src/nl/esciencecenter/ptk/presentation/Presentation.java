@@ -220,9 +220,14 @@ public class Presentation
             if (pres != null)
                 return pres;
 
-            pres = Presentation.createDefault();
-            presentationStore.put(key, pres);
-            return pres;
+            if (autoCreate)
+            {
+                pres = Presentation.createDefault();
+                presentationStore.put(key, pres);
+                return pres;
+            }
+            
+            return null; 
         }
     }
 
@@ -250,10 +255,10 @@ public class Presentation
 
     public static void storeSchemeType(String scheme, String type, Presentation pres)
     {
-        store(createKey(scheme, null,type), pres);
+        storePresentation(createKey(scheme, null,type), pres);
     }
 
-    public static void store(String key, Presentation pres)
+    public static void storePresentation(String key, Presentation pres)
     {
         if (pres == null)
             return;
