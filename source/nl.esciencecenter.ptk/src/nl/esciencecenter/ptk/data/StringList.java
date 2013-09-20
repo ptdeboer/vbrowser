@@ -424,6 +424,34 @@ public class StringList extends ArrayList<String> implements Cloneable, Serializ
     {
         return SortUtil.sort(this, ignoreCase); 
     }
+    
+    /** 
+     * Sort this list and remove all double entries. 
+     */
+    public void unique(boolean isAlreadySorted) 
+    {
+        if (isAlreadySorted==false)
+        {
+            sort(); 
+        }
+        
+        int index=0;
+        
+        while (index<this.size()-1)
+        {
+            String first=this.get(index);
+            String second=this.get(index+1);
+                  
+            if (first==second)
+            {
+                this.remove(second);
+            }
+            else
+            {
+                index++;
+            }
+        }
+    }
 
     public StringList duplicate()
     {
