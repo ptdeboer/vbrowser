@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.LinkOption;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringHolder;
@@ -126,9 +127,9 @@ public class FSUtil
         }
     }
     
-    public boolean existsPath(String path) throws FileURISyntaxException
+    public boolean existsPath(String path,LinkOption... linkOptions) throws FileURISyntaxException
     {
-        return newFSNode(resolvePath(path)).exists();
+        return newFSNode(resolvePath(path)).exists(linkOptions);
     }
 
     /** 
@@ -165,7 +166,7 @@ public class FSUtil
      * Checks whether paths exists and is a file. 
      * If the filePath contains invalid characters, this method will also return false. 
      */
-    public boolean existsFile(String filePath, boolean mustBeFileType)
+    public boolean existsFile(String filePath, boolean mustBeFileType,LinkOption... linkOptions)
     {
         if (filePath == null)
             return false;
@@ -173,11 +174,11 @@ public class FSUtil
         try
         {
             FSNode file = newFSNode(filePath);
-            if (file.exists() == false)
+            if (file.exists(linkOptions) == false)
                 return false;
     
             if (mustBeFileType)
-                if (file.isFile())
+                if (file.isFile(linkOptions))
                     return true;
                 else
                     return false;
@@ -194,7 +195,7 @@ public class FSUtil
      * Checks whether directoryPath paths exists and is a directory.
      * If the directory path contains invalid characters the method will also return false.  
      */
-    public boolean existsDir(String directoryPath) 
+    public boolean existsDir(String directoryPath,LinkOption... linkOptions) 
     {
         if (directoryPath == null)
             return false;
@@ -202,10 +203,10 @@ public class FSUtil
         try
         {
             FSNode file = newFSNode(directoryPath);
-            if (file.exists() == false)
+            if (file.exists(linkOptions) == false)
                 return false;
 
-            if (file.isDirectory())
+            if (file.isDirectory(linkOptions))
                 return true;
         }
         catch (FileURISyntaxException e)
@@ -243,11 +244,11 @@ public class FSUtil
     {
         if (localFileURI.isAbsolute())
         {
-            return new LocalFSNode(new java.io.File(localFileURI));
+            return new LocalFSNode(localFileURI);
         }
         else
         {
-            return new LocalFSNode(new java.io.File(this.workingDir.resolve(localFileURI)));
+            return new LocalFSNode(workingDir.resolve(localFileURI));
         }
         
     }
@@ -258,13 +259,13 @@ public class FSUtil
      * @throws IOException 
      * @throws URISyntaxException 
      */
-    public String[] list(String dirPath) throws IOException, FileURISyntaxException
+    public String[] list(String dirPath,LinkOption... linkOptions) throws IOException, FileURISyntaxException
     {
         FSNode file = newFSNode(resolveURI(dirPath));
-        if (file.exists() == false)
+        if (file.exists(null) == false)
             return null;
 
-        if (file.isDirectory() == false)
+        if (file.isDirectory(linkOptions) == false)
             return null;
 
         String strs[] = file.list();
@@ -278,12 +279,12 @@ public class FSUtil
         return strs;
     }
 
-    public boolean deleteFile(String filename) throws IOException, FileURISyntaxException
+    public void deleteFile(String filename) throws IOException, FileURISyntaxException
     {
         FSNode file = newFSNode(filename);
-        if (file.exists() == false)
-            return false;
-        return file.delete();
+        if (file.exists(LinkOption.NOFOLLOW_LINKS) == false)
+            return;
+        file.delete();
     }
 
     /**

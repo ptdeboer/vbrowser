@@ -27,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.LinkOption;
 
 import nl.esciencecenter.ptk.net.URIFactory;
 
@@ -209,26 +210,30 @@ public abstract class FSNode
 	 */ 
 	public abstract FSNode newFile(String path) throws FileURISyntaxException; 
 
-    /** Whether file/directory exists. */  
-	public abstract boolean exists(); 
-    
+	public abstract boolean exists(LinkOption... linkOptions); 
+	    
     /** Is a regular file. */ 
-    public abstract boolean isFile();
+    public abstract boolean isFile(LinkOption... linkOptions);
   
     /** Is a regular directory. */ 
-    public abstract boolean isDirectory(); 
+    public abstract boolean isDirectory(LinkOption... linkOptions); 
 
-    /** Size in bytes. */ 
-    public abstract long length();
+    /** Is a linux style softlink */ 
+    public abstract boolean isSymbolicLink();  
+
+    /** Size in bytes. 
+     * @throws IOException */ 
+    public abstract long length() throws IOException;
     
-    /** Modification time in milli seconds since epoch. */ 
-    public abstract long getModificationTime();
+    /** Modification time in milli seconds since epoch. 
+     * @throws IOException */ 
+    public abstract long getModificationTime() throws IOException;
 
     /** Logical parent */ 
     public abstract FSNode getParent(); 
 
     /** Delete file or empty directory. */
-    public abstract boolean delete() throws IOException;
+    public abstract void delete() throws IOException;
     
     // === Directory methods === // 
     
@@ -244,5 +249,6 @@ public abstract class FSNode
     /** Create full directory path. */
     public abstract void mkdirs() throws IOException;
 
+  
     
 }

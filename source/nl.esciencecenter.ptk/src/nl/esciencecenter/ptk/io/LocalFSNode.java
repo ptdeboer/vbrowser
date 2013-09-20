@@ -27,149 +27,162 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.attribute.FileAttributeView;
+import java.nio.file.attribute.FileTime;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /** 
  * Local file implementation of FSNode based on java.io.File;   
  */ 
 public class LocalFSNode extends FSNode
 {
-	private java.io.File _file;
+    // nio ! 
+	private Path _path;
 	
-	public LocalFSNode(java.io.File file)
-	{
-	    super(file.toURI()); 
-	    init(getURI()); 
-	}
- 
-	protected LocalFSNode(String path) throws FileURISyntaxException
-	{
-	    super(FSUtil.getDefault().resolveURI(path));
-	    init(getURI());
-	}
+    public LocalFSNode(Path path)
+    {
+        super(path.toUri());
+        init(path); 
+    }
 	
-	private void init(URI uri)
+	private void init(Path path)
 	{
-	    setURI(uri); 
-		this._file=new java.io.File(uri.getPath());   
+	    setURI(path.toUri()); 
+		this._path=path;   
 	}
 	
 	public LocalFSNode(URI loc) 
 	{
 		super(loc); 
-		init(loc); 
+		FileSystem fs = FileSystems.getDefault();
+		init(fs.getPath(loc.getPath()));
 	}
 
 	@Override
-	public boolean exists() 
+	public boolean exists(LinkOption... linkOptions) 
 	{
-		return _file.exists(); 
+		return Files.exists(_path, linkOptions); 
 	}
 
 	@Override
-	public boolean isDirectory()
+	public boolean isDirectory(LinkOption... linkOptions)
 	{
-		return _file.isDirectory(); 
-	}
-
-	@Override
-	public String[] list() 
-	{
-		return _file.list(); 
+		return Files.isDirectory(_path, linkOptions); 
 	}
 	
 	@Override
-	public LocalFSNode[] listNodes() 
+	public String[] list() throws IOException 
 	{
-		java.io.File files[]=_file.listFiles(); 
-		if (files==null)
+		DirectoryStream<Path> dirStream = Files.newDirectoryStream(_path);
+		Iterator<Path> dirIterator = dirStream.iterator(); 
+		ArrayList<String> list = new ArrayList<String>(); 
+		
+		while(dirIterator.hasNext()) 
 		{
-		    return null;
+		    list.add(dirIterator.next().getFileName().toString());   
 		}
-		
-		int len=files.length;
-		
-		LocalFSNode lfiles[]=new LocalFSNode[len];
-		for (int i=0;i<len;i++)
-		{
-			lfiles[i]=new LocalFSNode(files[i]);
-		}
-		
-		return lfiles; 
+		   
+		return list.toArray(new String[0]); 
+	}
+	
+	@Override
+	public LocalFSNode[] listNodes() throws IOException 
+	{
+	    DirectoryStream<Path> dirStream = Files.newDirectoryStream(_path);
+        Iterator<Path> dirIterator = dirStream.iterator(); 
+        ArrayList<LocalFSNode> list = new ArrayList<LocalFSNode>(); 
+        
+        while(dirIterator.hasNext()) 
+        {
+            list.add(new LocalFSNode(dirIterator.next()));    
+        }
+           
+        return list.toArray(new LocalFSNode[0]); 
 	}
 
-	public boolean delete() throws IOException
+	public void delete() throws IOException
 	{
-		return _file.delete(); 
+	    Files.delete(_path); 
 	}
 	
 	@Override
-	public long length() 
+	public long length() throws IOException 
 	{
-		return _file.length(); 
+		return (Long)Files.getAttribute(_path, "size");   
 	}
 	
 	@Override
-	public boolean isFile()
+	public boolean isFile(LinkOption... linkOptions)
 	{
-		return _file.isFile(); 
+		return Files.isRegularFile(_path,linkOptions);  
 	}
 	
 	@Override
 	public void mkdir() throws IOException
 	{
-		_file.mkdir(); 
-		if (_file.exists()==false)
-		    throw new FileNotFoundException("Failed to create directory:"+this); 
+	    Files.createDirectory(_path); 
 	}
 	
 	@Override
 	public void mkdirs() throws IOException
 	{
-		_file.mkdirs(); 
-		if (_file.exists()==false)
-            throw new FileNotFoundException("Failed to create directory:"+this); 
+	    Files.createDirectories(_path);
 	}
 	
 	@Override
-	public OutputStream createOutputStream() throws FileNotFoundException 
+	public OutputStream createOutputStream() throws IOException 
 	{
-		return new FileOutputStream(_file); 
+		return Files.newOutputStream(_path); // OpenOptions..
 	}
 	
 	@Override
-	public InputStream createInputStream() throws FileNotFoundException 
+	public InputStream createInputStream() throws IOException 
 	{
-		return new FileInputStream(_file); 
+		return Files.newInputStream(_path);
 	}
 	
 	@Override
 	public String getPath() 
 	{
-		return this._file.getAbsolutePath(); 
+		return _path.toUri().getPath();  
 	}
 	
 	@Override
 	public LocalFSNode getParent() 
 	{
-		return new LocalFSNode(_file.getParentFile()); 
+		return new LocalFSNode(_path.getParent()); 
 	}
 
 	@Override
-	public long getModificationTime() 
+	public long getModificationTime() throws IOException 
 	{
-		return _file.lastModified(); 
+	    FileTime value = Files.getLastModifiedTime(_path);
+	    return value.toMillis(); 
 	}
 
 	@Override
 	public LocalFSNode newFile(String path) throws FileURISyntaxException 
 	{
-		LocalFSNode lfile=new LocalFSNode(resolvePath(path));  
+		LocalFSNode lfile=new LocalFSNode(resolvePathURI(path));  
 		return lfile; 
 	}
 	
-	public java.io.File getJavaFile()
+	public java.io.File toJavaFile()
 	{
-	    return this._file; 
+	    return _path.toFile(); 
 	}
+
+    @Override
+    public boolean isSymbolicLink()
+    {
+        return Files.isSymbolicLink(_path); 
+    }
 
 }
