@@ -329,8 +329,8 @@ public class LocalFilesystem extends FileSystemNode
         return new LFile(this, fsUtil.newLocalFSNode(fileVrl.toURINoException()));
     }
 
-    public boolean isUnixFS()
+    public boolean hasPosixFS()
     {
-        return fsUtil.hasLocalUXFS(); 
+        return fsUtil.hasPosixFS(); 
     }
 }

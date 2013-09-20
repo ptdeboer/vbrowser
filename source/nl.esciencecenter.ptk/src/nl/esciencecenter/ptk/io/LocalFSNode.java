@@ -37,8 +37,11 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.PosixFilePermission;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.naming.directory.BasicAttributes;
 
@@ -213,6 +216,19 @@ public class LocalFSNode extends FSNode
         return Files.isSymbolicLink(_path); 
     }
 
+    /** 
+     * Returns symbolic link target or NULL 
+     */ 
+    public LocalFSNode getSymbolicLinkTarget() throws IOException
+    {
+        if (this.isSymbolicLink()==false)
+            return null;
+        
+        Path target = Files.readSymbolicLink(_path);
+        
+        return new LocalFSNode(target); 
+    }
+    
     public BasicFileAttributes getBasicAttributes() throws IOException
     {
         if (basicAttrs==null)
@@ -233,20 +249,82 @@ public class LocalFSNode extends FSNode
 
     public boolean isReadable()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return this.toJavaFile().canRead();
     }
 
     public boolean isWritable()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return this.toJavaFile().canWrite(); 
     }
 
     public boolean isHidden()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return this.getBasename().startsWith("."); 
+    }
+
+    public int getUnixFileMode() throws IOException
+    {
+         Set<PosixFilePermission> perms = getPosixAttributes().permissions(); 
+         return toUnixFileMode(perms); 
+    }
+
+    public static int toUnixFileMode(Set<PosixFilePermission> perms)
+    {
+        int mode=0; 
+        
+        if (perms.contains(PosixFilePermission.OWNER_READ))
+            mode|=0400;
+        if (perms.contains(PosixFilePermission.OWNER_WRITE))
+            mode|=0200;
+        if (perms.contains(PosixFilePermission.OWNER_EXECUTE))
+            mode|=0100; 
+        if (perms.contains(PosixFilePermission.GROUP_READ))
+            mode|=0040;
+        if (perms.contains(PosixFilePermission.GROUP_WRITE))
+            mode|=0020;
+        if (perms.contains(PosixFilePermission.GROUP_EXECUTE))
+            mode|=0010; 
+        if (perms.contains(PosixFilePermission.OTHERS_READ))
+            mode|=0004;
+        if (perms.contains(PosixFilePermission.OTHERS_WRITE))
+            mode|=0002;
+        if (perms.contains(PosixFilePermission.OTHERS_EXECUTE))
+            mode|=0001; 
+
+        return mode; 
+    }
+
+    public static Set<PosixFilePermission> fromUnixFileMode(int mode)
+    {
+        Set<PosixFilePermission> perms=new HashSet<PosixFilePermission>();
+        
+        if ((mode&0400)>0)
+            perms.add(PosixFilePermission.OWNER_READ); 
+        if ((mode&0200)>0)
+            perms.add(PosixFilePermission.OWNER_WRITE); 
+        if ((mode&0100)>0)
+            perms.add(PosixFilePermission.OWNER_EXECUTE); 
+
+        if ((mode&0040)>0)
+            perms.add(PosixFilePermission.GROUP_READ); 
+        if ((mode&0020)>0)
+            perms.add(PosixFilePermission.GROUP_WRITE); 
+        if ((mode&0010)>0)
+            perms.add(PosixFilePermission.GROUP_EXECUTE); 
+
+        if ((mode&0004)>0)
+            perms.add(PosixFilePermission.OTHERS_READ); 
+        if ((mode&0002)>0)
+            perms.add(PosixFilePermission.OTHERS_WRITE); 
+        if ((mode&0001)>0)
+            perms.add(PosixFilePermission.OTHERS_EXECUTE); 
+
+        return perms; 
+    }
+    
+    public void setUnixFileMode(int mode) throws IOException
+    {
+        Files.setPosixFilePermissions(_path, fromUnixFileMode(mode));
     }
     
 }

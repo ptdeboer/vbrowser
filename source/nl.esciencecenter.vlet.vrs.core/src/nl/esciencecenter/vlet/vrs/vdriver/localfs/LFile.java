@@ -115,7 +115,7 @@ public class LFile extends VFile implements VStreamAccessable,
     {
         String superNames[] = super.getAttributeNames();
 
-        if (localfs.isUnixFS())
+        if (localfs.hasPosixFS())
         {
             StringList list = new StringList(superNames);
             list.add(LocalFSFactory.unixFSAttributeNames);

@@ -110,7 +110,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
     {
         String superNames[] = super.getAttributeNames();
 
-        if (localfs.isUnixFS())
+        if (localfs.hasPosixFS())
         {
             StringList list = new StringList(superNames);
             list.add(LocalFSFactory.unixFSAttributeNames);

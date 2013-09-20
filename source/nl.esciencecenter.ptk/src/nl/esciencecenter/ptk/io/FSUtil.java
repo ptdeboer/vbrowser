@@ -527,5 +527,16 @@ public class FSUtil
             return false; 
         }        
     }
+
+    public boolean hasPosixFS()
+    {
+        if (GlobalProperties.isWindows())
+            return false; 
+        
+        if (GlobalProperties.isLinux())
+            return true; 
+        
+        return true; 
+    }
   
 }
