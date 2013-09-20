@@ -94,6 +94,20 @@ public abstract class FSNode
 	{
 		return URIFactory.basename(uri.getPath());  
 	}
+	
+    public String getBasename(boolean includeExtension)
+    {
+        String fileName=URIFactory.basename(uri.getPath());
+        
+        if (includeExtension)
+        {
+            return fileName;
+        }
+        else
+        {
+            return URIFactory.stripExtension(fileName);
+        }
+    }
 
 	public String getExtension()
 	{
@@ -229,5 +243,6 @@ public abstract class FSNode
 
     /** Create full directory path. */
     public abstract void mkdirs() throws IOException;
+
     
 }
