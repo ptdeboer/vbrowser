@@ -45,7 +45,9 @@ public class JAnimatedLabel extends JLabel
         super.setIcon(icon); 
     }
     
-    /** Explicitly set AnimatedIcon */ 
+    /** 
+     * Explicitly set AnimatedIcon
+     */ 
     public void setAnimatedIcon(AnimatedIcon icon) 
     {
         setIcon(icon); 
@@ -84,7 +86,9 @@ public class JAnimatedLabel extends JLabel
        return null;  
     }
     
-    /** Returns true is the Icon is of AnimatedIcon class */ 
+    /** 
+     * Returns true is the Icon is of AnimatedIcon class 
+     */ 
     public boolean isAnimated()
     {
         return (getAnimatedIcon()!=null); 
