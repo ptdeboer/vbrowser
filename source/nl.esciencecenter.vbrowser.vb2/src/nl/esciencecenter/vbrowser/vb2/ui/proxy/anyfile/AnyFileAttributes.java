@@ -20,6 +20,8 @@
 
 package nl.esciencecenter.vbrowser.vb2.ui.proxy.anyfile;
 
+import java.io.IOException;
+
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
@@ -60,7 +62,7 @@ public class AnyFileAttributes implements AttributeSource, IPresentable
             FileAttribute[] values = defaultFileAttributes; 
             String strValues[]=new String[values.length];
             for (int i=0;i<values.length;i++)
-                strValues[i]=values[i].toString();
+                strValues[i]=values[i].getName(); 
             return strValues; 
         }
     }
@@ -77,6 +79,8 @@ public class AnyFileAttributes implements AttributeSource, IPresentable
         defaultPresentation=Presentation.createDefault(); 
         
         defaultPresentation.setChildAttributeNames(FileAttribute.getStringValues()); 
+        defaultPresentation.setIconAttributeName(FileAttribute.ICON.getName());
+        
 //        Presentation.storeSchemeType(FSNode.FILE_SCHEME,ResourceType.FILE.toString(),defaultPresentation);
 //        Presentation.storeSchemeType(FSNode.FILE_SCHEME,ResourceType.DIRECTORY.toString(),defaultPresentation);
     }
@@ -105,30 +109,39 @@ public class AnyFileAttributes implements AttributeSource, IPresentable
             return null; 
         if (name.equals(""))
             return null; 
-
-        if (name.equals(""+FileAttribute.RESOURCE_TYPE))
+        
+        if (name.equalsIgnoreCase(""+FileAttribute.RESOURCE_TYPE))
             return new Attribute(name,anyFile.isFile()?"File":"Dir"); 
 
-        if (name.equals(""+FileAttribute.NAME))
+        if (name.equalsIgnoreCase(""+FileAttribute.NAME))
             return new Attribute(name,anyFile.getBasename());
 
-        if (name.equals(""+FileAttribute.BASENAME))
+        if (name.equalsIgnoreCase(""+FileAttribute.BASENAME))
             return new Attribute(name,anyFile.getBasename());
 
-        if (name.equals(""+FileAttribute.DIRNAME))
+        if (name.equalsIgnoreCase(""+FileAttribute.DIRNAME))
             return new Attribute(name,anyFile.getDirname());
-
-        if (name.equals(""+FileAttribute.MODIFICATION_TIME))
-            return new Attribute(name,anyFile.getModificationTime());
         
-        if (name.equals(""+FileAttribute.MODIFICATION_TIME_STRING))
-            return new Attribute(name,Presentation.createDate(anyFile.getModificationTime()));
-
-        if (name.equals(""+FileAttribute.LENGTH))
-            return new Attribute(name,anyFile.length());
+        try
+        {
+            if (name.equalsIgnoreCase(""+FileAttribute.MODIFICATION_TIME))
+                return new Attribute(name,anyFile.getModificationTime());
+            
+            if (name.equals(""+FileAttribute.MODIFICATION_TIME_STRING))
+                return new Attribute(name,Presentation.createDate(anyFile.getModificationTime()));
+            
+            if (name.equalsIgnoreCase(""+FileAttribute.LENGTH))
+                return new Attribute(name,anyFile.length());
+        }
+        catch (IOException e)
+        {
+            return new Attribute(name,"?"); 
+        }
         
-        if (name.equals(""+FileAttribute.PATH))
-            return new Attribute(name,anyFile.getPath());  
+        if (name.equalsIgnoreCase(""+FileAttribute.PATH))
+        {
+            return new Attribute(name,anyFile.getPath());
+        }
         
         return null; 
     }

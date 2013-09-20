@@ -30,6 +30,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.UIGlobal;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeNames;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
@@ -494,7 +495,14 @@ public abstract class ProxyNode
 	
     protected String[] getDefaultProxyAttributesNames()
     {
-        return new String[]{"icon","name","location","resourceType","mimeType"};
+        return new String[]
+            {
+                AttributeNames.ATTR_ICON,
+                AttributeNames.ATTR_NAME,
+                AttributeNames.ATTR_RESOURCE_TYPE,
+                AttributeNames.ATTR_URI,
+                AttributeNames.ATTR_MIMETYPE 
+            };
     }
     
     protected Attribute[] getDefaultProxyAttributes(String names[]) throws ProxyException
@@ -505,15 +513,15 @@ public abstract class ProxyNode
         for (int i=0;i<names.length;i++)
         {
             String name=names[i];
-            if (name.equals("icon"))
+            if (name.equals(AttributeNames.ATTR_ICON))
                 attrs[i]=new Attribute(name,this.getIconURL(this.getResourceStatus(), 48));
-            else if (name.equals("name"))
+            else if (name.equals(AttributeNames.ATTR_NAME))
                 attrs[i]=new Attribute(name,this.getName()); 
-            else if (name.equals("location"))
+            else if (name.equals(AttributeNames.ATTR_URI))
                 attrs[i]=new Attribute(name,this.getVRL()); 
-            else if (name.equals("resourceType"))
+            else if (name.equals(AttributeNames.ATTR_RESOURCE_TYPE))
                 attrs[i]=new Attribute(name,this.getResourceType()); 
-            else if (name.equals("mimeType"))
+            else if (name.equals(AttributeNames.ATTR_MIMETYPE))
                 attrs[i]=new Attribute(name,this.getMimeType());
         }
         return attrs; 
