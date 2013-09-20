@@ -67,7 +67,9 @@ public class SortUtil
         }
     }
     
-    /** Sort by name. Optionally sort by type first, then by name */
+    /** 
+     * Sort by name. 
+     */
     public static int[] sort(List<String> list, boolean ignoreCase)
     {
         if (list == null)
@@ -79,7 +81,9 @@ public class SortUtil
         return qsort.sort(list);
     }
     
-    /** In place sorting */ 
+    /** 
+     * In place sorting 
+     */ 
     public static int[] sort(List<Integer> list) 
     {
         if (list == null)
