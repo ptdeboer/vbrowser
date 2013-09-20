@@ -199,12 +199,31 @@ public abstract class FSNode
 	    return "(FSNode)"+this.getURI().toString(); 
 	}
 	
+    public boolean sync()
+    {
+        return false; 
+    }
+
+    /**
+     * Returns creation time in millis since EPOCH, if supported. Returns -1 otherwise. 
+     */
+    public long getCreationTime() throws IOException
+    {
+        return -1;
+    }
+
+    /**
+     * Returns creation time in millis since EPOCH, if supported. Returns -1 otherwise. 
+     */
+    public long getAccessTime() throws IOException
+    {
+        return -1;
+    }
+    
     // =======================================================================
     // Abstract Interface 
     // =======================================================================
 
-	// === File/Directory methods === // 
-	
 	/** 
 	 * FSNode factory method, optionally resolves path against parent FSNode.
 	 */ 
@@ -225,8 +244,10 @@ public abstract class FSNode
      * @throws IOException */ 
     public abstract long length() throws IOException;
     
-    /** Modification time in milli seconds since epoch. 
-     * @throws IOException */ 
+    /**
+     * Last modification time in milli seconds since epoch. May return -1 if attribute is not supported. 
+     * @throws IOException 
+     */ 
     public abstract long getModificationTime() throws IOException;
 
     /** Logical parent */ 
@@ -248,7 +269,6 @@ public abstract class FSNode
 
     /** Create full directory path. */
     public abstract void mkdirs() throws IOException;
-
   
     
 }

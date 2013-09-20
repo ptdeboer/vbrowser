@@ -33,10 +33,14 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.PosixFileAttributes;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import javax.naming.directory.BasicAttributes;
 
 /** 
  * Local file implementation of FSNode based on java.io.File;   
@@ -45,6 +49,8 @@ public class LocalFSNode extends FSNode
 {
     // nio ! 
 	private Path _path;
+    private BasicFileAttributes basicAttrs;
+    private PosixFileAttributes posixAttrs;
 	
     public LocalFSNode(Path path)
     {
@@ -56,6 +62,14 @@ public class LocalFSNode extends FSNode
 	{
 	    setURI(path.toUri()); 
 		this._path=path;   
+	}
+	
+	@Override
+	public boolean sync()
+	{
+	    this.basicAttrs=null;
+	    this.posixAttrs=null;
+	    return true; 
 	}
 	
 	public LocalFSNode(URI loc) 
@@ -163,9 +177,23 @@ public class LocalFSNode extends FSNode
 	@Override
 	public long getModificationTime() throws IOException 
 	{
-	    FileTime value = Files.getLastModifiedTime(_path);
+	    FileTime value = getBasicAttributes().lastModifiedTime();
 	    return value.toMillis(); 
 	}
+
+	@Override
+	public long getCreationTime() throws IOException 
+	{
+	    FileTime value = getBasicAttributes().creationTime();
+	    return value.toMillis(); 
+    }
+
+	@Override
+	public long getAccessTime() throws IOException 
+	{
+	    FileTime value = getBasicAttributes().lastAccessTime();
+	    return value.toMillis(); 
+    }
 
 	@Override
 	public LocalFSNode newFile(String path) throws FileURISyntaxException 
@@ -185,4 +213,40 @@ public class LocalFSNode extends FSNode
         return Files.isSymbolicLink(_path); 
     }
 
+    public BasicFileAttributes getBasicAttributes() throws IOException
+    {
+        if (basicAttrs==null)
+        {
+            basicAttrs= Files.readAttributes(_path, BasicFileAttributes.class);
+        }
+        return basicAttrs; 
+    }
+    
+    public PosixFileAttributes getPosixAttributes() throws IOException
+    {
+        if (posixAttrs==null)
+        {
+            posixAttrs= Files.readAttributes(_path, PosixFileAttributes.class);
+        }
+        return posixAttrs; 
+    }
+
+    public boolean isReadable()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public boolean isWritable()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public boolean isHidden()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+    
 }
