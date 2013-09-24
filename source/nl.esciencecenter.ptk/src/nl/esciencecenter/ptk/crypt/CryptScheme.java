@@ -13,7 +13,7 @@ public enum CryptScheme
     DESEDE_ECB_PKCS5("DESede","DESede/ECB/PKCS5Padding",24),
     
     /**
-     * Single DES, Electronic Coockbook and PKC5 Padding. 
+     * Single DES, Electronic Cook Book and PKC5 Padding. 
      * @deprecated Do not use single DES
      */ 
     DES_ECB_PKCS5("DES","DES/ECB/PKCS5Padding",16),
@@ -23,13 +23,13 @@ public enum CryptScheme
      */
     AES128_ECB_PKCS5("AES","AES/ECB/PKCS5Padding",16),
 
-    ///** 
-    // * AES-192 Encryption. Need unlimited policy files for bit keys > 128  
-    // */
-    //AES192_ECB_PKCS5("AES","AES/ECB/PKCS5Padding",24),
+    /** 
+     * AES-192 Encryption. Need unlimited policy files for bit keys > 128  
+     */
+    AES192_ECB_PKCS5("AES","AES/ECB/PKCS5Padding",24),
 
     /**
-     * AES-192 Encryption. Need unlimited policy files for bit keys > 128 
+     * AES-256 Encryption. Need unlimited policy files for bit keys > 128 
      */
     AES256_ECB_PKCS5("AES","AES/ECB/PKCS5Padding",32),
 
