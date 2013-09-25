@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -122,7 +123,18 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
             if (enableMetaMenu==false)
                 return; 
             
-            if ( (e.getModifiers() & Event.META_MASK)>0)
+            Object source = e.getSource(); 
+            boolean show=false;
+            
+            // left click on icon 
+            if ( (source==fileIconLbl) && ((e.getModifiers() & Event.META_MASK)==0) )
+                show=true;
+            
+            // right (meta) click on TextField:
+            if ( (source==locationTF) && ((e.getModifiers() & Event.META_MASK)>0) )
+                show=true;
+            
+            if (show)
             {
                 showMetaMenu(e.getX(),e.getY()); 
             }
@@ -141,7 +153,9 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
     
     protected String fileExtensions[]=null;
     
-    protected boolean enableMetaMenu=true; 
+    protected boolean enableMetaMenu=true;
+
+    private LSFMouseListener fieldMouseListener; 
     
     public LocationSelectionField(LocationType type)
     {
@@ -152,13 +166,16 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
 
     public void initGui()
     {
+        this.fieldMouseListener=new LSFMouseListener();
+        
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setBorder(new LineBorder(Color.GRAY));
         
         {
             fileIconLbl = new JLabel("");
             add(fileIconLbl);
-            fileIconLbl.setIcon(loadIcon("files/directory16.png")); 
+            fileIconLbl.setIcon(loadIcon("files/directory16.png"));
+            fileIconLbl.addMouseListener(fieldMouseListener);
         }
         
         {
@@ -167,7 +184,7 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
             add(locationTF);
             locationTF.setColumns(10);
             locationTF.setBorder(new EmptyBorder(2,2,2,2));
-            locationTF.addMouseListener(new LSFMouseListener());
+            locationTF.addMouseListener(fieldMouseListener);
             
             FileLocationEvaluator evaluator=new FileLocationEvaluator(locationTF);
             locationTF.addActionListener(evaluator);
@@ -217,7 +234,7 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
     	}
     }
     
-    public void setIcon(Icon icon)
+    public void setFileIcon(Icon icon)
     {
         fileIconLbl.setIcon(icon); 
     }
@@ -293,17 +310,29 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
     public void showMetaMenu(int relX,int relY)
     {
         JPopupMenu popUp=new JPopupMenu();  
+
+        {
+            JMenuItem mi=new JMenuItem("Location"); 
+            popUp.add(mi); 
+            mi.setEnabled(false); 
+        }
         
-        JMenuItem mi=new JMenuItem("Browse"); 
-        mi.addActionListener(new ActionListener(){
+        popUp.add(new JSeparator()); 
+        
+        {
+            JMenuItem mi=new JMenuItem("Browse"); 
+            mi.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent e){
                     showFileSelector(); 
                 }    
             });
+            
+            mi.setActionCommand("Browse");
+            popUp.add(mi);
+        }
         
-        mi.setActionCommand("Browse");
-        popUp.add(mi); 
+         
         popUp.show(this, relX, relY);
     }
     
