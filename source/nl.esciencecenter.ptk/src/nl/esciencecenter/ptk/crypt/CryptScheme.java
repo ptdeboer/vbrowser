@@ -10,18 +10,18 @@ public enum CryptScheme
     /** 
      * Triple DES (E-D-E), Electronic Cook Book and PKC5 Padding.
      */ 
-    DESEDE_ECB_PKCS5("DESede","DESede/ECB/PKCS5Padding",24),
+    DESEDE_ECB_PKCS5("DESede","DESede","DESede/ECB/PKCS5Padding",24),
     
     /**
      * Single DES, Electronic Coockbook and PKC5 Padding. 
      * @deprecated Do not use single DES
      */ 
-    DES_ECB_PKCS5("DES","DES/ECB/PKCS5Padding",16),
+    DES_ECB_PKCS5("DES","DES","DES/ECB/PKCS5Padding",16),
     
     /** 
      * AES-128 Encryption, ECB and PKC5 PAddding. 
      */
-    AES128_ECB_PKCS5("AES","AES/ECB/PKCS5Padding",16),
+    AES128_ECB_PKCS5("AES-128","AES","AES/ECB/PKCS5Padding",16),
 
     ///** 
     // * AES-192 Encryption. Need unlimited policy files for bit keys > 128  
@@ -31,15 +31,21 @@ public enum CryptScheme
     /**
      * AES-192 Encryption. Need unlimited policy files for bit keys > 128 
      */
-    AES256_ECB_PKCS5("AES","AES/ECB/PKCS5Padding",32),
+    AES256_ECB_PKCS5("AES-256","AES","AES/ECB/PKCS5Padding",32),
 
     ; 
     // === //
     
     /** 
-     * Encryption Scheme
+     * Encryption Scheme alias. 
      */ 
-    protected String schemeName;
+    protected String schemeAlias;
+
+    /** 
+     * Type of Scheme 
+     */ 
+    protected String schemeFamily;
+
     
     /** 
      * Full Configuration String 
@@ -53,19 +59,28 @@ public enum CryptScheme
      */ 
     protected int keyLength; 
         
-    private CryptScheme(String cryptScheme,String configName,int keyLength)
+    private CryptScheme(String shemeAlias,String schemeFamily,String configName,int keyLength)
     {
-        this.schemeName=cryptScheme; 
+        this.schemeAlias=shemeAlias; 
+        this.schemeFamily=schemeFamily; 
         this.configString=configName;
         this.keyLength=keyLength; 
     }
     
     /** 
-     * @return Used encryption Scheme. 
+     * @return Used encryption scheme symbolic name or alias. 
      */
-    public String getSchemeName()
+    public String getSchemeAlias()
     {
-        return schemeName; 
+        return schemeAlias; 
+    }
+        
+    /** 
+     * @return Actually used Cipher Scheme (DES,AES)
+     */
+    public String getCipherScheme()
+    {
+        return schemeFamily;
     }
     
     /** 
@@ -77,7 +92,9 @@ public enum CryptScheme
         return configString; 
     }
     
-    /** 
+    /**
+     * Returns siginicant key length. 
+     * Smaller key are rejected. Longer key might be truncated or XOR-ed with their remainder.  
      * @return Significant Key Length in bytes.  
      */
     public int getKeyLength()
