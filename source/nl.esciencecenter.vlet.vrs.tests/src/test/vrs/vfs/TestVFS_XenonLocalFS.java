@@ -21,15 +21,16 @@
 
 package test.vrs.vfs;
 
-import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
+import nl.esciencecenter.vbrowser.vrs.xenon.XenonFSFactory;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.VletConfig;
 import nl.esciencecenter.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.VRSFactory;
 import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
 import test.TestSettings;
 
 
-public class TestVFS_OctopusLocalFS extends TestVFS
+public class TestVFS_XenonLocalFS extends TestVFS
 {
     private static final VFSClient vfs=null;
     
@@ -52,7 +53,7 @@ public class TestVFS_OctopusLocalFS extends TestVFS
                 
         VletConfig.init();
         VRS.getRegistry().unregisterVRSDriverClass(nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory.class); 
-        VRS.getRegistry().registerVRSDriverClass(OctopusFSFactory.class);
+        VRS.getRegistry().registerVRSDriverClass(XenonFSFactory.class);
         
         VFSClient vfs=VFSClient.getDefault(); 
         return vfs; 
@@ -62,6 +63,12 @@ public class TestVFS_OctopusLocalFS extends TestVFS
     public VRL getRemoteLocation()
     {
         return TestSettings.getTestLocation(TestSettings.VFS_LOCALFS_LOCATION); 
+    }
+    
+    @Override
+    public Class<? extends VRSFactory> getVRSFactoryClass()
+    {
+        return XenonFSFactory.class;
     }
 
 }

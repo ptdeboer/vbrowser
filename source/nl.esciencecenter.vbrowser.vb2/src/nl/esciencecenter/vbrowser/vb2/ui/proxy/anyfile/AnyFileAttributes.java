@@ -140,7 +140,7 @@ public class AnyFileAttributes implements AttributeSource, IPresentable
         
         if (name.equalsIgnoreCase(""+FileAttribute.PATH))
         {
-            return new Attribute(name,anyFile.getPath());
+            return new Attribute(name,anyFile.getPathname());
         }
         
         return null; 

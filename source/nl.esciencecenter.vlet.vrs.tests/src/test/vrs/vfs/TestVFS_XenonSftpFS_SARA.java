@@ -22,35 +22,26 @@
 package test.vrs.vfs;
 
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.esciencecenter.vlet.vrs.ServerInfo;
 import test.TestSettings;
 
-public class TestVFS_OctopusSftpFS_localhost extends TestVFS
+public class TestVFS_XenonSftpFS_SARA extends TestVFS
 {
     static
     {
         try
         {
-            TestVFS_OctopusLocalFS.initOctopus();
+            TestVFS_XenonLocalFS.initOctopus(); 
         }
         catch (Exception e)
         {
             e.printStackTrace();
         } 
-        
-    }
-    
-    protected void checkAuthentication() throws Exception
-    {
-        ServerInfo info=this.getVRSContext().getServerInfoFor(this.getRemoteLocation(), true); 
-        info.setAttribute(ServerInfo.ATTR_SSH_IDENTITY,"test_rsa"); 
-        info.store();
     }
     
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestSettings.VFS_SFTP_LOCALHOST_TESTUSER); 
+        return TestSettings.getTestLocation(TestSettings.VFS_SFTP_SARA_LOCATION); 
     }
 
 }

@@ -84,13 +84,16 @@ public abstract class FSNode
     }
     
     /** 
-     * Returns absolute and normalized URI path.   
+     * Returns absolute and normalized URI path as String.   
      */ 
-    public String getPath()
+    public String getPathname()
     {
     	return uri.getPath(); 
     }
-    
+
+    /** 
+     * Returns last part of the path inlcuding extension.    
+     */ 
 	public String getBasename() 
 	{
 		return URIFactory.basename(uri.getPath());  

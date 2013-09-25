@@ -89,7 +89,7 @@ public class ITTestFSUtil
 	public void testCreateDeleteDir() throws Exception
 	{
 	    FSNode tDir=getTestDir();
-	    String path=tDir.getPath(); 
+	    String path=tDir.getPathname(); 
 	    String subdir="subdir"; 
 	    FSNode subDir=tDir.getNode(subdir);
 	    Assert.assertFalse("Subdirectory already exists:"+subDir,subDir.exists()); 
@@ -98,7 +98,7 @@ public class ITTestFSUtil
 	    Assert.assertTrue("Subdirectory must be directory after mkdir():"+subDir,subDir.isDirectory());
         if (subDir.isLocal())
         {
-            java.io.File jfile=new java.io.File(subDir.getPath());
+            java.io.File jfile=new java.io.File(subDir.getPathname());
             Assert.assertTrue("A local created file must be compatible with an existing (local) java.io.File",jfile.exists()); 
             Assert.assertTrue("A local directory must be a real 'Directory' type",jfile.isDirectory()); 
         }
@@ -117,7 +117,7 @@ public class ITTestFSUtil
 	public void testCreateDeleteFile(FSNode parent,String fileName) throws Exception
 	{
         FSNode tDir=getTestDir();
-        String path=tDir.getPath(); 
+        String path=tDir.getPathname(); 
  
         FSNode file=tDir.getNode(fileName);
         Assert.assertFalse("Test file already exists:"+file,file.exists()); 
@@ -126,7 +126,7 @@ public class ITTestFSUtil
         Assert.assertTrue("Test file be of file type after create():"+file,file.isFile());
         if (file.isLocal())
         {
-            java.io.File jfile=new java.io.File(file.getPath());
+            java.io.File jfile=new java.io.File(file.getPathname());
             Assert.assertTrue("A local created file must be compatible with an existing (local) java.io.File",jfile.exists()); 
             Assert.assertTrue("A local file must be a real 'file' type",jfile.isFile()); 
         }

@@ -20,9 +20,6 @@
 
 package nl.esciencecenter.ptk.io;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,7 +31,6 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
@@ -43,10 +39,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.naming.directory.BasicAttributes;
-
 /** 
- * Local file implementation of FSNode based on java.io.File;   
+ * Local file implementation of FSNode based on java.nio.Files;   
  */ 
 public class LocalFSNode extends FSNode
 {
@@ -166,7 +160,7 @@ public class LocalFSNode extends FSNode
 	}
 	
 	@Override
-	public String getPath() 
+	public String getPathname() 
 	{
 		return _path.toUri().getPath();  
 	}
