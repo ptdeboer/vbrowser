@@ -18,10 +18,8 @@
  */
 // source: 
 
-package nl.esciencecenter.vbrowser.vrs.octopus;
+package nl.esciencecenter.vbrowser.vrs.xenon;
 
-import nl.esciencecenter.ptk.util.StringUtil;
-import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
@@ -34,7 +32,7 @@ import nl.esciencecenter.vlet.vrs.vfs.VFileSystem;
 /**
  *  Octopus Meta FSFactory. 
  */ 
-public class OctopusFSFactory extends VFSFactory
+public class XenonFSFactory extends VFSFactory
 {
 	// ========================================================================
 	// Static 
@@ -45,8 +43,8 @@ public class OctopusFSFactory extends VFSFactory
 			VRS.FILE_SCHEME,
 			VRS.SFTP_SCHEME,
 			// for testing only:
-			"octopus."+VRS.FILE_SCHEME,
-			"octopus."+VRS.SFTP_SCHEME
+			"xenon."+VRS.FILE_SCHEME,
+			"xenon."+VRS.SFTP_SCHEME
 		}; 
 
 	// ========================================================================
@@ -64,12 +62,12 @@ public class OctopusFSFactory extends VFSFactory
 		return fs; 
 	}
 	
-	public OctopusFS createNewFileSystem(VRSContext context,ServerInfo info, VRL location) throws VrsException
+	public XenonFS createNewFileSystem(VRSContext context,ServerInfo info, VRL location) throws VrsException
 	{
 		// Create new FileSystem instance. 
 		// Use VRSContext for user context dependend specific settings. 
 		// Checks ServerInfo for Resource Info settings and properties. 
-		return new OctopusFS(context,info,location);
+		return new XenonFS(context,info,location);
 	}
 		
 	@Override
@@ -81,7 +79,7 @@ public class OctopusFSFactory extends VFSFactory
 	@Override
 	public String getName() 
 	{
-		return "OctopusRS";
+		return "XenonRS";
 	}
 
 	@Override

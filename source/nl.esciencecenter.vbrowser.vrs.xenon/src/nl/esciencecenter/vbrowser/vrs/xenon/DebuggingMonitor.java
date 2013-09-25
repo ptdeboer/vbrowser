@@ -1,4 +1,4 @@
-package nl.esciencecenter.vbrowser.vrs.octopus;
+package nl.esciencecenter.vbrowser.vrs.xenon;
 
 import nl.esciencecenter.ptk.task.TaskMonitorAdaptor;
 

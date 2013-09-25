@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.esciencecenter.vbrowser.vrs.octopus;
+package nl.esciencecenter.vbrowser.vrs.xenon;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,20 +32,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import nl.esciencecenter.octopus.Octopus;
-import nl.esciencecenter.octopus.credentials.Credential;
-import nl.esciencecenter.octopus.credentials.Credentials;
-import nl.esciencecenter.octopus.engine.OctopusEngine;
-import nl.esciencecenter.octopus.exceptions.OctopusException;
-import nl.esciencecenter.octopus.exceptions.OctopusIOException;
-import nl.esciencecenter.octopus.files.Path;
-import nl.esciencecenter.octopus.files.DirectoryStream;
-import nl.esciencecenter.octopus.files.FileAttributes;
-import nl.esciencecenter.octopus.files.FileSystem;
-import nl.esciencecenter.octopus.files.OpenOption;
-import nl.esciencecenter.octopus.files.PathAttributesPair;
-import nl.esciencecenter.octopus.files.PosixFilePermission;
-import nl.esciencecenter.octopus.files.Pathname;
+import nl.esciencecenter.xenon.Xenon;
+import nl.esciencecenter.xenon.XenonException;
+import nl.esciencecenter.xenon.credentials.Credential;
+import nl.esciencecenter.xenon.credentials.Credentials;
+import nl.esciencecenter.xenon.engine.XenonEngine;
+import nl.esciencecenter.xenon.files.Path;
+import nl.esciencecenter.xenon.files.DirectoryStream;
+import nl.esciencecenter.xenon.files.FileAttributes;
+import nl.esciencecenter.xenon.files.FileSystem;
+import nl.esciencecenter.xenon.files.OpenOption;
+import nl.esciencecenter.xenon.files.PathAttributesPair;
+import nl.esciencecenter.xenon.files.PosixFilePermission;
+import nl.esciencecenter.xenon.files.RelativePath;
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.SecretHolder;
 import nl.esciencecenter.ptk.io.FSUtil;
@@ -58,26 +57,26 @@ import nl.esciencecenter.vlet.VletConfig;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
 import nl.esciencecenter.vlet.vrs.VRSContext;
 
-public class OctopusClient
+public class XenonClient
 {
     private static ClassLogger logger; 
     
     static
     {
-        logger=ClassLogger.getLogger(OctopusClient.class); 
+        logger=ClassLogger.getLogger(XenonClient.class); 
         logger.setLevelToDebug(); 
     }
     
     /** 
-     * Create OctopusClient and initialize Octopus Engine for the specified VRSContext. 
+     * Create XenonClient and initialize Xenon Engine for the specified VRSContext. 
      * Optionally add properties from ServerInfo to the initialization. 
      * 
      * @param vrsContext - The VRSContext  
      * @param serverInfo - specific remote resource configuration. 
-     * @return new OctopusClient. 
+     * @return new XenonClient. 
      * @throws VrsException
      */
-    public static OctopusClient createFor(VRSContext vrsContext, ServerInfo serverInfo) throws VrsException
+    public static XenonClient createFor(VRSContext vrsContext, ServerInfo serverInfo) throws VrsException
     {
         // check shared clients here. 
         try
@@ -85,20 +84,20 @@ public class OctopusClient
             Map<String,String> props=new Hashtable<String,String>(); 
 
             // lib subdirs. when started from eclipse, these might not exist!
-            String subDirs[]={"octopus","auxlib/octopus","vdriver/octopus"};
+            String subDirs[]={"xenon","auxlib/xenon","vdriver/xenon"};
             
             for (String subDir:subDirs)
             {
                 String octoDir=VletConfig.getInstallationLibDir().resolvePath(subDir).getPath(); 
                 if (FSUtil.getDefault().existsDir(octoDir))
                 {
-                    ClassLogger.getLogger(OctopusClient.class).infoPrintf("Using ocotopus dir:%s\n",octoDir); 
-                    props.put("octopus.adaptor.dir",octoDir);
+                    ClassLogger.getLogger(XenonClient.class).infoPrintf("Using ocotopus dir:%s\n",octoDir); 
+                    props.put("xenon.adaptor.dir",octoDir);
                     break;
                 }
             }
             
-            OctopusClient client = new OctopusClient(props); 
+            XenonClient client = new XenonClient(props); 
             client.updateProperties(vrsContext,serverInfo); 
             return client;
         }
@@ -144,7 +143,7 @@ public class OctopusClient
     }
     // === instance == 
     
-    private Octopus engine;
+    private Xenon engine;
     private Map<String, String> octoProperties;
     private VRL userHomeDir;
     private String userName;
@@ -153,11 +152,11 @@ public class OctopusClient
     /**
      * Protected constructor: Use factory method.
      */
-    protected OctopusClient(Map<String,String> props) throws OctopusException
+    protected XenonClient(Map<String,String> props) throws XenonException
     {
         octoProperties=props;
         //octoCredentials=new Credentials(); 
-        engine=OctopusEngine.newOctopus(octoProperties); 
+        engine=XenonEngine.newXenon(octoProperties); 
     }
     
     protected void updateProperties(VRSContext context, ServerInfo info)
@@ -177,7 +176,7 @@ public class OctopusClient
         return this.userHomeDir; 
     }
     
-    public Path resolvePath(FileSystem octoFS,String pathString) throws OctopusIOException, OctopusException
+    public Path resolvePath(FileSystem octoFS,String pathString) throws XenonException
     {
         boolean startsWithTilde=false;  
                 
@@ -195,37 +194,37 @@ public class OctopusClient
             startsWithTilde=true; 
         }
         
-        Pathname relativePath=new Pathname(pathString);
+        RelativePath relativePath=new RelativePath(pathString);
         Path path=engine.files().newPath(octoFS, relativePath); 
 
         return path; 
     }
     
-    public Path resolvePath(FileSystem octoFS, Pathname relativePath) throws OctopusIOException, OctopusException
+    public Path resolvePath(FileSystem octoFS, RelativePath relativePath) throws XenonException, XenonException
     {
         return engine.files().newPath(octoFS, relativePath); 
     }
     
-    public FileSystem createFileSystem(java.net.URI uri) throws OctopusIOException, OctopusException
+    public FileSystem createFileSystem(java.net.URI uri) throws XenonException, XenonException
     {
-        return engine.files().newFileSystem(uri, null, octoProperties);
+        return engine.files().newFileSystem(uri.getScheme(),"/", null, octoProperties);
     }
  
-    public FileSystem createFileSystem(java.net.URI uri,Credential cred) throws OctopusIOException, OctopusException
+    public FileSystem createFileSystem(java.net.URI uri,Credential cred) throws XenonException, XenonException
     {
-        return engine.files().newFileSystem(uri, cred, octoProperties);
+        return engine.files().newFileSystem(uri.getScheme(),"/", cred, octoProperties);
     }
     
-    public FileAttributes statPath(Path path) throws OctopusIOException
+    public FileAttributes statPath(Path path) throws XenonException
     {
         return engine.files().getAttributes(path); 
     }
 
     /**
      *  Stat Directory including attributes
-     * @throws OctopusException 
+     * @throws XenonException 
       */ 
-    public List<PathAttributesPair> statDir(Path octoPath) throws OctopusIOException, OctopusException
+    public List<PathAttributesPair> statDir(Path octoPath) throws XenonException, XenonException
     {
         DirectoryStream<PathAttributesPair> dirIterator = engine.files().newAttributesDirectoryStream(octoPath); 
 
@@ -248,7 +247,7 @@ public class OctopusClient
             {
                 // happens when file is a borken link. but can not check that here. 
                 // lastException=e;
-                //Pathname dummyPath=octoPath.getPathname().resolve("?#"+count);
+                //RelativePath dummyPath=octoPath.getRelativePath().resolve("?#"+count);
                 Path dummyPath = resolvePath(octoPath.getFileSystem(),"?#"+count); 
                 paths.add(new NillPathAttributesPair(dummyPath,null,e));
                 logger.logException(ClassLogger.ERROR, this, e, "Couldn't get next when listing directory:"+octoPath);
@@ -265,7 +264,7 @@ public class OctopusClient
     /** 
      * list files only without attributes 
      */ 
-    public List<Path> listDir(Path octoPath) throws OctopusIOException
+    public List<Path> listDir(Path octoPath) throws XenonException
     {
         DirectoryStream<Path> dirIterator = engine.files().newDirectoryStream(octoPath); 
 
@@ -277,7 +276,7 @@ public class OctopusClient
         {
             Path el = iterator.next();
             paths.add(el); 
-            System.err.printf("***>> adding:%s\n",el.getPathname());
+            System.err.printf("***>> adding:%s\n",el.getRelativePath());
         }
         
         if (paths.size()==0)
@@ -286,25 +285,25 @@ public class OctopusClient
         return paths;
     }
 
-    public FileAttributes getFileAttributes(Path octoPath) throws OctopusIOException
+    public FileAttributes getFileAttributes(Path octoPath) throws XenonException
     {
         return engine.files().getAttributes(octoPath); 
     }
 
-    public boolean deleteFile(Path octoPath, boolean force) throws OctopusIOException
+    public boolean deleteFile(Path octoPath, boolean force) throws XenonException
     {
         engine.files().delete(octoPath); 
         return true; // no exceptions 
     }
     
-    public boolean exists(Path octoPath) throws OctopusIOException
+    public boolean exists(Path octoPath) throws XenonException
     {
         return engine.files().exists(octoPath); 
     }
 
-    public Path mkdir(Path octoPath) throws OctopusIOException
+    public void mkdir(Path octoPath) throws XenonException
     {
-        return engine.files().createDirectory(octoPath); //,getDefaultDirPermissions());
+        engine.files().createDirectory(octoPath);
     }
 
     public Set<PosixFilePermission> createPermissions(int mode)
@@ -378,19 +377,19 @@ public class OctopusClient
         return createPermissions(0755); // octal 
     }
      
-    public Path createFile(Path octoPath) throws OctopusIOException
+    public void createFile(Path octoPath) throws XenonException
     {
-        return engine.files().createFile(octoPath); //, getDefaultFilePermissions());
+        engine.files().createFile(octoPath); //, getDefaultFilePermissions());
     }
 
-    public InputStream createInputStream(Path octoPath) throws OctopusIOException
+    public InputStream createInputStream(Path octoPath) throws XenonException
     {
         return engine.files().newInputStream(octoPath);
     }
 
     // Open existing file and rewrite contents. If appen==true the OutputStream
     // will start at the end of the file. 
-    public OutputStream createAppendingOutputStream(Path path, boolean append) throws IOException
+    public OutputStream createAppendingOutputStream(Path path, boolean append) throws XenonException
     {
         OpenOption opts[]=new OpenOption[1];
 
@@ -404,12 +403,11 @@ public class OctopusClient
         }
         
         return engine.files().newOutputStream(path, opts); 
-        
     }
 
     // Create new OutputStream, optionally create new file if it doesn exists,
     // old file will be deleted. 
-    public OutputStream createNewOutputStream(Path path, boolean ignoreExisting) throws IOException
+    public OutputStream createNewOutputStream(Path path, boolean ignoreExisting) throws XenonException
     {
         OpenOption opts[];
         
@@ -431,30 +429,39 @@ public class OctopusClient
         
     }
     
-    public void rmdir(Path octoPath) throws OctopusIOException
+    public void rmdir(Path octoPath) throws XenonException
     {
         //DeleteOption options;
         engine.files().delete(octoPath) ;; // (octoPath,options);  
     }
 
-    public Path rename(Path oldPath, Path newPath) throws VrsException, OctopusIOException
+    public void rename(Path oldPath, Path newPath) throws VrsException, XenonException
     {
         // Move must here be a rename on the same filesystem!
 
         if (checkSameFilesystem(oldPath,newPath)==false)
             throw new VrsException("Cannot rename file when new file is on other file system:"+oldPath+"=>"+newPath); 
         
-        Path actualPath=engine.files().move(oldPath, newPath);
-        return actualPath;
+        engine.files().move(oldPath, newPath);
     }
 
     public boolean checkSameFilesystem(Path path1, Path path2)
     {
-        URI uri1 = path1.getFileSystem().getUri(); 
-        URI uri2 = path2.getFileSystem().getUri(); 
+        FileSystem fs1 = path1.getFileSystem(); 
+        FileSystem fs2 = path2.getFileSystem(); 
         
-        if (StringUtil.compare(uri1.getHost(),uri2.getHost())!=0) 
-            return false;
+        if (fs1!=fs2)
+        {
+            return false; 
+        }
+        
+        logger.errorPrintf("FIXME:Cannot compare fileSystems yet!"); 
+        
+//        URI uri1 = path1.getFileSystem().getUri(); 
+//        URI uri2 = path2.getFileSystem().getUri(); 
+//        
+//        if (StringUtil.compare(uri1.getHost(),uri2.getHost())!=0) 
+//            return false;
         
 //        if (StringUtil.compare(uri1.getHost(),uri2.getHost())!=0) 
 //            return false;
@@ -462,7 +469,7 @@ public class OctopusClient
         return true; 
     }
     
-    public Credential createSSHCredentials(ServerInfo info) throws OctopusException, VRLSyntaxException
+    public Credential createSSHCredentials(ServerInfo info) throws XenonException, VRLSyntaxException
     {
         String sshUser=info.getUsername(); 
         String ssh_id_key_file=info.getAttributeValue(ServerInfo.ATTR_SSH_IDENTITY);          

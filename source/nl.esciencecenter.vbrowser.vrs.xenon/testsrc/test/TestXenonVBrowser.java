@@ -20,48 +20,39 @@
 
 package test;
 
-import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
-import nl.esciencecenter.vlet.VletConfig;
-import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.vfs.VDir;
 import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
 import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 
-public class TestOctopusSftpFS
+public class TestXenonVBrowser
 {
-    private static VFSClient vfs=null; 
-    
-    public static VFSClient initOctopusVFS() throws Exception
+	
+	public static void main(String args[]) throws Exception
     {
-        if (vfs!=null)
-            return vfs; 
+	    
+	    // The VBrowser classes must be in the classpath to be able to start this. 
+        nl.esciencecenter.vlet.gui.startVBrowser.main(args);
         
-        VletConfig.init();
-        VRS.getRegistry().unregisterVRSDriverClass(nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory.class); 
-        VRS.getRegistry().registerVRSDriverClass(OctopusFSFactory.class);
-        
-        VFSClient vfs=VFSClient.getDefault(); 
-        return vfs; 
-    }
-    
-    public static void main(String args[]) throws Exception
-    {
-        VFSClient vfs=initOctopusVFS(); 
-        
-        VDir dir = vfs.getDir("sftp://localhost/home/"+VletConfig.getUserName()); 
+        testGetDir(); 
 
-        System.out.printf(">>> Dir:"+dir); 
+    }
+
+    private static void testGetDir() throws Exception
+    {
+        VFSClient vfs=TestXenonFS.initXenonVFS(); 
+        
+        VDir dir = vfs.getDir("file:/home/ptdeboer/test"); 
+        
         VFSNode[] nodes = dir.list(); 
         
-        System.out.printf(">>> Dir.list():\n"); 
-        
+        System.out.printf(">>> Dir:"+dir); 
         for (int i=0;i<nodes.length;i++)
         {
             System.out.printf(" - node[#%d] =%s\n",i,nodes[i]);
-            System.out.printf(" - node[#%d].getPath() =%s\n",i,nodes[i].getPath());
-
         }
+
         
     }
-    
+
+
 }
