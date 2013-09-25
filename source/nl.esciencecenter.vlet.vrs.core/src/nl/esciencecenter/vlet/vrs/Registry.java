@@ -273,8 +273,8 @@ public final class Registry // todo: change to vrs protected class.
             registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.vdriver.infors.InfoRSFactory");
             
             // auto configuration of octopus vs local adaptors. 
-            boolean result=registerVRSDriverClassNoError(currentLoader,"nl.esciencecenter.vbrowser.vrs.xenon.XenonFSFactory");
-            if (result==false)
+            //boolean result=registerVRSDriverClassNoError(currentLoader,"nl.esciencecenter.vbrowser.vrs.xenon.XenonFSFactory");
+            //if (result==false)
             {
                 registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory");
                 registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.ssh.jcraft.SftpFSFactory");
