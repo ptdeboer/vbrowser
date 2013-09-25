@@ -138,20 +138,11 @@ public class XenonFS extends FileSystemNode
      */ 
     public VRL createVRL(Path path) throws VrsException 
     {
-        try
-        {
-            FileSystem fs = path.getFileSystem(); 
-            String pathstr=path.getRelativePath().getAbsolutePath();
-            VRL fsVrl=new VRL(fs.getScheme()+":"+fs.getLocation()); 
-            return fsVrl.replacePath(pathstr); 
-        }
-        catch (Exception e)
-        {
-            throw new VrsException(e.getMessage(),e);
-        }
+        VRL fsVrl=this.getVRL(); 
+        String pathstr=path.getRelativePath().getAbsolutePath();
+        return fsVrl.replacePath(pathstr); 
     }
-    
-   
+       
     @Override
     public XenonDir newDir(VRL pathVrl) throws VrsException
     {
