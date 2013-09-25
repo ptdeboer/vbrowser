@@ -183,12 +183,12 @@ public class LFile extends VFile implements VStreamAccessable,
 
     public boolean isReadable()
     {
-        return fsNode.isReadable();  
+        return fsNode.toJavaFile().canRead();
     }
 
     public boolean isWritable()
     {
-        return fsNode.isWritable();
+        return fsNode.toJavaFile().canWrite();
     }
 
     public boolean create() throws VrsException
@@ -279,7 +279,18 @@ public class LFile extends VFile implements VStreamAccessable,
 
     public long getLength() throws IOException 
     {
-        return fsNode.length();
+        try
+        {
+            return fsNode.length();
+        }
+        catch (IOException e)
+        {
+            if (fsNode.isBrokenLink())
+            {
+                return 0; 
+            }
+            else throw e;
+        }
     }
 
     public long getModificationTime() throws VrsException

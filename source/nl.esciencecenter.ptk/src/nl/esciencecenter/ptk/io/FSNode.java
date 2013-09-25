@@ -42,7 +42,7 @@ public abstract class FSNode
     
     public static final String DIR_TYPE = "Dir";
 
-	public static final String FILE_SCHEME = "file"; // file:///blah 
+	public static final String FILE_SCHEME = "file"; 
     
     // ===
     // 
@@ -223,6 +223,21 @@ public abstract class FSNode
         return -1;
     }
     
+    public boolean isHidden()
+    {
+        // Windows has a different way to hide files. 
+        // Use default UNIX way to indicate hidden files. 
+        return this.getBasename().startsWith(".");
+    }
+    
+    /**
+     *  Is a unix style soft- or symbolic link
+     */ 
+    public boolean isSymbolicLink()
+    {
+        return false; 
+    }
+
     // =======================================================================
     // Abstract Interface 
     // =======================================================================
@@ -239,12 +254,11 @@ public abstract class FSNode
   
     /** Is a regular directory. */ 
     public abstract boolean isDirectory(LinkOption... linkOptions); 
-
-    /** Is a linux style softlink */ 
-    public abstract boolean isSymbolicLink();  
-
-    /** Size in bytes. 
-     * @throws IOException */ 
+   
+    /** 
+     * Size in bytes. 
+     * @throws IOException 
+     */ 
     public abstract long length() throws IOException;
     
     /**

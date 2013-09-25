@@ -208,12 +208,12 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 
     public boolean isReadable()
     {
-        return fsNode.isReadable();
+        return fsNode.toJavaFile().canRead();
     }
 
     public boolean isWritable()
     {
-        return fsNode.isReadable();
+        return fsNode.toJavaFile().canWrite();
     }
 
     public boolean create(boolean ignoreExisting) throws VrsException
