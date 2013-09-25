@@ -63,7 +63,7 @@ public class AutoCompleteTextField extends JComboBox
 
             if (!StringUtil.isEmpty(clear))
             {
-                completeText();
+               // completeText();
             }
         }
     }
@@ -130,7 +130,7 @@ public class AutoCompleteTextField extends JComboBox
 
             if (current.toLowerCase().startsWith(text.toLowerCase()))
             {
-                //tf.setText(current);
+                tf.setText(current);
                 tf.setSelectionStart(text.length());
                 tf.setSelectionEnd(current.length());
                 int old=this.getSelectedIndex();
