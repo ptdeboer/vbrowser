@@ -18,12 +18,9 @@
  */
 // source: 
 
-package nl.esciencecenter.vbrowser.vrs.octopus;
+package nl.esciencecenter.vbrowser.vrs.xenon;
 
-import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
-import nl.esciencecenter.octopus.exceptions.OctopusIOException;
-import nl.esciencecenter.octopus.files.FileAttributes;
-import nl.esciencecenter.octopus.files.Path;
+
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
@@ -32,16 +29,19 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.ResourceAlreadyExistsException;
 import nl.esciencecenter.vlet.vrs.vfs.VDir;
 import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
+import nl.esciencecenter.xenon.XenonException;
+import nl.esciencecenter.xenon.files.FileAttributes;
+import nl.esciencecenter.xenon.files.Path;
 
 /**
  * Minimal implementation of the VDir class. 
  */
-public class OctopusDir extends VDir
+public class XenonDir extends VDir
 {
 	private FileAttributes fileAttrs;
     private Path octoPath;
 
-    public OctopusDir(OctopusFS vfs, FileAttributes attrs, Path path)
+    public XenonDir(XenonFS vfs, FileAttributes attrs, Path path) throws VrsException
 	{
 		super(vfs, vfs.createVRL(path));
 		this.fileAttrs=attrs;
@@ -64,7 +64,7 @@ public class OctopusDir extends VDir
             }
             return fileAttrs; 
         }
-        catch (OctopusIOException e)
+        catch (XenonException e)
         {
             // Check for File Not Found Here !
             throw new VrsException(e.getMessage(),e); 
@@ -92,7 +92,7 @@ public class OctopusDir extends VDir
         {
             this.getOctoClient().mkdir(octoPath);
         }
-        catch (OctopusIOException e)
+        catch (XenonException e)
         {
             throw new VrsException(e.getMessage(),e); 
         } 
@@ -114,7 +114,7 @@ public class OctopusDir extends VDir
                 return this.getOctoClient().exists(octoPath); 
             }
         }
-        catch (OctopusIOException e)
+        catch (XenonException e)
         {
             throw new VrsException(e.getMessage(),e); 
         }
@@ -127,10 +127,10 @@ public class OctopusDir extends VDir
         return getFileSystem().listNodesAndAttrs(octoPath); 
 	}
 	
-	public OctopusFS getFileSystem()
+	public XenonFS getFileSystem()
 	{
 	    // Downcast from VFileSystem interface to actual FileSystem object. 
-	    return (OctopusFS)super.getFileSystem(); 
+	    return (XenonFS)super.getFileSystem(); 
 	}
 	
 	public VRL rename(String newName, boolean renameFullPath)
@@ -159,7 +159,7 @@ public class OctopusDir extends VDir
             this.fileAttrs=null; 
             return true; 
         }
-        catch (OctopusIOException e)
+        catch (XenonException e)
         {
             throw new VrsException(e.getMessage(),e);  
         } 
@@ -222,7 +222,7 @@ public class OctopusDir extends VDir
 	// Protected 
 	// === 
     
-    protected OctopusClient getOctoClient()
+    protected XenonClient getOctoClient()
     {
         return this.getFileSystem().octoClient; 
     }
@@ -233,7 +233,7 @@ public class OctopusDir extends VDir
         { 
             return this.getAttrs(false).isSymbolicLink();
         }
-        catch (AttributeNotSupportedException e)
+        catch (Throwable e)
         {
             throw new VrsException(e.getMessage(),e); 
         }
@@ -245,7 +245,7 @@ public class OctopusDir extends VDir
         {
             return this.getAttrs(false).isHidden(); 
         }
-        catch (AttributeNotSupportedException e)
+        catch (Throwable e)
         {
             throw new VrsException(e.getMessage(),e); 
         }

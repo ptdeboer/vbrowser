@@ -18,16 +18,15 @@
  */
 // source: 
 
-package nl.esciencecenter.vbrowser.vrs.octopus;
+package nl.esciencecenter.vbrowser.vrs.xenon;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.esciencecenter.octopus.exceptions.AttributeNotSupportedException;
-import nl.esciencecenter.octopus.exceptions.OctopusIOException;
-import nl.esciencecenter.octopus.files.Path;
-import nl.esciencecenter.octopus.files.FileAttributes;
+import nl.esciencecenter.xenon.XenonException;
+import nl.esciencecenter.xenon.files.Path;
+import nl.esciencecenter.xenon.files.FileAttributes;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -39,12 +38,12 @@ import nl.esciencecenter.vlet.vrs.vfs.VFile;
 /** 
  * 
  */
-public class OctopusFile extends VFile
+public class XenonFile extends VFile
 {
     private FileAttributes fileAttrs;
     private Path octoPath;
 
-    public OctopusFile(OctopusFS octopusFS, FileAttributes attrs, Path path)
+    public XenonFile(XenonFS octopusFS, FileAttributes attrs, Path path) throws VrsException
     {
        super(octopusFS,octopusFS.createVRL(path));
        this.fileAttrs=attrs; 
@@ -67,7 +66,7 @@ public class OctopusFile extends VFile
             }
             return fileAttrs; 
         }
-        catch (OctopusIOException e)
+        catch (XenonException e)
         {
             // Check for File Not Found Here !
             throw new VrsException(e.getMessage(),e); 
@@ -103,10 +102,10 @@ public class OctopusFile extends VFile
 		try
         {
 	        // Path is immutable, update it here ? 
-            Path newPath = this.getOctoClient().createFile(octoPath);
-            return true;
+		    getOctoClient().createFile(octoPath);
+		    return true; 
         }
-        catch (OctopusIOException e)
+        catch (Throwable e)
         {
            throw new VrsException(e.getMessage(),e); 
         }
@@ -156,7 +155,7 @@ public class OctopusFile extends VFile
         {
             return getAttrs(false).isReadable();
         }
-        catch (AttributeNotSupportedException e)
+        catch (Throwable e)
         {
             throw new VrsException(e.getMessage(),e); 
         }
@@ -170,12 +169,26 @@ public class OctopusFile extends VFile
 
 	public InputStream createInputStream() throws IOException
 	{
-		return this.getOctoClient().createInputStream(octoPath); 
+		try
+        {
+            return this.getOctoClient().createInputStream(octoPath);
+        }
+        catch (Throwable e)
+        {
+            throw new IOException(e.getMessage(),e); 
+        } 
 	}
 
 	public OutputStream createOutputStream() throws IOException 
 	{
-	    return this.getOctoClient().createNewOutputStream(octoPath,true); 
+	    try
+        {
+            return this.getOctoClient().createNewOutputStream(octoPath,true);
+        }
+        catch (Throwable e)
+        {
+            throw new IOException(e.getMessage(),e); 
+        }
 	}
 
 	public VRL rename(String newName, boolean renameFullPath)
@@ -195,7 +208,7 @@ public class OctopusFile extends VFile
             this.fileAttrs=null; 
             return result; 
         }
-        catch (OctopusIOException e)
+        catch (Throwable e)
         {
             throw new VrsException(e.getMessage(),e); 
         } 
@@ -218,11 +231,7 @@ public class OctopusFile extends VFile
 	            return this.getOctoClient().exists(octoPath); 
 	        }
         }
-	    catch (AttributeNotSupportedException e)
-	    {
-	        throw new VrsException(e.getMessage(),e); 
-	    }
-        catch (OctopusIOException e)
+        catch (Throwable e)
         {
             throw new VrsException(e.getMessage(),e); 
         }
@@ -251,13 +260,13 @@ public class OctopusFile extends VFile
     }
     
     // explicit downcast: 
-    protected OctopusFS getFS()
+    protected XenonFS getFS()
     {
     	// downcast from VFileSystem interface to actual (Skeleton) FileSystem object. 
-    	return ((OctopusFS)this.getFileSystem()); 
+    	return ((XenonFS)this.getFileSystem()); 
     }
     
-    protected OctopusClient getOctoClient()
+    protected XenonClient getOctoClient()
     {
         return this.getFS().octoClient; 
     } 
@@ -269,7 +278,7 @@ public class OctopusFile extends VFile
         {
             return this.getAttrs(false).isSymbolicLink();
         }
-        catch (AttributeNotSupportedException e)
+        catch (Throwable e)
         {
             throw new VrsException(e.getMessage(),e); 
         }
@@ -281,7 +290,7 @@ public class OctopusFile extends VFile
         {
             return this.getAttrs(false).isHidden(); 
         }
-        catch (AttributeNotSupportedException e)
+        catch (Throwable e)
         {
             throw new VrsException(e.getMessage(),e); 
         }

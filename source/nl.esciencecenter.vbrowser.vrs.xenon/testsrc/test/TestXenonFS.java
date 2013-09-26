@@ -20,25 +20,25 @@
 
 package test;
 
-import nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory;
+import nl.esciencecenter.vbrowser.vrs.xenon.XenonFSFactory;
 import nl.esciencecenter.vlet.VletConfig;
 import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.vfs.VDir;
 import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
 import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 
-public class TestOctopusSftpFS
+public class TestXenonFS
 {
     private static VFSClient vfs=null; 
     
-    public static VFSClient initOctopusVFS() throws Exception
+    public static VFSClient initXenonVFS() throws Exception
     {
         if (vfs!=null)
             return vfs; 
         
         VletConfig.init();
         VRS.getRegistry().unregisterVRSDriverClass(nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory.class); 
-        VRS.getRegistry().registerVRSDriverClass(OctopusFSFactory.class);
+        VRS.getRegistry().registerVRSDriverClass(XenonFSFactory.class);
         
         VFSClient vfs=VFSClient.getDefault(); 
         return vfs; 
@@ -46,20 +46,16 @@ public class TestOctopusSftpFS
     
     public static void main(String args[]) throws Exception
     {
-        VFSClient vfs=initOctopusVFS(); 
+        VFSClient vfs=initXenonVFS(); 
         
-        VDir dir = vfs.getDir("sftp://localhost/home/"+VletConfig.getUserName()); 
-
-        System.out.printf(">>> Dir:"+dir); 
+        VDir dir = vfs.getDir("file:///home/"+VletConfig.getUserName()); 
+        
         VFSNode[] nodes = dir.list(); 
         
-        System.out.printf(">>> Dir.list():\n"); 
-        
+        System.out.printf(">>> Dir:"+dir); 
         for (int i=0;i<nodes.length;i++)
         {
             System.out.printf(" - node[#%d] =%s\n",i,nodes[i]);
-            System.out.printf(" - node[#%d].getPath() =%s\n",i,nodes[i].getPath());
-
         }
         
     }
