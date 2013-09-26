@@ -31,78 +31,77 @@ import java.nio.file.LinkOption;
 
 import nl.esciencecenter.ptk.net.URIFactory;
 
-/** 
- * Abstract FileSystem Node of local or remote Filesystem. 
- * Can be File or Directory. 
- * Uses URI based location.  
+/**
+ * Abstract FileSystem Node of local or remote Filesystem. Can be File or
+ * Directory. Uses URI based location.
  */
-public abstract class FSNode 
+public abstract class FSNode
 {
     public static final String FILE_TYPE = "File";
-    
+
     public static final String DIR_TYPE = "Dir";
 
-	public static final String FILE_SCHEME = "file"; 
-    
+    public static final String FILE_SCHEME = "file";
+
     // ===
-    // 
+    //
     // ===
-    
+
     private URI uri;
 
     public FSNode(URI uri)
     {
-        this.uri=uri; 
+        this.uri = uri;
     }
 
     protected void setURI(URI URI)
     {
-    	this.uri=URI; 
+        this.uri = URI;
     }
 
-    public URI getURI() 
+    public URI getURI()
     {
         return uri;
     }
 
-    public URL getURL() throws MalformedURLException 
+    public URL getURL() throws MalformedURLException
     {
-        return uri.toURL(); 
-    }
-    
-    public FSNode getNode(String relpath) throws FileURISyntaxException
-    {
-        return newFile(resolvePath(relpath));  
-    } 
-        
-    /**
-     * Whether this file points to a local file. 
-     */ 
-    public boolean isLocal()
-    {
-       return false; 
-    }
-    
-    /** 
-     * Returns absolute and normalized URI path as String.   
-     */ 
-    public String getPathname()
-    {
-    	return uri.getPath(); 
+        return uri.toURL();
     }
 
-    /** 
-     * Returns last part of the path inlcuding extension.    
-     */ 
-	public String getBasename() 
-	{
-		return URIFactory.basename(uri.getPath());  
-	}
-	
+    public FSNode getNode(String relpath) throws FileURISyntaxException
+    {
+        return newFile(resolvePath(relpath));
+    }
+
+    /**
+     * Whether this file points to a local file.
+     */
+    public boolean isLocal()
+    {
+        return false;
+    }
+
+    /**
+     * Returns absolute and normalized URI path as String.
+     */
+    public String getPathname()
+    {
+        return uri.getPath();
+    }
+
+    /**
+     * Returns last part of the path inlcuding extension.
+     */
+    public String getBasename()
+    {
+        return URIFactory.basename(uri.getPath());
+    }
+
     public String getBasename(boolean includeExtension)
     {
-        String fileName=URIFactory.basename(uri.getPath());
-        
+        String fileName = URIFactory.basename(uri.getPath());
+
         if (includeExtension)
         {
             return fileName;
@@ -113,179 +112,184 @@ public abstract class FSNode
         }
     }
 
-	public String getExtension()
-	{
-	    return URIFactory.extension(uri.getPath());  
-	}
-	
-	public String getDirname() 
-	{
-		return URIFactory.dirname(uri.getPath());  
-	}
-	
+    public String getExtension()
+    {
+        return URIFactory.extension(uri.getPath());
+    }
+
+    public String getDirname()
+    {
+        return URIFactory.dirname(uri.getPath());
+    }
+
     public String getHostname()
     {
-    	return uri.getHost(); 
+        return uri.getHost();
     }
-    
+
     public int getPort()
     {
-    	return uri.getPort(); 
+        return uri.getPort();
     }
 
-    // =======================================================================
-    // IO Methods 
-    // =======================================================================
-
-    public InputStream createInputStream() throws IOException
+    public String toString()
     {
-    	throw new Error("Not supported: createInputStream() of:"+this); 
-    }
-    
-    public OutputStream createOutputStream() throws IOException
-    {
-    	throw new Error("Not supported: createOutputStream() of:"+this); 
+        return "(FSNode)" + this.getURI().toString();
     }
 
-	public FSNode createDir(String subdir) throws IOException, FileURISyntaxException
-	{
-		FSNode dir=newFile(resolvePath(subdir)); 
-		dir.mkdir(); 
-		return dir; 
-	}
-
-	public FSNode createFile(String filepath) throws IOException, FileURISyntaxException 
-	{
-		FSNode file=newFile(resolvePath(filepath)); 
-		file.create();  
-		return file;
-	}
-	
-	public String resolvePath(String relPath) throws FileURISyntaxException
-	{
-		try
-        {
-            return new URIFactory(uri).resolvePath(relPath);
-        }
-        catch (URISyntaxException e)
-        {
-            throw new FileURISyntaxException(e.getMessage(),relPath,e);
-        }
-	}
-	
-	public URI resolvePathURI(String relPath) throws FileURISyntaxException
-	{
-	    try
-	    {
-	        return new URIFactory(uri).setPath(resolvePath(relPath)).toURI();
-	    }
-	    catch (URISyntaxException e)
-	    {
-            throw new FileURISyntaxException(e.getMessage(),relPath,e);
-	    }
-	}
-
-	public boolean create() throws IOException 
-	{
-		byte bytes[]=new byte[0]; 
-		
-		// create file by writing zero bytes: 
-		OutputStream outps=this.createOutputStream(); 
-		outps.write(bytes); 
-		outps.close(); 
-		
-		return true; 
-	}
-	
-	public String toString()
-	{
-	    return "(FSNode)"+this.getURI().toString(); 
-	}
-	
     public boolean sync()
     {
-        return false; 
+        return false;
     }
 
     /**
-     * Returns creation time in millis since EPOCH, if supported. Returns -1 otherwise. 
-     */
-    public long getCreationTime() throws IOException
-    {
-        return -1;
-    }
-
-    /**
-     * Returns creation time in millis since EPOCH, if supported. Returns -1 otherwise. 
+     * Returns creation time in millis since EPOCH, if supported. Returns -1
+     * otherwise.
      */
     public long getAccessTime() throws IOException
     {
         return -1;
     }
-    
+
     public boolean isHidden()
     {
-        // Windows has a different way to hide files. 
-        // Use default UNIX way to indicate hidden files. 
+        // Windows has a different way to hide files.
+        // Use default UNIX way to indicate hidden files.
         return this.getBasename().startsWith(".");
     }
-    
+
     /**
-     *  Is a unix style soft- or symbolic link
-     */ 
+     * Is a unix style soft- or symbolic link
+     */
     public boolean isSymbolicLink()
     {
-        return false; 
+        return false;
+    }
+    // =======================================================================
+    // IO Methods
+    // =======================================================================
+
+    public InputStream createInputStream() throws IOException
+    {
+        throw new Error("Not supported: createInputStream() of:" + this);
     }
 
-    // =======================================================================
-    // Abstract Interface 
-    // =======================================================================
+    public OutputStream createOutputStream() throws IOException
+    {
+        throw new Error("Not supported: createOutputStream() of:" + this);
+    }
 
-	/** 
-	 * FSNode factory method, optionally resolves path against parent FSNode.
-	 */ 
-	public abstract FSNode newFile(String path) throws FileURISyntaxException; 
+    public FSNode createDir(String subdir) throws IOException, FileURISyntaxException
+    {
+        FSNode dir = newFile(resolvePath(subdir));
+        dir.mkdir();
+        return dir;
+    }
 
-	public abstract boolean exists(LinkOption... linkOptions); 
-	    
-    /** Is a regular file. */ 
-    public abstract boolean isFile(LinkOption... linkOptions);
-  
-    /** Is a regular directory. */ 
-    public abstract boolean isDirectory(LinkOption... linkOptions); 
+    public FSNode createFile(String filepath) throws IOException, FileURISyntaxException
+    {
+        FSNode file = newFile(resolvePath(filepath));
+        file.create();
+        return file;
+    }
+
+    public String resolvePath(String relPath) throws FileURISyntaxException
+    {
+        try
+        {
+            return new URIFactory(uri).resolvePath(relPath);
+        }
+        catch (URISyntaxException e)
+        {
+            throw new FileURISyntaxException(e.getMessage(), relPath, e);
+        }
+    }
+
+    public URI resolvePathURI(String relPath) throws FileURISyntaxException
+    {
+        try
+        {
+            return new URIFactory(uri).setPath(resolvePath(relPath)).toURI();
+        }
+        catch (URISyntaxException e)
+        {
+            throw new FileURISyntaxException(e.getMessage(), relPath, e);
+        }
+    }
+
+    public boolean create() throws IOException
+    {
+        byte bytes[] = new byte[0];
+
+        // create file by writing zero bytes:
+        OutputStream outps = this.createOutputStream();
+        outps.write(bytes);
+        outps.close();
+
+        return true;
+    }
+
    
-    /** 
-     * Size in bytes. 
-     * @throws IOException 
-     */ 
-    public abstract long length() throws IOException;
-    
     /**
-     * Last modification time in milli seconds since epoch. May return -1 if attribute is not supported. 
-     * @throws IOException 
-     */ 
+     * Returns creation time in millis since EPOCH, if supported. Returns -1
+     * otherwise.
+     */
+    public long getCreationTime() throws IOException
+    {
+        return -1;
+    }
+   
+
+    // =======================================================================
+    // Abstract Interface
+    // =======================================================================
+
+    /**
+     * FSNode factory method, optionally resolves path against parent FSNode.
+     */
+    public abstract FSNode newFile(String path) throws FileURISyntaxException;
+
+    public abstract boolean exists(LinkOption... linkOptions);
+
+    /** Is a regular file. */
+    public abstract boolean isFile(LinkOption... linkOptions);
+
+    /** Is a regular directory. */
+    public abstract boolean isDirectory(LinkOption... linkOptions);
+
+    /**
+     * Size in bytes.
+     * 
+     * @throws IOException
+     */
+    public abstract long length() throws IOException;
+
+    /**
+     * Last modification time in milli seconds since epoch. May return -1 if
+     * attribute is not supported.
+     * 
+     * @throws IOException
+     */
     public abstract long getModificationTime() throws IOException;
 
-    /** Logical parent */ 
-    public abstract FSNode getParent(); 
+    /** Logical parent */
+    public abstract FSNode getParent();
 
     /** Delete file or empty directory. */
     public abstract void delete() throws IOException;
-    
-    // === Directory methods === // 
-    
-    /** Return contents of directory. */ 
-    public abstract String[] list() throws IOException;  
-    
-    /** Return contents of directory as FSNode objects .*/ 
-    public abstract FSNode[] listNodes()throws IOException;   
 
-    /** Create last path element as (sub)directory, parent directory must exist. */ 
-    public abstract void mkdir() throws IOException;  
+    // === Directory methods === //
+
+    /** Return contents of directory. */
+    public abstract String[] list() throws IOException;
+
+    /** Return contents of directory as FSNode objects . */
+    public abstract FSNode[] listNodes() throws IOException;
+
+    /** Create last path element as (sub)directory, parent directory must exist. */
+    public abstract void mkdir() throws IOException;
 
     /** Create full directory path. */
     public abstract void mkdirs() throws IOException;
-  
-    
+
 }
