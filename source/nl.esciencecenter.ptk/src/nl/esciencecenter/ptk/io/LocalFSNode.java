@@ -292,16 +292,20 @@ public class LocalFSNode extends FSNode
         }
         catch (UnsupportedOperationException e)
         {
-        	posixAttrs=null;
+        	return null; 
         }
         
         return posixAttrs;
     }
 
-
-    public int getUnixFileMode() throws IOException
+	public int getUnixFileMode() throws IOException
     {
-        Set<PosixFilePermission> perms = getPosixAttributes().permissions();
+		PosixFileAttributes attrs;
+		if ((attrs=getPosixAttributes())==null)
+			return 0; 
+		
+        Set<PosixFilePermission> perms = attrs.permissions();
+        
         return toUnixFileMode(perms);
     }
 
@@ -364,4 +368,23 @@ public class LocalFSNode extends FSNode
         Files.setPosixFilePermissions(_path, fromUnixFileMode(mode));
     }
 
+	public String getOwnerName() throws IOException
+	{
+		PosixFileAttributes attrs;
+		
+		if ((attrs=this.getPosixAttributes())==null)
+			return null;
+		
+		return attrs.owner().getName(); 
+	}
+
+	public String getGroupName() throws IOException
+	{
+		PosixFileAttributes attrs;
+		
+		if ((attrs=this.getPosixAttributes())==null)
+			return null;
+		
+		return attrs.group().getName(); 
+	}
 }

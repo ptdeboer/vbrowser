@@ -343,7 +343,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
     {
         try
         {
-            return fsNode.getPosixAttributes().group().getName();
+            return fsNode.getGroupName(); 
         }
         catch (IOException e)
         {
@@ -355,7 +355,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
     {
         try
         {
-            return fsNode.getPosixAttributes().owner().getName();
+            return fsNode.getOwnerName();
         }
         catch (IOException e)
         {
