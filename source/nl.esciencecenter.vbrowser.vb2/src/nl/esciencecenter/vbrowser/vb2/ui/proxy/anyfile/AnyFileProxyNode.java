@@ -149,7 +149,7 @@ public class AnyFileProxyNode extends ProxyNode
 	@Override
 	protected String doGetMimeType() throws ProxyException 
 	{
-		return MimeTypes.getDefault().getMimeType(file.getPath());  
+		return MimeTypes.getDefault().getMimeType(file.getPathname());  
 	}
 
 	@Override

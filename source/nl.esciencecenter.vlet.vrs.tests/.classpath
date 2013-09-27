@@ -10,5 +10,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.grid.globus"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vrs.infors"/>
+	<classpathentry kind="src" path="/nl.esciencecenter.vbrowser.vrs.xenon"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

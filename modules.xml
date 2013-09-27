@@ -57,7 +57,7 @@
     <target name="vlet-all" depends="init,vlet-core,vlet-vfs-adaptors,vlet-vbrowser,vlet-vbrowser-viewers,vlet-doc.userguide">
     </target>
 
-    <target name="vlet-octo-all" depends="init,vlet-core,vlet-vfs-adaptors,vlet-vrs-octopus,vlet-vbrowser,vlet-vbrowser-viewers,vlet-doc.userguide">
+    <target name="vlet-xenon-all" depends="init,vlet-core,vlet-vfs-adaptors,vlet-vrs-xenon,vlet-vbrowser,vlet-vbrowser-viewers,vlet-doc.userguide">
     </target>
 
     <target name="vlet-auxlibs" depends="init">
@@ -119,10 +119,10 @@
 
     </target>
 
-    <target name="vlet-vrs-octopus" depends="vlet-core">
+    <target name="vlet-vrs-xenon" depends="vlet-core">
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vbrowser.vrs.octopus"/>
+            <param name="name" value="nl.esciencecenter.vbrowser.vrs.xenon"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
@@ -167,7 +167,7 @@
 
     </target>
 
-    <!-- <target name="vlet-vfs-adaptors" depends="vlet-vrs-octopus,vlet-vfs-globus,vlet-vfs-lfc-srm"/> -->
+    <!-- <target name="vlet-vfs-adaptors" depends="vlet-vrs-xenon,vlet-vfs-globus,vlet-vfs-lfc-srm"/> -->
     <target name="vlet-vfs-adaptors" depends="vlet-vfs-ssh,vlet-vfs-globus,vlet-vfs-lfc-srm"/>
 
     <target name="vlet-vbrowser" depends="vlet-core">

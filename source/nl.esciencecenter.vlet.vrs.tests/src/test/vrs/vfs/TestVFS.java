@@ -58,6 +58,7 @@ import nl.esciencecenter.vlet.util.bdii.BdiiUtil;
 import nl.esciencecenter.vlet.util.bdii.StorageArea;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
 import nl.esciencecenter.vlet.vrs.VRSContext;
+import nl.esciencecenter.vlet.vrs.VRSFactory;
 import nl.esciencecenter.vlet.vrs.io.VRandomAccessable;
 import nl.esciencecenter.vlet.vrs.io.VRandomReadable;
 import nl.esciencecenter.vlet.vrs.io.VResizable;
@@ -285,6 +286,12 @@ public class TestVFS extends VTestCase
     {
         return testRenames;
     }
+        
+    public Class<? extends VRSFactory> getVRSFactoryClass()
+    {
+        return null;
+    }
+   
     
     // =======
     // Actual Tests
@@ -3139,6 +3146,6 @@ public class TestVFS extends VTestCase
         return remoteTestDir;
     }
 
-   
+ 
 
 }

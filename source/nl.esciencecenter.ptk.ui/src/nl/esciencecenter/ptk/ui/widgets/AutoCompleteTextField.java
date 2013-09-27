@@ -63,7 +63,7 @@ public class AutoCompleteTextField extends JComboBox
 
             if (!StringUtil.isEmpty(clear))
             {
-                completeText();
+               // completeText();
             }
         }
     }
