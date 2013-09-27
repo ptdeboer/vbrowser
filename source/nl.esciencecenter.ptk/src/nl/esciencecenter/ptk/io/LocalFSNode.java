@@ -39,6 +39,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.net.URIFactory;
+
 /**
  * Local file implementation of FSNode based on java.nio.Files;
  */
@@ -75,7 +78,15 @@ public class LocalFSNode extends FSNode
     {
         super(loc);
         FileSystem fs = FileSystems.getDefault();
-        init(fs.getPath(loc.getPath()));
+        if (GlobalProperties.isWindows())
+        {
+        	String dosPath=new URIFactory(loc).getDosPath();
+        	init(fs.getPath(dosPath));
+        }
+        else
+        {
+        	init(fs.getPath(loc.getPath()));
+        }
     }
 
     @Override
@@ -278,6 +289,10 @@ public class LocalFSNode extends FSNode
             {
                 throw e;
             }
+        }
+        catch (UnsupportedOperationException e)
+        {
+        	posixAttrs=null;
         }
         
         return posixAttrs;
