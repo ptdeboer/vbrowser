@@ -86,7 +86,7 @@ public final class Registry // todo: change to vrs protected class.
     private static Registry instance = null;
 
     private static boolean globalURLStreamFactoryInitialized = false;
-    
+
     private static Object singletonLock = new Object();
 
     private static boolean instanceCreation = false;
@@ -157,7 +157,7 @@ public final class Registry // todo: change to vrs protected class.
     {
         GlobalProperties.init();
     }
-    
+
     /**
      * Creates and returns the singlon instance. Only once instance is allowed.
      * 
@@ -172,9 +172,9 @@ public final class Registry // todo: change to vrs protected class.
                 if (instance == null)
                 {
                     // ============================================================
-                    // This can happen when during initailization time this
+                    // This can happen when during initialization time this
                     // method is called again. within the same Thread !
-                    // Because of the 'synchronised' modifier,
+                    // Because of the 'synchronized' modifier,
                     // this must be the same thread, so this is a recursive
                     // call!
                     // This must be avoided at all time.
@@ -202,12 +202,14 @@ public final class Registry // todo: change to vrs protected class.
         }
         return instance;
     }
-    
+
     // ====================================================================
     // Instance Methods
     // ====================================================================
 
-    /** Cross Context Event notifier! */
+    /**
+     *  Cross Context Event notifier! 
+     */
     private ResourceEventNotifier resourceEventNotifier = null;
 
     /**
@@ -224,7 +226,9 @@ public final class Registry // todo: change to vrs protected class.
      */
     private Map<String, VRSFactory> registeredServices = new HashMap<String, VRSFactory>();
 
-    /** The Registerd UI. The default UI is a console. */
+    /**
+     *  The Registerd UI. The default UI is a console. 
+     */
     private UI masterUI = new SimpelUI();
 
     /**
@@ -247,10 +251,12 @@ public final class Registry // todo: change to vrs protected class.
         initRegistry();
     }
 
-    /** Initializer */
+    /** 
+     * Initializer 
+     */
     private void initRegistry()
     {
-        // default notifier: has NO dependencies !!!
+        // default notifier: has NO dependencies 
         this.resourceEventNotifier = new ResourceEventNotifier();
 
         logger.infoPrintf("--- initRegistry() ---\n");
@@ -266,25 +272,27 @@ public final class Registry // todo: change to vrs protected class.
             logger.infoPrintf("Initializing default core vdrivers=%s\n", str);
 
             // Core VDrivers. Typically located in lib/vdrivers.
-            // Are not loaded in a private class loader, but directly accessible.
-            
+            // Are not loaded in a private class loader, but directly
+            // accessible.
+
             registerVRSDriverClassNoError(currentLoader, HTTPFactory.class.getCanonicalName());
             registerVRSDriverClassNoError(currentLoader, HTTPSFactory.class.getCanonicalName());
             registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.vdriver.infors.InfoRSFactory");
-            
-            // auto configuration of octopus vs local adaptors. 
-            //boolean result=registerVRSDriverClassNoError(currentLoader,"nl.esciencecenter.vbrowser.vrs.xenon.XenonFSFactory");
-            //if (result==false)
+
+            // auto configuration of octopus vs local adaptors.
+            // boolean
+            // result=registerVRSDriverClassNoError(currentLoader,"nl.esciencecenter.vbrowser.vrs.xenon.XenonFSFactory");
+            // if (result==false)
             {
                 registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory");
                 registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.ssh.jcraft.SftpFSFactory");
             }
 
-            // Globus is a plugin. 
+            // Globus is a plugin.
             registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.globusrs.GlobusRSFactory");
             registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.gftp.GftpFSFactory");
 
-            // Other VFS/VRS implementations from lib/vdrivers or lib/plugins 
+            // Other VFS/VRS implementations from lib/vdrivers or lib/plugins
             registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.srm.SRMFSFactory");
             registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.lfc.LFCFSFactory");
 
@@ -342,7 +350,9 @@ public final class Registry // todo: change to vrs protected class.
         }
     }
 
-    /** Read local plugin directory (Java File!) and register them */
+    /**
+     * Read local plugin directory (Java File!) and register them
+     */
     private void loadVRSPlugins()
     {
         VRL plugDir = VletConfig.getInstallationPluginDir();
@@ -373,8 +383,8 @@ public final class Registry // todo: change to vrs protected class.
 
     /**
      * Get schemes from the VRSFactory add them to the registry.
-     * <p>
-     * <b>is synchronized</b>: Method modifies the Registry !
+     * 
+     * Note: method is <b>synchronized</b>: Method modifies the Registry !
      */
     private synchronized void registerSchemeNames(VRSFactory vrs)
     {
@@ -396,7 +406,9 @@ public final class Registry // todo: change to vrs protected class.
         }
     }
 
-    /** Unregister VRSFactory */
+    /**
+     * Unregister VRSFactory schemes.
+     */
     private synchronized void unregisterSchemeNames(VRSFactory vrs)
     {
         String schemes[] = vrs.getSchemeNames();
@@ -492,7 +504,7 @@ public final class Registry // todo: change to vrs protected class.
             if (o instanceof VRSFactory)
             {
                 VRSFactory rs = (VRSFactory) o;
-
+                logger.infoPrintf("Removing:%s\n", rs.getClass().getCanonicalName());
                 registeredServices.remove(rs.getClass().getCanonicalName());
                 unregisterSchemeNames(rs);
 
@@ -510,7 +522,7 @@ public final class Registry // todo: change to vrs protected class.
 
         this.updateDefaultSchemes();
 
-        logger.infoPrintf("Added VRSFactory class:%s\n", factoryClass.getName());
+        logger.infoPrintf("Unregistered VRSFactory class:%s\n", factoryClass.getName());
         return true;
     }
 
@@ -535,7 +547,7 @@ public final class Registry // todo: change to vrs protected class.
             throw new nl.esciencecenter.vlet.exception.InitializationException("Class is not a VRSFactory:"
                     + cls.getCanonicalName());
         }
-        
+
         logger.debugPrintf("Registering class:+%s\n", cls.getName());
 
         return this.registerVRSDriverClass((Class<? extends VRSFactory>) cls);
@@ -552,7 +564,7 @@ public final class Registry // todo: change to vrs protected class.
      */
     private synchronized boolean registerVRSDriverClassNoError(ClassLoader classLoader, String classname)
     {
-        
+
         try
         {
             return registerVRSDriverClass(classLoader, classname);
@@ -745,7 +757,8 @@ public final class Registry // todo: change to vrs protected class.
             return (VFileSystem) vrs;
         }
 
-        throw new nl.esciencecenter.vlet.exception.ResourceTypeMismatchException("Location is NOT a fileystem:" + location);
+        throw new nl.esciencecenter.vlet.exception.ResourceTypeMismatchException("Location is NOT a fileystem:"
+                + location);
     }
 
     /**
@@ -878,7 +891,5 @@ public final class Registry // todo: change to vrs protected class.
     {
         return this.resourceEventNotifier;
     }
-
-    
 
 }
