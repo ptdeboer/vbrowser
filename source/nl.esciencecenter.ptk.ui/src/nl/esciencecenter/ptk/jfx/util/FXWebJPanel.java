@@ -17,7 +17,10 @@ import java.net.URL;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
+import javafx.concurrent.Worker.State;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
@@ -34,7 +37,14 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-public class FXWebKitJPanel extends JPanel 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.events.EventListener;
+import org.w3c.dom.events.EventTarget;
+
+public class FXWebJPanel extends JPanel 
 {
     private static final long serialVersionUID = -7501864809216238899L;
     // 
@@ -51,6 +61,11 @@ public class FXWebKitJPanel extends JPanel
         }
     }
 
+    class LinkEventListener
+    {
+        
+    }
+    
     // ===
     //
     // ===
@@ -61,8 +76,9 @@ public class FXWebKitJPanel extends JPanel
     private JButton btnGo = new JButton("Go");
     private JTextField txtURL = new JTextField();
     private JProgressBar progressBar = new JProgressBar();
+    private EventListener hyperLinkListener;
 
-    public FXWebKitJPanel(BorderLayout borderLayout,boolean initComponents)
+    public FXWebJPanel(BorderLayout borderLayout,boolean initComponents)
     {
         super(borderLayout);
         
@@ -210,7 +226,7 @@ public class FXWebKitJPanel extends JPanel
                                 @Override
                                 public void run()
                                 {
-                                    JOptionPane.showMessageDialog(FXWebKitJPanel.this, (value != null) ? engine.getLocation() + "\n"
+                                    JOptionPane.showMessageDialog(FXWebJPanel.this, (value != null) ? engine.getLocation() + "\n"
                                             + value.getMessage() : engine.getLocation() + "\nUnexpected error.",
                                             "Loading error...", JOptionPane.ERROR_MESSAGE);
                                 }
@@ -219,11 +235,44 @@ public class FXWebKitJPanel extends JPanel
                     }
                 });
 
+                // Register Link Listener: 
+                engine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() 
+                        {
+                            public void changed(ObservableValue ov, State oldState, State newState) 
+                            {
+                                System.err.println("> newState="+newState);
+                                
+                                if (newState == Worker.State.SUCCEEDED) 
+                                {
+                                    Document doc = engine.getDocument();
+                                    installHyperLinkListeners(doc);  
+                                }
+                            }
+                        });
+                
                 jfxPanel.setScene(new Scene(view));
             }
         });
+        
+        
     }
 
+    public EventListener getLinkListener()
+    {
+        if (this.hyperLinkListener==null)
+        {
+            this.hyperLinkListener = new EventListener() {
+                @Override
+                public void handleEvent(org.w3c.dom.events.Event ev)
+                {
+                    System.err.println(ev.getType()+":<Target>"+ev.getTarget().toString());
+                    ev.preventDefault(); 
+                }
+            };
+        }
+        return this.hyperLinkListener; 
+    }
+    
     public void loadURL(final String url)
     {
         Platform.runLater(new Runnable()
@@ -288,6 +337,32 @@ public class FXWebKitJPanel extends JPanel
     public URI getURI() throws URISyntaxException
     {
         return new URI(txtURL.getText()); 
+    }
+    
+    private void installHyperLinkListeners(Document doc)
+    {
+        if (doc==null)
+        {
+            System.err.println("> installHyperLinkListeners(): NULL Document");
+            return; 
+        }
+        
+       
+
+        // Element el = doc.getElementById("textarea");
+        
+        NodeList elList = doc.getElementsByTagName("a");
+        
+        for (int i=0;i<elList.getLength();i++)
+        {
+            Node el=elList.item(i);
+            // System.err.println("> - Node:"+el);
+            ((EventTarget) el).addEventListener("click", getLinkListener(), false);
+            ((EventTarget) el).addEventListener("dblclick", getLinkListener(), false);
+            ((EventTarget) el).addEventListener("mouseover", getLinkListener(), false);
+
+        }
+
     }
     
 }

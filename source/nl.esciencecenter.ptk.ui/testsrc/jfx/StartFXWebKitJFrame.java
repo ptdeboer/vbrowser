@@ -1,12 +1,12 @@
 package jfx;
 
-import nl.esciencecenter.ptk.jfx.util.FXWebKitJFrame;
+import nl.esciencecenter.ptk.jfx.util.FXWebJFrame;
 
 public class StartFXWebKitJFrame
 {
     public static void main(String args[])
     {
-        FXWebKitJFrame.launch("http://www.cnn.com");
+        FXWebJFrame.launch("http://www.cnn.com");
     }
     
 }

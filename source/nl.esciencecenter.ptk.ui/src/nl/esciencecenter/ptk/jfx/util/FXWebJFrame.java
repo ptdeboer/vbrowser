@@ -7,13 +7,13 @@ import java.net.URISyntaxException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-public class FXWebKitJFrame extends JFrame
+public class FXWebJFrame extends JFrame
 {
     private static final long serialVersionUID = -8338688804088729908L;
     
-    private FXWebKitJPanel webKitPanel;
+    private FXWebJPanel webKitPanel;
     
-    public FXWebKitJFrame()
+    public FXWebJFrame()
     {
         initComponents(); 
     }
@@ -21,7 +21,7 @@ public class FXWebKitJFrame extends JFrame
     protected void initComponents()
     {
         {
-            webKitPanel = new FXWebKitJPanel(new BorderLayout(),true);
+            webKitPanel = new FXWebJPanel(new BorderLayout(),true);
             getContentPane().add(webKitPanel);
         }
     }
@@ -36,9 +36,9 @@ public class FXWebKitJFrame extends JFrame
         return webKitPanel.getURI(); 
     }
     
-    public static FXWebKitJFrame launch(final String url)
+    public static FXWebJFrame launch(final String url)
     {
-        final FXWebKitJFrame frame=new FXWebKitJFrame(); 
+        final FXWebJFrame frame=new FXWebJFrame(); 
         
         Runnable starter=new Runnable()
         {
