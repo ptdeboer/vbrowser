@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
@@ -37,6 +38,23 @@ public class FXWebKitJPanel extends JPanel
 {
     private static final long serialVersionUID = -7501864809216238899L;
     // 
+    
+    private static String toURL(String str)
+    {
+        try
+        {
+            return new URL(str).toExternalForm();
+        }
+        catch (MalformedURLException exception)
+        {
+            return null;
+        }
+    }
+
+    // ===
+    //
+    // ===
+    
     private JFXPanel jfxPanel;
     private WebEngine engine;
     private JLabel lblStatus = new JLabel();
@@ -90,6 +108,16 @@ public class FXWebKitJPanel extends JPanel
         add(statusBar, BorderLayout.SOUTH);
     }
 
+    protected JFXPanel getJFXPanel()
+    {
+        return jfxPanel;
+    }
+    
+    protected WebEngine getWebEngine()
+    {
+        return engine;
+    }
+    
     private void createScene()
     {
 
@@ -215,18 +243,7 @@ public class FXWebKitJPanel extends JPanel
         });
     }
 
-    private static String toURL(String str)
-    {
-        try
-        {
-            return new URL(str).toExternalForm();
-        }
-        catch (MalformedURLException exception)
-        {
-            return null;
-        }
-    }
-
+   
     protected void updateLocation(String oldText,String newText)
     {
         txtURL.setText(newText);
@@ -239,19 +256,24 @@ public class FXWebKitJPanel extends JPanel
     
     protected void updateTitle(String text)
     {
-        this.getJFrame().setTitle(text);
+        Frame frame=this.getFrame();
+        if (frame!=null)
+            frame.setTitle(text);
     }
-
-    public JFrame getJFrame()
+    
+    /**
+     * Get Parent (J)Frame.  
+     */
+    public Frame getFrame()
     {
         Component comp=this; 
         
         while (comp!=null)
         {
             Container parentComp = comp.getParent();
-            if (parentComp instanceof JFrame)
+            if (parentComp instanceof Frame)
             {
-                return (JFrame)parentComp;
+                return (Frame)parentComp;
             }
             
             if (comp==parentComp)
