@@ -20,6 +20,7 @@
 
 package nl.esciencecenter.ptk.net;
 
+import java.io.File;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -1100,5 +1101,23 @@ public class URIFactory implements Serializable
 
         return str;
     }
+
+	public String getDosPath() 
+	{
+		String newPath=this.getPath();
+		
+		// Check /C:/ and remove leading slash. 
+		
+		if (newPath.length()>=4)
+		{
+			if ( (newPath.charAt(0)=='/') && (newPath.charAt(3)=='/') )
+			{
+				newPath=newPath.substring(1);
+			}
+		}
+		
+		newPath=newPath.replace('/',File.separatorChar);
+		return newPath;
+	}
 
 }

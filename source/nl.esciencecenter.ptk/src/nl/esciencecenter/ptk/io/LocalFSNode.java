@@ -39,6 +39,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.net.URIFactory;
+
 /**
  * Local file implementation of FSNode based on java.nio.Files;
  */
@@ -75,7 +78,15 @@ public class LocalFSNode extends FSNode
     {
         super(loc);
         FileSystem fs = FileSystems.getDefault();
-        init(fs.getPath(loc.getPath()));
+        if (GlobalProperties.isWindows())
+        {
+        	String dosPath=new URIFactory(loc).getDosPath();
+        	init(fs.getPath(dosPath));
+        }
+        else
+        {
+        	init(fs.getPath(loc.getPath()));
+        }
     }
 
     @Override
@@ -279,14 +290,22 @@ public class LocalFSNode extends FSNode
                 throw e;
             }
         }
+        catch (UnsupportedOperationException e)
+        {
+        	return null; 
+        }
         
         return posixAttrs;
     }
 
-
-    public int getUnixFileMode() throws IOException
+	public int getUnixFileMode() throws IOException
     {
-        Set<PosixFilePermission> perms = getPosixAttributes().permissions();
+		PosixFileAttributes attrs;
+		if ((attrs=getPosixAttributes())==null)
+			return 0; 
+		
+        Set<PosixFilePermission> perms = attrs.permissions();
+        
         return toUnixFileMode(perms);
     }
 
@@ -349,4 +368,23 @@ public class LocalFSNode extends FSNode
         Files.setPosixFilePermissions(_path, fromUnixFileMode(mode));
     }
 
+	public String getOwnerName() throws IOException
+	{
+		PosixFileAttributes attrs;
+		
+		if ((attrs=this.getPosixAttributes())==null)
+			return null;
+		
+		return attrs.owner().getName(); 
+	}
+
+	public String getGroupName() throws IOException
+	{
+		PosixFileAttributes attrs;
+		
+		if ((attrs=this.getPosixAttributes())==null)
+			return null;
+		
+		return attrs.group().getName(); 
+	}
 }

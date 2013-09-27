@@ -100,6 +100,8 @@ public class TestVFS extends VTestCase
             + "Strange characters:áéíóúâêîôû\n<TODO more...>\nUTF8:<TODO>\n" 
             + "\n --- If you read this, you can delete this file ---\n";
 
+    private static int uniquepathnr = 0;
+    
     // ========================================================================
     // Instance
     // ========================================================================
@@ -118,7 +120,6 @@ public class TestVFS extends VTestCase
 
     private VRL remoteTestDirVrl = null;
 
-    private int uniquepathnr = 0;
 
     private Object uniquepathnrMutex = new Object();
 
@@ -938,13 +939,13 @@ public class TestVFS extends VTestCase
         // postfix space 
         
         String orgFileName = nextFilename("spaceRenameFile1"); 
-        String newFileName = orgFileName+" "; 
+        String newFileName = orgFileName+" space"; 
         
         testRename(parentDir,orgFileName,newFileName);
         
         // prefix space 
         orgFileName = nextFilename("spaceRenameFile2"); 
-        newFileName = " "+orgFileName+" ";  
+        newFileName = "pre "+orgFileName+" post";  
         
         // infix space 
         testRename(parentDir,orgFileName,newFileName); 

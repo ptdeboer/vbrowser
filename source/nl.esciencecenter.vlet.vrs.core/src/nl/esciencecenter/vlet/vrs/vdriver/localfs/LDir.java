@@ -220,6 +220,11 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
     {
         if (fsNode.exists())
         {
+        	if (fsNode.isDirectory()==false) 
+        	{
+        		throw new ResourceAlreadyExistsException("Path already exists, but is a file:"+this); 
+        	}
+        	
             if (ignoreExisting)
             {
                 return true;
@@ -343,7 +348,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
     {
         try
         {
-            return fsNode.getPosixAttributes().group().getName();
+            return fsNode.getGroupName(); 
         }
         catch (IOException e)
         {
@@ -355,7 +360,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
     {
         try
         {
-            return fsNode.getPosixAttributes().owner().getName();
+            return fsNode.getOwnerName();
         }
         catch (IOException e)
         {
