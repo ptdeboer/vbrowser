@@ -115,6 +115,8 @@ public class StringCrypter
      * This option is for legacy applications.
      */ 
     private boolean usePlainCharBytes=false;
+
+    private CryptScheme cryptScheme;
     
 //    public StringEncrypter() throws EncryptionException
 //    {
@@ -203,57 +205,56 @@ public class StringCrypter
             throw new NullPointerException("Encryption key is null!");
         }
         
+        this.cryptScheme=encryptionScheme; 
+        String cipherScheme=encryptionScheme.getCipherScheme(); 
+        int keyLen=encryptionScheme.getKeyLength();
+        
         try
         {
+
             // IV only needed for CBC, not ECB:
             // IvParameterSpec ivSpec=null;
             //          
             // if (IV!=null)
             //    ivSpec = new IvParameterSpec(IV); 
-
-            if (encryptionScheme.equals(CryptScheme.DESEDE_ECB_PKCS5))
+            switch(encryptionScheme)
             {
-                keySpec = new DESedeKeySpec(rawKey);
-                keyFactory = SecretKeyFactory.getInstance(encryptionScheme.getSchemeName());
-                cipher = Cipher.getInstance(encryptionScheme.getConfigString());
-            }
-            else if (encryptionScheme.equals(CryptScheme.DES_ECB_PKCS5))
-            {
-                keySpec = new DESKeySpec(rawKey);
-                keyFactory = SecretKeyFactory.getInstance(encryptionScheme.getSchemeName());
-                cipher = Cipher.getInstance(encryptionScheme.getConfigString());
-            }
-            else if ( encryptionScheme.equals(CryptScheme.AES128_ECB_PKCS5) ||  encryptionScheme.equals(CryptScheme.AES256_ECB_PKCS5) )
-            {
-                byte subkey[]=null; 
-                int k=16; 
-                
-                if (encryptionScheme.equals(CryptScheme.AES256_ECB_PKCS5))
+                case DESEDE_ECB_PKCS5:
                 {
-                    k=32;
+                    keySpec = new DESedeKeySpec(rawKey);
+                    keyFactory = SecretKeyFactory.getInstance(encryptionScheme.getCipherScheme());
+                    cipher = Cipher.getInstance(encryptionScheme.getConfigString());
+                    break; 
                 }
-                
-                if (rawKey.length<k)
+                case AES128_ECB_PKCS5:
+                //case AES192_ECB_PKCS5:
+                case AES256_ECB_PKCS5:
                 {
-                    throw new EncryptionException ("AES Key length to short. Length="+rawKey.length+", must be at least:"+k,null); 
+                    byte subkey[]=null; 
+                    
+                    if (rawKey.length<keyLen)
+                    {
+                        throw new EncryptionException ("AES Key length to short. Length="+rawKey.length+", must be at least:"+keyLen,null); 
+                    }
+                    
+                    subkey=new byte[keyLen];  
+                    for (int i=0;i<keyLen;i++)
+                    {
+                            subkey[i]=rawKey[i];
+                    }
+                    
+                    keySpec = new SecretKeySpec(subkey,cipherScheme);
+                    // Not needed. Directly use keysSpec as SecretKey for AES ! 
+                    // SecretKeyFactory.getInstance(encryptionScheme.getSchemeName());
+                    keyFactory = null;
+                    cipher = Cipher.getInstance(encryptionScheme.getConfigString());
+                    break; 
                 }
-                
-                subkey=new byte[k];  
-                for (int i=0;i<k;i++)
+                default: 
                 {
-                        subkey[i]=rawKey[i];
+                    throw new IllegalArgumentException("Encryption scheme not supported: " + encryptionScheme);
                 }
-                
-                keySpec = new SecretKeySpec(subkey,"AES");
-                // Not needed. Directly use keysSpec as SecretKey for AES ! 
-                // SecretKeyFactory.getInstance(encryptionScheme.getSchemeName());
-                keyFactory = null;
-                cipher = Cipher.getInstance(encryptionScheme.getConfigString());
-            }
-            else
-            {
-                throw new IllegalArgumentException("Encryption scheme not supported: " + encryptionScheme);
-            }
+            } // switch 
             
         }
         catch (NoSuchAlgorithmException e)
@@ -342,6 +343,15 @@ public class StringCrypter
         }
         catch (InvalidKeyException e)
         {
+            if (this.cryptScheme.getCipherScheme().toUpperCase().startsWith("AES"))
+            {
+                if (e.getMessage().contains("Illegal key size"))
+                {
+                    
+                    throw new EncryptionException("Illegal keysize for AES. Are Unlimited Strength Jurisdiction Policy Files for AES installed?\n"
+                                                  +"Error="+e.getMessage(),e);
+                }
+            }
             throw new EncryptionException(e.getMessage(),e);
         }
         catch (IllegalBlockSizeException e)
