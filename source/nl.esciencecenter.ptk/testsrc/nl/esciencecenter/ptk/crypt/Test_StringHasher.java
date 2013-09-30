@@ -23,12 +23,11 @@ package nl.esciencecenter.ptk.crypt;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
-import junit.framework.Assert;
-
 import nl.esciencecenter.ptk.crypt.StringHasher;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class Test_StringHasher

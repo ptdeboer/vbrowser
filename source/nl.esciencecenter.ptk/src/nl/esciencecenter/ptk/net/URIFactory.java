@@ -985,7 +985,7 @@ public class URIFactory implements Serializable
         URI uri = new URI("file", kludgePath, null);
         // Use encoded path here to allow for strange character
         URI newUri = uri.resolve(encode(uripath(relpath,false)));
-        return newUri.getPath();
+        return this.uripath(newUri.getPath());
     }
 
     public URIFactory getParent()
