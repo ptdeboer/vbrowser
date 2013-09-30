@@ -21,7 +21,9 @@
 package nl.esciencecenter.ptk.ui.widgets;
 
 import java.awt.event.ActionListener;
+import java.net.URI;
 import java.net.URL;
+import java.util.List;
 import java.util.TooManyListenersException;
 
 import javax.swing.BoxLayout;
@@ -271,10 +273,13 @@ public class NavigationBar extends JToolBar implements URIDropTargetLister
             ClassLogger.getLogger(this.getClass()).logException(ClassLogger.ERROR, e, "TooManyListenersException:"+e);
         }
     }
-
-    public void notifyDnDDrop(String txt)
+    
+    public void notifyDnDDrop(List<URI> uris)
     {
-        this.updateLocation(txt,false);        
+        if ((uris!=null) && (uris.size()>0)) 
+        {
+            this.updateLocation(uris.get(0).toString(),false);         
+        }
     }
     
 }
