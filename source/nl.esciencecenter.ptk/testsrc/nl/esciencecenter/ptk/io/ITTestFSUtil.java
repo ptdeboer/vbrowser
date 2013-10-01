@@ -22,8 +22,7 @@ package nl.esciencecenter.ptk.io;
 
 import java.io.IOException;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

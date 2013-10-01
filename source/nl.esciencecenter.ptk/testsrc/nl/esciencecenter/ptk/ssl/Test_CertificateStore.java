@@ -6,15 +6,13 @@ import java.security.Principal;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
-
 import java.util.List;
-
-import junit.framework.Assert;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.util.StringUtil;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class Test_CertificateStore

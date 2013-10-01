@@ -1041,7 +1041,7 @@ public class TestVFS extends VTestCase
             {
                 if (root.isWritable()==false)
                 {
-                    VDir newDir = root.createDir(nextFilename("testI"));
+                     VDir newDir = root.createDir(nextFilename("testI"));
                 
                     Assert.fail("Should raise Exception:" + ResourceWriteAccessDeniedException.class);
                 }

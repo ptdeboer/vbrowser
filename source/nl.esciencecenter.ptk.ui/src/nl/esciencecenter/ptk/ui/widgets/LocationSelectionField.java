@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URL;
+import java.util.List;
 import java.util.TooManyListenersException;
 
 import javax.swing.BoxLayout;
@@ -302,9 +303,12 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
         }
     }
 
-    public void notifyDnDDrop(String txt)
+    public void notifyDnDDrop(List<URI> uris)
     {
-        this.locationTF.setText(txt);         
+        if ((uris!=null) && (uris.size()>0)) 
+        {
+            this.locationTF.setText(uris.get(0).toString());         
+        }
     }
 
     public void showMetaMenu(int relX,int relY)

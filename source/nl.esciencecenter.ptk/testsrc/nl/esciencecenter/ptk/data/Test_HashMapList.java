@@ -1,8 +1,8 @@
 package nl.esciencecenter.ptk.data;
 
-import junit.framework.Assert;
 import nl.esciencecenter.ptk.data.HashMapList;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class Test_HashMapList

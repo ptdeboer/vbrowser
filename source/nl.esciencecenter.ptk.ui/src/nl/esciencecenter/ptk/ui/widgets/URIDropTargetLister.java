@@ -1,8 +1,11 @@
 package nl.esciencecenter.ptk.ui.widgets;
 
+import java.net.URI;
+import java.util.List;
+
 public interface URIDropTargetLister 
 {
 
-	void notifyDnDDrop(String uriString);
+	void notifyDnDDrop(List<URI> uriList);
 
 }
