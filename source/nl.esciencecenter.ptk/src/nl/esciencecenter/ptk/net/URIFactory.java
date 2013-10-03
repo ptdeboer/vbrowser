@@ -413,6 +413,9 @@ public class URIFactory implements Serializable
 
     public URIFactory(URI uri)
     {
+        if (uri==null)
+            return; 
+        
         init(uri);
     }
 
