@@ -9,5 +9,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nl.esciencecenter.vbrowser.vrs"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vbrowser.vb2.viewers"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

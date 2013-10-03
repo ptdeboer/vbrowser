@@ -320,6 +320,8 @@ public abstract class ProxyNode
     {
         ViewNode viewNode=new ViewNode(locator,getIcon(model),getName(),isComposite());
         viewNode.setResourceType(this.getResourceType()); 
+        viewNode.setMimeType(this.getMimeType());
+        
         return viewNode; 
     } 
     

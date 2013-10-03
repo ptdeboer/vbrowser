@@ -78,50 +78,58 @@ public class ActionMenu extends JPopupMenu
 		{
 		    JMenu openMenu=new JMenu("Open in"); 
 		    menu.add(openMenu); 
-		    JMenuItem mi=new JMenuItem("New Window"); 
-		    openMenu.add(mi);
-		    mi.setActionCommand(""+ActionMethod.OPEN_IN_NEW_WINDOW); 
-		    mi=new JMenuItem("New Tab"); 
-            openMenu.add(mi); 
-            mi.setActionCommand(""+ActionMethod.OPEN_IN_NEW_TAB); 
+		    
+		    menu.add(menu.createItem(viewNode,"New Window",ActionMethod.OPEN_IN_NEW_WINDOW)); 
+            menu.add(menu.createItem(viewNode,"New Tab",ActionMethod.OPEN_IN_NEW_TAB)); 
 		}
-		
+
+        menu.add(new JSeparator()); 
+        
+        {
+            menu.add(menu.createItem(viewNode,"View",ActionMethod.VIEW_OPEN_DEFAULT)); 
+        }
+        
         menu.add(sep); 
 		
-        menu.add(menu.createItem(viewNode,"Create",ActionMethod.CREATE)); 
-        if (multiSelection)
-        	menu.add(menu.createItem(viewNode,"Delete All",ActionMethod.DELETE_SELECTION));
-        else 
-        	menu.add(menu.createItem(viewNode,"Delete",ActionMethod.DELETE));
-        
-        menu.add(menu.createItem(viewNode,"Rename",ActionMethod.RENAME));
+        {
+            menu.add(menu.createItem(viewNode,"Create",ActionMethod.CREATE)); 
+            if (multiSelection)
+            	menu.add(menu.createItem(viewNode,"Delete All",ActionMethod.DELETE_SELECTION));
+            else 
+            	menu.add(menu.createItem(viewNode,"Delete",ActionMethod.DELETE));
+            
+            menu.add(menu.createItem(viewNode,"Rename",ActionMethod.RENAME));
+        }
         
         sep=new JSeparator();
     	menu.add(sep);
     	
+    	{
+    
+       		JMenuItem item;
+       		String name="Copy"; 
+       		if (multiSelection)
+       			name="Copy All"; 
+       		
+    		menu.add(item=menu.createItem(viewNode,name,ActionMethod.COPY_SELECTION)); 
+    
+    		// enable copy in cancas menu only when there is something selected
+    		if (canvasMenu)
+    			if (hasSelection) 
+    				item.setEnabled(true);
+    			else
+    				item.setEnabled(false); 
+        	
+            menu.add(menu.createItem(viewNode,"Paste",ActionMethod.PASTE)); 
+            sep=new JSeparator();
+        	menu.add(sep); 
+    		menu.add(menu.createItem(viewNode,"Refresh",ActionMethod.REFRESH)); 
+    	}
 
-   		JMenuItem item;
-   		String name="Copy"; 
-   		if (multiSelection)
-   			name="Copy All"; 
-   		
-		menu.add(item=menu.createItem(viewNode,name,ActionMethod.COPY_SELECTION)); 
+        sep=new JSeparator(); 
+        menu.add(sep); 
 
-		// enable copy in cancas menu only when there is something selected
-		if (canvasMenu)
-			if (hasSelection) 
-				item.setEnabled(true);
-			else
-				item.setEnabled(false); 
-    	
-        menu.add(menu.createItem(viewNode,"Paste",ActionMethod.PASTE)); 
-        sep=new JSeparator();
-    	menu.add(sep); 
-		menu.add(menu.createItem(viewNode,"Refresh",ActionMethod.REFRESH)); 
-		
 		{
-			sep=new JSeparator(); 
-			menu.add(sep); 
 
 			JMenu subMenu=new JMenu("Location"); 
 			{
@@ -130,7 +138,7 @@ public class ActionMenu extends JPopupMenu
 				menu.add(subMenu); 
 			}
 			{
-				menu.add(menu.createItem(viewNode,"Properties",ActionMethod.PROPERTIES)); 
+				menu.add(menu.createItem(viewNode,"Properties",ActionMethod.SHOW_PROPERTIES)); 
 			}
 		}
 

@@ -44,6 +44,7 @@ import javax.swing.border.EtchedBorder;
 
 import nl.esciencecenter.ptk.ui.widgets.NavigationBar;
 import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.ActionMethod;
+import nl.esciencecenter.vbrowser.vb2.ui.browser.internal.ViewerRegistry;
 import nl.esciencecenter.vbrowser.vb2.ui.iconspanel.IconsPanel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.DataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
@@ -55,6 +56,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTable;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTableModel;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.TableDataProducer;
 import nl.esciencecenter.vbrowser.vb2.ui.tree.ResourceTree;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerPanel;
 
 /**
  * Master browser frame.  
@@ -64,7 +66,7 @@ public class BrowserFrame extends JFrame
 {
     public static enum BrowserViewMode
     {
-        ICONS, ICONLIST, TABLE, CONTENT
+        ICONS, ICONLIST, TABLE, CONTENT_VIEWER
     };
     
 	private static final long serialVersionUID = 3076698217838089389L;
@@ -319,6 +321,17 @@ public class BrowserFrame extends JFrame
 		return tbl; 
 	}
 	
+	
+	protected void addViewerPanel(ViewerPanel viewer)
+	{
+	    TabContentPanel tab = this.getCurrentTab(); 
+	    
+	    tab=this.addTab("Viewer",null,false); 
+	    tab.setContent(viewer);  
+	    
+	    return; 
+    }
+	   
 	protected JComponent getFirstTab(Class<? extends JComponent> clazz) 
 	{
 		for (int i=0;i<this.uiRightTabPane.getComponentCount();i++)
@@ -524,6 +537,10 @@ public class BrowserFrame extends JFrame
 	            break; 
 	        case TABLE:
 	        	this.getTablePanel(true);
+	        	break;
+	        case CONTENT_VIEWER:
+	            // this.getViewerPanel(true);
+	            break;
 	    }
 	}
 

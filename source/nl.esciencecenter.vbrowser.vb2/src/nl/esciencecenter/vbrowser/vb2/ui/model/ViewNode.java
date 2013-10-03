@@ -50,6 +50,8 @@ public class ViewNode
 
     protected String resourceType; 
     
+    protected String mimeType; 
+    
     protected ViewNode(VRL locator)
     {
         this.locator=locator; 
@@ -94,13 +96,17 @@ public class ViewNode
         return getIcon(DEFAULT_ICON); 
     }
     
-    /** Pre rendered selected icon */ 
+    /** 
+     * Pre rendered selected icon 
+     */ 
     public Icon getSelectedIcon()
     {
         return getIcon(SELECTED_ICON); 
     }
 
-    /** Returns status icon if specified */
+    /** 
+     * Returns status icon if specified 
+     */
     public Icon getIcon(String name)
     {
         return iconMapping.get(name); 
@@ -111,15 +117,31 @@ public class ViewNode
         return false; // is Busy should be updated using events
     }
     
-    public String toString()
-    {
-    	return "{ViewNode:"+locator+"}"; 
-    }
-
-    public String getResourceType()
+       public String getResourceType()
     {
         return this.resourceType;
     }
 
-    // Status on ViewNode ? 
+    public void setMimeType(String mimeType)
+    {
+        this.mimeType=mimeType;
+    }
+
+    public String getMimeType()
+    {
+        return mimeType;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ViewNode [locator=" + locator + ", isComposite=" + isComposite + ", name=" + name + ", iconMapping="
+                + iconMapping + ", resourceType=" + resourceType + ", mimeType=" + mimeType + "]";
+    }
+
+    // === 
+    // Generated Methods 
+    // ===
+
+    
 }

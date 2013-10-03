@@ -22,6 +22,7 @@ package nl.esciencecenter.vbrowser.vb2.ui.browser;
 
 import javax.swing.TransferHandler;
 
+import nl.esciencecenter.vbrowser.vb2.ui.browser.internal.ViewerRegistry;
 import nl.esciencecenter.vbrowser.vb2.ui.dnd.DnDUtil;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactoryRegistry;
@@ -49,6 +50,7 @@ public class BrowserPlatform
     // ========================================================================
     
     private ProxyFactoryRegistry proxyRegistry=null;
+    private ViewerRegistry viewerRegistry;
     
     
     protected BrowserPlatform()
@@ -60,9 +62,14 @@ public class BrowserPlatform
     {
         // init defaults: 
         this.proxyRegistry=ProxyFactoryRegistry.getInstance(); 
+        
+        this.viewerRegistry=new ViewerRegistry(); 
+        
+        initDefaultViewers(); 
     }
     
-    public ProxyFactory getFactoryFor(VRL locator)
+
+    public ProxyFactory getProxyFactoryFor(VRL locator)
     {
         return this.proxyRegistry.getProxyFactoryFor(locator); 
     }
@@ -83,7 +90,7 @@ public class BrowserPlatform
     }
 
     /**
-     * Returns Inter Browser DnD TransferHandler for DnDs between browser frames and ViewNodeComponents. 
+     * Returns Internal Browser DnD TransferHandler for DnDs between browser frames and ViewNodeComponents. 
      */
     public TransferHandler getTransferHandler()
     {
@@ -91,4 +98,14 @@ public class BrowserPlatform
        return DnDUtil.getDefaultTransferHandler();
     }
     
+    protected ViewerRegistry getViewerRegistry()
+    {
+        return viewerRegistry; 
+    }
+    
+    protected void initDefaultViewers()
+    {
+        
+    }
+
 }

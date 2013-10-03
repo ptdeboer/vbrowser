@@ -34,7 +34,7 @@ public enum ActionMethod
     DEFAULT_ACTION("DefaultAction"), 
     // Menu actions 
     DELETE("Delete"), 
-	PROPERTIES("Properties"),
+	SHOW_PROPERTIES("Properties"),
     CREATE("Create"),
     RENAME("Rename"),
     COPY("Copy"),
@@ -51,6 +51,7 @@ public enum ActionMethod
     VIEW_AS_ICONS("ViewAsIcons"), 
     VIEW_AS_ICON_LIST("ViewAsList"), 
     VIEW_AS_TABLE("ViewAsTable"),
+    VIEW_OPEN_DEFAULT("ViewDefault"),
     // Tab Nav
     NEW_TAB("NewTab"),
     OPEN_IN_NEW_TAB("OpenInNewTab"),
