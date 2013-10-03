@@ -105,7 +105,7 @@ public class URIDropHandler implements DropTargetListener
 
                 if ((uris!=null) && (uris.size()>0))
                 {
-                	uriDropTargetListener.notifyDnDDrop(uris);
+                	uriDropTargetListener.notifyUriDrop(uris);
                 	dtde.dropComplete(true);
                 	return;
                 }
@@ -126,7 +126,7 @@ public class URIDropHandler implements DropTargetListener
                 
                 if ((uris!=null) && (uris.size()>0))
                 {
-                    uriDropTargetListener.notifyDnDDrop(uris);
+                    uriDropTargetListener.notifyUriDrop(uris);
                     dtde.dropComplete(true);
                     return;
                 }
@@ -144,7 +144,7 @@ public class URIDropHandler implements DropTargetListener
                 try
                 {
                     uris.add(new URI(txt));
-                    uriDropTargetListener.notifyDnDDrop(uris);
+                    uriDropTargetListener.notifyUriDrop(uris);
                     dtde.dropComplete(true);
                     return; 
                 }

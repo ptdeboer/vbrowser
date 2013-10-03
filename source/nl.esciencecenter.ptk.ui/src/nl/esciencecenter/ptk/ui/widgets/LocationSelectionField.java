@@ -303,7 +303,7 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
         }
     }
 
-    public void notifyDnDDrop(List<URI> uris)
+    public void notifyUriDrop(List<URI> uris)
     {
         if ((uris!=null) && (uris.size()>0)) 
         {

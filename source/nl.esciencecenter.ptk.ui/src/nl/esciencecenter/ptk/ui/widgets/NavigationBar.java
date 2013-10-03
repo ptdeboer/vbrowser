@@ -274,7 +274,7 @@ public class NavigationBar extends JToolBar implements URIDropTargetLister
         }
     }
     
-    public void notifyDnDDrop(List<URI> uris)
+    public void notifyUriDrop(List<URI> uris)
     {
         if ((uris!=null) && (uris.size()>0)) 
         {

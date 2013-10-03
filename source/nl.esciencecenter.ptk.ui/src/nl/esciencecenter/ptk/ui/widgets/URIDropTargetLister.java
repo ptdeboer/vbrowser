@@ -6,6 +6,6 @@ import java.util.List;
 public interface URIDropTargetLister 
 {
 
-	void notifyDnDDrop(List<URI> uriList);
+	void notifyUriDrop(List<URI> uriList);
 
 }
