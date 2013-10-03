@@ -27,6 +27,7 @@ import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.UIGlobal;
+import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
@@ -242,7 +243,7 @@ public abstract class ProxyNode
     
     public Icon getIcon(int size) throws ProxyException
     {
-        IconProvider provider=UIGlobal.getIconProvider();
+        IconProvider provider=BrowserPlatform.getInstance().getIconProvider();
         
         String mimeType=this.getMimeType(); 
         

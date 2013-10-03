@@ -39,9 +39,8 @@ public class GuiSettings
 	public static String MOUSE_POPUP_BUTTON="ui.popup_button"; 
 
     // ========================================================================
-    // Public fields 
+    // Instance fields 
     // ========================================================================
-    	
 	
 	private ConfigProperties properties=new ConfigProperties(); 
 	
@@ -59,6 +58,10 @@ public class GuiSettings
 
 	private int  mouse_popup_button=mouse_alt_button;
 
+	public GuiSettings()
+	{
+	    
+	}
 
     public URI getUserIconsDir()
     {

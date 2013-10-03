@@ -65,7 +65,6 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
 
     {
         logger = ClassLogger.getLogger(ProxyBrowser.class);
-        //logger.setLevelToDebug();
     }
 
     // ========================================================================
@@ -311,13 +310,13 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
 		        this.proxyActionHandler.handleDelete(action,node); 
     			break;
     		case DEFAULT_ACTION:
-    			defaultAction(node);
+    			doDefaultAction(node);
     			break;
     		case DELETE_SELECTION:
                 this.proxyActionHandler.handleDeleteSelection(action,node);  
     		    break; 
     		case OPEN_LOCATION:
-    			defaultAction(node);
+    			doDefaultAction(node);
     			break;
     		case OPEN_IN_NEW_WINDOW:
     			createBrowser(node);
@@ -387,7 +386,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
                 viewer=new ProxyObjectViewer(node); 
             }
             
-            browserFrame.addViewerPanel(viewer);
+            browserFrame.addViewerPanel(viewer,true);
 
             // initialize viewer + update location: 
         
@@ -503,9 +502,18 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
         openLocation(actionNode.getVRL(),true,false);
     }
 
-    public void defaultAction(ViewNode actionNode)
+    public void doDefaultAction(ViewNode actionNode)
     {
-        openLocation(actionNode.getVRL(),true,false);
+        // determinte default action to view node: 
+        
+        if (actionNode.isComposite())
+        {
+            openLocation(actionNode.getVRL(),true,false);
+        }
+        else
+        {
+            this.doOpenViewer(actionNode,null,false);
+        }
     }
 
     protected void createNewTab(ViewNode node)

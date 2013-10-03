@@ -20,11 +20,8 @@
 
 package nl.esciencecenter.vbrowser.vb2.ui;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import nl.esciencecenter.ptk.ui.icons.IconProvider;
-import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 
@@ -32,9 +29,7 @@ public class UIGlobal
 {
     private static GuiSettings guiSettings; 
     private static ClassLogger uiLogger;
-    private static UIResourceLoader resourceLoader; 
-    private static JFrame rootFrame;
-    private static IconProvider iconProvider;
+
     
     static
     {
@@ -45,9 +40,7 @@ public class UIGlobal
         {
             guiSettings=new GuiSettings();
             uiLogger=ClassLogger.getLogger("UIGlobal"); 
-            resourceLoader=UIResourceLoader.getDefault();
-            rootFrame=new JFrame(); 
-            iconProvider=new IconProvider(rootFrame,resourceLoader); 
+      
         }
         catch (Exception e)
         {
@@ -59,16 +52,10 @@ public class UIGlobal
     {
     }
    
-
     public static GuiSettings getGuiSettings()
     {
         return guiSettings; 
     }
-
-    public static IconProvider getIconProvider()
-    {
-        return iconProvider; 
-    }  
 
     public static void assertNotGuiThread(String msg) throws Error
 	{

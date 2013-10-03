@@ -20,12 +20,21 @@
 
 package nl.esciencecenter.vbrowser.vb2.ui.browser;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import javax.swing.JFrame;
 import javax.swing.TransferHandler;
 
+import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.net.URIFactory;
+import nl.esciencecenter.ptk.ui.icons.IconProvider;
+import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.internal.ViewerRegistry;
 import nl.esciencecenter.vbrowser.vb2.ui.dnd.DnDUtil;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactoryRegistry;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerResourceHandler;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /** 
@@ -50,24 +59,48 @@ public class BrowserPlatform
     // ========================================================================
     
     private ProxyFactoryRegistry proxyRegistry=null;
+    
     private ViewerRegistry viewerRegistry;
     
+    private ViewerResourceHandler viewerResourceHandler; 
+    private static UIResourceLoader resourceLoader; 
+    private static JFrame rootFrame;
+    private static IconProvider iconProvider;
     
     protected BrowserPlatform()
     {
-        init(); 
+        try
+        {
+            init();
+        }
+        catch (URISyntaxException e)
+        {
+            e.printStackTrace();
+        } 
     }
     
-    private void init()
+    private void init() throws URISyntaxException
     {
         // init defaults: 
         this.proxyRegistry=ProxyFactoryRegistry.getInstance(); 
         
         this.viewerRegistry=new ViewerRegistry(); 
+        this.viewerResourceHandler=ViewerResourceHandler.getDefault(); 
         
+        URI viewerConfig=new URIFactory(getPlatformConfigDir()).appendPath("."+getPlatformID().toLowerCase()).toURI();
+        viewerResourceHandler.setViewerConfigDir(getPlatformConfigDir());
+  
         initDefaultViewers(); 
+        
+        resourceLoader=UIResourceLoader.getDefault();
+        rootFrame=new JFrame(); 
+        iconProvider=new IconProvider(rootFrame,resourceLoader); 
     }
     
+    public String getPlatformID()
+    {
+        return "VBTK2"; 
+    }
 
     public ProxyFactory getProxyFactoryFor(VRL locator)
     {
@@ -107,5 +140,23 @@ public class BrowserPlatform
     {
         
     }
+    
+    public URI getPlatformConfigDir()
+    {
+        try
+        {
+            return new URIFactory("file:///"+GlobalProperties.getGlobalUserHome()).appendPath("."+getPlatformID().toLowerCase()).toURI();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public static IconProvider getIconProvider()
+    {
+        return iconProvider; 
+    }  
 
 }
