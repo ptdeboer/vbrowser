@@ -56,6 +56,7 @@ public class MimeTypes
 	static
 	{
 	    logger=ClassLogger.getLogger(MimeTypes.class);
+	    logger.setLevelToDebug();
 	}
 	
 	public static MimeTypes getDefault()
