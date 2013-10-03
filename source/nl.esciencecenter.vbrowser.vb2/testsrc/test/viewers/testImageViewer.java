@@ -2,7 +2,7 @@ package test.viewers;
 
 import java.net.URI;
 
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ImageViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewers.ImageViewer;
 
 public class testImageViewer
 {

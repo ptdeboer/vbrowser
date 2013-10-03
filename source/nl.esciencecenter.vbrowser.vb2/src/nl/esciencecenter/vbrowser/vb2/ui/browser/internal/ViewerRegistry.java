@@ -1,8 +1,9 @@
 package nl.esciencecenter.vbrowser.vb2.ui.browser.internal;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ImageViewer;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerPanel;
+import nl.esciencecenter.vbrowser.vb2.ui.viewers.ImageViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewers.TextViewer;
 
 public class ViewerRegistry
 {
@@ -28,7 +29,17 @@ public class ViewerRegistry
 
     public Class getMimeTypeViewerClass(String mimeType)
     {
-       return ImageViewer.class; 
+        TextViewer textViewer=new TextViewer();
+        
+        if (textViewer.canView(mimeType))
+            return textViewer.getClass(); 
+
+        ImageViewer imageViewer=new ImageViewer();
+        
+        if (imageViewer.canView(mimeType))
+            return imageViewer.getClass(); 
+
+       return null;
     }
     
     public ViewerPanel createViewer(Class<? extends ViewerPanel> viewerClass)

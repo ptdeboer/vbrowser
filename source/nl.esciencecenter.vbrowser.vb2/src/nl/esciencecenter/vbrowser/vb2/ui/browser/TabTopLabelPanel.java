@@ -96,7 +96,6 @@ public class TabTopLabelPanel extends JPanel
                 case Delete:
                     setToolTipText("Close this tab");
                     this.setIcon(new ImageIcon(MiniIcons.getTabDeleteImage()));
-                    this.setIcon(new ImageIcon(MiniIcons.getMiniQuestionmark()));
                     break;
                 case Add: 
                     setToolTipText("Copy tab");

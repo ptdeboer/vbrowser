@@ -19,7 +19,7 @@
  */
 // source:
 
-package nl.esciencecenter.vbrowser.vb2.ui.viewerpanel;
+package nl.esciencecenter.vbrowser.vb2.ui.viewers;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -40,6 +40,7 @@ import javax.swing.SwingUtilities;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.ui.image.ImagePane;
 import nl.esciencecenter.ptk.ui.image.ImagePane.ImageWaiter;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.EmbeddedViewer;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
@@ -171,11 +172,6 @@ public class ImageViewer extends EmbeddedViewer
         return "ImageViewer";
     }
 
-    @Override
-    public String getViewerClass()
-    {
-        return this.getClass().getCanonicalName(); 
-    }
 
     
     @Override
@@ -190,7 +186,6 @@ public class ImageViewer extends EmbeddedViewer
             notifyException("Failed to load image:"+getURI(),e); 
         }
     }
-
 
 
     public void loadImage(java.net.URI uri) throws Exception 
@@ -229,7 +224,7 @@ public class ImageViewer extends EmbeddedViewer
 
     public void loadImage(URI location, boolean wait) throws IOException
     {
-        InputStream inps=getContentFactory().openInputStream(location); 
+        InputStream inps=getResourceHandler().openInputStream(location); 
         
         Image image;
         image = ImageIO.read(inps);

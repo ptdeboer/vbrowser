@@ -65,7 +65,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
 
     {
         logger = ClassLogger.getLogger(ProxyBrowser.class);
-        logger.setLevelToDebug();
+        //logger.setLevelToDebug();
     }
 
     // ========================================================================
@@ -375,22 +375,26 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
 
     private void doOpenViewer(ViewNode node,Class optViewerClass,boolean standaloneWindow)
     {
-        logger.errorPrintf("OPENVIEWERL:%s\n",node); 
+        logger.infoPrintf("doOpenViewer:%s\n",node); 
         
         try
         {
 
             ViewerPanel viewer = createViewerFor(node,optViewerClass); 
-            viewer=null;
-            
-            viewer=new ProxyObjectViewer(node); 
+            //viewer=null;
+            if (viewer==null)
+            {   
+                viewer=new ProxyObjectViewer(node); 
+            }
             
             browserFrame.addViewerPanel(viewer);
 
             // initialize viewer + update location: 
         
             viewer.initViewer(); 
+            
             viewer.updateURI(node.getVRL().toURI());
+            
         }
         catch (ProxyException e)
         {

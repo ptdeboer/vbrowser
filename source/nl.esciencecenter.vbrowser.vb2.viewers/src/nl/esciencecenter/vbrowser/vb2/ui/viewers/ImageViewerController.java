@@ -19,7 +19,7 @@
  */
 // source:
 
-package nl.esciencecenter.vbrowser.vb2.ui.viewerpanel;
+package nl.esciencecenter.vbrowser.vb2.ui.viewers;
 
 import java.awt.Point;
 import java.awt.event.ComponentEvent;

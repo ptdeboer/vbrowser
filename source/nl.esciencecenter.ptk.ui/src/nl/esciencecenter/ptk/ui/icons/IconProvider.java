@@ -539,6 +539,11 @@ public class IconProvider
     {
         return this.createIcon(this.home_icon_url,size); 
     }
+
+    public Icon getIconOrBroken(String iconUrl)
+    {
+        return this.createIcon(iconUrl); 
+    }
    
  
 }

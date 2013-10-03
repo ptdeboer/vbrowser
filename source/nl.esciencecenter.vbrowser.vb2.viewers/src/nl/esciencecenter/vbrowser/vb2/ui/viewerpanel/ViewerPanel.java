@@ -1,10 +1,14 @@
 package nl.esciencecenter.vbrowser.vb2.ui.viewerpanel;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.net.URI;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 
 public abstract class ViewerPanel extends JPanel
 {
@@ -71,6 +75,48 @@ public abstract class ViewerPanel extends JPanel
         e.printStackTrace(); 
     }
     
+    /** 
+     * Whether Viewer has it own ScrollPane. 
+     * If not the parent Component might embedd the viewer into a ScrollPanel. 
+     * @return
+     */
+    public boolean haveOwnScrollPane()
+    {
+        return false; 
+    }
+    
+    /** Set title of master frame or Viewer tab */
+    public void setViewerTitle(final String name)
+    {
+        JFrame frame = getJFrame();
+        if (frame != null)
+            getJFrame().setTitle(name);
+
+        this.setName(name);
+    }
+    
+    /**
+     * Returns parent JFrame if contained in one. Might return NULL if parent is
+     * not a JFrame! use getTopLevelAncestor() to get the (AWT) toplevel
+     * component.
+     * 
+     * @see javax.swing.JComponent#getTopLevelAncestor()
+     * @return the containing JFrame or null.
+     */
+    final public JFrame getJFrame()
+    {
+
+        Container topcomp = this.getTopLevelAncestor();
+        if (topcomp instanceof Frame)
+            return ((JFrame) topcomp);
+
+        return null;
+    }
+
+    final protected boolean hasJFrame()
+    {
+        return (this.getJFrame() != null);
+    }
     // =========================================================================
     // Abstract Interface 
     // ========================================================================

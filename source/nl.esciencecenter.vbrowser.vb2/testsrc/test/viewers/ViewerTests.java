@@ -4,7 +4,7 @@ import java.net.URI;
 
 import javax.swing.JFrame;
 
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ImageViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewers.ImageViewer;
 
 public class ViewerTests
 {
