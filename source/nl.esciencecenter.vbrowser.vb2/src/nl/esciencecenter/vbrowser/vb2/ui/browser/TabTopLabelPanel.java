@@ -1,13 +1,8 @@
 package nl.esciencecenter.vbrowser.vb2.ui.browser;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,10 +23,6 @@ public class TabTopLabelPanel extends JPanel
 
     public static enum TabButtonType {Delete,Add}; 
 
-    private final TabContentPanel pane;
-
-    private final JTabbedPane parentPane;
-
     private TabButton addButton;
 
     private TabButton delButton;
@@ -40,8 +31,6 @@ public class TabTopLabelPanel extends JPanel
     {
         // unset default FlowLayout' gaps
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        this.parentPane = parentPane;
-        this.pane = pane;
 
         if ( (parentPane==null) || (pane == null))
         {
@@ -92,6 +81,8 @@ public class TabTopLabelPanel extends JPanel
     
     private class TabButton extends JButton // implements ActionListener
     {
+        private static final long serialVersionUID = -3932012699584733182L;
+    
         TabButtonType type; 
         
         public TabButton(TabButtonType buttonType)
@@ -105,6 +96,7 @@ public class TabTopLabelPanel extends JPanel
                 case Delete:
                     setToolTipText("Close this tab");
                     this.setIcon(new ImageIcon(MiniIcons.getTabDeleteImage()));
+                    this.setIcon(new ImageIcon(MiniIcons.getMiniQuestionmark()));
                     break;
                 case Add: 
                     setToolTipText("Copy tab");
@@ -132,59 +124,13 @@ public class TabTopLabelPanel extends JPanel
             // addActionListener(this);
         }
 
-//        public void actionPerformed(ActionEvent e)
-//        {
-//            if (this.type==TabButtonType.Delete)
-//            {
-//                parentPane.remove(pane);
-//            }
-//            else if (this.type==TabButtonType.Add)
-//            {
-//                
-//            }
-//        }
-
         public void updateUI()
         {
             
         }
 
-//        protected void paintComponent(Graphics g)
-//        {
-//            super.paintComponent(g);
-//            
-//            Graphics2D g2 = (Graphics2D) g.create();
-//            // shift the image for pressed buttons
-//            if (getModel().isPressed())
-//            {
-//                g2.translate(1, 1);
-//            }
-//            g2.setStroke(new BasicStroke(2));
-//            g2.setColor(Color.BLACK);
-//
-//            
-//            if (getModel().isRollover())
-//            {
-//                g2.setColor(Color.MAGENTA);
-//            }
-//            
-//            int delta = 5;
-//            if (type==TabButtonType.Delete)
-//            {
-//                g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight() - delta - 1);
-//                g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight() - delta - 1);
-//            }
-//            else
-//            {
-//                int w=getWidth(); 
-//                int h=getHeight();
-//                g2.drawLine(w/2, delta,w/2,h-delta-1);
-//                g2.drawLine(delta,h/2,w-delta-1,h/2); 
-//            }
-//            g2.dispose();
-//        }
     }
-
+    
     private final static MouseListener buttonMouseListener = new MouseAdapter()
     {
         public void mouseEntered(MouseEvent e)

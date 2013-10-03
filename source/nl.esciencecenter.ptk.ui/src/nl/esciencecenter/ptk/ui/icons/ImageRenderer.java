@@ -26,11 +26,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.Map;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 

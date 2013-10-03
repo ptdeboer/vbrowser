@@ -31,12 +31,23 @@ public class MiniIcons
            +"....X....\n"
            +"....X....\n"
            +"....X....\n"
-           +".XXXXXXXX.\n"
+           +".XXXXXXX.\n"
            +"....X.....\n"
            +"....X....\n"
            +"....X....\n"
            +".........\n";
  
+    public static String tabMiniQuestionMark =
+            ".........\n"
+           +"...XXXX..\n"
+           +"..XX..XX.\n"
+           +"......XX.\n"
+           +".....XX..\n"
+           +"....XX...\n"
+           +"....XX...\n"
+           +".........\n"
+           +"....XX...\n";
+    
     public static Image getTabDeleteImage()
     {
         Map<String, Color> colormap=new HashMap<String, Color>(); 
@@ -61,7 +72,13 @@ public class MiniIcons
 
     public static Image getMiniQuestionmark()
     {
-        return getTabAddImage();
+        Map<String, Color> colormap=new HashMap<String, Color>(); 
+        colormap.put(".",new Color(0,0,0,0)); 
+        colormap.put("X",new Color(0,0,0,255)); 
+        colormap.put("x",new Color(0,0,0,128)); 
+
+        Image image = new ImageRenderer(null).createImage(tabMiniQuestionMark,colormap,Color.BLACK,'.');
+        return image;
     }
 
 

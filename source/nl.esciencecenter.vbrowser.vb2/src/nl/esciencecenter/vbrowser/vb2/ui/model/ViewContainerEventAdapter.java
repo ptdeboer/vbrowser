@@ -106,17 +106,20 @@ public class ViewContainerEventAdapter implements MouseListener, MouseMotionList
     @Override
     public void mouseExited(MouseEvent event)
     {
-        logger.debugPrintf("mouseClicked:%s\n", event);
+       // logger.debugPrintf("mouseClicked:%s\n", event);
     }
 
     @Override
     public void mouseReleased(MouseEvent event)
     {
-        logger.debugPrintf("mouseClicked:%s\n", event);
+       // logger.debugPrintf("mouseClicked:%s\n", event);
     }
 
     public void mousePressed(MouseEvent e)
     {
+        
+        // logger.debugPrintf("mouseClicked:%s\n", event);
+        
         ViewNode node = getViewNode(e);
         boolean canvasclick = false;
 
