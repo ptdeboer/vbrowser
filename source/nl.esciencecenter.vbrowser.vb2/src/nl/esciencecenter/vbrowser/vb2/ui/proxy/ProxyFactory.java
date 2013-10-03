@@ -37,7 +37,6 @@ public abstract class ProxyFactory
     private static ClassLogger logger; 
     {
         logger=ClassLogger.getLogger(ProxyFactory.class);
-        logger.setLevelToDebug(); 
     }
     
 	public class ProxyCacheElement
