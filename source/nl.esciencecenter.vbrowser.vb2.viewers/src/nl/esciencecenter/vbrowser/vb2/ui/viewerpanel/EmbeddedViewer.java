@@ -1,7 +1,9 @@
 package nl.esciencecenter.vbrowser.vb2.ui.viewerpanel;
 
 import java.awt.Cursor;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 import javax.swing.Icon;
@@ -22,7 +24,14 @@ public abstract class EmbeddedViewer extends ViewerPanel implements MimeViewer
     protected String textEncoding = "UTF-8";
 
     protected Cursor busyCursor = new Cursor(Cursor.WAIT_CURSOR);
-
+    
+    protected Properties properties;
+        
+    public EmbeddedViewer()
+    {
+        super();
+    }
+    
     public Cursor getBusyCursor()
     {
         return busyCursor;
@@ -104,14 +113,43 @@ public abstract class EmbeddedViewer extends ViewerPanel implements MimeViewer
        return  new StringList(getMimeTypes()).contains(mimeType); 
     }
     
-    protected Properties loadConfigProperties()
+    public URI getConfigPropertiesURI() throws URISyntaxException
     {
-        return new Properties(); 
+        URI confUri=this.getResourceHandler().getViewerConfigDir();
+        if (confUri==null)
+            return null;
+        
+        URIFactory factory=new URIFactory(confUri);
+        factory.appendPath("/viewers/"+getName().toLowerCase()+".props");
+        return factory.toURI(); 
     }
     
-    protected void saveConfigProperties(Properties configProps)
+    protected Properties loadConfigProperties() throws IOException
+    {   
+        if (properties==null)
+        {
+            try
+            {
+                properties=getResourceHandler().loadProperties(getConfigPropertiesURI());
+            }
+            catch (URISyntaxException e)
+            {
+                throw new IOException("Invalid properties location:"+e.getReason(),e);
+            }
+        }
+        return properties; 
+    }
+    
+    protected void saveConfigProperties(Properties configProps) throws IOException
     {
-        
+        try
+        {
+            getResourceHandler().saveProperties(getConfigPropertiesURI(),configProps);
+        }
+        catch (URISyntaxException e)
+        {
+            throw new IOException("Invalid properties location:"+e.getReason(),e);
+        }
     }
 
     public void errorPrintf(String format,Object... args)
