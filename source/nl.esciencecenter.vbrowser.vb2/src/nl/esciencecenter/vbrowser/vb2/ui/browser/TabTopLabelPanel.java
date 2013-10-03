@@ -15,6 +15,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -103,12 +104,15 @@ public class TabTopLabelPanel extends JPanel
             {
                 case Delete:
                     setToolTipText("Close this tab");
+                    this.setIcon(new ImageIcon(MiniIcons.getTabDeleteImage()));
                     break;
                 case Add: 
                     setToolTipText("Copy tab");
+                    this.setIcon(new ImageIcon(MiniIcons.getTabAddImage()));
                     break; 
                 default: 
                     setToolTipText("?");
+                    this.setIcon(new ImageIcon(MiniIcons.getMiniQuestionmark()));
                     break; 
             }
             
@@ -145,40 +149,40 @@ public class TabTopLabelPanel extends JPanel
             
         }
 
-        protected void paintComponent(Graphics g)
-        {
-            super.paintComponent(g);
-            
-            Graphics2D g2 = (Graphics2D) g.create();
-            // shift the image for pressed buttons
-            if (getModel().isPressed())
-            {
-                g2.translate(1, 1);
-            }
-            g2.setStroke(new BasicStroke(2));
-            g2.setColor(Color.BLACK);
-
-            
-            if (getModel().isRollover())
-            {
-                g2.setColor(Color.MAGENTA);
-            }
-            
-            int delta = 5;
-            if (type==TabButtonType.Delete)
-            {
-                g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight() - delta - 1);
-                g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight() - delta - 1);
-            }
-            else
-            {
-                int w=getWidth(); 
-                int h=getHeight();
-                g2.drawLine(w/2, delta,w/2,h-delta-1);
-                g2.drawLine(delta,h/2,w-delta-1,h/2); 
-            }
-            g2.dispose();
-        }
+//        protected void paintComponent(Graphics g)
+//        {
+//            super.paintComponent(g);
+//            
+//            Graphics2D g2 = (Graphics2D) g.create();
+//            // shift the image for pressed buttons
+//            if (getModel().isPressed())
+//            {
+//                g2.translate(1, 1);
+//            }
+//            g2.setStroke(new BasicStroke(2));
+//            g2.setColor(Color.BLACK);
+//
+//            
+//            if (getModel().isRollover())
+//            {
+//                g2.setColor(Color.MAGENTA);
+//            }
+//            
+//            int delta = 5;
+//            if (type==TabButtonType.Delete)
+//            {
+//                g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight() - delta - 1);
+//                g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight() - delta - 1);
+//            }
+//            else
+//            {
+//                int w=getWidth(); 
+//                int h=getHeight();
+//                g2.drawLine(w/2, delta,w/2,h-delta-1);
+//                g2.drawLine(delta,h/2,w-delta-1,h/2); 
+//            }
+//            g2.dispose();
+//        }
     }
 
     private final static MouseListener buttonMouseListener = new MouseAdapter()
