@@ -18,6 +18,8 @@ import nl.esciencecenter.ptk.util.StringUtil;
 
 public class CertUtil
 {
+    private static CertUtil instance;
+
     /**
      * Create DER Encoded Certificate from String. 
      * Certificate String needs to be between:

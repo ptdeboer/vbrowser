@@ -47,13 +47,21 @@ public abstract class FSNode
     //
     // ===
 
-    private URI uri;
+    private URI uri=null;
 
-    public FSNode(URI uri)
+    private FSHandler fsHandler=null;
+
+    protected FSNode(FSHandler fsHandler,URI uri)
     {
         this.uri = uri;
+        this.fsHandler=fsHandler; 
     }
 
+    protected FSHandler getFSHandler()
+    {
+        return fsHandler; 
+    }
+    
     protected void setURI(URI URI)
     {
         this.uri = URI;
@@ -238,7 +246,7 @@ public abstract class FSNode
     {
         return -1;
     }
-   
+
 
     // =======================================================================
     // Abstract Interface
@@ -291,5 +299,6 @@ public abstract class FSNode
 
     /** Create full directory path. */
     public abstract void mkdirs() throws IOException;
+
 
 }

@@ -45,7 +45,7 @@ import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.io.FileURISyntaxException;
-import nl.esciencecenter.ptk.io.LocalFSNode;
+import nl.esciencecenter.ptk.io.local.LocalFSNode;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -909,6 +909,11 @@ public class CertificateStore
         }
     }
 
+    public void addCACertificate(X509Certificate cert, boolean save) throws CertificateStoreException
+    {
+        addCertificate(cert.getIssuerDN().getName(), cert, save);
+    }
+    
     /**
      * Store X509Certificate with the speficate alias to the KeyStore.
      *  
@@ -1184,6 +1189,8 @@ public class CertificateStore
     {
         return this.savingTrustManager;
     }
+
+  
 
 
 }

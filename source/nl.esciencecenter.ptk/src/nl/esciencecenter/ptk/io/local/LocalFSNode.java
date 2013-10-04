@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.esciencecenter.ptk.io;
+package nl.esciencecenter.ptk.io.local;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +40,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.io.FSNode;
+import nl.esciencecenter.ptk.io.FileURISyntaxException;
 import nl.esciencecenter.ptk.net.URIFactory;
 
 /**
@@ -53,10 +55,11 @@ public class LocalFSNode extends FSNode
     private BasicFileAttributes basicAttrs;
 
     private PosixFileAttributes posixAttrs;
-
-    public LocalFSNode(Path path)
+    
+    
+    public LocalFSNode(LocalFSHandler fsHandler,Path path)
     {
-        super(path.toUri());
+        super(fsHandler,path.toUri());
         init(path);
     }
 
@@ -74,9 +77,9 @@ public class LocalFSNode extends FSNode
         return true;
     }
 
-    public LocalFSNode(URI loc)
+    public LocalFSNode(LocalFSHandler fsHandler,URI loc)
     {
-        super(loc);
+        super(fsHandler,loc);
         FileSystem fs = FileSystems.getDefault();
         if (GlobalProperties.isWindows())
         {
@@ -88,7 +91,12 @@ public class LocalFSNode extends FSNode
         	init(fs.getPath(loc.getPath()));
         }
     }
-
+    
+    protected LocalFSHandler getFSHandler()
+    {
+        return (LocalFSHandler)super.getFSHandler(); 
+    }
+    
     @Override
     public boolean exists(LinkOption... linkOptions)
     {
@@ -125,7 +133,7 @@ public class LocalFSNode extends FSNode
 
         while (dirIterator.hasNext())
         {
-            list.add(new LocalFSNode(dirIterator.next()));
+            list.add(new LocalFSNode(getFSHandler(),dirIterator.next()));
         }
 
         return list.toArray(new LocalFSNode[0]);
@@ -178,10 +186,15 @@ public class LocalFSNode extends FSNode
         return _path.toUri().getPath();
     }
 
+    public Path getPath()
+    {
+        return _path; 
+    }
+    
     @Override
     public LocalFSNode getParent()
     {
-        return new LocalFSNode(_path.getParent());
+        return new LocalFSNode(getFSHandler(),_path.getParent());
     }
 
     @Override
@@ -208,7 +221,7 @@ public class LocalFSNode extends FSNode
     @Override
     public LocalFSNode newFile(String path) throws FileURISyntaxException
     {
-        LocalFSNode lfile = new LocalFSNode(resolvePathURI(path));
+        LocalFSNode lfile = new LocalFSNode(getFSHandler(),resolvePathURI(path));
         return lfile;
     }
 
@@ -241,7 +254,7 @@ public class LocalFSNode extends FSNode
 
         Path target = Files.readSymbolicLink(_path);
 
-        return new LocalFSNode(target);
+        return new LocalFSNode(getFSHandler(),target);
     }
 
     public BasicFileAttributes getBasicAttributes() throws IOException

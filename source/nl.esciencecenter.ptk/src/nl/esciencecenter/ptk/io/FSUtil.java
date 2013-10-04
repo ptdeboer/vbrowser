@@ -27,9 +27,15 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.LinkOption;
+import java.util.HashMap;
+import java.util.Map;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringHolder;
+import nl.esciencecenter.ptk.io.local.LocalFSHandler;
+import nl.esciencecenter.ptk.io.local.LocalFSNode;
+import nl.esciencecenter.ptk.io.local.LocalFSReader;
+import nl.esciencecenter.ptk.io.local.LocalFSWriter;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.net.URIUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -57,6 +63,7 @@ public class FSUtil
     {
         if (instance == null)
             instance = new FSUtil();
+        
         return instance;
     }
     
@@ -73,6 +80,10 @@ public class FSUtil
     protected URI workingDir; 
     protected URI tmpDir; 
     protected FSOptions fsOptions=new FSOptions(); 
+
+    private LocalFSHandler localFSHandler; 
+
+    protected Map<String,FSHandler> fsHandlers=new HashMap<String,FSHandler>();
     
     public FSUtil()
     {
@@ -81,11 +92,15 @@ public class FSUtil
 
     private void init()
     {
+        this.localFSHandler=LocalFSHandler.getDefault();
+        
         try
         {
             this.userHome = new java.io.File(GlobalProperties.getGlobalUserHome()).toURI(); 
             this.workingDir=new java.io.File(GlobalProperties.getGlobalUserHome()).toURI(); 
             this.tmpDir=new java.io.File(GlobalProperties.getGlobalTempDir()).toURI();
+            
+            registerHandlers(); 
         }
         catch (Throwable e)
         {
@@ -93,6 +108,16 @@ public class FSUtil
         }
     }
    
+    private void registerHandlers()
+    {
+        fsHandlers.put(localFSHandler.getScheme(),localFSHandler); 
+    }
+    
+    private FSHandler getHandler(String scheme)
+    {
+        return this.fsHandlers.get(scheme); 
+    }
+    
     /**
      * Check syntax and decode optional (relative) URL or path to an absolute
      * normalized path. 
@@ -127,7 +152,7 @@ public class FSUtil
         }
     }
     
-    public boolean existsPath(String path,LinkOption... linkOptions) throws FileURISyntaxException
+    public boolean existsPath(String path,LinkOption... linkOptions) throws IOException
     {
         return newFSNode(resolvePath(path)).exists(linkOptions);
     }
@@ -189,6 +214,10 @@ public class FSUtil
         {
             return false; 
         }
+        catch (IOException e)
+        {
+            return false; 
+        }
     }
 
     /**
@@ -213,13 +242,27 @@ public class FSUtil
         {
             return false; 
         }
+        catch (IOException e)
+        {
+            return false; 
+        }
 
         return false;
     }
 
-    public FSNode newFSNode(String path) throws FileURISyntaxException
+    public FSNode newFSNode(String path) throws IOException
     {
-        return new LocalFSNode(resolveURI(path));
+        URI uri=resolveURI(path);
+
+        // return new LocalFSNode(resolveURI(path));
+        FSHandler handler=getHandler(uri.getScheme());
+
+        if (handler==null)
+        {
+            throw new IOException("Schem not registered:"+uri.getScheme()); 
+        }
+        
+        return getHandler(uri.getScheme()).newFSNode(uri); 
     }
     
     /**
@@ -231,7 +274,7 @@ public class FSUtil
      */
     public FSNode newFSNode(URI uri)
     {
-        return new LocalFSNode(uri);
+        return new LocalFSNode(localFSHandler,uri);
     }
 
     /**
@@ -244,11 +287,11 @@ public class FSUtil
     {
         if (localFileURI.isAbsolute())
         {
-            return new LocalFSNode(localFileURI);
+            return new LocalFSNode(LocalFSHandler.getDefault(),localFileURI);
         }
         else
         {
-            return new LocalFSNode(workingDir.resolve(localFileURI));
+            return new LocalFSNode(localFSHandler,workingDir.resolve(localFileURI));
         }
         
     }
@@ -314,6 +357,16 @@ public class FSUtil
     public OutputStream createOutputStream(String filename) throws IOException, FileURISyntaxException
     {
         return newFSNode(filename).createOutputStream();
+    }
+
+    public RandomReader createRandomReader(FSNode node) throws IOException
+    {
+        return node.getFSHandler().createRandomReader(node); 
+    }
+ 
+    public RandomWriter createRandomWriter(FSNode node) throws IOException
+    {
+        return node.getFSHandler().createRandomWriter(node); 
     }
 
     /**
