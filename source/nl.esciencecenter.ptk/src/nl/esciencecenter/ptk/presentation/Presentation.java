@@ -30,13 +30,14 @@ import java.util.TimeZone;
 import javax.swing.JTable;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.object.Duplicatable;
 
 /**
  * Custom Presentation and formatting methods to show values, attributes, etc. 
  * 
  * @author P.T. de Boer
  */
-public class Presentation
+public class Presentation implements Duplicatable<Presentation>
 {
     // =======================================================================
     // Static 
@@ -222,7 +223,7 @@ public class Presentation
 
             if (autoCreate)
             {
-                pres = Presentation.createDefault();
+                pres = createDefault();
                 presentationStore.put(key, pres);
                 return pres;
             }
@@ -637,19 +638,55 @@ public class Presentation
     {
         this.childAttributeNames=new StringList();
             
-//        setAttributePreferredWidth(ATTR_ICON, 32);
-//        setAttributePreferredWidth(ATTR_NAME, 200);
-//        setAttributePreferredWidth(ATTR_RESOURCETTYPE, 90);
-//        setAttributePreferredWidth(ATTR_SCHEME, 48);
-//        setAttributePreferredWidth(ATTR_HOSTNAME, 120);
-//        setAttributePreferredWidth(ATTR_FILELENGTH, 70);
-//        setAttributePreferredWidth(ATTR_PATH, 200);
-//        setAttributePreferredWidth(ATTR_RESOURCE_STATUS,48);
-//        setAttributePreferredWidth(ATTR_ACCESSTIME, 120);
-//        setAttributePreferredWidth(ATTR_MODIFICATION_TIME, 120);
-//        setAttributePreferredWidth(ATTR_CREATION_TIME, 120);
+//        SETATTRIBUTEPREFERREDWIDTH(ATTR_ICON, 32);
+//        SETATTRIBUTEPREFERREDWIDTH(ATTR_NAME, 200);
+//        SETATTRIBUTEPREFERREDWIDTH(ATTR_RESOURCETTYPE, 90);
+//        SETATTRIBUTEPREFERREDWIDTH(ATTR_SCHEME, 48);
+//        SETATTRIBUTEPREFERREDWIDTH(ATTR_HOSTNAME, 120);
+//        SETATTRIBUTEPREFERREDWIDTH(ATTR_FILELENGTH, 70);
+//        SETATTRIBUTEPREFERREDWIDTH(ATTR_PATH, 200);
+//        SETATTRIBUTEPREFERREDWIDTH(ATTR_RESOURCE_STATUS,48);
+//        SETATTRIBUTEPREFERREDWIDTH(ATTR_ACCESSTIME, 120);
+//        SETATTRIBUTEPREFERREDWIDTH(ATTR_MODIFICATION_TIME, 120);
+//        SETATTRIBUTEPREFERREDWIDTH(ATTR_CREATION_TIME, 120);
     }   
 
+    protected void copyFrom(Presentation other)
+    {
+        defaultUnitScaleThreshold = other.defaultUnitScaleThreshold;
+        defaultNrDecimals = other.defaultNrDecimals;
+        useBase1024 = other.useBase1024;
+        sortOption = other.sortOption;
+        
+        if (other.childAttributeNames!=null)
+        {
+            childAttributeNames = other.childAttributeNames.duplicate(); 
+        }
+        else
+        {
+            childAttributeNames=null;   
+        }
+        
+        if (other.sortFields!=null)
+        {
+            sortFields = other.sortFields.duplicate(); 
+        }
+        else
+        {
+            sortFields=null;
+        }
+        
+        if (other.parent!=null)
+        {
+            parent = other.parent.duplicate(); 
+        }
+        
+        locale = other.locale;
+        columnsAutoResizeMode = other.columnsAutoResizeMode;
+        attributePresentations = new Hashtable<String, AttributePresentation>(other.attributePresentations);
+        iconAttributeName = other.iconAttributeName;
+    }
+    
     /**
      * Get which Child Attribute to show by default. Note that it is the PARENT
      * object which holds the presentation information about the child
@@ -988,5 +1025,25 @@ public class Presentation
     public String getIconAttributeName()
     {
         return iconAttributeName; 
+    }
+
+    @Override
+    public boolean shallowSupported()
+    {
+        return false;
+    }
+
+    @Override
+    public Presentation duplicate()
+    {
+        Presentation pres=new Presentation();
+        pres.copyFrom(this); 
+        return pres; 
+    }
+
+    @Override
+    public Presentation duplicate(boolean shallow)
+    {
+        return duplicate();
     }
 }
