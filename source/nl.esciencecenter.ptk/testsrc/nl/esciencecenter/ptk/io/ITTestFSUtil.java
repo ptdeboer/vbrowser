@@ -29,7 +29,7 @@ import org.junit.Test;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.io.FSUtil;
-import nl.esciencecenter.ptk.io.LocalFSNode;
+import nl.esciencecenter.ptk.io.local.LocalFSNode;
 
 public class ITTestFSUtil 
 {
