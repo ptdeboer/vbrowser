@@ -30,11 +30,10 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
-import nl.esciencecenter.vbrowser.vb2.ui.browser.internal.ViewerRegistry;
 import nl.esciencecenter.vbrowser.vb2.ui.dnd.DnDUtil;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactoryRegistry;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerResourceHandler;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerRegistry;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /** 
@@ -62,7 +61,6 @@ public class BrowserPlatform
     
     private ViewerRegistry viewerRegistry;
     
-    private ViewerResourceHandler viewerResourceHandler; 
     private static UIResourceLoader resourceLoader; 
     private static JFrame rootFrame;
     private static IconProvider iconProvider;
@@ -85,10 +83,9 @@ public class BrowserPlatform
         this.proxyRegistry=ProxyFactoryRegistry.getInstance(); 
         
         this.viewerRegistry=new ViewerRegistry(); 
-        this.viewerResourceHandler=ViewerResourceHandler.getDefault(); 
         
         URI viewerConfig=new URIFactory(getPlatformConfigDir()).appendPath("."+getPlatformID().toLowerCase()).toURI();
-        viewerResourceHandler.setViewerConfigDir(getPlatformConfigDir());
+        viewerRegistry.getResourceHandler().setViewerConfigDir(getPlatformConfigDir());
   
         initDefaultViewers(); 
         
@@ -131,7 +128,7 @@ public class BrowserPlatform
        return DnDUtil.getDefaultTransferHandler();
     }
     
-    protected ViewerRegistry getViewerRegistry()
+    public ViewerRegistry getViewerRegistry()
     {
         return viewerRegistry; 
     }

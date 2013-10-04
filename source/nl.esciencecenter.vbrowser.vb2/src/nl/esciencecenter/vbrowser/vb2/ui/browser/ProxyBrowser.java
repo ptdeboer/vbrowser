@@ -28,6 +28,7 @@ import java.net.URISyntaxException;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 
 import nl.esciencecenter.ptk.data.History;
@@ -38,8 +39,8 @@ import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.ActionMenu;
 import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.ActionMenuListener;
 import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.ActionMethod;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserFrame.BrowserViewMode;
-import nl.esciencecenter.vbrowser.vb2.ui.browser.internal.ProxyObjectViewer;
-import nl.esciencecenter.vbrowser.vb2.ui.browser.internal.ViewerRegistry;
+import nl.esciencecenter.vbrowser.vb2.ui.browser.viewers.ProxyObjectViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.browser.viewers.ViewerManager;
 import nl.esciencecenter.vbrowser.vb2.ui.dialogs.ExceptionDialog;
 import nl.esciencecenter.vbrowser.vb2.ui.iconspanel.IconsPanel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
@@ -51,7 +52,9 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeDataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEvent;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEventNotifier;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTable;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerFrame;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerPanel;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerRegistry;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
@@ -142,6 +145,8 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     private History<VRL> history=new History<VRL>();
 
     private ProxyActionHandler proxyActionHandler=null;
+
+    private ViewerManager viewerManager;
     
     public ProxyBrowser(BrowserPlatform platform, boolean show)
     {
@@ -163,6 +168,8 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
         browserFrame.setNavigationBarListener(new NavBarHandler());
         browserFrame.setVisible(show);
         this.proxyActionHandler=new ProxyActionHandler(this); 
+        
+        this.viewerManager=new ViewerManager(this); 
     }
 
     @Override
@@ -379,20 +386,24 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
         try
         {
 
-            ViewerPanel viewer = createViewerFor(node,optViewerClass); 
+            ViewerPanel viewer = viewerManager.createViewerFor(node,optViewerClass); 
             //viewer=null;
             if (viewer==null)
             {   
                 viewer=new ProxyObjectViewer(node); 
             }
             
-            browserFrame.addViewerPanel(viewer,true);
-
-            // initialize viewer + update location: 
-        
-            viewer.initViewer(); 
+            if (viewer.isStandaloneViewer())
+            {
+                viewerManager.createViewerFrame(viewer,true);
+            }
+            else
+            {
+                browserFrame.addViewerPanel(viewer,true);
+                viewer.initViewer(); 
+            }
             
-            viewer.updateURI(node.getVRL().toURI());
+            viewer.updateURI(node.getVRL().toURI(),true);
             
         }
         catch (ProxyException e)
@@ -407,27 +418,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
 
     }
 
-    protected ViewerPanel createViewerFor(ViewNode node,Class optViewerClass) throws ProxyException
-    {
-        ViewerRegistry registry = this.platform.getViewerRegistry();
-
-        String resourceType = node.getResourceType();
-        // String resourceStatus = node.getResourceStatus();
-        String mimeType = node.getMimeType();
-
-        if (mimeType!=null)
-        {
-            Class clazz = optViewerClass;
-            if (clazz==null)
-                clazz=registry.getMimeTypeViewerClass(mimeType);
-            if (clazz==null)
-                return null; 
-            ViewerPanel viewer = registry.createViewer(clazz);
-            return viewer;
-        }
-        
-        return null;
-    }
+  
     
     private void doViewAsIcons()
     {
@@ -524,7 +515,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     protected void closeCurrentTab()
     {
         TabContentPanel tab = this.browserFrame.getCurrentTab();
-        this.browserFrame.closeTab(tab); 
+        this.browserFrame.closeTab(tab,true); 
     }
     
     private void setViewedNode(ProxyNode node, Icon icon, boolean addHistory, boolean newTab)

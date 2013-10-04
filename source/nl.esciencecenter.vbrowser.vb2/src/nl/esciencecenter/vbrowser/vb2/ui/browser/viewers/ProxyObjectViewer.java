@@ -19,33 +19,18 @@
  */
 // source:
 
-package nl.esciencecenter.vbrowser.vb2.ui.browser.internal;
+package nl.esciencecenter.vbrowser.vb2.ui.browser.viewers;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.event.ComponentEvent;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.util.Vector;
-import java.util.regex.Pattern;
 
-import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JViewport;
-import javax.swing.SwingUtilities;
 
-import nl.esciencecenter.ptk.GlobalProperties;
-import nl.esciencecenter.ptk.ui.image.ImagePane;
-import nl.esciencecenter.ptk.ui.image.ImagePane.ImageWaiter;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.EmbeddedViewer;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * Implementation of an Image Viewer.<br>
@@ -55,7 +40,9 @@ public class ProxyObjectViewer extends EmbeddedViewer
     // private ImageIcon icon=null;
     JScrollPane scrollPane;
     JPanel mainPanel;
-
+    JPanel topPanel;  
+    JPanel midPanel; 
+    
     ViewNode viewNode;
     private JLabel iconLabel; 
     
@@ -90,6 +77,8 @@ public class ProxyObjectViewer extends EmbeddedViewer
                     scrollPane.setViewportView(mainPanel);
                     mainPanel.setLayout(new BorderLayout());
                 }
+                
+                
             }
 
             this.setToolTipText(getName());
@@ -103,18 +92,18 @@ public class ProxyObjectViewer extends EmbeddedViewer
     }
 
     @Override
-    public void initViewer()
+    public void doInitViewer()
     {
         initGui();
     }
     
     @Override
-    public void stopViewer()
+    public void doStopViewer()
     {
     }
 
     @Override
-    public void disposeViewer()
+    public void doDisposeViewer()
     {
     }
 
@@ -133,7 +122,7 @@ public class ProxyObjectViewer extends EmbeddedViewer
 
     
     @Override
-    public void startViewer() 
+    public void doStartViewer() 
     {
         try
         {
@@ -168,6 +157,12 @@ public class ProxyObjectViewer extends EmbeddedViewer
         {
             notifyBusy(false);
         }
+    }
+
+    @Override
+    protected void doUpdateURI(URI uri)
+    {
+        // need viewNode;
     }
 
    

@@ -34,6 +34,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import nl.esciencecenter.ptk.object.Disposable;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.UIGlobal;
 import nl.esciencecenter.vbrowser.vb2.ui.actions.KeyMappings;
@@ -50,7 +51,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeDataSource;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
-public class IconsPanel extends JPanel implements ListDataListener, ViewNodeContainer
+public class IconsPanel extends JPanel implements ListDataListener, ViewNodeContainer, Disposable
 {
 	private static final long serialVersionUID = -8822489309726132852L;
 	private static ClassLogger logger; 
@@ -475,5 +476,11 @@ public class IconsPanel extends JPanel implements ListDataListener, ViewNodeCont
     public DragGestureListener getDragGestureListener()
     {
         return this.dragListener; 
+    }
+
+    @Override
+    public void dispose()
+    {
+        
     }
 }

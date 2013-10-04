@@ -42,9 +42,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.border.EtchedBorder;
 
+import nl.esciencecenter.ptk.object.Disposable;
 import nl.esciencecenter.ptk.ui.widgets.NavigationBar;
 import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.ActionMethod;
-import nl.esciencecenter.vbrowser.vb2.ui.browser.internal.ViewerRegistry;
 import nl.esciencecenter.vbrowser.vb2.ui.iconspanel.IconsPanel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.DataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
@@ -487,7 +487,7 @@ public class BrowserFrame extends JFrame
 	}
 
 
-    public void closeTab(TabContentPanel tab)
+    public void closeTab(TabContentPanel tab, boolean disposeContent)
     {
         this.uiRightTabPane.removeTabAt(uiRightTabPane.indexOfComponent(tab));  
         int index=this.uiRightTabPane.getTabCount();
@@ -498,6 +498,15 @@ public class BrowserFrame extends JFrame
             if (comp instanceof TabTopLabelPanel)
             {
                 ((TabTopLabelPanel)comp).setEnableAddButton(true); // always enable last + button.
+            }
+        }
+        
+        if (disposeContent)
+        {
+            JComponent content = tab.getContent(); 
+            if (content instanceof Disposable)
+            {
+                ((Disposable)content).dispose(); 
             }
         }
         

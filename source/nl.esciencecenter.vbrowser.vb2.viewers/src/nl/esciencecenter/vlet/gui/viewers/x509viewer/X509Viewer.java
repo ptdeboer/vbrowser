@@ -71,7 +71,7 @@ public class X509Viewer extends EmbeddedViewer implements CertPanelListener
     }
 
     @Override
-    public void disposeViewer()
+    public void doDisposeViewer()
     {
 
     }
@@ -89,7 +89,7 @@ public class X509Viewer extends EmbeddedViewer implements CertPanelListener
     }
 
     @Override
-    public void initViewer()
+    public void doInitViewer()
     {
         initGUI();
     }
@@ -116,7 +116,7 @@ public class X509Viewer extends EmbeddedViewer implements CertPanelListener
     }
     
     @Override
-    public void stopViewer()
+    public void doStopViewer()
     {
 
     }
@@ -147,12 +147,18 @@ public class X509Viewer extends EmbeddedViewer implements CertPanelListener
     
     
     @Override
-    public void startViewer() 
+    public void doStartViewer() 
     {
-        startViewer(getURI(),null);
+        updateURI(getURI(),null);
     }
-    
-    public void startViewer(URI location, String optMethodName)
+
+    @Override
+    public void doUpdateURI(URI uri) 
+    {
+        updateURI(uri,null); 
+    }
+
+    public void updateURI(URI location, String optMethodName)
     {
         //default to true ?
         boolean add=true;

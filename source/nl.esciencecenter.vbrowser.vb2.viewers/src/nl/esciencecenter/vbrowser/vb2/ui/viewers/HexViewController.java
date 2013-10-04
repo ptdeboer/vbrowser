@@ -57,7 +57,7 @@ public class HexViewController implements AdjustmentListener, KeyListener, Actio
 
     public void handleDrop(URI uri)
     {
-	    this.hexViewer.reload(uri); 
+	    this.hexViewer.doUpdateURI(uri); 
     }
 
     public void adjustmentValueChanged(AdjustmentEvent e)
@@ -217,7 +217,7 @@ public class HexViewController implements AdjustmentListener, KeyListener, Actio
     {
         if (uriList.size()>0)
         {
-            hexViewer.reload(uriList.get(0));
+            hexViewer.doUpdateURI(uriList.get(0));
         }
     }
 	

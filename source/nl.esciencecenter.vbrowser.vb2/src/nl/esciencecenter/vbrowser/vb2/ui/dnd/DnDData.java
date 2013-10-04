@@ -87,7 +87,6 @@ public class DnDData
     /**
      * DataFlavors from which VRL(s) can be imported !
      */
-
     public static boolean canConvertToVRLs(Transferable t)
     {
         // DataFlavor flavors[]=t.getTransferDataFlavors();
@@ -157,7 +156,7 @@ public class DnDData
             return vris;
         }
         //
-        // DnD Support for KDE: drops uri lists ! (Yay for Ke-De-Yay)
+        // 
         //
         else if (t.isDataFlavorSupported(DnDData.flavorURIList))
         {

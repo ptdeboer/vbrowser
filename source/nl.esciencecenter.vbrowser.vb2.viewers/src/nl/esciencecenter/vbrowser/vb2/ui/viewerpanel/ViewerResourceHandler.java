@@ -5,32 +5,30 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Properties;
 
+import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.io.FSUtil;
-import nl.esciencecenter.ptk.io.LocalFSNode;
+import nl.esciencecenter.ptk.io.IOUtil;
+import nl.esciencecenter.ptk.io.RandomReader;
+import nl.esciencecenter.ptk.io.RandomWriter;
+import nl.esciencecenter.ptk.io.local.LocalFSNode;
+import nl.esciencecenter.ptk.ssl.CertificateStore;
+import nl.esciencecenter.ptk.ssl.CertificateStoreException;
 import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.mimetypes.MimeTypes;
 
 /** 
- * Content Factory for the various embedded Viewers.
+ * Content Factory and Resource Manager for the various embedded Viewers.
  */
 public class ViewerResourceHandler
 {
+    private static ClassLogger logger=ClassLogger.getLogger(ViewerResourceHandler.class); 
     
-    private static ViewerResourceHandler instance=null; 
-    
-
-    public static ViewerResourceHandler getDefault()
-    {
-        if (instance==null)
-        {
-            instance=new ViewerResourceHandler();
-        }   
-        
-        return instance;
-    }
-
     private UIResourceLoader resourceLoader;
     
-    private URI viewersConfigDir; 
+    private URI viewersConfigDir;
+
+    private CertificateStore certificateStore; 
     
     // === // 
     
@@ -63,10 +61,6 @@ public class ViewerResourceHandler
         return resourceLoader;
     }
 
-    public String getMimeType(URI uri)
-    {
-        return null;
-    }
 
     public void writeText(URI uri, String txt, String encoding) throws IOException
     {
@@ -96,14 +90,14 @@ public class ViewerResourceHandler
        return resourceLoader.loadProperties(uri);
     }
 
-    public FSUtil getFSUtil()
+    private FSUtil getFSUtil()
     {
         return FSUtil.getDefault();
     }
     
     public void saveProperties(URI uri, Properties properties) throws IOException
     {
-        System.err.printf("SaveProperties:"+uri); 
+        logger.infoPrintf("Saving Properties to:"+uri); 
         if (uri==null)
             return; 
         
@@ -117,6 +111,51 @@ public class ViewerResourceHandler
         resourceLoader.saveProperties(propsNode.getURI(),properties);
     }
 
+    public void syncReadBytes(RandomReader reader, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws IOException
+    {
+        // delegate to IOUtil 
+        IOUtil.syncReadBytes(reader, fileOffset, buffer, bufferOffset, numBytes); 
+        //reader.close(); 
+    }
+
+    public void syncWriteBytes(FSNode file, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws IOException
+    {
+        RandomWriter writer = getFSUtil().createRandomWriter(file); 
+        writer.writeBytes(fileOffset, buffer, bufferOffset, numBytes); 
+        writer.close(); 
+    }
+    
+
+    public CertificateStore getCertificateStore() throws CertificateStoreException
+    {
+        if (this.certificateStore==null)
+        {
+            certificateStore=CertificateStore.getDefault(true); 
+        }
+        return certificateStore;
+
+    }
+    
+    public void setCertificateStore(CertificateStore store)
+    {
+        this.certificateStore=store; 
+    }
+
+    public String getMimeType(URI uri)
+    {
+        return MimeTypes.getDefault().getMimeType(uri.getPath());  
+    }
+
+    public RandomReader createRandomReader(URI loc) throws IOException
+    {
+        FSUtil fsUtil=this.getFSUtil();
+        return fsUtil.createRandomReader(fsUtil.newFSNode(loc)); 
+    }
   
+    public RandomWriter createRandomWriter(URI loc) throws IOException
+    {
+        FSUtil fsUtil=this.getFSUtil();
+        return fsUtil.createRandomWriter(fsUtil.newFSNode(loc)); 
+    }
 
 }

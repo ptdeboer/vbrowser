@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.util.Properties;
 
 import javax.swing.Icon;
+import javax.swing.JFrame;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
@@ -56,13 +57,13 @@ public abstract class EmbeddedViewer extends ViewerPanel implements MimeViewer
     
     public ViewerResourceHandler getResourceHandler()
     {
-        return ViewerResourceHandler.getDefault(); 
+        return ViewerRegistry.getDefault().getResourceHandler();
     }
 
-    public void updateURI(URI uri)
+    public void updateURI(URI uri,boolean startViewer)
     {
-        super.updateURI(uri);
-        startViewer();
+        super.updateURI(uri,startViewer);
+        // updateContent()
     }
 
     public String getURIBasename()
@@ -113,24 +114,24 @@ public abstract class EmbeddedViewer extends ViewerPanel implements MimeViewer
        return  new StringList(getMimeTypes()).contains(mimeType); 
     }
     
-    public URI getConfigPropertiesURI() throws URISyntaxException
+    public URI getConfigPropertiesURI(String configPropsName) throws URISyntaxException
     {
         URI confUri=this.getResourceHandler().getViewerConfigDir();
         if (confUri==null)
             return null;
         
         URIFactory factory=new URIFactory(confUri);
-        factory.appendPath("/viewers/"+getName().toLowerCase()+".props");
+        factory.appendPath("/viewers/"+configPropsName);
         return factory.toURI(); 
     }
     
-    protected Properties loadConfigProperties() throws IOException
+    protected Properties loadConfigProperties(String configPropsName) throws IOException
     {   
         if (properties==null)
         {
             try
             {
-                properties=getResourceHandler().loadProperties(getConfigPropertiesURI());
+                properties=getResourceHandler().loadProperties(getConfigPropertiesURI(configPropsName));
             }
             catch (URISyntaxException e)
             {
@@ -140,18 +141,23 @@ public abstract class EmbeddedViewer extends ViewerPanel implements MimeViewer
         return properties; 
     }
     
-    protected void saveConfigProperties(Properties configProps) throws IOException
+    protected void saveConfigProperties(Properties configProps,String optName) throws IOException
     {
         try
         {
-            getResourceHandler().saveProperties(getConfigPropertiesURI(),configProps);
+            getResourceHandler().saveProperties(getConfigPropertiesURI(optName),configProps);
         }
         catch (URISyntaxException e)
         {
             throw new IOException("Invalid properties location:"+e.getReason(),e);
         }
     }
-
+    
+    public boolean isStandaloneViewer()
+    {
+        return false;
+    }
+        
     public void errorPrintf(String format,Object... args)
     {
         System.err.printf(format,args); 
@@ -172,7 +178,7 @@ public abstract class EmbeddedViewer extends ViewerPanel implements MimeViewer
         System.out.printf("DEBUG:"+format,args); 
     }
 
-    public void showMessage(String format, String... args)
+    public void showMessage(String format, Object... args)
     {
         System.out.printf("MESSAGE:"+format,args); 
         

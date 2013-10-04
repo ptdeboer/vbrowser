@@ -54,7 +54,7 @@ public class AnyFileProxyNode extends ProxyNode
         {
             file=FSUtil.getDefault().newFSNode(loc.getPath());
         }
-        catch (FileURISyntaxException e)
+        catch (IOException e)
         {
             throw new ProxyException(e.getMessage(),e); 
         } 
@@ -149,7 +149,7 @@ public class AnyFileProxyNode extends ProxyNode
 	@Override
 	protected String doGetMimeType() throws ProxyException 
 	{
-		return MimeTypes.getDefault().getMimeType(file.getPathname());  
+	    return MimeTypes.getDefault().getMimeType(file.getPathname());  
 	}
 
 	@Override

@@ -9,8 +9,10 @@ import java.net.URI;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import nl.esciencecenter.ptk.object.Disposable;
 
-public abstract class ViewerPanel extends JPanel
+
+public abstract class ViewerPanel extends JPanel implements Disposable
 {
     private static final long serialVersionUID = -8148836110597201287L;
 
@@ -32,13 +34,6 @@ public abstract class ViewerPanel extends JPanel
     public JPanel getContentPanel()
     {
         return this; 
-//        if (innerPanel==null)
-//        {
-//            return initInnerPanel(); 
-//            
-//        }
-//        
-//        return innerPanel; 
     }
 
     public JPanel initInnerPanel()
@@ -54,25 +49,24 @@ public abstract class ViewerPanel extends JPanel
         return viewedUri; 
     }
     
-    public void updateURI(URI newUri)
+    protected void setURI(URI uri)
     {
-        this.viewedUri=newUri; 
+        this.viewedUri=uri; 
     }
     
-    public void notifyBusy(boolean isBusy)
+    /** 
+     * Update View Location. 
+     * Overide this to update the viewed content. 
+     * @param newUri
+     */
+    public void updateURI(URI newUri, boolean startViewer)
     {
-        this.isBusy=isBusy; 
-    }
-    
-    public boolean isBusy()
-    {
-        return this.isBusy;
-    }
-
-    protected void notifyException(String message, Throwable e)
-    {
-        System.err.printf("Error:%s\n",message); 
-        e.printStackTrace(); 
+        this.setURI(newUri); 
+        
+        if (startViewer)
+            startViewer();
+        
+        doUpdateURI(newUri); 
     }
     
     /** 
@@ -84,7 +78,17 @@ public abstract class ViewerPanel extends JPanel
     {
         return false; 
     }
-    
+
+    /** 
+     * Whether to start this viewer in a StandAlone Dialog/Frame. 
+     * Some Viewers are not embedded viewers and must be started in a seperate Window.  
+     * @return
+     */
+    public boolean isStandaloneViewer()
+    {
+        return false;
+    }
+
     /** Set title of master frame or Viewer tab */
     public void setViewerTitle(final String name)
     {
@@ -117,31 +121,109 @@ public abstract class ViewerPanel extends JPanel
     {
         return (this.getJFrame() != null);
     }
+    
+    protected boolean closeViewer()
+    {
+        stopViewer(); 
+        disposeViewer(); 
+        
+        if (isStandaloneViewer()==false)
+            return false;
+        
+        JFrame frame = this.getJFrame(); 
+  
+        if (frame!=null)
+        {
+            frame.setVisible(false); 
+        }
+        return true;
+    }
+    
+    @Override
+    public void dispose()
+    {
+        stopViewer(); 
+        disposeViewer(); 
+    }
+
+    public final void initViewer()
+    {
+        doInitViewer(); 
+    }
+    public final void startViewer()
+    {
+        doStartViewer(); 
+        // fireStarted(); 
+    }
+    public final void stopViewer()
+    {
+        doStopViewer(); 
+        // fireStopped(); 
+    }
+    public final void disposeViewer()
+    {
+        doDisposeViewer(); 
+        //fireDisposed(); 
+    }
+    
+    // =========================================================================
+    // Events
+    // =========================================================================
+    
+    public void notifyBusy(boolean isBusy)
+    {
+        this.isBusy=isBusy; 
+    }
+    
+    public boolean isBusy()
+    {
+        return this.isBusy;
+    }
+    
+    /** 
+     * Notify Viewer Manager or other Listeners that an Exception has occured. 
+     * @param message
+     * @param e
+     */
+    protected void notifyException(String message, Throwable e)
+    {
+        System.err.printf("Error:%s\n",message); 
+        e.printStackTrace(); 
+    }
+    
     // =========================================================================
     // Abstract Interface 
-    // ========================================================================
+    // =========================================================================
     
     /**
      * Initialize GUI Component of viewer. Do not start loading resource. 
+     * Typically this method is called during The Swing Event Thread. 
      */
-    abstract public void initViewer();
+    abstract protected void doInitViewer();
 
     /** 
-     * Start the viewer, load resources of necessary.
+     * Start the viewer, load resources if necessary.
      */
-    abstract public void startViewer();
+    abstract protected void doStartViewer();
+
+    /** 
+     * Update content. 
+     */
+    abstract protected void doUpdateURI(URI uri);
 
     /**
      * Stop/suspend viewer. 
      * All background activity must stop. 
-     * After a stopViewer() a startViewer() may occure to notify the viewer can be actived again. 
+     * After a stopViewer() a startViewer() may occur to notify the viewer can be activateed again. 
      */
-    abstract public void stopViewer();
+    abstract protected void doStopViewer();
 
     /**
      * Stop viewer and dispose resources. 
-     * After a disposeViewer() 
+     * After a disposeViewer() a viewer will never be started but multiple disposeViewers() might ocure. 
      */ 
-    abstract public void disposeViewer();
+    abstract protected void doDisposeViewer();
+
+  
 
 }

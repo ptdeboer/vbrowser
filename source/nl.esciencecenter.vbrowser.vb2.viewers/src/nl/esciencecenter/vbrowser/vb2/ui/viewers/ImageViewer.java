@@ -29,20 +29,16 @@ import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.util.Vector;
-import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 
-import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.ui.image.ImagePane;
 import nl.esciencecenter.ptk.ui.image.ImagePane.ImageWaiter;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.EmbeddedViewer;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /**
  * Implementation of an Image Viewer.<br>
@@ -126,7 +122,7 @@ public class ImageViewer extends EmbeddedViewer
     }
 
     @Override
-    public void initViewer()
+    public void doInitViewer()
     {
         initGui();
     }
@@ -147,14 +143,14 @@ public class ImageViewer extends EmbeddedViewer
 //    }
     
     @Override
-    public void stopViewer()
+    public void doStopViewer()
     {
         // this.muststop=true;
         // this.imagePane.signalStop();
     }
 
     @Override
-    public void disposeViewer()
+    public void doDisposeViewer()
     {
         // help the garbage collector, images can be big:
         this.imagePane.dispose();
@@ -171,22 +167,24 @@ public class ImageViewer extends EmbeddedViewer
         // remove html color codes:
         return "ImageViewer";
     }
-
-
     
     @Override
-    public void startViewer() 
+    public void doStartViewer() 
+    {
+        doUpdateURI(getURI());
+    }
+    
+    public void doUpdateURI(URI uri)
     {
         try
         {
-            loadImage(getURI());
+            loadImage(uri);
         }
         catch (Exception e)
         {
             notifyException("Failed to load image:"+getURI(),e); 
         }
     }
-
 
     public void loadImage(java.net.URI uri) throws Exception 
     {
@@ -221,17 +219,26 @@ public class ImageViewer extends EmbeddedViewer
         }
     }
 
-
     public void loadImage(URI location, boolean wait) throws IOException
     {
         InputStream inps=getResourceHandler().openInputStream(location); 
         
         Image image;
         image = ImageIO.read(inps);
-        try {inps.close();} catch (Exception e) {;} 
+        
+        try
+        {
+            inps.close();
+        }
+        catch (Exception e) 
+        {
+            ;
+        } 
         
         if (image==null)
+        {
             throw new IOException("Failed to load image: Image loader returned NULL for:"+location); 
+        }
         
         imagePane.setImage(image,wait);
     }
@@ -270,7 +277,6 @@ public class ImageViewer extends EmbeddedViewer
 
     public void componentShown(ComponentEvent e)
     {
-
     }
 
     /**

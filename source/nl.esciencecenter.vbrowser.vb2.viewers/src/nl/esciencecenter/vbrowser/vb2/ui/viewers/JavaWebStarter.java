@@ -35,9 +35,6 @@ import nl.esciencecenter.ptk.exec.LocalExec;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.MimeViewer;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerPanel;
-import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -102,24 +99,24 @@ public class JavaWebStarter extends ViewerPanel implements ActionListener, MimeV
     }
     
     @Override
-    public void initViewer()
+    public void doInitViewer()
     {
         initGUI(); 
     }
 
     @Override
-    public void stopViewer()
+    public void doStopViewer()
     {
     }
 
     @Override
-    public void updateURI(URI loc, boolean startViewer) 
+    public void doUpdateURI(URI loc)
     {
         startURI(loc);
     }
 
     @Override
-    public void startViewer()
+    public void doStartViewer()
     {
         startURI(getURI()); 
     }
@@ -165,6 +162,7 @@ public class JavaWebStarter extends ViewerPanel implements ActionListener, MimeV
             cmds[1]=loc.toString(); 
             
             String result[]=LocalExec.execute(cmds); 
+            
         }
         catch (Throwable e)
         {
@@ -179,7 +177,7 @@ public class JavaWebStarter extends ViewerPanel implements ActionListener, MimeV
 
 
     @Override
-    public void disposeViewer()
+    public void doDisposeViewer()
     {
     }
 

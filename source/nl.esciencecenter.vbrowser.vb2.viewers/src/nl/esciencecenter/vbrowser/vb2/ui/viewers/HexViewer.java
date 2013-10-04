@@ -43,6 +43,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import nl.esciencecenter.ptk.io.FSNode;
+import nl.esciencecenter.ptk.io.RandomReader;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.ui.fonts.FontInfo;
 import nl.esciencecenter.ptk.ui.fonts.FontToolBar;
@@ -152,7 +153,7 @@ public class HexViewer extends EmbeddedViewer implements FontToolbarListener
 
     protected long scrollMutiplier = 1;
 
-    protected FSNode fsNode = null;
+    protected RandomReader reader = null;
 
     // === GUI components:
     private JToolBar toolBar;
@@ -655,17 +656,17 @@ public class HexViewer extends EmbeddedViewer implements FontToolbarListener
     }
 
     @Override
-    public void stopViewer()
+    public void doStopViewer()
     {
     }
 
-    public void disposeViewer()
+    public void doDisposeViewer()
     {
         this.textArea = null;
     }
 
     @Override
-    public void initViewer()
+    public void doInitViewer()
     {
         initGui();
     }
@@ -676,15 +677,13 @@ public class HexViewer extends EmbeddedViewer implements FontToolbarListener
         return "Binary Viewer";
     }
 
-    public void startViewer()
+    public void doStartViewer()
     {
-        reload(getURI());
+        doUpdateURI(getURI());
         this.validate();
-
-        // this.requestFrameResizeToPreferred();
     }
 
-    public void reload(final URI loc)
+    public void doUpdateURI(final URI loc)
     {
         debug("updateLocation:" + loc);
 
@@ -715,8 +714,8 @@ public class HexViewer extends EmbeddedViewer implements FontToolbarListener
 
         try
         {
-            this.fsNode = this.getResourceHandler().getFSNode(loc);
-            this.length = fsNode.length();
+            this.reader = this.getResourceHandler().createRandomReader(loc);
+            this.length = reader.getLength();
             this.offset = 0;
 
             // check buffered read
@@ -770,7 +769,7 @@ public class HexViewer extends EmbeddedViewer implements FontToolbarListener
     {
         debug("readBuffer:" + offset);
 
-        if (fsNode == null)
+        if (reader == null)
         {
             // no vfile, set to defaults:
             fileOffset = 0;
@@ -801,7 +800,7 @@ public class HexViewer extends EmbeddedViewer implements FontToolbarListener
 
             this.setViewerTitle("Reading:" + getURI());
             // new FileReader(vfile).read(fileOffset,buffer,0,len);
-            readBytes(fsNode, fileOffset, buffer, 0, len);
+            readBytes(reader, fileOffset, buffer, 0, len);
             this.setViewerTitle("Inspecting:" + getURI());
         }
         catch (Exception e)
@@ -815,10 +814,10 @@ public class HexViewer extends EmbeddedViewer implements FontToolbarListener
         }
     }
 
-    private void readBytes(FSNode file, long fileOffset, byte[] buffer, int bufferOffset, int numBytes)
+    private void readBytes(RandomReader reader, long fileOffset, byte[] buffer, int bufferOffset, int numBytes)
             throws IOException, VrsException
     {
-        this.getResourceHandler().syncReadBytes(file, fileOffset, buffer, bufferOffset, numBytes);
+        this.getResourceHandler().syncReadBytes(reader, fileOffset, buffer, bufferOffset, numBytes);
     }
 
     void debug(String msg)
