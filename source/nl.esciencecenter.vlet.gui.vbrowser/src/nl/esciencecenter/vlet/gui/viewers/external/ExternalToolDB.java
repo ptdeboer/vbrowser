@@ -21,14 +21,15 @@
 
 package nl.esciencecenter.vlet.gui.viewers.external;
 
+import java.io.IOException;
 import java.util.Vector;
 
 import nl.esciencecenter.ptk.GlobalProperties;
-import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.ptk.exec.LocalExec;
+import nl.esciencecenter.ptk.exec.LocalProcess;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.VletConfig;
-import nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalExec;
-import nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalProcess;
+
 
 public class ExternalToolDB
 {
@@ -108,7 +109,7 @@ public class ExternalToolDB
      *  to start the tool.  
      *  Tries to resolve the command 'cmd' to a local binary. 
      */ 
-    public LocalProcess executeVrl(String cmd, VRL vrl, boolean waitFor) throws VrsException
+    public LocalProcess executeVrl(String cmd, VRL vrl, boolean waitFor) throws IOException
     {
         String cmdPath=this.getCommandPath(cmd); 
         

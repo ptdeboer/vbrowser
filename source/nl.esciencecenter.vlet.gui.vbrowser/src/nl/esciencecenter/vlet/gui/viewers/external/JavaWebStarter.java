@@ -22,6 +22,7 @@
 package nl.esciencecenter.vlet.gui.viewers.external;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -29,10 +30,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.border.BevelBorder;
 
+import nl.esciencecenter.ptk.exec.LocalProcess;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.gui.viewers.ViewerPlugin;
-import nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalProcess;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -111,10 +112,17 @@ public class JavaWebStarter extends ViewerPlugin implements ActionListener
     @Override
     public void updateLocation(VRL loc) throws VrsException
     {
-        openVRL(loc);
+        try
+        {
+            openVRL(loc);
+        }
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
     }
 
-    public void openVRL(VRL loc) throws VrsException
+    public void openVRL(VRL loc) throws IOException
     {
         debug("starting:"+loc);
         

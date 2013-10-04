@@ -19,21 +19,20 @@
  */
 // source:
 
-package nl.esciencecenter.vlet.vrs.vdriver.localfs;
+package nl.esciencecenter.ptk.exec;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 
+import nl.esciencecenter.ptk.object.Disposable;
 import nl.esciencecenter.ptk.task.ActionTask;
-import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-import nl.esciencecenter.vlet.exception.NestedIOException;
 
 /** 
- * Process Information wrapper
+ * Wrapper for a Local Process. 
  */ 
-public class LocalProcess 
+public class LocalProcess implements Disposable 
 {
 	private Process process=null;
 
@@ -60,7 +59,6 @@ public class LocalProcess
 
 	public LocalProcess()
 	{
-		
 	}
 	
 	public void captureOutput(boolean captureOut,boolean captureErr) 
@@ -69,7 +67,7 @@ public class LocalProcess
 		this.captureStderr=captureErr; 
 	}
 
-	public void waitFor() throws VrsException
+	public void waitFor() throws IOException
 	{
 		try
 		{
@@ -82,7 +80,9 @@ public class LocalProcess
 		}
 		catch (InterruptedException e)
 		{
-			throw new VrsException("InterruptedException",e); 
+		    // Keep Flag!:
+		    Thread.currentThread().interrupt();
+			throw new IOException("InterruptedException",e); 
 		}
 		finally
 		{
@@ -96,17 +96,17 @@ public class LocalProcess
 		this.captureStderr=captureStderr;
 	}
 	
-	public void execute(String[] cmds) throws VrsException
+	public void execute(String[] cmds) throws IOException
 	{
 		execute(cmds,true); 
 	}
 	
-	public void execute(String[] cmds, boolean syncWait) throws VrsException
+	public void execute(String[] cmds, boolean syncWait) throws IOException
 	{
 		setCommands(cmds); 
 	
 		if (commands==null)
-			throw new VrsException("Command string is empty !");
+			throw new IOException("Command string is empty !");
 
 		try
 		{
@@ -114,17 +114,19 @@ public class LocalProcess
 		}
 		catch (IOException e)
 		{
-			throw new NestedIOException(e);   
+			throw e;   
+		}
+		catch (Throwable e)
+		{
+		    throw new IOException(e.getMessage(),e); 
 		}
 		
-		// check termination directly after execute 
 		isTerminated(); 
 		
 		// 
-		// Optimation: 
 		// when doing a (synchonized) wait, 
 		// start streamReader in current thread ! 
-		// this to avoid extra (thread) overhead when syncrhonized command
+		// this to avoid extra (thread) overhead when synchronized command
 		// execution.
 		
 		if ((captureStdout==true) || (captureStderr==true))
@@ -133,11 +135,17 @@ public class LocalProcess
 		}
 		
 		if (syncWait)
+		{
 			waitFor();
+		}
 	}
 
-	// start streamreaders to read from stderr,stdout. 
-	protected void startStreamWatcher(boolean syncWait) throws NestedIOException
+	/** 
+	 * Start streamreaders to read from stderr,stdout. 
+	 * @param syncWait
+	 * @throws IOException
+	 */
+	protected void startStreamWatcher(boolean syncWait) throws IOException
 	{
 		if ((this.captureStderr==false) && (this.captureStdout==false))
 			return; // nothing to be done.  
@@ -215,6 +223,11 @@ public class LocalProcess
 		
 	}
 
+	/** 
+	 * Set list of command + argumen to start. 
+	 * cmds[0] is the actual command, cmds[1],...,cmds[2] are the arguments. 
+	 * @param cmds
+	 */
 	void setCommands(String[] cmds)
 	{
 		this.commands=cmds; 
@@ -229,6 +242,7 @@ public class LocalProcess
 	{
 		return stdoutString;
 	}
+	
 	/**
 	 * Returns stderr of terminated process. 
 	 * If this method is called during execution of a process
@@ -246,16 +260,18 @@ public class LocalProcess
 	
 	public void terminate()
 	{
-		process.destroy();
+	    dispose(); 
 	}
 	
 	public boolean isTerminated()
 	{
 		// process has already terminated 
 		if (isTerminated==true)
+		{
 			return true;
+		}
 		
-		// dirty way to check whether proces hasn't exited 
+		// dirty way to check whether process hasn't exited 
 		try
 		{
 			this.process.exitValue();
@@ -263,6 +279,7 @@ public class LocalProcess
 		}
 		catch (IllegalThreadStateException e)
 		{
+		    // cannot get exitValue() from non terminated process:
 			this.isTerminated=false; 
 		}
 		
@@ -287,13 +304,33 @@ public class LocalProcess
 		return stdoutStream; 
 	}
 
-	public void destroy()
+	public void dispose()
 	{
-	    process.destroy(); 
+	    if (stdinStream!=null)
+	    {
+	        try { stdinStream.close(); } catch (Exception e) { };
+	        stdinStream=null; 
+	    }
+        
+	    if (stdoutStream!=null)
+        {
+            try { stdoutStream.close(); } catch (Exception e) { };
+            stdoutStream=null; 
+        }
+        
+        if (stderrStream!=null)
+        {
+            try { stderrStream.close(); } catch (Exception e) { };
+            stderrStream=null; 
+        }
+	    
+	    if (process!=null)
+	    {
+	        process.destroy();
+	        process=null;
+	    }
+	    
 	}
 	
-	/*public void addProcessListener(ProcessListener listener)
-	{
-		Todo
-	}*/
+
 }
