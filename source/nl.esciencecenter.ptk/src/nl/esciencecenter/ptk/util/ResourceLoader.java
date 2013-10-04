@@ -34,6 +34,8 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.io.RandomReader;
+import nl.esciencecenter.ptk.io.RandomWriter;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
@@ -599,6 +601,16 @@ public class ResourceLoader
             logger.logException(ClassLogger.DEBUG, e, "Exception while closing outputstream:%s\n", e);
         }
     }
+ 
 
-   
+    public RandomReader createRandomReader(URI loc) throws IOException
+    {
+        return fsUtil.createRandomReader(fsUtil.newFSNode(loc));
+    }
+
+    public RandomWriter createRandomWriter(URI loc) throws IOException
+    {
+        return fsUtil.createRandomWriter(fsUtil.newFSNode(loc));
+    }
+    
 }
