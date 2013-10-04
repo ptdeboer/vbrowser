@@ -58,7 +58,12 @@ public abstract class EmbeddedViewer extends ViewerPanel implements MimeViewer
     
     public ViewerResourceHandler getResourceHandler()
     {
-        return ViewerRegistry.getDefault().getResourceHandler();
+        ViewerRegistry reg=getViewerRegistry(); 
+        
+        if (reg==null)
+            return null; 
+        
+        return reg.getResourceHandler(); 
     }
 
     public String getURIBasename()

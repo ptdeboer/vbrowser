@@ -15,7 +15,7 @@ public class StartTextViewer
         
         try
         {
-            ViewerTests.testViewer(new TextViewer(),new URI("file:///home/ptdeboer/tests/testText.txt"));
+            ViewerTests.testViewer(TextViewer.class,new URI("file:///home/ptdeboer/tests/testText.txt"));
 
             // viewStandAlone(null);
         }

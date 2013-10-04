@@ -14,7 +14,7 @@ public class StartX509Viewer
         
         try
         {
-            ViewerTests.testViewer(new X509Viewer(),new URI("file:///home/ptdeboer/tests/cert.pem"));
+            ViewerTests.testViewer(X509Viewer.class,new URI("file:///home/ptdeboer/tests/cert.pem"));
             // viewStandAlone(null);
         }
         catch (Exception e)

@@ -34,6 +34,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.dnd.DnDUtil;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactoryRegistry;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerRegistry;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerResourceHandler;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /** 
@@ -61,9 +62,9 @@ public class BrowserPlatform
     
     private ViewerRegistry viewerRegistry;
     
-    private static UIResourceLoader resourceLoader; 
-    private static JFrame rootFrame;
-    private static IconProvider iconProvider;
+    private UIResourceLoader resourceLoader; 
+    private JFrame rootFrame;
+    private IconProvider iconProvider;
     
     protected BrowserPlatform()
     {
@@ -82,16 +83,19 @@ public class BrowserPlatform
         // init defaults: 
         this.proxyRegistry=ProxyFactoryRegistry.getInstance(); 
         
-        this.viewerRegistry=new ViewerRegistry(); 
+        UIResourceLoader resourceLoader=new UIResourceLoader(); 
+        ViewerResourceHandler resourceHandler=new ViewerResourceHandler(resourceLoader); 
+        resourceHandler.setViewerConfigDir(getPlatformConfigDir());
         
-        URI viewerConfig=new URIFactory(getPlatformConfigDir()).appendPath("."+getPlatformID().toLowerCase()).toURI();
-        viewerRegistry.getResourceHandler().setViewerConfigDir(getPlatformConfigDir());
-  
-        initDefaultViewers(); 
+        this.viewerRegistry=new ViewerRegistry(resourceHandler); 
         
-        resourceLoader=UIResourceLoader.getDefault();
         rootFrame=new JFrame(); 
         iconProvider=new IconProvider(rootFrame,resourceLoader); 
+    }
+    
+    public void setUIResourceLoader(UIResourceLoader resourceLoader)
+    {
+        viewerRegistry.getResourceHandler().setResourceLoader(resourceLoader); 
     }
     
     public String getPlatformID()
@@ -133,11 +137,6 @@ public class BrowserPlatform
         return viewerRegistry; 
     }
     
-    protected void initDefaultViewers()
-    {
-        
-    }
-    
     public URI getPlatformConfigDir()
     {
         try
@@ -151,7 +150,7 @@ public class BrowserPlatform
         return null;
     }
     
-    public static IconProvider getIconProvider()
+    public IconProvider getIconProvider()
     {
         return iconProvider; 
     }  

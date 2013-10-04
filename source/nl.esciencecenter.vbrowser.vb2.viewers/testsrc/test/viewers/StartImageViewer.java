@@ -14,7 +14,7 @@ public class StartImageViewer
         
         try
         {
-            ViewerTests.testViewer(new ImageViewer(),new URI("file:///home/ptdeboer/tests/image1.jpg"));
+            ViewerTests.testViewer(ImageViewer.class,new URI("file:///home/ptdeboer/tests/image1.jpg"));
 
             // viewStandAlone(null);
         }

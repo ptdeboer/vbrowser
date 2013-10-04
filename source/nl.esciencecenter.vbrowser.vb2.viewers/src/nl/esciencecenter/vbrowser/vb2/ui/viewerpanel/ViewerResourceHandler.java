@@ -5,12 +5,9 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Properties;
 
-import nl.esciencecenter.ptk.io.FSNode;
-import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.io.RandomReader;
 import nl.esciencecenter.ptk.io.RandomWriter;
-import nl.esciencecenter.ptk.io.local.LocalFSNode;
 import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.esciencecenter.ptk.ssl.CertificateStoreException;
 import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
@@ -31,17 +28,21 @@ public class ViewerResourceHandler
     private CertificateStore certificateStore; 
     
     // === // 
-    
-    protected  ViewerResourceHandler()
+
+    public ViewerResourceHandler(UIResourceLoader resourceLoader)
     {
-        resourceLoader=new UIResourceLoader(); 
-        
+        this.resourceLoader=resourceLoader;
         viewersConfigDir=null;
     }
-
+    
+    public void setResourceLoader(UIResourceLoader resourceLoader)
+    {
+        this.resourceLoader=resourceLoader; 
+    }
+    
     public void setViewerConfigDir(URI configDir)
     {
-        System.err.printf("ViewerConfigDir=%s\n",configDir);
+        logger.infoPrintf("ViewerConfigDir=%s\n",configDir);
         this.viewersConfigDir=configDir;
     }
     
@@ -89,25 +90,14 @@ public class ViewerResourceHandler
        return resourceLoader.loadProperties(uri);
     }
 
-    private FSUtil getFSUtil()
-    {
-        return FSUtil.getDefault();
-    }
-    
+  
     public void saveProperties(URI uri, Properties properties) throws IOException
     {
         logger.infoPrintf("Saving Properties to:"+uri); 
         if (uri==null)
             return; 
         
-        LocalFSNode propsNode = getFSUtil().newLocalFSNode(uri); 
-        
-        LocalFSNode dir = propsNode.getParent(); 
-            
-        if (dir.exists()==false)
-            dir.mkdirs(); 
-        
-        resourceLoader.saveProperties(propsNode.getURI(),properties);
+        resourceLoader.saveProperties(uri,properties);
     }
 
     public void syncReadBytes(RandomReader reader, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws IOException
@@ -117,13 +107,12 @@ public class ViewerResourceHandler
         //reader.close(); 
     }
 
-    public void syncWriteBytes(FSNode file, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws IOException
+    public void syncWriteBytes(RandomWriter writer, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws IOException
     {
-        RandomWriter writer = getFSUtil().createRandomWriter(file); 
         writer.writeBytes(fileOffset, buffer, bufferOffset, numBytes); 
         writer.close(); 
     }
-    
+   
 
     public CertificateStore getCertificateStore() throws CertificateStoreException
     {
@@ -147,14 +136,13 @@ public class ViewerResourceHandler
 
     public RandomReader createRandomReader(URI loc) throws IOException
     {
-        FSUtil fsUtil=this.getFSUtil();
-        return fsUtil.createRandomReader(fsUtil.newFSNode(loc)); 
+        return resourceLoader.createRandomReader(loc); 
     }
   
     public RandomWriter createRandomWriter(URI loc) throws IOException
     {
-        FSUtil fsUtil=this.getFSUtil();
-        return fsUtil.createRandomWriter(fsUtil.newFSNode(loc)); 
+        return resourceLoader.createRandomWriter(loc); 
     }
+
 
 }

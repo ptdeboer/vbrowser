@@ -15,7 +15,7 @@ public class StartWebStarterJGridStart
         
         try
         {
-            ViewerTests.testViewer(new JavaWebStarter(),new URI("http://ca.dutchgrid.nl/start/jgridstart.jnlp"));
+            ViewerTests.testViewer(JavaWebStarter.class,new URI("http://ca.dutchgrid.nl/start/jgridstart.jnlp"));
         }
         catch (Exception e)
         {

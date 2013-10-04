@@ -289,36 +289,49 @@ public class BrowserFrame extends JFrame
 		return tab; 
 	}
 	
-	public ResourceTable getTablePanel() 
+	
+	protected void updateTableTab(boolean autoCreate,ProxyNode node)
 	{
-		return getTablePanel(false); 
+	    createTableTab(node); 
 	}
-
-	protected ResourceTable getTablePanel(boolean autoCreate)
+	
+	protected void createTableTab(ProxyNode node)
 	{
-		TabContentPanel tab = this.getCurrentTab(); 
-		if (tab==null)
-		{
-			if (autoCreate==false)
-				return null; 
-			
-			tab=this.addTab("Table",null,false); 
-		}
-		
-		JComponent comp = tab.getContent(); 
-		if (comp instanceof ResourceTable)
-			return (ResourceTable)comp;  
-		
-		if (autoCreate==false)
-			return null; 
-		
-		// Clone ! 
-		ProxyNode node=this.getViewedProxyNode(); 
-		
-		ResourceTable tbl = new ResourceTable(this.browserController,new ResourceTableModel());
-		tbl.setDataSource(node,true);  		
-		tab.setContent(tbl);  
-		return tbl; 
+	    TabContentPanel tab=this.addTab("Table",null,true); 
+        ResourceTable tbl = new ResourceTable(this.browserController,new ResourceTableModel());
+        tbl.setDataSource(node,true);       
+        tab.setContent(tbl);
+        
+//		TabContentPanel tab = this.getCurrentTab(); 
+//		if (tab==null)
+//		{
+//			if (autoCreate==false)
+//				return ;
+//
+//			// New Tab + Table: 
+//			tab=this.addTab("Table",null,false); 
+//			ResourceTable tbl = new ResourceTable(this.browserController,new ResourceTableModel());
+//	        tab.setContent(tbl);  
+//		}
+//		
+//		JComponent comp = tab.getContent(); 
+//		ResourceTable tbl=null;
+//		
+//		if (comp==null)
+//		{
+//		    return; 
+//		}
+//		
+//		if (comp instanceof ResourceTable)
+//		{
+//		    tbl=(ResourceTable)comp; 
+//		}
+//		else
+//		{
+//		    return; 
+//		}
+//		
+//		tbl.setDataSource(node,true);  		
 	}
 	
 	
@@ -545,7 +558,7 @@ public class BrowserFrame extends JFrame
 	        	this.getIconsPanel(true).updateUIModel(UIViewModel.createIconsListModel()); 
 	            break; 
 	        case TABLE:
-	        	this.getTablePanel(true);
+	        	this.updateTableTab(true,this.getViewedProxyNode());
 	        	break;
 	        case CONTENT_VIEWER:
 	            // this.getViewerPanel(true);

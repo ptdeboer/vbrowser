@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.viewers.HexViewer;
 import nl.esciencecenter.vbrowser.vb2.ui.viewers.ImageViewer;
@@ -44,7 +45,7 @@ public class ViewerRegistry
     public static ViewerRegistry getDefault()
     {
         if (instance==null)
-            instance=new ViewerRegistry();
+            instance=new ViewerRegistry(new ViewerResourceHandler(new UIResourceLoader()));
         
         return instance; 
     }
@@ -58,11 +59,10 @@ public class ViewerRegistry
     private ViewerResourceHandler resourceHandler=null; 
 
     
-    public ViewerRegistry()
+    public ViewerRegistry(ViewerResourceHandler resourceHandler)
     {
+        this.resourceHandler=resourceHandler; 
         initViewers(); 
-        
-        resourceHandler=new ViewerResourceHandler();
     }
 
     protected void initViewers()
@@ -133,6 +133,7 @@ public class ViewerRegistry
         try
         {
             viewer = viewerClass.newInstance();
+            viewer.setViewerRegistry(this); 
         }
         catch (Exception e)
         {

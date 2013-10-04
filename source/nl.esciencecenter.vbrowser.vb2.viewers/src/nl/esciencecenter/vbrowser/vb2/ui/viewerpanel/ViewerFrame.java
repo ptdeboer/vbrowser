@@ -4,6 +4,9 @@ import java.net.URI;
 
 import javax.swing.JFrame;
 
+import nl.esciencecenter.vbrowser.vb2.ui.viewers.HexViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewers.TextViewer;
+
 public class ViewerFrame extends JFrame
 {
     private static final long serialVersionUID = -1604425778812821234L;
@@ -26,21 +29,24 @@ public class ViewerFrame extends JFrame
         return viewer; 
     }
      
-    public static ViewerFrame startViewer(ViewerPanel viewer, URI optionalURI)
+    public static ViewerFrame startViewer(Class<? extends ViewerPanel> class1, URI optionalURI)
     {
-        ViewerFrame frame=createViewerFrame(viewer,true); 
-        viewer.startViewerFor(optionalURI); 
+        ViewerPanel newViewer=ViewerRegistry.getDefault().createViewer(class1); 
+        
+        ViewerFrame frame=createViewerFrame(newViewer,true); 
+        frame.getViewer().startViewerFor(optionalURI); 
         frame.setVisible(true); 
         
         return frame;
     }
 
-    public static ViewerFrame createViewerFrame(ViewerPanel viewer, boolean initViewer)
+    public static ViewerFrame createViewerFrame(ViewerPanel newViewer, boolean initViewer)
     {
-        ViewerFrame frame=new ViewerFrame(viewer); 
+        
+        ViewerFrame frame=new ViewerFrame(newViewer); 
         if (initViewer)
         {
-            viewer.initViewer();  
+            newViewer.initViewer();  
         }
         frame.pack(); 
         frame.setSize(frame.getPreferredSize()); 

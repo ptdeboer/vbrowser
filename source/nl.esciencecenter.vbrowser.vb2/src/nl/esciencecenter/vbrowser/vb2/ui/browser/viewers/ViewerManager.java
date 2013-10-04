@@ -59,8 +59,8 @@ public class ViewerManager
         } 
     }
 
-    public ViewerFrame createViewerFrame(ViewerPanel viewer, boolean initViewer)
+    public ViewerFrame createViewerFrame(ViewerPanel viewerClass, boolean initViewer)
     {
-        return ViewerFrame.createViewerFrame(viewer,initViewer);
+        return ViewerFrame.createViewerFrame(viewerClass,initViewer);
     }
 }

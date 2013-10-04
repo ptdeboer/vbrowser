@@ -14,7 +14,7 @@ public class StartHexViewer
         
         try
         {
-            ViewerTests.testViewer(new HexViewer(),new URI("file:///home/ptdeboer/tests/image1.jpg"));
+            ViewerTests.testViewer(HexViewer.class,new URI("file:///home/ptdeboer/tests/image1.jpg"));
             // viewStandAlone(null);
         }
         catch (Exception e)

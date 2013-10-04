@@ -28,9 +28,24 @@ public abstract class ViewerPanel extends JPanel implements Disposable
     
     private List<ViewerListener> listeners=new ArrayList<ViewerListener>(); 
     
+    private ViewerRegistry viewerRegistry=null;
+    
     protected ViewerPanel()
     {
         this.setLayout(new BorderLayout());
+    }
+    
+    protected void setViewerRegistry(ViewerRegistry viewerRegistry)
+    {
+        if (this.viewerRegistry!=null)
+            throw new Error("Cannot set VieweRegistry Twice!");
+        
+        this.viewerRegistry=viewerRegistry;
+    }
+    
+    protected ViewerRegistry getViewerRegistry()
+    {
+        return viewerRegistry;
     }
     
     /** 
@@ -249,6 +264,7 @@ public abstract class ViewerPanel extends JPanel implements Disposable
      * After a disposeViewer() a viewer will never be started but multiple disposeViewers() might ocure. 
      */ 
     abstract protected void doDisposeViewer();
+
 
   
 
