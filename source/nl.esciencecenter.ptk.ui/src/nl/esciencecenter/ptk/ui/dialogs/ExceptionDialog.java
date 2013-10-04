@@ -48,10 +48,10 @@ public class ExceptionDialog extends javax.swing.JDialog implements ActionListen
 
 	public static void show(Component parent,Throwable ex) 
 	{
-		show(parent,ex,false); 
+		show(parent,null,ex,false); 
 	}
 	
-	public static void show(final Component parent,final Throwable e,final boolean modal) 
+	public static void show(final Component parent,final String title,final Throwable e,final boolean modal) 
 	{
 		// allow for asynchronous call, but dialog MUST be shown during GUI thread ! 
 		// invoke show dialog during GUI thread: 
@@ -66,7 +66,7 @@ public class ExceptionDialog extends javax.swing.JDialog implements ActionListen
 
 					//System.err.println("after swing invoke later"); 
 					
-					show(parent,e,modal);
+					show(parent,title,e,modal);
 				}
 			};
 			
@@ -77,12 +77,19 @@ public class ExceptionDialog extends javax.swing.JDialog implements ActionListen
 		ExceptionDialog inst;
 		
 		// if model==true dialog parent must be set for advanced modality! 
+		
 		if (parent instanceof Dialog)
-			inst=new ExceptionDialog(((Dialog)parent),e,modal);
+		{
+			inst=new ExceptionDialog(((Dialog)parent),title,e,modal);
+		}
 		else if (parent instanceof Frame)
-			inst=new ExceptionDialog(((Frame)parent),e,modal);
+		{
+			inst=new ExceptionDialog(((Frame)parent),title,e,modal);
+		}
 		else 
-			inst = new ExceptionDialog((Frame)null,e,modal);
+		{
+			inst = new ExceptionDialog((Frame)null,title,e,modal);
+		}
 		
         //GuiSettings.setToOptimalWindowSize(inst);
         
@@ -118,9 +125,8 @@ public class ExceptionDialog extends javax.swing.JDialog implements ActionListen
 	protected ExceptionDialog(Throwable e)
 	{
 	    super(); 
-	    init(e); 
+	    init(null,e); 
     }
-	
 	
 	public void setDebugText(String txt)
 	{
@@ -130,27 +136,31 @@ public class ExceptionDialog extends javax.swing.JDialog implements ActionListen
 	}
 	
 	
-	public ExceptionDialog(Dialog parent, Throwable e,boolean modal) 
+	public ExceptionDialog(Dialog parent, String title,Throwable e,boolean modal) 
 	{        
 		// for chained modal dailogs, parent can NOT be NULL 
-		super(parent,"Exception",modal);  
-		init(e);
+		super(parent,title,modal);  
+		init(title,e);
 		this.setLocationRelativeTo(parent);  
 	}
 	
-	public ExceptionDialog(Frame frame, Throwable e,boolean modal) 
+	public ExceptionDialog(Frame frame,String title,Throwable e,boolean modal) 
 	{        
 		// for chained modal dailogs, parent can NOT be NULL 
-		super(frame,"Exception",modal);  
-		init(e);
+		super(frame,title,modal);  
+		init(title,e);
 		this.setLocationRelativeTo(frame);  
 	}
 	
-	private void init(Throwable e)
+	private void init(String title,Throwable e)
 	{
        // WindowRegistry.register(this);
 		initGUI();
-		String name=e.getClass().getSimpleName();
+		String name=title; 
+		if (name==null)
+		{
+		    name=e.getClass().getSimpleName();
+		}
 		
 		this.mainHeaderTextField.setText(name);
 		String txt=e.getMessage(); 
