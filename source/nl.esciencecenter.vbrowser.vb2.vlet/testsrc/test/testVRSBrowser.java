@@ -25,12 +25,19 @@ import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.ProxyBrowser;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs.VRSProxyFactory;
+import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.VRSContext;
+import nl.esciencecenter.vlet.vrs.util.VRSResourceLoader;
 
 public class testVRSBrowser 
 {
 
 	public static void main(String args[])
 	{
+	    // Use ResourceLoaders ! 
+	    VletConfig.setInitURLStreamFactory(false); 
+	    
 		try 
 		{
 			BrowserPlatform platform=BrowserPlatform.getInstance(); 
@@ -38,8 +45,10 @@ public class testVRSBrowser
 			VRSProxyFactory fac = VRSProxyFactory.getDefault();  
 		    platform.registerProxyFactory(fac);  
             
+		    VRSContext context=VRS.getDefaultVRSContext(); 
+		    platform.setUIResourceLoader(new VRSResourceLoader(context));
+            
 		    ProxyBrowser frame=(ProxyBrowser)platform.createBrowser(); 
-		    
     		ProxyNode root = fac.openLocation("myvle:/"); 
     		
 			frame.setRoot(root,true,true); 

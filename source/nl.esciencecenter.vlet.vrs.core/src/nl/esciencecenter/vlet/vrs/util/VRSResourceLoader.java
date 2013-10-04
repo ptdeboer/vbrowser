@@ -27,9 +27,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URL;
 
 import nl.esciencecenter.ptk.io.IOUtil;
-import nl.esciencecenter.ptk.util.ResourceLoader;
+import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.NestedIOException;
@@ -45,8 +48,10 @@ import nl.esciencecenter.vlet.vrs.vfs.VFile;
 /** 
  * ResourceLoader which uses VRS methods for reading/writing resources. 
  */
-public class VRSResourceLoader extends ResourceLoader
+public class VRSResourceLoader extends UIResourceLoader
 {
+    private static ClassLogger logger=ClassLogger.getLogger(VRSResourceLoader.class); 
+    
     private VRSContext vrsContext;
 
     private VRSClient vrsClient;
@@ -57,28 +62,96 @@ public class VRSResourceLoader extends ResourceLoader
         this.vrsClient=new VRSClient(context);
     }
     
-    public String readText(URI uri) throws IOException
+    // ========================================================================
+    // UIResourceLoader
+    // ========================================================================
+    
+    public InputStream createInputStream(String urlstr) throws IOException
     {
         try
         {
-            InputStream inps;
-            inps = vrsClient.openInputStream(new VRL(uri));
-            String text=readText(inps,null);  
-            try { inps.close(); } catch (Exception e) { ; } 
-            return text; 
+            return createInputStream(new VRL(urlstr));
         }
-        catch (VrsException e1)
+        catch (VRLSyntaxException e)
         {
-            throw new IOException(e1);
-        }  
+            throw new IOException(e.getMessage(),e); 
+        }
+    }
+
+    /**
+     * Returns an inputstream from the specified URI.
+     * 
+     * @param uri
+     * @return
+     * @throws VlException
+     */
+    public InputStream createInputStream(URL url) throws IOException
+    {
+        try
+        {
+            return createInputStream(new VRL(url));
+        }
+        catch (VRLSyntaxException e)
+        {
+            throw new IOException(e.getMessage(),e); 
+        }
+    }
+
+    public InputStream createInputStream(URI uri) throws IOException
+    {
+        return createInputStream(new VRL(uri));
+    }
+
+    public OutputStream createOutputStream(URI uri) throws IOException
+    {
+        return createOutputStream(new VRL(uri));
+    }
+
+    public OutputStream createOutputStream(URL url) throws IOException
+    {
+        try
+        {
+            return createOutputStream(new VRL(url));
+        }
+        catch (VRLSyntaxException e)
+        {
+            throw new IOException(e.getMessage(),e); 
+        }
     }
     
+    // ========================================================================
+    // VRS Implementations 
+    // ========================================================================
+    
+    public InputStream createInputStream(VRL vrl) throws IOException
+    {
+        try
+        {
+            return vrsClient.openInputStream(vrl);
+        }
+        catch (VrsException e)
+        {
+            throw new IOException(e.getMessage(),e); 
+        }
+    }
+
+    public OutputStream createOutputStream(VRL vrl) throws IOException
+    {
+        try
+        {
+            return vrsClient.openOutputStream(vrl);
+        }
+        catch (VrsException e)
+        {
+            throw new IOException(e.getMessage(),e); 
+        }
+    }
     /** 
      * Returns resource as String. 
      */ 
     public  String getText(VRL vrl) throws IOException, VrsException 
     {
-         InputStream inps=vrsClient.openInputStream(vrl);  
+         InputStream inps=createInputStream(vrl);
          String text=readText(inps,null);  
          try { inps.close(); } catch (Exception e) { ; } 
          return text; 
@@ -86,7 +159,7 @@ public class VRSResourceLoader extends ResourceLoader
    
     public String getText(VRL vrl, String textEncoding) throws IOException, VrsException 
     {
-        InputStream inps=vrsClient.openInputStream(vrl);  
+        InputStream inps=createInputStream(vrl);
         String text=readText(inps,textEncoding);  
         try { inps.close(); } catch (Exception e) { ; } 
         return text;
