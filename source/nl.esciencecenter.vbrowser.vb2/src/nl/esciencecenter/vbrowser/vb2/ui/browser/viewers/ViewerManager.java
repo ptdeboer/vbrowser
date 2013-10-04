@@ -17,7 +17,7 @@ public class ViewerManager
         browser=proxyBrowser;
     }
 
-    public ViewerPanel createViewerFor(ViewNode node,Class optViewerClass) throws ProxyException
+    public ViewerPanel createViewerFor(ViewNode node,String optViewerClass) throws ProxyException
     {
         ViewerRegistry registry = browser.getPlatform().getViewerRegistry();
 
@@ -25,20 +25,40 @@ public class ViewerManager
         // String resourceStatus = node.getResourceStatus();
         String mimeType = node.getMimeType();
 
-        if (mimeType!=null)
+
+        Class clazz=null; 
+        
+        if (optViewerClass!=null)
         {
-            Class clazz = optViewerClass;
-            if (clazz==null)
-                clazz=registry.getMimeTypeViewerClass(mimeType);
-            if (clazz==null)
-                return null; 
-            ViewerPanel viewer = registry.createViewer(clazz);
-            return viewer;
+            clazz = loadViewerClass(optViewerClass); 
         }
         
-        return null;
+        if ((clazz==null) && (mimeType!=null))
+        {
+            if (clazz==null)
+                clazz=registry.getMimeTypeViewerClass(mimeType);
+        }
+        
+        if (clazz==null)
+            return null; 
+        
+        ViewerPanel viewer = registry.createViewer(clazz);
+        return viewer;
     }
     
+    private Class loadViewerClass(String optViewerClass)
+    {
+        try
+        {
+            return this.getClass().getClassLoader().loadClass(optViewerClass);
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+            return null; 
+        } 
+    }
+
     public ViewerFrame createViewerFrame(ViewerPanel viewer, boolean initViewer)
     {
         return ViewerFrame.createViewerFrame(viewer,initViewer);

@@ -29,9 +29,8 @@ public class ViewerFrame extends JFrame
     public static ViewerFrame startViewer(ViewerPanel viewer, URI optionalURI)
     {
         ViewerFrame frame=createViewerFrame(viewer,true); 
-        
+        viewer.startViewerFor(optionalURI); 
         frame.setVisible(true); 
-        viewer.updateURI(optionalURI,true); 
         
         return frame;
     }

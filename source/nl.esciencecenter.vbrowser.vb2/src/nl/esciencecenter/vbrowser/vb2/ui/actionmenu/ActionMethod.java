@@ -52,6 +52,8 @@ public enum ActionMethod
     VIEW_AS_ICON_LIST("ViewAsList"), 
     VIEW_AS_TABLE("ViewAsTable"),
     VIEW_OPEN_DEFAULT("ViewDefault"),
+    VIEW_WITH("ViewWith"),
+
     // Tab Nav
     NEW_TAB("NewTab"),
     OPEN_IN_NEW_TAB("OpenInNewTab"),
@@ -72,7 +74,12 @@ public enum ActionMethod
 	{
 		this.methodName=method; 
 	}
-	
+
+	private ActionMethod(String method,String args[]) 
+	{
+	    this.methodName=method; 
+    }
+
 	public String getMethodName()
 	{
 		return this.methodName; 

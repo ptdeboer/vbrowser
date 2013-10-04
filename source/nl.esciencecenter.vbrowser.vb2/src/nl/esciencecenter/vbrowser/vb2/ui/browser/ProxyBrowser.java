@@ -289,7 +289,8 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
 			node = this.getCurrentViewNode();
 			global = true;
 		}
-
+		
+		
 		switch (action.getActionMethod()) 
 		{
             case BROWSE_BACK: 
@@ -350,11 +351,15 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
                 doViewAsTable(); 
                 break; 
             case SHOW_PROPERTIES:
-                doOpenViewer(node,ProxyObjectViewer.class,true); 
+                doOpenViewer(node,ProxyObjectViewer.class.getCanonicalName(),true); 
                 break;
             case VIEW_OPEN_DEFAULT:
                 doOpenViewer(node,null,false); 
                 break;
+            case VIEW_WITH:
+                doOpenViewer(node,action.getArg0(),false); 
+                break;
+
             default:
     			logger.errorPrintf("\n",
     			        ">>>\n>>> FIXME: ACTION NOT IMPLEMENTED:%s !\n<<<\n",
@@ -379,7 +384,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
         this.browserFrame.setViewMode(BrowserViewMode.ICONLIST);
     }
 
-    private void doOpenViewer(ViewNode node,Class optViewerClass,boolean standaloneWindow)
+    private void doOpenViewer(final ViewNode node,String optViewerClass,boolean standaloneWindow)
     {
         logger.infoPrintf("doOpenViewer:%s\n",node); 
         
@@ -395,7 +400,8 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
             
             if (viewer.isStandaloneViewer())
             {
-                viewerManager.createViewerFrame(viewer,true);
+                ViewerFrame frame=viewerManager.createViewerFrame(viewer,true);
+                frame.setVisible(true); 
             }
             else
             {
@@ -403,17 +409,31 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
                 viewer.initViewer(); 
             }
             
-            viewer.updateURI(node.getVRL().toURI(),true);
+            final ViewerPanel finalViewer=viewer; 
+            
+            ProxyBrowserTask task = new ProxyBrowserTask(this, "startViewerFor" + node)
+            {
+                @Override
+                protected void doTask()
+                {
+                    try
+                    {
+                        finalViewer.startViewerFor(node.getVRL().toURI());
+                    }
+                    catch (Throwable e)
+                    {
+                        handleException("Couldn't start Viewer for:"+node,e);
+                    }
+                }
+            };
+
+            task.startTask();
             
         }
         catch (ProxyException e)
         {
             this.handleException("Failed to create viewer for:"+node, e);
             return;
-        }
-        catch (URISyntaxException e)
-        {
-            this.handleException("Invalid location:"+node, e);
         }
 
     }

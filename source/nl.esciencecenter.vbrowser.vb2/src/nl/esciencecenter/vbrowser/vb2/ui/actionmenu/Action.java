@@ -52,6 +52,14 @@ public class Action
 	    this.actionMethod=actionMethod; 
 	}
 
+	public Action(Object source,ActionMethod actionMethod,String argument)
+    {
+        this.source=source; 
+        this.actionMethod=actionMethod; 
+        this.arguments=new StringList(); 
+        arguments.add(argument); 
+    }
+	
 	public ActionMethod getActionMethod()
 	{
 		return this.actionMethod;
@@ -102,6 +110,22 @@ public class Action
 		return this.arguments; 
 	}
 	
+	public String getArg0()
+	{
+	    if ((arguments==null) || (arguments.size()<1)) 
+	        return null; 
+	    
+	    return this.arguments.get(0);  
+    }
+	
+	public String getArg1()
+	{
+	    if ((arguments==null) || (arguments.size()<2)) 
+	        return null; 
+	        
+	    return this.arguments.get(1);  
+    }
+
     public Object getActionSource()
     {
         return source;

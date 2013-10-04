@@ -5,11 +5,15 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import nl.esciencecenter.ptk.object.Disposable;
+import nl.esciencecenter.ptk.ui.dialogs.ExceptionDialog;
+import nl.esciencecenter.vbrowser.vb2.ui.viewer.events.ViewerListener;
 
 
 public abstract class ViewerPanel extends JPanel implements Disposable
@@ -21,6 +25,8 @@ public abstract class ViewerPanel extends JPanel implements Disposable
     private URI viewedUri;
 
     private boolean isBusy; 
+    
+    private List<ViewerListener> listeners=new ArrayList<ViewerListener>(); 
     
     protected ViewerPanel()
     {
@@ -44,29 +50,32 @@ public abstract class ViewerPanel extends JPanel implements Disposable
         return innerPanel;
     }
     
-    public URI getURI()
+    final public URI getURI()
     {
         return viewedUri; 
     }
     
-    protected void setURI(URI uri)
+    final protected void setURI(URI uri)
     {
         this.viewedUri=uri; 
     }
     
-    /** 
-     * Update View Location. 
-     * Overide this to update the viewed content. 
-     * @param newUri
-     */
-    public void updateURI(URI newUri, boolean startViewer)
+    
+    final public void startViewerFor(URI newUri)
     {
         this.setURI(newUri); 
-        
-        if (startViewer)
-            startViewer();
-        
-        doUpdateURI(newUri); 
+        startViewer();
+        // doUpdateURI(newUri); 
+    }
+    
+    /** 
+     * Update the Viewed Location. 
+     * @param newUri
+     */
+    final public void updateURI(URI newURI)
+    {
+        setURI(newURI); 
+        doUpdateURI(newURI); 
     }
     
     /** 
@@ -89,14 +98,19 @@ public abstract class ViewerPanel extends JPanel implements Disposable
         return false;
     }
 
-    /** Set title of master frame or Viewer tab */
+    /** 
+     * Set title of master frame or Viewer tab 
+     */
     public void setViewerTitle(final String name)
     {
-        JFrame frame = getJFrame();
-        if (frame != null)
-            getJFrame().setTitle(name);
-
         this.setName(name);
+
+        if (isStandaloneViewer())
+        {
+            JFrame frame = getJFrame();
+            if (frame != null)
+                getJFrame().setTitle(name);
+        }
     }
     
     /**
@@ -122,7 +136,7 @@ public abstract class ViewerPanel extends JPanel implements Disposable
         return (this.getJFrame() != null);
     }
     
-    protected boolean closeViewer()
+    final protected boolean closeViewer()
     {
         stopViewer(); 
         disposeViewer(); 
@@ -140,27 +154,30 @@ public abstract class ViewerPanel extends JPanel implements Disposable
     }
     
     @Override
-    public void dispose()
+    final public void dispose()
     {
         stopViewer(); 
         disposeViewer(); 
     }
 
-    public final void initViewer()
+    final public void initViewer()
     {
         doInitViewer(); 
     }
-    public final void startViewer()
+    
+    final public void startViewer()
     {
         doStartViewer(); 
         // fireStarted(); 
     }
-    public final void stopViewer()
+    
+    final public void stopViewer()
     {
         doStopViewer(); 
         // fireStopped(); 
     }
-    public final void disposeViewer()
+    
+    final public void disposeViewer()
     {
         doDisposeViewer(); 
         //fireDisposed(); 
@@ -170,6 +187,16 @@ public abstract class ViewerPanel extends JPanel implements Disposable
     // Events
     // =========================================================================
     
+    public void addViewerListener(ViewerListener listener)
+    {
+        this.listeners.add(listener); 
+    }
+
+    public void removeViewerListener(ViewerListener listener)
+    {
+        this.listeners.remove(listener); 
+    }
+
     public void notifyBusy(boolean isBusy)
     {
         this.isBusy=isBusy; 
@@ -185,10 +212,9 @@ public abstract class ViewerPanel extends JPanel implements Disposable
      * @param message
      * @param e
      */
-    protected void notifyException(String message, Throwable e)
+    protected void notifyException(String message, Throwable ex)
     {
-        System.err.printf("Error:%s\n",message); 
-        e.printStackTrace(); 
+        ExceptionDialog.show(this, message, ex,false);
     }
     
     // =========================================================================

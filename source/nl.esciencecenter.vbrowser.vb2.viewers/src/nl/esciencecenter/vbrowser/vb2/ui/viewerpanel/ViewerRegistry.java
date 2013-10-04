@@ -1,33 +1,40 @@
 package nl.esciencecenter.vbrowser.vb2.ui.viewerpanel;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JFrame;
-
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.vbrowser.vb2.ui.viewers.*;
+import nl.esciencecenter.vbrowser.vb2.ui.viewers.HexViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewers.ImageViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewers.JavaWebStarter;
+import nl.esciencecenter.vbrowser.vb2.ui.viewers.TextViewer;
 import nl.esciencecenter.vlet.gui.viewers.x509viewer.X509Viewer;
 
 public class ViewerRegistry
 {
     private static ClassLogger logger=ClassLogger.getLogger(ViewerRegistry.class); 
     
-    protected class ViewerEntry
+    public class ViewerEntry
     {
         protected Class<? extends ViewerPanel> viewerClass; 
+        protected String viewerName; 
         
-        ViewerEntry(Class<? extends ViewerPanel> viewerClass)
+        ViewerEntry(String viewerName,Class<? extends ViewerPanel> viewerClass)
         {
             this.viewerClass=viewerClass;
+            this.viewerName=viewerName; 
         }
         
-        Class<? extends ViewerPanel> getViewerClass()
+        public Class<? extends ViewerPanel> getViewerClass()
         {
             return viewerClass; 
+        }
+
+        public String getName()
+        {
+            return viewerName;
         }
         
     }
@@ -69,12 +76,14 @@ public class ViewerRegistry
     
     public void registerViewer(Class<? extends ViewerPanel> viewerClass)
     {
-        ViewerEntry entry= new ViewerEntry(viewerClass); 
-        viewers.add(entry); 
         
         try
         {
             ViewerPanel viewer = viewerClass.newInstance();
+            String viewerName=viewer.getName(); 
+            
+            ViewerEntry entry= new ViewerEntry(viewerName,viewerClass); 
+            viewers.add(entry); 
       
             if (viewer instanceof MimeViewer)
             {
@@ -86,8 +95,7 @@ public class ViewerRegistry
         {
             logger.logException(ClassLogger.ERROR,e,"Failed to register viewer class:%s\n",viewerClass);
         } 
-    }
-    
+    }    
     
     private void registerMimeTypes(String[] mimeTypes, ViewerEntry entry)
     {
@@ -133,26 +141,15 @@ public class ViewerRegistry
 
         return viewer;
     }
-    
 
     public ViewerResourceHandler getResourceHandler()
     {
         return resourceHandler; 
     }
-    
-    public static JFrame startStandalone(ViewerPanel textViewer, URI uri)
+   
+    public ViewerEntry[] getViewers()
     {
-        JFrame frame=new JFrame();
-        
-        frame.add(textViewer);
-        frame.pack(); 
-        frame.setSize(800,600);
-        
-        textViewer.initViewer();
-        textViewer.updateURI(uri,true); 
-        
-        frame.setVisible(true); 
-        return frame; 
-        
+        // return array
+        return this.viewers.toArray(new ViewerEntry[0]);
     }
 }

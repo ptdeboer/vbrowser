@@ -28,9 +28,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
-
+import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeContainer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerRegistry;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerRegistry.ViewerEntry;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public class ActionMenu extends JPopupMenu
@@ -87,6 +89,8 @@ public class ActionMenu extends JPopupMenu
         
         {
             menu.add(menu.createItem(viewNode,"View",ActionMethod.VIEW_OPEN_DEFAULT)); 
+            menu.add(menu.createViewersMenu(viewNode)); 
+            
         }
         
         menu.add(sep); 
@@ -147,7 +151,23 @@ public class ActionMenu extends JPopupMenu
 
 	}
 	
-	/** 
+	private JMenu createViewersMenu(ViewNode viewNode)
+    {
+	    ViewerRegistry viewReg=BrowserPlatform.getInstance().getViewerRegistry(); 
+	    
+	    ViewerEntry[] viewers = viewReg.getViewers(); 
+	    JMenu subMenu=new JMenu("View with");
+	    
+	    for (ViewerEntry viewer:viewers)
+	    {
+	        JMenuItem item=createItem(viewNode,viewer.getName(),ActionMethod.VIEW_WITH,viewer.getViewerClass().getCanonicalName());
+	        subMenu.add(item); 
+	    }
+	    
+	    return subMenu; 
+    }
+
+    /** 
 	 * Translates pop action events to MenuActions 
 	 */ 
 	public class PopupHandler implements ActionListener
@@ -196,5 +216,15 @@ public class ActionMenu extends JPopupMenu
          
          return mitem;
 	}
+	
+	protected JMenuItem createItem(ViewNode viewNode,String name,ActionMethod actionMeth,String argument)
+    {
+         JMenuItem mitem = new JMenuItem();
+         mitem.setText(name);  
+         mitem.setActionCommand(new Action(viewNode,actionMeth,argument).toString()); 
+         mitem.addActionListener(this.popupHandler);
+         
+         return mitem;
+    }
 	
 }

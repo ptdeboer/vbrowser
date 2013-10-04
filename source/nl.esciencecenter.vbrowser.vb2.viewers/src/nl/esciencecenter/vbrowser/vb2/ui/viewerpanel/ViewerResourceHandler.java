@@ -61,7 +61,6 @@ public class ViewerResourceHandler
         return resourceLoader;
     }
 
-
     public void writeText(URI uri, String txt, String encoding) throws IOException
     {
         resourceLoader.writeTextTo(uri, txt, encoding);

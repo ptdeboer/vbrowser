@@ -7,17 +7,18 @@ import java.net.URISyntaxException;
 import java.util.Properties;
 
 import javax.swing.Icon;
-import javax.swing.JFrame;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 public abstract class EmbeddedViewer extends ViewerPanel implements MimeViewer
 {
     private static final long serialVersionUID = -873655384459474749L;
         
+    private static ClassLogger logger=ClassLogger.getLogger(EmbeddedViewer.class);
     // ===  
     
     protected IconProvider iconProvider=null;
@@ -58,12 +59,6 @@ public abstract class EmbeddedViewer extends ViewerPanel implements MimeViewer
     public ViewerResourceHandler getResourceHandler()
     {
         return ViewerRegistry.getDefault().getResourceHandler();
-    }
-
-    public void updateURI(URI uri,boolean startViewer)
-    {
-        super.updateURI(uri,startViewer);
-        // updateContent()
     }
 
     public String getURIBasename()
@@ -160,28 +155,28 @@ public abstract class EmbeddedViewer extends ViewerPanel implements MimeViewer
         
     public void errorPrintf(String format,Object... args)
     {
-        System.err.printf(format,args); 
+        logger.errorPrintf(format,args); 
     }
 
     protected void warnPrintf(String format,Object... args)
     {
-        System.err.printf(format,args); 
+        logger.warnPrintf(format,args); 
     }
 
     protected void infoPrintf(String format,Object... args)
     {
-        System.out.printf(format,args); 
+        logger.infoPrintf(format,args); 
     }
 
     protected void debugPrintf(String format,Object... args)
     {
-        System.out.printf("DEBUG:"+format,args); 
+        logger.debugPrintf("DEBUG:"+format,args); 
     }
 
     public void showMessage(String format, Object... args)
     {
-        System.out.printf("MESSAGE:"+format,args); 
-        
+        //redirect to master browser: 
+        logger.errorPrintf("MESSAGE:"+format,args); 
     }
 
 }
