@@ -25,6 +25,7 @@ package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
 import java.net.URISyntaxException;
 
 import nl.esciencecenter.ptk.data.LongHolder;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
@@ -216,7 +217,7 @@ public class VRSProxyNode extends ProxyNode
 	
 	public String toString()
 	{
-		return "<ProxyNode>"+locator.toString(); 
+	    return "<VRSProxyNode:"+getResourceType()+":"+getVRL(); 
 	}
 
 	@Override
@@ -337,7 +338,6 @@ public class VRSProxyNode extends ProxyNode
         String type=vnode.getResourceType();  
         
         return VRSPresentation.getPresentationFor(vnode.getVRL(),type, true);
-        
     }
 
 }
