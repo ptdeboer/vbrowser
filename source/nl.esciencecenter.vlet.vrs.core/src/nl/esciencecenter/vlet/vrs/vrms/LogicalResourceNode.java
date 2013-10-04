@@ -76,6 +76,7 @@ import nl.esciencecenter.vlet.vrs.data.xml.XMLData;
 import nl.esciencecenter.vlet.vrs.io.VStreamAccessable;
 import nl.esciencecenter.vlet.vrs.io.VStreamReadable;
 import nl.esciencecenter.vlet.vrs.io.VStreamWritable;
+import nl.esciencecenter.vlet.vrs.presentation.VRSPresentation;
 import nl.esciencecenter.vlet.vrs.util.VRSResourceLoader;
 import nl.esciencecenter.vlet.vrs.vfs.VFS;
 import nl.esciencecenter.vlet.vrs.vrl.VRLUtil;
@@ -1556,7 +1557,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
             return presentation;
 
         // Return Defaults:
-        return Presentation.getPresentationFor(getScheme(), getHostname(), getType(), true);
+        return VRSPresentation.getPresentationFor(getScheme(), getHostname(), getType(), true);
     }
 
     protected void setPresentation(Presentation newPresentation)
