@@ -39,6 +39,7 @@ import javax.swing.table.TableModel;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserInterface;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
@@ -57,7 +58,8 @@ import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 public class ResourceTable extends JTable implements UIDisposable, ViewNodeContainer 
 {
 	private static final long serialVersionUID = -8190587704685619938L;
-  
+	private static final ClassLogger logger=ClassLogger.getLogger(ResourceTable.class);
+	
     // default presentation
 	
     private Presentation presentation=null; 
@@ -131,13 +133,23 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
         this.addMouseListener(mouseListener);
 	}
 	
-	/** (re)Created columns from headers taken from DataModel */ 
+	/**
+	 *  (re)Created columns from headers taken from DataModel 
+	 */ 
     public void initColumns()
     {
-        String headers[]=getModel().getHeaders(); 
-        this.getPresentation().setChildAttributeNames(headers);
-        // Use order from presentation 
-        initColumns(getPresentation().getChildAttributeNames());
+        // Use Header from DataModel 
+        String headers[]=getModel().getHeaders();
+        
+        logger.infoPrintf("initColumns(): getHeaders() = %s\n",new StringList(headers).toString());
+        
+        if ((headers==null) || (headers.length<=0)) 
+        {
+            headers=getModel().getAllHeaders(); 
+            logger.infoPrintf("initColumns(): getAllHeaders() = %s\n",new StringList(headers).toString());
+        }
+        
+        initColumns(headers); 
     }
     
     public boolean isEditable()
@@ -257,7 +269,9 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
     }
     
     
-    /** Returns headers as defined in the DATA model */ 
+    /** 
+     * Returns headers as defined in the DATA model 
+     */ 
     public String[] getDataModelHeaders()
     {
         return getModel().getHeaders(); 
@@ -338,6 +352,7 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
     
     public void tableChanged(TableModelEvent e)
     {   
+        
         if (e == null || e.getFirstRow() == TableModelEvent.HEADER_ROW)
         {
             initColumns(); 
@@ -392,7 +407,9 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
        this.popupMenu=menu; 
     }
 
-    /** Return row Key under Point point. Might return NULL */ 
+    /** 
+     * Return row Key under Point point. Might return NULL 
+     * */ 
     public String getKeyUnder(Point point)
     {
         if (point==null)
@@ -405,20 +422,21 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
 
     public Presentation getPresentation()
     {
-        if (this.presentation==null)
-            presentation=Presentation.createDefault();             
+        if (presentation==null)
+        {
+            presentation=Presentation.createDefault(); 
+        }
         
-       return this.presentation; 
+        return this.presentation; 
     }
 
+    public void setPresentation(Presentation presentation)
+    {
+        this.presentation=presentation;
+    }
+    
     public void dispose()
     {
-    }
-
-    public void setPresentation(Presentation newPresentation)
-    {
-        this.presentation=newPresentation;
-        this.refreshAll();
     }
     
     /** 
@@ -429,9 +447,13 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
     	ResourceTableModel model = new ResourceTableModel(); 
     	this.setModel(model); 
         setDataProducer(new ProxyNodeTableDataProducer(node,model),true); 
-        Presentation pres = node.getPresentation(); 
+
+        // use presentation from ProxyNode ! 
+        Presentation pres=node.getPresentation(); 
         if (pres!=null)
-            this.setPresentation(pres); 
+        {
+            setPresentation(pres.duplicate(true)); 
+        }
     }
 
 	public void setDataProducer(TableDataProducer producer,boolean update)

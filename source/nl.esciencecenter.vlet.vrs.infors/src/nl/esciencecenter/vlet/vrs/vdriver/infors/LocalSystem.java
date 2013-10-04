@@ -26,6 +26,7 @@ import java.io.File;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.BooleanHolder;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;

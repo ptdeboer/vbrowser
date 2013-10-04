@@ -26,7 +26,7 @@ import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.vbrowser.vb2.ui.UIGlobal;
+
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
@@ -528,6 +528,11 @@ public abstract class ProxyNode
                 attrs[i]=new Attribute(name,this.getMimeType());
         }
         return attrs; 
+    }
+    
+    public String toString()
+    {
+        return "<ProxyNode:"+getResourceType()+":"+getVRL(); 
     }
     
 	// ========================================================================

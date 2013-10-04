@@ -3,6 +3,7 @@ package nl.esciencecenter.vbrowser.vb2.ui.browser;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -14,72 +15,40 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicButtonUI;
+
+import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.ActionMethod;
 
 public class TabTopLabelPanel extends JPanel
 {
     private static final long serialVersionUID = 5566174001482465094L;
 
     public static enum TabButtonType {Delete,Add}; 
-
-    private TabButton addButton;
-
-    private TabButton delButton;
-
-    public TabTopLabelPanel(final JTabbedPane parentPane, final TabContentPanel pane)
+    
+    private final static MouseListener buttonMouseListener = new MouseAdapter()
     {
-        // unset default FlowLayout' gaps
-        super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-
-        if ( (parentPane==null) || (pane == null))
+        public void mouseEntered(MouseEvent e)
         {
-            throw new NullPointerException("Tab pane or Parent TabbedPane is null");
-        }
-
-        setOpaque(false);
-
-        // make JLabel read titles from JTabbedPane
-        JLabel label = new JLabel()
-        {
-            public String getText()
+            Component component = e.getComponent();
+            if (component instanceof AbstractButton)
             {
-                return pane.getName();
+                AbstractButton button = (AbstractButton) component;
+                button.setBorderPainted(true);
             }
-        };
-
-        add(label);
-        // add more space between the label and the button
-        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-        // tab button
-
-        {
-            delButton = new TabButton(TabButtonType.Delete);
-            add(delButton);
-            delButton.setActionCommand(TabNavigationBar.CLOSE_TAB_ACTION); 
         }
+
+        public void mouseExited(MouseEvent e)
         {
-            addButton = new TabButton(TabButtonType.Add);
-            add(addButton);
-            addButton.setActionCommand(TabNavigationBar.NEW_TAB_ACTION); 
+            Component component = e.getComponent();
+            if (component instanceof AbstractButton)
+            {
+                AbstractButton button = (AbstractButton) component;
+                button.setBorderPainted(false);
+            }
         }
-        
-        // add more space to the top of the component
-        setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
-    }
+    };
     
-    public void setActionListener(ActionListener listener)
-    {
-        this.delButton.addActionListener(listener); 
-        this.addButton.addActionListener(listener); 
-       
-    }
-    public void setEnableAddButton(boolean value)
-    {
-        addButton.setVisible(value);
-    }
-    
-    private class TabButton extends JButton // implements ActionListener
+    protected class TabButton extends JButton // implements ActionListener
     {
         private static final long serialVersionUID = -3932012699584733182L;
     
@@ -125,31 +94,75 @@ public class TabTopLabelPanel extends JPanel
 
         public void updateUI()
         {
-            
         }
 
+        public TabContentPanel getTabPanel()
+        {
+            return TabTopLabelPanel.this.getTabPanel();
+        }
+    }
+        
+    private TabButton addButton;
+
+    private TabButton delButton;
+    
+    private TabContentPanel tabPane; 
+    
+    public TabTopLabelPanel(final TabContentPanel pane,final BrowserFrame.TabButtonHandler buttonHandler)
+    {
+        
+        // unset default FlowLayout' gaps
+        super(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
+        if (pane == null)
+        {
+            throw new NullPointerException("Tab pane or Parent TabbedPane is null");
+        }
+        
+        tabPane=pane;
+
+        setOpaque(false);
+
+        // make JLabel read titles from JTabbedPane
+        JLabel label = new JLabel()
+        {
+            public String getText()
+            {
+                return pane.getName();
+            }
+        };
+
+        add(label);
+        // add more space between the label and the button
+        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+        // tab button
+
+        {
+            delButton = new TabButton(TabButtonType.Delete);
+            add(delButton);
+            delButton.setActionCommand(""+ActionMethod.CLOSE_TAB);  
+            delButton.addActionListener(buttonHandler);
+        }
+        {
+            addButton = new TabButton(TabButtonType.Add);
+            add(addButton);
+            addButton.setActionCommand(""+ActionMethod.NEW_TAB); 
+            addButton.addActionListener(buttonHandler);
+        }
+        
+        // add more space to the top of the component
+        setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
     }
     
-    private final static MouseListener buttonMouseListener = new MouseAdapter()
+    TabContentPanel getTabPanel()
     {
-        public void mouseEntered(MouseEvent e)
-        {
-            Component component = e.getComponent();
-            if (component instanceof AbstractButton)
-            {
-                AbstractButton button = (AbstractButton) component;
-                button.setBorderPainted(true);
-            }
-        }
-
-        public void mouseExited(MouseEvent e)
-        {
-            Component component = e.getComponent();
-            if (component instanceof AbstractButton)
-            {
-                AbstractButton button = (AbstractButton) component;
-                button.setBorderPainted(false);
-            }
-        }
-    };
+        return this.tabPane; 
+    }
+    
+    public void setEnableAddButton(boolean value)
+    {
+        addButton.setVisible(value);
+    }
+    
+   
 }

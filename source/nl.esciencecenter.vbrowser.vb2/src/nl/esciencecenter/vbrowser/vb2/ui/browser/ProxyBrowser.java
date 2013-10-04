@@ -24,11 +24,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.net.URISyntaxException;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 
 import nl.esciencecenter.ptk.data.History;
@@ -54,7 +52,6 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEventNotifier;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTable;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerFrame;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerPanel;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerRegistry;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
@@ -86,7 +83,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     {
         public void actionPerformed(ActionEvent e)
         {
-            ProxyBrowser.this.handleMenuEvent(e);
+            ProxyBrowser.this.handleActionEvent(e);
         }
     }
     
@@ -154,6 +151,13 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     }
     
 
+    public void handleTabEvent(ActionEvent e)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+
     public String getBrowserId()
     {
         return "ProxyBrowser";
@@ -208,32 +212,23 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     /** 
      * Event from Menu Bar
      */
-    public void handleMenuEvent(ActionEvent e)
+    public void handleActionEvent(ActionEvent e)
     {
-        String cmdStr = e.getActionCommand();
-        Action theAction = Action.createFrom(getCurrentViewNode(), cmdStr);
-        handleMenuAction(theAction);
+        Action theAction = Action.createFrom(getCurrentViewNode(), e);
+        handleAction(theAction);
     }
 
     @Override
     public void handleMenuAction(Action theAction)
     {
+        handleAction(theAction); 
+    }
+    
+    public void handleAction(Action theAction)
+    {
         logger.debugPrintf(">>> ActionPerformed:%s\n", theAction);
-
-        Object source = theAction.getActionSource();
-
-        if (source instanceof ViewNode)
-        {
-            // node action
-            handleNodeAction((ViewNode) source, theAction);
-        }
-        else
-        {
-            // Global Menu action !
-            handleNodeAction(null, theAction);
-            // check source ???
-            // logger.fixmePrintf("\n>>>\n>>> FIXME: Global Action (null ViewNode):%s\n>>>\n", theAction);
-        }
+        ViewNode source = theAction.getActionSource();
+        handleNodeAction(source, theAction);
     }
     
     public void handleNavBarEvent(ActionEvent e)
@@ -271,11 +266,6 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
             handleAction(action);
         }
     }
-
-    public void handleAction(Action action) 
-    {
-        handleNodeAction(null, action); 
-    }
     
     @Override
 	public void handleNodeAction(ViewNode node, Action action) 
@@ -290,6 +280,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
 			global = true;
 		}
 		
+		Object eventSource=action.getEventSource(); 
 		
 		switch (action.getActionMethod()) 
 		{
@@ -329,6 +320,9 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     		case OPEN_IN_NEW_WINDOW:
     			createBrowser(node);
     			break;
+            case OPEN_IN_NEW_TAB:
+                createNewTab(node);
+                break;
     		case PASTE:
                 this.proxyActionHandler.handlePaste(action,node); 
     		    break; 
@@ -336,7 +330,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     		    createNewTab(node); 
     			break ;
     		case CLOSE_TAB:
-                closeCurrentTab(); 
+                closeTab(eventSource); 
                 break;
             case REFRESH:
                 doRefresh(node); 
@@ -532,11 +526,20 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     	this.openLocation(node.getVRL(),true,true); 
 	}
 
-    protected void closeCurrentTab()
+    protected void closeTab(Object source)
     {
-        TabContentPanel tab = this.browserFrame.getCurrentTab();
-        this.browserFrame.closeTab(tab,true); 
-    }
+        // check event source: 
+        if (source instanceof TabContentPanel)
+        {
+            TabContentPanel tab = (TabContentPanel)source;
+            this.browserFrame.closeTab(tab,true); 
+        }
+        else if (source instanceof TabTopLabelPanel.TabButton)
+        {
+            TabContentPanel tab = ((TabTopLabelPanel.TabButton)source).getTabPanel(); 
+            this.browserFrame.closeTab(tab,true);
+        }
+   }
     
     private void setViewedNode(ProxyNode node, Icon icon, boolean addHistory, boolean newTab)
     {

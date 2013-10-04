@@ -80,6 +80,11 @@ public class AnyFileProxyNode extends ProxyNode
     	//super.prefetch(); 
     }
     
+    public String toString()
+    {
+        return "<AnyFileProxyNode>:"+file; 
+    }
+    
     @Override
     public boolean isBusy()
     {

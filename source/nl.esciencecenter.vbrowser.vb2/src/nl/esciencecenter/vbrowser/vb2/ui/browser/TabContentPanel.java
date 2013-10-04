@@ -39,15 +39,17 @@ public class TabContentPanel extends JPanel
 {
     private static final long serialVersionUID = -8240076131848615972L;
 
-    public static TabContentPanel createTab(String name, JComponent comp, ActionListener al)
+    public static final String NEW_TAB_ACTION="newTab";
+    
+    public static final String CLOSE_TAB_ACTION="closeTab";
+    
+    public static TabContentPanel createTab(String name, JComponent comp)
     {
         TabContentPanel tabP = new TabContentPanel();
         tabP.setContent(comp);
         tabP.setName(name);
         tabP.scrollPane.setName(name);
         tabP.setToolTipText(name);
-
-        tabP.addActionListener(al);
 
         return tabP;
     }
@@ -62,7 +64,7 @@ public class TabContentPanel extends JPanel
 
     private JComponent content;
 
-    private TabNavigationBar tabNavBar;
+    private JPanel tabNavBar;
 
     public TabContentPanel()
     {
@@ -80,7 +82,7 @@ public class TabContentPanel extends JPanel
                 this.topPanel = new JPanel();
                 this.add(topPanel, BorderLayout.NORTH);
                 {
-                    this.tabNavBar = new TabNavigationBar();
+                    this.tabNavBar = new JPanel();
                     topPanel.add(tabNavBar);
                 }
             }
@@ -89,16 +91,6 @@ public class TabContentPanel extends JPanel
                 this.add(scrollPane);
             }
         }
-    }
-
-    public void addActionListener(ActionListener listener)
-    {
-        this.tabNavBar.addActionListener(listener);
-    }
-
-    public void removeActionListener(ActionListener listener)
-    {
-        this.tabNavBar.removeActionListener(listener);
     }
 
     public void setContent(JComponent comp)

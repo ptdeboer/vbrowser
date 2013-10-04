@@ -203,6 +203,8 @@ public class VRSPresentation
         // VQueues and VJobs:
         pres.setAttributePreferredWidth(ATTR_MAX_WALL_TIME, 100);
         pres.setAttributePreferredWidth(ATTR_NODE_TEMP_DIR, 160);
+        
+        pres.setChildAttributeNames(defaultNodeAttributeNames);
     }
     
 }

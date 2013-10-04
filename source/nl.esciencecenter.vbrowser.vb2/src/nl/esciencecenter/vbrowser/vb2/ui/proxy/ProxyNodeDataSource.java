@@ -162,4 +162,8 @@ public class ProxyNodeDataSource implements ExtendedDataSource
         return this.rootNode;
     }
 
+    public String toString()
+    {
+        return "<ProxyNodeDataSource>:"+rootNode; 
+    }
 }

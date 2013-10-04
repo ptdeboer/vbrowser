@@ -23,10 +23,10 @@ package nl.esciencecenter.vbrowser.vb2.ui.browser;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -45,6 +45,7 @@ import javax.swing.border.EtchedBorder;
 import nl.esciencecenter.ptk.object.Disposable;
 import nl.esciencecenter.ptk.ui.widgets.NavigationBar;
 import nl.esciencecenter.vbrowser.vb2.ui.actionmenu.ActionMethod;
+import nl.esciencecenter.vbrowser.vb2.ui.browser.TabTopLabelPanel.TabButtonType;
 import nl.esciencecenter.vbrowser.vb2.ui.iconspanel.IconsPanel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.DataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
@@ -68,6 +69,23 @@ public class BrowserFrame extends JFrame
     {
         ICONS, ICONLIST, TABLE, CONTENT_VIEWER
     };
+
+    public class TabButtonHandler implements ActionListener
+    {
+        protected TabContentPanel tabPane; 
+        
+        public TabButtonHandler(TabContentPanel pane)
+        {
+            tabPane=pane;
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            // redirect to ProxyBrowser controller: 
+            // actionListener.actionPerformed(new ActionEvent(tabPane,e.getID(),e.getActionCommand()));
+            actionListener.actionPerformed(e);
+        }
+    }
     
 	private static final long serialVersionUID = 3076698217838089389L;
 	
@@ -92,8 +110,6 @@ public class BrowserFrame extends JFrame
     private JButton uiViewAsTableBtn;
 
     private JPanel uiToolBarPanel;
-
-  
 
 	public BrowserFrame(BrowserInterface controller,ActionListener actionListener)
 	{
@@ -165,7 +181,6 @@ public class BrowserFrame extends JFrame
                             // viewAsListBut.setText("AL");
                             uiViewAsTableBtn.setActionCommand(ActionMethod.VIEW_AS_TABLE.toString());
                             uiViewAsTableBtn.addActionListener(actionListener);
-    
                             uiViewAsTableBtn.setIcon(loadIcon("menu/viewastablelist.png"));
                             //uiViewAsTableBtn.setEnabled(false); 
                            // uiViewAsTableBtn.setToolTipText(Messages.TT_VIEW_AS_TABLE);
@@ -205,8 +220,6 @@ public class BrowserFrame extends JFrame
                     {
                     	IconsPanel iconsPanel = new IconsPanel(this.browserController,null); 
                     	addTab("Icons",iconsPanel,false); 
-                       
-                        
                     }
 					// default table panel
                     //{
@@ -222,15 +235,20 @@ public class BrowserFrame extends JFrame
 		this.setSize(800,600); 
 	}
 
+	public void addTab()
+	{
+	    
+	}
+	
 	protected TabContentPanel addTab(String name, JComponent comp, boolean setFocus)
     {
-    	 TabContentPanel tabPanel = TabContentPanel.createTab(name,comp,this.actionListener); 
+    	 TabContentPanel tabPanel = TabContentPanel.createTab(name,comp);
     	 int newIndex=uiRightTabPane.getTabCount(); 
          uiRightTabPane.add(tabPanel,newIndex);
          
-         TabTopLabelPanel topTapPnl=new TabTopLabelPanel(uiRightTabPane,tabPanel);
+         TabButtonHandler handler=new TabButtonHandler(tabPanel); 
+         TabTopLabelPanel topTapPnl=new TabTopLabelPanel(tabPanel,handler);
          uiRightTabPane.setTabComponentAt(newIndex, topTapPnl); 
-         topTapPnl.setActionListener(this.actionListener); 
          
          if (newIndex>0)
          {
@@ -289,51 +307,36 @@ public class BrowserFrame extends JFrame
 		return tab; 
 	}
 	
-	
 	protected void updateTableTab(boolean autoCreate,ProxyNode node)
 	{
-	    createTableTab(node); 
-	}
-	
-	protected void createTableTab(ProxyNode node)
-	{
-	    TabContentPanel tab=this.addTab("Table",null,true); 
-        ResourceTable tbl = new ResourceTable(this.browserController,new ResourceTableModel());
+	    TabContentPanel tab = this.getCurrentTab(); 
+	    
+	    if (tab==null)
+	    {
+	        if (autoCreate==false)
+	            return ;
+	        
+	        tab=this.addTab("Table",null,true); 
+	    }
+	    
+	    JComponent comp = tab.getContent(); 
+	    ResourceTable tbl=null;
+      
+	    if (comp instanceof ResourceTable)
+	    {
+	        tbl=(ResourceTable)comp; 
+	    }
+	    else
+	    {
+	        if (autoCreate==false)
+                return ;
+	        
+	        tbl = new ResourceTable(this.browserController,new ResourceTableModel());
+	        tab.setContent(tbl);  
+	    }
+	    
         tbl.setDataSource(node,true);       
-        tab.setContent(tbl);
-        
-//		TabContentPanel tab = this.getCurrentTab(); 
-//		if (tab==null)
-//		{
-//			if (autoCreate==false)
-//				return ;
-//
-//			// New Tab + Table: 
-//			tab=this.addTab("Table",null,false); 
-//			ResourceTable tbl = new ResourceTable(this.browserController,new ResourceTableModel());
-//	        tab.setContent(tbl);  
-//		}
-//		
-//		JComponent comp = tab.getContent(); 
-//		ResourceTable tbl=null;
-//		
-//		if (comp==null)
-//		{
-//		    return; 
-//		}
-//		
-//		if (comp instanceof ResourceTable)
-//		{
-//		    tbl=(ResourceTable)comp; 
-//		}
-//		else
-//		{
-//		    return; 
-//		}
-//		
-//		tbl.setDataSource(node,true);  		
-	}
-	
+	}	
 	
 	protected void addViewerPanel(ViewerPanel viewer,boolean setFocus)
 	{
@@ -500,9 +503,16 @@ public class BrowserFrame extends JFrame
 	}
 
 
-    public void closeTab(TabContentPanel tab, boolean disposeContent)
+    public boolean closeTab(TabContentPanel tab, boolean disposeContent)
     {
-        this.uiRightTabPane.removeTabAt(uiRightTabPane.indexOfComponent(tab));  
+        int tabIndex=uiRightTabPane.indexOfComponent(tab);
+
+        if (tabIndex<0)
+        {
+            return false; 
+        }
+        
+        this.uiRightTabPane.removeTabAt(tabIndex);  
         int index=this.uiRightTabPane.getTabCount();
         
         if (index>0)
@@ -523,6 +533,7 @@ public class BrowserFrame extends JFrame
             }
         }
         
+        return true;
     }
     
 	public TabContentPanel getTab(int index) 

@@ -176,9 +176,17 @@ public class IconsPanel extends JPanel implements ListDataListener, ViewNodeCont
 		return (IconItem) super.getComponent(index); 
 	}
 	
-	/** Set Root Node and update UI */ 
+	/** 
+	 * Set Root Node and update UI
+	 */ 
     public void setDataSource(ProxyNode node, boolean update)
     {
+        if (node==null)
+        {
+            setDataSource((ProxyNodeDataSource)null,true); //reset/clear 
+            return; 
+        }
+        
         ProxyNodeDataSource dataSource = new ProxyNodeDataSource (node); 
         this.setDataSource(dataSource,update);  
     }

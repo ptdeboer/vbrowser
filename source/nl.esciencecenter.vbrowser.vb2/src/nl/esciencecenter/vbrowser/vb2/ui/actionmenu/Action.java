@@ -20,6 +20,8 @@
 
 package nl.esciencecenter.vbrowser.vb2.ui.actionmenu;
 
+import java.awt.event.ActionEvent;
+
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 
@@ -45,16 +47,20 @@ public class Action
 	private StringList arguments=null;
 
     private Object source; 
+    
+    private ViewNode viewNode; 
 	
-	public Action(Object source,ActionMethod actionMethod)
+	public Action(Object eventSource,ViewNode nodeSource,ActionMethod actionMethod)
 	{
-	    this.source=source; 
+	    this.source=eventSource; 
+	    this.viewNode=nodeSource; 
 	    this.actionMethod=actionMethod; 
 	}
 
-	public Action(Object source,ActionMethod actionMethod,String argument)
+	public Action(Object eventSource,ViewNode nodeSource,ActionMethod actionMethod,String argument)
     {
-        this.source=source; 
+	    this.source=eventSource; 
+	    this.viewNode=nodeSource; 
         this.actionMethod=actionMethod; 
         this.arguments=new StringList(); 
         arguments.add(argument); 
@@ -79,8 +85,9 @@ public class Action
 		return str;
 	}
 	
-	public static Action createFrom(ViewNode viewNode, String cmdStr) 
+	public static Action createFrom(ViewNode viewNode, ActionEvent event) 
 	{
+	    String cmdStr=event.getActionCommand(); 
 		String strs[]=cmdStr.split(":"); 
 		
 		String methodStr=null;
@@ -92,8 +99,9 @@ public class Action
 		if (strs.length>1)
 			argsStr=strs[1]; 
 		
-		Action action=new Action(viewNode,ActionMethod.createFrom(methodStr)); 
+		Action action=new Action(event.getSource(),viewNode,ActionMethod.createFrom(methodStr)); 
 		action.parseArgs(argsStr); 
+
 		return action; 
 	}
 
@@ -126,9 +134,14 @@ public class Action
 	    return this.arguments.get(1);  
     }
 
-    public Object getActionSource()
+    public ViewNode getActionSource()
     {
-        return source;
+        return viewNode;
+    }
+    
+    public Object getEventSource()
+    {
+        return source; 
     }
 
     // === 
@@ -137,19 +150,19 @@ public class Action
     
     public static Action createSelectionAction(ViewNode node)
     {
-        Action action=new Action(node,ActionMethod.SELECTION_ACTION);
+        Action action=new Action(null,node,ActionMethod.SELECTION_ACTION);
         return action; 
     }
     
     public static Action createDefaultAction(ViewNode node)
     {
-        Action action=new Action(node,ActionMethod.DEFAULT_ACTION); 
+        Action action=new Action(null,node,ActionMethod.DEFAULT_ACTION); 
         return action; 
     }
 
     public static Action createGlobalAction(ActionMethod meth)
     {
-        Action action=new Action(null,meth);  
+        Action action=new Action(null,null,meth);  
         return action; 
     }
     

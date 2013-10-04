@@ -84,59 +84,73 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 			updateData(); 
 	}
 
+	public Presentation getPresentation() 
+	{
+	 // Custom Presentation: 
+        Presentation pres=null;
+        
+        try 
+        {
+            pres = dataSource.getPresentation();
+
+            if (pres!=null)
+            {
+                logger.debugPrintf("Using Presentation from DataSource:%s\n",dataSource); 
+            }
+            else
+            {
+                ViewNode rootNode=getRootViewNode(); 
+
+                logger.debugPrintf("Using default Presentation for:%s\n",rootNode); 
+                // Check default Presenation form Scheme+Type; 
+                pres= Presentation.getPresentationForSchemeType(rootNode.getVRL().getScheme(),rootNode.getResourceType(),true);
+            }
+
+        }
+        catch (ProxyException e)
+        {
+            logger.logException(ClassLogger.ERROR,e,"Failed to get Presenation from dataSource:%s\n",dataSource);
+            handle(e,"Couldn't get presentation\n"); 
+        }
+        
+        return pres; 
+	}
+	
 	public void initHeaders() throws ProxyException
 	{
 		if (dataSource==null)
 		{
+		    // clear: 
 			tableModel.setHeaders(new String[0]); 
 			return; 
 		}
-
-		// dummy tabel: 
-		StringList headers=new StringList();
-
-		
-		// Custom Presentation: 
-		Presentation pres=null;
-		
-		try 
-		{
-			pres = dataSource.getPresentation();
-		}
-		catch (ProxyException e)
-		{
-			handle(e,"Couldn't get presentation\n"); 
-		}
-		
-		ViewNode rootNode=getRootViewNode(); 
-		
-		if (pres==null)
-		{
-		    // presentation store: 
-			pres= Presentation.getPresentationForSchemeType(rootNode.getVRL().getScheme(),
-					rootNode.getResourceType(),false);
-		}
-
+				
 		String[] names=null;
-
 		String iconAttributeName=null; 
+
+		Presentation pres=getPresentation(); 
 		
 		// set default attributes
-		if (pres!=null)
+		if (pres==null)
+		{
+            logger.debugPrintf("No Presentation(!) for ViewNode:%s\n",rootNode); 
+		}
+		else
 		{
 			names=pres.getChildAttributeNames();
 		     // update icon attribute name:
 			iconAttributeName=pres.getIconAttributeName(); 
+			logger.debugPrintf("Using headers from Presentation.getChildAttributeNames():%s\n",new StringList(names));
 		}
 		
 		if (names==null)
 		{
-		    names=new String[]{""};
-		    // headers.add("icon"); 
-		    // headers.add("name");
-		    // headers.add("type"); 
+		    logger.warnPrintf("No Headers for:%s\n",this);
+		    return; 
 		}
 		
+        StringList headers=new StringList();
+        
 		for (String name:names)
 		{
 		    headers.add(name);

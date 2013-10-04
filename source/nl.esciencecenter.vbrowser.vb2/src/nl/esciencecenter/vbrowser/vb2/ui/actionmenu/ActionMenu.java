@@ -81,8 +81,8 @@ public class ActionMenu extends JPopupMenu
 		    JMenu openMenu=new JMenu("Open in"); 
 		    menu.add(openMenu); 
 		    
-		    menu.add(menu.createItem(viewNode,"New Window",ActionMethod.OPEN_IN_NEW_WINDOW)); 
-            menu.add(menu.createItem(viewNode,"New Tab",ActionMethod.OPEN_IN_NEW_TAB)); 
+		    openMenu.add(menu.createItem(viewNode,"New Window",ActionMethod.OPEN_IN_NEW_WINDOW)); 
+		    openMenu.add(menu.createItem(viewNode,"New Tab",ActionMethod.OPEN_IN_NEW_TAB)); 
 		}
 
         menu.add(new JSeparator()); 
@@ -185,7 +185,7 @@ public class ActionMenu extends JPopupMenu
 		public void actionPerformed(ActionEvent e) 
 		{
 			String cmdStr=e.getActionCommand(); 
-			Action theAction=Action.createFrom(viewNode,cmdStr); 
+			Action theAction=Action.createFrom(viewNode,e); 
 			menuActionListener.handleMenuAction(theAction); 
 
 		}
@@ -211,7 +211,7 @@ public class ActionMenu extends JPopupMenu
 	{
 		 JMenuItem mitem = new JMenuItem();
          mitem.setText(name);  
-         mitem.setActionCommand(new Action(viewNode,actionMeth).toString()); 
+         mitem.setActionCommand(new Action(null,viewNode,actionMeth).toString()); 
          mitem.addActionListener(this.popupHandler);
          
          return mitem;
@@ -221,7 +221,7 @@ public class ActionMenu extends JPopupMenu
     {
          JMenuItem mitem = new JMenuItem();
          mitem.setText(name);  
-         mitem.setActionCommand(new Action(viewNode,actionMeth,argument).toString()); 
+         mitem.setActionCommand(new Action(null,viewNode,actionMeth,argument).toString()); 
          mitem.addActionListener(this.popupHandler);
          
          return mitem;

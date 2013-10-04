@@ -80,6 +80,12 @@ public class IconsPanelUpdater implements ProxyNodeEventListener
 	{
 		try
 		{
+		    if (dataSource==null)
+		    {
+		        updateChilds(null);// clear/reset; 
+		        return;
+		    }
+		    
 			this.rootNode=this.dataSource.getRoot(getUIModel()); 
 			ViewNode[] childs = this.dataSource.getChilds(getUIModel(), rootNode.getVRL(),0,-1,null); 
 			updateChilds(childs); 
