@@ -157,6 +157,7 @@ public class LocalFilesystem extends FileSystemNode
             throw new ResourceNotFoundException("Invalid path:"+path,e);
         } 
      
+        
         if (node.exists() == true)
         {
             if (node.isSymbolicLink())
@@ -175,6 +176,21 @@ public class LocalFilesystem extends FileSystemNode
             else
             {
                 throw new ResourceNotFoundException("Couldn't handle unknown resource type:" + path);
+            }
+        }
+        else
+        {
+            try
+            {
+                // broken link handling: 
+                if (node.isBrokenLink())
+                {
+                    return new LFile(this, node);
+                }
+            }
+            catch (IOException e)
+            {
+                throw new VrsException(e.getMessage(),e); 
             }
         }
 
