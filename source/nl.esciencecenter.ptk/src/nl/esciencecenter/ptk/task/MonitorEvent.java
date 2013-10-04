@@ -20,25 +20,24 @@
 
 package nl.esciencecenter.ptk.task;
 
-public class MonitorEvent
+public class MonitorEvent extends GenericEvent
 {
     public static enum MonitorEventType
     {
        StatusChanged,ChildMonitorAdded,ChildMonitorRemoved;
     };
     
-    public ITaskMonitor source=null;
     public MonitorEventType type=null; 
     public ITaskMonitor childMonitor=null;
     
     public MonitorEvent(ITaskMonitor source)
     {
-        this.source=source; 
+        super(source);
     }
     
     public MonitorEvent(ITaskMonitor source,MonitorEventType eventType)
     {
-        this.source=source;
+        super(source);
         this.type=eventType;
     }
     
