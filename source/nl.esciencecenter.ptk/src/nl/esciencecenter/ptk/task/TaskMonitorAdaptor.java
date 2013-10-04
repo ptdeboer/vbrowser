@@ -43,7 +43,7 @@ public class TaskMonitorAdaptor implements ITaskMonitor
 
     // === Listeners ===
 
-    protected Vector<ITaskMonitorListener> listeners = new Vector<ITaskMonitorListener>();
+    //protected Vector<ITaskMonitorListener> listeners = new Vector<ITaskMonitorListener>();
 
     // === status === 
     protected boolean isCancelled = false;
@@ -296,16 +296,16 @@ public class TaskMonitorAdaptor implements ITaskMonitor
         this.exception = tr;
     }
 
-    @Override
-    public void addMonitorListener(ITaskMonitorListener listener)
-    {
-        this.listeners.add(listener);
-    }
-
-    @Override
-    public void removeMonitorListener(ITaskMonitorListener listener)
-    {
-        this.listeners.remove(listener);
-    }
+//    @Override
+//    public void addMonitorListener(ITaskMonitorListener listener)
+//    {
+//        this.listeners.add(listener);
+//    }
+//
+//    @Override
+//    public void removeMonitorListener(ITaskMonitorListener listener)
+//    {
+//        this.listeners.remove(listener);
+//    }
 
 }

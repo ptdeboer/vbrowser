@@ -21,11 +21,12 @@
 package nl.esciencecenter.ptk.task;
 
 import nl.esciencecenter.ptk.data.StringHolder;
+import nl.esciencecenter.ptk.events.IEventSource;
 
 /** 
  * Interface for Action Tasks, or other objects,  which can be monitored. 
  */
-public interface ITaskMonitor 
+public interface ITaskMonitor extends IEventSource 
 {
 	public static class TaskStats
 	{
@@ -157,11 +158,6 @@ public interface ITaskMonitor
 	public Throwable getException();
     
 	public void setException(Throwable t); 
-	
-    // === Listeners ! === 
-    
-	public void addMonitorListener(ITaskMonitorListener listener);
-    
-	public void removeMonitorListener(ITaskMonitorListener listener);
+
 	
 }

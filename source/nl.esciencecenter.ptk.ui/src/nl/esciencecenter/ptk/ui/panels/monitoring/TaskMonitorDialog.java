@@ -39,14 +39,12 @@ import javax.swing.text.DefaultCaret;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
-import nl.esciencecenter.ptk.task.ITaskMonitorListener;
-import nl.esciencecenter.ptk.task.MonitorEvent;
 import nl.esciencecenter.ptk.task.TaskWatcher;
 import nl.esciencecenter.ptk.util.StringUtil;
 
 
 public class TaskMonitorDialog extends javax.swing.JDialog 
-    implements ActionListener,WindowListener, ITaskMonitorListener
+    implements ActionListener,WindowListener
 {
     private static final long serialVersionUID = -6758655504973209472L;
 
@@ -100,7 +98,6 @@ public class TaskMonitorDialog extends javax.swing.JDialog
     private void initMonitoring()
     {
         this.monitorPanel.setMonitor(actionTask.getTaskMonitor());
-        actionTask.getTaskMonitor().addMonitorListener(this); 
     }
     
     private void initGUI() 
@@ -382,25 +379,6 @@ public class TaskMonitorDialog extends javax.swing.JDialog
     public void addSubMonitor(ITaskMonitor monitor)
     {
         this.dockingPanel.add(new TaskMonitorPanel(monitor));
-    }
-
-    @Override
-    public void notifyMonitorEvent(MonitorEvent event)
-    {
-        switch (event.type)
-        {
-            case ChildMonitorAdded:
-            {
-                // no sub monitors. 
-//                if (event.childMonitor instanceof VFSTransfer)
-//                {
-//                    this.addSubMonitor((VFSTransfer)event.childMonitor); 
-//                } 
-//                else
-                this.addSubMonitor(event.childMonitor); 
-            }
-        }
-        
     }
 
   
