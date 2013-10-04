@@ -28,6 +28,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
+import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -99,7 +100,7 @@ public class VRSResourceLoader extends ResourceLoader
         }
         
         VRandomReadable readable=(VRandomReadable)file;
-        VRSIOUtil.syncReadBytes(readable, fileOffset, buffer, bufferOffset, numBytes); 
+        IOUtil.syncReadBytes(readable, fileOffset, buffer, bufferOffset, numBytes); 
     }
     
     public void writeTextTo(VRL vrl, String txt)  throws IOException, VrsException

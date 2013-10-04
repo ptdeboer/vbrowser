@@ -35,7 +35,9 @@ import java.nio.file.attribute.GroupPrincipal;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.io.LocalFSNode;
+import nl.esciencecenter.ptk.io.local.LocalFSNode;
+import nl.esciencecenter.ptk.io.local.LocalFSReader;
+import nl.esciencecenter.ptk.io.local.LocalFSWriter;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
@@ -358,71 +360,14 @@ public class LFile extends VFile implements VStreamAccessable,
     public int readBytes(long fileOffset, byte[] buffer, int bufferOffset,
             int nrBytes) throws IOException
     {
-        RandomAccessFile afile = null;
-        
-        try
-        {
-            afile = new RandomAccessFile(fsNode.toJavaFile(), "r");
-            afile.seek(fileOffset);
-            int nrRead = afile.read(buffer, bufferOffset, nrBytes);
-         
-            return nrRead;
-        }
-        catch (IOException e)
-        {
-            throw new IOException("Could open location for reading:" + this,e);
-        }
-        finally
-        {
-            if (afile!=null)
-            {
-                try
-                {
-                    // Must close between Reads! (not fast but ensures consistency between reads). 
-                    afile.close();
-                }
-                catch (IOException e)
-                {
-                }
-            }
-        }
-
+        return new LocalFSReader(fsNode).readBytes(fileOffset,buffer,bufferOffset,nrBytes); 
     }
 
     // Method from VRandomAccessable:
     public void writeBytes(long fileOffset, byte[] buffer, int bufferOffset,
             int nrBytes) throws IOException
     {
-        RandomAccessFile afile = null;
-
-        try
-        {
-            afile = new RandomAccessFile(fsNode.toJavaFile(), "rw");
-            afile.seek(fileOffset);
-            afile.write(buffer, bufferOffset, nrBytes);
-            afile.close(); // MUST CLOSE !
-            // if (truncate)
-            // afile.setLength(fileOffset+nrBytes);
-            return;// if failed, some exception occured !
-        }
-        catch (IOException e)
-        {
-            throw e;
-        }
-        finally
-        {
-            if (afile!=null)
-            {
-                try
-                {
-                    // Must close between Reads! (not fast but ensures consistency between reads). 
-                    afile.close();
-                }
-                catch (IOException e)
-                {
-                }
-            }
-        }
+        new LocalFSWriter(fsNode).writeBytes(fileOffset,buffer,bufferOffset,nrBytes); 
     }
 
     public void setLengthToZero() throws IOException

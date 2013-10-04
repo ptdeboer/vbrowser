@@ -27,7 +27,7 @@ import java.io.File;
 import java.io.IOException;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.io.LocalFSNode;
+import nl.esciencecenter.ptk.io.local.LocalFSNode;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;

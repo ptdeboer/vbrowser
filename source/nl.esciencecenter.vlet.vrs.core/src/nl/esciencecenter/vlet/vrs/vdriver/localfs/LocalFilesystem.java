@@ -27,7 +27,7 @@ import java.io.IOException;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.io.FileURISyntaxException;
-import nl.esciencecenter.ptk.io.LocalFSNode;
+import nl.esciencecenter.ptk.io.local.LocalFSNode;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
