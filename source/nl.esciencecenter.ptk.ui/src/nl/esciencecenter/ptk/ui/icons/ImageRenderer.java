@@ -45,6 +45,61 @@ public class ImageRenderer
         logger = ClassLogger.getLogger(ImageRenderer.class);
     }
 
+    public static class ARGBPixel
+    {
+        public int a;
+        public int r;
+        public int g;
+        public int b;
+
+        public ARGBPixel(int newA, int newR, int newG, int newB)
+        {
+            a = newA;
+            r = newR;
+            g = newG;
+            b = newG;
+        }
+
+        public ARGBPixel(long rgb)
+        {
+            if (rgb < 0)
+            {
+                rgb = (rgb & 0x00ffffffffffL);
+            }
+
+            a = (int) ((rgb >> 24) % 256);
+            r = (int) ((rgb >> 16) % 256);
+            g = (int) ((rgb >> 8) % 256);
+            b = (int) (rgb % 256);
+        }
+
+        /**
+         * Multiply RGB values, keep alpha
+         */
+        public void mulRGB(double perc)
+        {
+            r = (int) (r * perc);
+            g = (int) (g * perc);
+            b = (int) (b * perc);
+
+            if (r > 255)
+                r = 255;
+            if (g > 255)
+                g = 255;
+            if (b > 255)
+                b = 255;
+        }
+
+        public void toMonochrome(Color monoColor)
+        {
+            double monoValue = (r + g + b) / (3.0 * 255.0); // weighted colors ?
+
+            r = (int) Math.floor(monoValue * monoColor.getRed());
+            g = (int) Math.floor(monoValue * monoColor.getGreen());
+            b = (int) Math.floor(monoValue * monoColor.getBlue());
+        }
+    }
+
     // ========
     // Instance
     // ========
@@ -55,7 +110,6 @@ public class ImageRenderer
      * Optional AWT object which can be used as image 'source' to create peer
      * compatible image format. This can increase the rendering speed.
      */
-
     @SuppressWarnings("unused")
     private Component imageSource = null;
 
@@ -69,10 +123,12 @@ public class ImageRenderer
         this.imageSource = source;
     }
 
-    /** 
-     * Scale image, add optional link icon and perform optional 'greyout' 
+    /**
+     * Scale image, add optional link icon and perform optional 'greyout'
+     * 
+     * @param focus
      */
-    public Image renderIconImage(Image orgImage, boolean isLink, Dimension preferredSize, boolean greyOut)
+    public Image renderIconImage(Image orgImage, boolean isLink, Dimension preferredSize, boolean greyOut, boolean focus)
     {
         // === PRE === //
 
@@ -178,10 +234,12 @@ public class ImageRenderer
         // done ?
 
         if ((scaleHeight == prefHeight) && (scaleWidth == prefWidth))
-            if ((isLink == false) && (greyOut == false))
+        {
+            if ((isLink == false) && (greyOut == false) && (focus == false))
             {
                 return scaledImage;
             }
+        }
 
         //
         // Create new Icon Canvas to draw & merge linkicon and greyout pattern.
@@ -280,7 +338,15 @@ public class ImageRenderer
         Color c = greyoutColor;
 
         if (greyOut)
-            applyMesh(newImage, c);
+        {
+            newImage = applyMesh(newImage, c);
+        }
+
+        if (focus)
+        {
+            Color glowColor = new Color(255, 255, 224);
+            newImage = applyFocusGlow(newImage, glowColor, 0.25);
+        }
 
         //
         // IV) new ImageIcon Object!
@@ -297,10 +363,10 @@ public class ImageRenderer
         javax.swing.ImageIcon ii = new javax.swing.ImageIcon(image);
     }
 
-    /** 
-     * Create mesh like pattern over the image 
+    /**
+     * Create mesh like pattern over the image
      */
-    public void applyMesh(BufferedImage baseImage, Color greycolor)
+    public BufferedImage applyMesh(BufferedImage baseImage, Color greycolor)
     {
         int width = baseImage.getWidth();
         int height = baseImage.getHeight();
@@ -314,13 +380,9 @@ public class ImageRenderer
             for (int y = 0; y < height; y++)
             {
                 // TYPE INT ARGB
-                int rgb = baseImage.getRGB(x, y);
-                // colorModel.getRGB(raster.getDataElements(x, y, null));
+                ARGBPixel argbPixel = getPixel(baseImage, x, y);
 
-                int a = (rgb >> 24) % 256;
-                int r = (rgb >> 16) % 256;
-                int g = (rgb >> 8) % 256;
-                int b = rgb % 256;
+                int a = argbPixel.a;
 
                 if ((x + y) % 2 == 1)
                 {
@@ -328,20 +390,73 @@ public class ImageRenderer
                 }
                 else
                 {
-                    r = greycolor.getRed();
-                    g = greycolor.getGreen();
-                    b = greycolor.getBlue();
+                    int r = greycolor.getRed();
+                    int g = greycolor.getGreen();
+                    int b = greycolor.getBlue();
 
                     // Keep alpha level!
                     // a=255;
-                    paintPixel(baseImage,x,y,a,r,g,b); 
+                    paintPixel(baseImage, x, y, a, r, g, b);
                 }
             }
         }
+
+        return baseImage;
     }
 
-    /** 
-     * Convert RGB color image to monochrome image. 
+    public ARGBPixel getPixel(BufferedImage image, int x, int y)
+    {
+        // TYPE usigned int ARGB
+        long rgb = image.getRGB(x, y);
+        return new ARGBPixel(rgb);
+    }
+
+    /**
+     * Create mesh like pattern over the image
+     */
+    public BufferedImage applyFocusGlow(BufferedImage baseImage, Color glowColor, double perc)
+    {
+        int width = baseImage.getWidth();
+        int height = baseImage.getHeight();
+
+        // BufferedImage shadowImage=applyShadow(baseImage);
+
+        // ColorModel model = newimage.getColorModel();
+        // Raster raster=newimage.getRaster();
+
+        // reduce in color strength;
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                ARGBPixel argbPixel = getPixel(baseImage, x, y);
+
+                double rf = glowColor.getRed();
+                double gf = glowColor.getGreen();
+                double bf = glowColor.getBlue();
+
+                argbPixel.r += (rf - argbPixel.r) * perc;
+                argbPixel.g += (gf - argbPixel.g) * perc;
+                argbPixel.b += (bf - argbPixel.b) * perc;
+
+                if (argbPixel.r > 255)
+                    argbPixel.r = 255;
+                if (argbPixel.g > 255)
+                    argbPixel.g = 255;
+                if (argbPixel.b > 255)
+                    argbPixel.b = 255;
+
+                // Keep alpha level!
+                // argbPixel.a=255;
+                paintPixel(baseImage, x, y, argbPixel);
+            }
+        }
+
+        return baseImage;
+    }
+
+    /**
+     * Convert RGB color image to monochrome image.
      */
     public void toMonochromeImage(BufferedImage baseImage, Color monoColor)
     {
@@ -356,30 +471,22 @@ public class ImageRenderer
         {
             for (int y = 0; y < height; y++)
             {
-                // TYPE INT ARGB
-                int rgb = baseImage.getRGB(x, y);
-                // colorModel.getRGB(raster.getDataElements(x, y, null));
-
-                int a = (rgb >> 24) % 256;
-                int r = (rgb >> 16) % 256;
-                int g = (rgb >> 8) % 256;
-                int b = rgb % 256;
-
-                double monoValue=(r+g+b)/(256.0*256.0*256.0); // weighted colors ?  
-                
-                r = (int)Math.floor(monoValue*monoColor.getRed()); 
-                g = (int)Math.floor(monoValue*monoColor.getGreen());
-                b = (int)Math.floor(monoValue*monoColor.getBlue());
-
-                // Keep alpha level!
-                paintPixel(baseImage,x,y,a,r,g,b); 
+                ARGBPixel pix = this.getPixel(baseImage, x, y);
+                pix.toMonochrome(monoColor);
+                paintPixel(baseImage, x, y, pix);
             }
         }
     }
-    
+
     private void paintPixel(BufferedImage image, int x, int y, int a, int r, int g, int b)
     {
         image.setRGB(x, y, ((int) a) * 256 * 256 * 256 + ((int) r) * 65536 + ((int) g) * 256 + ((int) b));
+    }
+
+    private void paintPixel(BufferedImage image, int x, int y, ARGBPixel pixel)
+    {
+        image.setRGB(x, y, ((int) pixel.a) * 256 * 256 * 256 + ((int) pixel.r) * 65536 + ((int) pixel.g) * 256
+                + ((int) pixel.b));
     }
 
     public Image getLinkImage()
@@ -402,63 +509,62 @@ public class ImageRenderer
         return this.greyoutColor;
     }
 
-    /** 
-     * Create simple bitmap image from XPM like String definition.  
+    /**
+     * Create simple bitmap image from XPM like String definition.
      */
-    public Image createImage(String imageStr, Map<String, Color> colorMap,Color defaultColor, char alphaChar)
+    public Image createImage(String imageStr, Map<String, Color> colorMap, Color defaultColor, char alphaChar)
     {
-        if ( (imageStr==null) || (imageStr.equals("")) )
-            return null; 
-        
-        String lines[]=imageStr.split("\n"); 
-        int height=lines.length; 
-        
-        if (height<=0)
+        if ((imageStr == null) || (imageStr.equals("")))
+            return null;
+
+        String lines[] = imageStr.split("\n");
+        int height = lines.length;
+
+        if (height <= 0)
         {
             return null;
         }
-        int width=lines[0].length();
-        
+        int width = lines[0].length();
+
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        
-        for (int y=0;y<height;y++)
+
+        for (int y = 0; y < height; y++)
         {
-            if (lines[y].length()<width)
+            if (lines[y].length() < width)
             {
-                throw new IndexOutOfBoundsException("Line #"+y+" is to short:"+lines[y].length()+"<"+width+"!"); 
+                throw new IndexOutOfBoundsException("Line #" + y + " is to short:" + lines[y].length() + "<" + width
+                        + "!");
             }
-            
-            for (int x=0;x<width;x++)
+
+            for (int x = 0; x < width; x++)
             {
-               int a=0,r=0,g=0,b=0; 
-                
-               char pixelChar=lines[y].charAt(x);
-               if (pixelChar==alphaChar)
-               {
-                   a=0;
-                   r=defaultColor.getRed();
-                   g=defaultColor.getGreen();
-                   b=defaultColor.getBlue();
-               }
-               else
-               {
-                   Color c=colorMap.get(""+pixelChar); 
-                   if (c==null)
-                   {
-                       c=defaultColor;
-                   }
-                   a=255;
-                   r=c.getRed(); 
-                   g=c.getGreen();
-                   b=c.getGreen(); 
-               }
-               paintPixel(image,x,y,a,r,g,b);
+                int a = 0, r = 0, g = 0, b = 0;
+
+                char pixelChar = lines[y].charAt(x);
+                if (pixelChar == alphaChar)
+                {
+                    a = 0;
+                    r = defaultColor.getRed();
+                    g = defaultColor.getGreen();
+                    b = defaultColor.getBlue();
+                }
+                else
+                {
+                    Color c = colorMap.get("" + pixelChar);
+                    if (c == null)
+                    {
+                        c = defaultColor;
+                    }
+                    a = 255;
+                    r = c.getRed();
+                    g = c.getGreen();
+                    b = c.getGreen();
+                }
+                paintPixel(image, x, y, a, r, g, b);
             }
         }
-            
-        return image; 
+
+        return image;
     }
 
-
-    
 }
