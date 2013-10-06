@@ -1,4 +1,4 @@
-package nl.esciencecenter.vbrowser.vb2.ui.viewerpanel;
+package nl.esciencecenter.vbrowser.vb2.ui.viewerplugin;
 
 import java.awt.Cursor;
 import java.io.IOException;

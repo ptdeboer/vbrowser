@@ -2,8 +2,8 @@ package test.viewers;
 
 import java.net.URI;
 
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerFrame;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerPanel;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerFrame;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerPanel;
 import nl.esciencecenter.vbrowser.vb2.ui.viewers.HexViewer;
 import nl.esciencecenter.vbrowser.vb2.ui.viewers.TextViewer;
 

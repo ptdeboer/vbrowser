@@ -1,4 +1,4 @@
-package nl.esciencecenter.vbrowser.vb2.ui.viewerpanel;
+package nl.esciencecenter.vbrowser.vb2.ui.viewerplugin;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -76,10 +76,10 @@ public abstract class ViewerPanel extends JPanel implements Disposable
     }
     
     
-    final public void startViewerFor(URI newUri)
+    final public void startViewerFor(URI newUri,String optMenuMethod)
     {
         this.setURI(newUri); 
-        startViewer();
+        startViewer(optMenuMethod);
         // doUpdateURI(newUri); 
     }
     
@@ -180,9 +180,10 @@ public abstract class ViewerPanel extends JPanel implements Disposable
         doInitViewer(); 
     }
     
-    final public void startViewer()
+    final public void startViewer(String optMenuMethod)
     {
-        doStartViewer(); 
+        doStartViewer(optMenuMethod); 
+        
         // fireStarted(); 
     }
     
@@ -245,7 +246,7 @@ public abstract class ViewerPanel extends JPanel implements Disposable
     /** 
      * Start the viewer, load resources if necessary.
      */
-    abstract protected void doStartViewer();
+    abstract protected void doStartViewer(String optionalMethod);
 
     /** 
      * Update content. 

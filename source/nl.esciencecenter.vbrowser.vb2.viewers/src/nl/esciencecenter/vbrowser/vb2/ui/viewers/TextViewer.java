@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
@@ -49,7 +50,8 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
 
-import nl.esciencecenter.ptk.io.FSNode;
+import nl.esciencecenter.ptk.data.HashMapList;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.ui.fonts.FontInfo;
@@ -57,7 +59,7 @@ import nl.esciencecenter.ptk.ui.fonts.FontToolBar;
 import nl.esciencecenter.ptk.ui.fonts.FontToolbarListener;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.EmbeddedViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.EmbeddedViewer;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.mimetypes.MimeTypes;
 
@@ -73,20 +75,30 @@ public class TextViewer extends EmbeddedViewer implements ActionListener, FontTo
 
     private static final String CONFIG_LINE_WRAP = "textviewer.linewrap";
 
-    private static final String configPropertyNames[] =
-    { CONFIG_LINE_WRAP };
+    private static final String configPropertyNames[] = { CONFIG_LINE_WRAP };
 
-    /** The mimetypes i can view */
+    public static final String ACTION_VIEW="View";
+    
+    public static final String ACTION_EDIT="Edit"; 
+    
+    /**
+     *  The mimetypes i can view
+     */
     private static String mimeTypes[] =
-    { MimeTypes.MIME_TEXT_PLAIN, MimeTypes.MIME_TEXT_HTML,
-
-    "text/x-c", "text/x-cpp", "text/x-java", "application/x-sh", "application/x-csh", "application/x-shellscript",
+        { 
+            MimeTypes.MIME_TEXT_PLAIN, 
+            MimeTypes.MIME_TEXT_HTML,
+            "text/x-c", 
+            "text/x-cpp", 
+            "text/x-java", 
+            "application/x-sh", 
+            "application/x-csh", 
+            "application/x-shellscript",
             // MimeTypes.MIME_BINARY, -> Now handled by MimeType mapping!
-            "application/vlet-type-definition", "text/x-nfo" // nfo files: uses
-                                                             // CP437 Encoding
-                                                             // (US Extended
-                                                             // ASCII)!
-    };
+            "application/vlet-type-definition", 
+            // nfo files: uses CP437 Encoding (US Extended ASCII)!
+            "text/x-nfo" 
+        };
 
     // ===
     // Instance
@@ -372,8 +384,9 @@ public class TextViewer extends EmbeddedViewer implements ActionListener, FontTo
      * @param location
      * @throws VrsException
      */
-    public void doStartViewer()
+    public void doStartViewer(String optionalMethod)
     {
+        System.err.println(">>> Method:"+optionalMethod); 
         doUpdateURI(getURI());
     }
 
@@ -833,6 +846,22 @@ public class TextViewer extends EmbeddedViewer implements ActionListener, FontTo
         {
             errorPrintf("Property Exception '%s':%s\n", CONFIG_LINE_WRAP, e);
         }
+    }
+
+    @Override
+    public Map<String, List<String>> getMimeMenuMethods()
+    {
+        // Use HashMapList to keep order of menu entries: first is default(!)
+        
+        Map<String,List<String>> mappings=new HashMapList<String,List<String>>(); 
+        
+        for (int i=0;i<mimeTypes.length;i++)
+        {
+            List<String> list=new StringList(new String[]{ACTION_VIEW+":View Text",ACTION_EDIT+":Edit Text"}); 
+            mappings.put(mimeTypes[i],list); 
+        }
+        
+        return mappings; 
     }
 
     // public Vector<ActionMenuMapping> getActionMappings()

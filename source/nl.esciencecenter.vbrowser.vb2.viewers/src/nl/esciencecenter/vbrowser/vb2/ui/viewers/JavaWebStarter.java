@@ -23,6 +23,8 @@ package nl.esciencecenter.vbrowser.vb2.ui.viewers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -31,10 +33,13 @@ import javax.swing.JTextPane;
 import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.data.HashMapList;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.exec.LocalExec;
 import nl.esciencecenter.ptk.net.URIFactory;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.MimeViewer;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerPanel;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.MimeViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerPanel;
+
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -116,7 +121,7 @@ public class JavaWebStarter extends ViewerPanel implements ActionListener, MimeV
     }
 
     @Override
-    public void doStartViewer()
+    public void doStartViewer(String optionalMethod)
     {
         startURI(getURI()); 
     }
@@ -192,4 +197,21 @@ public class JavaWebStarter extends ViewerPanel implements ActionListener, MimeV
     }
 
  
+    @Override
+    public Map<String, List<String>> getMimeMenuMethods()
+    {
+        String[] mimeTypes=getMimeTypes(); 
+        
+        // Use HashMapList to keep order of menu entries: first is default(!)
+        
+        Map<String,List<String>> mappings=new HashMapList<String,List<String>>(); 
+        
+        for (int i=0;i<mimeTypes.length;i++)
+        {
+            List<String> list=new StringList(new String[]{"start:Start Java"}); 
+            mappings.put(mimeTypes[i],list); 
+        }
+        
+        return mappings; 
+    }
 }

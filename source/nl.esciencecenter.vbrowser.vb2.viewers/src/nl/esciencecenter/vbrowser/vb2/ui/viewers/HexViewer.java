@@ -31,6 +31,7 @@ import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 import java.util.TooManyListenersException;
 import java.util.logging.Level;
@@ -42,6 +43,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
+import nl.esciencecenter.ptk.data.HashMapList;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.io.RandomReader;
 import nl.esciencecenter.ptk.task.ActionTask;
@@ -51,7 +54,7 @@ import nl.esciencecenter.ptk.ui.fonts.FontToolbarListener;
 import nl.esciencecenter.ptk.ui.widgets.URIDropHandler;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.EmbeddedViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.EmbeddedViewer;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.mimetypes.MimeTypes;
 
@@ -677,7 +680,7 @@ public class HexViewer extends EmbeddedViewer implements FontToolbarListener
         return "Binary Viewer";
     }
 
-    public void doStartViewer()
+    public void doStartViewer(String optionalMethod)
     {
         doUpdateURI(getURI());
         this.validate();
@@ -971,4 +974,19 @@ public class HexViewer extends EmbeddedViewer implements FontToolbarListener
         e.printStackTrace();
     }
 
+    @Override
+    public Map<String, List<String>> getMimeMenuMethods()
+    {
+        // Use HashMapList to keep order of menu entries: first is default(!)
+        
+        Map<String,List<String>> mappings=new HashMapList<String,List<String>>(); 
+        
+        for (int i=0;i<mimeTypes.length;i++)
+        {
+            List<String> list=new StringList(new String[]{"view:View Binary"}); 
+            mappings.put(mimeTypes[i],list); 
+        }
+        
+        return mappings; 
+    }
 }

@@ -1,4 +1,4 @@
-package nl.esciencecenter.vbrowser.vb2.ui.viewerpanel;
+package nl.esciencecenter.vbrowser.vb2.ui.viewerplugin;
 
 import java.net.URI;
 
@@ -34,7 +34,7 @@ public class ViewerFrame extends JFrame
         ViewerPanel newViewer=ViewerRegistry.getDefault().createViewer(class1); 
         
         ViewerFrame frame=createViewerFrame(newViewer,true); 
-        frame.getViewer().startViewerFor(optionalURI); 
+        frame.getViewer().startViewerFor(optionalURI,null); 
         frame.setVisible(true); 
         
         return frame;

@@ -26,14 +26,18 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.net.URI;
 import java.security.cert.X509Certificate;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFrame;
 
+import nl.esciencecenter.ptk.data.HashMapList;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.ssl.CertUtil;
 import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.esciencecenter.ptk.ssl.CertificateStoreException;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.EmbeddedViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.EmbeddedViewer;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 
@@ -147,9 +151,9 @@ public class X509Viewer extends EmbeddedViewer implements CertPanelListener
     
     
     @Override
-    public void doStartViewer() 
+    public void doStartViewer(String optionalMethod)
     {
-        updateURI(getURI(),null);
+        updateURI(getURI(),optionalMethod);
     }
 
     @Override
@@ -279,5 +283,21 @@ public class X509Viewer extends EmbeddedViewer implements CertPanelListener
         closeViewer(); 
     }
     
-  
+    @Override
+    public Map<String, List<String>> getMimeMenuMethods()
+    {
+        String[] mimeTypes=getMimeTypes(); 
+        
+        // Use HashMapList to keep order of menu entries: first is default(!)
+        
+        Map<String,List<String>> mappings=new HashMapList<String,List<String>>(); 
+        
+        for (int i=0;i<mimeTypes.length;i++)
+        {
+            List<String> list=new StringList(new String[]{VIEW_METHOD+":View Certificate",ADD_METHOD+":Add Certificate"}); 
+            mappings.put(mimeTypes[i],list); 
+        }
+        
+        return mappings; 
+    }
 }

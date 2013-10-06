@@ -29,15 +29,19 @@ import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 
+import nl.esciencecenter.ptk.data.HashMapList;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.ui.image.ImagePane;
 import nl.esciencecenter.ptk.ui.image.ImagePane.ImageWaiter;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.EmbeddedViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.EmbeddedViewer;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
@@ -169,7 +173,7 @@ public class ImageViewer extends EmbeddedViewer
     }
     
     @Override
-    public void doStartViewer() 
+    public void doStartViewer(String optionalMethod)
     {
         doUpdateURI(getURI());
     }
@@ -522,5 +526,20 @@ public class ImageViewer extends EmbeddedViewer
         this.resetZoom();
     }
 
+    @Override
+    public Map<String, List<String>> getMimeMenuMethods()
+    {
+        // Use HashMapList to keep order of menu entries: first is default(!)
+        
+        Map<String,List<String>> mappings=new HashMapList<String,List<String>>(); 
+        
+        for (int i=0;i<mimeTypes.length;i++)
+        {
+            List<String> list=new StringList(new String[]{"view:View Image"}); 
+            mappings.put(mimeTypes[i],list); 
+        }
+        
+        return mappings; 
+    }
    
 }
