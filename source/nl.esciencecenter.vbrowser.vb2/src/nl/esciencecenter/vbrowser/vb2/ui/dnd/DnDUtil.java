@@ -43,6 +43,11 @@ public class DnDUtil
         logger.debugPrintf("DnD:%s\n",message);
     }
 
+    public static void warnPrintf(String format,Object... args)
+    {
+        logger.warnPrintf("DnD:"+format,args);
+        
+    }
     public static void infoPrintf(String format,Object... args)
     {
         logger.infoPrintf("DnD:"+format,args);
@@ -55,7 +60,8 @@ public class DnDUtil
 
     public static void logException(Exception e, String format,Object... args)
     {
-        logger.logException(ClassLogger.ERROR,e,format,args); 
+        logger.logException(ClassLogger.ERROR,e,"DnD:"+format,args); 
     }
+
     
 }
