@@ -19,9 +19,9 @@
  */
 // source:
 
-package nl.esciencecenter.ptk.util.vlterm;
+package nl.esciencecenter.ptk.util.vterm;
 
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.*;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.*;
  
 public class VT10xEmulatorDefs
 {

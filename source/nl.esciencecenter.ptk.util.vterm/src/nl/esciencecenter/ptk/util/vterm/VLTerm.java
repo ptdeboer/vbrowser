@@ -1,4 +1,4 @@
-package nl.esciencecenter.ptk.util.vlterm;
+package nl.esciencecenter.ptk.util.vterm;
 ///*
 // * Copyright 2006-2010 Virtual Laboratory for e-Science (www.vl-e.nl)
 // * Copyright 2012-2013 Netherlands eScience Center.

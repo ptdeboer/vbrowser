@@ -19,9 +19,16 @@
  */
 // source:
 
-package nl.esciencecenter.ptk.util.vlterm;
+package nl.esciencecenter.ptk.util.vterm;
 
-public interface IToken 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+public interface TerminalKeyListener extends KeyListener 
 {
-
+	public void keyPressed(KeyEvent e);
+	
+	public void keyReleased(KeyEvent e);
+	
+	public void keyTyped(KeyEvent e);
 }

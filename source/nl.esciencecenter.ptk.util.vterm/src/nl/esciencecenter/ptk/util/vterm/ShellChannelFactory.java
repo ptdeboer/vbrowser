@@ -1,10 +1,10 @@
-package nl.esciencecenter.ptk.util.vlterm;
+package nl.esciencecenter.ptk.util.vterm;
 
 import java.io.IOException;
 import java.net.URI;
 
 import nl.esciencecenter.ptk.crypt.Secret;
-import nl.esciencecenter.ptk.util.vlterm.VTermChannelProvider.ChannelOptions;
+import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider.ChannelOptions;
 
 public interface ShellChannelFactory
 {

@@ -19,9 +19,9 @@
  */
 // source:
 
-package nl.esciencecenter.ptk.util.vlterm;
+package nl.esciencecenter.ptk.util.vterm;
 
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.CTRL_ESC;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.CTRL_ESC;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +30,7 @@ import java.io.OutputStream;
 import nl.esciencecenter.ptk.ui.charpane.ICharacterTerminal;
 import nl.esciencecenter.ptk.ui.charpane.StyleChar;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token;
+import nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token;
 
 /**
  * 

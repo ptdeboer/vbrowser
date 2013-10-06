@@ -3,8 +3,8 @@ package nl.esciencecenter.vlet.vfs.ssh.jcraft;
 import java.io.IOException;
 
 import nl.esciencecenter.ptk.crypt.Secret;
-import nl.esciencecenter.ptk.util.vlterm.ShellChannelFactory;
-import nl.esciencecenter.ptk.util.vlterm.VTermChannelProvider.ChannelOptions;
+import nl.esciencecenter.ptk.util.vterm.ShellChannelFactory;
+import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider.ChannelOptions;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vlet.vfs.ssh.jcraft.SSHChannel.SSHChannelOptions;
 import nl.esciencecenter.vlet.vrs.VRSContext;

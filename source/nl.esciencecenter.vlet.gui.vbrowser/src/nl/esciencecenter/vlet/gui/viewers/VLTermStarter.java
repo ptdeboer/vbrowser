@@ -36,8 +36,8 @@ import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.esciencecenter.ptk.util.vlterm.ShellChannel;
-import nl.esciencecenter.ptk.util.vlterm.VTerm;
+import nl.esciencecenter.ptk.util.vterm.ShellChannel;
+import nl.esciencecenter.ptk.util.vterm.VTerm;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.actions.ActionContext;

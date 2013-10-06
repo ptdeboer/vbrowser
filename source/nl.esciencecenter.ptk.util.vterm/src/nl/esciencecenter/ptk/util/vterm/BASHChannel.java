@@ -1,4 +1,4 @@
-package nl.esciencecenter.ptk.util.vlterm;
+package nl.esciencecenter.ptk.util.vterm;
 
 
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.net.URI;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.ptk.util.vlterm.VTermChannelProvider.ChannelOptions;
+import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider.ChannelOptions;
 
 /**
  * 

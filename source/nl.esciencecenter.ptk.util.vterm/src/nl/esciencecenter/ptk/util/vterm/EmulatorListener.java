@@ -19,7 +19,7 @@
  */
 // source:
 
-package nl.esciencecenter.ptk.util.vlterm;
+package nl.esciencecenter.ptk.util.vterm;
 
 public interface EmulatorListener 
 {

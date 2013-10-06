@@ -24,7 +24,7 @@ package tests;
 import java.awt.Frame;
 
 import nl.esciencecenter.ptk.ui.charpane.CharPane;
-import nl.esciencecenter.ptk.util.vlterm.TermPanel;
+import nl.esciencecenter.ptk.util.vterm.TermPanel;
 
 
 public class testCharPane

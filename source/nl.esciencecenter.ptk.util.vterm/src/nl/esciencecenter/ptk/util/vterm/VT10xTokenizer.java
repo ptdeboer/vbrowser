@@ -19,7 +19,7 @@
  */
 // source:
 
-package nl.esciencecenter.ptk.util.vlterm;
+package nl.esciencecenter.ptk.util.vterm;
  
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,23 +27,23 @@ import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.*;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.BEEP;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.BS;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.CAN;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.CHARSET_G0;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.CHARSET_G1;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.CR;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.ENQ;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.EOT;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.ESC;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.ETX;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.FF;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.HT;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.LF;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.SUB;
-import static nl.esciencecenter.ptk.util.vlterm.VT10xEmulatorDefs.Token.VT;
+import nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.*;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.BEEP;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.BS;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.CAN;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.CHARSET_G0;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.CHARSET_G1;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.CR;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.ENQ;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.EOT;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.ESC;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.ETX;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.FF;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.HT;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.LF;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.SUB;
+import static nl.esciencecenter.ptk.util.vterm.VT10xEmulatorDefs.Token.VT;
 
 /**
  * Simple tokenizer class.

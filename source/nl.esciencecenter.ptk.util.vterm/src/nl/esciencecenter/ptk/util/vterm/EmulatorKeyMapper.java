@@ -19,7 +19,7 @@
  */
 // source:
 
-package nl.esciencecenter.ptk.util.vlterm;
+package nl.esciencecenter.ptk.util.vterm;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

@@ -19,7 +19,7 @@
  */
 // source:
 
-package nl.esciencecenter.ptk.util.vlterm;
+package nl.esciencecenter.ptk.util.vterm;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
@@ -61,7 +61,7 @@ import nl.esciencecenter.ptk.ui.dialogs.ExceptionDialog;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.ptk.util.vlterm.VTermChannelProvider.ChannelOptions;
+import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider.ChannelOptions;
 
 
 public class VTerm extends JFrame implements  Runnable

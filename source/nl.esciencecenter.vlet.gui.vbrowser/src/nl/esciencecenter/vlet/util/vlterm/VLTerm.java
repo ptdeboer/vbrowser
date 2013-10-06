@@ -21,10 +21,10 @@
 
 package nl.esciencecenter.vlet.util.vlterm;
 
-import nl.esciencecenter.ptk.util.vlterm.CreateVTerm;
-import nl.esciencecenter.ptk.util.vlterm.ShellChannel;
-import nl.esciencecenter.ptk.util.vlterm.VTerm;
-import nl.esciencecenter.ptk.util.vlterm.VTermChannelProvider;
+import nl.esciencecenter.ptk.util.vterm.CreateVTerm;
+import nl.esciencecenter.ptk.util.vterm.ShellChannel;
+import nl.esciencecenter.ptk.util.vterm.VTerm;
+import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.gui.UIGlobal;
 import nl.esciencecenter.vlet.vfs.ssh.jcraft.SSHChannel;

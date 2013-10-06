@@ -37,10 +37,10 @@ import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.esciencecenter.ptk.util.vlterm.CreateVTerm;
-import nl.esciencecenter.ptk.util.vlterm.ShellChannel;
-import nl.esciencecenter.ptk.util.vlterm.VTerm;
-import nl.esciencecenter.ptk.util.vlterm.VTermChannelProvider;
+import nl.esciencecenter.ptk.util.vterm.CreateVTerm;
+import nl.esciencecenter.ptk.util.vterm.ShellChannel;
+import nl.esciencecenter.ptk.util.vterm.VTerm;
+import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.MimeViewer;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerPanel;
 import nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs.VRSProxyFactory;
