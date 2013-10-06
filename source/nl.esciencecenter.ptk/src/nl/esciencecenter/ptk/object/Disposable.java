@@ -1,5 +1,8 @@
 package nl.esciencecenter.ptk.object;
 
+/** 
+ * Interface for Objects which must be explicit disposed. 
+ */
 public interface Disposable
 {
     /** 

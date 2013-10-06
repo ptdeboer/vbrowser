@@ -32,23 +32,69 @@ public class SortUtil
 
     public static class StringComparer implements Comparer<String>
     {
-        public boolean ignoreCase = false;
+        public boolean ignoreCase;
+        public boolean reverseOrder;
+
+        public StringComparer()
+        {
+            this.ignoreCase=false; 
+            this.reverseOrder=false; 
+        }
+        
+        public StringComparer(boolean ignoreCase)
+        {
+            this.ignoreCase=ignoreCase; 
+            this.reverseOrder=false; 
+        }
+
+        public StringComparer(boolean ignoreCase,boolean reverseOrder)
+        {
+            this.ignoreCase=ignoreCase; 
+            this.reverseOrder=reverseOrder; 
+        }
 
         public int compare(String o1, String o2)
         {
             if (o1 == null)
+            {
                 if (o2 == null)
+                {
                     return 0;
+                }
                 else
+                {
                     return -1;
+                }
+            }
             else if (o2 == null)
+            {
                 return 1;
+            }
             else
+            {
                 ; // continue
+            }
+            
             String str1 = o1.toString();
             String str2 = o2.toString();
 
-            return str1.compareToIgnoreCase(str2);
+            int result; 
+            
+            if (ignoreCase)
+            {
+                result = str1.compareToIgnoreCase(str2);
+            }
+            else
+            {
+                result = str1.compareTo(str2);
+            }
+            
+            if (reverseOrder)
+            {
+                result=-result;
+            }
+            
+            return result; 
         }
     }
 
@@ -70,7 +116,7 @@ public class SortUtil
     /** 
      * Sort by name. 
      */
-    public static int[] sort(List<String> list, boolean ignoreCase)
+    public static int[] qsort(List<String> list, boolean ignoreCase)
     {
         if (list == null)
             return null;
@@ -84,7 +130,7 @@ public class SortUtil
     /** 
      * In place sorting 
      */ 
-    public static int[] sort(List<Integer> list) 
+    public static int[] qsort(List<Integer> list) 
     {
         if (list == null)
             return null;
@@ -110,7 +156,7 @@ public class SortUtil
             
         if (alreadySorted==false)
         {
-            sort(list); 
+            qsort(list); 
         }
         
         Set<Integer> uniqueSet=new LinkedHashSet<Integer>();
@@ -128,6 +174,19 @@ public class SortUtil
         }
         
         return uniqueSet;
-    }
+    }       
         
+    /** 
+     * In place sorting 
+     */ 
+    public static <T> int[] qsort(List<T> list,Comparer<T> comparer) 
+    {
+        if (list == null)
+            return null;
+        
+        QSort<T> qsort = new QSort<T>(comparer);
+        
+        return qsort.sort(list);
+    }
+    
 }

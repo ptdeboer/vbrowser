@@ -29,308 +29,337 @@ import java.io.StringWriter;
 import nl.esciencecenter.ptk.object.Disposable;
 import nl.esciencecenter.ptk.task.ActionTask;
 
-/** 
- * Wrapper for a Local Process. 
- */ 
-public class LocalProcess implements Disposable 
+/**
+ * Wrapper for a Local Process.
+ */
+public class LocalProcess implements Disposable
 {
-	private Process process=null;
+    private Process process = null;
 
-	private OutputStream stdinStream=null; // output to process 'stdin' 
-	private InputStream stdoutStream=null; 
-	private InputStream stderrStream=null; 
+    private OutputStream stdinStream = null; // output to process 'stdin'
 
-	private String stdoutString=null; 
-	private String stderrString=null; 
+    private InputStream stdoutStream = null;
 
-	private boolean captureStdout=false;
-	private boolean captureStderr=false;
+    private InputStream stderrStream = null;
 
-	private String[] commands;
+    private String stdoutString = null;
 
-	private ActionTask streamReaderTask=null;
+    private String stderrString = null;
 
-	private boolean isTerminated=false;
-	
-	public LocalProcess(Process process)
-	{
-		this.process=process; 
-	}
+    private boolean captureStdout = false;
 
-	public LocalProcess()
-	{
-	}
-	
-	public void captureOutput(boolean captureOut,boolean captureErr) 
-	{
-		this.captureStdout=captureOut; 
-		this.captureStderr=captureErr; 
-	}
+    private boolean captureStderr = false;
 
-	public void waitFor() throws IOException
-	{
-		try
-		{
-			this.process.waitFor();
-			
-			// wait for completion of streamreader also ! 
-			if (streamReaderTask!=null) 
-				streamReaderTask.waitForAll();
-			
-		}
-		catch (InterruptedException e)
-		{
-		    // Keep Flag!:
-		    Thread.currentThread().interrupt();
-			throw new IOException("InterruptedException",e); 
-		}
-		finally
-		{
-			isTerminated=true;
-		}
-	}
+    private String[] commands;
 
-	public void setCaptureOutput(boolean captureStdout, boolean captureStderr)
-	{
-		this.captureStdout=captureStdout;
-		this.captureStderr=captureStderr;
-	}
-	
-	public void execute(String[] cmds) throws IOException
-	{
-		execute(cmds,true); 
-	}
-	
-	public void execute(String[] cmds, boolean syncWait) throws IOException
-	{
-		setCommands(cmds); 
-	
-		if (commands==null)
-			throw new IOException("Command string is empty !");
+    private ActionTask streamReaderTask = null;
 
-		try
-		{
-			this.process=Runtime.getRuntime().exec(commands);
-		}
-		catch (IOException e)
-		{
-			throw e;   
-		}
-		catch (Throwable e)
-		{
-		    throw new IOException(e.getMessage(),e); 
-		}
-		
-		isTerminated(); 
-		
-		// 
-		// when doing a (synchonized) wait, 
-		// start streamReader in current thread ! 
-		// this to avoid extra (thread) overhead when synchronized command
-		// execution.
-		
-		if ((captureStdout==true) || (captureStderr==true))
-		{
-			startStreamWatcher(syncWait);
-		}
-		
-		if (syncWait)
-		{
-			waitFor();
-		}
-	}
+    private boolean isTerminated = false;
 
-	/** 
-	 * Start streamreaders to read from stderr,stdout. 
-	 * @param syncWait
-	 * @throws IOException
-	 */
-	protected void startStreamWatcher(boolean syncWait) throws IOException
-	{
-		if ((this.captureStderr==false) && (this.captureStdout==false))
-			return; // nothing to be done.  
+    public LocalProcess(Process process)
+    {
+        this.process = process;
+    }
 
-		if (this.captureStdout)
-			stdoutStream = process.getInputStream(); 
+    public LocalProcess()
+    {
+    }
 
-		if (this.captureStderr)
-			stderrStream = process.getErrorStream();
+    public void captureOutput(boolean captureOut, boolean captureErr)
+    {
+        this.captureStdout = captureOut;
+        this.captureStderr = captureErr;
+    }
 
-		// start backgrounded stream reader 
-
-		//streamReaderTask=new ActionTask(ProcessTaskSource.getDefault(),"StreamWatcher")
-
-		streamReaderTask=new ActionTask(null,"StreamWatcher")
-		{
-			boolean stop=false; 
-			
-			public void doTask()
-			{
-			
-				
-				// buf size is initial. Will Autoextend.
-				StringWriter stdoutWriter=new StringWriter(1024); 
-				StringWriter stderrWriter=new StringWriter(1024);
-
-				int val1=-1,val2=-1; 
-
-				try
-				{
-					do
-					{   
-						// alternate read from stdout and stderr: 
-						if (stdoutStream!=null)
-						{
-							val1=stdoutStream.read();
-
-							if (val1>=0)
-							{
-								stdoutWriter.write(val1);  
-							}
-						}
-
-						if (stderrStream!=null)
-						{
-							val2=stderrStream.read();
-
-							if (val2>=0)
-							{
-								stderrWriter.write(val2);  
-							}
-						}
-					} while ((stop==false) && ( (val1>=0) || (val2>=0))); //continue until EOF on both streams
-				}
-				catch (IOException e)
-				{
-					this.setException(e);  
-				}
-
-				stdoutString=stdoutWriter.toString(); 
-				stderrString=stderrWriter.toString();
-			}
-
-			@Override
-			public void stopTask()
-			{
-				stop=true; 
-			}
-		};
-		
-		if (syncWait==false) 
-			streamReaderTask.startTask();// background
-		else
-			streamReaderTask.run();// call run() directly 
-		
-	}
-
-	/** 
-	 * Set list of command + argumen to start. 
-	 * cmds[0] is the actual command, cmds[1],...,cmds[2] are the arguments. 
-	 * @param cmds
-	 */
-	void setCommands(String[] cmds)
-	{
-		this.commands=cmds; 
-	}
-
-	/**
-	 * Returns stdout of terminated process. 
-	 * If this method is called during execution of a process
-	 * this method will return null. 
-	 */
-	public String getStdout()
-	{
-		return stdoutString;
-	}
-	
-	/**
-	 * Returns stderr of terminated process. 
-	 * If this method is called during execution of a process
-	 * this method will return null. 
-	 */
-	public String getStderr()
-	{
-		return stderrString;  
-	}
-	
-	public int getExitValue()
-	{
-		return process.exitValue();
-	}
-	
-	public void terminate()
-	{
-	    dispose(); 
-	}
-	
-	public boolean isTerminated()
-	{
-		// process has already terminated 
-		if (isTerminated==true)
-		{
-			return true;
-		}
-		
-		// dirty way to check whether process hasn't exited 
-		try
-		{
-			this.process.exitValue();
-			this.isTerminated=true; 
-		}
-		catch (IllegalThreadStateException e)
-		{
-		    // cannot get exitValue() from non terminated process:
-			this.isTerminated=false; 
-		}
-		
-		return isTerminated;
-	}
-
-	public OutputStream getStdinStream()
-	{
-		stdinStream=process.getOutputStream(); 
-		return stdinStream;  
-	}
-	
-	public InputStream getStderrStream()
-	{
-		stderrStream=process.getErrorStream(); 
-		return stderrStream; 
-	}
-	
-	public InputStream getStdoutStream()
-	{
-		stdoutStream=process.getInputStream();	
-		return stdoutStream; 
-	}
-
-	public void dispose()
-	{
-	    if (stdinStream!=null)
-	    {
-	        try { stdinStream.close(); } catch (Exception e) { };
-	        stdinStream=null; 
-	    }
-        
-	    if (stdoutStream!=null)
+    public void waitFor() throws IOException
+    {
+        try
         {
-            try { stdoutStream.close(); } catch (Exception e) { };
-            stdoutStream=null; 
+            this.process.waitFor();
+
+            // wait for completion of streamreader also !
+            if (streamReaderTask != null)
+                streamReaderTask.waitForAll();
+
         }
-        
-        if (stderrStream!=null)
+        catch (InterruptedException e)
         {
-            try { stderrStream.close(); } catch (Exception e) { };
-            stderrStream=null; 
+            // Keep Flag!:
+            Thread.currentThread().interrupt();
+            throw new IOException("InterruptedException", e);
         }
-	    
-	    if (process!=null)
-	    {
-	        process.destroy();
-	        process=null;
-	    }
-	    
-	}
-	
+        finally
+        {
+            isTerminated = true;
+        }
+    }
+
+    public void setCaptureOutput(boolean captureStdout, boolean captureStderr)
+    {
+        this.captureStdout = captureStdout;
+        this.captureStderr = captureStderr;
+    }
+
+    public void execute(String[] cmds) throws IOException
+    {
+        execute(cmds, true);
+    }
+
+    public void execute(String[] cmds, boolean syncWait) throws IOException
+    {
+        setCommands(cmds);
+
+        if (commands == null)
+            throw new IOException("Command string is empty !");
+
+        try
+        {
+            this.process = Runtime.getRuntime().exec(commands);
+        }
+        catch (IOException e)
+        {
+            throw e;
+        }
+        catch (Throwable e)
+        {
+            throw new IOException(e.getMessage(), e);
+        }
+
+        isTerminated();
+
+        //
+        // when doing a (synchonized) wait,
+        // start streamReader in current thread !
+        // this to avoid extra (thread) overhead when synchronized command
+        // execution.
+
+        if ((captureStdout == true) || (captureStderr == true))
+        {
+            startStreamWatcher(syncWait);
+        }
+
+        if (syncWait)
+        {
+            waitFor();
+        }
+    }
+
+    /**
+     * Start streamreaders to read from stderr,stdout.
+     * 
+     * @param syncWait
+     * @throws IOException
+     */
+    protected void startStreamWatcher(boolean syncWait) throws IOException
+    {
+        if ((this.captureStderr == false) && (this.captureStdout == false))
+            return; // nothing to be done.
+
+        if (this.captureStdout)
+            stdoutStream = process.getInputStream();
+
+        if (this.captureStderr)
+            stderrStream = process.getErrorStream();
+
+        // start backgrounded stream reader
+
+        // streamReaderTask=new
+        // ActionTask(ProcessTaskSource.getDefault(),"StreamWatcher")
+
+        streamReaderTask = new ActionTask(null, "StreamWatcher")
+        {
+            boolean stop = false;
+
+            public void doTask()
+            {
+
+                // buf size is initial. Will Autoextend.
+                StringWriter stdoutWriter = new StringWriter(1024);
+                StringWriter stderrWriter = new StringWriter(1024);
+
+                int val1 = -1, val2 = -1;
+
+                try
+                {
+                    do
+                    {
+                        // alternate read from stdout and stderr:
+                        if (stdoutStream != null)
+                        {
+                            val1 = stdoutStream.read();
+
+                            if (val1 >= 0)
+                            {
+                                stdoutWriter.write(val1);
+                            }
+                        }
+
+                        if (stderrStream != null)
+                        {
+                            val2 = stderrStream.read();
+
+                            if (val2 >= 0)
+                            {
+                                stderrWriter.write(val2);
+                            }
+                        }
+                    } while ((stop == false) && ((val1 >= 0) || (val2 >= 0))); // continue
+                                                                               // until
+                                                                               // EOF
+                                                                               // on
+                                                                               // both
+                                                                               // streams
+                }
+                catch (IOException e)
+                {
+                    this.setException(e);
+                }
+
+                stdoutString = stdoutWriter.toString();
+                stderrString = stderrWriter.toString();
+            }
+
+            @Override
+            public void stopTask()
+            {
+                stop = true;
+            }
+        };
+
+        if (syncWait == false)
+            streamReaderTask.startTask();// background
+        else
+            streamReaderTask.run();// call run() directly
+
+    }
+
+    /**
+     * Set list of command + argumen to start. cmds[0] is the actual command,
+     * cmds[1],...,cmds[2] are the arguments.
+     * 
+     * @param cmds
+     */
+    void setCommands(String[] cmds)
+    {
+        this.commands = cmds;
+    }
+
+    /**
+     * Returns stdout of terminated process. If this method is called during
+     * execution of a process this method will return null.
+     */
+    public String getStdout()
+    {
+        return stdoutString;
+    }
+
+    /**
+     * Returns stderr of terminated process. If this method is called during
+     * execution of a process this method will return null.
+     */
+    public String getStderr()
+    {
+        return stderrString;
+    }
+
+    public int getExitValue()
+    {
+        return process.exitValue();
+    }
+
+    public void terminate()
+    {
+        dispose();
+    }
+
+    public boolean isTerminated()
+    {
+        // process has already terminated
+        if (isTerminated == true)
+        {
+            return true;
+        }
+
+        // dirty way to check whether process hasn't exited
+        try
+        {
+            this.process.exitValue();
+            this.isTerminated = true;
+        }
+        catch (IllegalThreadStateException e)
+        {
+            // cannot get exitValue() from non terminated process:
+            this.isTerminated = false;
+        }
+
+        return isTerminated;
+    }
+
+    public OutputStream getStdinStream()
+    {
+        stdinStream = process.getOutputStream();
+        return stdinStream;
+    }
+
+    public InputStream getStderrStream()
+    {
+        stderrStream = process.getErrorStream();
+        return stderrStream;
+    }
+
+    public InputStream getStdoutStream()
+    {
+        stdoutStream = process.getInputStream();
+        return stdoutStream;
+    }
+
+    public void dispose()
+    {
+        if (stdinStream != null)
+        {
+            try
+            {
+                stdinStream.close();
+            }
+            catch (Exception e)
+            {
+            }
+            
+            stdinStream = null;
+        }
+
+        if (stdoutStream != null)
+        {
+            try
+            {
+                stdoutStream.close();
+            }
+            catch (Exception e)
+            {
+            }
+            
+            stdoutStream = null;
+        }
+
+        if (stderrStream != null)
+        {
+            try
+            {
+                stderrStream.close();
+            }
+            catch (Exception e)
+            {
+            }
+            
+            stderrStream = null;
+        }
+
+        if (process != null)
+        {
+            process.destroy();
+            process = null;
+        }
+
+    }
 
 }

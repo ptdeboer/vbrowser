@@ -22,33 +22,31 @@ package nl.esciencecenter.ptk.io;
 
 import java.io.File;
 
-import junit.framework.Assert;
-
 import nl.esciencecenter.ptk.GlobalProperties;
 
+import org.junit.Assert;
 import org.junit.Test;
-
-
 
 public class Test_GlobalProperties 
 {
 	
 	@Test
-	public void testArchitecture()
+	public void testArchitectureInfo()
 	{
-		printf("--- TestGlobal ---\n");
-		
+	    // Basically test whether methods work Exception free on tested platforms: 
+
+		printf("> Global properties:\n");
 		printf(" - user name =%s\n",assertNotEmpty(GlobalProperties.getGlobalUserName()));
 		printf(" - user home =%s\n",assertNotEmpty(GlobalProperties.getGlobalUserHome()));
 		printf(" - tmp dir   =%s\n",assertNotEmpty(GlobalProperties.getGlobalTempDir()));
 		printf(" - hostname  =%s\n",assertNotEmpty(GlobalProperties.getHostname()));
 		//
-		printf(" - OS info   = %s/%s/%s\n",GlobalProperties.getOsArch(),GlobalProperties.getOsName(),GlobalProperties.getOsVersion()); 
-		printf(" - isWindows = %s\n",GlobalProperties.isWindows());  
-		printf(" - isLinux   = %s\n",GlobalProperties.isLinux());	
-		printf(" - isMacOS   = %s\n",GlobalProperties.isMacOS());
-		printf(" - isMacOSX  = %s\n",GlobalProperties.isMacOSX());
-		printf(" - isMac     = %s\n",GlobalProperties.isMac());
+		printf("> OS arch/name/version = %s/%s/%s\n",GlobalProperties.getOsArch(),GlobalProperties.getOsName(),GlobalProperties.getOsVersion()); 
+		printf(" - isWindows   = %s\n",GlobalProperties.isWindows());  
+		printf(" - isLinux     = %s\n",GlobalProperties.isLinux());	
+		printf(" - isMacOS     = %s\n",GlobalProperties.isMacOS());
+		printf(" - isMacOSX    = %s\n",GlobalProperties.isMacOSX());
+		printf(" - isMac       = %s\n",GlobalProperties.isMac());
 	        
 		//assertNotEmpty(""); 
 	}
@@ -56,17 +54,31 @@ public class Test_GlobalProperties
     @Test 
     public void testTempDir()
     {
-    	String tmpDir = GlobalProperties.getGlobalTempDir(); 
-    	
-    	Assert.assertNotNull("getGlobalTempDir() must return a value",tmpDir); 
-    	
-    	File file=new File(tmpDir); 
-
-    	Assert.assertTrue("System depended temp directory must exists:"+tmpDir,file.exists()); 
-    	Assert.assertTrue("System depended temp location must be a directory:"+tmpDir,file.isDirectory()); 
-    
+        testGlobalDirProperty(GlobalProperties.getGlobalTempDir()); 
     }
     
+    protected void testGlobalDirProperty(String dir)
+    {
+    	Assert.assertNotNull("getGlobalTempDir() must return a value",dir); 
+    	
+    	File file=new File(dir); 
+
+    	Assert.assertTrue("System depended temp directory must exists:"+dir,file.exists()); 
+    	Assert.assertTrue("System depended temp location must be a directory:"+dir,file.isDirectory()); 
+    }
+    
+    @Test 
+    public void testUserHome()
+    {
+        testGlobalDirProperty(GlobalProperties.getGlobalUserHome()); 
+    }
+
+    @Test 
+    public void testUserDir()
+    {
+        testGlobalDirProperty(GlobalProperties.getGlobalUserDir()); 
+    }
+
 	private String assertNotEmpty(String string)
 	{
 		Assert.assertNotNull("String value may not be null",string); 

@@ -23,8 +23,8 @@ package nl.esciencecenter.ptk.object;
 /** 
  * This interface is an alternative to clone() which supports Generics.
  * Also it can be checked whether the duplicate method returns a shallow or a deep copy.  
- * By default the Duplicate method return a full (deep) Copy. 
- * This is useful for 'value' objects where each created copy is full stand alone copy.
+ * By default the Duplicate method returns a full (deep) Copy. This is different then clone().  
+ * This is useful for 'value' objects where each created copy must be a full (stand alone) copy.
  */
 public interface Duplicatable<Type> 
 {

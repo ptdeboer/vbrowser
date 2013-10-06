@@ -23,10 +23,9 @@ package nl.esciencecenter.ptk.exec;
 
 import java.io.IOException;
 
-
 /**
- * Helper class for local execution of script/commands etc.
- * Is Factory class for LocalProcess.
+ * Helper class for local execution of script/commands etc. Is Factory class for
+ * LocalProcess.
  * 
  * @author P.T. de Boer
  */
@@ -57,10 +56,10 @@ public class LocalExec
             LocalProcess proc = new LocalProcess();
             // capture stderr, stdout
             proc.setCaptureOutput(true, true);
-            
+
             // Execute command and wait:
             proc.execute(cmds, true);
-            
+
             // POST:
             // get stdout,stderr
             String stdout = proc.getStdout();
@@ -79,7 +78,6 @@ public class LocalExec
 
     private static void dispose(LocalProcess proc)
     {
-       
 
         proc.dispose();
     }
@@ -91,7 +89,8 @@ public class LocalExec
      * Process object of running process.
      * 
      * @param wait
-     *            - wait until process completes. if false the Actual runnign LocalProcess is returned. 
+     *            - wait until process completes. if false the Actual runnign
+     *            LocalProcess is returned.
      */
     public static LocalProcess execute(String cmds[], boolean wait) throws IOException
     {
