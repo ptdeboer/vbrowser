@@ -20,7 +20,9 @@
 
 package nl.esciencecenter.ptk.data;
 
-/** Common VAR Holder interface */
+/** 
+ * Common VAR Holder interface.
+ */
 public interface VARHolder<T>
 {
     /** Whether value is set */ 

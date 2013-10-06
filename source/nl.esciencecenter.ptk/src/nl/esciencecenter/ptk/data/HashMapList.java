@@ -29,19 +29,19 @@ import java.util.Set;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 /**
- * Extended LinkedHashMap.
- * Added more support for array and lists. 
+ * Extended LinkedHashMap. Added more support for array and lists.
  * 
  * @author Piter T. de Boer.
  * 
- * @param <TK> - The Key Type 
- * @param <TV> - The Value Type
+ * @param <TK>
+ *            - The Key Type
+ * @param <TV>
+ *            - The Value Type
  */
-public class HashMapList<TK, TV> extends LinkedHashMap<TK, TV> 
-    implements Serializable
+public class HashMapList<TK, TV> extends LinkedHashMap<TK, TV> implements Serializable
 {
     private static final long serialVersionUID = -8373244037848706796L;
-    
+
     private static ClassLogger logger = null;
 
     static
@@ -51,7 +51,7 @@ public class HashMapList<TK, TV> extends LinkedHashMap<TK, TV>
     }
 
     // =======================================================================
-    // 
+    //
     // =======================================================================
 
     public TV put(TK key, TV value)
@@ -60,15 +60,15 @@ public class HashMapList<TK, TV> extends LinkedHashMap<TK, TV>
         return prev;
     }
 
-    /** 
-     * Adds All entries to current map 
+    /**
+     * Adds All entries to current map
      */
     public void putAll(Map<? extends TK, ? extends TV> map)
     {
         super.putAll(map);
     }
 
-    /** 
+    /**
      * Put selection from Map map into this Hashtable.
      */
     public void putAll(Map<? extends TK, ? extends TV> map, Iterable<TK> keys)
@@ -79,8 +79,8 @@ public class HashMapList<TK, TV> extends LinkedHashMap<TK, TV>
         }
     }
 
-    /** 
-     * Put selection from Map map into this Hashtable 
+    /**
+     * Put selection from Map map into this Hashtable
      */
     public void putAll(Map<? extends TK, ? extends TV> map, TK keys[])
     {
@@ -89,54 +89,56 @@ public class HashMapList<TK, TV> extends LinkedHashMap<TK, TV>
             put(key, map.get(key));
         }
     }
+
     public TV elementAt(int i)
     {
         // todo: optimization for large sets:
         return this.get(this.getKey(i));
     }
-    
+
     public TK getKey(int nr)
     {
         // todo: faster search
         Set<TK> set = this.keySet();
-     
-        int index=0; 
-        if (size()<=0)
-            return null; 
-        
-        for (TK key:set)
+
+        int index = 0;
+        if (size() <= 0)
+            return null;
+
+        for (TK key : set)
         {
-            if (index==nr)
+            if (index == nr)
                 return key;
             index++;
         }
-        
+
         return null;
     }
-    
+
     // ================
     // Arrays and Lists
     // ================
-    
+
     public Iterator<TK> getKeyIterator()
     {
         return this.keySet().iterator();
     }
-    
+
     public TK[] getKeyArray(TK[] arr)
     {
         return this.keySet().toArray(arr);
     }
-    
+
     /**
-     * Returns values as Array. 
-     * @param array - example array need for actual type. 
+     * Returns values as Array.
+     * 
+     * @param array
+     *            - example array need for actual type.
      * @return
      */
     public TV[] toArray(TV[] array)
     {
         return this.values().toArray(array);
     }
-   
-  
+
 }

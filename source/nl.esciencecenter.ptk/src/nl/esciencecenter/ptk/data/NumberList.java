@@ -20,12 +20,10 @@
 
 package nl.esciencecenter.ptk.data;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class NumberList extends ArrayList<Number>
+public class NumberList extends ExtendedList<Number>
 {
-    
     private static final long serialVersionUID = -741767804216375724L;
 
     public NumberList(List<? extends Number> ints)

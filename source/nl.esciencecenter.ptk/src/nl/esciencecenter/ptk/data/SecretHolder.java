@@ -29,7 +29,9 @@ public class SecretHolder  implements VARHolder<Secret>
 {
 	public Secret value=null; 
 	
-	/** Wrap Holder around secret chars, source characters are cleared! */ 
+	/**
+	 *  Wrap Holder around secret chars, source characters are cleared! 
+	 */ 
 	public SecretHolder(char[] secret)
 	{
 		this.value=new Secret(secret,true); // auto clear source!
@@ -46,7 +48,7 @@ public class SecretHolder  implements VARHolder<Secret>
 
     public String toString()
 	{
-		return "<SecretHolder>";  
+		return "<SecretHolder>(?)";  
 	}
 	
 	public synchronized void dispose()

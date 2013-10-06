@@ -25,11 +25,11 @@ import java.util.List;
 public class IntegerList extends NumberList
 {
     private static final long serialVersionUID = -4874302466681798570L;
-   
+
     // === instance ===
- 
+
     public IntegerList(List<Integer> ints)
     {
-        super(ints); 
+        super(ints);
     }
 }
