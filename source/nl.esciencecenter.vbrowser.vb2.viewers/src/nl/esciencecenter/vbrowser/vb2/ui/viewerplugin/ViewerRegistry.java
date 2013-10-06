@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
+import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.viewers.HexViewer;
 import nl.esciencecenter.vbrowser.vb2.ui.viewers.ImageViewer;
@@ -77,7 +77,7 @@ public class ViewerRegistry
     public static ViewerRegistry getDefault()
     {
         if (instance == null)
-            instance = new ViewerRegistry(new ViewerResourceHandler(new UIResourceLoader()));
+            instance = new ViewerRegistry(new ViewerResourceHandler(new ResourceLoader()));
 
         return instance;
     }

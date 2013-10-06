@@ -30,7 +30,7 @@ import java.net.URI;
 import java.net.URL;
 
 import nl.esciencecenter.ptk.io.IOUtil;
-import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
+import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -48,7 +48,7 @@ import nl.esciencecenter.vlet.vrs.vfs.VFile;
 /** 
  * ResourceLoader which uses VRS methods for reading/writing resources. 
  */
-public class VRSResourceLoader extends UIResourceLoader
+public class VRSResourceLoader extends ResourceLoader
 {
     private static ClassLogger logger=ClassLogger.getLogger(VRSResourceLoader.class); 
     

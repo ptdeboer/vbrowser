@@ -21,6 +21,11 @@
 package nl.esciencecenter.ptk.ui.fonts;
 
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.Map;
+
+import javax.swing.JComponent;
 
 public class FontUtil
 {
@@ -59,4 +64,18 @@ public class FontUtil
         return Font.getFont(name);   
     }
 
+    // breadcrump to update renderinghints:
+    public static boolean updateRenderingHints(JComponent comp,Map<?,?> renderingHints)
+    {
+        Graphics graphics=comp.getGraphics();
+        
+        if (graphics instanceof Graphics2D)
+        {
+            ((Graphics2D)graphics).addRenderingHints(renderingHints); 
+            return true; 
+        }
+        
+        return false; 
+    }
+    
 }

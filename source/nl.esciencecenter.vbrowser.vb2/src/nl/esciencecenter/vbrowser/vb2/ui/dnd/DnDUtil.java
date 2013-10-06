@@ -43,11 +43,6 @@ public class DnDUtil
         logger.debugPrintf("DnD:%s\n",message);
     }
 
-    public static void infoPrintln(String format,Object... args)
-    {
-        logger.infoPrintf("DnD:%s\n",args);
-    }
-
     public static void infoPrintf(String format,Object... args)
     {
         logger.infoPrintf("DnD:"+format,args);

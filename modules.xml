@@ -54,10 +54,10 @@
 
     </target>
 
-    <target name="vlet-all" depends="init,vlet-core,vlet-vfs-adaptors,vlet-vbrowser,vlet-vbrowser-viewers,vlet-doc.userguide">
+    <target name="vlet-all" depends="init,vlet-core,vlet-vfs-adaptors,vlet-vbrowser,vlet-vbrowser-plugins,vlet-doc.userguide">
     </target>
 
-    <target name="vlet-xenon-all" depends="init,vlet-core,vlet-vfs-adaptors,vlet-vrs-xenon,vlet-vbrowser,vlet-vbrowser-viewers,vlet-doc.userguide">
+    <target name="vlet-xenon-all" depends="init,vlet-core,vlet-vfs-adaptors,vlet-vrs-xenon,vlet-vbrowser,vlet-vbrowser-plugins,vlet-doc.userguide">
     </target>
 
     <target name="vlet-auxlibs" depends="init">
@@ -96,6 +96,7 @@
             <param name="scm.path" value=""/>
         </antcall>
     </target>
+
 
     <target name="vlet-vfs-globus" depends="vlet-core">
 
@@ -169,14 +170,35 @@
 
     <!-- <target name="vlet-vfs-adaptors" depends="vlet-vrs-xenon,vlet-vfs-globus,vlet-vfs-lfc-srm"/> -->
     <target name="vlet-vfs-adaptors" depends="vlet-vfs-ssh,vlet-vfs-globus,vlet-vfs-lfc-srm"/>
+  
 
-    <target name="vlet-vbrowser" depends="vlet-core">
+    <!--
+      ===========================================
+                    UI Modules
+      ===========================================
+      --> 
+
+    <target name="ptk-ui" depends="vlet-core">
 
         <antcall target="module-build">
             <param name="name" value="nl.esciencecenter.ptk.ui"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
         </antcall>
+
+    </target>
+
+    <target name="ptk-util-vterm" depends="vlet-core,ptk-ui">
+
+        <antcall target="module-build">
+            <param name="name" value="nl.esciencecenter.ptk.util.vterm"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+    </target>
+
+    <target name="vlet-vbrowser" depends="vlet-core,ptk-ui,ptk-util-vterm">
 
         <antcall target="module-build">
             <param name="name" value="nl.esciencecenter.vlet.gui.vbrowser"/>
@@ -186,7 +208,7 @@
 
     </target>
 
-    <target name="vlet-vbrowser-viewers" depends="vlet-core,vlet-vbrowser">
+    <target name="vlet-vbrowser-plugins" depends="vlet-vbrowser">
 
         <antcall target="module-build">
             <param name="name" value="nl.esciencecenter.vlet.gui.lobo.viewer"/>
@@ -208,7 +230,7 @@
 
     <!-- 
          Conditional target: latexdocs can only be created on Linux
-  -->
+      -->
 
     <target name="check-build-userguide">
         <!-- set if not set -->

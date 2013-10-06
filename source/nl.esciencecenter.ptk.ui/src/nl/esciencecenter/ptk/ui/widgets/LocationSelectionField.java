@@ -32,7 +32,7 @@ import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.io.FileURISyntaxException;
 import nl.esciencecenter.ptk.jfx.util.FXFileChooser;
 import nl.esciencecenter.ptk.jfx.util.FXFileChooser.ChooserType;
-import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
+import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 public class LocationSelectionField extends JPanel implements URIDropTargetLister
@@ -202,7 +202,7 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
     {
         URL url = getClass().getClassLoader().getResource(iconUrl);
         if (url==null)
-            return new UIResourceLoader().getMiniBrokenImageIcon(); 
+            return IconProvider.getDefault().getMiniBrokenImageIcon(); 
         return new ImageIcon(url);
     }
 

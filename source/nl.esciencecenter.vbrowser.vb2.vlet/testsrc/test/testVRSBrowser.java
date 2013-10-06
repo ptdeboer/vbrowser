@@ -47,7 +47,7 @@ public class testVRSBrowser
 		    platform.registerProxyFactory(fac);  
             
 		    VRSContext context=VRS.getDefaultVRSContext(); 
-		    platform.setUIResourceLoader(new VRSResourceLoader(context));
+		    platform.setResourceLoader(new VRSResourceLoader(context));
             
 		    platform.getViewerRegistry().registerViewer(VLTermStarter.class);
 		    

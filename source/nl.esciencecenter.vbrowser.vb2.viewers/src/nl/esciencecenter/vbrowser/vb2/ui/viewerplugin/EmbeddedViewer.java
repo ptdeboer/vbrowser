@@ -11,7 +11,7 @@ import javax.swing.Icon;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
-import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
+import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 
 public abstract class EmbeddedViewer extends ViewerPanel implements MimeViewer
@@ -71,7 +71,7 @@ public abstract class EmbeddedViewer extends ViewerPanel implements MimeViewer
         return new URIFactory(getURI()).getBasename(); 
     }
     
-    protected UIResourceLoader getResourceLoader()
+    protected ResourceLoader getResourceLoader()
     {
         return this.getResourceHandler().getResourceLoader();
     }

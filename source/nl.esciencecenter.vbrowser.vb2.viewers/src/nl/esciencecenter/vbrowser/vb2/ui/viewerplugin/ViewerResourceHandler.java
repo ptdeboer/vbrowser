@@ -10,7 +10,7 @@ import nl.esciencecenter.ptk.io.RandomReader;
 import nl.esciencecenter.ptk.io.RandomWriter;
 import nl.esciencecenter.ptk.ssl.CertificateStore;
 import nl.esciencecenter.ptk.ssl.CertificateStoreException;
-import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
+import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.mimetypes.MimeTypes;
 
@@ -21,7 +21,7 @@ public class ViewerResourceHandler
 {
     private static ClassLogger logger=ClassLogger.getLogger(ViewerResourceHandler.class); 
     
-    private UIResourceLoader resourceLoader;
+    private ResourceLoader resourceLoader;
     
     private URI viewersConfigDir;
 
@@ -29,13 +29,13 @@ public class ViewerResourceHandler
     
     // === // 
 
-    public ViewerResourceHandler(UIResourceLoader resourceLoader)
+    public ViewerResourceHandler(ResourceLoader resourceLoader)
     {
         this.resourceLoader=resourceLoader;
         viewersConfigDir=null;
     }
     
-    public void setResourceLoader(UIResourceLoader resourceLoader)
+    public void setResourceLoader(ResourceLoader resourceLoader)
     {
         this.resourceLoader=resourceLoader; 
     }
@@ -57,7 +57,7 @@ public class ViewerResourceHandler
         return resourceLoader.createInputStream(uri);
     }
     
-    UIResourceLoader getResourceLoader()
+    ResourceLoader getResourceLoader()
     {
         return resourceLoader;
     }

@@ -25,6 +25,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.RenderingHints.Key;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -57,6 +61,7 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.ui.fonts.FontInfo;
 import nl.esciencecenter.ptk.ui.fonts.FontToolBar;
 import nl.esciencecenter.ptk.ui.fonts.FontToolbarListener;
+import nl.esciencecenter.ptk.ui.fonts.FontUtil;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.EmbeddedViewer;
@@ -99,7 +104,7 @@ public class TextViewer extends EmbeddedViewer implements ActionListener, FontTo
             // nfo files: uses CP437 Encoding (US Extended ASCII)!
             "text/x-nfo" 
         };
-
+    
     // ===
     // Instance
     // ===
@@ -376,17 +381,16 @@ public class TextViewer extends EmbeddedViewer implements ActionListener, FontTo
     public void updateFont(Font font, Map<?, ?> renderingHints)
     {
         textArea.setFont(font);
-        // GuiSettings.updateRenderingHints(textArea,renderingHints);
+        FontUtil.updateRenderingHints(textArea,renderingHints);// doesn't work. 
         textArea.repaint();
     }
-
+    
     /**
      * @param location
      * @throws VrsException
      */
     public void doStartViewer(String optionalMethod)
     {
-        System.err.println(">>> Method:"+optionalMethod); 
         doUpdateURI(getURI());
     }
 

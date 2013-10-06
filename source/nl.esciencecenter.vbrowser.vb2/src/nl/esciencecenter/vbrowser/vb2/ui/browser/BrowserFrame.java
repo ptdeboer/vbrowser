@@ -232,7 +232,7 @@ public class BrowserFrame extends JFrame
 		}
 		
 		// default sizes: 
-		this.setSize(800,600); 
+		this.setSize(1000,600); 
 	}
 
 	public void addTab()

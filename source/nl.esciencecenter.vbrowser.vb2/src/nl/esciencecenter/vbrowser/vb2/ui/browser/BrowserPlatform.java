@@ -29,7 +29,7 @@ import javax.swing.TransferHandler;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
-import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
+import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.vbrowser.vb2.ui.dnd.DnDUtil;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactoryRegistry;
@@ -37,35 +37,37 @@ import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerRegistry;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerResourceHandler;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
-/** 
+/**
  * Browser Platform.
- *  
- * Typically one Platform instance per application environment is created. 
+ * 
+ * Typically one Platform instance per application environment is created.
  */
 public class BrowserPlatform
 {
-    private static BrowserPlatform instance=null;
-    
+    private static BrowserPlatform instance = null;
+
     public static synchronized BrowserPlatform getInstance()
     {
-        if (instance==null)
-            instance=new BrowserPlatform();
-        
-        return instance; 
+        if (instance == null)
+            instance = new BrowserPlatform();
+
+        return instance;
     }
-    
+
     // ========================================================================
     // Instance
     // ========================================================================
-    
-    private ProxyFactoryRegistry proxyRegistry=null;
-    
+
+    private ProxyFactoryRegistry proxyRegistry = null;
+
     private ViewerRegistry viewerRegistry;
-    
-    private UIResourceLoader resourceLoader; 
+
+    private ResourceLoader resourceLoader;
+
     private JFrame rootFrame;
+
     private IconProvider iconProvider;
-    
+
     protected BrowserPlatform()
     {
         try
@@ -75,84 +77,86 @@ public class BrowserPlatform
         catch (URISyntaxException e)
         {
             e.printStackTrace();
-        } 
+        }
     }
-    
+
     private void init() throws URISyntaxException
     {
-        // init defaults: 
-        this.proxyRegistry=ProxyFactoryRegistry.getInstance(); 
-        
-        UIResourceLoader resourceLoader=new UIResourceLoader(); 
-        ViewerResourceHandler resourceHandler=new ViewerResourceHandler(resourceLoader); 
+        // init defaults:
+        this.proxyRegistry = ProxyFactoryRegistry.getInstance();
+
+        ResourceLoader resourceLoader = new ResourceLoader();
+        ViewerResourceHandler resourceHandler = new ViewerResourceHandler(resourceLoader);
         resourceHandler.setViewerConfigDir(getPlatformConfigDir());
-        
-        this.viewerRegistry=new ViewerRegistry(resourceHandler); 
-        
-        rootFrame=new JFrame(); 
-        iconProvider=new IconProvider(rootFrame,resourceLoader); 
+
+        this.viewerRegistry = new ViewerRegistry(resourceHandler);
+
+        rootFrame = new JFrame();
+        iconProvider = new IconProvider(rootFrame, resourceLoader);
     }
-    
-    public void setUIResourceLoader(UIResourceLoader resourceLoader)
+
+    public void setResourceLoader(ResourceLoader resourceLoader)
     {
-        viewerRegistry.getResourceHandler().setResourceLoader(resourceLoader); 
+        viewerRegistry.getResourceHandler().setResourceLoader(resourceLoader);
     }
-    
+
     public String getPlatformID()
     {
-        return "VBTK2"; 
+        return "VBTK2";
     }
 
     public ProxyFactory getProxyFactoryFor(VRL locator)
     {
-        return this.proxyRegistry.getProxyFactoryFor(locator); 
+        return this.proxyRegistry.getProxyFactoryFor(locator);
     }
-    
+
     public BrowserInterface createBrowser()
     {
-    	return createBrowser(true);
+        return createBrowser(true);
     }
-    
+
     public BrowserInterface createBrowser(boolean show)
     {
-    	return new ProxyBrowser(this,show); 
+        return new ProxyBrowser(this, show);
     }
-   
+
     public void registerProxyFactory(ProxyFactory factory)
     {
-        this.proxyRegistry.registerProxyFactory(factory); 
+        this.proxyRegistry.registerProxyFactory(factory);
     }
 
     /**
-     * Returns Internal Browser DnD TransferHandler for DnDs between browser frames and ViewNodeComponents. 
+     * Returns Internal Browser DnD TransferHandler for DnDs between browser
+     * frames and ViewNodeComponents.
      */
     public TransferHandler getTransferHandler()
     {
         // default;
-       return DnDUtil.getDefaultTransferHandler();
+        return DnDUtil.getDefaultTransferHandler();
     }
-    
+
     public ViewerRegistry getViewerRegistry()
     {
-        return viewerRegistry; 
+        return viewerRegistry;
     }
-    
+
     public URI getPlatformConfigDir()
     {
         try
         {
-            return new URIFactory("file:///"+GlobalProperties.getGlobalUserHome()).appendPath("."+getPlatformID().toLowerCase()).toURI();
+            return new URIFactory("file:///" + GlobalProperties.getGlobalUserHome()).appendPath(
+                    "." + getPlatformID().toLowerCase()).toURI();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }
         return null;
     }
-    
+
     public IconProvider getIconProvider()
     {
-        return iconProvider; 
-    }  
+        return iconProvider;
+    }
 
 }

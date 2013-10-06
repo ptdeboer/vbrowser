@@ -388,8 +388,10 @@ public class FontInfo
     public void setAntiAliasing(Boolean useAA)
     {
         if (this.renderingHints == null)
+        {
             renderingHints = new HashMap<Key, Object>();
-
+        }
+        
         logger.debugPrintf("setAntiAliasing():" + useAA);
 
         if (useAA == null)

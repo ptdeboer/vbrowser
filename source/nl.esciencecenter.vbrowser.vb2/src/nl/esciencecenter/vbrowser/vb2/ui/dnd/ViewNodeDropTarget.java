@@ -160,7 +160,7 @@ public  class ViewNodeDropTarget extends DropTarget //, DragSourceListener,
 
         if ((comp instanceof ViewNodeComponent)==false)
         {
-            DnDUtil.errorPrintf("interActiveDrop() Cannot import data to non ViewNodeComponent:%s\n",comp); 
+            DnDUtil.errorPrintf("interActiveDrop(): Cannot import data to non ViewNodeComponent:%s\n",comp); 
             return false;// ignore mis drop! 
         }
             
@@ -177,7 +177,7 @@ public  class ViewNodeDropTarget extends DropTarget //, DragSourceListener,
         try
         {
             List<VRL> vris = DnDData.getVRLsFrom(data); 
-            DnDUtil.debugPrintf(">>> Actual Drop on ViewNode:%s\n",viewNode); 
+            DnDUtil.debugPrintf("doInterActiveDrop(): Actual Drop on ViewNode:%s\n",viewNode); 
             for (int i=0;i<vris.size();i++)
             {
                 DnDUtil.debugPrintf(" -vri[#%d]=%s\n",i,vris.get(i));

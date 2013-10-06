@@ -223,6 +223,7 @@ public class FontToolBar extends JToolBar implements ActionListener
         }
         else if (source == this.antiAliasingButton)
         {
+            fontInfo.setAntiAliasing(this.antiAliasingButton.isSelected());
         	updateFont();
         }
     }
