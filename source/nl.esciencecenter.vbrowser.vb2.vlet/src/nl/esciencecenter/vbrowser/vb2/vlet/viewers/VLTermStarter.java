@@ -36,9 +36,9 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.exec.ShellChannel;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.vterm.CreateVTerm;
-import nl.esciencecenter.ptk.util.vterm.ShellChannel;
 import nl.esciencecenter.ptk.util.vterm.VTerm;
 import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider;
 import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.MimeViewer;
@@ -46,7 +46,6 @@ import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerPanel;
 import nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs.VRSProxyFactory;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vfs.ssh.jcraft.SSHShellChannelFactory;
-
 
 public class VLTermStarter extends ViewerPanel implements MimeViewer, ActionListener
 {

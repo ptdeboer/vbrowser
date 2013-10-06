@@ -35,8 +35,8 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.exec.ShellChannel;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.esciencecenter.ptk.util.vterm.ShellChannel;
 import nl.esciencecenter.ptk.util.vterm.VTerm;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -47,7 +47,6 @@ import nl.esciencecenter.vlet.gui.UIGlobal;
 import nl.esciencecenter.vlet.util.vlterm.VLTerm;
 import nl.esciencecenter.vlet.vrs.io.VShellChannelCreator;
 import nl.esciencecenter.vlet.vrs.vfs.VFS;
-import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
 import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 import nl.esciencecenter.vlet.vrs.vfs.VFileSystem;
 

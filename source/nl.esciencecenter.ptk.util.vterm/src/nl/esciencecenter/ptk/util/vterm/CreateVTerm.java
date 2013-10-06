@@ -5,6 +5,8 @@ import java.net.URI;
 
 import javax.swing.SwingUtilities;
 
+import nl.esciencecenter.ptk.exec.ShellChannel;
+
 public class CreateVTerm
 {
     

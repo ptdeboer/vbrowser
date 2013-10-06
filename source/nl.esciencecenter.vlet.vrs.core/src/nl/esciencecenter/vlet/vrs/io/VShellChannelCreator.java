@@ -23,7 +23,7 @@ package nl.esciencecenter.vlet.vrs.io;
 
 import java.io.IOException;
 
-import nl.esciencecenter.ptk.util.vterm.ShellChannel;
+import nl.esciencecenter.ptk.exec.ShellChannel;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public interface VShellChannelCreator

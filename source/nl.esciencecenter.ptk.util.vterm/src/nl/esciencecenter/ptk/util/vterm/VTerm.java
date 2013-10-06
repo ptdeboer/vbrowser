@@ -54,6 +54,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.exec.ShellChannel;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.io.FileURISyntaxException;
 import nl.esciencecenter.ptk.ui.charpane.ColorMap;
@@ -61,7 +62,7 @@ import nl.esciencecenter.ptk.ui.dialogs.ExceptionDialog;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider.ChannelOptions;
+import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider.TermChannelOptions;
 
 
 public class VTerm extends JFrame implements  Runnable
@@ -360,18 +361,18 @@ public class VTerm extends JFrame implements  Runnable
     	// this.updateFrameSize(); 
     }
     
-    public ChannelOptions getChannelOptions(String type, boolean autoCreate)
+    public TermChannelOptions getChannelOptions(String type, boolean autoCreate)
     {
-        ChannelOptions options=termProvider.getChannelOptions(type); 
+        TermChannelOptions options=termProvider.getChannelOptions(type); 
         if (options!=null)
         {
             return options; 
         }
         
-        return new ChannelOptions();
+        return new TermChannelOptions();
     }
     
-    public void setChannelOptions(String type, ChannelOptions options)
+    public void setChannelOptions(String type, TermChannelOptions options)
     {
         termProvider.setChannelOptions(type,options); 
     }
@@ -447,7 +448,7 @@ public class VTerm extends JFrame implements  Runnable
              * menu.add(mitem); menubar.add(menu);
              */
             {
-                ChannelOptions sshOptions=getChannelOptions(SESSION_SSH,true);
+                TermChannelOptions sshOptions=getChannelOptions(SESSION_SSH,true);
                 
                 JMenu sshmenu = new JMenu("SSH");
                 menu.add(sshmenu);
@@ -723,7 +724,7 @@ public class VTerm extends JFrame implements  Runnable
         }
         else if (action.equals("XForwardingSettings"))
         {
-            ChannelOptions sshOptions=this.getChannelOptions(SESSION_SSH,true); 
+            TermChannelOptions sshOptions=this.getChannelOptions(SESSION_SSH,true); 
             
             String display = JOptionPane.showInputDialog(this,
                     "XDisplay name (hostname:0)", (sshOptions.channelXForwardingHost == null) ? "" : (sshOptions.channelXForwardingHost
@@ -1085,7 +1086,7 @@ public class VTerm extends JFrame implements  Runnable
         }
         else if (this.sessionType.compareTo(SESSION_SSH) == 0)
         {
-            ChannelOptions options = this.getChannelOptions(SESSION_SSH,true); 
+            TermChannelOptions options = this.getChannelOptions(SESSION_SSH,true); 
             
             try
             {

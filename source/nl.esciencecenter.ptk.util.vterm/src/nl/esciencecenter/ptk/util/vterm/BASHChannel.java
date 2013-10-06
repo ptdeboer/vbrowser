@@ -7,8 +7,9 @@ import java.io.OutputStream;
 import java.net.URI;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.exec.ChannelOptions;
+import nl.esciencecenter.ptk.exec.ShellChannel;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider.ChannelOptions;
 
 /**
  * 

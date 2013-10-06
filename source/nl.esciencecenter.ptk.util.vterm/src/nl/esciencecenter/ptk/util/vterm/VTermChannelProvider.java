@@ -6,10 +6,13 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import nl.esciencecenter.ptk.crypt.Secret;
+import nl.esciencecenter.ptk.exec.ChannelOptions;
+import nl.esciencecenter.ptk.exec.ShellChannel;
+import nl.esciencecenter.ptk.exec.ShellChannelFactory;
 
 public class VTermChannelProvider
 {
-    public static class ChannelOptions
+    public static class TermChannelOptions implements ChannelOptions 
     {
         public boolean useChannelCompression;
 
@@ -29,6 +32,18 @@ public class VTermChannelProvider
                     + ", channelXForwardingHost=" + channelXForwardingHost + ", channelXForwardingPort="
                     + channelXForwardingPort + "]";
         }
+
+        @Override
+        public String getOption(String name)
+        {
+            return null;
+        }
+
+        @Override
+        public String getChannelType()
+        {
+            return null;
+        }
         
     }
 
@@ -38,7 +53,7 @@ public class VTermChannelProvider
 
     protected Map<String,ShellChannelFactory> factories=new Hashtable<String,ShellChannelFactory>(); 
 
-    protected Map<String,ChannelOptions> defaultOptions = new Hashtable<String,ChannelOptions>(); 
+    protected Map<String,TermChannelOptions> defaultOptions = new Hashtable<String,TermChannelOptions>(); 
     
     public VTermChannelProvider()
     {
@@ -67,12 +82,12 @@ public class VTermChannelProvider
         throw new IOException("Channel type not supported:" + type + " (when connecting to:" + uri + ")");
     }
 
-    public ChannelOptions getChannelOptions(String type)
+    public TermChannelOptions getChannelOptions(String type)
     {
         return defaultOptions.get(type); 
     }
 
-    public void setChannelOptions(String type,ChannelOptions newOptions)
+    public void setChannelOptions(String type,TermChannelOptions newOptions)
     {
         defaultOptions.put(type,newOptions); 
         System.out.println("Channel options:"+newOptions);

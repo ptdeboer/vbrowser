@@ -1,4 +1,4 @@
-package nl.esciencecenter.ptk.util.vterm;
+package nl.esciencecenter.ptk.exec;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -21,8 +21,8 @@
 
 package nl.esciencecenter.vlet.util.vlterm;
 
+import nl.esciencecenter.ptk.exec.ShellChannel;
 import nl.esciencecenter.ptk.util.vterm.CreateVTerm;
-import nl.esciencecenter.ptk.util.vterm.ShellChannel;
 import nl.esciencecenter.ptk.util.vterm.VTerm;
 import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
