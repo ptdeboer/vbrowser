@@ -77,6 +77,7 @@ public  class ViewNodeDropTarget extends DropTarget //, DragSourceListener,
         }
         else
         {
+            //DnDUtil.warnPrintf("Received drag for NON ViewNode component:%s\n",source); 
         	// dtde.rejectDrag(); // NOT here!
         }
     }
@@ -84,6 +85,7 @@ public  class ViewNodeDropTarget extends DropTarget //, DragSourceListener,
     public void dragOver(DropTargetDragEvent dtde)
     {
         super.dragOver(dtde); 
+        
     	DnDUtil.debugPrintf("dragOver:%s\n",dtde);
     	// done in super: 
     	// Component source = dtde.getDropTargetContext().getComponent();
@@ -99,13 +101,14 @@ public  class ViewNodeDropTarget extends DropTarget //, DragSourceListener,
     public void dragExit(DropTargetEvent dte)
     {
         super.dragExit(dte); 
-        //Component source = dte.getDropTargetContext().getComponent(); 
         DnDUtil.debugPrintf("dragExit:%s\n",dte);
     }
 
     // Actual Drop!
     public void drop(DropTargetDropEvent dtde)
     {
+        super.clearAutoscroll();
+        
         handleDrop(dtde);
     }
     
@@ -130,6 +133,19 @@ public  class ViewNodeDropTarget extends DropTarget //, DragSourceListener,
     	    handler = jcomp.getTransferHandler(); 
     	}
     	
+    	ViewNode viewNode;
+    	
+    	if (comp instanceof ViewNodeComponent)
+    	{
+    	    viewNode=((ViewNodeComponent)comp).getViewNode(); 
+    	}
+    	else
+    	{
+    	    DnDUtil.errorPrintf("handleDrop(): Received Drop for NON ViewNodeComponent:%s\n",dtde);
+    	    dtde.rejectDrop(); 
+    	    return; 
+    	}
+    	
     	// check dropped data: 
     	if (DnDData.canConvertToVRLs(data))
     	{
@@ -137,7 +153,7 @@ public  class ViewNodeDropTarget extends DropTarget //, DragSourceListener,
             dtde.acceptDrop (DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK);
          
             //II: Do Drop: 
-            doInterActiveDrop(comp,p,data); 
+            doActualDrop(comp,p,viewNode,data); 
             
             // III: complete the drag ! 
             dtde.getDropTargetContext().dropComplete(true);
@@ -153,21 +169,12 @@ public  class ViewNodeDropTarget extends DropTarget //, DragSourceListener,
     // Temp
     // ========================================================================================
 
-    /** Interactive drop on JComponent */ 
-    public static boolean doInterActiveDrop(Component comp, Point point,Transferable data) 
+    /**
+     *  Interactive drop on ViewNode 
+     */ 
+    public boolean doActualDrop(Component uiComp,Point point,ViewNode viewNode,Transferable data) 
     {
-        DnDUtil.debugPrintf("interActiveDrop():%s\n",comp);
-
-        if ((comp instanceof ViewNodeComponent)==false)
-        {
-            DnDUtil.errorPrintf("interActiveDrop(): Cannot import data to non ViewNodeComponent:%s\n",comp); 
-            return false;// ignore mis drop! 
-        }
-            
-        ViewNodeComponent node=(ViewNodeComponent)comp; 
-        ViewNode viewNode=node.getViewNode();
-            
-        // this.interActiveDrop((ViewNodeComponent)comp,point,data); 
+        DnDUtil.debugPrintf("interActiveDrop():%s -> %s\n",uiComp, viewNode);
         
         if (DnDData.canConvertToVRLs(data)==false)
         {

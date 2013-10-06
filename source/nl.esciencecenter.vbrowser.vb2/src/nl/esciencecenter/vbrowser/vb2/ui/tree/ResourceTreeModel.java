@@ -169,7 +169,9 @@ public class ResourceTreeModel extends DefaultTreeModel
         updateChilds(node,childs,true); 
     }
     
-    /** Set childs or append new ones */ 
+    /** 
+     * Set childs or append new ones 
+     */ 
     protected synchronized void updateChilds(ResourceTreeNode targetNode, ViewNode childs[], boolean append)
     {
     	logger.debugPrintf("+++ updateChilds(append=%s) for:%s,numChilds=#%d\n",
@@ -223,7 +225,7 @@ public class ResourceTreeModel extends DefaultTreeModel
 
                 try
                 {
-                    ResourceTreeNode newNode = new ResourceTreeNode(targetNode,iconItem);
+                    ResourceTreeNode newNode = new ResourceTreeNode(targetNode,iconItem,false);
                     
                     // it now has at least one node: 
                     //parentNode.setAllowsChildren(true);

@@ -20,7 +20,10 @@
 
 package nl.esciencecenter.vbrowser.vb2.ui.tree;
 
+import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.dnd.Autoscroll;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseEvent;
@@ -46,7 +49,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.model.ViewContainerEventAdapter;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeContainer;
 
-public class ResourceTree extends JTree implements ViewNodeContainer
+public class ResourceTree extends JTree implements ViewNodeContainer, Autoscroll 
 {
     private static final long serialVersionUID = -3310437371919331098L;
     
@@ -431,5 +434,30 @@ public class ResourceTree extends JTree implements ViewNodeContainer
         
         return nodes[0];
     }
+
+    private int autoScrollMargin=12; 
+    
+    @Override 
+    public void autoscroll(Point p) 
+    {
+      int realrow = getRowForLocation(p.x, p.y);
+      Rectangle outer = getBounds();
+      realrow = (p.y + outer.y <= autoScrollMargin ? realrow < 1 ? 0 : realrow - 1
+          : realrow < getRowCount() - 1 ? realrow + 1 : realrow);
+      scrollRowToVisible(realrow);
+    }
+    
+    @Override
+    public Insets getAutoscrollInsets() 
+    {
+      Rectangle outer = getBounds();
+      Rectangle inner = getParent().getBounds();
+      
+      return new Insets(inner.y - outer.y + autoScrollMargin, inner.x - outer.x
+          + autoScrollMargin, outer.height - inner.height - inner.y + outer.y
+          + autoScrollMargin, outer.width - inner.width - inner.x + outer.x
+          + autoScrollMargin);
+    }
+    
     
 }
