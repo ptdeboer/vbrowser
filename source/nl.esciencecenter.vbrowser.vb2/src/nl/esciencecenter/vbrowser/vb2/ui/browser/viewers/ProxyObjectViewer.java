@@ -23,13 +23,15 @@ package nl.esciencecenter.vbrowser.vb2.ui.browser.viewers;
 
 import java.awt.BorderLayout;
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.EmbeddedViewer;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.EmbeddedViewer;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
@@ -122,7 +124,7 @@ public class ProxyObjectViewer extends EmbeddedViewer
 
     
     @Override
-    public void doStartViewer() 
+    public void doStartViewer(String optMethodName) 
     {
         try
         {
@@ -163,6 +165,12 @@ public class ProxyObjectViewer extends EmbeddedViewer
     protected void doUpdateURI(URI uri)
     {
         // need viewNode;
+    }
+
+    @Override
+    public Map<String, List<String>> getMimeMenuMethods()
+    {
+        return null;
     }
 
    

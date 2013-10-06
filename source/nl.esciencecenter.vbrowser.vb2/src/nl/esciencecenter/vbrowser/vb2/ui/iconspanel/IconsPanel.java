@@ -21,6 +21,7 @@
 package nl.esciencecenter.vbrowser.vb2.ui.iconspanel;
 
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureListener;
@@ -145,6 +146,7 @@ public class IconsPanel extends JPanel implements ListDataListener, ViewNodeCont
 		// layoutmanager: 
 		this.layoutManager=new IconLayoutManager(this.uiModel); 
 		this.setLayout(layoutManager);
+        //this.setLayout(new FlowLayout());
 		this.setBackground(uiModel.getCanvasBGColor()); 
 	}
 	

@@ -25,6 +25,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.ProxyBrowser;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs.VRSProxyFactory;
+import nl.esciencecenter.vbrowser.vb2.vlet.viewers.VLTermStarter;
 import nl.esciencecenter.vlet.VletConfig;
 import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.VRSContext;
@@ -48,6 +49,8 @@ public class testVRSBrowser
 		    VRSContext context=VRS.getDefaultVRSContext(); 
 		    platform.setUIResourceLoader(new VRSResourceLoader(context));
             
+		    platform.getViewerRegistry().registerViewer(VLTermStarter.class);
+		    
 		    ProxyBrowser frame=(ProxyBrowser)platform.createBrowser(); 
     		ProxyNode root = fac.openLocation("myvle:/"); 
     		

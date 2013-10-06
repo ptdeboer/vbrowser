@@ -28,7 +28,9 @@ import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeContainer;
 
 public interface BrowserInterface
 {
-    /** Returns master platform this browser is associated with */ 
+    /** 
+     * Returns master platform this browser is associated with
+     */ 
     public BrowserPlatform getPlatform(); 
     
     public void handleException(String actionText,Throwable exception);
@@ -36,6 +38,5 @@ public interface BrowserInterface
 	public JPopupMenu createActionMenuFor(ViewNodeContainer container, ViewNode viewNode,boolean canvasMenu);
 
     public void handleNodeAction(ViewNode node, Action action);
-    
-   
+      
 }

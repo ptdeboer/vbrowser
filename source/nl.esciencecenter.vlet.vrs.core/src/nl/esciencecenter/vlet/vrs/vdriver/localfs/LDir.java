@@ -28,8 +28,6 @@ import java.io.IOException;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.local.LocalFSNode;
-import nl.esciencecenter.ptk.net.URIFactory;
-import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -37,8 +35,6 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.ResourceAlreadyExistsException;
 import nl.esciencecenter.vlet.exception.ResourceReadAccessDeniedException;
 import nl.esciencecenter.vlet.vrs.VNode;
-import nl.esciencecenter.vlet.vrs.VRS;
-import nl.esciencecenter.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.esciencecenter.vlet.vrs.vfs.VDir;
 import nl.esciencecenter.vlet.vrs.vfs.VFS;
 import nl.esciencecenter.vlet.vrs.vfs.VFSNode;

@@ -160,11 +160,11 @@ public class LocalFilesystem extends FileSystemNode
         
         if (node.exists() == true)
         {
-            if (node.isSymbolicLink())
-            {
-                return new LFile(this, node);
-            }
-            else if (node.isFile())
+//            if (node.isSymbolicLink()&&node.isBrokenLink())
+//            {
+//                return new LFile(this, node);
+//            }
+            if (node.isFile())
             {
                 return new LFile(this, node);
             }
@@ -173,27 +173,20 @@ public class LocalFilesystem extends FileSystemNode
                 LDir dir = new LDir(this, node);
                 return dir;
             }
-            else
-            {
-                throw new ResourceNotFoundException("Couldn't handle unknown resource type:" + path);
-            }
         }
-        else
+        
+        try
         {
-            try
+            // broken link handling: 
+            if (node.isBrokenLink())
             {
-                // broken link handling: 
-                if (node.isBrokenLink())
-                {
-                    return new LFile(this, node);
-                }
-            }
-            catch (IOException e)
-            {
-                throw new VrsException(e.getMessage(),e); 
+                return new LFile(this, node);
             }
         }
-
+        catch (IOException e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
 
 //        // ===================================================
 //        // Windows hack. The drive path "/A:/" doesn't exists

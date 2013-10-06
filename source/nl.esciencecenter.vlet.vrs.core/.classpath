@@ -9,5 +9,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nl.esciencecenter.vbrowser.vrs"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nl.esciencecenter.ptk.ui"/>
+	<classpathentry kind="src" path="/nl.esciencecenter.ptk.util.vterm"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

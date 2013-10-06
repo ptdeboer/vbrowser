@@ -33,8 +33,8 @@ import nl.esciencecenter.ptk.ui.util.UIResourceLoader;
 import nl.esciencecenter.vbrowser.vb2.ui.dnd.DnDUtil;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactoryRegistry;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerRegistry;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerResourceHandler;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerRegistry;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerResourceHandler;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 /** 

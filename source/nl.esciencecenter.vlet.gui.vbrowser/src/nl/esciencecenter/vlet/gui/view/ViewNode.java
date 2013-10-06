@@ -21,6 +21,7 @@
 
 package nl.esciencecenter.vlet.gui.view;
 
+import java.awt.Dimension;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -84,10 +85,10 @@ public class ViewNode
     {
         // Update icon. bypass ProxyNode: 
         Icon defIcon = UIGlobal.getIconProvider().createIcon(null,
-                iconUrl,false,getIconSize(),false);  
+                iconUrl,false,getIconDimension(),false,false);  
         
         Icon selIcon = UIGlobal.getIconProvider().createIcon(null,
-                iconUrl,false,getIconSize(),true); 
+                iconUrl,false,getIconDimension(),true,false); 
    
         if ((defIcon!=null) && (selIcon!=null))
         {
@@ -225,6 +226,11 @@ public class ViewNode
     private int getIconSize()
     {
         return iconSize;
+    }
+
+    private Dimension getIconDimension()
+    {
+        return new Dimension(iconSize,iconSize); 
     }
 
     public void setTargetVrl(VRL targetVrl)

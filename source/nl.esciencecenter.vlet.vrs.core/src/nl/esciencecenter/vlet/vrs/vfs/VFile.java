@@ -52,7 +52,7 @@ public abstract class VFile extends VFSNode implements VSize,VStreamAccessable /
     @Override 
     public String getResourceType()
     {
-        return VFS.FILE_TYPE;
+        return VFS.FILE_TYPE; 
     }
 
     /**

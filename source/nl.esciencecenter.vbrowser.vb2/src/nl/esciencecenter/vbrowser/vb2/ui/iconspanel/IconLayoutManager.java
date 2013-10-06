@@ -32,25 +32,24 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 
 /** 
- * Simple icons layout manager. 
- * Starts icons in upper right and adds icons either 
- * in top down (fitting in window) and expand left to right order
- * (Horizotal Orientation).
- * Or left right (fitting in window) and expanding top - down 
- * in vertical direction (Vertical Orientation).
+ * Icons Panel layout manager. 
+ * Default Icon Flow: Horizontal Flow:<br>
+ * Starts icons in upper left and adds icons to the right, fitting window width, and expand downwards. 
+ * List View Flow: Vertical Flow:<br>
+ * Start Upper Left, adding icons downwards, fitting window height, and expand to the left. 
  *  
  * @author Piter T. de Boer.
  */
 public class IconLayoutManager implements LayoutManager
 {
-	private static ClassLogger logger; 
-	
+	private static ClassLogger logger=ClassLogger.getLogger(IconLayoutManager.class); 
+		
 	{
-		logger=ClassLogger.getLogger(IconLayoutManager.class); 
+	    //logger.setLevelToDebug();
 	}
 	
 	private UIViewModel uiModel;
-	private Dimension prefSize;
+	private Dimension prefSize=null;
 	private boolean changed=true; 
 	
 	public IconLayoutManager(UIViewModel model)
@@ -70,36 +69,36 @@ public class IconLayoutManager implements LayoutManager
 
 	public void addLayoutComponent(String name, Component comp)
 	{
-		this.changed=true; 
 		logger.debugPrintf(">>> addLayoutComponent:'%s' => %c <<<\n",name,comp); 
+		this.changed=true; 
 	}
 
 	public void layoutContainer(Container parent)
 	{
-		checkAlignIcons(parent); 
+	    logger.debugPrintf(">>> layoutContainer() <<<\n");
+		checkAlignIcons(parent,true); 
 	}
 	
-	private Dimension checkAlignIcons(Container parent)
+	private Dimension checkAlignIcons(Container parent,boolean doLayout)
 	{
-	    // BUGG !
-	    // if (this.changed==true) 
-	    this.prefSize=alignIcons(parent);
-		this.changed=false; 
+	    Dimension newSize=alignIcons(parent,doLayout);
+		this.changed=(newSize!=prefSize); 
+		prefSize=newSize;
 		return this.prefSize; 
 	}
 	
 	public Dimension minimumLayoutSize(Container parent)
 	{
-		logger.debugPrintf(">>> minimumLayoutSize() <<<\n");
-		return checkAlignIcons(parent);  
- 
-		// return alignIcons(parent); 
+	    logger.debugPrintf(">>> minimumLayoutSize() <<<\n");
+        return checkAlignIcons(parent,false);  
 	}
 
 	public Dimension preferredLayoutSize(Container parent)
 	{
-		logger.debugPrintf(">>> preferredLayoutSize() <<<\n");
-		return checkAlignIcons(parent);  
+	    logger.debugPrintf(">>> preferredLayoutSize() <<<\n");
+	    
+	    // TBI: check bug: align icons now during calculations.  
+	    return alignIcons(parent,true); 
 	}
 	
 	public void removeLayoutComponent(Component comp)
@@ -115,23 +114,23 @@ public class IconLayoutManager implements LayoutManager
      * Do not trigger new resize events to prevent an endless aligniIcons loop !  
      */
 
-    protected Dimension alignIcons(Container container)
+    protected Dimension alignIcons(Container container,boolean doLayout)
     {
-    	logger.debugPrintf(">>> alignIcons <<<\n"); 
+    	logger.debugPrintf(">>> alignIcons:"+doLayout+"<<<\n"); 
 
         int row = 0;
         int column = 0;
-        int xpos = uiModel.getIconHGap(); // start with offset 
-        int ypos = uiModel.getIconVGap(); // start with offset 
+
         int maxy = 0;
         int maxx=0; 
         
-        
+        // Layout wihtin boundaries of current container.  
         Dimension targetSize=getTargetSize(container);  
 
         // get max width and max height 
-        int cellMaxWidth=0; 
-        int cellMaxHeight=0;
+        Dimension cellMaxPrefSize=new Dimension(0,0); 
+        Dimension cellMaxMinSize=new Dimension(0,0); 
+        
         
         Component[] childs = container.getComponents();
         
@@ -141,67 +140,81 @@ public class IconLayoutManager implements LayoutManager
             return new Dimension(0,0); 
         }
         
-        // PASS I) Scan buttons for grid width and height 
+        // PASS I) Scan buttons for preferred and minimum sizes 
         for (Component comp : childs)
         {
             if (comp==null)
                 continue;
-            Dimension size = comp.getPreferredSize(); 
             
-            if (size.width>cellMaxWidth)
-               cellMaxWidth=comp.getWidth(); 
-            if (size.height>cellMaxHeight)
-                cellMaxHeight=comp.getHeight();
+            updateMax(cellMaxPrefSize,comp.getPreferredSize()); 
+            updateMax(cellMaxMinSize,comp.getMinimumSize()); 
         }
         
+        int cellMaxWidth=cellMaxPrefSize.width;
+        int cellMaxHeight=cellMaxPrefSize.height;
+                
         // scan button for grid width and height 
+        
+        int currentXpos = uiModel.getIconHGap(); // start with offset 
+        int currentYpos = uiModel.getIconVGap(); // start with offset 
+        
         for (Component comp : childs)
         {
-            if (comp==null)
-                continue;
+            logger.debugPrintf("Evaluation:%s\n",comp); 
             
-            // I) place IconLabel
-            Point pos=null;
+            if ((comp==null) || (comp.isVisible()==false))
+            {
+                continue;
+            }
+            
+            // Ia) place IconLabel
+            Point currentPos=null;
             
             if (uiModel.getIconLabelPlacement()==UIViewModel.UIDirection.VERTICAL)
             {
-                 pos = new Point(xpos+cellMaxWidth/2-comp.getSize().width/2, ypos);
+                currentPos = new Point(currentXpos+cellMaxWidth/2-comp.getSize().width/2, currentYpos);
             }
             else
             {
-                 pos = new Point(xpos, ypos); // align to left
+                currentPos = new Point(currentXpos, currentYpos); // align to left
+            }
+
+            // Ib) Update Current Component:
+            if (doLayout)
+            {
+                // actual update of Component: 
+                comp.setLocation(currentPos);
+                prefSize=comp.getPreferredSize();
+                comp.setSize(prefSize); 
             }
             
-            comp.setLocation(pos);// set new location since GridLayout Somehow doesn't work ! 
-
-            // use GridLayoutManager: STIL DOESN'T WORK 
-            //c.gridx=column; 
-            //c.gridy=row; 
-            //this.add(bicon,c);
-            
-            // II) Current layout stats  
-            int bottom = pos.y + comp.getSize().height;
+            // II) Current Icon Flow Layout stats  
+            int bottom = currentPos.y + comp.getSize().height;
 
         	if (bottom > maxy)
+        	{
         		maxy = bottom; // lowest y coordinate of this row
+        	}
         	
-        	int right = pos.x + comp.getSize().width;
+        	int right = currentPos.x + comp.getSize().width;
 
         	if (right > maxx)
+        	{
         		maxx = right; // rightmost x coordinate of this column
-
-        	//III) new position 
+        	}
+        	
+        	//III) Calculate Next Position 
             if (this.uiModel.getIconLayoutDirection()==UIViewModel.UIDirection.HORIZONTAL)
             {
-            	xpos+=cellMaxWidth+uiModel.getIconHGap();
+            	currentXpos+=cellMaxWidth+uiModel.getIconHGap();
             	column++; //next column
 
             	// check next position
-            	if (xpos+cellMaxWidth >= targetSize.width)
+            	if (currentXpos+cellMaxWidth >= targetSize.width)
             	{
             		// reset to xpos to left margin, increase new ypos. 
-            		xpos = uiModel.getIconHGap();;// reset to defaul offset
-            		ypos = maxy + uiModel.getIconVGap(); // next row
+            		currentXpos = uiModel.getIconHGap();;// reset to defaul offset
+            		currentYpos = maxy + uiModel.getIconVGap(); // next row
             		//ypos += celly + browser_icon_gap_width; // next row
             		column = 0;
             		row++;
@@ -209,46 +222,45 @@ public class IconLayoutManager implements LayoutManager
             }
             else
             {
-            	ypos+=cellMaxHeight+uiModel.getIconVGap();
+            	currentYpos+=cellMaxHeight+uiModel.getIconVGap();
             	row++;
             	//  check next position
-            	if (ypos+cellMaxHeight  > targetSize.height)
+            	if (currentYpos+cellMaxHeight  > targetSize.height)
             	{
             		// reset to ypos to top margin, increase new xpos. 
-            		ypos = uiModel.getIconVGap();;// reset to defaul offset
-            		xpos = maxx + uiModel.getIconHGap(); // next row
+            		currentYpos = uiModel.getIconVGap();;// reset to defaul offset
+            		currentXpos = maxx + uiModel.getIconHGap(); // next row
             		//ypos += celly + browser_icon_gap_width; // next row
             		row = 0;
             		column++;
             	}
             }
-            
-            if (comp.isVisible()==false)
-            	comp.setVisible(true);
-            
-            // parent may setSize of child! 
-            comp.setSize(comp.getPreferredSize()); 
-
-            
-        }// *** END for node:nodeLocations
+        } // END for (node:nodeLocations)
        
         
         // IV) update sizes 
-        // IMPORTANT: alignIcons is called during doLayout, so 
-        // NO setSize may be called, since this retriggers a doLayout ! 
-        // ScrollPane Update: 
-        //  when setting the preferredSize, the ParentScrollPane 
-        //  will be informed about the new size
+        // Important: alignIcons() is called during doLayout(), so 
+        // NO setSize may be called, since this re-triggers a doLayout ! 
+        // JScrollPane Update: 
+        //   when setting the preferredSize, the ParentScrollPane 
+        //   will be informed about the new size and update the croll bars. 
         
         //update with real size
         Dimension size = new Dimension(maxx,maxy);
-        
-        //container.setSize(lastSize); 
-        //container.setPreferredSize(size);
+        // check:
         return size; 
     }
 
-	private Dimension getTargetSize(Container container)
+	private void updateMax(Dimension maxDimension, Dimension dim)
+    {
+	    if (maxDimension.height<dim.height)
+	        maxDimension.height=dim.height;
+	    
+	    if (maxDimension.width<dim.width)
+	        maxDimension.width=dim.width;
+    }
+
+    private Dimension getTargetSize(Container container)
 	{
         Dimension targetSize=null;
      
@@ -258,20 +270,18 @@ public class IconLayoutManager implements LayoutManager
         // Panel is embedded in a ScrollPane or similar widget. 
 		if (parent instanceof JViewport)
         {
-			// get VISIBLE part of ViewPort as target size. 
-		    //Container gran = container.getParent(); 
-		    //if (gran instanceof JScrollPane)
+			// Get VISIBLE part of ViewPort as target size. 
+		    // Container gran = container.getParent(); 
+		    // if (gran instanceof JScrollPane)
         	JViewport vport=(JViewport)parent; 
             targetSize=vport.getExtentSize();
-    
-            //System.err.println("targetSize="+targetSize);
-            //System.err.println("viewOffset="+viewOffset);
         }
         else 
         {
            targetSize = container.getSize();
         }
 		
+		logger.debugPrintf("Target Size of container=(%d,%d)\n",targetSize.width,targetSize.height);
 		return targetSize; 
 	}
 

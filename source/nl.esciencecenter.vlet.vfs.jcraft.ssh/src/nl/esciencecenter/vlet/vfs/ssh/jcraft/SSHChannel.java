@@ -29,12 +29,11 @@ import java.net.UnknownHostException;
 
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.SecretHolder;
-import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.util.vlterm.ShellChannel;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vlet.vrs.VRSContext;
-import nl.esciencecenter.vlet.vrs.io.VShellChannel;
 
 import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSchException;
@@ -45,7 +44,7 @@ import com.jcraft.jsch.UserInfo;
  * SSH Shell Channel. 
  *  
  */
-public class SSHChannel implements VShellChannel
+public class SSHChannel implements ShellChannel
 {
     public static class SSHChannelOptions
     {
@@ -67,10 +66,7 @@ public class SSHChannel implements VShellChannel
         //logger.setLevelToDebug(); 
     }
     
-    public static SSHChannel createSSHChannel(VRSContext context,String user,String host,int port, SSHChannelOptions options) throws VrsException
-    {
-        return new SSHChannel(context,user,host,port,options); 
-    }
+   
     
     // ========================================================================
     
@@ -145,6 +141,8 @@ public class SSHChannel implements VShellChannel
 
     private int port = 22;
 
+    private String startPath="/"; 
+    
     private SSHChannelOptions sshOptions=new SSHChannelOptions();
   
     private OutputStream stdin=null; 
@@ -155,16 +153,19 @@ public class SSHChannel implements VShellChannel
 
     private JCraftClient jcraftClient; 
     
-    public SSHChannel(VRSContext context, String user, String host,int port,SSHChannelOptions options) throws VrsException
+    public SSHChannel(VRSContext context, String user, String host,int port, String path, SSHChannelOptions options) throws VrsException
     {
         this.vrsContext=context; 
         this.user=user; 
         this.port=port; 
         this.host=host; 
         this.sshOptions=options;
+        this.startPath=path;
         
         if (sshOptions==null) 
+        {
             sshOptions=new SSHChannelOptions(); //defaults 
+        }
         
         try
         {
@@ -194,15 +195,21 @@ public class SSHChannel implements VShellChannel
     {
         try
         {
-         
             jschSession=createSession(user,host,port,sshOptions,new MyUserInfo()); 
+            
         }
         catch (JSchException e)
         {
-           throw new IOException("Coudn't create Session to:"+this,e);   
+            throw new IOException("Coudn't create Session to:"+this+"\nReason="+e.getMessage(),e);   
         }
         
         connectTo(jschSession);
+        
+        if (this.startPath!=null)
+        {
+            this.initStartPath(this.startPath); 
+        }
+        
     }
     
     
@@ -292,7 +299,7 @@ public class SSHChannel implements VShellChannel
     }
 
     @Override
-    public void disconnect()
+    public void disconnect(boolean waitForTermination)
     {
         if (this.jschChannel!=null)
             this.jschChannel.disconnect();
@@ -304,10 +311,12 @@ public class SSHChannel implements VShellChannel
         
         this.jschSession=null;
         
-        
-        synchronized(this.waitForObject)
+        if (waitForTermination)
         {
-            this.waitForObject.notifyAll();
+            synchronized(this.waitForObject)
+            {
+                this.waitForObject.notifyAll();
+            }
         }
         
     }
@@ -399,10 +408,25 @@ public class SSHChannel implements VShellChannel
         return jschChannel.getExitStatus(); 
     }
 
-    public void setCWD(String path)
+    public void initStartPath(String path)
     {
         
-        String cmd="cd \""+path+"\"; clear; echo 'VLTerm started...' ; \n"; 
+        String cmd="cd \""+path+"\"; clear; echo 'SSHCHannel started...' ; \n"; 
+        
+        try
+        {
+            this.stdin.write(cmd.getBytes());
+            this.stdin.flush(); 
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        } 
+    }
+
+    public void setCWD(String path)
+    {
+        String cmd="cd \""+path+"\";\n"; 
         
         try
         {

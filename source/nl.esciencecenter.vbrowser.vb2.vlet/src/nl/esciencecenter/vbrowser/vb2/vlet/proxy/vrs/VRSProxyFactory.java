@@ -45,10 +45,11 @@ public class VRSProxyFactory extends ProxyFactory
     static
     {
     	logger=ClassLogger.getLogger(VRSProxyFactory.class);
-    	logger.setLevelToDebug();
     }
     
 	private static VRSProxyFactory instance; 
+	
+    private static VRSContext staticContext; 
     
     public static VRSProxyFactory getDefault() 
     {
@@ -56,7 +57,18 @@ public class VRSProxyFactory extends ProxyFactory
             instance=new VRSProxyFactory();
               
         return instance; 
-   }
+    }
+    
+    public static synchronized VRSContext getProxyVRSContext()
+    {
+        if (staticContext==null)
+        {
+            staticContext=new VRSContext();
+        }
+        
+        return staticContext;
+    }
+    
     // ========================================================================
     // 
     // ========================================================================
@@ -69,7 +81,7 @@ public class VRSProxyFactory extends ProxyFactory
     {
         super(); 
         
-        this.vrsContext=VRS.getDefaultVRSContext(); 
+        this.vrsContext=getProxyVRSContext();
         this.vrsClient=new VRSClient(vrsContext); 
     }
     

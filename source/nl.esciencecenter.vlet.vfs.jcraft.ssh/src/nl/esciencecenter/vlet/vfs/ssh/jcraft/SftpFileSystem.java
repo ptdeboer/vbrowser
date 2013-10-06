@@ -1759,22 +1759,20 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
 
         throw new VrsException("Failed to create new local tunnel port");
     }
-
-   
+  
 
     public SSHChannel createShellChannel(VRL optLocation) throws IOException
     {
         try
         {
-
+            String startPath = optLocation.getPath();
+            
             SSHChannelOptions options = new SSHChannelOptions();
-            SSHChannel sshChannel = new SSHChannel(vrsContext, getUsername(), getHostname(), getPort(), options);
-    
-            String path = optLocation.getPath();
+            SSHChannel sshChannel = new SSHChannel(vrsContext, getUsername(), getHostname(), getPort(), startPath, options);
     
             // connect but re-use current session and options;
             sshChannel.connectTo(session);
-            sshChannel.setCWD(path);
+            //sshChannel.setCWD(path);
             return sshChannel;
         }
         catch (IOException e)

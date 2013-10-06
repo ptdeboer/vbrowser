@@ -381,21 +381,20 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
         this.changed = false; // new Attribute: reset 'changed' flag.
     }
 
-    /**
-     * Return duplicate of this object. This method returns the same class
-     * instead of the object.clone() method All values are copied.
-     * 
-     * @return
-     */
-
+    /** See {@link #duplicate()} */ 
     public Attribute clone()
     {
         return new Attribute(this);
     }
-
+    
+    /**
+     * Return duplicate of this object. This method returns the same class
+     * instead of the object.clone() method All values are copied.
+     * @return full non-shallow copy of this Object 
+     */
     public Attribute duplicate()
     {
-        return clone();
+        return new Attribute(this);
     }
 
     // =================================================================
@@ -404,6 +403,7 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
   
     /**
      * Get Type of Attribute. 
+     * Value type of ENUM elements is String. 
      */
     public AttributeType getType()
     {

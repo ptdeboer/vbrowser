@@ -236,12 +236,12 @@ public abstract class ProxyNode
         this.getProxyFactory().handleException(message,e);  
     }
 
-    public Icon getIcon(UIViewModel model) throws ProxyException
+    public Icon getIcon(UIViewModel model,boolean greyOut,boolean focus) throws ProxyException
     {
-        return getIcon(model.getIconSize()); 
+        return getIcon(model.getIconSize(),greyOut,focus); 
     }
     
-    public Icon getIcon(int size) throws ProxyException
+    public Icon getIcon(int size,boolean greyOut,boolean focus) throws ProxyException
     {
         IconProvider provider=BrowserPlatform.getInstance().getIconProvider();
         
@@ -254,7 +254,8 @@ public abstract class ProxyNode
                 false, // islink
                 mimeType,
                 size,
-                false); //grey out 
+                greyOut,
+                focus);  
     }
 
     public String getName() // no throw: name should already be fetched 
@@ -319,9 +320,15 @@ public abstract class ProxyNode
 
     public ViewNode createViewItem(UIViewModel model) throws ProxyException
     {
-        ViewNode viewNode=new ViewNode(locator,getIcon(model),getName(),isComposite());
+        Icon defaultIcon=getIcon(model,false,false);
+        ViewNode viewNode=new ViewNode(locator,defaultIcon,getName(),isComposite());
         viewNode.setResourceType(this.getResourceType()); 
         viewNode.setMimeType(this.getMimeType());
+
+        // other 
+        viewNode.setIcon(ViewNode.FOCUS_ICON,getIcon(model,false,true));
+        viewNode.setIcon(ViewNode.SELECTED_ICON,getIcon(model,true,false));
+        viewNode.setIcon(ViewNode.SELECTED_FOCUS_ICON,getIcon(model,true,true)); 
         
         return viewNode; 
     } 

@@ -7,5 +7,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vrs.core"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/jcraft/jsch-0.1.50.jar"/>
+	<classpathentry kind="src" path="/nl.esciencecenter.ptk.util.vterm"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

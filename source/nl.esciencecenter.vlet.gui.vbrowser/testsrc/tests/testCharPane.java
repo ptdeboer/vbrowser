@@ -23,8 +23,8 @@ package tests;
 
 import java.awt.Frame;
 
-import nl.esciencecenter.vlet.gui.util.charpane.CharPane;
-import nl.esciencecenter.vlet.util.vlterm.TermPanel;
+import nl.esciencecenter.ptk.ui.charpane.CharPane;
+import nl.esciencecenter.ptk.util.vlterm.TermPanel;
 
 
 public class testCharPane

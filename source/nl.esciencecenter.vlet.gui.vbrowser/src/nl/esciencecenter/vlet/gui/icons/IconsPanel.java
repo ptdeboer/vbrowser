@@ -390,7 +390,9 @@ public class IconsPanel extends BrowserJPanel implements ProxyResourceEventListe
     	    uiAddIconItems(items);
 	}
     
-    /** Run synchronized with Gui thread */
+    /** 
+     * Run synchronized with Gui thread 
+     */
     protected synchronized void uiAddIconItems(final ViewNode[] items) 
     {
         if (UIGlobal.isGuiThread()==false)
@@ -443,14 +445,14 @@ public class IconsPanel extends BrowserJPanel implements ProxyResourceEventListe
             }
         }
         
-        // do layout NOW 
-        this.doLayout(); 
+        // do layout NOW ?
+        //this.doLayout(); 
 
         // defer validation +repaint; 
         this.revalidate();
-        this.repaint(); 
+        //this.repaint(); 
         
-		debugPrintf("syncAddPChilds() END: done\n");
+		debugPrintf("uiAddIconItems() END: done\n");
     }
 
     

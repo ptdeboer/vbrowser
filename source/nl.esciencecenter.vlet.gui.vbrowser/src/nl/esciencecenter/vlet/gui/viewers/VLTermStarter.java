@@ -36,6 +36,8 @@ import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.StringUtil;
+import nl.esciencecenter.ptk.util.vlterm.ShellChannel;
+import nl.esciencecenter.ptk.util.vlterm.VTerm;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.actions.ActionContext;
@@ -43,7 +45,6 @@ import nl.esciencecenter.vlet.actions.ActionMenuConstants;
 import nl.esciencecenter.vlet.actions.ActionMenuMapping;
 import nl.esciencecenter.vlet.gui.UIGlobal;
 import nl.esciencecenter.vlet.util.vlterm.VLTerm;
-import nl.esciencecenter.vlet.vrs.io.VShellChannel;
 import nl.esciencecenter.vlet.vrs.io.VShellChannelCreator;
 import nl.esciencecenter.vlet.vrs.vfs.VFS;
 import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
@@ -180,7 +181,7 @@ public class VLTermStarter extends ViewerPlugin implements ActionListener
 	
 	public void startVLTerm(VRL loc) 
 	{
-	    VLTerm term=null; 
+	    VTerm term=null; 
 	    
         try
         {
@@ -194,7 +195,7 @@ public class VLTermStarter extends ViewerPlugin implements ActionListener
             
             if (vfs instanceof VShellChannelCreator)
             {
-                VShellChannel shellChan = ((VShellChannelCreator)vfs).createShellChannel(loc);
+                ShellChannel shellChan = ((VShellChannelCreator)vfs).createShellChannel(loc);
                 term=VLTerm.newVLTerm(shellChan); 
             }
             else

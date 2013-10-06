@@ -57,7 +57,7 @@ import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTable;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTableModel;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.TableDataProducer;
 import nl.esciencecenter.vbrowser.vb2.ui.tree.ResourceTree;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerPanel;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerPanel;
 
 /**
  * Master browser frame.  

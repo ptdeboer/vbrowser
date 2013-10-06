@@ -21,6 +21,7 @@
 package nl.esciencecenter.vbrowser.vb2.ui.iconspanel;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.dnd.DnDConstants;
@@ -31,6 +32,7 @@ import java.awt.event.FocusListener;
 
 import javax.swing.JLabel;
 import javax.swing.TransferHandler;
+import javax.swing.border.EtchedBorder;
 
 import nl.esciencecenter.ptk.ui.fonts.FontInfo;
 import nl.esciencecenter.vbrowser.vb2.ui.dnd.ViewNodeDropTarget;
@@ -67,7 +69,7 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
         initModel(uiModel); 
 
         this.setIcon(viewNode.getIcon());
-        updateLabelText(viewNode.getName(),false); 
+        updateLabelText(viewNode.getName()); 
 
         boolean visible=true; 
 
@@ -102,11 +104,12 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
             this.setVerticalTextPosition(JLabel.CENTER);
             this.setHorizontalTextPosition(JLabel.RIGHT);
         }
+        
         // === Listeners === 
         this.setFocusable(true);
         // handle own focus events. 
         this.addFocusListener(this);  
-        // this.addMouseListener(handler); 
+        
     }
     
     public void setViewComponentEventAdapter(ViewContainerEventAdapter handler)
@@ -140,7 +143,12 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
         this.setTransferHandler(transferHandler);   
     }
     
-    public void updateLabelText(String text,boolean hasFocus)
+    public void updateLabelText(String text)
+    {
+        setText(text);
+    }
+
+    public void updateLabelText2(String text,boolean hasFocus)
     {
         if (text==null)
             text=""; 
@@ -217,9 +225,17 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
         htmlText+="</html>"; 
 
         setText(htmlText);
-        
+     
+        if (hasFocus)
+        {
+            this.setBorder(new EtchedBorder());
+        }
+        else
+        {
+            this.setBorder(null); 
+        }
+                
     }
-
     public ViewNode getViewNode() 
     {
         return this.viewNode; 
@@ -232,7 +248,7 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
 
     public void updateFocus(boolean hasFocus)
     {
-        updateLabelText(viewNode.getName(),hasFocus); 
+        updateIcon(selected,hasFocus); 
         repaint();
     }
 
@@ -276,27 +292,55 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
     public void setSelected(boolean val)
     {
         this.selected=val;
-        
-        if (val)
+        updateIcon(selected,false);
+        this.repaint();
+    }
+    
+    protected void updateIcon(boolean isSelected,boolean hasFocus)
+    {
+        if (isSelected)
         {
-            setIcon(viewNode.getSelectedIcon());
-            //textLabel.setOpaque(true);
-            //prev_label_color=textLabel.getForeground();
-            setForeground(uiModel.getFontHighlightColor()); 
+            if (hasFocus)
+            {
+                setIcon(viewNode.getIcon(ViewNode.SELECTED_FOCUS_ICON));
+                //textLabel.setOpaque(true);
+                //prev_label_color=textLabel.getForeground();
+                setForeground(uiModel.getFontHighlightColor()); 
+            }
+            else
+            {
+                setIcon(viewNode.getIcon(ViewNode.SELECTED_ICON));
+                //textLabel.setOpaque(true);
+                //prev_label_color=textLabel.getForeground();
+                setForeground(uiModel.getFontHighlightColor()); 
+            }
         }
         else
         {
-            setIcon(viewNode.getIcon());
-            //textLabel.setOpaque(false);
-            setForeground(uiModel.getFontColor()); 
+            if (hasFocus)
+            {
+                setIcon(viewNode.getIcon(ViewNode.FOCUS_ICON));
+                //textLabel.setOpaque(false);
+                setForeground(uiModel.getFontHighlightColor()); 
+            }
+            else
+            {
+                setIcon(viewNode.getIcon());
+                //textLabel.setOpaque(false);
+                setForeground(uiModel.getFontColor());    
+            }
         }
-        
-        this.repaint();
     }
     
     public boolean isSelected()
     {
     	return this.selected; 
+    }
+    
+    public Dimension getPreferredSize()
+    {
+        Dimension size=super.getPreferredSize(); 
+        return size;  
     }
 
 }

@@ -36,9 +36,13 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 public class ViewNode
 {
     public static final String DEFAULT_ICON="defaultIcon"; 
-    
-    public static final String SELECTED_ICON="defaultIcon"; 
-	
+
+    public static final String FOCUS_ICON="focusIcon"; 
+
+    public static final String SELECTED_ICON="selectedIcon"; 
+
+    public static final String SELECTED_FOCUS_ICON="selectedFocusIcon"; 
+
 	/** Atomic Locator, never changes during the lifetime of this object */
     protected final VRL locator;
     
@@ -109,7 +113,19 @@ public class ViewNode
      */
     public Icon getIcon(String name)
     {
-        return iconMapping.get(name); 
+        Icon icon=iconMapping.get(name); 
+        if (icon!=null)
+        {
+            return icon;
+        }
+                
+        icon=iconMapping.get(DEFAULT_ICON); 
+        return icon;
+    }
+    
+    public void setIcon(String name,Icon icon)
+    {
+        iconMapping.put(name,icon);  
     }
     
     public boolean isBusy()

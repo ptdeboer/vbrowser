@@ -65,7 +65,15 @@ public class Action
         this.arguments=new StringList(); 
         arguments.add(argument); 
     }
-	
+
+	public Action(Object eventSource,ViewNode nodeSource,ActionMethod actionMethod,String arguments[])
+	{
+	    this.source=eventSource; 
+	    this.viewNode=nodeSource; 
+	    this.actionMethod=actionMethod; 
+	    this.arguments=new StringList(arguments); 
+    }
+
 	public ActionMethod getActionMethod()
 	{
 		return this.actionMethod;

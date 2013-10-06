@@ -139,16 +139,16 @@ public class IconsLayoutManager implements LayoutManager
             
             // set position and add to panel
             if (iconView.labelOrientation==IconViewType.Orientation.VERTICAL)
+            {
                  pos = new Point(xpos+cellMaxWidth/2-comp.getSize().width/2, ypos);
+            }
             else
+            {
                  pos = new Point(xpos, ypos); // align to left
+            }
             
-            comp.setLocation(pos);// set new location since GridLayout Somehow doesn't work ! 
-
-            // use GridLayoutManager: STIL DOESN'T WORK 
-            //c.gridx=column; 
-            //c.gridy=row; 
-            //this.add(bicon,c);
+            // Update Location 
+            comp.setLocation(pos); 
             
             // II) Current layout stats  
             int bottom = pos.y + comp.getSize().height;

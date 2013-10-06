@@ -27,6 +27,7 @@ import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSource;
+import nl.esciencecenter.vbrowser.vrs.mimetypes.MimeTypes;
 
 /**
  * combined Attribute+Presentation interface for AnyFile;   
@@ -121,6 +122,12 @@ public class AnyFileAttributes implements AttributeSource, IPresentable
 
         if (name.equalsIgnoreCase(""+FileAttribute.DIRNAME))
             return new Attribute(name,anyFile.getDirname());
+
+        if (name.equalsIgnoreCase(""+FileAttribute.MIMETYPE))
+        {
+            String mime=MimeTypes.getDefault().getMimeType(anyFile.getBasename()); 
+            return new Attribute(name,mime);
+        }
         
         try
         {

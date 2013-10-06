@@ -50,8 +50,8 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeDataSource;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEvent;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeEventNotifier;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTable;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerFrame;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerPanel;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerFrame;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerPanel;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
@@ -345,19 +345,17 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
                 doViewAsTable(); 
                 break; 
             case SHOW_PROPERTIES:
-                doOpenViewer(node,ProxyObjectViewer.class.getCanonicalName(),true); 
+                doOpenViewer(node,ProxyObjectViewer.class.getCanonicalName(),null,true); 
                 break;
             case VIEW_OPEN_DEFAULT:
-                doOpenViewer(node,null,false); 
+                doOpenViewer(node,null,null,false); 
                 break;
             case VIEW_WITH:
-                doOpenViewer(node,action.getArg0(),false); 
+                // Open viewer in new window.
+                doOpenViewer(node,action.getArg0(),action.getArg1(),true); 
                 break;
-
             default:
-    			logger.errorPrintf("\n",
-    			        ">>>\n>>> FIXME: ACTION NOT IMPLEMENTED:%s !\n<<<\n",
-    					action);
+    			logger.errorPrintf("<<< FIXME: ACTION NOT IMPLEMENTED:%s >>>\n", action);
     			break;
 		}
 	}
@@ -378,7 +376,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
         this.browserFrame.setViewMode(BrowserViewMode.ICONLIST);
     }
 
-    private void doOpenViewer(final ViewNode node,String optViewerClass,boolean standaloneWindow)
+    private void doOpenViewer(final ViewNode node,String optViewerClass,final String optMenuMethod, boolean standaloneWindow)
     {
         logger.infoPrintf("doOpenViewer:%s\n",node); 
         
@@ -392,7 +390,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
                 viewer=new ProxyObjectViewer(node); 
             }
             
-            if (viewer.isStandaloneViewer())
+            if (standaloneWindow || viewer.isStandaloneViewer())
             {
                 ViewerFrame frame=viewerManager.createViewerFrame(viewer,true);
                 frame.setVisible(true); 
@@ -412,7 +410,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
                 {
                     try
                     {
-                        finalViewer.startViewerFor(node.getVRL().toURI());
+                        finalViewer.startViewerFor(node.getVRL().toURI(),optMenuMethod);
                     }
                     catch (Throwable e)
                     {
@@ -429,10 +427,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
             this.handleException("Failed to create viewer for:"+node, e);
             return;
         }
-
     }
-
-  
     
     private void doViewAsIcons()
     {
@@ -517,7 +512,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
         }
         else
         {
-            this.doOpenViewer(actionNode,null,false);
+            this.doOpenViewer(actionNode,null,null,false);
         }
     }
 
@@ -629,7 +624,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
                 try
                 {
                     ProxyNode node = factory.openLocation(locator);
-                    setViewedNode(node, node.getIcon(16), addToHistory,newTab);
+                    setViewedNode(node, node.getIcon(16,false,false), addToHistory,newTab);
                 }
                 catch (Throwable e)
                 {

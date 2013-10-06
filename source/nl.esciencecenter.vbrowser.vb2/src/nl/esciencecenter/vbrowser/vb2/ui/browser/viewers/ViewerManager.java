@@ -3,9 +3,9 @@ package nl.esciencecenter.vbrowser.vb2.ui.browser.viewers;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.ProxyBrowser;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerFrame;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerPanel;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerpanel.ViewerRegistry;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerFrame;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerPanel;
+import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerRegistry;
 
 public class ViewerManager
 {

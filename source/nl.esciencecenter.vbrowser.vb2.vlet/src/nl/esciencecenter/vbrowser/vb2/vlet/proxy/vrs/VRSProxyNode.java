@@ -73,10 +73,6 @@ public class VRSProxyNode extends ProxyNode
         }
     }
     
-    protected boolean isLogicalNode()
-    {
-    	return (this.vnode instanceof LogicalResourceNode);
-    }
     
     @Override
     protected VRSProxyNode doGetParent() throws ProxyException
@@ -179,14 +175,18 @@ public class VRSProxyNode extends ProxyNode
     @Override
     public String getIconURL(String status,int size) throws ProxyException
     {
-    	if (isLogicalNode())
+        String url; 
+        
+    	if (vnode instanceof LogicalResourceNode)
     	{
-    		return ((LogicalResourceNode)vnode).getTargetIconURL();   
+    	    url=((LogicalResourceNode)vnode).getTargetIconURL();   
     	}
     	else
     	{
-    		return vnode.getIconURL(size);  
+    	    url = vnode.getIconURL(size);  
     	}
+    	
+    	return url; 
     }
 
 	@Override
@@ -212,7 +212,7 @@ public class VRSProxyNode extends ProxyNode
 	
 	protected void debug(String msg)
 	{
-		System.err.println("VRSProxyNode:"+msg); 
+		//System.err.println("VRSProxyNode:"+msg); 
 	}
 	
 	public String toString()

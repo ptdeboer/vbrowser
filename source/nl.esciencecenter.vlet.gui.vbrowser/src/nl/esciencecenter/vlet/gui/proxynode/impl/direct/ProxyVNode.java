@@ -21,6 +21,7 @@
 
 package nl.esciencecenter.vlet.gui.proxynode.impl.direct;
 
+import java.awt.Dimension;
 import java.lang.ref.WeakReference;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -86,13 +87,7 @@ import nl.esciencecenter.vlet.vrs.vrms.VResourceLink;
  */
 public final class ProxyVNode extends ProxyNode
 {
-    private static ClassLogger logger;
-    
-    static
-    {
-        logger=ClassLogger.getLogger(ProxyVNode.class);
-        //logger.setLevelToDebug();
-    }
+    private static ClassLogger logger=ClassLogger.getLogger(ProxyVNode.class);
     
 	// private static ReferenceQueue<ProxyTNode> garbageQueue= new ReferenceQueue<ProxyTNode>(); 
 	
@@ -2070,7 +2065,7 @@ public final class ProxyVNode extends ProxyNode
         {
             logger.debugPrintf("createDefaultIcon: I)\n");
             
-            Icon icon=iconProv.createIcon(nodeClassLoader,iconURL,showAsLink,size,greyOut);
+            Icon icon=iconProv.createIcon(nodeClassLoader,iconURL,showAsLink,new Dimension(size,size),greyOut,false);
          
             if  (icon!=null)
             {
@@ -2090,11 +2085,11 @@ public final class ProxyVNode extends ProxyNode
             iconURL=iconProv.createMimeTypeIconPath(mimeType);
         
             // try again using full (theme) mimetype path: ./<themes path>/iconURL
-            Icon icon = iconProv.createIcon(nodeClassLoader,iconURL,showAsLink,size,greyOut);
+            Icon icon = iconProv.createIcon(nodeClassLoader,iconURL,showAsLink,new Dimension(size,size),greyOut,false);
             
             if (icon!=null)
             {
-                logger.debugPrintf("createDefaultIcon: using theme mimetype IIb):%s\n",iconURL);
+                logger.debugPrintf("createDefaultIcon: using theme mimetype IIa):%s\n",iconURL);
                 return icon;
             }
         }
@@ -2102,10 +2097,10 @@ public final class ProxyVNode extends ProxyNode
         // still no icon: 
         if (iconURL!=null)
         {
-            logger.debugPrintf("createDefaultIcon: using mimetype IIa):%s\n",iconURL);
+            logger.debugPrintf("createDefaultIcon: using mimetype IIb):%s\n",iconURL);
         
             // try ./mimetypes/iconURL subpath 
-            Icon icon = iconProv.createIcon(nodeClassLoader,"mimetypes/"+iconURL,showAsLink,size,greyOut);
+            Icon icon = iconProv.createIcon(nodeClassLoader,"mimetypes/"+iconURL,showAsLink,new Dimension(size,size),greyOut,false);
             
             if (icon!=null)
                 return icon;

@@ -11,5 +11,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.lfc"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.srm"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vrs.core"/>
+	<classpathentry kind="src" path="/nl.esciencecenter.vbrowser.vb2.viewers"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk.util.vterm"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

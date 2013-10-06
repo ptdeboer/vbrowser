@@ -15,5 +15,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.jcraft.ssh"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.lfc"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.srm"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk.util.vterm"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
