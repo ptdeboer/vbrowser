@@ -27,6 +27,8 @@ import java.io.OutputStream;
 import java.net.Proxy;
 import java.net.URISyntaxException;
 
+import nl.esciencecenter.ptk.ssl.CertificateStore;
+import nl.esciencecenter.ptk.ssl.CertificateStoreException;
 import nl.esciencecenter.ptk.web.WebClient;
 import nl.esciencecenter.ptk.web.WebException;
 import nl.esciencecenter.ptk.web.WebException.Reason;
@@ -88,10 +90,14 @@ public class WebResourceSystem implements VResourceSystem, VStreamProducer
         // this.cache=new HTTPCache(context);
         try
         {
+            CertificateStore certStore=context.getConfigManager().getCertificateStore();
+            
             // multithreaded web client (!) 
             webClient=WebClient.createMultiThreadedFor(info.getServerVRL().toURI(),null);
+            webClient.setCertificateStore(certStore);
+            
         }
-        catch (WebException | URISyntaxException e)
+        catch (WebException | URISyntaxException | CertificateStoreException e)
         {
             throw new VrsException(e.getMessage(),e); 
         } 
@@ -177,11 +183,19 @@ public class WebResourceSystem implements VResourceSystem, VStreamProducer
             try
             {
                 webClient.connect();
+                return;
             }
             catch (WebException e)
             {
                 lastException=e; 
-                addCertificate();    
+                if (e.getReason()==Reason.HTTPS_SSLEXCEPTION)
+                {
+                    addCertificate();    
+                }
+                else
+                {
+                    break; 
+                }
             }
         } 
 
@@ -190,7 +204,7 @@ public class WebResourceSystem implements VResourceSystem, VStreamProducer
 
     private void addCertificate()
     {
-        System.err.printf("FIXME:AddCertificate:"+this); 
+        System.err.printf("FIXME:AddCertificate:%s\n",this); 
     }
 
     @Override
