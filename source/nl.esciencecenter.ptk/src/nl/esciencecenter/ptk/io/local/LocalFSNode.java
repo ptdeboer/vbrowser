@@ -127,30 +127,46 @@ public class LocalFSNode extends FSNode
     public String[] list() throws IOException
     {
         DirectoryStream<Path> dirStream = Files.newDirectoryStream(_path);
-        Iterator<Path> dirIterator = dirStream.iterator();
-        ArrayList<String> list = new ArrayList<String>();
-
-        while (dirIterator.hasNext())
+        try
         {
-            list.add(dirIterator.next().getFileName().toString());
+            Iterator<Path> dirIterator = dirStream.iterator();
+            ArrayList<String> list = new ArrayList<String>();
+    
+            while (dirIterator.hasNext())
+            {
+                list.add(dirIterator.next().getFileName().toString());
+            }
+    
+            return list.toArray(new String[0]);
         }
-
-        return list.toArray(new String[0]);
+        finally
+        {
+            dirStream.close();
+        }
     }
 
     @Override
     public LocalFSNode[] listNodes() throws IOException
     {
         DirectoryStream<Path> dirStream = Files.newDirectoryStream(_path);
-        Iterator<Path> dirIterator = dirStream.iterator();
-        ArrayList<LocalFSNode> list = new ArrayList<LocalFSNode>();
-
-        while (dirIterator.hasNext())
+        try
         {
-            list.add(new LocalFSNode(getFSHandler(),dirIterator.next()));
-        }
+            Iterator<Path> dirIterator = dirStream.iterator();
+            ArrayList<LocalFSNode> list = new ArrayList<LocalFSNode>();
+    
+            while (dirIterator.hasNext())
+            {
+                list.add(new LocalFSNode(getFSHandler(),dirIterator.next()));
+            }
+            
+            return list.toArray(new LocalFSNode[0]);
 
-        return list.toArray(new LocalFSNode[0]);
+        }
+        finally
+        {
+            dirStream.close();
+        }
+        
     }
 
     public void delete() throws IOException
