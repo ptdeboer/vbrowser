@@ -91,10 +91,14 @@ int main(int argc, char *argv[])
     	   {
     	      scriptname=strdup(argv[i+1]);
     	      scriptout=1;
+              i++;
+              continue; 
     	   }
     	   else if (strcmp(argv[i],"-sh")==0)
     	   {
     	      shellcmd=strdup(argv[i+1]);
+              i++; 
+              continue; 
     	   }
     	   else
     	   {
@@ -207,6 +211,8 @@ int pttyopen(int *masterfd, int *slavefd)
 
   if (ioctl(*slavefd, I_PUSH, "ptem") == -1)
   {
+      // Piter T. de Boer: happens when binary is started from command line shell which is already 
+      // asociated with a pty. Ignore.
       perror("slavefd.ioctl(\"ptem\")");
       //close(*masterfd);
       //close(*slavefd);
@@ -215,6 +221,7 @@ int pttyopen(int *masterfd, int *slavefd)
 
   if (ioctl(*slavefd, I_PUSH, "ldterm") == -1)
    {
+      // Piter T. de Boer: happens when binary is started from command line shell. Ignore.
       perror("slavefd.ioctl(\"ldterm\")");
       //close(*masterfd);
       //close(*slavefd);
