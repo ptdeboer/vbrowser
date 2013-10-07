@@ -264,7 +264,13 @@ public final class URIFactory implements Serializable, Cloneable, Duplicatable<U
      *            - actual string
      * @return URI encode String.
      */
-    public static String encode(String rawString)
+    public static String encodeQuery(String rawString)
+    {
+        String encoded = URLUTF8Encoder.encode(rawString);
+        return encoded;
+    }
+
+    public static String encodePath(String rawString)
     {
         String encoded = URLUTF8Encoder.encode(rawString);
         return encoded;
@@ -527,7 +533,7 @@ public final class URIFactory implements Serializable, Cloneable, Duplicatable<U
             {
                 // Try to encode the String.
 
-                URI uri = new URI(encode(uriStr));
+                URI uri = new URI(encodePath(uriStr));
                 init(uri); // use URI initializer
                 return;
             }
@@ -875,7 +881,7 @@ public final class URIFactory implements Serializable, Cloneable, Duplicatable<U
     {
         return this.query;
     }
-
+    
     public String getUserInfo()
     {
         return this.userInfo;
@@ -1003,7 +1009,7 @@ public final class URIFactory implements Serializable, Cloneable, Duplicatable<U
             }
         }
 
-        init(toURI().resolve(encode(reluri)));
+        init(toURI().resolve(encodePath(reluri)));
         return this;
     }
 
@@ -1019,7 +1025,7 @@ public final class URIFactory implements Serializable, Cloneable, Duplicatable<U
         String kludgePath = this.getPath() + "/dummy.html";
         URI uri = new URI("file", kludgePath, null);
         // Use encoded path here to allow for strange character
-        URI newUri = uri.resolve(encode(uripath(relpath, false)));
+        URI newUri = uri.resolve(encodePath(uripath(relpath, false)));
         return uripath(newUri.getPath());
     }
 
@@ -1068,7 +1074,7 @@ public final class URIFactory implements Serializable, Cloneable, Duplicatable<U
      */
     public URI toEncodedURI() throws URISyntaxException
     {
-        return new URI(scheme, userInfo, hostname, port, encode(pathOrReference), encode(query), encode(fragment));
+        return new URI(scheme, userInfo, hostname, port, encodePath(pathOrReference), encodeQuery(query), encodeQuery(fragment));
     }
 
     public String toString()

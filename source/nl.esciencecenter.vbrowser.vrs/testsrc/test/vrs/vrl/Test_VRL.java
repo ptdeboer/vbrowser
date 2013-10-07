@@ -415,11 +415,11 @@ public class Test_VRL
                 // fragment seperator
                 VRL vrl2;
                 if ((c == '#') || (c == '?') || (c == '&'))
-                    vrl2 = new VRL("aap://noot/" + URIFactory.encode("" + c));
+                    vrl2 = new VRL("aap://noot/" + URIFactory.encodePath("" + c));
                 else
                     vrl2 = new VRL("aap://noot/" + c);
 
-                VRL vrl3 = new VRL("aap://noot/" + URIFactory.encode("" + c));
+                VRL vrl3 = new VRL("aap://noot/" + URIFactory.encodePath("" + c));
 
                 Assert.assertEquals("Encoded URI does not match VRL", uri.toString(), vrl.toURI().toString());
                 Assert.assertEquals("Decoded VRL path does not match. ", "/" + c, vrl.getPath());
