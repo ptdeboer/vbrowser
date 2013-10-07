@@ -100,13 +100,27 @@ public class LocalFSNode extends FSNode
     @Override
     public boolean exists(LinkOption... linkOptions)
     {
-        return Files.exists(_path, linkOptions);
+        if (linkOptions==null)
+        {
+            return Files.exists(_path);
+        }
+        else
+        {
+            return Files.exists(_path, linkOptions);
+        }
     }
 
     @Override
     public boolean isDirectory(LinkOption... linkOptions)
     {
-        return Files.isDirectory(_path, linkOptions);
+        if (linkOptions==null)
+        {
+            return Files.isDirectory(_path);
+        }
+        else
+        {
+            return Files.isDirectory(_path, linkOptions);
+        }
     }
 
     @Override
