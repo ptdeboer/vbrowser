@@ -206,16 +206,6 @@ public abstract class VNode // implements IVNode
     }
 
     /**
-     * Default charset for text resources
-     * 
-     * @throws VrsException
-     */
-    public String getCharSet() throws VrsException
-    {
-        return ResourceLoader.CHARSET_UTF8;
-    }
-
-    /**
      * Check whether this VNode implements the VComposite interface.
      */
     public boolean isComposite()
