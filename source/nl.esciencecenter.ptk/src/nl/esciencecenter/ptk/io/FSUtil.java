@@ -259,7 +259,7 @@ public class FSUtil
 
         if (handler==null)
         {
-            throw new IOException("Schem not registered:"+uri.getScheme()); 
+            throw new IOException("Scheme not registered:"+uri.getScheme()); 
         }
         
         return getHandler(uri.getScheme()).newFSNode(uri); 
