@@ -23,7 +23,6 @@ package nl.esciencecenter.vlet.vrs.vdriver.http;
 
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.esciencecenter.vlet.net.ssl.VrsSslUtil;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
 import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.VRSContext;

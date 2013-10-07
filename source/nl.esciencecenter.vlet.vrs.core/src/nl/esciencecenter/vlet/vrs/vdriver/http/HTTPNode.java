@@ -137,7 +137,6 @@ public class HTTPNode extends VNode implements VStreamAccessable
      * @throws NestedIOException 
      * 
      */
-    @Override
     public String getCharSet() throws VrsException
     {
         String str;
@@ -168,13 +167,10 @@ public class HTTPNode extends VNode implements VStreamAccessable
                 else if (pars[0].compareToIgnoreCase(" charset")==0) 
                     return pars[1]; 
             }
-
         }
 
-        //Debug("Warning: charset parameter not found, returning default for:"+this);
-
-        return super.getCharSet();
-
+        return "UTF-8";
+        
     }
 
     public boolean isConnected()
