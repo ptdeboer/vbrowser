@@ -585,7 +585,7 @@ public class Test_VRL
 
     // some check to ensure URI<->VRL consistancy !
     @Test
-    public void testURICompatibility() throws Exception
+    public void testJavaURICompatibility() throws Exception
     {
         // scheme/host/path/fragment
         URI uri = new URI("file", "", "/etc", (String) null);
