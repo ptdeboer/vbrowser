@@ -90,19 +90,18 @@ int readini(char *filename)
             else if (Scompare(name, JAVA_EXE_PROP) == 0)
             {
                 java_exe = value;
-                DEBUGPRINTF(" + found: java.exe=%s\n",java_vmargs);
+                DEBUGPRINTF(" + found: java.exe=%s\n",java_exe);
             }
             else if (Scompare(name, JAVA_HOME_PROP) == 0)
             {
                 java_home = value;
-                DEBUGPRINTF(" + found: java.home=%s\n",java_vmargs);
+                DEBUGPRINTF(" + found: java.home=%s\n",java_home);
             }
             else if (Scompare(name, JAVA_MAINJAR_PROP) == 0)
             {
                 main_jar = value;
-                DEBUGPRINTF(" + found: java.mainjar=%s\n",java_vmargs);
+                DEBUGPRINTF(" + found: java.mainjar=%s\n",main_jar);
             }
-
         }
 
     } while (line != NULL);
@@ -171,7 +170,8 @@ const char* getRegistryJavaHome()
 
     DEBUGPRINTF(" - JavaHome(1)='%s' (result=%d)\n",value,result);
 
-    if (value[0] == 0) {
+    if (value[0] == 0) 
+    {
         DEBUGPRINTF(" - JavaHome='%s'\n","NULL!");
         return NULL;
     }
@@ -246,9 +246,9 @@ int WINAPI WinMain(HINSTANCE hInstance,
         java_home=getenv(JAVA_HOME);
         // Environment Variable can have quotes:
         java_home=SstripQuotes(java_home);
-    }
 
-    DEBUGPRINTF(" - getenv(JAVA_HOME)=%s\n",nonullstring(java_home,"<undefined>"));
+	DEBUGPRINTF(" - getenv(JAVA_HOME)=%s\n",nonullstring(java_home,"<undefined>"));
+    }
 
     const char *javaRegistryHome=getRegistryJavaHome();
 
