@@ -5,9 +5,7 @@ import java.util.List;
 import nl.esciencecenter.ptk.data.ExtendedList;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeDnDHandler;
-import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeDnDHandler.DropAction;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
-import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public class VRSViewNodeDnDHandler extends ViewNodeDnDHandler 
@@ -26,7 +24,7 @@ public class VRSViewNodeDnDHandler extends ViewNodeDnDHandler
 	    try
         {
             VRSProxyNode targetPNode = proxyFactory.doOpenLocation(targetDropNode.getVRL());
-            new InteractiveProxyTransfer().doVFSCopyDrop(targetPNode, sources, false);
+            new InteractiveProxyTransfer().doCopyMoveDrop(targetPNode, sources, false);
         }
         catch (ProxyException e)
         {
