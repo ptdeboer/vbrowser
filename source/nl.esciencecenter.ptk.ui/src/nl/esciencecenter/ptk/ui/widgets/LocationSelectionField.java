@@ -214,7 +214,19 @@ public class LocationSelectionField extends JPanel implements URIDropTargetListe
 
     public void setLocationURI(java.net.URI uri)
     {
-        this.locationTF.setText(uri.toString());  
+    	switch (locationType)
+    	{
+    		case DirType:
+    		case FileType:
+    	        this.locationTF.setText(uri.getPath());   
+    			break;
+		case URIType:
+				this.locationTF.setText(uri.toString()); 
+			break;
+		default:
+			throw new Error("InternalError: Invalid LocationType:"+locationType); 
+    	}
+    	
     }
 
     public java.net.URI getLocationURI() throws FileURISyntaxException
