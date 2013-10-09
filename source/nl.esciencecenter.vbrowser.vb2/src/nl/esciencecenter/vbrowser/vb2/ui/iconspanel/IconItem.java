@@ -32,6 +32,8 @@ import java.awt.event.FocusListener;
 
 import javax.swing.JLabel;
 import javax.swing.TransferHandler;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
 import nl.esciencecenter.ptk.ui.fonts.FontInfo;
@@ -66,10 +68,10 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
         this.viewNode=node; 
         this.uiModel=uiModel; 
         
-        initModel(uiModel); 
+        this.max_icon_width=uiModel.getMaxIconLabelWidth(); 
 
         this.setIcon(viewNode.getIcon());
-        updateLabelText(viewNode.getName()); 
+        updateLabelText(viewNode.getName(),false); 
 
         boolean visible=true; 
 
@@ -119,12 +121,6 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
         this.addMouseListener(handler); 
     }
 
-
-    private void initModel(UIViewModel uiModel) 
-    {
-        this.max_icon_width=uiModel.getMaxIconLabelWidth(); 
-    }
-
     protected void initDND(TransferHandler transferHandler, DragGestureListener dragListener)
     {
         // One For All: Transfer Handler: 
@@ -143,12 +139,7 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
         this.setTransferHandler(transferHandler);   
     }
     
-    public void updateLabelText(String text)
-    {
-        setText(text);
-    }
-
-    public void updateLabelText2(String text,boolean hasFocus)
+    public void updateLabelText(String text, boolean hasFocus)
     {
         if (text==null)
             text=""; 
@@ -159,7 +150,7 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
             htmlText+="<u>";
         
         // from model ? 
-        if (max_icon_width<0) 
+        if (max_icon_width<=0) 
             this.max_icon_width=180; 
         
         // Calculate Font Size 
@@ -174,18 +165,13 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
         int len=text.length();  
         //int width=0; 
         int i=0; 
-
+        
+        int currentLineWidth=0; 
+        
         while(i<len) 
         {
-            // html expantion
-            int compensate=0; 
-
-            String linestr=""; 
-            // arg must tweak label size: 
-            while ((i<len) && (fmetric.stringWidth(linestr)<(max_icon_width-2*charWidth+compensate))) 
+            switch (text.charAt(i))
             {
-                switch (text.charAt(i))
-                {
                     // filter out special HTML characters: 
                     // only a small set needs to be filtered:
                     case '/':
@@ -199,43 +185,51 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
                     case '*':
                     case '<':
                     case '>':
+                    case '-':
                         // use numerical ASCII value: 
                         String str="&#"+(int)text.charAt(i)+";"; 
-                        linestr+=str; 
-                        // compensate for HTML expansion (minus character,plus pixel) 
-                        compensate+=(str.length()-1)*charWidth;  
+                        htmlText+=str; 
                         break; 
                     default: 
-                        linestr+=text.charAt(i);
+                    	htmlText+=text.charAt(i);
                         break;
-                }
-
-                i++; 
             }
 
-            htmlText+=linestr;
-            // hard line ?
-            if (i<len) 
-                htmlText+="<br>";
+            currentLineWidth+=charWidth; 
+            if (currentLineWidth>max_icon_width)
+            {
+            	htmlText+="<br>"; // Hard Break! 
+            	currentLineWidth=0;
+            }
+            
+            i++; 
         }
-
+        
         if (hasFocus)
             htmlText+="</u>"; 
 
         htmlText+="</html>"; 
 
         setText(htmlText);
-     
-        if (hasFocus)
-        {
-            this.setBorder(new EtchedBorder());
-        }
-        else
-        {
-            this.setBorder(null); 
-        }
-                
+
     }
+    
+    public void updateFocusBorder(boolean hasFocus)
+    {
+		  Border focusBorder;
+		  
+		  if (hasFocus)
+		  {
+		  	focusBorder=new EtchedBorder();
+		  }
+		  else
+		  {
+		  	focusBorder=new EmptyBorder(2,2,2,2); 
+		  }
+		  
+		  this.setBorder(focusBorder);
+    }
+    	
     public ViewNode getViewNode() 
     {
         return this.viewNode; 
@@ -249,6 +243,8 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
     public void updateFocus(boolean hasFocus)
     {
         updateIcon(selected,hasFocus); 
+        updateLabelText(viewNode.getName(),hasFocus); 
+        //updateFocusBorder(hasFocus); 
         repaint();
     }
 

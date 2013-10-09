@@ -373,7 +373,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
 
     private void doViewAsList()
     {
-        this.browserFrame.setViewMode(BrowserViewMode.ICONLIST);
+        this.browserFrame.setViewMode(BrowserViewMode.ICONLIST16);
     }
 
     private void doOpenViewer(final ViewNode node,String optViewerClass,final String optMenuMethod, boolean standaloneWindow)
@@ -431,7 +431,7 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
     
     private void doViewAsIcons()
     {
-        this.browserFrame.setViewMode(BrowserViewMode.ICONS);
+        this.browserFrame.setViewMode(BrowserViewMode.ICONS48);
     }
 
     private void doBrowseForward()

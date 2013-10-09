@@ -85,7 +85,7 @@ public class IconsPanel extends JPanel implements ListDataListener, ViewNodeCont
 	private void init(BrowserInterface browser, DataSource dataSource) 
 	{
 		this.masterBrowser=browser;
-		this.uiModel=UIViewModel.createIconsModel(); 
+		this.uiModel=UIViewModel.createIconsModel(48); 
 		this.iconsPanelUpdater=new IconsPanelUpdater(this,dataSource); 
 		this.iconModel=new IconListModel(); 
 		this.iconModel.addListDataListener(this); 

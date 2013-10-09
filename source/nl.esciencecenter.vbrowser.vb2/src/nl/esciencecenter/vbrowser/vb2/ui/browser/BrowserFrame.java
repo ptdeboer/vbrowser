@@ -67,7 +67,22 @@ public class BrowserFrame extends JFrame
 {
     public static enum BrowserViewMode
     {
-        ICONS, ICONLIST, TABLE, CONTENT_VIEWER
+        ICONS16(16),ICONS48(48),ICONS96(96), ICONLIST16(16),ICONSLIST48(48), TABLE, CONTENT_VIEWER;
+
+        int iconSize=48; 
+        
+        private BrowserViewMode()
+        {
+        }
+        private BrowserViewMode(int size)
+        {
+        	iconSize=size;
+        }
+        
+		public int getIconSize() 
+		{
+			return iconSize;
+		}
     };
 
     public class TabButtonHandler implements ActionListener
@@ -170,7 +185,7 @@ public class BrowserFrame extends JFrame
                             uiViewAsIconListBtn = new JButton();
                             uiViewBar.add(uiViewAsIconListBtn);
                             // viewAsIconRows.setText("ICR");
-                            uiViewAsIconListBtn.setIcon(loadIcon("menu/viewasiconlist.png"));
+                            uiViewAsIconListBtn.setIcon(loadIcon("menu/viewasiconlist_medium.png"));
                             uiViewAsIconListBtn.setActionCommand(ActionMethod.VIEW_AS_ICON_LIST.toString());
                             uiViewAsIconListBtn.addActionListener(actionListener);
                             uiViewAsIconListBtn.setEnabled(true);
@@ -562,11 +577,14 @@ public class BrowserFrame extends JFrame
 		
 		switch(mode)
 	    {
-	        case ICONS:
-	        	this.getIconsPanel(true).updateUIModel(UIViewModel.createIconsModel()); 
+	        case ICONS16:
+			case ICONS48:
+			case ICONS96:
+	        	this.getIconsPanel(true).updateUIModel(UIViewModel.createIconsModel(mode.getIconSize())); 
 	            break; 
-	        case ICONLIST:
-	        	this.getIconsPanel(true).updateUIModel(UIViewModel.createIconsListModel()); 
+	        case ICONLIST16:
+			case ICONSLIST48:
+	        	this.getIconsPanel(true).updateUIModel(UIViewModel.createIconsListModel(mode.getIconSize())); 
 	            break; 
 	        case TABLE:
 	        	this.updateTableTab(true,this.getViewedProxyNode());
@@ -574,6 +592,8 @@ public class BrowserFrame extends JFrame
 	        case CONTENT_VIEWER:
 	            // this.getViewerPanel(true);
 	            break;
+	        default:
+	        	break;
 	    }
 	}
 

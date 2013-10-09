@@ -67,29 +67,29 @@ public class UIViewModel
         return model; 
     }
 
-    public static synchronized UIViewModel createIconsModel()
+    public static synchronized UIViewModel createIconsModel(int size)
     {
         if (iconsModel==null)
             iconsModel=new UIViewModel(); 
         
-        iconsModel.iconSize=48; 
+        iconsModel.iconSize=size; 
         iconsModel.iconLayoutDirection=UIDirection.HORIZONTAL;
         iconsModel.iconLabelPlacement=UIDirection.VERTICAL;
-        iconsModel.maximumIconLabelWidth=180; 
+        iconsModel.maximumIconLabelWidth=size*5; 
         
         return iconsModel; 
     }
 
     // class sync'd: method does't take much time. 
-    public static synchronized  UIViewModel createIconsListModel()
+    public static synchronized  UIViewModel createIconsListModel(int size)
     {
         if (iconsListModel==null)
             iconsListModel=new UIViewModel(); 
         
-        iconsListModel.iconSize=16; 
+        iconsListModel.iconSize=size; 
         iconsListModel.iconLayoutDirection=UIDirection.VERTICAL;
         iconsListModel.iconLabelPlacement=UIDirection.HORIZONTAL;
-        iconsListModel.maximumIconLabelWidth=460; 
+        iconsListModel.maximumIconLabelWidth=size*20; 
         
         return iconsListModel; 
     }
@@ -172,7 +172,6 @@ public class UIViewModel
     {
         iconSize=size; 
     }
-
 
 	public UIDirection getIconLabelPlacement() 
 	{

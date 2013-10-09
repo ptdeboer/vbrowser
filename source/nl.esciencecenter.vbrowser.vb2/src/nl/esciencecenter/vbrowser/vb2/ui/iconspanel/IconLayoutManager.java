@@ -97,7 +97,7 @@ public class IconLayoutManager implements LayoutManager
 	{
 	    logger.debugPrintf(">>> preferredLayoutSize() <<<\n");
 	    
-	    // TBI: check bug: align icons now during calculations.  
+	    // TBI: check bug: align icons now during preferesLayoutSize calculations.  
 	    return alignIcons(parent,true); 
 	}
 	
@@ -153,6 +153,9 @@ public class IconLayoutManager implements LayoutManager
         int cellMaxWidth=cellMaxPrefSize.width;
         int cellMaxHeight=cellMaxPrefSize.height;
                 
+        if (cellMaxWidth>uiModel.getMaxIconLabelWidth())
+        	cellMaxWidth=uiModel.getMaxIconLabelWidth(); 
+        
         // scan button for grid width and height 
         
         int currentXpos = uiModel.getIconHGap(); // start with offset 
@@ -185,7 +188,10 @@ public class IconLayoutManager implements LayoutManager
                 // actual update of Component: 
                 comp.setLocation(currentPos);
                 prefSize=comp.getPreferredSize();
+                if (prefSize.width>cellMaxWidth)
+                	prefSize.width=cellMaxWidth; 
                 comp.setSize(prefSize); 
+                comp.validate(); // now 
             }
             
             // II) Current Icon Flow Layout stats  
@@ -213,7 +219,7 @@ public class IconLayoutManager implements LayoutManager
             	if (currentXpos+cellMaxWidth >= targetSize.width)
             	{
             		// reset to xpos to left margin, increase new ypos. 
-            		currentXpos = uiModel.getIconHGap();;// reset to defaul offset
+            		currentXpos = uiModel.getIconHGap();// reset to default offset
             		currentYpos = maxy + uiModel.getIconVGap(); // next row
             		//ypos += celly + browser_icon_gap_width; // next row
             		column = 0;
