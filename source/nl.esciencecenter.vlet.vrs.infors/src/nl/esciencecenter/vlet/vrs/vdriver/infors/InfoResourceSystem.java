@@ -71,14 +71,17 @@ public class InfoResourceSystem extends CompositeServiceInfoNode<VNode> implemen
     public VNode openLocation(VRL vrl) throws VrsException
     {
         int len=0;
-        
+        String scheme=vrl.getScheme(); 
+        String path=vrl.getPath(); 
         String[] paths=vrl.getPathElements(); 
         
         if (paths!=null)
             len=paths.length; 
         
-        if ((len==0) || (paths[0].equals(""))) 
+        if (scheme.equals("scheme") && ((len==0) || (paths[0].equals(""))) ) 
+        {
             return this;
+        }
         
         debug("Get info resource from root:"+paths[0]); 
         
@@ -98,18 +101,24 @@ public class InfoResourceSystem extends CompositeServiceInfoNode<VNode> implemen
             }
         }
         
-        if (StringUtil.equals(localSystemRoot.getVRL().getPathElements()[0],paths[0]))
+        System.err.printf("openLocation: %s\n",vrl);
+        System.err.printf("localSystemRoot: %s\n",localSystemRoot.getVRL());
+        
+        if (scheme.equals(localSystemRoot.getScheme()))
         {
-            if (len==1)
-                return localSystemRoot;
-            else
+            
+            if (vrl.equals(localSystemRoot.getVRL()))
             {
-                node=localSystemRoot.findNode(vrl,true);
-                if (node!=null)
-                    return node; 
-                
-                throw new ResourceNotFoundException("No information for local resource:"+vrl);
+                return localSystemRoot;
             }
+            
+            node=localSystemRoot.findNode(vrl,true);
+            if (node!=null)
+            {
+                return node; 
+            }
+                
+            throw new ResourceNotFoundException("No information for local resource:"+vrl);
         }
             
         throw new ResourceNotFoundException("No information for:"+vrl);

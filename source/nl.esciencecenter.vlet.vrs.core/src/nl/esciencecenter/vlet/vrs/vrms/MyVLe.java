@@ -373,7 +373,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
         }
 
         // Local system neighbourhood info resource
-        targetLoc = new VRL("info",null,VRS.INFO_LOCALSYSTEM);
+        targetLoc = new VRL(VRS.INFO_LOCALSYSTEM,null,"/");
 
         try
         {

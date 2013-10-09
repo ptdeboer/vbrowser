@@ -41,13 +41,12 @@ import nl.esciencecenter.vlet.vrs.data.VAttributeConstants;
 import nl.esciencecenter.vlet.vrs.vdriver.infors.net.NetworkNode;
 import nl.esciencecenter.vlet.vrs.vrms.ConfigManager;
 
-
 public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEditable
 {
 	
 	public LocalSystem(VRSContext context)
 	{
-		super(context, new VRL(InfoConstants.INFO_SCHEME,null,"/"+InfoConstants.LOCALSYSTEM_TYPE));
+		super(context, new VRL(InfoConstants.INFO_LOCALSYSTEM_SCHEME,null,"/"));
 		
 		try
         {
@@ -135,11 +134,13 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
     {
     	this.clearChilds(); 
     	
+    	VRL userHome=vrsContext.getUserHomeLocation();
+    	
      // start with userHome:
-        addPathNode(vrsContext.getUserHomeLocation(),"home","default/home_folder.png");
+        addPathNode(userHome,"Home","default/home_folder.png");
         // debugging:
         if (VletConfig.getRootLogger().isLevelDebug());
-            addPathNode(vrsContext.getConfigManager().getUserConfigDir(),"config","config-folder-48.png");
+            addPathNode(vrsContext.getConfigManager().getUserConfigDir(),"VletRC","config-folder-48.png");
         addFilesystemRoots(); 
     }
 
@@ -187,10 +188,16 @@ public class LocalSystem extends CompositeServiceInfoNode<VNode> implements VEdi
             if (roots[i].exists())
             {
                 String path=roots[i].getAbsolutePath(); 
+                String logicalName=path; 
+                if (path==null || path=="/" || (path==""))
+                {
+                    logicalName="/Root";
+                }
+                
                 targetLoc=new VRL("file",null,path);
                 //linkPath=this.getLocation().addPath(""+index++); 
                 
-                VRL childVRL=this.createChildVRL("fs:"+i); 
+                VRL childVRL=this.createChildVRL(logicalName); 
                 
                 lnode=LinkNode.createLinkNode(vrsContext,childVRL,targetLoc); 
                 lnode.setName("localhost:"+targetLoc.getPath());

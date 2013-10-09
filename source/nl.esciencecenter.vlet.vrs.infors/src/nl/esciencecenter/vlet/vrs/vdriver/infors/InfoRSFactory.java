@@ -36,7 +36,7 @@ import nl.esciencecenter.vlet.vrs.VResourceSystem;
  */
 public class InfoRSFactory extends VRSFactory
 {
-    public static String[] schemes={ VRS.INFO_SCHEME,"grid" } ;
+    public static String[] schemes={ VRS.INFO_SCHEME,InfoConstants.INFO_LOCALSYSTEM_SCHEME,InfoConstants.INFO_GRID_SCHEME } ;
 
     public static String[] types={ "InfoType" } ;
 

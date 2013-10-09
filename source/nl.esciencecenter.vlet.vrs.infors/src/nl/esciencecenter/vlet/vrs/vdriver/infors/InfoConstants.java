@@ -28,6 +28,8 @@ public class InfoConstants
     // schemes 
     
     public static final String INFO_SCHEME = "info";
+    public static final String INFO_LOCALSYSTEM_SCHEME = "LocalSystem";
+    public static final String INFO_GRID_SCHEME = "Grid";
     
     // Types 
     

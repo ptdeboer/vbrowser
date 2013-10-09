@@ -47,7 +47,7 @@ public class GridNeighbourhood extends CompositeServiceInfoNode<VNode>
     
 	public GridNeighbourhood(VRSContext context)
 	{
-		super(context, new VRL(InfoConstants.INFO_SCHEME,null,"/"+InfoConstants.GRID_NEIGHBOURHOOD_TYPE));
+		super(context, new VRL(InfoConstants.INFO_GRID_SCHEME,null,"/"+InfoConstants.GRID_NEIGHBOURHOOD_TYPE));
 		initChilds(); 
 	}
 	
