@@ -195,7 +195,7 @@ public class WebClient
 
     public boolean hasUI()
     {
-        return (this.ui == null);
+        return (this.ui != null);
     }
 
     public void setCredentials(String username, Secret password)
