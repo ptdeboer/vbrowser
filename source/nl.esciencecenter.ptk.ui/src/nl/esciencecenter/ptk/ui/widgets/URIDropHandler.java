@@ -83,7 +83,7 @@ public class URIDropHandler implements DropTargetListener
             {
                 // Check URI(s)
                 debugPrintf(">>>%s\n","flavorURIList");
-                dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+                dtde.acceptDrop(DnDConstants.ACTION_COPY);
                 
                 uris=DnDFlavors.getURIList(t,DnDFlavors.flavorURIList);
                 
@@ -100,7 +100,7 @@ public class URIDropHandler implements DropTargetListener
             {
             	// (Java) Files dropped native browser: 
                 debugPrintf(">>>%s\n","javaFileListFlavor");
-                dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+                dtde.acceptDrop(DnDConstants.ACTION_COPY);
                 
                 uris=DnDFlavors.getURIList(t,DnDFlavors.javaFileListFlavor);
     
@@ -116,7 +116,7 @@ public class URIDropHandler implements DropTargetListener
             else if (t.isDataFlavorSupported(DataFlavor.stringFlavor))
             {
                 // Convert to text: 
-                dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+                dtde.acceptDrop(DnDConstants.ACTION_COPY);
                 String txt = (String) t.getTransferData(DataFlavor.stringFlavor);
                 dtde.getDropTargetContext().dropComplete(true);
                 uris = new ArrayList<java.net.URI>();

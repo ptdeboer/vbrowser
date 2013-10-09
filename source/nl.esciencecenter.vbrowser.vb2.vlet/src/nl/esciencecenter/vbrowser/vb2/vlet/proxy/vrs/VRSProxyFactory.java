@@ -24,11 +24,11 @@ package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.VNode;
-import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.VRSClient;
 import nl.esciencecenter.vlet.vrs.VRSContext;
 import nl.esciencecenter.vlet.vrs.VRSFactory;
@@ -77,6 +77,8 @@ public class VRSProxyFactory extends ProxyFactory
     
     private VRSClient vrsClient;
 
+    protected VRSViewNodeDnDHandler viewNodeDnDHandler=null;
+    
     protected VRSProxyFactory()
     {
         super(); 
@@ -143,5 +145,14 @@ public class VRSProxyFactory extends ProxyFactory
 		return false; 
 	}
 
+    
+	public VRSViewNodeDnDHandler getVRSProxyDnDHandler(ViewNode viewNode)
+	{
+		if (viewNodeDnDHandler==null)
+	    {
+		    viewNodeDnDHandler=new VRSViewNodeDnDHandler(this); 
+	    }
+		return viewNodeDnDHandler;
+	}
 
 }

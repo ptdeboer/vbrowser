@@ -25,14 +25,12 @@ package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
 import java.net.URISyntaxException;
 
 import nl.esciencecenter.ptk.data.LongHolder;
-import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
+import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
-import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
-import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.VComposite;
@@ -40,8 +38,6 @@ import nl.esciencecenter.vlet.vrs.VNode;
 import nl.esciencecenter.vlet.vrs.presentation.VRSPresentation;
 import nl.esciencecenter.vlet.vrs.vrms.LogicalResourceNode;
 import nl.esciencecenter.vlet.vrs.vrms.VResourceLink;
-
-
 
 /** 
  * VRS ProxyNode 
@@ -63,8 +59,7 @@ public class VRSProxyNode extends ProxyNode
 
     protected void doPrefetchAttributes() throws ProxyException
     {
-        super.doPrefetchAttributes(); 
-        
+        super.doPrefetchAttributes();         
        
         if (vnode instanceof VResourceLink)
         {
@@ -142,7 +137,6 @@ public class VRSProxyNode extends ProxyNode
 		{
 			throw createProxyException("Failed to resolve node:"+this.vnode,e); 
 		}
-    	
     }
     
     protected VRSProxyNode[] createNodes(VNode[] nodes) throws ProxyException
@@ -274,6 +268,12 @@ public class VRSProxyNode extends ProxyNode
         return null; 
     }
 
+    @Override 
+    public VRSViewNodeDnDHandler createViewNodeDnDHandler(ViewNode viewNode)
+    {
+    	return factory().getVRSProxyDnDHandler(viewNode);
+    }
+    
 	// ========================================================================
 	// Misc 
 	// ========================================================================
@@ -338,6 +338,12 @@ public class VRSProxyNode extends ProxyNode
         String type=vnode.getResourceType();  
         
         return VRSPresentation.getPresentationFor(vnode.getVRL(),type, true);
+    }
+
+    public ProxyNode getTargetPNode()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

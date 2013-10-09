@@ -33,6 +33,7 @@ import javax.swing.TransferHandler;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeComponent;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeContainer;
+import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeDnDHandler.DropAction;
 
 /**
  * Default TransgerHandler for ViewNodes.
@@ -66,6 +67,8 @@ public class DnDTransferHandler extends TransferHandler
         DnDUtil.debugPrintln("exportDone action=" + action);
     }
 
+    // Method is NOT called when canImport(TransferSupport transferSupport) is overrriden!
+    @Deprecated
     @Override
     public boolean canImport(JComponent c, DataFlavor[] flavors)
     {
@@ -75,6 +78,16 @@ public class DnDTransferHandler extends TransferHandler
         // return VTransferData.hasMyDataFlavor(flavors);
     }
 
+    public boolean canImport(TransferSupport transferSupport)
+    {
+    	DataFlavor[] flavors = transferSupport.getDataFlavors(); 
+    	for (DataFlavor flav : flavors)
+    	{
+            DnDUtil.errorPrintf("FIXME:canImport():%s\n",flav);
+    	}
+        return false;
+    }
+    
     @Override
     protected Transferable createTransferable(JComponent c)
     {
@@ -153,6 +166,7 @@ public class DnDTransferHandler extends TransferHandler
 
     // NOT called if importData(TransferSupport is implemented) 
     @Override
+    @Deprecated
     public boolean importData(JComponent comp, Transferable data)
     {
         // This method is directory called when performing CTRL-V
@@ -163,7 +177,8 @@ public class DnDTransferHandler extends TransferHandler
             DnDUtil.errorPrintf("importData(): Error: Not a ViewNodeComponent:%s\n",comp);
             return false;
         }
-        return doPasteData((ViewNodeComponent)comp,data);
+        
+        return DnDUtil.doPasteData(comp,((ViewNodeComponent)comp).getViewNode(),data); 
     }
 
     /*
@@ -186,21 +201,7 @@ public class DnDTransferHandler extends TransferHandler
             return false;
         }
         
-        return doPasteData((ViewNodeComponent)comp,data); 
+        return DnDUtil.doPasteData(comp,((ViewNodeComponent)comp).getViewNode(),data); 
     }
     
-    // ========================================================================
-    // Drop/Paste actions
-    // ========================================================================
-    
-    /**
-     * Paste Data call when for example CTRL-V IS called ! Supplied component
-     * is the Swing Component which has the focus when CTRL-V was called !
-     */
-    public boolean doPasteData(ViewNodeComponent comp, Transferable data)
-    {
-        DnDUtil.debugPrintf("pasteData():" + comp);
-        return false;
-    }
-
 }

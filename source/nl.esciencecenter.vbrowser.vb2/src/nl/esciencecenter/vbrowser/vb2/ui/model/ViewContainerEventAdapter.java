@@ -60,6 +60,7 @@ public class ViewContainerEventAdapter implements MouseListener, MouseMotionList
         this.nodeActionListener = componentController;
         //this.notifySelectionEvents=handleSelectionEvents;
         //this.notifyActionEvents=handleActionEvents;
+        logger.setLevelToDebug(); 
     }
 
     public void setNotifySelectionEvent(boolean val)
@@ -117,8 +118,7 @@ public class ViewContainerEventAdapter implements MouseListener, MouseMotionList
 
     public void mousePressed(MouseEvent e)
     {
-        
-        // logger.debugPrintf("mouseClicked:%s\n", event);
+        logger.debugPrintf("mousePressed:%s\n", e);
         
         ViewNode node = getViewNode(e);
         boolean canvasclick = false;
@@ -174,7 +174,7 @@ public class ViewContainerEventAdapter implements MouseListener, MouseMotionList
 
     public void mouseClicked(MouseEvent e)
     {
-        // logger.dDebug("mouseClicked"+e);
+        logger.debugPrintf("mouseClicked:%s\n",e);
 
         ViewNode node = getViewNode(e);
 

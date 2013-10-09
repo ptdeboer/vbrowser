@@ -59,6 +59,14 @@ public class GuiSettings
 
 	private int  mouse_popup_button=mouse_alt_button;
 
+    public Color textfield_editable_background_color;
+
+    public Color textfield_editable_foreground_color;
+
+    public Color textfield_non_editable_background_color;
+
+    public Color textfield_non_editable_foreground_color;
+
 	public GuiSettings()
 	{
 		initDefaults();
@@ -168,7 +176,7 @@ public class GuiSettings
             if (getSingleClickAction()==false && (e.getClickCount()==1)) 
                 return true; 
          
-            if ((getSingleClickAction()) && (e.getClickCount()==2)) 
+            if ((getSingleClickAction()) && (e.getClickCount()==1)) 
                 return true;
         }
         

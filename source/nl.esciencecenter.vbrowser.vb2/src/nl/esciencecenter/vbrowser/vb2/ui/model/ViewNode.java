@@ -43,7 +43,9 @@ public class ViewNode
 
     public static final String SELECTED_FOCUS_ICON="selectedFocusIcon"; 
 
-	/** Atomic Locator, never changes during the lifetime of this object */
+	/** 
+	 * Atomic Locator, never changes during the lifetime of this object. 
+	 */
     protected final VRL locator;
     
     protected boolean isComposite;
@@ -54,7 +56,11 @@ public class ViewNode
 
     protected String resourceType; 
     
-    protected String mimeType; 
+    protected String resourceStatus; 
+    
+    protected String mimeType;
+
+	private ViewNodeDnDHandler nodeDnDHandler; 
     
     protected ViewNode(VRL locator)
     {
@@ -148,12 +154,32 @@ public class ViewNode
         return mimeType;
     }
 
+	public void setResourceStatus(String newStatus)
+	{
+		this.resourceStatus=newStatus; 
+	}
+	
+	public String getResourceStatus()
+	{
+		return resourceStatus;
+	}
+	
     @Override
     public String toString()
     {
         return "ViewNode [locator=" + locator + ", isComposite=" + isComposite + ", name=" + name + ", iconMapping="
                 + iconMapping + ", resourceType=" + resourceType + ", mimeType=" + mimeType + "]";
     }
+
+	public void setDnDHandler(ViewNodeDnDHandler dropHandler) 
+	{
+		this.nodeDnDHandler=dropHandler;
+	}
+
+	public ViewNodeDnDHandler getDnDHandler()
+	{
+		return nodeDnDHandler;
+	}
 
     // === 
     // Generated Methods 

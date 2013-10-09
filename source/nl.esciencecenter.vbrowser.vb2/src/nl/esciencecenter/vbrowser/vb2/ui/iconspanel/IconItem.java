@@ -37,6 +37,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
 import nl.esciencecenter.ptk.ui.fonts.FontInfo;
+import nl.esciencecenter.vbrowser.vb2.ui.actions.KeyMappings;
 import nl.esciencecenter.vbrowser.vb2.ui.dnd.ViewNodeDropTarget;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewContainerEventAdapter;
@@ -134,7 +135,7 @@ public class IconItem extends JLabel implements ViewNodeComponent, FocusListener
         // Specify DROP target: 
         this.setDropTarget(new ViewNodeDropTarget(this));
         // Have to set Keymapping to my component 
-        nl.esciencecenter.vbrowser.vb2.ui.actions.KeyMappings.addCopyPasteKeymappings(this); 
+        KeyMappings.addCopyPasteKeymappings(this); 
         
         this.setTransferHandler(transferHandler);   
     }

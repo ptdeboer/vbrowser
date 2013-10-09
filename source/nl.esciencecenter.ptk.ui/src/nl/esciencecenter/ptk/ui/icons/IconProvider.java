@@ -706,6 +706,6 @@ public class IconProvider
       {
             throw new IOException("Failed to read image:"+url,e); 
       } 
-    } 
+    }
     
 }

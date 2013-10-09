@@ -26,8 +26,8 @@ import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
+import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeDnDHandler;
 import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
@@ -324,7 +324,10 @@ public abstract class ProxyNode
         ViewNode viewNode=new ViewNode(locator,defaultIcon,getName(),isComposite());
         viewNode.setResourceType(this.getResourceType()); 
         viewNode.setMimeType(this.getMimeType());
-
+        viewNode.setResourceStatus(this.getResourceStatus());
+        // handlers: 
+        viewNode.setDnDHandler(createViewNodeDnDHandler(viewNode)); 
+        
         // other 
         viewNode.setIcon(ViewNode.FOCUS_ICON,getIcon(model,false,true));
         viewNode.setIcon(ViewNode.SELECTED_ICON,getIcon(model,true,false));
@@ -332,7 +335,12 @@ public abstract class ProxyNode
         
         return viewNode; 
     } 
-    
+
+	protected ViewNodeDnDHandler createViewNodeDnDHandler(ViewNode viewNode) 
+	{
+		return new ViewNodeDnDHandler(viewNode); 
+	}
+
 	public boolean hasLocator(VRL locator)
 	{
 		return this.locator.equals(locator); 

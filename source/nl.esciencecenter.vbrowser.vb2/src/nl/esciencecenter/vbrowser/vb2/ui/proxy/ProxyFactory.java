@@ -28,7 +28,6 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
-
 /**
  * ProxyNodeFactory 
  */
@@ -167,5 +166,6 @@ public abstract class ProxyFactory
 	abstract public ProxyNode doOpenLocation(VRL locator) throws ProxyException;
 
 	abstract public boolean canOpen(VRL locator,StringHolder reason);
+
 
 }
