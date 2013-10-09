@@ -241,6 +241,9 @@ public class ActionMenu extends JPopupMenu
 
         List<MimeMenuEntry> entries = viewReg.getMimeMenuEntries(mimeType);
 
+        if (entries==null)
+            return; 
+        
         for (MimeMenuEntry entry : entries)
         {
             String args[] = new String[2];
