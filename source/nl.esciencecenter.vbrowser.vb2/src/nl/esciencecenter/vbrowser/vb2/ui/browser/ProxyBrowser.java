@@ -354,6 +354,8 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
                 // Open viewer in new window.
                 doOpenViewer(node,action.getArg0(),action.getArg1(),true); 
                 break;
+            case SELECTION_ACTION:
+            	doDefaultSelectedAction(node);
             default:
     			logger.errorPrintf("<<< FIXME: ACTION NOT IMPLEMENTED:%s >>>\n", action);
     			break;
@@ -502,9 +504,15 @@ public class ProxyBrowser implements BrowserInterface, ActionMenuListener
         openLocation(actionNode.getVRL(),true,false);
     }
 
+    public void doDefaultSelectedAction(ViewNode actionNode)
+    {
+    	// Container listener update Actual Selection. 
+    	// Perform here optional Menu updates...
+    }
+    
     public void doDefaultAction(ViewNode actionNode)
     {
-        // determinte default action to view node: 
+        // Determine default action to view node: 
         
         if (actionNode.isComposite())
         {

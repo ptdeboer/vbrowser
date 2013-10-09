@@ -24,12 +24,12 @@ import java.util.Properties;
 
 import nl.esciencecenter.ptk.util.StringUtil;
 
-public class ConfigProperties 
+public class ConfigProperties extends Properties
 {
+	private static final long serialVersionUID = -5793232356668006148L;
+	
 	// Optional Parent!
     final ConfigProperties parent; 
-
-	Properties properties=new Properties(); 
 
     public ConfigProperties(ConfigProperties parent)
     {
@@ -43,13 +43,15 @@ public class ConfigProperties
     
 	public String getProperty(String name)
 	{
-		String val=this.properties.getProperty(name); 
+		String val=super.getProperty(name); 
 		if ((val==null) && (parent!=null)) 
+		{
 			val=parent.getProperty(name); 
+		}
 		return val;
 	}
 
-	public String getProperty(String propName,String defaultValue) 
+	public String getStringProperty(String propName,String defaultValue) 
 	{
 		String val=getProperty(propName); 
 		if (val==null)

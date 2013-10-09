@@ -42,7 +42,10 @@ public class GuiSettings
     // Instance fields 
     // ========================================================================
 	
+	// User Configuration properties: 
 	private ConfigProperties properties=new ConfigProperties(); 
+	
+	// UI Properties 
 	
 	private Color label_selected_bg_color=Color.darkGray;
 
@@ -54,24 +57,32 @@ public class GuiSettings
 
 	private int  mouse_alt_button=MouseEvent.BUTTON3;
 
-	private boolean single_click_action=false;
-
 	private int  mouse_popup_button=mouse_alt_button;
 
 	public GuiSettings()
 	{
-	    
+		initDefaults();
+	}
+	
+	protected void initDefaults()
+	{
+		setProperty(SINGLE_CLICK_ACTION,""+true);
 	}
 
-    public URI getUserIconsDir()
-    {
-        return null;
-    }
-
-    public URI getInstallationIconsDir()
-    {
-        return null;
-    } 
+	public void setProperty(String name, String value)
+	{
+		properties.setProperty(name,value); 
+	}
+	
+//    public URI getUserIconsDir()
+//    {
+//        return null;
+//    }
+//
+//    public URI getInstallationIconsDir()
+//    {
+//        return null;
+//    } 
     
    
     /**
@@ -111,7 +122,7 @@ public class GuiSettings
 
 	public boolean getSingleClickAction()
     {
-        return properties.getBoolProperty(SINGLE_CLICK_ACTION,single_click_action);
+        return properties.getBoolProperty(SINGLE_CLICK_ACTION,true);
     }
     
     /**
