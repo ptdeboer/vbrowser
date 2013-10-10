@@ -190,8 +190,8 @@ public class IconProvider
     public Icon createDefaultIcon(String iconUrl, boolean isComposite, boolean isLink, String mimetype, int size,
             boolean greyOut, boolean focus)
     {
-        logger.debugPrintf("createDefaultIcon [%d,greyOut=%b,focus=%b,isComposite=%b,isLink=%b]\n", size, greyOut,
-                isComposite, isLink);
+        logger.debugPrintf("createDefaultIcon [size=%d, greyOut=%b, focus=%b, isComposite=%b, isLink=%b]\n", 
+                size, greyOut,focus, isComposite, isLink);
 
         // for plugins, must use classLoader of plugin class !
         ClassLoader classLoader = getClassLoader();
