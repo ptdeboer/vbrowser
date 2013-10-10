@@ -79,6 +79,12 @@
         </antcall>
 
         <antcall target="module-build">
+            <param name="name" value="nl.esciencecenter.ptk.web"/>
+            <param name="version" value=""/>
+            <param name="scm.path" value=""/>
+        </antcall>
+
+        <antcall target="module-build">
             <param name="name" value="nl.esciencecenter.vbrowser.vrs"/>
             <param name="version" value=""/>
             <param name="scm.path" value=""/>
