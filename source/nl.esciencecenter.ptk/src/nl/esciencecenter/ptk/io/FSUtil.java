@@ -136,7 +136,7 @@ public class FSUtil
      */
     public URI resolveURI(String path) throws FileURISyntaxException
     {
-        if ((this.fsOptions.resolve_tilde) && path.contains("~"))
+        if ((this.fsOptions.resolve_tilde) && (path!=null) && path.contains("~"))
         {
             String homePath=URIFactory.uripath(userHome.getPath());
             path=path.replace("~", homePath); 
