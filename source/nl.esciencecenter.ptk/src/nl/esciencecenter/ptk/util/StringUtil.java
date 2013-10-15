@@ -606,6 +606,9 @@ public class StringUtil
 
     public static boolean hasWhiteSpace(String text)
     {
+        if (text==null)
+            return false;
+        
         boolean val=StringUtil.matchRE(text,"[^ \t\n]+",true,true);// use expensive RE 
         return (val==false);  
     }
