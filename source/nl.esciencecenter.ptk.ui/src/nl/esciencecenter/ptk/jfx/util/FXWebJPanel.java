@@ -20,7 +20,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
 import javafx.embed.swing.JFXPanel;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
@@ -29,7 +28,6 @@ import javafx.scene.web.WebView;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -37,8 +35,9 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import nl.esciencecenter.ptk.util.logging.ClassLogger;
+
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.events.EventListener;
@@ -47,6 +46,8 @@ import org.w3c.dom.events.EventTarget;
 public class FXWebJPanel extends JPanel 
 {
     private static final long serialVersionUID = -7501864809216238899L;
+    
+    private static final ClassLogger logger=ClassLogger.getLogger(FXWebJPanel.class); 
     // 
     
     private static String toURL(String str)
@@ -59,11 +60,6 @@ public class FXWebJPanel extends JPanel
         {
             return null;
         }
-    }
-
-    class LinkEventListener
-    {
-        
     }
     
     // ===
@@ -136,7 +132,6 @@ public class FXWebJPanel extends JPanel
     
     private void createScene()
     {
-
         Platform.runLater(new Runnable()
         {
             @Override
@@ -191,7 +186,6 @@ public class FXWebJPanel extends JPanel
                             public void run()
                             {
                                 updateLocation(oldValue,newValue); 
-
                             }
                         });
                     }
@@ -240,7 +234,7 @@ public class FXWebJPanel extends JPanel
                         {
                             public void changed(ObservableValue ov, State oldState, State newState) 
                             {
-                                System.err.println("> newState="+newState);
+                                logger.debugPrintf("changed(): newState=%s\n",newState);
                                 
                                 if (newState == Worker.State.SUCCEEDED) 
                                 {
@@ -253,8 +247,6 @@ public class FXWebJPanel extends JPanel
                 jfxPanel.setScene(new Scene(view));
             }
         });
-        
-        
     }
 
     public EventListener getLinkListener()
@@ -265,8 +257,9 @@ public class FXWebJPanel extends JPanel
                 @Override
                 public void handleEvent(org.w3c.dom.events.Event ev)
                 {
-                    System.err.println(ev.getType()+":<Target>"+ev.getTarget().toString());
-                    ev.preventDefault(); 
+                    logger.debugPrintf("Event:%s:<Target>:%s\n",ev.getType(),ev.getTarget().toString());
+                    // Handle here and block:
+                    // ev.preventDefault(); 
                 }
             };
         }
@@ -343,11 +336,9 @@ public class FXWebJPanel extends JPanel
     {
         if (doc==null)
         {
-            System.err.println("> installHyperLinkListeners(): NULL Document");
+            logger.warnPrintf("*** installHyperLinkListeners(): NULL Document!");
             return; 
         }
-        
-       
 
         // Element el = doc.getElementById("textarea");
         
@@ -360,7 +351,6 @@ public class FXWebJPanel extends JPanel
             ((EventTarget) el).addEventListener("click", getLinkListener(), false);
             ((EventTarget) el).addEventListener("dblclick", getLinkListener(), false);
             ((EventTarget) el).addEventListener("mouseover", getLinkListener(), false);
-
         }
 
     }
