@@ -1131,9 +1131,14 @@ public class WebClient
      * @param message
      * @throws WebException Matching WebException 
      */
-    private int checkHttpStatus(int httpStatus, String message, StringHolder optResonseH) throws WebException
+    private int checkHttpStatus(int httpStatus, String message, StringHolder optResponseH) throws WebException
     {
-
+        
+        if ((optResponseH!=null)  && (optResponseH.value!=null)) 
+        {
+            message=message+"\n--- response ---\n"+optResponseH.value; 
+        }
+        
         if (httpStatus == org.apache.http.HttpStatus.SC_NOT_FOUND)
         {
             throw new WebException(WebException.Reason.RESOURCE_NOT_FOUND, httpStatus, message
