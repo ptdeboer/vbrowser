@@ -187,7 +187,6 @@ public class WebClient
         return this.sessionID;
     }
 
-
     public UI getUI()
     {
         return this.ui;
@@ -369,6 +368,11 @@ public class WebClient
             }
             else if (reason == Reason.UNAUTHORIZED)
             {
+                if (this.config.useAuthentication()==false)
+                {
+                    throw new WebException(reason, "Need proper authentication for this service, but authentication is disabled.\n" + e.getMessage(), e);
+                }
+                
                 throw new WebException(reason, "Failed to authenticate: User or password wrong.\n" + e.getMessage(), e);
             }
             else
@@ -523,18 +527,20 @@ public class WebClient
                     + putOrPostmethod.getClass());
         }
 
+        String actualUser; 
+        
         try
         {
             HttpResponse response;
 
             if (config.getUseBasicAuthentication())
             {
-                String user = config.getUsername();
+                actualUser = config.getUsername();
                 String passwdStr = new String(config.getPasswordChars());
-                logger.debugPrintf("Using basic authentication, user=%s\n", user);
+                logger.debugPrintf("Using basic authentication, user=%s\n", actualUser);
 
                 Header authHeader = new BasicHeader("Authorization", "Basic "
-                        + (StringUtil.base64Encode((user + ":" + passwdStr).getBytes())));
+                        + (StringUtil.base64Encode((actualUser + ":" + passwdStr).getBytes())));
                 putOrPostmethod.addHeader(authHeader);
             }
 
