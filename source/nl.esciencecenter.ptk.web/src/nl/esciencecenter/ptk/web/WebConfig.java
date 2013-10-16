@@ -109,43 +109,60 @@ public class WebConfig
         init(uri); 
     }
     
-    protected void init(java.net.URI javaUri)
+    protected void init(java.net.URI serviceUri)
     {
-        this.protocol=javaUri.getScheme().toLowerCase(); 
-        this.hostname=javaUri.getHost(); 
-        this.port=javaUri.getPort(); 
+        this.protocol=serviceUri.getScheme().toLowerCase(); 
+        this.hostname=serviceUri.getHost(); 
+        this.port=serviceUri.getPort(); 
+        
         if (this.port<=0) 
         {
             if (this.isHTTPS())
+            {
                 port=SslConst.HTTPS_PORT;
+            }
             else
-                port=SslConst.HTTP_PORT; 
+            {
+                port=SslConst.HTTP_PORT;
+            }
         }
         
         // =========
         // sanitize: 
         // =========
         
-        this.servicePath=javaUri.getPath(); 
+        this.servicePath=serviceUri.getPath(); 
         
         if (servicePath!=null)
         {
+            if (servicePath.equals(""))
+            {
+                servicePath="/"; 
+            }
+
             // make absolute: 
             if (servicePath.startsWith("/")==false)
+            {
                 servicePath="/"+servicePath; 
-         
+            }
+                
             // strip last slash: 
-            if  (servicePath.endsWith("/")) 
+            if ( (servicePath.length()>1) && (servicePath.endsWith("/")) ) 
             {
                 servicePath=this.servicePath.substring(0,servicePath.length()-1);
             }
+        }            
+        
+        if (serviceUri.getUserInfo()!=null)
+        {
+            this.username=serviceUri.getUserInfo(); 
         }
     }
 
     /** 
-     * Return Web Service URI as java.net.URI. 
+     * Return Web Service URI as java.net.URI including the web service path name, for example "https://www.cnn.nl:443/theNews/"
      * 
-     * @return Web service URI as java.net.URI
+     * @return The Web service URI as java.net.URI
      * @throws URISyntaxException 
      */
     public java.net.URI getServiceURI() throws URISyntaxException
@@ -154,9 +171,10 @@ public class WebConfig
     }
 
     /** 
-     * Return Web Service URI as java.net.URI. 
-     * 
-     * @return Web service URI as java.net.URI
+     * Return web server URI as java.net.URI, for example "http://www.cnn.nl/" 
+     *  
+     * This is the HOST URI without the service path name. 
+     * @return The server or host URI as java.net.URI
      * @throws URISyntaxException 
      */
     public java.net.URI getServerURI() throws URISyntaxException
@@ -258,6 +276,30 @@ public class WebConfig
     public boolean getAllowUserInteraction()
     {
         return allowUserInteraction;
+    }
+
+    /**
+     * Create URI string without throwing URISyntax Exceptions 
+     */
+    public String getServiceURIString()
+    {
+        String uriStr= this.protocol+"://";
+        if (this.username!=null)
+            uriStr+=this.getUsername()+"@";
+        
+        uriStr+=this.hostname+"/"; 
+        uriStr+=this.servicePath; 
+        return uriStr; 
+    }
+
+    public String getProtocol()
+    {
+        return protocol;
+    }
+
+    public String getServicePath()
+    {
+        return servicePath;
     }
     
 }

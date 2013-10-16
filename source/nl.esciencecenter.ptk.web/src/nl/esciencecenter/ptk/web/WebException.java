@@ -41,7 +41,8 @@ public class WebException extends IOException
         HTTP_CLIENTEXCEPTION("HTTP Client Exception."), 
         HTTPS_SSLEXCEPTION("HTTPS SSL Exception."),
         IOEXCEPTION("IOException."), 
-        INVALID_REQUEST("Invalid Request");
+        INVALID_REQUEST("Invalid Request"), 
+        INVALID_RESPONSE("Invalid Response")
         ;
         
         // === Instance === 
