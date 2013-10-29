@@ -1,10 +1,11 @@
-package nl.esciencecenter.ptk.web;
+package nl.esciencecenter.ptk.web.content;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import nl.esciencecenter.ptk.io.FSNode;
+import nl.esciencecenter.ptk.web.PutMonitor;
 
 import org.apache.http.entity.mime.MIME;
 import org.apache.http.entity.mime.content.AbstractContentBody;

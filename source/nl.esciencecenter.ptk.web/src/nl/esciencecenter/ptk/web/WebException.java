@@ -29,20 +29,23 @@ public class WebException extends IOException
     {
         // Exception Reasons; 
         UNAUTHORIZED("Unauthorized."),
-        RESOURCE_NOT_FOUND("Resource not found."),
-        RESOURCE_ALREADY_EXISTS("Resource already exists."),
         FORBIDDEN("Forbidden."),
+        
+        CONNECTION_EXCEPTION("Connection Exception."),
         UNKNOWN_HOST("Hostname or server not found."),
         NO_ROUTE_TO_HOST_EXCEPTION("No route to host."),
         CONNECTION_TIME_OUT("Connection timeout."),
+        
+        RESOURCE_NOT_FOUND("Resource not found."),
+        RESOURCE_ALREADY_EXISTS("Resource already exists."),
+        
         HTTP_ERROR("HTTP Error."), 
-        URI_EXCEPTION("URI Syntax Exception."), 
-        CONNECTION_EXCEPTION("Connection Exception."),
         HTTP_CLIENTEXCEPTION("HTTP Client Exception."), 
         HTTPS_SSLEXCEPTION("HTTPS SSL Exception."),
         IOEXCEPTION("IOException."), 
         INVALID_REQUEST("Invalid Request"), 
-        INVALID_RESPONSE("Invalid Response")
+        INVALID_RESPONSE("Invalid Response"),
+        URI_EXCEPTION("URI Syntax Exception."), 
         ;
         
         // === Instance === 
@@ -65,6 +68,8 @@ public class WebException extends IOException
     private Reason reason=null; 
     
     private int httpCode=0; 
+    
+    private String htmlResponse=null;
 
     public WebException()
     {
@@ -76,25 +81,9 @@ public class WebException extends IOException
         super(message); 
     }
     
-    public WebException(Throwable cause)
-    {
-        super(cause); 
-    }
-    
     public WebException(String message,Throwable cause)
     {
         super(message,cause); 
-    }
-    
-    public WebException(Reason reason,String message)
-    {
-        super(message); 
-    }
-    
-    public WebException(Reason reason,Throwable cause)
-    {
-        super(cause);
-        this.reason=reason; 
     }
     
     public WebException(Reason reason,String message,Throwable cause)
@@ -102,7 +91,7 @@ public class WebException extends IOException
         super(message,cause); 
         this.reason=reason; 
     }
-    
+   
     public WebException(Reason reason, int httpCode, String message)
     {
         super(message); 
@@ -110,13 +99,22 @@ public class WebException extends IOException
         this.httpCode=httpCode; 
     }
     
-    public WebException(Reason reason, int httpCode, String message,Throwable cause)
+    /** 
+     * Create WebException from HTML error response. 
+     * Typically the call itself succeed (no exception raised), but the web server responded with a HTTP error code and a HTML error text. 
+     * @param reason - Enum type of recognized reason. 
+     * @param httpCode - HTTP Status code (404,500,etc). 
+     * @param message - Human readable exception message 
+     * @param htmlResponse -  exact HTML formatted response from web server. 
+     */
+    public WebException(Reason reason, int httpCode, String message,String htmlResponse)
     {
-        super(message,cause); 
+        super(message); 
         this.reason=reason;
         this.httpCode=httpCode; 
+        this.htmlResponse=htmlResponse; 
     }
-
+    
     public Reason getReason()
     {
         return this.reason; 
@@ -130,13 +128,14 @@ public class WebException extends IOException
     {
         return this.httpCode;
     }
-    
-    /**
-     * Returns status text of HTTP Status Code. 
-     */ 
-    public String getHttpCodeString()
+
+    /** 
+     * If the Remote Server responded with a HTML formatted error text, this method will return it. 
+     * @return
+     */
+    public String getHtmlResponse()
     {
-        return null; // return HttpStatus.getStatusText(httpCode); 
+        return this.htmlResponse; 
     }
     
 }

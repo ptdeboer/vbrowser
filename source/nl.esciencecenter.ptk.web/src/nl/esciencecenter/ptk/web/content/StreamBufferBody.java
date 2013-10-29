@@ -1,3 +1,4 @@
+package nl.esciencecenter.ptk.web.content;
 //package nl.esciencecenter.ptk.web;
 //
 //import java.io.IOException;

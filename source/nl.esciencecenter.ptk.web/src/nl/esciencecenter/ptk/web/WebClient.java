@@ -44,6 +44,8 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.ptk.web.WebConfig.AuthenticationType;
 import nl.esciencecenter.ptk.web.WebException.Reason;
+import nl.esciencecenter.ptk.web.content.ByteBufferBody;
+import nl.esciencecenter.ptk.web.content.FSNodeBody;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -354,7 +356,7 @@ public class WebClient
                 }
             }
 
-            checkHttpStatus(result, "initJSession(): Couldn't initialize JSessionID.",null);
+            checkHttpStatus(result, "initJSession(): Couldn't initialize JSessionID.",null,null);
 
             // all ok here.
         }
@@ -427,7 +429,7 @@ public class WebClient
             // get.setFollowRedirects(true);
 
             int result = this.executeDelete(delMethod, null, null);
-            checkHttpStatus(result, "deleteJSession(): Couldn't invalidate JSessionID.",null);
+            checkHttpStatus(result, "deleteJSession(): Couldn't invalidate JSessionID.",null,null);
             // all ok here.
             sessionID = null; // cleared
         }
@@ -666,10 +668,14 @@ public class WebClient
             StringHolder contentTypeHolder) throws WebException
     {
         HttpEntity entity = response.getEntity();
-
+        
+        StatusLine status = response.getStatusLine();
+        int statusCode = status.getStatusCode();
+        this.lastHttpStatus = statusCode;
+        
         if (entity == null)
         {
-            throw new WebException(WebException.Reason.IOEXCEPTION, "Response Entity is NULL");
+            throw new WebException(WebException.Reason.IOEXCEPTION,lastHttpStatus, "Response Entity is NULL");
         }
 
         InputStream contentInputstream = null;
@@ -741,9 +747,7 @@ public class WebClient
             logger.debugPrintf("  - Header: '%s'='%s'\n", headers[i].getName(), headers[i].getValue());
         }
 
-        StatusLine status = response.getStatusLine();
-        int statusCode = status.getStatusCode();
-        this.lastHttpStatus = statusCode;
+  
 
         return statusCode;
     }
@@ -772,7 +776,7 @@ public class WebClient
         // EXECUTE
         int result = executeGet(getMethod, resultTextHolder, contentTypeHolder);
         // POST
-        checkHttpStatus(result, "doGet(): Failed for uri:'" + uri + "'.",resultTextHolder);
+        checkHttpStatus(result, "doGet(): Failed for uri:'" + uri + "'.",resultTextHolder,contentTypeHolder);
         return result;
     }
 
@@ -802,7 +806,8 @@ public class WebClient
             {
                 logger.debugPrintf("NULL Entity\n");
                 getMethod.releaseConnection();
-                throw new WebException(WebException.Reason.IOEXCEPTION, "Response Entity is NULL");
+                int httpStatus=response.getStatusLine().getStatusCode();
+                throw new WebException(WebException.Reason.IOEXCEPTION, httpStatus,"Response Entity is NULL");
             }
 
             // Status must be ok, for the content to be streamed: 
@@ -846,7 +851,7 @@ public class WebClient
         // EXECUTE
         int result = executeDelete(delMethod, resultTextHolder, contentTypeHolder);
         // POST
-        checkHttpStatus(result, "doDelete(): Failed for query:'" + query + "'.",resultTextHolder);
+        checkHttpStatus(result, "doDelete(): Failed for query:'" + query + "'.",resultTextHolder,contentTypeHolder);
         return result;
     }
 
@@ -876,7 +881,7 @@ public class WebClient
         // Method:
         int status=executePut(putMethod,resultTextH,contentTypeH);
         // Status: 
-        return checkHttpStatus(status, "doPut:'" + uri, resultTextH); 
+        return checkHttpStatus(status, "doPut:'" + uri, resultTextH,contentTypeH); 
     }
 
     public int doPutFile(String query, String filePath, StringHolder resultStrH,PutMonitor putMonitor) throws WebException
@@ -916,7 +921,7 @@ public class WebClient
         {
             throw new WebException(Reason.IOEXCEPTION,"Failed to resolve File:"+filePath,e); 
         } 
-        
+        StringHolder contentTypeH=new StringHolder(); 
         FSNodeBody fileB=new FSNodeBody(node,putMonitor); 
         multiPart.addPart("file", fileB);
 
@@ -924,14 +929,14 @@ public class WebClient
         putMethod.setEntity(multiPart);
         
         // Execute 
-        int status=executePut(putMethod,resultStrH,null);
+        int status=executePut(putMethod,resultStrH,contentTypeH);
         // Status: 
-        return checkHttpStatus(status, "doPutFile:'" + uri+"', file="+filePath, resultStrH); 
+        return checkHttpStatus(status, "doPutFile:'" + uri+"', file="+filePath, resultStrH,contentTypeH); 
     }
 
-    public int doPutBytes(String query, byte bytes[], String optMimeType, StringHolder resultStrH) throws WebException
+    public int doPutBytes(String query, byte bytes[], String optMimeType, StringHolder resultStrH, PutMonitor optPutMonitor) throws WebException
     {
-        return doPutBytes(resolve(query),bytes,optMimeType, resultStrH);
+        return doPutBytes(resolve(query),bytes,optMimeType, resultStrH,optPutMonitor);
     }
     /**
      * Performs a managed HttpPut with a byte array as attachment. Recognized
@@ -950,7 +955,7 @@ public class WebClient
      *         (Web)Exceptions
      * @throws WebException
      */
-    public int doPutBytes(URI uri, byte bytes[], String mimeType, StringHolder resultStrH) throws WebException
+    public int doPutBytes(URI uri, byte bytes[], String mimeType, StringHolder resultStrH,PutMonitor optPutMonitor) throws WebException
     {
         if (bytes==null)
         {
@@ -963,19 +968,19 @@ public class WebClient
         {
             mimeType = "application/octet-stream";
         }
-        
+        StringHolder contentTypeH=new StringHolder(); 
         HttpPut putMethod = new HttpPut(uri.toString());
         MultipartEntity multiPart = new MultipartEntity();
-        ByteArrayBody byteBody = new ByteArrayBody(bytes, mimeType, "bytes");
+        ByteBufferBody byteBody = new ByteBufferBody(bytes, mimeType, "bytes",optPutMonitor);
 
         // Add the part to the MultipartEntity.
         multiPart.addPart("bytes", byteBody);
         putMethod.setEntity(multiPart);
         
         // Execute Method: 
-        int status=executePut(putMethod, resultStrH,null);
+        int status=executePut(putMethod, resultStrH,contentTypeH);
         // Status
-        return this.checkHttpStatus(status,"doPutBytes() uri="+uri,resultStrH);
+        return this.checkHttpStatus(status,"doPutBytes() uri="+uri,resultStrH,contentTypeH);
     }
 
     public ResponseOutputStream doPutOutputStream(String query, StringHolder resultStrH) throws WebException
@@ -997,11 +1002,12 @@ public class WebClient
 
         URI uri = resolve(query);
 
+        StringHolder contentTypeH=new StringHolder(); 
         putMethod = new HttpPut(uri.toString());
-
         MultipartEntity multiPart = new MultipartEntity();
 
         StringBody stringB;
+        
         try
         {
             stringB = new StringBody(text);
@@ -1014,9 +1020,9 @@ public class WebClient
 
         putMethod.setEntity(multiPart);
         // Method
-        int status=executePut(putMethod,resultTextH,null); 
+        int status=executePut(putMethod,resultTextH,contentTypeH); 
         // Status
-        return this.checkHttpStatus(status,"doPutString():"+query,resultTextH);
+        return this.checkHttpStatus(status,"doPutString():"+query,resultTextH,contentTypeH);
     }
    
     /** 
@@ -1126,7 +1132,7 @@ public class WebClient
         StatusLine statusLine = response.getStatusLine();
         int status = statusLine.getStatusCode();
         this.lastHttpStatus = status;
-        this.checkHttpStatus(status, message,null);
+        this.checkHttpStatus(status, message,null,null);
     }
 
     /**
@@ -1135,20 +1141,26 @@ public class WebClient
      * @param httpStatus
      *            - actual HTTP Status code
      * @param message
+     * @param contentTypeHolder 
      * @throws WebException Matching WebException 
      */
-    private int checkHttpStatus(int httpStatus, String message, StringHolder optResponseH) throws WebException
+    private int checkHttpStatus(int httpStatus, String message, StringHolder responseH, StringHolder contentTypeH) throws WebException
     {
-        
-        if ((optResponseH!=null)  && (optResponseH.value!=null)) 
+        String response=null; 
+        String contentType=null;
+        if (responseH!=null)
+            response=responseH.value; 
+        if (contentTypeH!=null)
+            contentType=contentTypeH.value;
+                
+        if (response!=null)
         {
-            message=message+"\n--- response ---\n"+optResponseH.value; 
+            message=message+"\n--- response ---\n"+response; 
         }
         
         if (httpStatus == org.apache.http.HttpStatus.SC_NOT_FOUND)
         {
-            throw new WebException(WebException.Reason.RESOURCE_NOT_FOUND, httpStatus, message
-                    + "\nReason:Resource Not Found.");
+            throw new WebException(WebException.Reason.RESOURCE_NOT_FOUND, httpStatus, message + "\nReason:Resource Not Found.");
         }
         else if (httpStatus == org.apache.http.HttpStatus.SC_UNAUTHORIZED)
         {
@@ -1160,13 +1172,11 @@ public class WebClient
         }
         else if (httpStatus == org.apache.http.HttpStatus.SC_EXPECTATION_FAILED)
         {
-            throw new WebException(WebException.Reason.INVALID_REQUEST, httpStatus, message
-                    + "\nReason:Expectation Failed/Invalid request.");
+            throw new WebException(WebException.Reason.INVALID_REQUEST, httpStatus, message + "\nReason:Expectation Failed/Invalid request.");
         }
         else if (isHttpStatusOK(httpStatus) == false)
         {
-            throw new WebException(WebException.Reason.HTTP_ERROR, httpStatus, message + "Error (" + httpStatus + "):"
-                    + httpStatus);
+            throw new WebException(WebException.Reason.HTTP_ERROR, httpStatus, message + "Error (" + httpStatus + "):" + httpStatus);
         }
         
         return httpStatus; 
@@ -1230,7 +1240,13 @@ public class WebClient
 
         return result;
     }
-
+    // === Misc. === 
+    
+    public String toString()
+    {
+        return "WebClient:[uri:"+this.getServiceURI()+", isAuthenticated:"+this.isAuthenticated()+"]"; 
+    }
+    
     protected ClassLogger getLogger()
     {
         return logger;
