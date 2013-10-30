@@ -34,6 +34,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.io.FileURISyntaxException;
 import nl.esciencecenter.ptk.io.RandomReader;
 import nl.esciencecenter.ptk.io.RandomWriter;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -124,21 +125,32 @@ public class ResourceLoader
 
     public ResourceLoader()
     {
-        init(null);
+        init(FSUtil.getDefault(),null);
     }
 
     /**
-     * Initialize ResourceLoader with extra URL search path. When resolving a
-     * relative URL these path URLs will be searched as well similar as using a PATH environment variable. 
+     * Initialize ResourceLoader with extra URL search path. 
+     * When resolving relative URLs these path URLs will be searched as well similar as using a PATH environment variable. 
      * 
      * @param urls - URL search paths
      */
     public ResourceLoader(URL urls[])
     {
-        init(urls);
+        init(FSUtil.getDefault(),urls);
+    }
+    
+    /**
+     * Initialize ResourceLoader with extra URL search path.
+     * When resolving relative URLs these path URLs will be searched as well similar as using a PATH environment variable. 
+     * @param FSUtil - custom FileSystem utility. 
+     * @param urls - URL search paths
+     */
+    public ResourceLoader(FSUtil fsUtil,URL urls[])
+    {
+        init(fsUtil,urls);
     }
 
-    protected void init(URL urls[])
+    protected void init(FSUtil fsUtil, URL urls[])
     {
         if (urls != null)
         {
@@ -146,9 +158,14 @@ public class ResourceLoader
             ClassLoader parent = Thread.currentThread().getContextClassLoader();
             classLoader = new URLClassLoader(urls, parent);
         }
-        fsUtil = FSUtil.getDefault();
+        
+        this.fsUtil=fsUtil;
+        
+        if (this.fsUtil==null)
+        {
+            fsUtil = FSUtil.getDefault();
+        }
     }
-
 
     /** 
      * Returns default characted encoding which is used when reading text. 
@@ -187,8 +204,9 @@ public class ResourceLoader
      * @param relUri relative or absolute URI 
      * @return resolve and valid URL.  
      * @throws MalformedURLException
+     * @throws FileURISyntaxException 
      */
-    public URL resolveUrl(URI relUri) throws MalformedURLException
+    public URL resolveUrl(URI relUri) throws MalformedURLException, FileURISyntaxException
     {
         
         if (relUri.isAbsolute())
@@ -196,9 +214,17 @@ public class ResourceLoader
             return relUri.toURL(); 
         }
         
-        return resolveUrl(relUri.toString());
+        URL url=resolveUrl(relUri.toString());
+        if (url!=null)
+        {
+            return url; 
+        }
+        
+        // If the URL is null, the relative URI can not be resolved against an existing URL on the classpath ! 
+        // The relative URI should be resolve to the current working directory.
+        
+        return fsUtil.resolveURI(relUri.toString()).toURL();  
     }
-
     
     /**
      * Resolve relative resource String and return absolute URL. The URL String
@@ -223,8 +249,10 @@ public class ResourceLoader
         logger.debugPrintf("resolveUrl():%s\n", url);
 
         if (url == null)
+        {
             throw new NullPointerException("URL String can not be null");
-
+        }
+        
         // (I) First optional Class Loader !
         if (optClassLoader != null)
         {
