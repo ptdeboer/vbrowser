@@ -149,6 +149,152 @@ public class ResourceLoader
         fsUtil = FSUtil.getDefault();
     }
 
+
+    /** 
+     * Returns default characted encoding which is used when reading text. 
+     */
+    public String getCharEncoding()
+    {
+        return charEncoding;
+    }
+
+    /**
+     * Specify default character encoding which is used when reading text.
+     */
+    public void setCharEncoding(String encoding)
+    {
+        charEncoding = encoding;
+    }
+    
+    // =================================================================
+    // URI/URL resolving 
+    // =================================================================
+    
+    
+    /**
+     * Resolve URL string to absolute URL
+     * 
+     * @see ResourceLoader#resolveUrl(ClassLoader, String)
+     */
+    public URL resolveUrl(String urlString)
+    {
+        return resolveUrl(null, urlString);
+    }
+
+    /** 
+     * Resolve possible relative URI to absolute URL. 
+     * 
+     * @param relUri relative or absolute URI 
+     * @return resolve and valid URL.  
+     * @throws MalformedURLException
+     */
+    public URL resolveUrl(URI relUri) throws MalformedURLException
+    {
+        
+        if (relUri.isAbsolute())
+        {
+            return relUri.toURL(); 
+        }
+        
+        return resolveUrl(relUri.toString());
+    }
+
+    
+    /**
+     * Resolve relative resource String and return absolute URL. The URL String
+     * can be matched against the optional ClassLoader in the case the URL
+     * points to a resource loaded by a custom ClasLoader that is not accessible
+     * by the classloader which loaded this (ResourceLoader) class.
+     * 
+     * If the ResourceLoader has been initialized with extra (ClassPath) URLs,
+     * these will be searched also.
+     * 
+     * @param optClassLoader
+     *            - Optional ClassLoader from plugin class Loader
+     * @param url
+     *            - relative URL String, might be absolute but then there is
+     *            nothing to 'resolve'.
+     * @return resolved Absolute URL
+     */
+    public URL resolveUrl(ClassLoader optClassLoader, String url)
+    {
+        URL resolvedUrl = null;
+
+        logger.debugPrintf("resolveUrl():%s\n", url);
+
+        if (url == null)
+            throw new NullPointerException("URL String can not be null");
+
+        // (I) First optional Class Loader !
+        if (optClassLoader != null)
+        {
+            resolvedUrl = optClassLoader.getResource(url);
+
+            if (resolvedUrl != null)
+            {
+                logger.debugPrintf("resolveUrl() I: Resolved URL by using extra class loader:%s\n", resolvedUrl);
+            }
+        }
+
+        // (II) Use Reource Classloader
+        if ((resolvedUrl == null) && (this.classLoader != null))
+        {
+            resolvedUrl = this.classLoader.getResource(url);
+
+            if (resolvedUrl != null)
+            {
+                logger.debugPrintf("resolveURL() II:Resolved URL by using resource classloader:%s\n", resolvedUrl);
+            }
+        }
+
+        // (III) Check default (global) classloader for icons which are on the
+        // classpath
+        if (resolvedUrl == null)
+        {
+            resolvedUrl = this.getClass().getClassLoader().getResource(url);
+
+            if (resolvedUrl != null)
+            {
+                logger.debugPrintf("resolveURL() III:Resolved URL by using global classloader:%s\n", resolvedUrl);
+            }
+        }
+
+        // keep as is:
+        if (resolvedUrl == null)
+        {
+            try
+            {
+                URL url2 = new URL(url);
+                resolvedUrl = url2;
+            }
+            catch (MalformedURLException e)
+            {
+                logger.debugPrintf("resolveURL() IV: Not an absolute url:%s\n", url);
+            }
+        }
+
+        logger.debugPrintf("resolveURL(): '%s' -> '%s' \n", url, resolvedUrl);
+
+        return resolvedUrl;
+    }
+
+    /**
+     *  Returns current URL search path for relative resources.  
+     */
+    public URL[] getSearchPath()
+    {
+        URL urls[] = null;
+
+        if (this.classLoader != null)
+            urls = this.classLoader.getURLs();
+
+        return urls;
+    }
+    
+    // =================================================================
+    // Input- and OutputStreams 
+    // =================================================================
+    
     /**
      * Resolves relative URL string and returns InputStream to resource. 
      * If the urlstr is an absolute URL this method is similar to  <code>URL.openConnection().getInputStream()</code>.
@@ -178,7 +324,9 @@ public class ResourceLoader
     public InputStream createInputStream(URL url) throws IOException
     {
         if (url==null)
-            throw new NullPointerException("URL is NULL!"); 
+        {
+            throw new NullPointerException("URL is NULL!");
+        }
         
         try
         {
@@ -196,7 +344,7 @@ public class ResourceLoader
         try
         {
             // use URL compatible method
-            return uri.toURL().openConnection().getInputStream();
+            return resolveUrl(uri).openConnection().getInputStream();
         }
         catch (IOException e)
         {
@@ -205,6 +353,38 @@ public class ResourceLoader
         }
     }
 
+    public OutputStream createOutputStream(URL url) throws IOException
+    {
+        return _createOutputStream(url);
+    }
+
+    public OutputStream createOutputStream(URI uri) throws IOException
+    {
+        return _createOutputStream(resolveUrl(uri));
+    }
+    
+    protected OutputStream _createOutputStream(URL url) throws IOException
+    {
+        if (url.getProtocol().equalsIgnoreCase("file"))
+        {
+            return this.fsUtil.createOutputStream(url.getPath());  
+        }
+        
+        try
+        {
+            return url.openConnection().getOutputStream();
+        }
+        catch (IOException e)
+        {
+            // wrap:
+            throw new IOException("Cannot create OutputStream from:" + url + "\n" + e.getMessage(), e);
+        }
+    }
+    
+    // =================================================================
+    // Read and Write methods  
+    // =================================================================
+    
     public String readText(URL location) throws IOException
     {
         return readText(location,this.charEncoding); 
@@ -351,8 +531,8 @@ public class ResourceLoader
     public Properties loadProperties(URI uri) throws IOException
     {
         // must use URL so it works during bootstrap !
-        // (After bootstap new schemes will be possible)
-        return loadProperties(uri.toURL());
+        // (After bootstrap new schemes will be possible)
+        return loadProperties(resolveUrl(uri));
     }
 
     public Properties loadProperties(URL url) throws IOException
@@ -395,123 +575,6 @@ public class ResourceLoader
         return props;
     }
 
-    /** 
-     * Returns default characted encoding which is used when reading text. 
-     */
-    public String getCharEncoding()
-    {
-        return charEncoding;
-    }
-
-    /**
-     * Specify default character encoding which is used when reading text.
-     */
-    public void setCharEncoding(String encoding)
-    {
-        charEncoding = encoding;
-    }
-   
-    /**
-     * Resolve URL string to absolute URL
-     * 
-     * @see ResourceLoader#resolveUrl(ClassLoader, String)
-     */
-    public URL resolveUrl(String urlString)
-    {
-        return resolveUrl(null, urlString);
-    }
-
-    /**
-     * Resolve relative resource String and return absolute URL. The URL String
-     * can be matched against the optional ClassLoader in the case the URL
-     * points to a resource loaded by a custom ClasLoader that is not accessible
-     * by the classloader which loaded this (ResourceLoader) class.
-     * 
-     * If the ResourceLoader has been initialized with extra (ClassPath) URLs,
-     * these will be searched also.
-     * 
-     * @param optClassLoader
-     *            - Optional ClassLoader from plugin class Loader
-     * @param url
-     *            - relative URL String, might be absolute but then there is
-     *            nothing to 'resolve'.
-     * @return resolved Absolute URL
-     */
-    public URL resolveUrl(ClassLoader optClassLoader, String url)
-    {
-        URL resolvedUrl = null;
-
-        logger.debugPrintf("resolveUrl():%s\n", url);
-
-        if (url == null)
-            throw new NullPointerException("URL String can not be null");
-
-        // (I) First optional Class Loader !
-        if (optClassLoader != null)
-        {
-            resolvedUrl = optClassLoader.getResource(url);
-
-            if (resolvedUrl != null)
-            {
-                logger.debugPrintf("resolveUrl() I: Resolved URL by using extra class loader:%s\n", resolvedUrl);
-            }
-        }
-
-        // (II) Use Reource Classloader
-        if ((resolvedUrl == null) && (this.classLoader != null))
-        {
-            resolvedUrl = this.classLoader.getResource(url);
-
-            if (resolvedUrl != null)
-            {
-                logger.debugPrintf("resolveURL() II:Resolved URL by using resource classloader:%s\n", resolvedUrl);
-            }
-        }
-
-        // (III) Check default (global) classloader for icons which are on the
-        // classpath
-        if (resolvedUrl == null)
-        {
-            resolvedUrl = this.getClass().getClassLoader().getResource(url);
-
-            if (resolvedUrl != null)
-            {
-                logger.debugPrintf("resolveURL() III:Resolved URL by using global classloader:%s\n", resolvedUrl);
-            }
-        }
-
-        // keep as is:
-        if (resolvedUrl == null)
-        {
-            try
-            {
-                URL url2 = new URL(url);
-                resolvedUrl = url2;
-            }
-            catch (MalformedURLException e)
-            {
-                logger.debugPrintf("resolveURL() IV: Not an absolute url:%s\n", url);
-            }
-        }
-
-        logger.debugPrintf("resolveURL(): '%s' -> '%s' \n", url, resolvedUrl);
-
-        return resolvedUrl;
-    }
-
-    /**
-     *  Returns current URL search path for relative resources.  
-     */
-    public URL[] getSearchPath()
-    {
-        URL urls[] = null;
-
-        if (this.classLoader != null)
-            urls = this.classLoader.getURLs();
-
-        return urls;
-    }
-
     /**
      * Save properties file to specified location.
      */
@@ -543,34 +606,6 @@ public class ResourceLoader
         }
     }
 
-    public OutputStream createOutputStream(URL url) throws IOException
-    {
-        return _createOutputStream(url);
-    }
-
-    public OutputStream createOutputStream(URI uri) throws IOException
-    {
-        return _createOutputStream(uri.toURL());
-    }
-    
-    protected OutputStream _createOutputStream(URL url) throws IOException
-    {
-        if (url.getProtocol().equalsIgnoreCase("file"))
-        {
-            return this.fsUtil.createOutputStream(url.getPath());  
-        }
-        
-        try
-        {
-            return url.openConnection().getOutputStream();
-        }
-        catch (IOException e)
-        {
-            // wrap:
-            throw new IOException("Cannot create OutputStream from:" + url + "\n" + e.getMessage(), e);
-        }
-    }
-
     /**
      * Save properties file to specified location.
      */
@@ -587,9 +622,16 @@ public class ResourceLoader
         writeBytesTo(loc,text.getBytes(charset));
     }
     
-    public void writeBytesTo(URI loc,byte[] bytes) throws IOException
+    /** 
+     * Write bytes to URI location. 
+     *  
+     * @param uri - URI of location. URI scheme must support OutputStreams. 
+     * @param bytes - bytes to write to the location
+     * @throws IOException
+     */
+    public void writeBytesTo(URI uri,byte[] bytes) throws IOException
     {
-        OutputStream outps = createOutputStream(loc);
+        OutputStream outps = createOutputStream(uri);
         outps.write(bytes); 
         
         try
@@ -602,12 +644,23 @@ public class ResourceLoader
         }
     }
  
-
+    // =================================================================
+    // Random IO Interface   
+    // =================================================================
+    
+    /** 
+     * Returns RandomReader if supported by the URI scheme.  
+     * @throws IOException
+     */
     public RandomReader createRandomReader(URI loc) throws IOException
     {
         return fsUtil.createRandomReader(fsUtil.newFSNode(loc));
     }
 
+    /** 
+     * Returns RandomWriter if supported by the URI scheme.  
+     * @throws IOException
+     */
     public RandomWriter createRandomWriter(URI loc) throws IOException
     {
         return fsUtil.createRandomWriter(fsUtil.newFSNode(loc));
