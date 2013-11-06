@@ -69,8 +69,10 @@ public class WebException extends IOException
     
     private int httpCode=0; 
     
-    private String htmlResponse=null;
+    private String textResponse=null;
 
+    private String responseMimeType=null; 
+    
     public WebException()
     {
         super(); 
@@ -112,8 +114,27 @@ public class WebException extends IOException
         super(message); 
         this.reason=reason;
         this.httpCode=httpCode; 
-        this.htmlResponse=htmlResponse; 
+        this.responseMimeType="text/html"; 
+        this.textResponse=htmlResponse; 
     }
+    
+    /** 
+     * Create WebException from HTML error response. 
+     * Typically the call itself succeed (no exception raised), but the web server responded with a HTTP error code and a HTML error text. 
+     * @param reason - Enum type of recognized reason. 
+     * @param httpCode - HTTP Status code (404,500,etc). 
+     * @param message - Human readable exception message 
+     * @param htmlResponse -  exact HTML formatted response from web server. 
+     */
+    public WebException(Reason reason, int httpCode, String message,String responseType,String htmlResponse)
+    {
+        super(message); 
+        this.reason=reason;
+        this.httpCode=httpCode; 
+        this.responseMimeType=responseType;
+        this.textResponse=htmlResponse; 
+    }
+    
     
     public Reason getReason()
     {
@@ -130,12 +151,34 @@ public class WebException extends IOException
     }
 
     /** 
-     * If the Remote Server responded with a HTML formatted error text, this method will return it. 
-     * @return
+     * If the Remote Server responded with a (HTML) formatted error text, this method will return it. 
+     * @return - (html) formatted server response text. 
      */
-    public String getHtmlResponse()
+    public String getServerResponse()
     {
-        return this.htmlResponse; 
+        return this.textResponse; 
     }
     
+    /** 
+     * If the Remote Server responded with a (HTML) formatted error text, this method will return the actual mime type of the response. 
+     * @return - mime-type of server response. Typically "text/html".   
+     */
+    public String getResponseMimeType()
+    {
+        return this.responseMimeType; 
+    }
+    
+    public String toString()
+    {
+        String str = getClass().getName();
+        String message = getLocalizedMessage();
+        
+        str+="["+getReason()+"]";
+        if (message!=null)
+        {
+            str+=":"+message;
+        }
+        
+        return str;  
+    }
 }

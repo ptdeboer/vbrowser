@@ -1147,36 +1147,36 @@ public class WebClient
     private int checkHttpStatus(int httpStatus, String message, StringHolder responseH, StringHolder contentTypeH) throws WebException
     {
         String response=null; 
-        String contentType=null;
+        String responseType=null;
         if (responseH!=null)
             response=responseH.value; 
         if (contentTypeH!=null)
-            contentType=contentTypeH.value;
+            responseType=contentTypeH.value;
                 
         if (response!=null)
         {
             message=message+"\n--- response ---\n"+response; 
         }
-        
+
         if (httpStatus == org.apache.http.HttpStatus.SC_NOT_FOUND)
         {
-            throw new WebException(WebException.Reason.RESOURCE_NOT_FOUND, httpStatus, message + "\nReason:Resource Not Found.");
+            throw new WebException(WebException.Reason.RESOURCE_NOT_FOUND, httpStatus, message + "\nReason:Resource Not Found.",responseType,response);
         }
         else if (httpStatus == org.apache.http.HttpStatus.SC_UNAUTHORIZED)
         {
-            throw new WebException(WebException.Reason.UNAUTHORIZED, httpStatus, message + "\nReason:Unauthorized");
+            throw new WebException(WebException.Reason.UNAUTHORIZED, httpStatus, message + "\nReason:Unauthorized",responseType,response);
         }
         else if (httpStatus == org.apache.http.HttpStatus.SC_FORBIDDEN)
         {
-            throw new WebException(WebException.Reason.UNAUTHORIZED, httpStatus, message + "\nReason:Forbidden");
+            throw new WebException(WebException.Reason.UNAUTHORIZED, httpStatus, message + "\nReason:Forbidden",responseType,response);
         }
         else if (httpStatus == org.apache.http.HttpStatus.SC_EXPECTATION_FAILED)
         {
-            throw new WebException(WebException.Reason.INVALID_REQUEST, httpStatus, message + "\nReason:Expectation Failed/Invalid request.");
+            throw new WebException(WebException.Reason.INVALID_REQUEST, httpStatus, message + "\nReason:Expectation Failed/Invalid request.",responseType,response);
         }
         else if (isHttpStatusOK(httpStatus) == false)
         {
-            throw new WebException(WebException.Reason.HTTP_ERROR, httpStatus, message + "Error (" + httpStatus + "):" + httpStatus);
+            throw new WebException(WebException.Reason.HTTP_ERROR, httpStatus, message + "Error (" + httpStatus + "):" + httpStatus,responseType,response);
         }
         
         return httpStatus; 
