@@ -72,6 +72,7 @@ public class XenonFS extends FileSystemNode
 		super(context, info);
 		
 		boolean isSftp="sftp".equals(location.getScheme());
+		boolean isGftp="gsiftp".equals(location.getScheme()) || "gftp".equals(location.getScheme());
         boolean isLocal="file".equals(location.getScheme());
 
 		String fsUriStr=null;
@@ -82,9 +83,16 @@ public class XenonFS extends FileSystemNode
 		if (isSftp)
 		{
             if (StringUtil.isEmpty(configeredUser))
+            {
                 configeredUser=context.getConfigManager().getUserName(); 
+            }
             
             fsUriStr=location.getScheme()+"://"+configeredUser+"@"+location.getHostname()+"/";
+		}
+		else if (isGftp)
+		{
+		    fsUriStr=location.getScheme()+"://"+location.getHostname()+"/";
+		    
 		}
 		else
 		{
@@ -98,11 +106,16 @@ public class XenonFS extends FileSystemNode
 		    // create optional shared client. 
 		    octoClient=XenonClient.createFor(context,info); 
 		    
-		    if ("sftp".equals(location.getScheme()))
+		    if (isSftp)
 		    {
 		        info.getUserinfo(); 
 	            octoFS=octoClient.createFileSystem(fsUri,octoClient.createSSHCredentials(info));
 		    }
+		    else if (isGftp)
+            {
+                info.getUserinfo(); 
+                octoFS=octoClient.createGftpFileSystem(fsUri,octoClient.createGftpCredentials(info));
+            }
 		    else
 		    {
 		        octoFS=octoClient.createFileSystem(fsUri);

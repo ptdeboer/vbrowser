@@ -34,6 +34,7 @@ import java.util.Set;
 
 import nl.esciencecenter.xenon.Xenon;
 import nl.esciencecenter.xenon.XenonException;
+import nl.esciencecenter.xenon.adaptors.gftp.GlobusProxyCredential;
 import nl.esciencecenter.xenon.credentials.Credential;
 import nl.esciencecenter.xenon.credentials.Credentials;
 import nl.esciencecenter.xenon.engine.XenonEngine;
@@ -213,6 +214,11 @@ public class XenonClient
     public FileSystem createFileSystem(java.net.URI uri,Credential cred) throws XenonException, XenonException
     {
         return engine.files().newFileSystem(uri.getScheme(),"/", cred, octoProperties);
+    }
+    
+    public FileSystem createGftpFileSystem(java.net.URI uri,Credential cred) throws XenonException, XenonException
+    {
+        return engine.files().newFileSystem(uri.getScheme(),uri.getHost()+":"+uri.getPort(), cred, octoProperties);
     }
     
     public FileAttributes statPath(Path path) throws XenonException
@@ -536,6 +542,11 @@ public class XenonClient
         }
         
         return cred; 
+    }
+
+    public Credential createGftpCredentials(ServerInfo info) throws XenonException
+    {
+        return engine.credentials().newCertificateCredential("gsiftp", "/tmp/x509up_u1000", null,null, null); 
     }
 
    
