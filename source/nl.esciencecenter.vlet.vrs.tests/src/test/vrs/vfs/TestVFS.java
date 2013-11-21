@@ -1549,7 +1549,7 @@ public class TestVFS extends VTestCase
         {
             localFile = localTempDir.createFile("test10MBStreamRead");
 
-            int len = 10 * 1024 * 1024;
+            int len = 1313 * 1024;
 
             // fixed seed for reproducable tests
             Random generator = new Random(13);

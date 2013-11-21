@@ -25,7 +25,6 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
-
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -39,15 +38,15 @@ import nl.esciencecenter.vlet.vrs.VRSContext;
  */
 public class TestSettings
 {
-    public static final String VFS_LOCALFS_LOCATION         = "vfsLocalFS_location1";
-    public static final String VFS_LOCAL_TEMPDIR_LOCATION   = "vfsLocalFS_tmpDirLocation"; 
-    public static final String VFS_GFTP_V1_LOCATION         = "vfsGFTP_V1_location1"; 
-    public static final String VFS_GFTP_LOCATION            ="vfsGFTPLocation"; 
-    public static final String VFS_GFTP_LOCATION2           ="vfsGFTPLocation2"; 
-    public static final String VFS_GFTP_ELAB_LOCATION       ="vfsGFTPElabLocation"; 
-    public static final String VFS_SFTP_SARA_LOCATION       ="vfsSFTPSARALocation"; 
-    public static final String VFS_SFTP_LOCALHOST_TESTUSER  ="vfsSFTPLocalhostLocation";
-    
+    public static final String VFS_LOCALFS_LOCATION         = "localFS_location1";
+    public static final String VFS_LOCAL_TEMPDIR_LOCATION   = "localFS_tmpDirLocation"; 
+    public static final String VFS_GFTP_V1_LOCATION         = "GFTP_V1_location1"; 
+    public static final String VFS_GFTP_LOCATION            ="GFTPLocation"; 
+    public static final String VFS_GFTP_LOCATION2           ="GFTPLocation2"; 
+    public static final String VFS_GFTP_CLOUD_LOCATION       ="GFTPCloudLocation"; 
+    public static final String VFS_SFTP_SARA_LOCATION       ="SFTPSARALocation"; 
+    public static final String VFS_SFTP_LOCALHOST_TESTUSER  ="SFTPLocalhostLocation";
+
     public static final String VFS_SRM_DCACHE_SARA_LOCATION         ="vfsSRM_dCache_SARA_location";
     public static final String VFS_SRM_DCACHE_SARA_OTHER_LOCATION   ="vfsSRM_dCache_SARA_otherLocation";
     public static final String VFS_SRM_DTEAM_DCACHE_SARA_LOCATION   ="vfsSRM_dteam_dCache_SARA_location";
@@ -119,13 +118,13 @@ public class TestSettings
                 new VRL("file", null, "/tmp/" + testUserName + "/testLocalFS"));
         
         testLocations.put(VFS_GFTP_LOCATION,
-                new VRL("gftp", "fs2.das3.science.uva.nl", "/tmp/" + testUserName + "/testGFTP1"));
+                new VRL("gsiftp", "fs2.das3.science.uva.nl", "/tmp/" + testUserName + "/testGFTP1"));
 
         testLocations.put(VFS_GFTP_LOCATION2,
-                new VRL("gftp", "fs2.das3.science.uva.nl", "/tmp/" + testUserName + "/testGFTP2"));
+                new VRL("gsiftp", "fs2.das3.science.uva.nl", "/tmp/" + testUserName + "/testGFTP2"));
         
-        testLocations.put(VFS_GFTP_ELAB_LOCATION,
-                new VRL("gftp", "elab.lab.uvalight.net", "/tmp/" + testUserName + "/testGFTP3"));
+        testLocations.put(VFS_GFTP_CLOUD_LOCATION,
+                new VRL("gsiftp", "xnatws.esciencetest.nl", 2811, "/tmp/" + testUserName + "/testGFTP3"));
         
         testLocations.put(VFS_SFTP_SARA_LOCATION,
                 new VRL("sftp","ptdeboer", "ui.grid.sara.nl", 22,"/tmp/" + testUserName+ "/testSFTP1"));
@@ -253,6 +252,7 @@ public class TestSettings
 
     public static String[] BLACK_LISTED_SE =
             { "se.grid.rug.nl", "srm.grid.rug.nl" };
+    
     
     
     // 

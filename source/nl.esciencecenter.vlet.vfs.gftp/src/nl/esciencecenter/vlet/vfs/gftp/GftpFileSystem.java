@@ -549,8 +549,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
      * @throws ClientException
      * @throws VrsException
      */
-    private void setCheckMode2(boolean _binMode,
-            boolean updatePassiveMode) throws VrsException
+    private void setCheckMode(boolean updatePassiveMode) throws VrsException
     {
         long id = Thread.currentThread().getId();
 
@@ -809,7 +808,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             else
                 synchronized (serverMutex)
                 {
-                    setCheckMode2(true, usePassive());
+                    setCheckMode( usePassive());
                     transferState = client.asynchPut(remotefilepath,
                             riofile, markerListener);
                 }
@@ -918,7 +917,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             else synchronized (serverMutex)
             {
                 // Active asynchronous:
-                setCheckMode2(true, usePassive());
+                setCheckMode( usePassive());
                 transferState = client.asynchGet(remotefilepath,
                             riofile, markerListener);
             }
@@ -1013,7 +1012,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             synchronized (serverMutex)
             {
                 // rename does no use datachannel (passive=false);
-                this.setCheckMode2(false, false);
+                this.setCheckMode( false);
                 client.rename(filepath, newpath);
             }
 
@@ -1049,13 +1048,18 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             synchronized (serverMutex)
             {
                 // changedir/delete doesn't need data channel:
-                setCheckMode2(false, false);
+                setCheckMode( false);
+                // cd to directory. This also acts as an extra permissions check.
                 client.changeDir(parentDir);
 
                 if (isDir)
+                {
                     client.deleteDir((name));
+                }
                 else
+                {
                     client.deleteFile(name);
+                }
             }
 
             return true;
@@ -1246,7 +1250,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             synchronized (serverMutex)
             {
                 // mkdir doesn't need data channel
-                setCheckMode2(false, false);
+                setCheckMode( false);
                 client.makeDir(dirpath);
             }
 
@@ -1281,7 +1285,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                 synchronized (serverMutex)
                 {
                     // cd doesn't need data channel
-                    setCheckMode2(false, false);
+                    setCheckMode( false);
 
                     // empty path = default path which gftp server sets
                     path = client.getCurrentDir();
@@ -1376,7 +1380,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             else
                 synchronized (serverMutex)
                 {
-                    setCheckMode2(true, usePassive());
+                    setCheckMode( usePassive());
                     retval = client.mlsd(dirpath);
                 }
 
@@ -1693,7 +1697,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             synchronized (serverMutex)
             {
                 // extra precausion to avoid upsetting the GridFTPClient
-                setCheckMode2(false, false);
+                setCheckMode( false);
                 if (this.client.exists(filepath) == false)
                 {
                     return null;// mslt is also used in 'exists' // throw new
@@ -1702,7 +1706,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                 }
 
                 // update passive for DATA channel mslt
-                setCheckMode2(true, usePassive());
+                setCheckMode( usePassive());
                 entry = client.mlst(filepath);
 
                 return entry;
@@ -1742,7 +1746,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
         try
         {
-            setCheckMode2(false, false);
+            setCheckMode( false);
 
             // use current client for existance to speed up 'exists'
             if (client.exists(filepath) == false)
@@ -1943,7 +1947,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         {
             synchronized (serverMutex)
             {
-                setCheckMode2(false, false);
+                setCheckMode( false);
                 size = this.client.getSize(path);
                 return size;
             }
@@ -2065,7 +2069,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             else
                 synchronized (this.serverMutex)
                 {
-                    setCheckMode2(true, usePassive());
+                    setCheckMode( usePassive());
                     this.client.put(fullPath, nilsource, null);
                 }
         }
