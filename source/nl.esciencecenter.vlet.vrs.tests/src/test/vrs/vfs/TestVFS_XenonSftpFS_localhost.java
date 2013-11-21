@@ -24,6 +24,7 @@ package test.vrs.vfs;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
 import test.TestSettings;
+import test.TestSettings.TestLocation;
 
 public class TestVFS_XenonSftpFS_localhost extends TestVFS
 {
@@ -50,7 +51,7 @@ public class TestVFS_XenonSftpFS_localhost extends TestVFS
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestSettings.VFS_SFTP_LOCALHOST_TESTUSER); 
+        return TestSettings.getTestLocation(TestLocation.VFS_SFTP_LOCALHOST_TESTUSER); 
     }
 
 }

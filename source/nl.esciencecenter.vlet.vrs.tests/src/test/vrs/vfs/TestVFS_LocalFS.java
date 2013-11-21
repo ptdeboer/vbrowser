@@ -22,6 +22,7 @@
 package test.vrs.vfs;
 
 import test.TestSettings;
+import test.TestSettings.TestLocation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.VRS;
 
@@ -54,7 +55,7 @@ public class TestVFS_LocalFS extends TestVFS
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestSettings.VFS_LOCALFS_LOCATION); 
+        return TestSettings.getTestLocation(TestLocation.VFS_LOCALFS_LOCATION); 
     }
 
 // Use Junit 4 annotation.

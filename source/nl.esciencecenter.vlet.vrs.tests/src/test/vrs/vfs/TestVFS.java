@@ -81,6 +81,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import test.TestSettings;
+import test.TestSettings.TestLocation;
 import test.VTestCase;
 
 
@@ -116,7 +117,7 @@ public class TestVFS extends VTestCase
 
     private boolean doBigTests = true;
 
-    private VRL localTempDirVrl = TestSettings.getTestLocation(TestSettings.VFS_LOCAL_TEMPDIR_LOCATION);
+    private VRL localTempDirVrl = TestSettings.getTestLocation(TestLocation.VFS_LOCAL_TEMPDIR_LOCATION);
 
     private VRL remoteTestDirVrl = null;
 

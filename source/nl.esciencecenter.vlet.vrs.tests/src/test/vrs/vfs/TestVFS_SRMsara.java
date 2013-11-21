@@ -24,6 +24,7 @@ package test.vrs.vfs;
 import org.junit.Before;
 
 import test.TestSettings;
+import test.TestSettings.TestLocation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
 //import nl.uva.vlet.gui.dialog.AuthenticationDialog;
@@ -50,7 +51,7 @@ public class TestVFS_SRMsara extends TestVFS_SRM
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestSettings.VFS_SRM_DCACHE_SARA_LOCATION); 
+        return TestSettings.getTestLocation(TestLocation.VFS_SRM_DCACHE_SARA_LOCATION); 
     }
 
     @Before

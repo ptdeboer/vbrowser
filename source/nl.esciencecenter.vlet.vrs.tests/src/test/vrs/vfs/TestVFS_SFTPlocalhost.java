@@ -24,6 +24,7 @@ package test.vrs.vfs;
 import org.junit.Before;
 
 import test.TestSettings;
+import test.TestSettings.TestLocation;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
@@ -49,7 +50,7 @@ public class TestVFS_SFTPlocalhost extends TestVFS
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestSettings.VFS_SFTP_LOCALHOST_TESTUSER); 
+        return TestSettings.getTestLocation(TestLocation.VFS_SFTP_LOCALHOST_TESTUSER); 
     }
 
     protected void checkAuthentication() throws Exception

@@ -28,6 +28,7 @@ import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.VRSFactory;
 import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
 import test.TestSettings;
+import test.TestSettings.TestLocation;
 
 
 public class TestVFS_XenonLocalFS extends TestVFS
@@ -62,7 +63,7 @@ public class TestVFS_XenonLocalFS extends TestVFS
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestSettings.VFS_LOCALFS_LOCATION); 
+        return TestSettings.getTestLocation(TestLocation.VFS_LOCALFS_LOCATION); 
     }
     
     @Override

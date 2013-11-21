@@ -25,10 +25,11 @@ import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import test.TestSettings;
 import test.TestSettings.TestLocation;
 
-public class TestVFS_XenonSftpFS_SARA extends TestVFS
+public class TestVFS_XenonSGftp_localhost extends TestVFS
 {
     static
     {
+        
         try
         {
             TestVFS_XenonLocalFS.initOctopus(); 
@@ -37,12 +38,13 @@ public class TestVFS_XenonSftpFS_SARA extends TestVFS
         {
             e.printStackTrace();
         } 
+        
     }
     
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestLocation.VFS_SFTP_SARA_LOCATION); 
+        return TestSettings.getTestLocation(TestLocation.VFS_GFTP_LOCALHOST); 
     }
 
 }

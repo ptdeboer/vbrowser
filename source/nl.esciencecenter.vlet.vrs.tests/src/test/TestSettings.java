@@ -32,168 +32,187 @@ import nl.esciencecenter.vlet.vrs.ServerInfo;
 import nl.esciencecenter.vlet.vrs.VRSContext;
 
 /**
- * Test configuarion settings. TODO: custom settings.
+ * Test configuarion settings.
  * 
  * @author P.T. de Boer
  */
 public class TestSettings
 {
-    public static final String VFS_LOCALFS_LOCATION         = "localFS_location1";
-    public static final String VFS_LOCAL_TEMPDIR_LOCATION   = "localFS_tmpDirLocation"; 
-    public static final String VFS_GFTP_V1_LOCATION         = "GFTP_V1_location1"; 
-    public static final String VFS_GFTP_LOCATION            ="GFTPLocation"; 
-    public static final String VFS_GFTP_LOCATION2           ="GFTPLocation2"; 
-    public static final String VFS_GFTP_CLOUD_LOCATION       ="GFTPCloudLocation"; 
-    public static final String VFS_SFTP_SARA_LOCATION       ="SFTPSARALocation"; 
-    public static final String VFS_SFTP_LOCALHOST_TESTUSER  ="SFTPLocalhostLocation";
+    public static enum TestLocation
+    {
+        VFS_LOCALFS_LOCATION,
+        VFS_LOCAL_TEMPDIR_LOCATION,
+        VFS_GFTP_V1_LOCATION,
+        VFS_GFTP_LOCALHOST,
+        VFS_GFTP_LOCATION1,
+        VFS_GFTP_LOCATION2,
+        VFS_GFTP_CLOUD_LOCATION,
+        VFS_SFTP_SARA_LOCATION,
+        VFS_SFTP_LOCALHOST_TESTUSER,
+        VFS_SRM_DCACHE_SARA_LOCATION,
+        VFS_SRM_DCACHE_SARA_OTHER_LOCATION,
+        VFS_SRM_DTEAM_DCACHE_SARA_LOCATION,
+        VFS_SRM_DPM_NIKHEF_LOCATION,
+        VFS_SRM_CASTORUK_LOCATION,
+        VFS_SRM_STORMIT_LOCATION,
+        VFS_SRM_AMC_LOCATION,
+        VFS_LFC_SARA_LOCATION,
+        VFS_LFC_SARA_OTHER_LOCATION,
 
-    public static final String VFS_SRM_DCACHE_SARA_LOCATION         ="vfsSRM_dCache_SARA_location";
-    public static final String VFS_SRM_DCACHE_SARA_OTHER_LOCATION   ="vfsSRM_dCache_SARA_otherLocation";
-    public static final String VFS_SRM_DTEAM_DCACHE_SARA_LOCATION   ="vfsSRM_dteam_dCache_SARA_location";
-    public static final String VFS_SRM_DPM_NIKHEF_LOCATION          ="vfsSRM_DPM_NIKHEF_location";
-    public static final String VFS_SRM_CASTORUK_LOCATION            ="vfsSRM_CASTOR_UK_location";    
-    public static final String VFS_SRM_STORMIT_LOCATION             ="vfsSRM_STORM_IT_location";
-    public static final String VFS_SRM_AMC_LOCATION                 ="vfsSRM_DPM_AMC_location";
-    
-    public static final String VFS_LFC_SARA_LOCATION = "vfsLFC_SARA_location1"; 
-    public static final String VFS_LFC_SARA_OTHER_LOCATION = "vfsLFC_SARA_location2"; 
+        VFS_SRM_STORMRUG_LOCATION,
+        VFS_SRM_DCACHE_RUG_LOCATION,
+        VFS_WEBDAV_LOCATION_1,
+        VFS_WEBDAV_LOCATION_2
+    }
 
-    public static final String VFS_SRM_STORMRUG_LOCATION   ="vfsSRM_STORM_RUG_Location";
-    public static final String VFS_SRM_DCACHE_RUG_LOCATION ="vfsSRM_dCache_RUG_Location";
-    public static final String VFS_WEBDAV_LOCATION_1 = "vfsWebdav_location_1";
-    public static final String VFS_WEBDAV_LOCATION_2 = "vfsWebdav_location_2";
-   
     public static final String BDII_URI_SARA = "ldap://bdii.grid.sara.nl:2170";
-    public static final String BDII2_URI_SARA = "ldap://bdii2.grid.sara.nl:2170";
-    public static final String BDII_URI_NIKHEF = "ldap://bdii03.nikhef.nl:2170";
-    public static final String BDII_URI_EXP_NIKHEF = "ldap://tbn19.nikhef.nl:2170";
-    
-    public static final String[] BDII_LOCATIONS = 
-            { 
-                TestSettings.BDII_URI_SARA, 
-                TestSettings.BDII2_URI_SARA,
-                TestSettings.BDII_URI_NIKHEF,
-                TestSettings.BDII_URI_EXP_NIKHEF 
-            };
 
-    /** Singleton! */ 
-    private static TestSettings instance; 
-    
+    public static final String BDII2_URI_SARA = "ldap://bdii2.grid.sara.nl:2170";
+
+    public static final String BDII_URI_NIKHEF = "ldap://bdii03.nikhef.nl:2170";
+
+    public static final String BDII_URI_EXP_NIKHEF = "ldap://tbn19.nikhef.nl:2170";
+
+    public static final String[] BDII_LOCATIONS =
+    {
+            TestSettings.BDII_URI_SARA,
+            TestSettings.BDII2_URI_SARA,
+            TestSettings.BDII_URI_NIKHEF,
+            TestSettings.BDII_URI_EXP_NIKHEF
+    };
+
+    /** Singleton! */
+    private static TestSettings instance;
+
     static
     {
-        instance=new TestSettings(); 
+        instance = new TestSettings();
     }
-    
+
     public static TestSettings getDefault()
     {
-        return instance; 
+        return instance;
     }
-    
-    public static VRL getTestLocation(String name)
+
+    // init locations:
+
+    public static VRL getTestLocation(String location)
     {
-        return getDefault().getLocation(name); 
+        return getDefault().testLocations.get(TestLocation.valueOf(location));
     }
 
+    public static VRL getTestLocation(TestLocation location)
+    {
+        return getDefault().testLocations.get(location);
+    }
+
+    
     // ========================================================================
-    // 
+    //
     // ========================================================================
 
-    private Map<String,VRL> testLocations=new Hashtable<String,VRL>();
-    private String testUserName; 
-    
+    private Map<TestLocation, VRL> testLocations = new Hashtable<TestLocation, VRL>();
+
+    private String testUserName;
+
     private TestSettings()
     {
-        testUserName=GlobalProperties.getGlobalUserName();  
-    	initLocations();
+        testUserName = GlobalProperties.getGlobalUserName();
+        initLocations();
     }
-    
+
+
     private void initLocations()
     {
-        // init locations:
-        
-        testLocations.put(VFS_LOCAL_TEMPDIR_LOCATION,
+
+        testLocations.put(TestLocation.VFS_LOCAL_TEMPDIR_LOCATION,
                 new VRL("file", null, "/tmp/" + testUserName + "/localtmpdir"));
-                 
-        testLocations.put(VFS_LOCALFS_LOCATION,
+
+        testLocations.put(TestLocation.VFS_LOCALFS_LOCATION,
                 new VRL("file", null, "/tmp/" + testUserName + "/testLocalFS"));
-        
-        testLocations.put(VFS_GFTP_LOCATION,
-                new VRL("gsiftp", "fs2.das3.science.uva.nl", "/tmp/" + testUserName + "/testGFTP1"));
 
-        testLocations.put(VFS_GFTP_LOCATION2,
-                new VRL("gsiftp", "fs2.das3.science.uva.nl", "/tmp/" + testUserName + "/testGFTP2"));
-        
-        testLocations.put(VFS_GFTP_CLOUD_LOCATION,
-                new VRL("gsiftp", "xnatws.esciencetest.nl", 2811, "/tmp/" + testUserName + "/testGFTP3"));
-        
-        testLocations.put(VFS_SFTP_SARA_LOCATION,
-                new VRL("sftp","ptdeboer", "ui.grid.sara.nl", 22,"/tmp/" + testUserName+ "/testSFTP1"));
+        testLocations.put(TestLocation.VFS_GFTP_LOCALHOST,
+                new VRL("gsiftp", "localhost", "/tmp/" + testUserName + "/testGFTP1"));
 
-        testLocations.put(VFS_SFTP_LOCALHOST_TESTUSER,
+        testLocations.put(TestLocation.VFS_GFTP_LOCATION1,
+                new VRL("gsiftp", "fs2.das4.science.uva.nl", "/tmp/" + testUserName + "/testGFTP2"));
+
+        testLocations.put(TestLocation.VFS_GFTP_LOCATION2,
+                new VRL("gsiftp", "fs2.das4.science.uva.nl", "/tmp/" + testUserName + "/testGFTP3"));
+
+        testLocations.put(TestLocation.VFS_GFTP_CLOUD_LOCATION,
+                new VRL("gsiftp", "xnatws.esciencetest.nl", 2811, "/tmp/" + testUserName + "/testGFTP4"));
+
+        testLocations.put(TestLocation.VFS_SFTP_SARA_LOCATION,
+                new VRL("sftp", "ptdeboer", "ui.grid.sara.nl", 22, "/tmp/" + testUserName + "/testSFTP1"));
+
+        testLocations.put(TestLocation.VFS_SFTP_LOCALHOST_TESTUSER,
                 new VRL("sftp", "testuser", "localhost", 22, "/tmp/testuser/testSFTP2"));
-        
-        testLocations.put(VFS_SRM_DCACHE_SARA_LOCATION,
-                new VRL("srm","srm.grid.sara.nl","/pnfs/grid.sara.nl/data/nlesc.nl/" + testUserName+ "/testSRM_dCache_SARA_t1"));
 
-        testLocations.put(VFS_SRM_DCACHE_SARA_OTHER_LOCATION,
-                new VRL("srm","srm.grid.sara.nl","/pnfs/grid.sara.nl/data/nlesc.nl/other" + testUserName+ "/testSRM_dCache_SARA_t1"));
-        
-        testLocations.put(VFS_SRM_DTEAM_DCACHE_SARA_LOCATION,
-                new VRL("srm","srm-t.grid.sara.nl","/pnfs/grid.sara.nl/data/dteam/" + testUserName+ "/testSRM_T_dCache_SARA_t1"));
-        
-        testLocations.put(VFS_SRM_DPM_NIKHEF_LOCATION,
-                new VRL("srm",null,"tbn18.nikhef.nl",8446,"/dpm/nikhef.nl/home/pvier/" + testUserName+ "/testSRM_DPM_NIKHEF"));
-        
-        testLocations.put(VFS_SRM_STORMIT_LOCATION,
-                new VRL("srm","prod-se-01.pd.infn.it","/dteam/" + testUserName+ "/testSRM_STORM_it"));
-        
-        testLocations.put(VFS_SRM_STORMRUG_LOCATION,
-                new VRL("srm","srm.grid.rug.nl","/pvier/" + testUserName+ "/testSRM_STORM_rug"));
-        
-        testLocations.put(VFS_SRM_CASTORUK_LOCATION,
-                new VRL("srm",null, "srm-dteam.gridpp.rl.ac.uk", 8443,"/castor/ads.rl.ac.uk/test/dteam/" +testUserName + "/test_SRMVFS_CASTOR_uk"));
-        
-        testLocations.put(VFS_SRM_AMC_LOCATION,
+        testLocations.put(TestLocation.VFS_SRM_DCACHE_SARA_LOCATION,
+                new VRL("srm", "srm.grid.sara.nl", "/pnfs/grid.sara.nl/data/nlesc.nl/" + testUserName + "/testSRM_dCache_SARA_t1"));
+
+        testLocations.put(TestLocation.VFS_SRM_DCACHE_SARA_OTHER_LOCATION,
+                new VRL("srm", "srm.grid.sara.nl", "/pnfs/grid.sara.nl/data/nlesc.nl/other" + testUserName + "/testSRM_dCache_SARA_t1"));
+
+        testLocations.put(TestLocation.VFS_SRM_DTEAM_DCACHE_SARA_LOCATION,
+                new VRL("srm", "srm-t.grid.sara.nl", "/pnfs/grid.sara.nl/data/dteam/" + testUserName + "/testSRM_T_dCache_SARA_t1"));
+
+        testLocations.put(TestLocation.VFS_SRM_DPM_NIKHEF_LOCATION,
+                new VRL("srm", null, "tbn18.nikhef.nl", 8446, "/dpm/nikhef.nl/home/pvier/" + testUserName + "/testSRM_DPM_NIKHEF"));
+
+        testLocations.put(TestLocation.VFS_SRM_STORMIT_LOCATION,
+                new VRL("srm", "prod-se-01.pd.infn.it", "/dteam/" + testUserName + "/testSRM_STORM_it"));
+
+        testLocations.put(TestLocation.VFS_SRM_STORMRUG_LOCATION,
+                new VRL("srm", "srm.grid.rug.nl", "/pvier/" + testUserName + "/testSRM_STORM_rug"));
+
+        testLocations.put(TestLocation.VFS_SRM_CASTORUK_LOCATION,
+                new VRL("srm", null, "srm-dteam.gridpp.rl.ac.uk", 8443, "/castor/ads.rl.ac.uk/test/dteam/" + testUserName
+                        + "/test_SRMVFS_CASTOR_uk"));
+
+        testLocations.put(TestLocation.VFS_SRM_AMC_LOCATION,
                 new VRL("srm", null, "gb-se-amc.amc.nl", 8446, "/dpm/amc.nl/home/pvier/"));
-        
-        testLocations.put(VFS_SRM_DCACHE_RUG_LOCATION,
-                new VRL("srm", null, "se.grid.rug.nl", 8443, "/pnfs/grid.rug.nl/data/pvier/")); 
-        
-        testLocations.put(VFS_WEBDAV_LOCATION_1,
+
+        testLocations.put(TestLocation.VFS_SRM_DCACHE_RUG_LOCATION,
+                new VRL("srm", null, "se.grid.rug.nl", 8443, "/pnfs/grid.rug.nl/data/pvier/"));
+
+        testLocations.put(TestLocation.VFS_WEBDAV_LOCATION_1,
                 new VRL("webdav", null, "localhost", 8008, "/tmp/" + testUserName + "/testWEBDAV"));
-        
-        testLocations.put(VFS_WEBDAV_LOCATION_2,
+
+        testLocations.put(TestLocation.VFS_WEBDAV_LOCATION_2,
                 new VRL("webdav", null, "localhost", 8008, "/tmp/" + testUserName + "/testWEBDAV_2"));
-    
-        testLocations.put(VFS_LFC_SARA_LOCATION,
+
+        testLocations.put(TestLocation.VFS_LFC_SARA_LOCATION,
                 new VRL("lfn", null, "lfc.grid.sara.nl", 5010, "/grid/nlesc.nl/ptdeboer/testlfc"));
 
-        testLocations.put(VFS_LFC_SARA_OTHER_LOCATION,
-                new VRL("lfn", null, "lfc.grid.sara.nl", 5010, "/grid/nlesc.nl/ptdeboer/testlfc_other")); 
-    }
-    
-    public VRL getLocation(String name)
-    {
-        return this.testLocations.get(name);  
+        testLocations.put(TestLocation.VFS_LFC_SARA_OTHER_LOCATION,
+                new VRL("lfn", null, "lfc.grid.sara.nl", 5010, "/grid/nlesc.nl/ptdeboer/testlfc_other"));
     }
 
+    public VRL getLocation(TestLocation location)
+    {
+        return this.testLocations.get(location);
+    }
+    
     public String[] getLocationNames()
     {
-        Set<String> set = this.testLocations.keySet(); 
-        String names[]=new String[set.size()];  
-        names=set.toArray(names);
-        return names; 
+        Set<TestLocation> set = this.testLocations.keySet();
+        String names[] = new String[set.size()];
+        names = set.toArray(names);
+        return names;
     }
-    
+
     public void setUsername(String user)
     {
-    	this.testUserName=user; 
-    	initLocations(); 
+        this.testUserName = user;
+        initLocations();
     }
+
     // ========================================================================
-    // 
+    //
     // ========================================================================
-    
+
     /** test location for the SRB tests */
     public static VRL test_srb_location = null;
 
@@ -206,27 +225,35 @@ public class TestSettings
             + GlobalProperties.getGlobalUserName() + "/testGAT_GFTP");
 
     /**
-//     * local tempdir to create test files:
-//     */
-//    public static VRL localTempDirLocation = new VRL("file", null, "/tmp/" + Global.getUsername() + "/vfstesttempdir");
+     * // * local tempdir to create test files: //
+     */
+    // public static VRL localTempDirLocation = new VRL("file", null, "/tmp/" +
+    // Global.getUsername() + "/vfstesttempdir");
 
     public static VRL testWSVFSLocation = new VRL("ws.vfs", null, "pc-vlab17.science.uva.nl", 8443, "/",
             "vrl=gsiftp://pc-vlab19.science.uva.nl/tmp/" + GlobalProperties.getGlobalUserName() + "/wsvfstestdir", (String) null);
 
-//    public static VRL testSRMNikhefLocation = new VRL("srm", null, "tbn18.nikhef.nl", 8446,
-//            "/dpm/nikhef.nl/home/pvier/" + Global.getUsername() + "/test_SRMVFS_DPM");
+    // public static VRL testSRMNikhefLocation = new VRL("srm", null,
+    // "tbn18.nikhef.nl", 8446,
+    // "/dpm/nikhef.nl/home/pvier/" + Global.getUsername() +
+    // "/test_SRMVFS_DPM");
 
     public static VRL testSRMRuGLocation = new VRL("srm", null, "srm.grid.rug.nl", 8444, "/pvier/"
             + GlobalProperties.getGlobalUserName() + "/test_SRMVFS_STORM");
 
-//    public static VRL testSRMAMCLocation = new VRL("srm", null, "gb-se-amc.amc.nl", 8446, "/dpm/amc.nl/home/pvier/"
-//            + Global.getUsername() + "/test_SRMVFS_DPM");
+    // public static VRL testSRMAMCLocation = new VRL("srm", null,
+    // "gb-se-amc.amc.nl", 8446, "/dpm/amc.nl/home/pvier/"
+    // + Global.getUsername() + "/test_SRMVFS_DPM");
 
-//    public static VRL testSRMSaraLocation = new VRL("srm", null, "srm.grid.sara.nl", 8443,
-//            "/pnfs/grid.sara.nl/data/pvier/" + Global.getUsername() + "/test_SRMVFS_DCACHE");
+    // public static VRL testSRMSaraLocation = new VRL("srm", null,
+    // "srm.grid.sara.nl", 8443,
+    // "/pnfs/grid.sara.nl/data/pvier/" + Global.getUsername() +
+    // "/test_SRMVFS_DCACHE");
 
-//    public static VRL testSRMCastorUK  = new VRL("srm", null, "srm-dteam.gridpp.rl.ac.uk", 8443,
-//            "castor/ads.rl.ac.uk/test/dteam/" + Global.getUsername() + "/test_SRMVFS_CASTOR");
+    // public static VRL testSRMCastorUK = new VRL("srm", null,
+    // "srm-dteam.gridpp.rl.ac.uk", 8443,
+    // "castor/ads.rl.ac.uk/test/dteam/" + Global.getUsername() +
+    // "/test_SRMVFS_CASTOR");
 
     public static VRL testLFCJSaraLocation = new VRL("lfn", null, "lfc.grid.sara.nl", 5010, "/grid/pvier/test-"
             + GlobalProperties.getGlobalUserName() + "-vfslfc2/");
@@ -238,12 +265,13 @@ public class TestSettings
 
     public static VRL testLFCLocation2 = testLFCJNikhefLocation;
 
-//    public static VRL testIrodsSaraLocation=new VRL("irods", "piter_de_boer", "irods.grid.sara.nl",50000,
-//                                                    "/SARA_BIGGRID/home/piter_de_boer/testIrodsVFS");
-    
-    public static VRL testIrodsSaraLocation=new VRL("irods", "piter_de_boer", "irods.grid.sara.nl",50000,
-                                                     "/SARA_BIGGRID/home/public/testdir/testIrodsVFS");   
-           
+    // public static VRL testIrodsSaraLocation=new VRL("irods", "piter_de_boer",
+    // "irods.grid.sara.nl",50000,
+    // "/SARA_BIGGRID/home/piter_de_boer/testIrodsVFS");
+
+    public static VRL testIrodsSaraLocation = new VRL("irods", "piter_de_boer", "irods.grid.sara.nl", 50000,
+            "/SARA_BIGGRID/home/public/testdir/testIrodsVFS");
+
     public static VRL test_vCommentable_SaraLocation = new VRL("lfn", null, "lfc.grid.sara.nl", 5010,
             "/grid/pvier/test-" + GlobalProperties.getGlobalUserName() + "-vCommentableTest/");
 
@@ -251,13 +279,11 @@ public class TestSettings
             "/grid/pvier/test-" + GlobalProperties.getGlobalUserName() + "-vCommentableTest/");
 
     public static String[] BLACK_LISTED_SE =
-            { "se.grid.rug.nl", "srm.grid.rug.nl" };
-    
-    
-    
-    // 
+    { "se.grid.rug.nl", "srm.grid.rug.nl" };
+
+    //
     // Static initializer
-    // 
+    //
 
     static
     {

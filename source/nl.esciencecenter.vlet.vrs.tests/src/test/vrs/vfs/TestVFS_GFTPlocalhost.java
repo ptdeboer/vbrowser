@@ -24,6 +24,7 @@ package test.vrs.vfs;
 import org.junit.Before;
 
 import test.TestSettings;
+import test.TestSettings.TestLocation;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
 //import nl.uva.vlet.gui.dialog.AuthenticationDialog;
@@ -44,7 +45,7 @@ public class TestVFS_GFTPlocalhost extends TestVFS
     @Override
     public VRL getRemoteLocation()
     {
-        return TestSettings.getTestLocation(TestSettings.VFS_GFTP_LOCATION); 
+        return TestSettings.getTestLocation(TestLocation.VFS_GFTP_LOCALHOST); 
     }
 
 //    public static void authenticate() throws VlException
