@@ -69,9 +69,9 @@ public class WebException extends IOException
     
     private int httpCode=0; 
     
-    private String textResponse=null;
+    private String serverResponse=null;
 
-    private String responseMimeType=null; 
+    private String serverResponseMimeType=null; 
     
     public WebException()
     {
@@ -114,8 +114,8 @@ public class WebException extends IOException
         super(message); 
         this.reason=reason;
         this.httpCode=httpCode; 
-        this.responseMimeType="text/html"; 
-        this.textResponse=htmlResponse; 
+        this.serverResponseMimeType="text/html"; 
+        this.serverResponse=htmlResponse; 
     }
     
     /** 
@@ -131,8 +131,8 @@ public class WebException extends IOException
         super(message); 
         this.reason=reason;
         this.httpCode=httpCode; 
-        this.responseMimeType=responseType;
-        this.textResponse=htmlResponse; 
+        this.serverResponseMimeType=responseType;
+        this.serverResponse=htmlResponse; 
     }
     
     
@@ -156,7 +156,7 @@ public class WebException extends IOException
      */
     public String getServerResponse()
     {
-        return this.textResponse; 
+        return this.serverResponse; 
     }
     
     /** 
@@ -165,7 +165,7 @@ public class WebException extends IOException
      */
     public String getResponseMimeType()
     {
-        return this.responseMimeType; 
+        return this.serverResponseMimeType; 
     }
     
     public String toString()
