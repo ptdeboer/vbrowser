@@ -307,11 +307,16 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
             File file=new File(certPath);
             if (file.exists())
             {
+                logger.debugPrintf(" +++ Loading Extra Certificates from:%s +++\n",certPath);
+
                 TrustedCertificates extraCerts = TrustedCertificates.load(certPath); 
                 X509Certificate extraXCertsArr[] = extraCerts.getCertificates();
 
-                logger.debugPrintf(" +++ Loading Extra Certificates +++\n");
-        
+                if ((extraXCertsArr==null) || (extraXCertsArr.length<=0)) 
+                {
+                    logger.debugPrintf(" - No certificates found in: %s\n",certPath);
+                }
+                
                 for (X509Certificate cert : extraXCertsArr)
                 {
                     logger.debugPrintf(" + loaded extra certificate: %s\n",cert.getSubjectDN());
