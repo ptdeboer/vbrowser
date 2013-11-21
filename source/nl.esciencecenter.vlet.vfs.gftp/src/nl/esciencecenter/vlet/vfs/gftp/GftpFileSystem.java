@@ -389,9 +389,11 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             VrsException globusEx=GlobusUtil.checkException("Couldn't connect to:"+this,e);
             
             if (globusEx!=null)
+            {
                 throw globusEx; 
+            }
             
-            throw new ServerCommunicationException("Coudln't connect to:"+this+"\nReason="+e.getMessage(), e);
+            throw new ServerCommunicationException("Coudn't connect to:"+this+"\nReason="+e.getMessage(), e);
         }
 
         return newClient;
