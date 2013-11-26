@@ -43,7 +43,7 @@ public class XenonFile extends VFile
     private FileAttributes fileAttrs;
     private Path octoPath;
 
-    public XenonFile(XenonFS octopusFS, FileAttributes attrs, Path path) throws VrsException
+    public XenonFile(XenonVFS octopusFS, FileAttributes attrs, Path path) throws VrsException
     {
        super(octopusFS,octopusFS.createVRL(path));
        this.fileAttrs=attrs; 
@@ -260,10 +260,10 @@ public class XenonFile extends VFile
     }
     
     // explicit downcast: 
-    protected XenonFS getFS()
+    protected XenonVFS getFS()
     {
     	// downcast from VFileSystem interface to actual (Skeleton) FileSystem object. 
-    	return ((XenonFS)this.getFileSystem()); 
+    	return ((XenonVFS)this.getFileSystem()); 
     }
     
     protected XenonClient getOctoClient()

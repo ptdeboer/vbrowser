@@ -41,7 +41,7 @@ public class XenonDir extends VDir
 	private FileAttributes fileAttrs;
     private Path octoPath;
 
-    public XenonDir(XenonFS vfs, FileAttributes attrs, Path path) throws VrsException
+    public XenonDir(XenonVFS vfs, FileAttributes attrs, Path path) throws VrsException
 	{
 		super(vfs, vfs.createVRL(path));
 		this.fileAttrs=attrs;
@@ -127,10 +127,10 @@ public class XenonDir extends VDir
         return getFileSystem().listNodesAndAttrs(octoPath); 
 	}
 	
-	public XenonFS getFileSystem()
+	public XenonVFS getFileSystem()
 	{
 	    // Downcast from VFileSystem interface to actual FileSystem object. 
-	    return (XenonFS)super.getFileSystem(); 
+	    return (XenonVFS)super.getFileSystem(); 
 	}
 	
 	public VRL rename(String newName, boolean renameFullPath)
