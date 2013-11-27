@@ -22,6 +22,7 @@ package nl.esciencecenter.vbrowser.vrs.data;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -149,6 +150,18 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
         }
     }
 
+    public static List<Attribute> toList(Attribute[] attrs)
+    {
+        if (attrs==null)
+            return null; 
+        
+        ArrayList<Attribute> list=new ArrayList<Attribute>(attrs.length); 
+        for (Attribute attr:attrs)
+            list.add(attr);
+            
+        return list; 
+    }
+    
     // ========================================================================
     // Instance
     // ========================================================================
@@ -275,6 +288,14 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
     }
 
     /**
+     * Named String {Type,Value} Tuple
+     */
+    public Attribute(String name, String value,boolean editable)
+    {
+        init(AttributeType.STRING, name, value);
+        this.setEditable(editable); 
+    }
+    /**
      * Custom named & explicit typed Attribute
      */
     public Attribute(AttributeType type, String name, Object value)
@@ -290,6 +311,10 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
         init(AttributeType.DATETIME, name, date); // Presentation.createNormalizedDateTimeString(date));
     }
     
+    public AttributeDescription getDescription()
+    {
+        return new AttributeDescription(this.getName(),this.getType(),this.isEditable()); 
+    }
     /**
      * Main init method to be called by other constructors. <br>
      * This method may only be used by contructors.
@@ -907,5 +932,7 @@ public class Attribute implements Cloneable, Serializable, Duplicatable<Attribut
                 + ",[" + ((isEditable()) ? "E" : "") + ((hasChanged()) ? "C" : "") 
                 + "]}";
     }
+
+
     
 }

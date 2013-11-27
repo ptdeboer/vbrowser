@@ -20,6 +20,8 @@
 
 package nl.esciencecenter.vbrowser.vrs.data;
 
+import java.util.List;
+
 /**
  * Interface for MetaData resources
  *  
@@ -27,10 +29,10 @@ package nl.esciencecenter.vbrowser.vrs.data;
  */
 public interface AttributeSource
 {
-    public String[] getAttributeNames(); 
+    public List<String> getAttributeNames(); 
     
     public Attribute getAttribute(String name); 
     
-    public Attribute[] getAttributes(String names[]); 
+    public List<Attribute> getAttributes(List<String> names); 
     
 }
