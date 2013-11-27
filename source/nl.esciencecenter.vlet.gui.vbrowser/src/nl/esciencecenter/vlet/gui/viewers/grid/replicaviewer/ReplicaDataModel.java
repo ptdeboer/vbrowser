@@ -48,7 +48,7 @@ public class ReplicaDataModel extends ResourceTableModel
     public static final String replicaAttrNames[]=
         {
             ATTR_PATH,
-            ATTR_FILE_LENGTH, 
+            ATTR_FILE_SIZE, 
             ATTR_LOCATION,
             ATTR_CHECKSUM,
             ATTR_CHECKSUM_TYPE,
@@ -77,7 +77,7 @@ public class ReplicaDataModel extends ResourceTableModel
         headers.add(ATTR_INDEX);
         headers.add(ATTR_STORAGE_ELEMENT);
         headers.add(ATTR_PATH);
-        headers.add(ATTR_FILE_LENGTH);
+        headers.add(ATTR_FILE_SIZE);
         headers.add(ATTR_STATUS);
         headers.add(ATTR_ERROR_TEXT);
         
@@ -149,13 +149,13 @@ public class ReplicaDataModel extends ResourceTableModel
                 attrs.put(ATTR_STATUS,""+ReplicaStatus.OK);
                 attrs.put(ATTR_ERROR_TEXT,"");
                 if (info.getLength()>=0) 
-                    attrs.put(new Attribute(ATTR_FILE_LENGTH,info.getLength()));
+                    attrs.put(new Attribute(ATTR_FILE_SIZE,info.getLength()));
             }
             else
             {
                 attrs.put(ATTR_STATUS,""+ReplicaStatus.ERROR);
                 attrs.put(ATTR_ERROR_TEXT,info.getException().getMessage());
-                attrs.put(new Attribute(ATTR_FILE_LENGTH,"?")); 
+                attrs.put(new Attribute(ATTR_FILE_SIZE,"?")); 
             }
             
             this.setValues(host,attrs.toArray(new Attribute[0])); 

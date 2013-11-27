@@ -289,7 +289,7 @@ public final class Registry // todo: change to vrs protected class.
 
             // Globus is a plugin.
             registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.globusrs.GlobusRSFactory");
-            registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.gftp.GftpFSFactory");
+            //registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.gftp.GftpFSFactory");
 
             // Other VFS/VRS implementations from lib/vdrivers or lib/plugins
             registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.srm.SRMFSFactory");
@@ -756,6 +756,11 @@ public final class Registry // todo: change to vrs protected class.
             return (VFileSystem) vrs;
         }
 
+        if (vrs==null)
+        {
+            throw new nl.esciencecenter.vlet.exception.ResourceTypeMismatchException("FileSystem not registerd for:"+location); 
+        }
+        
         throw new nl.esciencecenter.vlet.exception.ResourceTypeMismatchException("Location is NOT a fileystem:"
                 + location);
     }

@@ -155,7 +155,35 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         logger.infoPrintf("default lifetime     =%d\n",defaultLifetime); 
             
     }
-    
+    private static GridProxyModel staticGetModel()
+    {
+        return staticGetModel(false);
+    }
+
+    private static GridProxyModel staticGetModel(boolean usePKCS11Device)
+    {
+        if (staticModel != null)
+            return staticModel;
+
+        if (usePKCS11Device)
+        {
+            try
+            {
+                // Do We Need: PKCS11 ???
+                Class<?> iClass = Class.forName(VletConfig.PKCS11_MODEL);
+                staticModel = (GridProxyModel) iClass.newInstance();
+            }
+            catch (Exception e)
+            {
+                staticModel = new DefaultGridProxyModel();
+            }
+        }
+        else
+        {
+            staticModel = new DefaultGridProxyModel();
+        }
+        return staticModel;
+    }
     
     /** Load Globus Crendentials (= Grid Proxy) */ 
     public GlobusCredentialWrapper createCredentialFromFile(String path)
@@ -557,35 +585,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         return cred; 
     }
     
-    private static GridProxyModel staticGetModel()
-    {
-        return staticGetModel(false);
-    }
 
-    private static GridProxyModel staticGetModel(boolean usePKCS11Device)
-    {
-        if (staticModel != null)
-            return staticModel;
-
-        if (usePKCS11Device)
-        {
-            try
-            {
-                // Do We Need: PKCS11 ???
-                Class<?> iClass = Class.forName(VletConfig.PKCS11_MODEL);
-                staticModel = (GridProxyModel) iClass.newInstance();
-            }
-            catch (Exception e)
-            {
-                staticModel = new DefaultGridProxyModel();
-            }
-        }
-        else
-        {
-            staticModel = new DefaultGridProxyModel();
-        }
-        return staticModel;
-    }
 
     @Override
     public List<String> getRootCertificateLocations()

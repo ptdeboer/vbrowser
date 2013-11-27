@@ -21,10 +21,7 @@
 
 package nl.esciencecenter.vlet.vfs.ssh.jcraft;
 
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ACCESS_TIME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_GROUPID;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_USERID;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_FILE_MODE;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.*;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -50,17 +47,17 @@ public class SftpFSFactory extends VFSFactory
 
 	static String sftpFileAttributeNames[]=
         {
-            ATTR_ACCESS_TIME,
-            ATTR_USERID,
-            ATTR_GROUPID,
+            ATTR_LASTACCESS_TIME,
+            ATTR_UNIX_USERID,
+            ATTR_UNIX_GROUPID,
             ATTR_UNIX_FILE_MODE
         };
     
     static String sftpDirAttributeNames[]=
     {
-        ATTR_ACCESS_TIME,
-        ATTR_USERID,
-        ATTR_GROUPID,
+        ATTR_LASTACCESS_TIME,
+        ATTR_UNIX_USERID,
+        ATTR_UNIX_GROUPID,
         ATTR_UNIX_FILE_MODE
     };
     // ========================================================================

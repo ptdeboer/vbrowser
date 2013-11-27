@@ -25,6 +25,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
@@ -124,7 +125,7 @@ public class ResourceTable extends JTable
 	/** (re)Created columns from headers taken from DataModel */ 
     public void initColumns()
     {
-        String headers[]=getModel().getHeaders(); 
+        List<String> headers = getModel().getHeadersList(); 
         this.getPresentation().setChildAttributeNames(headers);
         // Use order from presentation 
         initColumns(getPresentation().getChildAttributeNames());
@@ -318,7 +319,7 @@ public class ResourceTable extends JTable
         
         // triggers restructure, and KEEP the current view order of Columns. 
         this.getModel().setHeaders(viewHeaders.toArray());
-        this.presentation.setChildAttributeNames(viewHeaders.toArray());
+        this.presentation.setChildAttributeNames(viewHeaders);
         this.getModel().fireTableStructureChanged(); 
     }
     

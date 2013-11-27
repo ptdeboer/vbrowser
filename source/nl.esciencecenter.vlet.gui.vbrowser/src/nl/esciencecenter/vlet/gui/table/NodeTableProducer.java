@@ -158,12 +158,12 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
                 ProxyNode child=rootNode;
                 if ((nodes!=null) && (nodes.length>0))
                     child=nodes[0];
-                pres.setChildAttributeNames(child.getAttributeNames());
+                pres.setChildAttributeNames(new StringList(child.getAttributeNames()));
             }
             else
             {
                 names = this.getAllHeaderNames();
-                pres.setChildAttributeNames(names);// update with default !
+                pres.setChildAttributeNames(new StringList(names));// update with default !
             }
         }
 

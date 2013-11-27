@@ -151,11 +151,11 @@ public class FileDescWrapper
 
         Attribute attr = null;
 
-        if (StringUtil.equals(name, VAttributeConstants.ATTR_GROUPID))
+        if (StringUtil.equals(name, VAttributeConstants.ATTR_UNIX_GROUPID))
         {
             attr = new Attribute(name, getFileDesc().getGid());
         }
-        else if (StringUtil.equals(name, VAttributeConstants.ATTR_USERID))
+        else if (StringUtil.equals(name, VAttributeConstants.ATTR_UNIX_USERID))
         {
             attr = new Attribute(name, getFileDesc().getUid());
         }
@@ -186,7 +186,7 @@ public class FileDescWrapper
             attr = VAttributeUtil.createDateFromMilliesSinceEpoch(name,
                     1000 * getFileDesc().getMTime());
         }
-        else if (StringUtil.equals(name, VAttributeConstants.ATTR_ACCESS_TIME))
+        else if (StringUtil.equals(name, VAttributeConstants.ATTR_LASTACCESS_TIME))
         {
             // return unix time :
             attr = VAttributeUtil.createDateFromMilliesSinceEpoch(name,

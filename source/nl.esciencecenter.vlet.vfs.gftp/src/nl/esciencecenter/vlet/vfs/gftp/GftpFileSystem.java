@@ -2744,17 +2744,17 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
          * new VAttribute(name,millisToDateTimeString(
          * GftpServer._getModificationTime(entry))); }
          **********************************************************************/
-        else if (name.compareTo(ATTR_FILE_LENGTH) == 0)
+        else if (name.compareTo(ATTR_FILE_SIZE) == 0)
         {
             return new Attribute(name, GftpFileSystem._getLength(entry));
 
         }
-        else if (name.compareTo(ATTR_OWNER) == 0)
+        else if (name.compareTo(ATTR_UNIX_OWNER) == 0)
         {
             return new Attribute(name, GftpFileSystem._getOwner(entry));
 
         }
-        else if (name.compareTo(ATTR_GROUP) == 0)
+        else if (name.compareTo(ATTR_UNIX_GROUPNAME) == 0)
         {
             return new Attribute(name, GftpFileSystem._getGroup(entry));
 

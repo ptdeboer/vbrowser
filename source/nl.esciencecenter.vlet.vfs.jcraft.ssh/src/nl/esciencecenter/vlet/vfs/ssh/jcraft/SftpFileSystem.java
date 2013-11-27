@@ -1299,19 +1299,19 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
         {
             return VAttributeUtil.createDateFromMilliesSinceEpoch(name, getModificationTime(attrs));
         }
-        else if (name.compareTo(ATTR_ACCESS_TIME) == 0)
+        else if (name.compareTo(ATTR_LASTACCESS_TIME) == 0)
         {
             return new Attribute(AttributeType.DATETIME, name, getAccessTime(attrs));
         }
-        else if (name.compareTo(ATTR_FILE_LENGTH) == 0)
+        else if (name.compareTo(ATTR_FILE_SIZE) == 0)
         {
             return new Attribute(name, attrs.getSize());
         }
-        else if (name.compareTo(ATTR_USERID) == 0)
+        else if (name.compareTo(ATTR_UNIX_USERID) == 0)
         {
             return new Attribute(name, attrs.getUId());
         }
-        else if (name.compareTo(ATTR_GROUPID) == 0)
+        else if (name.compareTo(ATTR_UNIX_GROUPID) == 0)
         {
             return new Attribute(name, attrs.getGId());
         }

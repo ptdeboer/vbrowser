@@ -21,7 +21,7 @@
 
 package test.vrs.vfs;
 
-import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_FILE_LENGTH;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_FILE_SIZE;
 import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_HOSTNAME;
 import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_MIMETYPE;
 import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_PATH;
@@ -658,7 +658,7 @@ public class TestVFS extends VTestCase
             {
                 VFile file = (VFile) newFile;
                 Assert.assertEquals("Both getLength() and getAttribute(ATTR_LENGTH) must return same value", file
-                        .getLength(), newFile.getAttribute(ATTR_FILE_LENGTH).getLongValue());
+                        .getLength(), newFile.getAttribute(ATTR_FILE_SIZE).getLongValue());
             }
         }
 

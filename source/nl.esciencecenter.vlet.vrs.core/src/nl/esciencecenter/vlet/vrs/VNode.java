@@ -56,7 +56,7 @@ import nl.esciencecenter.vlet.vrs.vrms.LogicalResourceNode;
  * 
  * @author P.T. de Boer
  */
-public abstract class VNode // implements IVNode
+public abstract class VNode 
 {
     static protected String[] vnodeAttributeNames =
         {

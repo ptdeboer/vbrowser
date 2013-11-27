@@ -283,7 +283,7 @@ public class LFile extends VFile implements VStreamAccessable,
     {
         try
         {
-            return fsNode.length();
+            return fsNode.getFileSize();
         }
         catch (IOException e)
         {

@@ -169,7 +169,7 @@ public class VAttributeCellRenderer implements TableCellRenderer
                {
                    label.setText(Presentation.relativeTimeString(attr.getDateValue()));  
                }
-               else if (attr.getName()==VAttributeConstants.ATTR_FILE_LENGTH)
+               else if (attr.getName()==VAttributeConstants.ATTR_FILE_SIZE)
                {
                    label.setText(pres.sizeString(attr.getLongValue())); 
                }

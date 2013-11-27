@@ -81,49 +81,21 @@ public class VAttributeConstants extends AttributeNames
     /** Spell out as Grid UID instead of confusinf GUID */
     public static final String ATTR_GRIDUID = "gridUniqueID";
 
-    public static final String ATTR_GROUP = "group";
-
     public static final String ATTR_ID = "id";
 
     public static final String ATTR_INDEX = "index";
 
     public static final String ATTR_ISCOMPOSITE = "isComposite";
 
-    /** Whether the resource is a "Directory" type. */
-    public static final String ATTR_ISDIR = "isDir";
-
     /** Whether the resource properties are 'editable'. */
     public static final String ATTR_ISEDITABLE = "isEditable";
 
-    /** Whether the resource is a "File" type. */
-    public static final String ATTR_ISFILE = "isFile";
-
-    /**
-     * Whether the resource is considered "hidden" on the (remote) filesystem.
-     */
-    public static final String ATTR_ISHIDDEN = "isHidden";
-
-    /**
-     * Whether the resource is readable using the current user's credentials (or
-     * file permissions).
-     */
     public static final String ATTR_ISREADABLE = "isReadable";
 
-    /**
-     * Whether resource is a symbolic link on for example a unix file system.
-     * Symbolic links are file system depended and not all file systems might
-     * support this.
-     */
-    public static final String ATTR_ISSYMBOLICLINK = "isSymbolicLink";
+    public static final String ATTR_ISWRITABLE = "isWritable";
 
     /** Whether this node is a VLink */
     public static final String ATTR_ISVLINK = "isVLink";
-
-    /**
-     * Whether the resource is writable using the current user's credentials (or
-     * file permissions).
-     */
-    public static final String ATTR_ISWRITABLE = "isWritable";
 
     /** Optional error text explaining the (error) status of a resource */
     public static final String ATTR_JOB_ERROR_TEXT = "errorText";
@@ -180,8 +152,6 @@ public class VAttributeConstants extends AttributeNames
      * subclasses)
      */
     public static final String ATTR_NRCHILDS = "nrChilds";
-
-    public static final String ATTR_OWNER = "owner";
 
     /**
      * Unambiguous Parent directory attribute for both files and directories.

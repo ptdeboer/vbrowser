@@ -395,7 +395,12 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
 	{
 		return headerModel.toArray();  
 	}
-	
+
+	public List<String> getHeadersList()
+	{
+	    return new StringList(headerModel.toArray());  
+    }
+
 	/** Create new Rows with empty Row Data */ 
     public void setRows(List<String> rowKeys)
     {

@@ -22,6 +22,7 @@
 package nl.esciencecenter.vlet.vrs.presentation;
 
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.*; 
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.presentation.Presentation.SortOption;
 
@@ -39,7 +40,7 @@ public class VRSPresentation
             ATTR_ICON, 
             ATTR_NAME, 
             ATTR_RESOURCE_TYPE, 
-            ATTR_FILE_LENGTH,
+            ATTR_FILE_SIZE,
             // ATTR_MODIFICATION_TIME_STRING,
             ATTR_MODIFICATION_TIME, 
             ATTR_MIMETYPE, 
@@ -58,7 +59,7 @@ public class VRSPresentation
             ATTR_ICON, 
             ATTR_NAME, 
             ATTR_RESOURCE_TYPE,
-            ATTR_FILE_LENGTH, 
+            ATTR_FILE_SIZE, 
             "Resource",
             // ATTR_MODIFICATION_TIME_STRING,
             ATTR_MODIFICATION_TIME, ATTR_MIMETYPE,
@@ -141,21 +142,21 @@ public class VRSPresentation
         
         if (scheme.compareTo(VRS.MYVLE_SCHEME) == 0)
         {
-            pres.setChildAttributeNames(myvleAttributeNames);
+            pres.setChildAttributeNames(new StringList(myvleAttributeNames));
             // do not sort MyVle !
             pres.setSortOption(SortOption.NEVER);
         }
         else if (scheme.compareTo(VRS.SRB_SCHEME) == 0)
         {
-            pres.setChildAttributeNames(VRSPresentation.defaultSRBAttributeNames);
+            pres.setChildAttributeNames(new StringList(VRSPresentation.defaultSRBAttributeNames));
         }
         else if (type.compareTo(VFS.DIR_TYPE) == 0)
         {
-            pres.setChildAttributeNames(VRSPresentation.defaultVFSAttributeNames);
+            pres.setChildAttributeNames(new StringList(VRSPresentation.defaultVFSAttributeNames));
         }
         else
         {
-            pres.setChildAttributeNames(VRSPresentation.defaultNodeAttributeNames);
+            pres.setChildAttributeNames(new StringList(VRSPresentation.defaultNodeAttributeNames));
         }
         
         pres.setIconAttributeName(ATTR_ICON);
@@ -195,7 +196,7 @@ public class VRSPresentation
         pres.setAttributePreferredWidth(ATTR_RESOURCE_TYPE, 140);
         pres.setAttributePreferredWidth(ATTR_SCHEME, 60);
         pres.setAttributePreferredWidth(ATTR_HOSTNAME, 140);
-        pres.setAttributePreferredWidth(ATTR_FILE_LENGTH, 70);
+        pres.setAttributePreferredWidth(ATTR_FILE_SIZE, 70);
         pres.setAttributePreferredWidth(ATTR_PATH, 200);
         pres.setAttributePreferredWidth(ATTR_STATUS, 48);
         pres.setAttributePreferredWidth(ATTR_MODIFICATION_TIME, 120);
@@ -204,7 +205,7 @@ public class VRSPresentation
         pres.setAttributePreferredWidth(ATTR_MAX_WALL_TIME, 100);
         pres.setAttributePreferredWidth(ATTR_NODE_TEMP_DIR, 160);
         
-        pres.setChildAttributeNames(defaultNodeAttributeNames);
+        pres.setChildAttributeNames(new StringList(defaultNodeAttributeNames));
     }
     
 }

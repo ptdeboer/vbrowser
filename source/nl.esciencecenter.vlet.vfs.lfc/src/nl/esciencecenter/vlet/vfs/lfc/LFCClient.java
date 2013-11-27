@@ -110,17 +110,17 @@ public class LFCClient
     protected static Random randomizer = new Random();
 
     static String[] lfcDirAttributeNames =
-    { VAttributeConstants.ATTR_GROUPID, VAttributeConstants.ATTR_USERID, VAttributeConstants.ATTR_GRIDUID,
+    { VAttributeConstants.ATTR_UNIX_GROUPID, VAttributeConstants.ATTR_UNIX_USERID, VAttributeConstants.ATTR_GRIDUID,
             VAttributeConstants.ATTR_UNIX_FILE_MODE, VAttributeConstants.ATTR_PERMISSIONSTRING,
             VAttributeConstants.ATTR_CREATION_TIME, VAttributeConstants.ATTR_MODIFICATION_TIME,
-            VAttributeConstants.ATTR_ACCESS_TIME, LFCFSFactory.ATTR_LFC_FILEID, LFCFSFactory.ATTR_LFC_FILECLASS,
+            VAttributeConstants.ATTR_LASTACCESS_TIME, LFCFSFactory.ATTR_LFC_FILEID, LFCFSFactory.ATTR_LFC_FILECLASS,
             LFCFSFactory.ATTR_LFC_ULINK, LFCFSFactory.ATTR_LFC_STATUS, LFCFSFactory.ATTR_LFC_COMMENT, };
 
     static String[] lfcFileAttributeNames =
-    { VAttributeConstants.ATTR_GROUPID, VAttributeConstants.ATTR_USERID, VAttributeConstants.ATTR_GRIDUID,
+    { VAttributeConstants.ATTR_UNIX_GROUPID, VAttributeConstants.ATTR_UNIX_USERID, VAttributeConstants.ATTR_GRIDUID,
             VAttributeConstants.ATTR_UNIX_FILE_MODE, VAttributeConstants.ATTR_PERMISSIONSTRING,
             VAttributeConstants.ATTR_CREATION_TIME, VAttributeConstants.ATTR_MODIFICATION_TIME,
-            VAttributeConstants.ATTR_ACCESS_TIME, LFCFSFactory.ATTR_LFC_FILEID, LFCFSFactory.ATTR_LFC_FILECLASS,
+            VAttributeConstants.ATTR_LASTACCESS_TIME, LFCFSFactory.ATTR_LFC_FILEID, LFCFSFactory.ATTR_LFC_FILECLASS,
             LFCFSFactory.ATTR_LFC_ULINK, LFCFSFactory.ATTR_LFC_STATUS, LFCFSFactory.ATTR_LFC_COMMENT,
             // LFCFSFactory.ATTR_LFC_CHECKSUMTYPE,
             // LFCFSFactory.ATTR_LFC_CHECKSUMVALUE,

@@ -810,7 +810,7 @@ public class LFCFile extends VFile implements VLogicalFileAlias, VUnixFileAttrib
         this.lfcClient.setFileSize(this,newSize); 
         this.wrapperDesc.clearMetaData();
         // Event!
-        this.fireAttributeChanged(new Attribute(VAttributeConstants.ATTR_FILE_LENGTH,newSize)); 
+        this.fireAttributeChanged(new Attribute(VAttributeConstants.ATTR_FILE_SIZE,newSize)); 
     }
  
     /** @Override */

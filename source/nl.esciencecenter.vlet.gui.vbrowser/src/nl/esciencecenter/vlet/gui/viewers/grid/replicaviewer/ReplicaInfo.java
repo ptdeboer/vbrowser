@@ -123,8 +123,8 @@ public class ReplicaInfo
     public void setAttributes(AttributeSet attrs)
     {
         // updat rep infos: 
-        if (attrs.containsKey(VAttributeConstants.ATTR_FILE_LENGTH))
-            setLength(attrs.getLongValue(VAttributeConstants.ATTR_FILE_LENGTH));
+        if (attrs.containsKey(VAttributeConstants.ATTR_FILE_SIZE))
+            setLength(attrs.getLongValue(VAttributeConstants.ATTR_FILE_SIZE));
         
         if (attrs.containsKey(VAttributeConstants.ATTR_EXISTS))
             setExists(attrs.getBooleanValue(VAttributeConstants.ATTR_EXISTS,false));

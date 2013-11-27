@@ -37,6 +37,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -583,7 +584,7 @@ public class TablePanel extends JTable implements VContainer,IPresentable
         // Update presentation information: 
         
         if (presentation!=null)
-            presentation.setChildAttributeNames(newNames); 
+            presentation.setChildAttributeNames(new StringList(newNames)); 
          
            
         // lazy update: recreate complete table: 
@@ -613,7 +614,7 @@ public class TablePanel extends JTable implements VContainer,IPresentable
         
         // copy headers from view model to data producer 
         if (presentation!=null) 
-            presentation.setChildAttributeNames(newNames); 
+            presentation.setChildAttributeNames(new StringList(newNames)); 
          
            
         // lazy update: recreate complete table: 

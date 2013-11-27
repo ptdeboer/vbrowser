@@ -132,8 +132,8 @@ public class TestSettings
                 new VRL("file", null, "/tmp/" + testUserName + "/testLocalFS"));
 
         testLocations.put(TestLocation.VFS_GFTP_LOCALHOST,
-                new VRL("gsiftp", "localhost", "/tmp/" + testUserName + "/testGFTP1"));
-
+                new VRL("gsiftp", "eslt007.local", "/tmp/gftp/testGFTP1"));
+        
         testLocations.put(TestLocation.VFS_GFTP_LOCATION1,
                 new VRL("gsiftp", "fs2.das4.science.uva.nl", "/tmp/" + testUserName + "/testGFTP2"));
 

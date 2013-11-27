@@ -24,9 +24,9 @@ package nl.esciencecenter.vlet.vfs.gftp;
 
 import static nl.esciencecenter.vlet.VletConfig.ATTR_PASSIVE_MODE;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ALLOW_3RD_PARTY;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_GROUP;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_GROUPNAME;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_HOSTNAME;
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_OWNER;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_OWNER;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_PORT;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_GFTPUNIQUE;
 
@@ -55,8 +55,8 @@ public class GftpFSFactory extends VFSFactory
 
     public static final String[] gftpAttributeNames =
     { 
-        ATTR_OWNER, 
-        ATTR_GROUP,
+        ATTR_UNIX_OWNER, 
+        ATTR_UNIX_GROUPNAME,
         ATTR_GFTPUNIQUE
     };
     

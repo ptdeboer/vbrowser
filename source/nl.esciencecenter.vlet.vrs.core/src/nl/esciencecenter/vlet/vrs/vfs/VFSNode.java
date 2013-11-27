@@ -76,7 +76,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         ATTR_ISFILE, 
         ATTR_ISDIR, 
         ATTR_NRCHILDS, 
-        ATTR_FILE_LENGTH,
+        ATTR_FILE_SIZE,
         // minimal time wich must be supported
         ATTR_MODIFICATION_TIME,
         // stringifying is now done in GUI !  
@@ -86,7 +86,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         // ATTR_CREATION_TIME_STRING,
         // not all implementation support the OWNER attribute
         //ATTR_OWNER, 
-        ATTR_ISSYMBOLICLINK,
+        ATTR_ISSYMBOLIC_LINK,
         ATTR_PERMISSIONSTRING // implementation specific permissions string
     };
 
@@ -344,7 +344,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
             return new Attribute(name, isDir());
         else if (name.compareTo(ATTR_ISFILE) == 0)
             return new Attribute(name, isFile());
-        else if (name.compareTo(ATTR_FILE_LENGTH) == 0)
+        else if (name.compareTo(ATTR_FILE_SIZE) == 0)
         {
             if (this instanceof VFile)
             {
@@ -360,14 +360,14 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
             // getLength for VDir not supported
             return new Attribute(name, 0);
         }
-        else if (name.compareTo(ATTR_GROUPID) == 0)
+        else if (name.compareTo(ATTR_UNIX_GROUPID) == 0)
         {
             if (this instanceof VUnixGroupMode)
                 return new Attribute(name, ((VUnixGroupMode) this).getGid());
             // getLength for VDir not supported
             return new Attribute(name, "");
         }
-        else if (name.compareTo(ATTR_USERID) == 0)
+        else if (name.compareTo(ATTR_UNIX_USERID) == 0)
         {
             if (this instanceof VUnixUserMode)
                 return new Attribute(name, ((VUnixUserMode) this).getUid());
@@ -405,7 +405,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         {
             return new Attribute(name,getPermissionsString()); 
         }
-        else if (name.compareTo(ATTR_ISSYMBOLICLINK) == 0)
+        else if (name.compareTo(ATTR_ISSYMBOLIC_LINK) == 0)
             return new Attribute(name, isSymbolicLink()); 
         else if (name.compareTo(ATTR_SYMBOLICLINKTARGET) == 0)
             return new Attribute(name, getSymbolicLinkTargetPath());

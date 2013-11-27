@@ -298,11 +298,11 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
         // First Get Defaults!:
         Presentation pres = Presentation.getPresentationFor(VRS.SRM_SCHEME, null, VRS.RESOURCE_INFO_TYPE,true);
         // Mess around:
-        String names[] = { VAttributeConstants.ATTR_ICON, 
+        StringList names = new StringList( VAttributeConstants.ATTR_ICON, 
                 VAttributeConstants.ATTR_RESOURCE_TYPE,
                 VAttributeConstants.ATTR_HOSTNAME, 
                 VAttributeConstants.ATTR_PORT, 
-                VAttributeConstants.ATTR_PATH, };
+                VAttributeConstants.ATTR_PATH );
 
         pres.setChildAttributeNames(names);
         return pres;
