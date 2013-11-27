@@ -128,22 +128,14 @@ public class StringList extends ExtendedList<String> implements Cloneable, Seria
     //
     // ========================================================================
 
-    /** 
-     * Construct String list from string array
-     */
-    public StringList(String[] strs)
+    public StringList(String... strs)
     {
         super(strs);
     }
-
+    
     public StringList()
     {
         super();// =default;
-    }
-
-    public StringList(String str)
-    {
-        super(str);
     }
 
     /**
