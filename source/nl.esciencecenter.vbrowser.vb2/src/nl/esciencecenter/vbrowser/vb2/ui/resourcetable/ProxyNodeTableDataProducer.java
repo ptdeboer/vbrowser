@@ -20,6 +20,8 @@
 
 package nl.esciencecenter.vbrowser.vb2.ui.resourcetable;
 
+import java.util.List;
+
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -267,7 +269,7 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 							return; 
 						try 
 						{
-							String hdrs[] = tableModel.getHeaders();   
+						    List<String> hdrs = tableModel.getHeaders();   
 							updateNodeAttributes(node,hdrs);
 							allAttributes.add(dataSource.getAttributeNames(node.getVRL()),true); 
 						}
@@ -312,10 +314,10 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 	
 	protected void fetchAttribute(String attrName)
 	{
-		fetchAttributes(new String[]{attrName}); 
+		fetchAttributes(new StringList(attrName)); 
 	}
 
-	private void fetchAttributes(final String[] attrNames)
+	private void fetchAttributes(final List<String> attrNames)
 	{
 		if (dataSource==null)
 			return; 
@@ -362,11 +364,9 @@ public class ProxyNodeTableDataProducer implements TableDataProducer
 	}
 
 
-	private void updateNodeAttributes(ViewNode viewNode,String[] attrNames) throws ProxyException 
+	private void updateNodeAttributes(ViewNode viewNode,List<String> attrNames) throws ProxyException 
 	{
-		Attribute[] attrs;
-		
-		attrs=dataSource.getAttributes(viewNode.getVRL(),attrNames); 
+		List<Attribute> attrs = dataSource.getAttributes(viewNode.getVRL(),attrNames); 
 		
 		RowData row=tableModel.getRow(viewNode.getVRL().toString());
 		

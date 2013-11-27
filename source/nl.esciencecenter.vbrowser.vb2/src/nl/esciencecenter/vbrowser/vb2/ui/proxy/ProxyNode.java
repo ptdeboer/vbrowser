@@ -20,9 +20,13 @@
 
 package nl.esciencecenter.vbrowser.vb2.ui.proxy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.Icon;
 
 import nl.esciencecenter.ptk.data.LongHolder;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -45,13 +49,31 @@ public abstract class ProxyNode
     {
     	logger=ClassLogger.getLogger(ProxyNode.class); 
     }
-    
+
     // ========================================================================
     // helpers
     // ========================================================================
+
+    // Null pointer safe toArray() method. 
+    public static ProxyNode[] toArray(List<? extends ProxyNode> nodes)
+    {
+        if (nodes==null)
+            return null; 
+        
+        return nodes.toArray(new ProxyNode[0]); 
+    } 
+    
+    public static List<? extends ProxyNode> toList(ProxyNode[] nodes)
+    {
+        ArrayList<ProxyNode> list=new ArrayList<ProxyNode>(nodes.length); 
+        for (int i=0;i<nodes.length;i++)
+            list.add(nodes[i]); 
+            
+        return list;  
+    }
     
      // Get subrange of array nodes [offset:offset+range] . 
-    public ProxyNode[] subrange(ProxyNode nodes[],int offset,int range)
+    public static List<? extends ProxyNode> subrange(List<? extends ProxyNode> nodes,int offset,int range)
     {
     	// no change:
     	if ((offset<=0) && (range<0)) 
@@ -63,7 +85,7 @@ public abstract class ProxyNode
     	if (nodes==null) 
     		return null; 
 
-    	int len=nodes.length; 
+    	int len=nodes.size(); 
 
     	// no more nodes after len: 
     	if (offset>=len)
@@ -83,9 +105,9 @@ public abstract class ProxyNode
     	// Assert: 0 <= offset < len 
     	// Assert: 0 <= range <= (len - offset)
 
-    	ProxyNode subnodes[]=new ProxyNode[range];
+    	ArrayList<ProxyNode> subnodes=new ArrayList<ProxyNode>(range); 
     	for (int i=0;i<range;i++)
-    		subnodes[i]=nodes[offset+i];
+    	    subnodes.add(nodes.get(offset+i));
     	return subnodes; 
     }
     
@@ -100,7 +122,7 @@ public abstract class ProxyNode
     
     class Childs
     {
-    	ProxyNode[] nodes=null;
+    	List<? extends ProxyNode> nodes=null;
 
     	long getChildsTime=-1; 
     }
@@ -122,7 +144,7 @@ public abstract class ProxyNode
 		
 		ProxyNode parent=null;
 
-        public String[] child_types;
+        public List<String> child_types;
 
 
 		public void setName(String newName) 
@@ -310,9 +332,9 @@ public abstract class ProxyNode
 
     public boolean hasChildren() throws ProxyException
     {
-        ProxyNode[] childs = this.getChilds(); 
+        List<? extends ProxyNode> childs = this.getChilds(); 
         
-        if ((childs==null) || (childs.length<0))
+        if ((childs==null) || (childs.size()<=0))
             return false;
         
         return true; 
@@ -346,7 +368,7 @@ public abstract class ProxyNode
 		return this.locator.equals(locator); 
 	}
 
-	public ProxyNode[] getChilds() throws ProxyException
+	public List<? extends ProxyNode> getChilds() throws ProxyException
 	{
 		return getChilds(0,-1,null); 
 	}
@@ -355,13 +377,13 @@ public abstract class ProxyNode
     // Cached methods
     // ========================================================================
    	
-	public ProxyNode[] getChilds(int offset, int range, LongHolder numChildsLeft) throws ProxyException
+	public List<? extends ProxyNode> getChilds(int offset, int range, LongHolder numChildsLeft) throws ProxyException
 	{
 		 synchronized(this.cache.childs)
 	     {
 			 if (cache.childs.nodes==null)
 			 {
-				 ProxyNode[] childs = doGetChilds(offset,range,numChildsLeft); 
+				 List<? extends ProxyNode> childs = doGetChilds(offset,range,numChildsLeft); 
 				 
 				 if ((offset>0) || (range>0)) 
 				 {
@@ -465,7 +487,7 @@ public abstract class ProxyNode
 		return this.cache.is_composite; 
 	}
 	
-	public String[] getCreateTypes() 
+	public List<String> getCreateTypes() 
 	{
 	    if (this.cache.child_types==null)
 	    {
@@ -482,9 +504,9 @@ public abstract class ProxyNode
 	    return this.cache.child_types;
 	}
 	
-    public String[] getAttributeNames() throws ProxyException
-    {  
-        String names[]=doGetAttributeNames(); 
+    public List<String> getAttributeNames() throws ProxyException
+    {   
+        List<String> names=doGetAttributeNames(); 
         
         if (names!=null)
             return names;
@@ -492,9 +514,9 @@ public abstract class ProxyNode
         return getDefaultProxyAttributesNames(); 
     }
 
-    public Attribute[] getAttributes(String[] names) throws ProxyException
+    public List<Attribute> getAttributes(List<String> names) throws ProxyException
     {
-        Attribute[] attrs = doGetAttributes(names); 
+        List<Attribute> attrs = doGetAttributes(names); 
 
         if (attrs!=null)
             return attrs; 
@@ -508,39 +530,49 @@ public abstract class ProxyNode
    
     public Presentation getPresentation() 
     {
-        return doGetPresentation(); 
+        try
+        {
+            return doGetPresentation();
+        }
+        catch (ProxyException e)
+        {
+            // Default Presentation! 
+            logger.errorPrintf("FIXME: Could not get presentation. Need default Presentation!"); 
+            e.printStackTrace();
+            return null; 
+        } 
     }
 	
-    protected String[] getDefaultProxyAttributesNames()
+    protected List<String> getDefaultProxyAttributesNames()
     {
-        return new String[]
+        return new StringList(new String[]
             {
                 AttributeNames.ATTR_ICON,
                 AttributeNames.ATTR_NAME,
                 AttributeNames.ATTR_RESOURCE_TYPE,
                 AttributeNames.ATTR_URI,
                 AttributeNames.ATTR_MIMETYPE 
-            };
+            });
     }
     
-    protected Attribute[] getDefaultProxyAttributes(String names[]) throws ProxyException
+    protected List<Attribute> getDefaultProxyAttributes(List<String> names) throws ProxyException
     {
-        Attribute attrs[]=new Attribute[names.length]; 
+        List<Attribute> attrs=new ArrayList<Attribute>(); 
         
         // hard coded default attributes: 
-        for (int i=0;i<names.length;i++)
+        for (int i=0;i<names.size();i++)
         {
-            String name=names[i];
+            String name=names.get(i);
             if (name.equals(AttributeNames.ATTR_ICON))
-                attrs[i]=new Attribute(name,this.getIconURL(this.getResourceStatus(), 48));
+                attrs.add(new Attribute(name,this.getIconURL(this.getResourceStatus(), 48))); 
             else if (name.equals(AttributeNames.ATTR_NAME))
-                attrs[i]=new Attribute(name,this.getName()); 
+                attrs.add(new Attribute(name,this.getName()));  
             else if (name.equals(AttributeNames.ATTR_URI))
-                attrs[i]=new Attribute(name,this.getVRL()); 
+                attrs.add(new Attribute(name,this.getVRL()));
             else if (name.equals(AttributeNames.ATTR_RESOURCE_TYPE))
-                attrs[i]=new Attribute(name,this.getResourceType()); 
+                attrs.add(new Attribute(name,this.getResourceType())); 
             else if (name.equals(AttributeNames.ATTR_MIMETYPE))
-                attrs[i]=new Attribute(name,this.getMimeType());
+                attrs.add(new Attribute(name,this.getMimeType()));
         }
         return attrs; 
     }
@@ -549,6 +581,8 @@ public abstract class ProxyNode
     {
         return "<ProxyNode:"+getResourceType()+":"+getVRL(); 
     }
+    
+
     
 	// ========================================================================
     // Protected implementation interface ! 
@@ -569,22 +603,25 @@ public abstract class ProxyNode
     // ====
     
 	/**  Uncached doGetChilds, using optional range */  
-	abstract protected ProxyNode[] doGetChilds(int offset, int range, LongHolder numChildsLeft) throws ProxyException;
+	abstract protected List<? extends ProxyNode> doGetChilds(int offset, int range, LongHolder numChildsLeft) throws ProxyException;
     
     /** Uncached doGetParent() */  
 	abstract protected ProxyNode doGetParent() throws ProxyException;
     
     /** Resource Type this node can create/contain. */ 
-    abstract protected String[] doGetChildTypes() throws ProxyException;
+    abstract protected List<String> doGetChildTypes() throws ProxyException;
 
     // ====
     // Attributes 
     // ====
 
-    abstract protected String[] doGetAttributeNames() throws ProxyException;
+    abstract protected List<String> doGetAttributeNames() throws ProxyException;
 
-    abstract protected Attribute[] doGetAttributes(String[] names) throws ProxyException;
+    abstract protected List<Attribute> doGetAttributes(List<String> names) throws ProxyException;
 
-    abstract protected Presentation doGetPresentation(); 
+    abstract protected Presentation doGetPresentation() throws ProxyException;
+
+
+
     
 }

@@ -20,6 +20,7 @@
 
 package nl.esciencecenter.vbrowser.vb2.ui.resourcetable;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -119,7 +120,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
             uiFireCellChanged(this, attrName);
         }
 
-        public void setValues(Attribute[] attrs)
+        public void setValues(List<Attribute> attrs)
         {
             if (attrs == null)
                 return;
@@ -358,11 +359,12 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
 
     public boolean setValue(String key, Attribute attr)
     {
-        return setValues(key, new Attribute[]
-        { attr });
+        ArrayList<Attribute> list = new ArrayList<Attribute>();
+        list.add(attr); 
+        return setValues(key, list);
     }
 
-    public boolean setValues(String key, Attribute attrs[])
+    public boolean setValues(String key, List<Attribute> attrs)
     {
         synchronized (rows)
         {
@@ -431,7 +433,7 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
         }
     }
 
-    public String[] getHeaders()
+    public List<String> getHeaders()
     {
         return headers.toArray();
     }
@@ -728,12 +730,12 @@ public class ResourceTableModel extends AbstractTableModel implements Iterable<R
         }
     }
 
-    public String[] getAllHeaders()
+    public List<String> getAllHeaders()
     {
         if (allHeaders == null)
             return this.headers.toArray();
 
-        return this.allHeaders.toArray();
+        return this.allHeaders;
     }
 
     /** Allow editable columns by specifying all possible headers */

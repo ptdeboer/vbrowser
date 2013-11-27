@@ -18,14 +18,17 @@
  */
 // source: 
 
-package nl.esciencecenter.vbrowser.vb2.ui.proxy.anyfile;
+package nl.esciencecenter.vbrowser.vb2.ui.proxy.fsnode;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import nl.esciencecenter.ptk.data.LongHolder;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.io.FSUtil;
-import nl.esciencecenter.ptk.io.FileURISyntaxException;
+
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
@@ -35,19 +38,21 @@ import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.mimetypes.MimeTypes;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
-
-public class AnyFileProxyNode extends ProxyNode
+/** 
+ * Example ProxyNode based on (Generic) FSNode class. 
+ */
+public class FSNodeProxyNode extends ProxyNode
 {
 	FSNode file;
 	
-	private AnyFileAttributes metaFile; 
+	private FSNodeAttributes metaFile; 
 	
-    protected AnyFileProxyNode createChild(String childname) throws ProxyException
+    protected FSNodeProxyNode createChild(String childname) throws ProxyException
     {
-        return new AnyFileProxyNode(getProxyFactory(),getVRL().appendPath(childname)); 
+        return new FSNodeProxyNode(getProxyFactory(),getVRL().appendPath(childname)); 
     }
     
-    public AnyFileProxyNode(ProxyFactory anyFileProxyFactory, VRL loc) throws ProxyException
+    public FSNodeProxyNode(ProxyFactory anyFileProxyFactory, VRL loc) throws ProxyException
     {
         super(anyFileProxyFactory,loc); 
         try
@@ -61,14 +66,14 @@ public class AnyFileProxyNode extends ProxyNode
         init(); 
     } 
     
-    public AnyFileProxyNode(ProxyFactory anyFileProxyFactory,VRL loc,FSNode file) throws ProxyException
+    public FSNodeProxyNode(ProxyFactory anyFileProxyFactory,VRL loc,FSNode file) throws ProxyException
     {
         super(anyFileProxyFactory,loc); 
         this.file=file; 
         init(); 
     }
     
-    protected AnyFileProxyNode(ProxyFactory anyFileProxyFactory,AnyFileProxyNode parent,VRL locator) throws ProxyException
+    protected FSNodeProxyNode(ProxyFactory anyFileProxyFactory,FSNodeProxyNode parent,VRL locator) throws ProxyException
     {
         super(anyFileProxyFactory,locator);
         init(); 
@@ -76,7 +81,7 @@ public class AnyFileProxyNode extends ProxyNode
 
     private void init() throws ProxyException
     {
-        this.metaFile=new AnyFileAttributes(file); 
+        this.metaFile=new FSNodeAttributes(file); 
     	//super.prefetch(); 
     }
     
@@ -121,7 +126,7 @@ public class AnyFileProxyNode extends ProxyNode
     
    
     @Override
-    public ProxyNode[] doGetChilds(int offset, int range,LongHolder numChildsLeft) throws ProxyException
+    public List<? extends ProxyNode> doGetChilds(int offset, int range,LongHolder numChildsLeft) throws ProxyException
     {
     	FSNode[] files;
 		try 
@@ -136,11 +141,10 @@ public class AnyFileProxyNode extends ProxyNode
     	if (files==null)
     		return null; 
     	
-    	AnyFileProxyNode nodes[]=new AnyFileProxyNode[files.length];
-    	
+    	ArrayList<FSNodeProxyNode> nodes=new ArrayList<FSNodeProxyNode>(files.length); 
     	
     	for (int i=0;i<files.length;i++)
-    		nodes[i]=new AnyFileProxyNode(getProxyFactory(),new VRL(files[i].getURI()),files[i]); 
+    		nodes.add(new FSNodeProxyNode(getProxyFactory(),new VRL(files[i].getURI()),files[i])); 
         
     	return subrange(nodes,offset,range);  
     }
@@ -148,7 +152,7 @@ public class AnyFileProxyNode extends ProxyNode
     @Override
 	public ProxyFactory getProxyFactory()
 	{
-		return AnyFileProxyFactory.getDefault(); 
+		return FSNodeProxyFactory.getDefault(); 
 	}
 
 	@Override
@@ -185,19 +189,19 @@ public class AnyFileProxyNode extends ProxyNode
     }
 
     @Override
-    protected String[] doGetChildTypes() 
+    protected List<String> doGetChildTypes() 
     {
-        return new String[]{FSNode.FILE_TYPE,FSNode.DIR_TYPE}; 
+        return new StringList(FSNode.FILE_TYPE,FSNode.DIR_TYPE); 
     }
 
     @Override
-    protected String[] doGetAttributeNames() throws ProxyException
+    protected List<String> doGetAttributeNames() throws ProxyException
     {
         return metaFile.getAttributeNames(); 
     }
 
     @Override
-    protected Attribute[] doGetAttributes(String[] names) throws ProxyException
+    protected List<Attribute> doGetAttributes(List<String> names) throws ProxyException
     {
         return metaFile.getAttributes(names); 
     }

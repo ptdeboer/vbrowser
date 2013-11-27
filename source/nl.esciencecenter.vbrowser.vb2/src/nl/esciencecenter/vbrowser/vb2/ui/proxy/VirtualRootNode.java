@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.esciencecenter.ptk.data.LongHolder;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -50,9 +51,9 @@ public class VirtualRootNode extends ProxyNode
     }
 
     @Override
-    protected ProxyNode[] doGetChilds(int offset, int range, LongHolder numChildsLeft) throws ProxyException
+    protected List<? extends ProxyNode> doGetChilds(int offset, int range, LongHolder numChildsLeft) throws ProxyException
     {
-        return this.subrange(childs.toArray(new ProxyNode[0]),offset,range); 
+        return ProxyNode.subrange(childs,offset,range); 
     }
 
     @Override
@@ -62,25 +63,25 @@ public class VirtualRootNode extends ProxyNode
     }
 
     @Override
-    protected String[] doGetChildTypes() throws ProxyException
+    protected List<String> doGetChildTypes() throws ProxyException
     {
-        String types[]=new String[childs.size()]; 
+        StringList list=new StringList(); 
         
-        for (int i=0;i<types.length;i++)
+        for (int i=0;i<childs.size();i++)
         {
-            types[i]=childs.get(i).getResourceType();
+            list.add(childs.get(i).getResourceType()); 
         }
-        return types;
+        return list; 
     }
 
     @Override
-    protected String[] doGetAttributeNames() throws ProxyException
+    protected List<String> doGetAttributeNames() throws ProxyException
     {
         return null;
     }
 
     @Override
-    protected Attribute[] doGetAttributes(String[] names) throws ProxyException
+    protected List<Attribute> doGetAttributes(List<String> names) throws ProxyException
     {
         return null;
     }

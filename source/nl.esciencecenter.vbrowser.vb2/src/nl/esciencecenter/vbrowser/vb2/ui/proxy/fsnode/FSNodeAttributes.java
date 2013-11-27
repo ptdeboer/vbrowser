@@ -18,10 +18,13 @@
  */
 // source: 
 
-package nl.esciencecenter.vbrowser.vb2.ui.proxy.anyfile;
+package nl.esciencecenter.vbrowser.vb2.ui.proxy.fsnode;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
@@ -30,9 +33,9 @@ import nl.esciencecenter.vbrowser.vrs.data.AttributeSource;
 import nl.esciencecenter.vbrowser.vrs.mimetypes.MimeTypes;
 
 /**
- * combined Attribute+Presentation interface for AnyFile;   
+ * Combined Attribute+Presentation example for FSNode    
  */
-public class AnyFileAttributes implements AttributeSource, IPresentable
+public class FSNodeAttributes implements AttributeSource, IPresentable
 {
     public static enum FileAttribute
     {
@@ -58,12 +61,12 @@ public class AnyFileAttributes implements AttributeSource, IPresentable
         private static FileAttribute defaultFileAttributes[]=new FileAttribute[]
                     {   ICON,NAME,LENGTH,MIMETYPE,MODIFICATION_TIME_STRING,PERMISSIONS_STRING }; 
 
-        public static String[] getStringValues()
+        public static List<String> getStringValues()
         {
             FileAttribute[] values = defaultFileAttributes; 
-            String strValues[]=new String[values.length];
+            StringList strValues=new StringList(values.length);
             for (int i=0;i<values.length;i++)
-                strValues[i]=values[i].getName(); 
+                strValues.add(values[i].getName()); 
             return strValues; 
         }
     }
@@ -92,13 +95,13 @@ public class AnyFileAttributes implements AttributeSource, IPresentable
     
     private FSNode anyFile;
 
-    public AnyFileAttributes(FSNode anyFile)
+    public FSNodeAttributes(FSNode anyFile)
     {
         this.anyFile=anyFile; 
     }
     
     @Override
-    public String[] getAttributeNames()
+    public List<String> getAttributeNames()
     {
         return FileAttribute.getStringValues(); 
     }
@@ -138,7 +141,7 @@ public class AnyFileAttributes implements AttributeSource, IPresentable
                 return new Attribute(name,Presentation.createDate(anyFile.getModificationTime()));
             
             if (name.equalsIgnoreCase(""+FileAttribute.LENGTH))
-                return new Attribute(name,anyFile.length());
+                return new Attribute(name,anyFile.getFileSize());
         }
         catch (IOException e)
         {
@@ -154,11 +157,11 @@ public class AnyFileAttributes implements AttributeSource, IPresentable
     }
 
     @Override
-    public Attribute[] getAttributes(String[] names)
+    public List<Attribute> getAttributes(List<String> names)
     {
-        Attribute attrs[]=new Attribute[names.length]; 
-        for (int i=0;i<names.length;i++)
-            attrs[i]=getAttribute(names[i]); 
+        ArrayList<Attribute> attrs=new ArrayList<Attribute>(names.size()); 
+        for (int i=0;i<names.size();i++)
+            attrs.add(getAttribute(names.get(i)));
         return attrs; 
     }
 

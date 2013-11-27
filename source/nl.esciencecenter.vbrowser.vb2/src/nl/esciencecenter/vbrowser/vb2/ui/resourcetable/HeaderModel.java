@@ -20,6 +20,8 @@
 
 package nl.esciencecenter.vbrowser.vb2.ui.resourcetable;
 
+import java.util.ArrayList;
+
 import javax.swing.AbstractListModel;
 
 import nl.esciencecenter.ptk.data.StringList;
@@ -81,9 +83,9 @@ public class HeaderModel extends AbstractListModel
         this.values=vals.duplicate();  
     }
 
-    public String[] toArray()
+    public ArrayList<String> toArray()
     {
-        return this.values.toArray(); 
+        return this.values; 
     }
 
     public int indexOf(String name)

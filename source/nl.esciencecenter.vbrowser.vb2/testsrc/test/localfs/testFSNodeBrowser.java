@@ -18,7 +18,7 @@
  */ 
 // source: 
 
-package test;
+package test.localfs;
 
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.ProxyBrowser;

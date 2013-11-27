@@ -24,6 +24,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JPopupMenu;
@@ -139,11 +140,11 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
     public void initColumns()
     {
         // Use Header from DataModel 
-        String headers[]=getModel().getHeaders();
+        List<String> headers = getModel().getHeaders();
         
-        logger.infoPrintf("initColumns(): getHeaders() = %s\n",new StringList(headers).toString());
+        logger.infoPrintf("initColumns(): getHeaders() = %s\n",headers.toString());
         
-        if ((headers==null) || (headers.length<=0)) 
+        if ((headers==null) || (headers.size()<=0)) 
         {
             headers=getModel().getAllHeaders(); 
             logger.infoPrintf("initColumns(): getAllHeaders() = %s\n",new StringList(headers).toString());
@@ -219,21 +220,21 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
 	}
 
 	   
-    private void initColumns(String headers[])
+    private void initColumns(List<String> headers)
     {
         setAutoResizeMode(getPresentation().getColumnsAutoResizeMode());
                 
         TableColumnModel columnModel=new DefaultTableColumnModel();
 
-        for (int i=0;i<headers.length;i++)
+        for (int i=0;i<headers.size();i++)
         {
-            String headerName=headers[i]; 
+            String headerName=headers.get(i); 
             // debug("Creating new column:"+headers[i]);
             TableColumn column = createColumn(i,headerName);
             // update column width from presentation
             Integer prefWidth=getPresentation().getAttributePreferredWidth(headerName);
             if (prefWidth==null)
-                prefWidth=headers[i].length()*10;// 10 points font ? 
+                prefWidth=headers.get(i).length()*10;// 10 points font ? 
             
             column.setPreferredWidth(prefWidth);
             
@@ -272,7 +273,7 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
     /** 
      * Returns headers as defined in the DATA model 
      */ 
-    public String[] getDataModelHeaders()
+    public List<String> getDataModelHeaders()
     {
         return getModel().getHeaders(); 
     }
@@ -341,7 +342,7 @@ public class ResourceTable extends JTable implements UIDisposable, ViewNodeConta
         
         // triggers restructure, and KEEP the current view order of Columns. 
         this.getModel().setHeaders(viewHeaders);
-        this.presentation.setChildAttributeNames(viewHeaders.toArray());
+        this.presentation.setChildAttributeNames(viewHeaders);
         this.getModel().fireTableStructureChanged(); 
     }
     

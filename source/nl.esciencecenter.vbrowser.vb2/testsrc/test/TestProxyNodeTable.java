@@ -31,7 +31,7 @@ import javax.swing.SwingUtilities;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
-import nl.esciencecenter.vbrowser.vb2.ui.proxy.anyfile.AnyFileProxyFactory;
+import nl.esciencecenter.vbrowser.vb2.ui.proxy.fsnode.FSNodeProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ProxyNodeTableDataProducer;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTable;
 import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTableModel;
@@ -45,7 +45,7 @@ public class TestProxyNodeTable
         {
             BrowserPlatform platform=BrowserPlatform.getInstance(); 
             
-            ProxyFactory fac = AnyFileProxyFactory.getDefault(); 
+            ProxyFactory fac = FSNodeProxyFactory.getDefault(); 
             
             platform.registerProxyFactory(fac); 
             

@@ -46,7 +46,7 @@ public class DummyProxyNode extends ProxyNode
         dummyPresentation=Presentation.createDefault();
         for (int i=0;i<attrNames.size();i++)
             dummyPresentation.setAttributePreferredWidths(attrNames.get(i),new int[]{42,42+i*42,42+4*42}); 
-        dummyPresentation.setChildAttributeNames(attrNames.toArray()); 
+        dummyPresentation.setChildAttributeNames(attrNames); 
         
     }
 
@@ -117,7 +117,7 @@ public class DummyProxyNode extends ProxyNode
     }
 
     @Override
-    public ProxyNode[] doGetChilds(int offset, int range,LongHolder numChildsLeft)
+    public List<? extends ProxyNode> doGetChilds(int offset, int range,LongHolder numChildsLeft)
     {
         if (childs==null)
         {	
@@ -137,11 +137,8 @@ public class DummyProxyNode extends ProxyNode
             node.mimetype="text/rtf"; 
             childs.add(node); 
         }
-        
-        ProxyNode _arr[]=new ProxyNode[childs.size()]; 
-        _arr=childs.toArray(_arr); 
-        
-        return subrange(_arr,offset,range);  
+                
+        return subrange(childs,offset,range);  
     }
 
     public static DummyProxyNode getRoot() throws ProxyException
@@ -193,24 +190,24 @@ public class DummyProxyNode extends ProxyNode
     }
 
     @Override
-    protected String[] doGetChildTypes() 
+    protected List<String> doGetChildTypes() 
     {
-        return new String[]{"DummyType"}; 
+        return new StringList("DummyType"); 
     }
 
     @Override
-    protected String[] doGetAttributeNames() throws ProxyException
+    protected List<String> doGetAttributeNames() throws ProxyException
     {
-        return attrNames.toArray();
+        return attrNames.clone();
     }
 
     @Override
-    protected Attribute[] doGetAttributes(String[] names) throws ProxyException
+    protected List<Attribute> doGetAttributes(List<String> names) throws ProxyException
     {
-        Attribute attrs[]=new Attribute[names.length];
+        ArrayList<Attribute> attrs=new ArrayList<Attribute>(names.size()); 
         
-        for (int i=0;i<names.length;i++)
-            attrs[i]=new Attribute(names[i],"Value:"+names[i]); 
+        for (int i=0;i<names.size();i++)
+            attrs.add(new Attribute(names.get(i),"Value:"+names.get(i)));  
         
         return attrs;
         

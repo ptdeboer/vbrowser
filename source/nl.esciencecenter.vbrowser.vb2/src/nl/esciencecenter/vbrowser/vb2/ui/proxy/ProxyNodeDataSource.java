@@ -20,6 +20,8 @@
 
 package nl.esciencecenter.vbrowser.vb2.ui.proxy;
 
+import java.util.List;
+
 import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ExtendedDataSource;
@@ -61,13 +63,13 @@ public class ProxyNodeDataSource implements ExtendedDataSource
         // check toplevel:
         if (rootNode.hasLocator(locator))
         {
-            childs = rootNode.getChilds(offset, range, numChildsLeft);
+            childs = ProxyNode.toArray(rootNode.getChilds(offset, range, numChildsLeft));
         }
         else
         {
 
             ProxyNode parent = proxyFactory.openLocation(locator);
-            childs = parent.getChilds();
+            childs = ProxyNode.toArray(parent.getChilds());
         }
 
         return childs;
@@ -131,14 +133,14 @@ public class ProxyNodeDataSource implements ExtendedDataSource
     }
 
     @Override
-    public String[] getAttributeNames(VRL locator) throws ProxyException
+    public List<String> getAttributeNames(VRL locator) throws ProxyException
     {
         ProxyNode node = proxyFactory.openLocation(locator);
         return node.getAttributeNames();
     }
 
     @Override
-    public Attribute[] getAttributes(VRL locator, String[] attrNames) throws ProxyException
+    public List<Attribute> getAttributes(VRL locator, List<String> attrNames) throws ProxyException
     {
         ProxyNode node = proxyFactory.openLocation(locator);
         return node.getAttributes(attrNames);

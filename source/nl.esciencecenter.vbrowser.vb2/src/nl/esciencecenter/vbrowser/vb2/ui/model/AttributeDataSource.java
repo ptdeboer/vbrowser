@@ -20,6 +20,8 @@
 
 package nl.esciencecenter.vbrowser.vb2.ui.model;
 
+import java.util.List;
+
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -31,7 +33,7 @@ public interface AttributeDataSource
     // Attribute Interface
     // =====================
     
-    String[] getAttributeNames(VRL locator) throws ProxyException; 
+    List<String> getAttributeNames(VRL locator) throws ProxyException; 
     
-    Attribute[] getAttributes(VRL locator,String attrNames[]) throws ProxyException; 
+    List<Attribute> getAttributes(VRL locator,List<String> attrNames) throws ProxyException; 
 }

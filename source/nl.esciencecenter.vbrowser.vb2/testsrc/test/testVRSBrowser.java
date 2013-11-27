@@ -22,11 +22,10 @@ package test;
 
 import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
 import nl.esciencecenter.vbrowser.vb2.ui.browser.ProxyBrowser;
-import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
-import nl.esciencecenter.vbrowser.vb2.ui.proxy.fsnode.FSNodeProxyFactory;
+import nl.esciencecenter.vbrowser.vb2.ui.proxy.vrs.VRSProxyFactory;
 
-public class testFSNodeBrowser 
+public class testVRSBrowser 
 {
 
 	public static void main(String args[])
@@ -37,7 +36,7 @@ public class testFSNodeBrowser
 		    
 		    ProxyBrowser frame=(ProxyBrowser)platform.createBrowser();
 		    
-		    ProxyFactory fac = FSNodeProxyFactory.getDefault(); 
+		    VRSProxyFactory fac = VRSProxyFactory.getDefault(); 
 		    
 		    platform.registerProxyFactory(fac); 
 		    

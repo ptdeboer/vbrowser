@@ -1,5 +1,7 @@
 package nl.esciencecenter.vbrowser.vb2.ui.proxy;
 
+import java.util.List;
+
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -33,7 +35,7 @@ public class VirtualRootProxyFactory extends ProxyFactory
         }
         
         // delegate to ProxyNodeFactories of children: 
-        ProxyNode[] nodes = getRoot().getChilds(); 
+        List<? extends ProxyNode> nodes = getRoot().getChilds(); 
 
         String reasons="=== reasons ===\n";
         for (ProxyNode node:nodes)
@@ -57,10 +59,10 @@ public class VirtualRootProxyFactory extends ProxyFactory
         if (locator.toString().equals(VROOT_VRL))
             return true;
         
-        ProxyNode[] nodes;
+        
         try
         {
-            nodes = getRoot().getChilds();
+            List<? extends ProxyNode> nodes = getRoot().getChilds();
             for (ProxyNode node:nodes)
             {
                 if (node.getProxyFactory().canOpen(locator, reasonHolder))

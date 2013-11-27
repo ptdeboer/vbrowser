@@ -18,7 +18,7 @@
  */
 // source: 
 
-package nl.esciencecenter.vbrowser.vb2.ui.proxy.anyfile;
+package nl.esciencecenter.vbrowser.vb2.ui.proxy.fsnode;
 
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.io.FSNode;
@@ -27,14 +27,17 @@ import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
-public class AnyFileProxyFactory extends ProxyFactory
+/** 
+ * Example ProxyNode Factory based on (Generic) FSNode class. 
+ */
+public class FSNodeProxyFactory extends ProxyFactory
 {
     private static ProxyFactory instance; 
     
     public static synchronized ProxyFactory getDefault() 
     {
         if (instance==null)
-            instance=new AnyFileProxyFactory();
+            instance=new FSNodeProxyFactory();
               
         return instance; 
    }
@@ -44,7 +47,7 @@ public class AnyFileProxyFactory extends ProxyFactory
 
     public ProxyNode doOpenLocation(VRL locator) throws ProxyException
     {
-        return new AnyFileProxyNode(this,locator); 
+        return new FSNodeProxyNode(this,locator); 
     }
 
 	@Override

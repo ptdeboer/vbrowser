@@ -22,6 +22,7 @@ package nl.esciencecenter.vbrowser.vb2.ui.resourcetable;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
@@ -138,7 +139,7 @@ public class HeaderPopupMenu extends JPopupMenu
         menu.setText("Columns");
         
         // All Headers!
-        String names[]=tablePanel.getModel().getAllHeaders();
+        List<String> names = tablePanel.getModel().getAllHeaders();
         
         @SuppressWarnings("unused")
         JMenuItem mitem=null;
