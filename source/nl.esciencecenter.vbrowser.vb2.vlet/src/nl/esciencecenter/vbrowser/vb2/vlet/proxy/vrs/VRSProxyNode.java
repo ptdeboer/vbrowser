@@ -23,8 +23,11 @@ package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
 
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import nl.esciencecenter.ptk.data.LongHolder;
+import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
@@ -89,7 +92,7 @@ public class VRSProxyNode extends ProxyNode
     }
 
     @Override
-    protected ProxyNode[] doGetChilds(int offset, int range,LongHolder numChildsLeft) throws ProxyException
+    protected List<? extends ProxyNode> doGetChilds(int offset, int range,LongHolder numChildsLeft) throws ProxyException
     {
     	debug("doGetChilds:"+this); 
     	 
@@ -139,17 +142,17 @@ public class VRSProxyNode extends ProxyNode
 		}
     }
     
-    protected VRSProxyNode[] createNodes(VNode[] nodes) throws ProxyException
+    protected List<VRSProxyNode> createNodes(VNode[] nodes) throws ProxyException
     {
     	if (nodes==null)
     		return null; 
     	
         int len=nodes.length;  
         
-        VRSProxyNode pnodes[]=new VRSProxyNode[len];
+        ArrayList<VRSProxyNode> pnodes=new ArrayList<VRSProxyNode>(len);
         for (int i=0;i<len;i++)
         {
-            pnodes[i]=createNode(nodes[i]); 
+            pnodes.add(createNode(nodes[i]));  
         }
         return pnodes; 
     }
@@ -258,11 +261,11 @@ public class VRSProxyNode extends ProxyNode
 	}
 
     @Override
-    protected String[] doGetChildTypes() throws ProxyException
+    protected List<String> doGetChildTypes() throws ProxyException
     {
         if (vnode instanceof VComposite)
         {
-            return ((VComposite)vnode).getResourceTypes(); 
+            return new StringList(((VComposite)vnode).getResourceTypes()); 
         }
         
         return null; 
@@ -309,17 +312,17 @@ public class VRSProxyNode extends ProxyNode
     }
 
     @Override
-    protected String[] doGetAttributeNames() throws ProxyException
+    protected List<String> doGetAttributeNames() throws ProxyException
     {
-        return vnode.getAttributeNames(); 
+        return new StringList(vnode.getAttributeNames()); 
     }
     
 	@Override
-    protected Attribute[] doGetAttributes(String[] names) throws ProxyException
+    protected List<Attribute> doGetAttributes(List<String> names) throws ProxyException
     {
         try
         {
-            return vnode.getAttributes(names);
+            return Attribute.toList(vnode.getAttributes(names.toArray(new String[0]))); 
         }
         catch (VrsException e)
         {

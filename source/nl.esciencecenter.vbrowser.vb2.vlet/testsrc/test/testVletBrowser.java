@@ -31,7 +31,7 @@ import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.VRSContext;
 import nl.esciencecenter.vlet.vrs.util.VRSResourceLoader;
 
-public class testVRSBrowser 
+public class testVletBrowser 
 {
 
 	public static void main(String args[])
