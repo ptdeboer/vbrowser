@@ -1,6 +1,5 @@
 package nl.esciencecenter.vbrowser.vrs.localfs;
 
-import java.io.IOException;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 
@@ -28,17 +27,6 @@ public class LocalFileAttributes extends FileAttributes
     public boolean isHidden()
     {
         return false; 
-    }
-
-    public long getModificationTime()
-    {
-        FileTime time = attrs.lastModifiedTime();
-        if (time==null)
-        {
-            return -1; 
-        }
-        
-        return time.toMillis(); 
     }
 
 //    public String getPermissionsString()

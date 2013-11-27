@@ -11,6 +11,7 @@ import nl.esciencecenter.vbrowser.vrs.VFSPath;
 import nl.esciencecenter.vbrowser.vrs.VFileSystem;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsAccessDeniedException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.node.FileAttributes;
 import nl.esciencecenter.vbrowser.vrs.node.VFSPathNode;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
@@ -73,6 +74,19 @@ public class LocalFSPathNode extends VFSPathNode
         {
             throw new VrsException(e.getMessage(),e);
         }  
+    }
+
+    @Override
+    public FileAttributes getFileAttributes() throws VrsException
+    {
+        try
+        {
+            return new LocalFileAttributes(fsNode.getBasicAttributes());
+        }
+        catch (IOException e)
+        {
+           throw new VrsException(e.getMessage(),e); 
+        }
     }
 
 }

@@ -52,7 +52,7 @@ public class AttributeNames
 
     public static final String ATTR_UNIX_GROUPID = "unix.groupID";
 
-    public static final String ATTR_UNIX_OWNER= "unix.userName";
+    public static final String ATTR_UNIX_OWNER= "unix.owner";
 
     public static final String ATTR_UNIX_GROUPNAME = "unix.groupName";
 
