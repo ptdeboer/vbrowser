@@ -63,12 +63,12 @@ public class XenonFSFactory extends VFSFactory
 		return fs; 
 	}
 	
-	public XenonFS createNewFileSystem(VRSContext context,ServerInfo info, VRL location) throws VrsException
+	public XenonVFS createNewFileSystem(VRSContext context,ServerInfo info, VRL location) throws VrsException
 	{
 		// Create new FileSystem instance. 
 		// Use VRSContext for user context dependend specific settings. 
 		// Checks ServerInfo for Resource Info settings and properties. 
-		return new XenonFS(context,info,location);
+		return new XenonVFS(context,info,location);
 	}
 		
 	@Override

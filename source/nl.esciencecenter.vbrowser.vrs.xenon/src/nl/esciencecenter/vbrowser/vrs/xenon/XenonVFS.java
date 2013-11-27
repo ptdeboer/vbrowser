@@ -26,6 +26,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
 
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
@@ -46,13 +47,13 @@ import nl.esciencecenter.xenon.files.PosixFilePermission;
 /**
  * Octopus Meta VFileSystem adaptor. 
  */  
-public class XenonFS extends FileSystemNode
+public class XenonVFS extends FileSystemNode
 {
     private static ClassLogger logger=null; 
     
     static 
     {
-        logger=ClassLogger.getLogger(XenonFS.class);
+        logger=ClassLogger.getLogger(XenonVFS.class);
         logger.setLevelToDebug();
     }
     
@@ -67,15 +68,19 @@ public class XenonFS extends FileSystemNode
     private Path entryPath;
 
 
-    public XenonFS(VRSContext context, ServerInfo info,VRL location) throws VrsException 
+    public XenonVFS(VRSContext context, ServerInfo info,VRL location) throws VrsException 
 	{
 		super(context, info);
 		
+	    // create optional shared client. 
+	    octoClient=XenonClient.createFor(context,info); 
+	    
 		boolean isSftp="sftp".equals(location.getScheme());
 		boolean isGftp="gsiftp".equals(location.getScheme()) || "gftp".equals(location.getScheme());
         boolean isLocal="file".equals(location.getScheme());
 
 		String fsUriStr=null;
+		String drivePath="/";
 		
 		String vrlUser=location.getUsername(); 
 	    String configeredUser=info.getUsername(); 
@@ -94,17 +99,31 @@ public class XenonFS extends FileSystemNode
 		    fsUriStr=location.getScheme()+"://"+location.getHostname()+"/";
 		    
 		}
-		else
+		else if (isLocal)
 		{
-		    fsUriStr="file:/";
+			fsUriStr="file:/";
+			if (GlobalProperties.isWindows())
+			{
+				// normalized dos path: '/C:/'
+				String pathStr=location.getPath(); 
+				if ((pathStr.length()>=3) && (pathStr.charAt(2)==':'))
+				{
+					// Get "C:" part. 
+					drivePath=pathStr.substring(1,3);
+		    	}
+				else
+				{
+					drivePath=octoClient.getFirstDrive();
+				}
+		    }
 		}
-		
+		else
+	    {
+	    	throw new VrsException("File system type not yet supported for:"+location); 
+	    }		
 		try
         {
 		    URI fsUri=new URI(fsUriStr);
-		    
-		    // create optional shared client. 
-		    octoClient=XenonClient.createFor(context,info); 
 		    
 		    if (isSftp)
 		    {
@@ -116,9 +135,13 @@ public class XenonFS extends FileSystemNode
                 info.getUserinfo(); 
                 octoFS=octoClient.createGftpFileSystem(fsUri,octoClient.createGftpCredentials(info));
             }
+		    else if (isLocal)
+		    {
+		        octoFS=octoClient.createLocalFileSystem(drivePath);
+		    }
 		    else
 		    {
-		        octoFS=octoClient.createFileSystem(fsUri);
+		    	throw new VrsException("File system type not yet supported for:"+location); 
 		    }
 		    
 		    this.entryPath = octoFS.getEntryPath();

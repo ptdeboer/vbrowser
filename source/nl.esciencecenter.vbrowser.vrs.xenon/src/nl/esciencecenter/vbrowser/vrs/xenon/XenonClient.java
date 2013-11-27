@@ -20,6 +20,7 @@
 
 package nl.esciencecenter.vbrowser.vrs.xenon;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -46,6 +47,8 @@ import nl.esciencecenter.xenon.files.OpenOption;
 import nl.esciencecenter.xenon.files.PathAttributesPair;
 import nl.esciencecenter.xenon.files.PosixFilePermission;
 import nl.esciencecenter.xenon.files.RelativePath;
+import nl.esciencecenter.xenon.util.Utils;
+import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.SecretHolder;
 import nl.esciencecenter.ptk.io.FSUtil;
@@ -145,19 +148,23 @@ public class XenonClient
     // === instance == 
     
     private Xenon engine;
-    private Map<String, String> octoProperties;
+    private Map<String, String> xenonProps;
     private VRL userHomeDir;
     private String userName;
     private VRSContext vrsContext;
+	private FileSystem[] localDrives;
 
     /**
      * Protected constructor: Use factory method.
      */
     protected XenonClient(Map<String,String> props) throws XenonException
     {
-        octoProperties=props;
+        xenonProps=props;
         //octoCredentials=new Credentials(); 
-        engine=XenonEngine.newXenon(octoProperties); 
+        engine=XenonEngine.newXenon(xenonProps); 
+         
+        
+        init(); 
     }
     
     protected void updateProperties(VRSContext context, ServerInfo info)
@@ -166,6 +173,42 @@ public class XenonClient
         this.userHomeDir=context.getUserHomeLocation();  
         this.vrsContext=context; 
     }
+    
+    protected void init()
+    {
+    	
+    	// Exception: 
+    	localDrives=null; 
+
+//    	try {
+//    		this.localDrives=Utils.getLocalFileSystems(engine.files());
+//    		return; 
+//		} catch (XenonException e1) {
+//			e1.printStackTrace();
+//		} 
+    	
+    	File[] roots = File.listRoots();
+    	this.localDrives=new FileSystem[roots.length]; 
+    	
+    	for (int i=0;i<roots.length;i++)
+    	{
+    		String drivePath=roots[i].getAbsolutePath(); 
+    		if (drivePath.endsWith("\\")) 
+    		{
+    			drivePath=drivePath.substring(0, drivePath.length()-1);
+    		}
+    		try {
+				localDrives[i]=createLocalFileSystem(drivePath);
+				logger.errorPrintf("Initialized local drive:%s\n", localDrives[i]); 
+			} catch (XenonException e) {
+				logger.errorPrintf("Failed to initialize local drive:%s\nException=%s\n", roots[i],e);
+			}  
+    	}
+    }
+    
+	public String getFirstDrive() {
+		return localDrives[0].getLocation(); 	
+	}
     
     public String getUsername()
     {
@@ -208,17 +251,30 @@ public class XenonClient
     
     public FileSystem createFileSystem(java.net.URI uri) throws XenonException, XenonException
     {
-        return engine.files().newFileSystem(uri.getScheme(),"/", null, octoProperties);
+    	GlobalProperties.isWindows(); 
+    	
+        return engine.files().newFileSystem(uri.getScheme(),"/", null, xenonProps);
     }
  
     public FileSystem createFileSystem(java.net.URI uri,Credential cred) throws XenonException, XenonException
     {
-        return engine.files().newFileSystem(uri.getScheme(),"/", cred, octoProperties);
+        return engine.files().newFileSystem(uri.getScheme(),"/", cred, xenonProps);
     }
-    
+
+    public FileSystem createLocalFileSystem(java.net.URI uri) throws XenonException, XenonException
+    {
+    	
+        return engine.files().newFileSystem(uri.getScheme(),"/", null, xenonProps);
+    }
+
+    public FileSystem createLocalFileSystem(String drivePath) throws XenonException, XenonException
+    {
+        return engine.files().newFileSystem("file",drivePath, null, xenonProps);
+    }
+
     public FileSystem createGftpFileSystem(java.net.URI uri,Credential cred) throws XenonException, XenonException
     {
-        return engine.files().newFileSystem(uri.getScheme(),uri.getHost()+":"+uri.getPort(), cred, octoProperties);
+        return engine.files().newFileSystem(uri.getScheme(),uri.getHost()+":"+uri.getPort(), cred, xenonProps);
     }
     
     public FileAttributes statPath(Path path) throws XenonException
@@ -548,6 +604,8 @@ public class XenonClient
     {
         return engine.credentials().newCertificateCredential("gsiftp", "/tmp/x509up_u1000", null,null, null); 
     }
+
+
 
    
 
