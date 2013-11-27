@@ -126,7 +126,7 @@ public class FSNodeBody  extends AbstractContentBody
     {
         try
         {
-            return this.fsNode.length();
+            return this.fsNode.getFileSize();
         }
         catch (IOException e)
         {
