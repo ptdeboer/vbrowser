@@ -402,7 +402,7 @@ public class FSUtil
             encoding = ENCODING_UTF8;
 
         FSNode file = newFSNode(filename);
-        int len = (int) file.length();
+        int len = (int) file.getFileSize();
         if (len > maxSize)
             len = maxSize;
 
@@ -439,7 +439,7 @@ public class FSUtil
                 // close
         try { foutps.close(); } catch (IOException e) { ; } 
         
-        long fileLen=file.length();
+        long fileLen=file.getFileSize();
         if (len!=fileLen) 
         {
             logger.warnPrintf("File NOT truncated: After writing %d byte to '%s', file length is:%d!\n",filename,len,fileLen);

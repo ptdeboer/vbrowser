@@ -50,13 +50,7 @@ public class LocalFSReader implements RandomReader
     @Override
     public long getLength() throws IOException
     {
-        return fsNode.length(); 
+        return fsNode.getFileSize(); 
     }
-    
-//    @Override
-//    public void close() throws IOException
-//    {
-//        
-//    }
 
 }

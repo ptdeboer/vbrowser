@@ -175,12 +175,6 @@ public class LocalFSNode extends FSNode
     }
 
     @Override
-    public long length() throws IOException
-    {
-        return (Long) Files.getAttribute(_path, "size");
-    }
-
-    @Override
     public boolean isFile(LinkOption... linkOptions)
     {
         return Files.isRegularFile(_path, linkOptions);
@@ -247,7 +241,7 @@ public class LocalFSNode extends FSNode
         FileTime value = getBasicAttributes().lastAccessTime();
         return value.toMillis();
     }
-
+    
     @Override
     public LocalFSNode newFile(String path) throws FileURISyntaxException
     {
@@ -430,4 +424,6 @@ public class LocalFSNode extends FSNode
 		
 		return attrs.group().getName(); 
 	}
+
+
 }

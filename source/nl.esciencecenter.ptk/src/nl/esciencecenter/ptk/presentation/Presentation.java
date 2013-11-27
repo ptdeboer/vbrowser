@@ -23,6 +23,7 @@ package nl.esciencecenter.ptk.presentation;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -704,9 +705,9 @@ public class Presentation implements Duplicatable<Presentation>
     /** 
      * Set which child attribute to show.  
      */
-    public void setChildAttributeNames(String names[])
+    public void setChildAttributeNames(List<String> names)
     {
-        childAttributeNames = new StringList(names);
+        childAttributeNames = new StringList(names); // private copy ! 
     }
 
     /** 

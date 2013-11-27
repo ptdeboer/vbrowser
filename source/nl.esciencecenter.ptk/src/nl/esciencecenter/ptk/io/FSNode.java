@@ -28,6 +28,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.LinkOption;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 
 import nl.esciencecenter.ptk.net.URIFactory;
 
@@ -247,7 +249,58 @@ public abstract class FSNode
         return -1;
     }
 
-
+    public boolean isRoot()
+    {
+        String path=this.getPathname();
+        
+        if ("/".equals(path))
+        {
+            return true;
+        }
+        
+        return false; 
+    }
+    
+    public long getCreateionTime() throws IOException
+    {
+        BasicFileAttributes attrs = this.getBasicAttributes();
+        
+        if (attrs==null)
+            return -1; 
+        
+        FileTime time = attrs.creationTime();
+        
+        if (time==null)
+            return -1; 
+        
+        return time.toMillis();
+    }
+     
+    public long getModificationTime() throws IOException
+    {
+        BasicFileAttributes attrs = this.getBasicAttributes();
+        
+        if (attrs==null)
+            return -1; 
+        
+        FileTime time = attrs.lastModifiedTime();
+        
+        if (time==null)
+            return -1; 
+        
+        return time.toMillis();
+    }
+    
+    public long getFileSize() throws IOException
+    {
+        BasicFileAttributes attrs = this.getBasicAttributes();
+        
+        if (attrs==null)
+            return 0;
+        
+        return attrs.size();
+    }
+    
     // =======================================================================
     // Abstract Interface
     // =======================================================================
@@ -264,21 +317,6 @@ public abstract class FSNode
 
     /** Is a regular directory. */
     public abstract boolean isDirectory(LinkOption... linkOptions);
-
-    /**
-     * Size in bytes.
-     * 
-     * @throws IOException
-     */
-    public abstract long length() throws IOException;
-
-    /**
-     * Last modification time in milli seconds since epoch. May return -1 if
-     * attribute is not supported.
-     * 
-     * @throws IOException
-     */
-    public abstract long getModificationTime() throws IOException;
 
     /** Logical parent */
     public abstract FSNode getParent();
@@ -299,6 +337,9 @@ public abstract class FSNode
 
     /** Create full directory path. */
     public abstract void mkdirs() throws IOException;
+
+    public abstract BasicFileAttributes getBasicAttributes() throws IOException;
+
 
 
 }
