@@ -1,22 +1,22 @@
 <project name="vbrowser-modules" default="doModules" basedir=".">
 
-    <import file="build.xml"/>
+    <import file="build.xml" />
 
     <target name="module-check">
 
         <property name="sourcepath" value="${project.sourcedir}/${name}" />
-        <available property="module.exists" file="${sourcepath}/build.xml"/>
+        <available property="module.exists" file="${sourcepath}/build.xml" />
 
         <!-- component info  -->
-        <echo message="=============================================================="/>
-        <echo message="=== Build Component: ${name}: ${target}"/>
-        <echo message="=============================================================="/>
-        <echo message=" project root         = ${project.root}"/>
-        <echo message=" project dist         = ${project.dist}"/>
-        <echo message=" project sourceroot   = ${project.sourcedir}"/>
-        <echo message=" component name       = ${name}"/>
-        <echo message=" component scm.path   = ${scm.path}"/>
-        <echo message=" component sourcepath = ${sourcepath}"/>
+        <echo message="==============================================================" />
+        <echo message="=== Build Component: ${name}: ${target}" />
+        <echo message="==============================================================" />
+        <echo message=" project root         = ${project.root}" />
+        <echo message=" project dist         = ${project.dist}" />
+        <echo message=" project sourceroot   = ${project.sourcedir}" />
+        <echo message=" component name       = ${name}" />
+        <echo message=" component scm.path   = ${scm.path}" />
+        <echo message=" component sourcepath = ${sourcepath}" />
 
     </target>
 
@@ -27,29 +27,26 @@
       -->
     <target name="module-build" depends="module-check">
 
-        <fail unless="module.exists" 
-              message="*** Component: ${name} at ${sourcepath} is missing or scm checkout went wrong (missing build.xml file ?)" />
+        <fail unless="module.exists" message="*** Component: ${name} at ${sourcepath} is missing or scm checkout went wrong (missing build.xml file ?)" />
 
         <!-- default target: can be overriden by previous target-->
-        <property name="target" value="dist-install"/>
+        <property name="target" value="dist-install" />
 
-        <ant antfile="build.xml" 
-            dir="${sourcepath}" 
-            target="${target}">
+        <ant antfile="build.xml" dir="${sourcepath}" target="${target}">
         </ant>
 
     </target>
 
-    <target name="doModules" depends="vlet-all"/>
+    <target name="doModules" depends="vlet-all" />
 
-    <target name="doModules-test" depends="vlet-modules-test"/>
+    <target name="doModules-test" depends="vlet-modules-test" />
 
     <target name="vlet-modules-test" depends="init">
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.ptk"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.ptk" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
     </target>
@@ -63,43 +60,34 @@
     <target name="vlet-auxlibs" depends="init">
 
         <antcall target="module-build">
-            <param name="name" value="cog.jglobus-1.4"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="cog.jglobus-1.4" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
     </target>
 
-    <target name="vlet-core" depends="init,vlet-auxlibs">
+    <target name="vlet-platinum" depends="init,vlet-auxlibs">
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.ptk"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.vlet.platinum" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
+        </antcall>
+    </target>
+
+    <target name="vlet-core" depends="init,vlet-auxlibs,vlet-platinum">
+
+        <antcall target="module-build">
+            <param name="name" value="nl.esciencecenter.vlet.vrs.core" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.ptk.web"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
-        </antcall>
-
-        <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vbrowser.vrs"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
-        </antcall>
-
-        <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vlet.vrs.core"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
-        </antcall>
-
-        <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vlet.vrs.infors"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.vlet.vrs.infors" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
     </target>
 
@@ -107,21 +95,21 @@
     <target name="vlet-vfs-globus" depends="vlet-core">
 
         <antcall target="module-build">
-            <param name="name" value="org.apache.axis-1.4"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="org.apache.axis-1.4" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vlet.grid.globus"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.vlet.grid.globus" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vlet.vfs.gftp"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.vlet.vfs.gftp" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
     </target>
@@ -129,9 +117,9 @@
     <target name="vlet-vrs-xenon" depends="vlet-core">
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vbrowser.vrs.xenon"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.vbrowser.vrs.xenon" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
     </target>
@@ -139,9 +127,9 @@
     <target name="vlet-vfs-ssh" depends="vlet-core">
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vlet.vfs.jcraft.ssh"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.vlet.vfs.jcraft.ssh" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
     </target>
@@ -149,67 +137,47 @@
     <target name="vlet-vfs-lfc-srm" depends="vlet-vfs-globus">
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.glite.srm"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.glite.srm" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vlet.vfs.srm"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.vlet.vfs.srm" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.glite.lfc"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.glite.lfc" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vlet.vfs.lfc"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.vlet.vfs.lfc" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
     </target>
 
     <!-- <target name="vlet-vfs-adaptors" depends="vlet-vrs-xenon,vlet-vfs-globus,vlet-vfs-lfc-srm"/> -->
-    <target name="vlet-vfs-adaptors" depends="vlet-vfs-ssh,vlet-vfs-globus,vlet-vfs-lfc-srm"/>
-  
+    <target name="vlet-vfs-adaptors" depends="vlet-vfs-ssh,vlet-vfs-globus,vlet-vfs-lfc-srm" />
+
 
     <!--
       ===========================================
                     UI Modules
       ===========================================
-      --> 
+      -->
 
-    <target name="ptk-ui" depends="vlet-core">
-
-        <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.ptk.ui"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
-        </antcall>
-
-    </target>
-
-    <target name="ptk-util-vterm" depends="vlet-core,ptk-ui">
+    <target name="vlet-vbrowser" depends="vlet-core,vlet-platinum">
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.ptk.util.vterm"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
-        </antcall>
-
-    </target>
-
-    <target name="vlet-vbrowser" depends="vlet-core,ptk-ui,ptk-util-vterm">
-
-        <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vlet.gui.vbrowser"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.vlet.gui.vbrowser" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
     </target>
@@ -217,15 +185,15 @@
     <target name="vlet-vbrowser-plugins" depends="vlet-vbrowser">
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vlet.gui.lobo.viewer"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.vlet.gui.lobo.viewer" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
         <antcall target="module-build">
-            <param name="name" value="nl.esciencecenter.vlet.gui.pedal"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+            <param name="name" value="nl.esciencecenter.vlet.gui.pedal" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
     </target>
@@ -245,24 +213,24 @@
         <condition property="do.build.doc.userguide">
             <and>
                 <!-- yes/true strings: -->
-                <istrue value="${project.build.doc.userguide}"/>
+                <istrue value="${project.build.doc.userguide}" />
                 <not>
                     <os family="windows" />
                 </not>
             </and>
         </condition>
 
-        <echo message=" project.build.doc.userguide =${project.build.doc.userguide} "/>
-        <echo message=" do.build.doc.userguide      =${do.build.doc.userguide} "/>
+        <echo message=" project.build.doc.userguide =${project.build.doc.userguide} " />
+        <echo message=" do.build.doc.userguide      =${do.build.doc.userguide} " />
 
     </target>
 
     <target name="vlet-doc.userguide" if="do.build.doc.userguide" depends="vlet-core,check-build-userguide">
 
-        <antcall target="module-build" >
-            <param name="name" value="doc.userguide"/>
-            <param name="version" value=""/>
-            <param name="scm.path" value=""/>
+        <antcall target="module-build">
+            <param name="name" value="doc.userguide" />
+            <param name="version" value="" />
+            <param name="scm.path" value="" />
         </antcall>
 
     </target>

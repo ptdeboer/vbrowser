@@ -28,10 +28,15 @@ project.dist.doc=${project.dist}/doc
 
 ## mark project.prop read!
 project.env.ok=ok;
+
+##
+# External modules 
+
+# platinum.install=/opt/platinum
+platinum.install=${project.root}/../Platinum/dist
  
 ## version
-project.version=1.6.0-rc2
-ptk.version=${project.version}
+project.version=1.6.0-rc3
 vlet.version=${project.version}
 vbrowser.version=${project.version}
 ## Owner/Vendor: 

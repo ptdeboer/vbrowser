@@ -1,0 +1,17 @@
+###
+# File      : build.prop
+# Component : vlet-platinum
+# 
+
+###
+# Do not add spaces to the end of the values ! 
+# Component defaults (not that component.root is set in the main build file)
+comp.groupId=nl.esciencecenter.vlet
+comp.artifactId=vlet-platinum
+# build settings
+comp.dist=${comp.root}/dist
+comp.build=${comp.root}/build
+comp.src=${comp.root}/src
+comp.lib=${comp.root}/lib
+
+
