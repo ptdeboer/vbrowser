@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="testsrc"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vbrowser.vb2"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk.ui"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
@@ -11,7 +10,9 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.lfc"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vfs.srm"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.vrs.core"/>
-	<classpathentry kind="src" path="/nl.esciencecenter.vbrowser.vb2.viewers"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk.util.vterm"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk.vbrowser.ui"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk.vbrowser.vrs"/>
+	<classpathentry kind="src" path="/nl.esciencecenter.ptk.vbrowser.viewers"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

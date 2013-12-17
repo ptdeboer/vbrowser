@@ -75,7 +75,7 @@ public class AttrEnumField extends JStringComboBox implements IAttributeField
         this.getModel().setSelectedItem(txt);
     }
 
-    public String getName()
+    public String getViewerName()
     {
         return super.getName();
     }

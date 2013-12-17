@@ -46,7 +46,7 @@ import nl.esciencecenter.ui.proto.panels.fields.AttrEnumField;
 import nl.esciencecenter.ui.proto.panels.fields.AttrIntField;
 import nl.esciencecenter.ui.proto.panels.fields.AttrParameterField;
 import nl.esciencecenter.ui.proto.panels.fields.AttrPortField;
-import nl.esciencecenter.vbrowser.vb2.ui.UIGlobal;
+import nl.esciencecenter.ptk.vbrowser.ui.UIGlobal;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;

@@ -225,7 +225,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
                         
                         // [Settings]=>[Encoding]=>{Encodings}
 
-                        String encs[]=UIGlobal.getResourceLoader().getCharEncodings();
+                        String encs[]=ResourceLoader.getDefaultCharEncodings();
                         encodingButtons=new Vector<JRadioButton>();
                         ButtonGroup bGroup=new ButtonGroup(); 
                         for (String encoding:encs)

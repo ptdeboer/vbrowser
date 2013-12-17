@@ -54,7 +54,7 @@ public class AttrParameterField extends JTextField implements IAttributeField
         this.setName(name);
     }
 
-    public String getName()
+    public String getViewerName()
     {
         return super.getName();
     }

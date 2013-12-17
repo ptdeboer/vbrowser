@@ -28,12 +28,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserInterface;
-import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
-import nl.esciencecenter.vbrowser.vb2.ui.model.UIViewModel;
-import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
-import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNodeDataSource;
-import nl.esciencecenter.vbrowser.vb2.ui.tree.ResourceTree;
+import nl.esciencecenter.ptk.vbrowser.ui.browser.BrowserInterface;
+import nl.esciencecenter.ptk.vbrowser.ui.browser.BrowserPlatform;
+import nl.esciencecenter.ptk.vbrowser.ui.model.UIViewModel;
+import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyNode;
+import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyNodeDataSource;
+import nl.esciencecenter.ptk.vbrowser.ui.tree.ResourceTree;
 import nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs.VRSProxyFactory;
 
 public class testVRSTree 

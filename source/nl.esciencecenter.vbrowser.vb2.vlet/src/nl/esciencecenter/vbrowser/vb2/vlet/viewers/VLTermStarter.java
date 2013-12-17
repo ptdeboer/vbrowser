@@ -38,16 +38,17 @@ import javax.swing.border.BevelBorder;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.exec.ShellChannel;
 import nl.esciencecenter.ptk.util.StringUtil;
-import nl.esciencecenter.ptk.util.vterm.CreateVTerm;
+import nl.esciencecenter.ptk.util.vterm.StartVTerm;
 import nl.esciencecenter.ptk.util.vterm.VTerm;
 import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.MimeViewer;
-import nl.esciencecenter.vbrowser.vb2.ui.viewerplugin.ViewerPanel;
+import nl.esciencecenter.ptk.vbrowser.viewers.viewerplugin.MimeViewer;
+import nl.esciencecenter.ptk.vbrowser.viewers.viewerplugin.ViewerPanel;
+import nl.esciencecenter.ptk.vbrowser.viewers.viewerplugin.ViewerPlugin;
 import nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs.VRSProxyFactory;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vfs.ssh.jcraft.SSHShellChannelFactory;
 
-public class VLTermStarter extends ViewerPanel implements MimeViewer, ActionListener
+public class VLTermStarter extends ViewerPanel implements MimeViewer, ViewerPlugin, ActionListener
 {
     private static final long serialVersionUID = 6104695556400295643L;
     
@@ -57,7 +58,7 @@ public class VLTermStarter extends ViewerPanel implements MimeViewer, ActionList
     private JPanel butPanel;
 
 	@Override
-	public String getName() 
+	public String getViewerName() 
 	{
 	    return "VTerm";
 	}
@@ -142,7 +143,7 @@ public class VLTermStarter extends ViewerPanel implements MimeViewer, ActionList
 	    // Share Context ! 
 	    provider.registerChannelFactory("SSH",new SSHShellChannelFactory(VRSProxyFactory.getProxyVRSContext())); 
 	        
-	    VTerm term = CreateVTerm.startVTerm(provider, uri, shellChan);
+	    VTerm term = StartVTerm.startVTerm(provider, uri, shellChan);
 	}
 
     @Override
@@ -155,5 +156,11 @@ public class VLTermStarter extends ViewerPanel implements MimeViewer, ActionList
     public Map<String, List<String>> getMimeMenuMethods()
     {
         return null;
+    }
+
+    @Override
+    public ViewerPanel getViewerPanel()
+    {
+        return this; 
     }
  }

@@ -3,9 +3,9 @@ package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
 import java.util.List;
 
 import nl.esciencecenter.ptk.data.ExtendedList;
-import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNode;
-import nl.esciencecenter.vbrowser.vb2.ui.model.ViewNodeDnDHandler;
-import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyException;
+import nl.esciencecenter.ptk.vbrowser.ui.model.ViewNode;
+import nl.esciencecenter.ptk.vbrowser.ui.model.ViewNodeDnDHandler;
+import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
 public class VRSViewNodeDnDHandler extends ViewNodeDnDHandler 

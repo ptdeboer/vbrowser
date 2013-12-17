@@ -22,7 +22,7 @@
 package nl.esciencecenter.vlet.util.vlterm;
 
 import nl.esciencecenter.ptk.exec.ShellChannel;
-import nl.esciencecenter.ptk.util.vterm.CreateVTerm;
+import nl.esciencecenter.ptk.util.vterm.StartVTerm;
 import nl.esciencecenter.ptk.util.vterm.VTerm;
 import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -69,7 +69,7 @@ public class VLTerm
             uri = optionalLocation.toURINoException();
         }
         
-        VTerm term = CreateVTerm.startVTerm(provider, uri, shellChan);
+        VTerm term = StartVTerm.startVTerm(provider, uri, shellChan);
 
         return term;
     }

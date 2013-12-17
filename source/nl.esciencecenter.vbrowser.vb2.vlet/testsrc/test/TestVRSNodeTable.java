@@ -29,11 +29,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import nl.esciencecenter.vbrowser.vb2.ui.browser.BrowserPlatform;
-import nl.esciencecenter.vbrowser.vb2.ui.proxy.ProxyNode;
-import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ProxyNodeTableDataProducer;
-import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTable;
-import nl.esciencecenter.vbrowser.vb2.ui.resourcetable.ResourceTableModel;
+import nl.esciencecenter.ptk.vbrowser.ui.browser.BrowserPlatform;
+import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyNode;
+import nl.esciencecenter.ptk.vbrowser.ui.resourcetable.ProxyNodeTableDataProducer;
+import nl.esciencecenter.ptk.vbrowser.ui.resourcetable.ResourceTable;
+import nl.esciencecenter.ptk.vbrowser.ui.resourcetable.ResourceTableModel;
 import nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs.VRSProxyFactory;
 
 

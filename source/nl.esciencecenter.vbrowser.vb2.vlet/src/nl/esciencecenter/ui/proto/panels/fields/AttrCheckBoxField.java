@@ -43,7 +43,7 @@ public class AttrCheckBoxField extends JCheckBox implements IAttributeField
         this.setSelected(value);
     }
 
-    public String getName()
+    public String getViewerName()
     {
         return super.getName();
     }

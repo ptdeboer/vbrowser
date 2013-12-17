@@ -26,7 +26,7 @@ import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 
 public interface IAttributeField
 {
-    public String getName();
+    public String getViewerName();
 
     public String getValue();
 
