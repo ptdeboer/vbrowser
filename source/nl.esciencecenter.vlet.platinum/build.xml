@@ -75,9 +75,18 @@
         <property name="platinum.install.lib" value="${platinum.install}/lib" /> 
 	    
         <!-- platinum libs -->
-	    <mkdir dir="${project.dist.lib}/platinum" />
+        <mkdir dir="${project.dist.lib}/platinum" />
         <copy todir="${project.dist.lib}/platinum">
-            <fileset dir="${platinum.install.lib}" />
+            <fileset dir="${platinum.install.lib}" >
+                <exclude name="icons"/>
+            </fileset>
+        </copy>
+        
+        <!-- platinum icons -->
+        <mkdir dir="${project.dist.lib}/icons" />
+        <copy todir="${project.dist.lib}/icons">
+            <fileset dir="${platinum.install.lib}/icons" >
+            </fileset>
         </copy>
 
         <!-- lib -->
