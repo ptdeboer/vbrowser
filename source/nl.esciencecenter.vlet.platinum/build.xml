@@ -77,7 +77,7 @@
         <!-- platinum libs -->
 	    <mkdir dir="${project.dist.lib}/platinum" />
         <copy todir="${project.dist.lib}/platinum">
-            <fileset dir="${comp.lib}/platinum" />
+            <fileset dir="${platinum.install.lib}" />
         </copy>
 
         <!-- lib -->

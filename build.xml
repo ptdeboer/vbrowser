@@ -37,6 +37,14 @@
         <tstamp>
             <format property="project.time.number" pattern="yyyyMMddHHmmss" locale="en" />
         </tstamp>
+        <echo message="=============================================================="/>
+        <echo message="=== VBrowser: ${project.version} "/>
+        <echo message="=============================================================="/>
+        <echo message=" project root         = ${project.root}"/>
+        <echo message=" project dist         = ${project.dist}"/>
+        <echo message=" project sourceroot   = ${project.sourcedir}"/>
+        <echo message=" --- auxlibs --- "/>
+        <echo message=" platinum.install     = ${platinum.install}"/>
 
     </target>
 
