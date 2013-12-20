@@ -128,7 +128,7 @@ public class ResourceTable extends JTable
         List<String> headers = getModel().getHeadersList(); 
         this.getPresentation().setChildAttributeNames(headers);
         // Use order from presentation 
-        initColumns(getPresentation().getChildAttributeNames());
+        initColumns(getPresentation().getPreferredChildAttributeNames());
     }
     
     public boolean isEditable()

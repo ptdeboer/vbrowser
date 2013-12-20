@@ -133,7 +133,7 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
 
         if (attributeNames == null)
         {
-            attributeNames = getPresentation().getChildAttributeNames();
+            attributeNames = getPresentation().getPreferredChildAttributeNames();
         }
 
         int rows = 0;
@@ -142,7 +142,7 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
             rows = nodes.length;
 
         Presentation pres = getPresentation();
-        String names[] = pres.getChildAttributeNames();
+        String names[] = pres.getPreferredChildAttributeNames();
 
         // ---
         // no custom names defined, use all:
@@ -615,7 +615,7 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
                 // update attributes from presentation only:
                 try
                 {
-                    String attrNames[] = getPresentation().getChildAttributeNames();
+                    String attrNames[] = getPresentation().getPreferredChildAttributeNames();
                     updateNodeAttributes(node, attrNames);
                 }
                 catch (VrsException e)
