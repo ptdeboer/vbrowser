@@ -51,7 +51,7 @@
 
     </target>
 
-    <target name="vlet-all" depends="init,vlet-core,vlet-vfs-adaptors,vlet-vbrowser,vlet-vbrowser-plugins,vlet-doc.userguide">
+    <target name="vlet-all" depends="init,vlet-core,vlet-vrs-xenon,vlet-vfs-adaptors,vlet-vbrowser,vlet-vbrowser-plugins,vlet-doc.userguide">
     </target>
 
     <target name="vlet-xenon-all" depends="init,vlet-core,vlet-vrs-xenon,vlet-vfs-adaptors,vlet-vbrowser,vlet-vbrowser-plugins,vlet-doc.userguide">
