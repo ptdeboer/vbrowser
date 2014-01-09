@@ -278,7 +278,7 @@ public final class Registry // todo: change to vrs protected class.
             registerVRSDriverClassNoError(currentLoader, HTTPFactory.class.getCanonicalName());
             registerVRSDriverClassNoError(currentLoader, HTTPSFactory.class.getCanonicalName());
             
-            registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory");
+            registerVRSDriverClassNoError(currentLoader, nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory.class.getCanonicalName());
             registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.vdriver.infors.InfoRSFactory");
 
             boolean result=registerVRSDriverClassNoError(currentLoader,"nl.esciencecenter.vbrowser.vrs.xenon.XenonFSFactory");
@@ -290,7 +290,7 @@ public final class Registry // todo: change to vrs protected class.
 
             // Globus is a plugin.
             registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.globusrs.GlobusRSFactory");
-            //registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.gftp.GftpFSFactory");
+            registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.gftp.GftpFSFactory");
 
             // Other VFS/VRS implementations from lib/vdrivers or lib/plugins
             registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.srm.SRMFSFactory");
@@ -649,7 +649,7 @@ public final class Registry // todo: change to vrs protected class.
             list = this.registeredSchemes.get(schemeStr);
         }
 
-        if ((list == null) || (list.size() < -0))
+        if ((list == null) || (list.size() <= 0))
         {
             logger.infoPrintf("No VRSFactory implementation found for scheme:%s", schemeStr);
             return null;
