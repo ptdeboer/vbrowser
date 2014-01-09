@@ -6,5 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.apache.axis-1.4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vlet.grid.globus"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vbrowser.vrs.xenon"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
