@@ -72,8 +72,6 @@
     
     <modules>
         <!--  core -->
-        <module>${vbrowser.modules.dir}/nl.esciencecenter.ptk</module>
-        <module>${vbrowser.modules.dir}/nl.esciencecenter.vbrowser.vrs</module>
         <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.vrs.core</module> 
         <!-- vfs/vrs --> 
         <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.vrs.infors</module> 
@@ -87,8 +85,6 @@
         <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.vfs.lfc</module>
          --> 
         <!--  gui  -->
-	<module>${vbrowser.modules.dir}/nl.esciencecenter.ptk.ui</module>
-        <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.gui.utils</module>
         <module>${vbrowser.modules.dir}/nl.esciencecenter.vlet.gui.vbrowser</module>
 
         <!-- Viewers --> 
@@ -106,8 +102,8 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
+                        <source>1.7</source>
+                        <target>1.7</target>
                           <files>
                             <file>${vbrowser.rootdir}/project.prop</file>
                             <file>${vbrowser.rootdir}/local.prop</file>

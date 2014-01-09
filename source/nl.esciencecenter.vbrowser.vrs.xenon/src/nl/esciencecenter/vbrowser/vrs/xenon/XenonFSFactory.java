@@ -40,12 +40,13 @@ public class XenonFSFactory extends VFSFactory
 	    
 	static private String schemes[]=
 		{
-			VRS.FILE_SCHEME,
+			//VRS.FILE_SCHEME,
 			VRS.SFTP_SCHEME,
-			VRS.GFTP_SCHEME,
+			//VRS.GFTP_SCHEME,
 			// for testing only:
 			"xenon."+VRS.FILE_SCHEME,
-			"xenon."+VRS.SFTP_SCHEME
+			"xenon."+VRS.SFTP_SCHEME,
+	        "xenon."+VRS.GFTP_SCHEME
 		}; 
 
 	// ========================================================================

@@ -1,3 +1,4 @@
+package test.xenon;
 ///*
 // * Copyrighted 2012-2013 Netherlands eScience Center.
 // *

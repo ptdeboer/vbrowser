@@ -18,15 +18,13 @@
  */
 // source: 
 
-package test;
+package test.xenon;
 
 import java.net.URI;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-
-import org.junit.Assert;
 
 import nl.esciencecenter.xenon.Xenon;
 import nl.esciencecenter.xenon.XenonException;
@@ -57,7 +55,7 @@ public class TestXenon
     {
         
         FileSystem fs = oct.files().newFileSystem(fsUri.getScheme(),fsUri.getPath(), null, null); 
-        Assert.assertNotNull("FileSystem is null",fs); 
+        //Assert.assertNotNull("FileSystem is null",fs); 
         
         RelativePath relPath=new RelativePath(pathStr);
         Path path = oct.files().newPath(fs, relPath); 

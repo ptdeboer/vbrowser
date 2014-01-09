@@ -54,16 +54,16 @@
     <target name="vlet-all" depends="init,vlet-core,vlet-vfs-adaptors,vlet-vbrowser,vlet-vbrowser-plugins,vlet-doc.userguide">
     </target>
 
-    <target name="vlet-xenon-all" depends="init,vlet-core,vlet-vfs-adaptors,vlet-vrs-xenon,vlet-vbrowser,vlet-vbrowser-plugins,vlet-doc.userguide">
+    <target name="vlet-xenon-all" depends="init,vlet-core,vlet-vrs-xenon,vlet-vfs-adaptors,vlet-vbrowser,vlet-vbrowser-plugins,vlet-doc.userguide">
     </target>
 
     <target name="vlet-auxlibs" depends="init">
 
-        <antcall target="module-build">
+        <!-- <antcall target="module-build">
             <param name="name" value="cog.jglobus-1.4" />
             <param name="version" value="" />
             <param name="scm.path" value="" />
-        </antcall>
+        </antcall> --> 
 
     </target>
 

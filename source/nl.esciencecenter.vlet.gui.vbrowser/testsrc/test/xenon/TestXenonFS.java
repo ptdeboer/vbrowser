@@ -18,30 +18,37 @@
  */
 // source: 
 
-package test;
+package test.xenon;
 
+import nl.esciencecenter.vbrowser.vrs.xenon.XenonFSFactory;
+import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.vfs.VDir;
 import nl.esciencecenter.vlet.vrs.vfs.VFSClient;
 import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 
-public class TestXenonVBrowser
+public class TestXenonFS
 {
-	
-	public static void main(String args[]) throws Exception
+    private static VFSClient vfs=null; 
+    
+    public static VFSClient initXenonVFS() throws Exception
     {
-	    
-	    // The VBrowser classes must be in the classpath to be able to start this. 
-        nl.esciencecenter.vlet.gui.startVBrowser.main(args);
+        if (vfs!=null)
+            return vfs; 
         
-        testGetDir(); 
-
+        VletConfig.init();
+        VRS.getRegistry().unregisterVRSDriverClass(nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory.class); 
+        VRS.getRegistry().registerVRSDriverClass(XenonFSFactory.class);
+        
+        VFSClient vfs=VFSClient.getDefault(); 
+        return vfs; 
     }
-
-    private static void testGetDir() throws Exception
+    
+    public static void main(String args[]) throws Exception
     {
-        VFSClient vfs=TestXenonFS.initXenonVFS(); 
+        VFSClient vfs=initXenonVFS(); 
         
-        VDir dir = vfs.getDir("file:/home/ptdeboer/test"); 
+        VDir dir = vfs.getDir("file:///home/"+VletConfig.getUserName()); 
         
         VFSNode[] nodes = dir.list(); 
         
@@ -50,9 +57,7 @@ public class TestXenonVBrowser
         {
             System.out.printf(" - node[#%d] =%s\n",i,nodes[i]);
         }
-
         
     }
-
-
+    
 }

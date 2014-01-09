@@ -1,3 +1,4 @@
+package test.xenon;
 ///*
 // * Copyrighted 2012-2013 Netherlands eScience Center.
 // *
@@ -21,6 +22,7 @@
 //package test;
 //
 //import java.net.URI;
+//import java.net.URISyntaxException;
 //import java.util.Hashtable;
 //import java.util.Iterator;
 //import java.util.Map;
@@ -28,15 +30,16 @@
 //
 //import org.junit.Assert;
 //
-//import nl.esciencecenter.zz.Octopus;
+//import nl.esciencecenter.octopus.Octopus;
 //import nl.esciencecenter.octopus.engine.OctopusEngine;
 //import nl.esciencecenter.octopus.exceptions.OctopusException;
 //import nl.esciencecenter.octopus.files.Path;
 //import nl.esciencecenter.octopus.files.DirectoryStream;
+//import nl.esciencecenter.octopus.files.Path;
 //import nl.esciencecenter.octopus.files.FileSystem;
 //import nl.esciencecenter.octopus.files.Pathname;
 //
-//public class TestOctopus
+//public class TestOctopusSftp
 //{
 //
 //    public static void main(String args[])
@@ -44,7 +47,7 @@
 //        try
 //        {
 //            Octopus oct=createEngine();
-//            testListDir(oct,new URI("file:/"),"/home/ptdeboer/");
+//            testListDir(oct,new URI("sftp://ptdeboer@localhost"),"/home/ptdeboer/");
 //        }
 //        catch (Exception e)
 //        {

@@ -277,13 +277,14 @@ public final class Registry // todo: change to vrs protected class.
 
             registerVRSDriverClassNoError(currentLoader, HTTPFactory.class.getCanonicalName());
             registerVRSDriverClassNoError(currentLoader, HTTPSFactory.class.getCanonicalName());
+            
+            registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory");
             registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.vdriver.infors.InfoRSFactory");
 
-            // result=registerVRSDriverClassNoError(currentLoader,"nl.esciencecenter.vbrowser.vrs.xenon.XenonFSFactory");
-            // if (result==false)
-            
+            boolean result=registerVRSDriverClassNoError(currentLoader,"nl.esciencecenter.vbrowser.vrs.xenon.XenonFSFactory");
+            if (result==false)
             {
-                registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory");
+                // fall back:
                 registerVRSDriverClassNoError(currentLoader, "nl.esciencecenter.vlet.vfs.ssh.jcraft.SftpFSFactory");
             }
 
