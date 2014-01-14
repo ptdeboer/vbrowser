@@ -4,11 +4,11 @@
 # 
 
 #
-vdriver.artefactId=nlesc-vbrowser.vrs.octopus
+vdriver.artefactId=nlesc-vbrowser.vrs.xenon
 # Package name space and plugin directory  
-vdriver.package=nl.esciencecenter.vbrowser.vrs.octopus
+vdriver.package=nl.esciencecenter.vbrowser.vrs.xenon
 # VRS Factory class 
-vdriver.factory=nl.esciencecenter.vbrowser.vrs.octopus.OctopusFSFactory
+vdriver.factory=nl.esciencecenter.vbrowser.vrs.xenon.XenonFSFactory
 
 ##Target options: 
 # install in lib/plugins this is the default. 

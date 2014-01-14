@@ -7,3 +7,4 @@ dist/*
 .settings
 **/.settings
 packs
+/dist

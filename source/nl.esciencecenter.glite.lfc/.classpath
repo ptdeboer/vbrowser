@@ -8,6 +8,6 @@
 	<classpathentry kind="lib" path="lib/cryptix-asn1.jar"/>
 	<classpathentry kind="lib" path="lib/cryptix32.jar"/>
 	<classpathentry kind="lib" path="lib/puretls.jar"/>
-	<classpathentry kind="lib" path="lib/cog-jglobus.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.vbrowser.vrs.xenon"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
