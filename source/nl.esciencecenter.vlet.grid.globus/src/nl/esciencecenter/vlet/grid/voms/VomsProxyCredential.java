@@ -469,11 +469,15 @@ public class VomsProxyCredential
             globusExtensionSet.add(kue);
         }
 
-        // ==================================================================
-        // generate new VOMS proxy
+        GlobusCredential newCred = plainProxy;  //  GlobusUtil.changeGlobusProxy(plainProxy,GSIConstants.GSI_2_PROXY,null);  
+        
+        // ==========================
+        // Generate new VOMS proxy
+        // ==========================
+        
         BouncyCastleCertProcessingFactory factory = BouncyCastleCertProcessingFactory.getDefault();
-        vomsProxy = factory.createCredential(plainProxy.getCertificateChain(), plainProxy.getPrivateKey(),
-                plainProxy.getStrength(), (int) plainProxy.getTimeLeft(), GSIConstants.DELEGATION_FULL,
+        vomsProxy = factory.createCredential(newCred.getCertificateChain(), newCred.getPrivateKey(),
+                newCred.getStrength(), (int) newCred.getTimeLeft(), GSIConstants.DELEGATION_FULL,
                 globusExtensionSet);
 
         infoPrintf("generateProxy() done.\n");

@@ -23,7 +23,6 @@ package nl.esciencecenter.vlet.grid.globus;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.List;
@@ -47,8 +46,9 @@ import nl.esciencecenter.vlet.grid.voms.VO;
 import nl.esciencecenter.vlet.grid.voms.VomsProxyCredential;
 import nl.esciencecenter.vlet.grid.voms.VomsUtil;
 
-
 import org.globus.common.CoGProperties;
+import org.globus.gsi.CertUtil;
+import org.globus.gsi.GSIConstants;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.GlobusCredentialException;
 import org.globus.gsi.TrustedCertificates;
@@ -155,6 +155,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         logger.infoPrintf("default lifetime     =%d\n",defaultLifetime); 
             
     }
+    
     private static GridProxyModel staticGetModel()
     {
         return staticGetModel(false);
@@ -270,6 +271,11 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         return URIFactory.uripath(new DefaultGridProxyModel().getProperties().getUserCertFile());   
     }
 
+    public int getDefaultLifetimeSeconds()
+    {
+        return getDefaultLifetime()*60*60; 
+    }
+    
     public int getDefaultLifetime()
     {
         return getDefaultProxyLifetime();
@@ -543,8 +549,61 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
     {
         this.defaultUserKeyFile=path; 
     }
-
+    
     public GlobusCredentialWrapper createCredential(final Secret passwd) throws Exception
+    {
+        GlobusCredential credential;
+        
+        String proxyFile=this.getDefaultProxyFilename(); 
+        String certFile=this.getDefaultUserCertLocation(); 
+        String keyFile=this.getDefaultUserKeyLocation(); 
+ 
+        int lifeTime=this.getDefaultLifetimeSeconds(); 
+         
+        ProxyInit init = new ProxyInit();
+    
+        int bits = 512;
+        int proxyType = GSIConstants.GSI_2_PROXY; 
+    
+        CertUtil.init();
+
+        init.setBits(bits);
+        init.setLifetime(lifeTime);
+        init.setProxyType(proxyType);
+        init.setProxyCertInfo(null);
+        init.setDebug(true);
+
+        credential=init.createProxy(certFile,
+            keyFile,
+            passwd,
+            false,
+            false,
+            proxyFile);
+    
+        // vomsify 
+        if (this.getEnableVoms())
+        {
+            // create new proxy and overwrite previous proxy. 
+            VomsProxyCredential vomsCred = VomsUtil.vomsify(credential,
+                    this.getDefaultVOName(),
+                    this.getDefaultVOName(),
+                    this.getDefaultVORole(),
+                    this.getDefaultLifetime()*3600);  
+                credential=vomsCred.getVomsProxy();
+                
+        }
+
+        GlobusCredentialWrapper cred = new GlobusCredentialWrapper(this,credential);
+            
+        // update settings. This is the only place they are known:  
+        cred.setUserKeyFile(keyFile); 
+        cred.setUserCertFile(certFile); 
+        cred.setProxyFile(proxyFile); 
+        
+        return cred; 
+    }
+    
+    public GlobusCredentialWrapper createCredentialCoG(final Secret passwd) throws Exception
     {
         GridProxyModel staticModel = staticGetModel();
         GlobusCredential credential;
@@ -559,6 +618,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         props.setProxyFile(proxyFile); 
         props.setUserKeyFile(keyFile); 
         props.setUserCertFile(certFile);
+        
         
         credential = staticModel.createProxy(new String(passwd.getChars()));
         
