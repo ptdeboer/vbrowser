@@ -101,9 +101,6 @@ public class InfoResourceSystem extends CompositeServiceInfoNode<VNode> implemen
             }
         }
         
-        System.err.printf("openLocation: %s\n",vrl);
-        System.err.printf("localSystemRoot: %s\n",localSystemRoot.getVRL());
-        
         if (scheme.equals(localSystemRoot.getScheme()))
         {
             
