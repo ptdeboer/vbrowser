@@ -217,16 +217,6 @@
 
         <mkdir dir="${comp.dist}/root" />
 
-        <!-- Copy TEXT files -->
-        <copy todir="${comp.dist}/root" verbose="true">
-            <fileset dir="root/">
-                <exclude name="cacerts" />
-                <!-- include name="README"/ -->
-            </fileset>
-
-            <filterset refid="vletfilters" />
-        </copy>
-
         <!-- Copy BINARY Files -->
         <copy todir="${comp.dist}/etc" verbose="true">
             <fileset file="etc/cacerts">

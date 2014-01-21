@@ -47,8 +47,8 @@
         <echo message=" platinum.install     = ${platinum.install}"/>
 
     </target>
-
-    <target name="dist-install" depends="init,modules-dist-install" />
+    
+    <target name="dist-install" depends="init,modules-dist-install,root-dist-install" />
     
     <target name="modules-dist-install" depends="init">
 
@@ -56,6 +56,26 @@
             <param name="target" value="dist-install" />
         </antcall>
 
+    </target>
+
+	<target name="root-dist-install" depends="init"> 
+	    
+        <filterset id="vbrowser-tokens">
+            <!-- nifty:  ant filterset (keyword subtitution) while copying files ! -->
+            <filter token="VBROWSER_VERSION" value="${project.version}" />
+            <filter token="VBROWSER_DATE" value="${project.tstamp}" />
+        </filterset>
+	    
+        <!-- Copy files to root of distribution -->
+        <copy todir="${project.dist}" verbose="true">
+            <fileset file="NOTICE.txt" />
+            <fileset file="README.txt" />
+            <fileset file="ReleaseNotes.txt" />
+            
+            <filterset refid="vbrowser-tokens" />
+    
+        </copy>
+ 
     </target>
 
     <target name="test" depends="clean,modules-test" />
