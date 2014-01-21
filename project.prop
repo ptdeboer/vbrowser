@@ -26,6 +26,9 @@ project.dist.etc=${project.dist}/etc
 project.dist.bin=${project.dist}/bin
 project.dist.doc=${project.dist}/doc
 
+#VRS Factory/Drivers: 
+project.dist.vdrivers=${project.dist.lib}/vdrivers
+
 ## mark project.prop read!
 project.env.ok=ok;
 

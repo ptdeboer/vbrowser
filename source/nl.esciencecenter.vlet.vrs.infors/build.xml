@@ -133,10 +133,10 @@
         <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
               unless="project.env.ok"/>
         
-        <mkdir dir="${project.dist.lib}/vdrivers" />
+        <mkdir dir="${project.dist.vdrivers}" />
         
         <!-- copy vdriver jar outside plugins dir -->
-        <copy todir="${project.dist.lib}/vdrivers">
+        <copy todir="${project.dist.vdrivers}">
             <fileset dir="${vdriver.dist}/lib" />
         </copy>
 

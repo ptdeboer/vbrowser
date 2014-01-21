@@ -141,7 +141,7 @@
         <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " 
               unless="project.env.ok"/>
 
-        <property name="vrsfactory.installdir" value="${project.dist.lib}/vdrivers"/>
+        <property name="vrsfactory.installdir" value="${project.dist.vdrivers}"/>
 
         <!-- install in lib/plugins/  -->
         <mkdir dir="${vrsfactory.installdir}" />
