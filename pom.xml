@@ -15,9 +15,9 @@
         <vbrowser.modules.dir>${vbrowser.source.subdir}</vbrowser.modules.dir>
 
         <!-- should read project.prop+local.prop here --> 
-        <project.version>1.6.0-rc1</project.version>
-        <vbrowser.version>1.6.0-rc1</vbrowser.version>
-        <vlet.version>1.6.0-rc1</vlet.version>
+        <project.version>1.6.0</project.version>
+        <vbrowser.version>1.6.0</vbrowser.version>
+        <vlet.version>1.6.0</vlet.version>
         <ptk.version>${vbrowser.version}</ptk.version>
         <!-- <vbrowser.version>${project.version}</vbrowser.version> 
         <vlet.version>${project.version}</vlet.version>
