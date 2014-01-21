@@ -1036,8 +1036,22 @@ public class ServerInfo
 
     public VRL getServerVRL()
     {
-        return new VRL(this.getScheme(), this.getHostname(), this
-                .getPort(), this.getDefaultPath());
+        String userInf=null;
+        if (getNeedUserinfo())
+            userInf=this.getUserinfo(); 
+        
+        VRL vrl; 
+        
+        if (userInf==null)
+        {
+            vrl=new VRL(this.getScheme(), this.getHostname(), this.getPort(), this.getDefaultPath());
+        }
+        else
+        {
+            vrl=new VRL(this.getScheme(), userInf,this.getHostname(), this.getPort(), this.getDefaultPath());
+        }
+        
+        return vrl; 
     }
     
     public String toString()

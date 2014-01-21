@@ -23,6 +23,8 @@ package nl.esciencecenter.vbrowser.vrs.xenon;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
+import nl.esciencecenter.vlet.vrs.ServerInfo.AuthScheme;
+import nl.esciencecenter.vlet.vrs.data.VAttributeConstants;
 import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.VRSContext;
 import nl.esciencecenter.vlet.vrs.vfs.VFSFactory;
@@ -108,8 +110,20 @@ public class XenonFSFactory extends VFSFactory
 
 	public ServerInfo updateSSHServerInfo(VRSContext context, ServerInfo info, VRL loc)
     {
-	    info.setIfNotSet(ServerInfo.ATTR_SSH_IDENTITY,"id_rsa");
+	    String user=info.getUsername(); 
+        
+        String defaultUser=context.getConfigManager().getUserName();
+        // sftp MUST have username: set current to default ! 
+        if ((user==null) || (user.compareTo("")==0)) 
+        {
+            info.setUsername(defaultUser);
+        }
+        
+        info.setNeedUserinfo(true);
+        info.setIfNotSet(VAttributeConstants.ATTR_HOSTNAME,"HOSTNAME"); 
+        info.setIfNotSet(ServerInfo.ATTR_SSH_IDENTITY,"id_rsa");
         info.setAuthScheme(ServerInfo.AuthScheme.PASSWORD_OR_IDKEY_AUTH,false);  
+        info.setNeedUserinfo(true); 
         
         return info; 
     }

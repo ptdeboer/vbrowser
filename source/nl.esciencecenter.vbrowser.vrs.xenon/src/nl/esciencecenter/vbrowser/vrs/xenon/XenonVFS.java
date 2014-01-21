@@ -91,8 +91,11 @@ public class XenonVFS extends FileSystemNode
             {
                 configeredUser=context.getConfigManager().getUserName(); 
             }
+            int port=location.getPort(); 
+            if (port<=0) 
+                port=22;
             
-            fsUriStr=location.getScheme()+"://"+configeredUser+"@"+location.getHostname()+"/";
+            fsUriStr=location.getScheme()+"://"+configeredUser+"@"+location.getHostname()+":"+port+"/";
 		}
 		else if (isGftp)
 		{
@@ -128,7 +131,7 @@ public class XenonVFS extends FileSystemNode
 		    if (isSftp)
 		    {
 		        info.getUserinfo(); 
-	            octoFS=octoClient.createFileSystem(fsUri,octoClient.createSSHCredentials(info));
+	            octoFS=octoClient.createSftpFileSystem(fsUri,octoClient.createSSHCredentials(info));
 		    }
 		    else if (isGftp)
             {
