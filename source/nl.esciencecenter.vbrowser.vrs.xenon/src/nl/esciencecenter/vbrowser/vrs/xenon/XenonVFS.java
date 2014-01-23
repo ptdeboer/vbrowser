@@ -166,16 +166,17 @@ public class XenonVFS extends FileSystemNode
 
         info.getUserinfo();
         Credential sshCred=null; 
-        String sshKey=info.getAttributeValue(ServerInfo.ATTR_SSH_IDENTITY); 
+        String sshKeyFile=info.getAttributeValue(ServerInfo.ATTR_SSH_IDENTITY); 
+        String sshUser=info.getUserinfo();
         
-        if (sshKey!=null)
+        if (sshKeyFile!=null)
         {
             try
             {
                 sshCred=xenonClient.createSSHKeyCredential(info, credentialErrorH1);
                 if (sshCred==null)
                 {
-                    logger.warnPrintf("Couldn't use SSH Key authentication for key:%s, error=%s\n",sshKey,credentialErrorH1.value);
+                    logger.warnPrintf("Couldn't use SSH Key authentication for key:%s, error=%s\n",sshKeyFile,credentialErrorH1.value);
                     // keep credentialErrorH1
                 }
                 else
@@ -186,7 +187,15 @@ public class XenonVFS extends FileSystemNode
             }
             catch (XenonException e)
             {
-                throw new VrsException(e.getMessage(),e); 
+                if (e.getMessage().contains("Auth cancel"))
+                {
+                    credentialErrorH1.value="Invalid User+Keyfile combination for '"+fsUri.getUserInfo()+" and '"+sshKeyFile+"'";
+                    logger.warnPrintf("SSH Keyfile authentication failed:%s\n",credentialErrorH2.value); 
+                }
+                else
+                {
+                    throw new VrsException(e.getMessage(),e);
+                }
             }
         }
         
@@ -202,7 +211,7 @@ public class XenonVFS extends FileSystemNode
             }
             else
             {
-                logger.warnPrintf("Couldn't use SSH Password authentication for key:%s, error=%s\n",sshKey,credentialErrorH2.value);
+                logger.warnPrintf("SSH Password authentication failed for user:'%s', error=%s\n",fsUri.getUserInfo(),credentialErrorH2.value);
             }
         }
         catch (XenonException e)
