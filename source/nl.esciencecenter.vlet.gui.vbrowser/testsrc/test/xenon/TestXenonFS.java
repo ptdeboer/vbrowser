@@ -37,7 +37,7 @@ public class TestXenonFS
             return vfs; 
         
         VletConfig.init();
-        VRS.getRegistry().unregisterVRSDriverClass(nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory.class); 
+        //VRS.getRegistry().unregisterVRSDriverClass(nl.esciencecenter.vlet.vrs.vdriver.localfs.LocalFSFactory.class); 
         VRS.getRegistry().registerVRSDriverClass(XenonFSFactory.class);
         
         VFSClient vfs=VFSClient.getDefault(); 

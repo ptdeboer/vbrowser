@@ -60,7 +60,7 @@ public class XenonDir extends VDir
         {
             if ((fileAttrs==null) || (update==true))
             {
-                fileAttrs=getOctoClient().getFileAttributes(octoPath);
+                fileAttrs=getXenonClient().getFileAttributes(octoPath);
             }
             return fileAttrs; 
         }
@@ -90,7 +90,7 @@ public class XenonDir extends VDir
 	    }
 		try
         {
-            this.getOctoClient().mkdir(octoPath);
+            this.getXenonClient().mkdir(octoPath);
         }
         catch (XenonException e)
         {
@@ -111,7 +111,7 @@ public class XenonDir extends VDir
             {
                 // call exists, do not fetch file attributes from a non existing file
                 // as this might throw an error.  
-                return this.getOctoClient().exists(octoPath); 
+                return this.getXenonClient().exists(octoPath); 
             }
         }
         catch (XenonException e)
@@ -154,7 +154,7 @@ public class XenonDir extends VDir
         // delete single empty directory:
         try
         {
-            this.getOctoClient().rmdir(octoPath);
+            this.getXenonClient().rmdir(octoPath);
             // clear attributes to indicate non existing dir! 
             this.fileAttrs=null; 
             return true; 
@@ -222,9 +222,9 @@ public class XenonDir extends VDir
 	// Protected 
 	// === 
     
-    protected XenonClient getOctoClient()
+    protected XenonClient getXenonClient()
     {
-        return this.getFileSystem().octoClient; 
+        return this.getFileSystem().xenonClient; 
     }
     
     public boolean isSymbolicLink() throws VrsException

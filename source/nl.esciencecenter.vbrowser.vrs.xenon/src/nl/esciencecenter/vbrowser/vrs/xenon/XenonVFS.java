@@ -27,17 +27,20 @@ import java.util.List;
 import java.util.Set;
 
 import nl.esciencecenter.ptk.GlobalProperties;
+import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+import nl.esciencecenter.vlet.exception.AuthenticationException;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
 import nl.esciencecenter.vlet.vrs.VRSContext;
 import nl.esciencecenter.vlet.vrs.vfs.FileSystemNode;
 import nl.esciencecenter.vlet.vrs.vfs.VFS;
 import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 import nl.esciencecenter.xenon.XenonException;
+import nl.esciencecenter.xenon.credentials.Credential;
 import nl.esciencecenter.xenon.files.FileAttributes;
 import nl.esciencecenter.xenon.files.FileSystem;
 import nl.esciencecenter.xenon.files.Path;
@@ -61,7 +64,7 @@ public class XenonVFS extends FileSystemNode
 	// Instance
 	// ========================================================================
 	
-	protected XenonClient octoClient;
+	protected XenonClient xenonClient;
 	
 	protected FileSystem octoFS;
 
@@ -73,7 +76,7 @@ public class XenonVFS extends FileSystemNode
 		super(context, info);
 		
 	    // create optional shared client. 
-	    octoClient=XenonClient.createFor(context,info); 
+	    xenonClient=XenonClient.createFor(context,info); 
 	    
 		boolean isSftp="sftp".equals(location.getScheme());
 		boolean isGftp="gsiftp".equals(location.getScheme()) || "gftp".equals(location.getScheme());
@@ -116,7 +119,7 @@ public class XenonVFS extends FileSystemNode
 		    	}
 				else
 				{
-					drivePath=octoClient.getFirstDrive();
+					drivePath=xenonClient.getFirstDrive();
 				}
 		    }
 		}
@@ -127,20 +130,20 @@ public class XenonVFS extends FileSystemNode
 		try
         {
 		    URI fsUri=new URI(fsUriStr);
+
 		    
 		    if (isSftp)
 		    {
-		        info.getUserinfo(); 
-	            octoFS=octoClient.createSftpFileSystem(fsUri,octoClient.createSSHCredentials(info));
+		        octoFS=authenticateSftpFileSystem(fsUri,info); 
 		    }
 		    else if (isGftp)
             {
                 info.getUserinfo(); 
-                octoFS=octoClient.createGftpFileSystem(fsUri,octoClient.createGftpCredentials(info));
+                octoFS=xenonClient.createGftpFileSystem(fsUri,xenonClient.createGftpCredentials(info));
             }
 		    else if (isLocal)
 		    {
-		        octoFS=octoClient.createLocalFileSystem(drivePath);
+		        octoFS=xenonClient.createLocalFileSystem(drivePath);
 		    }
 		    else
 		    {
@@ -156,6 +159,78 @@ public class XenonVFS extends FileSystemNode
         } 
 	}
 
+    private FileSystem authenticateSftpFileSystem(URI fsUri,ServerInfo info) throws VrsException
+    {
+        StringHolder credentialErrorH1=new StringHolder();
+        StringHolder credentialErrorH2=new StringHolder(); 
+
+        info.getUserinfo();
+        Credential sshCred=null; 
+        String sshKey=info.getAttributeValue(ServerInfo.ATTR_SSH_IDENTITY); 
+        
+        if (sshKey!=null)
+        {
+            try
+            {
+                sshCred=xenonClient.createSSHKeyCredential(info, credentialErrorH1);
+                if (sshCred==null)
+                {
+                    logger.warnPrintf("Couldn't use SSH Key authentication for key:%s, error=%s\n",sshKey,credentialErrorH1.value);
+                    // keep credentialErrorH1
+                }
+                else
+                {
+                    octoFS=xenonClient.createSftpFileSystem(fsUri,sshCred);
+                    return octoFS;  
+                }
+            }
+            catch (XenonException e)
+            {
+                throw new VrsException(e.getMessage(),e); 
+            }
+        }
+        
+        // ssh key not valid, use password: 
+        try
+        {
+            sshCred=xenonClient.createSSHPasswordCredential(info, true,credentialErrorH2);
+            
+            if (sshCred!=null)
+            {
+                octoFS=xenonClient.createSftpFileSystem(fsUri,sshCred);
+                return octoFS;  
+            }
+            else
+            {
+                logger.warnPrintf("Couldn't use SSH Password authentication for key:%s, error=%s\n",sshKey,credentialErrorH2.value);
+            }
+        }
+        catch (XenonException e)
+        {
+            if (e.getMessage().contains("Auth cancel"))
+            {
+                credentialErrorH2.value="Invalid Password for '"+fsUri.getUserInfo()+"' on '"+fsUri.getHost()+"'"; 
+            }
+            else
+            {
+                throw new VrsException("Error connecting to:"+fsUri+"\n"+e.getMessage(),e);
+            }
+        }
+        
+        String message="Failed to authenticate remote SSH Location:"+fsUri+"\n";
+        
+        if (credentialErrorH1.value!=null)
+        {
+            message+="SSH Identity error:"+credentialErrorH1.value+"\n";
+        }
+        if (credentialErrorH2.value!=null)
+        {
+            message+="SSH Password error:"+credentialErrorH2.value+"\n";
+        }
+                
+        throw new AuthenticationException(message);
+    }   
+
     /** 
      * Resolve VRL against this FileSystem 
      */ 
@@ -164,7 +239,7 @@ public class XenonVFS extends FileSystemNode
         try
         {
             // resolve path against FileSystem
-            return octoClient.resolvePath(octoFS,vrl.getPath());
+            return xenonClient.resolvePath(octoFS,vrl.getPath());
         }
         catch (Exception e)
         {
@@ -248,7 +323,7 @@ public class XenonVFS extends FileSystemNode
 	    try
 	    {
     	    Path path = createPath(vrl); 
-    	    FileAttributes attrs = octoClient.statPath(path); 
+    	    FileAttributes attrs = xenonClient.statPath(path); 
     
     	    return newVFSNode(path,attrs); 
     	    
@@ -296,7 +371,7 @@ public class XenonVFS extends FileSystemNode
         
         try
         {
-            paths = octoClient.listDir(octoPath);
+            paths = xenonClient.listDir(octoPath);
             if ((paths==null) || (paths.size()==0))
                     return null; 
                 
@@ -322,7 +397,7 @@ public class XenonVFS extends FileSystemNode
         
         try
         {
-            paths = octoClient.statDir(octoPath);
+            paths = xenonClient.statDir(octoPath);
             if ((paths==null) || (paths.size()==0))
                     return null; 
                 
@@ -414,7 +489,7 @@ public class XenonVFS extends FileSystemNode
         
         try
         {
-            octoClient.rename(octoPath,newPath);
+            xenonClient.rename(octoPath,newPath);
             return createVRL(newPath);
         }
         catch (Throwable e)
@@ -429,7 +504,7 @@ public class XenonVFS extends FileSystemNode
         try
         {
             set = attrs.permissions();
-            int mode=octoClient.getUnixFileMode(set); 
+            int mode=xenonClient.getUnixFileMode(set); 
             return VFS.modeToString(mode, isDir); 
         }
         catch (Throwable e)

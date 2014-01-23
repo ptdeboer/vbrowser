@@ -62,7 +62,7 @@ public class XenonFile extends VFile
         {
             if ((fileAttrs==null) || (update==true))
             {
-                fileAttrs=getOctoClient().getFileAttributes(octoPath);
+                fileAttrs=getXenonClient().getFileAttributes(octoPath);
             }
             return fileAttrs; 
         }
@@ -102,7 +102,7 @@ public class XenonFile extends VFile
 		try
         {
 	        // Path is immutable, update it here ? 
-		    getOctoClient().createFile(octoPath);
+		    getXenonClient().createFile(octoPath);
 		    return true; 
         }
         catch (Throwable e)
@@ -171,7 +171,7 @@ public class XenonFile extends VFile
 	{
 		try
         {
-            return this.getOctoClient().createInputStream(octoPath);
+            return this.getXenonClient().createInputStream(octoPath);
         }
         catch (Throwable e)
         {
@@ -183,7 +183,7 @@ public class XenonFile extends VFile
 	{
 	    try
         {
-            return this.getOctoClient().createNewOutputStream(octoPath,true);
+            return this.getXenonClient().createNewOutputStream(octoPath,true);
         }
         catch (Throwable e)
         {
@@ -203,7 +203,7 @@ public class XenonFile extends VFile
 	{
 		try
         {
-            boolean result = this.getOctoClient().deleteFile(octoPath,true);
+            boolean result = this.getXenonClient().deleteFile(octoPath,true);
             // clear attributes to indicate non existinf file! 
             this.fileAttrs=null; 
             return result; 
@@ -228,7 +228,7 @@ public class XenonFile extends VFile
 	        {
 	            // call exists, do not fetch file attributes from a non existing file
 	            // as this might throw an error.  
-	            return this.getOctoClient().exists(octoPath); 
+	            return this.getXenonClient().exists(octoPath); 
 	        }
         }
         catch (Throwable e)
@@ -266,9 +266,9 @@ public class XenonFile extends VFile
     	return ((XenonVFS)this.getFileSystem()); 
     }
     
-    protected XenonClient getOctoClient()
+    protected XenonClient getXenonClient()
     {
-        return this.getFS().octoClient; 
+        return this.getFS().xenonClient; 
     } 
     
     

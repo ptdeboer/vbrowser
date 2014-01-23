@@ -34,6 +34,7 @@ import java.util.Set;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.SecretHolder;
+import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -550,73 +551,105 @@ public class XenonClient
         return true;
     }
 
-    public Credential createSSHCredentials(ServerInfo info) throws XenonException, VRLSyntaxException
+    public Credential createSSHKeyCredential(ServerInfo info,StringHolder errorReasonH) throws XenonException, VRLSyntaxException
     {
         String sshUser = info.getUsername();
         String ssh_id_key_file = info.getAttributeValue(ServerInfo.ATTR_SSH_IDENTITY);
-        boolean useIdFile = false;
+        boolean exists = false;
         char passwordChars[] = null;
 
-        if (StringUtil.isEmpty(ssh_id_key_file) == false)
+        if (StringUtil.isEmpty(ssh_id_key_file))
         {
-            // ssh_id_key_file can be absolute here:
-            VRL idFile = getUserHome().resolvePath(".ssh").resolvePath(ssh_id_key_file);
-
-            useIdFile = FSUtil.getDefault().existsFile(idFile.getPath(), true);
-
-            if (useIdFile)
-            {
-                ssh_id_key_file = idFile.getPath();
-            }
-            else
-            {
-                ssh_id_key_file = null; // do not use!
-            }
+            if (errorReasonH!=null)
+                errorReasonH.value="Identity Keyfile not defined."; 
+            return null;
         }
+        
+        // ssh_id_key_file can both be absole or relative. 
+        VRL idFile = getUserHome().resolvePath(".ssh").resolvePath(ssh_id_key_file);
+
+        exists = FSUtil.getDefault().existsFile(idFile.getPath(), true);
+        
+        if (exists==false)
+        {
+            if (errorReasonH!=null)
+            {
+                errorReasonH.value="Identity Keyfile does not exists:"+idFile; 
+            }
+            return null; 
+        }
+        
+        Credentials creds = engine.credentials();
+        Credential cred;
+        
+        ssh_id_key_file = idFile.getPath();
+        
+        logger.debugPrintf("createSSHCredentials(): Using Username:"+sshUser);
+        logger.debugPrintf("createSSHCredentials(): Using ID Key file:%s\n",ssh_id_key_file);
+        
+        cred = creds.newCertificateCredential("ssh",
+                ssh_id_key_file,
+                sshUser,
+                passwordChars, null);
+        
+        
+        return cred; 
+    }
+    
+    public Credential createSSHPasswordCredential(ServerInfo info, boolean interactive,StringHolder errorReasonH) throws XenonException, VRLSyntaxException
+    {
+        String sshUser = info.getUsername();
         Secret pwd = null;
-        if (useIdFile == false)
+        
+        pwd = info.getPassword();
+        
+        if ( (pwd == null) || (pwd.isEmpty()) )
         {
-            // fall back to password
-            pwd = info.getPassword();
-            if ((pwd == null) || (pwd.isEmpty()))
+            if (interactive==false)
             {
-                String serverStr = info.getUserinfo() + "@" + info.getServerVRL().getHostname();
-                SecretHolder secretH = new SecretHolder();
-                this.vrsContext.getUI().askAuthentication("Provide password for:" + serverStr, secretH);
-                pwd = secretH.value;
+                if (errorReasonH!=null)
+                {
+                    errorReasonH.value="No password given. Please specify password."; 
+                }
+                return null;
             }
+            
+            String serverStr = info.getUserinfo() + "@" + info.getServerVRL().getHostname();
+            SecretHolder secretH = new SecretHolder();
+            this.vrsContext.getUI().askAuthentication("Provide password for:" + serverStr, secretH);
+            pwd = secretH.value;
+            
         }
-
+        
+        char[] passwordChars;
+        
         if ((pwd != null) && (!pwd.isEmpty()))
         {
             passwordChars = pwd.getChars();
         }
+        else
+        {
+            if (errorReasonH!=null)
+            {
+                errorReasonH.value="Password authentication cancelled."; 
+            }
+            return null; 
+        }
 
-        // logger.debugPrintf("createSSHCredentials(): Using Username:"+sshUser);
-        // logger.debugPrintf("createSSHCredentials(): Using ID Key file:%s\n",ssh_id_key_file);
-        // logger.debugPrintf("createSSHCredentials(): Using password = %s\n",(passwordChars!=null)?"Yes":"No");
+        logger.debugPrintf("createSSHCredentials(): Using Username:"+sshUser);
+        logger.debugPrintf("createSSHCredentials(): Using password = %s\n",(passwordChars!=null)?"Yes":"No");
 
         Credentials creds = engine.credentials();
         Credential cred;
 
-        if (useIdFile)
-        {
-            cred = creds.newCertificateCredential("ssh",
-                    ssh_id_key_file,
-                    sshUser,
-                    passwordChars, null);
-        }
-        else
-        {
-            cred = creds.newPasswordCredential("ssh",
-                    sshUser,
-                    passwordChars,
-                    null);
-        }
-
+        cred = creds.newPasswordCredential("ssh",
+                sshUser,
+                passwordChars,
+                null);
+        
         return cred;
     }
-
+    
     public Credential createGftpCredentials(ServerInfo info) throws XenonException
     {
         return engine.credentials().newCertificateCredential("gsiftp", "/tmp/x509up_u1000", null, null, null);
