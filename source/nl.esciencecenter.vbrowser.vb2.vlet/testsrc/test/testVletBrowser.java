@@ -22,7 +22,7 @@
 package test;
 
 import nl.esciencecenter.ptk.vbrowser.ui.browser.BrowserPlatform;
-import nl.esciencecenter.ptk.vbrowser.ui.browser.ProxyBrowser;
+import nl.esciencecenter.ptk.vbrowser.ui.browser.ProxyBrowserController;
 import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs.VRSProxyFactory;
 import nl.esciencecenter.vbrowser.vb2.vlet.viewers.VLTermStarter;
@@ -41,9 +41,9 @@ public class testVletBrowser
 	    
 		try 
 		{
-			BrowserPlatform platform=BrowserPlatform.getInstance(); 
+			BrowserPlatform platform=BrowserPlatform.getInstance("vlet"); 
 		    
-			VRSProxyFactory fac = VRSProxyFactory.getDefault();  
+			VRSProxyFactory fac = new VRSProxyFactory(platform);  
 		    platform.registerProxyFactory(fac);  
             
 		    VRSContext context=VRS.getDefaultVRSContext(); 
@@ -51,7 +51,7 @@ public class testVletBrowser
             
 		    platform.getViewerRegistry().registerViewer(VLTermStarter.class);
 		    
-		    ProxyBrowser frame=(ProxyBrowser)platform.createBrowser(); 
+		    ProxyBrowserController frame=(ProxyBrowserController)platform.createBrowser(); 
     		ProxyNode root = fac.openLocation("myvle:/"); 
     		
 			frame.setRoot(root,true,true); 

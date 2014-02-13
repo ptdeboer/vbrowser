@@ -24,6 +24,7 @@ package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
 import nl.esciencecenter.ptk.data.StringHolder;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
+import nl.esciencecenter.ptk.vbrowser.ui.browser.BrowserPlatform;
 import nl.esciencecenter.ptk.vbrowser.ui.model.ViewNode;
 import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyException;
 import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyFactory;
@@ -51,14 +52,6 @@ public class VRSProxyFactory extends ProxyFactory
 	
     private static VRSContext staticContext; 
     
-    public static VRSProxyFactory getDefault() 
-    {
-        if (instance==null)
-            instance=new VRSProxyFactory();
-              
-        return instance; 
-    }
-    
     public static synchronized VRSContext getProxyVRSContext()
     {
         if (staticContext==null)
@@ -79,9 +72,9 @@ public class VRSProxyFactory extends ProxyFactory
 
     protected VRSViewNodeDnDHandler viewNodeDnDHandler=null;
     
-    protected VRSProxyFactory()
+    public VRSProxyFactory(BrowserPlatform platform)
     {
-        super(); 
+        super(platform); 
         
         this.vrsContext=getProxyVRSContext();
         this.vrsClient=new VRSClient(vrsContext); 

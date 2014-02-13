@@ -170,7 +170,7 @@ public class VRSProxyNode extends ProxyNode
     }
     
     @Override
-    public String getIconURL(String status,int size) throws ProxyException
+    protected String doGetIconURL(String status,int size) throws ProxyException
     {
         String url; 
         
@@ -272,7 +272,7 @@ public class VRSProxyNode extends ProxyNode
     }
 
     @Override 
-    public VRSViewNodeDnDHandler createViewNodeDnDHandler(ViewNode viewNode)
+    public VRSViewNodeDnDHandler getViewNodeDnDHandlerFor(ViewNode viewNode)
     {
     	return factory().getVRSProxyDnDHandler(viewNode);
     }
