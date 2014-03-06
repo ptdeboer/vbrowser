@@ -44,7 +44,7 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
-import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vlet.exception.XMLDataParseException;
 import nl.esciencecenter.vlet.vrs.VComposite;
@@ -453,7 +453,7 @@ public class XMLData
             if ((enumValues != null) && (enumValues.size() > 0))
                 attr = new Attribute(attrName, enumValues.toArray(), valueStr);
             else
-                attr = VAttributeUtil.parseFromString(attrType, attrName, valueStr); // new
+                attr = AttributeUtil.parseFromString(attrType, attrName, valueStr); // new
                                                                                   // VAttribute(attrType,attrName,valueStr);
 
             logger.debugPrintf(" - new Attribute=%s\n", attr);
