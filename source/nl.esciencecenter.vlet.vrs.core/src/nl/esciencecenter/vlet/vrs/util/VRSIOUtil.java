@@ -25,12 +25,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.esciencecenter.ptk.io.RingBufferStreamTransferer;
 import nl.esciencecenter.ptk.io.IOUtil;
+import nl.esciencecenter.ptk.io.RingBufferStreamTransferer;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vlet.vrs.VNode;
 import nl.esciencecenter.vlet.vrs.VRS;
-import nl.esciencecenter.vlet.vrs.io.VRandomReadable;
 import nl.esciencecenter.vlet.vrs.io.VStreamReadable;
 import nl.esciencecenter.vlet.vrs.io.VStreamWritable;
 import nl.esciencecenter.vlet.vrs.vfs.VFS;

@@ -322,10 +322,15 @@ public class LFile extends VFile implements VStreamAccessable,
     {
         return fsNode.createInputStream(); 
     }
-
+    
     public OutputStream createOutputStream() throws IOException 
     {
-        return fsNode.createOutputStream(); 
+        return fsNode.createOutputStream(false);
+    }
+    
+    public OutputStream createOutputStream(boolean append) throws IOException 
+    {
+        return fsNode.createOutputStream(append); 
     }
 
     // Method from VRandomAccessable:

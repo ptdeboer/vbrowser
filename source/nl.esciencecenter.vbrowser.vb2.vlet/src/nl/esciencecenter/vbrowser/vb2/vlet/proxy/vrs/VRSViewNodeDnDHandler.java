@@ -4,11 +4,11 @@ import java.util.List;
 
 import nl.esciencecenter.ptk.data.ExtendedList;
 import nl.esciencecenter.ptk.vbrowser.ui.model.ViewNode;
-import nl.esciencecenter.ptk.vbrowser.ui.model.ViewNodeDnDHandler;
+import nl.esciencecenter.ptk.vbrowser.ui.model.ProxyNodeDnDHandler;
 import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
-public class VRSViewNodeDnDHandler extends ViewNodeDnDHandler 
+public class VRSViewNodeDnDHandler extends ProxyNodeDnDHandler 
 {
     VRSProxyFactory proxyFactory; 
     
