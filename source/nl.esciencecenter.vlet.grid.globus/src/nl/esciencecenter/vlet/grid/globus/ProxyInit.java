@@ -50,13 +50,14 @@ public class ProxyInit
 
     protected GlobusCredential proxy = null;
 
-    /** 
-     * Non static Globus certificate utility class. 
+    /**
+     * Non static Globus certificate utility class.
      */
     protected CertUtil certUtil;
 
     public ProxyInit()
     {
+        // performs static initialization.
         certUtil = new CertUtil();
     }
 
@@ -83,21 +84,34 @@ public class ProxyInit
     }
 
     /**
-     * @param lifetime - lifetime to be created proxy in seconds. 
+     * @param lifetime
+     *            - lifetime of the to be created proxy in seconds.
      */
     public void setLifetime(int lifetime)
     {
         this.lifetime = lifetime;
     }
 
+    /**
+     * @return lifetime of the proxy in seconds.
+     */
     public int getLifetime()
     {
         return lifetime;
     }
 
     /**
+     * Set proxy type to GSI 2 "legacy" proxies. Needed for old legacy grid
+     * proxies.
+     */
+    public void setProxyTypeToGSI2Legacy()
+    {
+        setProxyType(GSIConstants.GSI_2_PROXY);
+    }
+
+    /**
      * Specify Globus proxy type, for example
-     * <code>GSIConstants.GSI_2_PROXY</code> for legacy globus proxies.
+     * <code>GSIConstants.GSI_2_PROXY</code> for 'legacy' globus proxies.
      * 
      * @see GSIConstants
      * @param proxyType
@@ -118,6 +132,9 @@ public class ProxyInit
         return proxyType;
     }
 
+    /**
+     * Extra certificate exentsions.
+     */
     public void setProxyCertInfo(ProxyCertInfo proxyCertInfo)
     {
         this.proxyCertInfo = proxyCertInfo;
@@ -129,7 +146,8 @@ public class ProxyInit
     }
 
     /**
-     * Factory method to create globus proxy credentials. 
+     * Factory method to create globus proxy credentials.
+     * 
      * @param certFile
      *            - user public certificate file, for example "usercert.pem"
      * @param keyFile
@@ -138,8 +156,6 @@ public class ProxyInit
      *            - passphrase to decode private key file
      * @param verify
      *            verify user key and certificate file.
-     * @param globusStyle
-     *            - currently not used.
      * @param proxyFile
      *            - optional file to save new created proxy to.
      * @return Created GlobusCredential object.
@@ -149,7 +165,6 @@ public class ProxyInit
             String keyFile,
             Secret passphrase,
             boolean verify,
-            boolean globusStyle,
             String proxyFile) throws Exception
     {
         loadUserCertificates(certFile);

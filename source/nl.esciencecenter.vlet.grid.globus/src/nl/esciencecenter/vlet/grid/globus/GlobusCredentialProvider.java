@@ -577,7 +577,6 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
             keyFile,
             passwd,
             false,
-            false,
             proxyFile);
     
         // vomsify 
@@ -603,7 +602,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         return cred; 
     }
     
-    public GlobusCredentialWrapper createCredentialCoG(final Secret passwd) throws Exception
+    private GlobusCredentialWrapper createCredentialCoG(final Secret passwd) throws Exception
     {
         GridProxyModel staticModel = staticGetModel();
         GlobusCredential credential;
