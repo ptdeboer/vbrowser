@@ -242,7 +242,7 @@ public class UIGlobal
         {
             UILogger.infoPrintf(UIGlobal.class,"\n>>>\n    *** Swing GUI Event Assertion Error *** !!!\n>>>\n");
             throw new  InternalError("Internal Error. Cannot perform this "
-            						+(mustBeGuiThread?"during":"outside")+"during the Swing GUI Event thread.\n"+msg);
+            						+(mustBeGuiThread?"during":"outside")+" the Swing GUI Event thread.\n"+msg);
         }
 	}
 
