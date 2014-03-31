@@ -29,7 +29,7 @@ import java.util.Vector;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
-import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.NestedIOException;
@@ -395,7 +395,7 @@ public abstract class VFSNode extends VNode implements VRenamable, VEditable, VD
         else if (name.compareTo(ATTR_MODIFICATION_TIME) == 0)
         {
             // New TIME Type ! 
-            return VAttributeUtil.createDateFromMilliesSinceEpoch(name,getModificationTime());
+            return AttributeUtil.createDateFromMilliesSinceEpoch(name,getModificationTime());
         }
         /*else if (name.compareTo(ATTR_MODIFICATION_TIME_STRING) == 0)
         {

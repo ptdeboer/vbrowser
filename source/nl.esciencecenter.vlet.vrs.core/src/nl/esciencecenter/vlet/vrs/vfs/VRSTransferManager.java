@@ -1377,7 +1377,7 @@ public final class VRSTransferManager
 			{
 				// Do a microsoft and change the statistics during a (multi) file copy here.  
 				VNode nodeArr[]=heap.toArray(new VNode[0]); 
-				((VFSTransfer)monitor).setSources(nodes); //
+				((VFSTransfer)monitor).updateSources(nodes); //
 			}
 			
 			dirIndex++; // process next dir (if existant)

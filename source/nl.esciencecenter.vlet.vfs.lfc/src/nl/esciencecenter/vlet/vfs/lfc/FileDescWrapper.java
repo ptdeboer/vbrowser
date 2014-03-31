@@ -26,7 +26,7 @@ import nl.esciencecenter.glite.lfc.internal.ReplicaDesc;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
-import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeUtil;
 import nl.esciencecenter.vlet.vrs.data.VAttributeConstants;
 
 public class FileDescWrapper
@@ -176,20 +176,20 @@ public class FileDescWrapper
                 .equals(name, VAttributeConstants.ATTR_CREATION_TIME))
         {
             // return unix time but create from milliseconds
-            attr = VAttributeUtil.createDateFromMilliesSinceEpoch(name,
+            attr = AttributeUtil.createDateFromMilliesSinceEpoch(name,
                     1000 * getFileDesc().getCTime());
         }
         else if (StringUtil.equals(name,
                 VAttributeConstants.ATTR_MODIFICATION_TIME))
         {
             // return unix time :
-            attr = VAttributeUtil.createDateFromMilliesSinceEpoch(name,
+            attr = AttributeUtil.createDateFromMilliesSinceEpoch(name,
                     1000 * getFileDesc().getMTime());
         }
         else if (StringUtil.equals(name, VAttributeConstants.ATTR_LASTACCESS_TIME))
         {
             // return unix time :
-            attr = VAttributeUtil.createDateFromMilliesSinceEpoch(name,
+            attr = AttributeUtil.createDateFromMilliesSinceEpoch(name,
                     1000 * getFileDesc().getATime());
         }
 

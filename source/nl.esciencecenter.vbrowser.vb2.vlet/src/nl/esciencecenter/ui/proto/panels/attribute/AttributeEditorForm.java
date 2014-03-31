@@ -40,7 +40,7 @@ import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.ptk.vbrowser.ui.UIGlobal;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
-import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeUtil;
 
 
 public class AttributeEditorForm extends JDialog
@@ -152,7 +152,7 @@ public class AttributeEditorForm extends JDialog
         this.originalAttributes=attrs;
         this.titleName=titleName; 
         
-        attrs=VAttributeUtil.duplicateArray(attrs);  // use duplicate to edit;
+        attrs=AttributeUtil.duplicateArray(attrs);  // use duplicate to edit;
         
         // Must first create ActionListener since it is used in initGui...
         this.formController = new AttributeEditorController(this); 
@@ -201,7 +201,7 @@ public class AttributeEditorForm extends JDialog
         this.originalAttributes=attributes;
         
         // use duplicate to edit:
-        attributes=VAttributeUtil.duplicateArray(attributes);
+        attributes=AttributeUtil.duplicateArray(attributes);
         
         this.infoPanel.setAttributes(new AttributeSet(attributes),true);
         

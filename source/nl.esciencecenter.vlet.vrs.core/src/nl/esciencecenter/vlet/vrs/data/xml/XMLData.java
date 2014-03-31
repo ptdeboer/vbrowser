@@ -23,7 +23,6 @@ package nl.esciencecenter.vlet.vrs.data.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -42,9 +41,10 @@ import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
-import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeNames;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
-import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vlet.exception.XMLDataParseException;
 import nl.esciencecenter.vlet.vrs.VComposite;
@@ -59,8 +59,7 @@ import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 /**
- * Simple XML to/from Object Factory for the data.* packages. Implementation
- * will change but suffices for now.
+ * Simple XML to/from Object Factory for the data.* packages. Implementation will change but suffices for now.
  * 
  * Default encoding is UTF-8.
  * 
@@ -78,6 +77,36 @@ public class XMLData
     public static final String VATTRIBUTE_ELEMENT = "vattribute";
 
     public static final String VATTRIBUTESET_ELEMENT = "vattributes";
+
+    /**
+     * Upgrade property names from VLET-1.5.x to VBrowser-1.6.y
+     * 
+     * @param attrName - vlet-1.5.0 legacy name
+     * @return new 1.6.0 attribute name.
+     */
+    public static String legacyUpgradeAttributeName(Node nodeAttr, String attrName)
+    {
+        if (attrName == null)
+            return null;
+
+        logger.debugPrintf("Ispecting node/propertyName=%s/%s\n", nodeAttr.getNodeName(), attrName);
+
+        // Upgrade case:
+        if (attrName.equalsIgnoreCase(AttributeNames.ATTR_ICONURL) && (attrName.equals(AttributeNames.ATTR_ICONURL)==false))
+        {
+            logger.warnPrintf("Upgrading vlet-1.5.0 style attribute 'iconURL':'%s'=>'%s'\n", attrName, AttributeNames.ATTR_ICONURL);
+            return AttributeNames.ATTR_ICONURL;
+        }
+
+        // Resource 'type' is now explicit 'resourceType'
+        if (attrName.equalsIgnoreCase("type"))
+        {
+            logger.warnPrintf("Upgrading vlet-1.5.0 style attribute 'type':'%s' => '%s'\n", attrName, AttributeNames.ATTR_RESOURCE_TYPE);
+            return AttributeNames.ATTR_RESOURCE_TYPE;
+        }
+
+        return attrName;
+    }
 
     /*
      * public static final String NAME_ELEMENT="name";
@@ -108,8 +137,8 @@ public class XMLData
     }
 
     /**
-     * Specify alternative &lt;VAttributeSet&gt; XML Tag. Make sure to use the
-     * same VAttributeSet tag names when decoding and when encoding.
+     * Specify alternative &lt;VAttributeSet&gt; XML Tag. Make sure to use the same VAttributeSet tag names when
+     * decoding and when encoding.
      */
     public void setVAttributeSetElementName(String name)
     {
@@ -117,8 +146,8 @@ public class XMLData
     }
 
     /**
-     * Specify alternative &lt;VAttribute&gt; XML Tag. Make sure to use the same
-     * VAttribute tag names when decoding and when encoding.
+     * Specify alternative &lt;VAttribute&gt; XML Tag. Make sure to use the same VAttribute tag names when decoding and
+     * when encoding.
      */
     public void setVAttributeElementName(String name)
     {
@@ -223,7 +252,8 @@ public class XMLData
      */
     public Node createXMLNode(Document domDoc, AttributeSet attrSet)
     {
-        Attribute[] attrs = attrSet.toArray(new Attribute[]{});
+        Attribute[] attrs = attrSet.toArray(new Attribute[]
+        {});
         String name = attrSet.getName();
 
         // <Attribute name=... type=...>
@@ -276,8 +306,8 @@ public class XMLData
     }
 
     /**
-     * VAtttributeSet factory method. Parses the whole string. Assumes one XML
-     * document string containing one VAttribute Set.
+     * VAtttributeSet factory method. Parses the whole string. Assumes one XML document string containing one VAttribute
+     * Set.
      */
     public AttributeSet parseVAttributeSet(String xmlString) throws XMLDataParseException
     {
@@ -292,8 +322,8 @@ public class XMLData
     }
 
     /**
-     * VAtttributeSet factory method. Reads the whole xml text from the
-     * InputStream. Assumes one XML document containing one VAttribute Set.
+     * VAtttributeSet factory method. Reads the whole xml text from the InputStream. Assumes one XML document containing
+     * one VAttribute Set.
      */
     public AttributeSet parseVAttributeSet(InputStream xmlStream) throws XMLDataParseException
     {
@@ -330,8 +360,8 @@ public class XMLData
     }
 
     /**
-     * VAtttributeSet factory method. Reads the whole xml text from the
-     * InputStream. Assumes one XML document containing one VAttribute Set.
+     * VAtttributeSet factory method. Reads the whole xml text from the InputStream. Assumes one XML document containing
+     * one VAttribute Set.
      * 
      * @param collectionTag
      */
@@ -412,6 +442,8 @@ public class XMLData
             String typeStr = ((Element) attrNode).getAttribute("type");
             String editableStr = ((Element) attrNode).getAttribute("editable");
 
+            attrName = legacyUpgradeAttributeName(attrNode, attrName);
+
             AttributeType attrType = AttributeType.valueOf(typeStr);
 
             logger.debugPrintf(" - new Attribute: {name,type}={%s,%s}\n", attrName, attrType);
@@ -445,29 +477,55 @@ public class XMLData
                 }
             }
 
+            // create actual attributes.
             Attribute attr = null;
-            // ===
-            // Parsed enum value without enum list: add default value
-            // ===
 
-            if ((enumValues != null) && (enumValues.size() > 0))
-                attr = new Attribute(attrName, enumValues.toArray(), valueStr);
-            else
-                attr = VAttributeUtil.parseFromString(attrType, attrName, valueStr); // new
-                                                                                  // VAttribute(attrType,attrName,valueStr);
-
-            logger.debugPrintf(" - new Attribute=%s\n", attr);
-
-            if (StringUtil.isEmpty(editableStr) != false)
+            try
             {
-                attr.setEditable(Boolean.parseBoolean(editableStr));
+
+                if (attrType == AttributeType.ENUM)
+                {
+                    if ((enumValues != null) && (enumValues.size() > 0))
+                    {
+                        // Enum attribute with enum values
+                        attr = new Attribute(attrName, enumValues.toArray(), valueStr);
+                    }
+                    else
+                    {
+                        // Bug Fix: Empty ENUM values in xml file.
+                        // Read error: use single value as default enum list. Will be update in later phase.
+                        attr = AttributeUtil.createEnumerate(attrName, new String[]
+                        { valueStr }, valueStr);
+                    }
+                }
+                else
+                {
+                    // Default attribute, parse value from string with specific AttributeType.
+                    attr = AttributeUtil.parseFromString(attrType, attrName, valueStr);
+                }
+
+                if (StringUtil.isEmpty(editableStr) != false)
+                {
+                    attr.setEditable(Boolean.parseBoolean(editableStr));
+                }
+                else
+                {
+                    attr.setEditable(true); // default to editable !
+                }
+
+                logger.debugPrintf(" - new Attribute=%s\n", attr);
+
             }
-            else
+            catch (Throwable attrEx)
             {
-                attr.setEditable(true); // default to editable !
+                logger.logException(ClassLogger.ERROR, attrEx, "*** Failed to parse Attribute:<%s>:'%s:%s'\n", attrType, attrName, valueStr);
+                attrEx.printStackTrace();
             }
 
-            attrSet.put(attr);
+            if (attr != null)
+            {
+                attrSet.put(attr);
+            }
         }
 
         return attrSet;
@@ -540,7 +598,7 @@ public class XMLData
             throw new XMLDataParseException(e.getMessage(), e);
         }
     }
-    
+
     public String createXMLString(AttributeSet attrSet, String comments) throws XMLDataParseException
     {
         logger.debugPrintf("writeAsXML(): attrSet=%s\n", attrSet);
@@ -548,11 +606,11 @@ public class XMLData
         Document domDoc = this.createDefaultDocument();
         domDoc.appendChild(createCommentsNode(domDoc, comments));
         domDoc.appendChild(this.createXMLNode(domDoc, attrSet));
-        return this.createXMLString(domDoc); 
+        return this.createXMLString(domDoc);
     }
 
-    /** 
-     * Write Collection of VAttributeSets 
+    /**
+     * Write Collection of VAttributeSets
      */
     public String createXMLString(String configName, Iterable<AttributeSet> attrSets, String comments)
             throws XMLDataParseException
@@ -563,7 +621,7 @@ public class XMLData
         domDoc.appendChild(createCommentsNode(domDoc, comments));
         domDoc.appendChild(this.createXMLNode(domDoc, configName, configName, attrSets));
 
-        return this.createXMLString(domDoc); 
+        return this.createXMLString(domDoc);
     }
 
     public String createXMLString(VPersistance rootNode, String comments) throws DOMException, VrsException
@@ -573,7 +631,7 @@ public class XMLData
         Document domDoc = this.createDefaultDocument();
         domDoc.appendChild(createCommentsNode(domDoc, comments));
         domDoc.appendChild(this.createXMLTree(domDoc, rootNode));
-        return this.createXMLString(domDoc); 
+        return this.createXMLString(domDoc);
     }
 
     private Node createCommentsNode(Document domDoc, String comments)
@@ -697,9 +755,9 @@ public class XMLData
             {
                 attrSet = this.parseVAttributeSet(attrSetEl);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                throw new XMLDataParseException("Failse to parse AttributeSet Element:"+attrSetEl);
+                throw new XMLDataParseException("Failse to parse AttributeSet Element:" + attrSetEl);
             }
         }
 
@@ -773,7 +831,5 @@ public class XMLData
 
         return els.elementAt(0);
     }
-
-  
 
 }

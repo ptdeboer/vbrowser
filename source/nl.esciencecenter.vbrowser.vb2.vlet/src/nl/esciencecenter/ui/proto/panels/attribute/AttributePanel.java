@@ -21,7 +21,7 @@
 
 package nl.esciencecenter.ui.proto.panels.attribute;
 
-
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,7 +46,9 @@ import nl.esciencecenter.ui.proto.panels.fields.AttrEnumField;
 import nl.esciencecenter.ui.proto.panels.fields.AttrIntField;
 import nl.esciencecenter.ui.proto.panels.fields.AttrParameterField;
 import nl.esciencecenter.ui.proto.panels.fields.AttrPortField;
+import nl.esciencecenter.ptk.vbrowser.ui.GuiSettings;
 import nl.esciencecenter.ptk.vbrowser.ui.UIGlobal;
+import nl.esciencecenter.ptk.vbrowser.ui.UIProperties;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
@@ -55,40 +57,49 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 /**
- * Attribute Panel. 
+ * Attribute Panel.
  */
 public class AttributePanel extends JPanel
 {
-    // Needed by swing JComponent  
+    // Needed by swing JComponent
     private static final long serialVersionUID = 6889725168037866258L;
-    private static final int default_row_gap = 4; 
+
+    private static final int default_row_gap = 4;
     private static final int default_column_gap = 8;
     private static final int default_border_width = 5;
     private static final int default_border_height = 5;
-
-    private static final int default_min_field_width=100;
-    private static final int default_max_field_width=300;
+    private static final int default_min_field_width = 100;
+    private static final int default_max_field_width = 300;
 
     /**
-     * Attribute Set. Operation on this set 
-     * should reflect Panel and vice versa ! 
+     * Attribute Set. Operation on this set should reflect Panel and vice versa
+     * !
      */
-    protected AttributeSet attributes=null;
-   
-    private boolean isEditable=false;
-    private boolean hasChangedAttributes=false; 
+    protected AttributeSet attributes = null;
+
+    private boolean isEditable = false;
+
+    private boolean hasChangedAttributes = false;
+
     private int maxFieldWidth;
+
     private JComponent[] jFields;
+
     private JLabel[] jLabels;
-    private boolean useFormLayout=true;
+
+    private boolean useFormLayout = true;
+
     private int rowOffset;
-    private FormLayout formLayout; 
+
+    private FormLayout formLayout;
+
+    private Vector<AttributePanelListener> listeners = new Vector<AttributePanelListener>();
 
     public void initGui()
     {
         formLayout = new FormLayout(
-                    "10px,right:pref:grow, 5px, fill:pref:grow,10px",
-                    "10px,center:pref:grow, max(p;5px),max(p;5px), max(p;5px), center:pref:grow,10px");
+                "10px,right:pref:grow, 5px, fill:pref:grow,10px",
+                "10px,center:pref:grow, max(p;5px),max(p;5px), max(p;5px), center:pref:grow,10px");
 
         this.setLayout(formLayout);
     }
@@ -98,123 +109,126 @@ public class AttributePanel extends JPanel
      */
     public AttributePanel()
     {
-        //super();
-        Attribute attrs[]=new Attribute[4];
-        String options[]={"Option1","Option2"};
-        
-        attrs[0]=new Attribute("textAttribute", "text"); 
-        attrs[1]=new Attribute("booleanAttribute", true); 
-        attrs[2]=new Attribute("numberAttribute", 1);	
-        attrs[3]=new Attribute("selectAttribute",options,0); 
-        initGui(); 
+        // super();
+        Attribute attrs[] = new Attribute[4];
+        String options[] =
+        { "Option1", "Option2" };
 
-        setAttributes(new AttributeSet(attrs));   
-    }
-
-    private void init(AttributeSet set,boolean editable)
-    {
-        this.isEditable=editable; 
+        attrs[0] = new Attribute("textAttribute", "text");
+        attrs[1] = new Attribute("booleanAttribute", true);
+        attrs[2] = new Attribute("numberAttribute", 1);
+        attrs[3] = new Attribute("selectAttribute", options, 0);
         initGui();
 
-        if (set==null)
-            // allowed: means creat empty window, attribute will follow ! 
-            return; 
+        setAttributes(new AttributeSet(attrs));
+    }
 
-        setAttributes(set,editable);  
+    private void init(AttributeSet set, boolean editable)
+    {
+        this.isEditable = editable;
+        initGui();
+
+        if (set == null)
+            // allowed: means creat empty window, attribute will follow !
+            return;
+
+        setAttributes(set, editable);
     }
 
     public AttributePanel(Attribute attrs[])
     {
         super();
-        init(new AttributeSet(attrs),isEditable); 
+        init(new AttributeSet(attrs), isEditable);
     }
 
-    public AttributePanel(Attribute attrs[],boolean isEditable)
+    public AttributePanel(Attribute attrs[], boolean isEditable)
     {
         super();
-        init(new AttributeSet(attrs),isEditable); 
+        init(new AttributeSet(attrs), isEditable);
     }
 
-    public AttributePanel(AttributeSet set,boolean isEditable)
+    public AttributePanel(AttributeSet set, boolean isEditable)
     {
         super();
-        init(set,isEditable); 
+        init(set, isEditable);
     }
 
     public AttributePanel(AttributeSet set)
-	{
-    	super(); 
-		init(set,true); 
-	}
+    {
+        super();
+        init(set, true);
+    }
 
-	/** 
-     * Creates labels & fields.
-     * Robuustness note:  Attributes in the attrs[] array may 
-     * be null. They will not be shown:
-     * @param editable 
+    /**
+     * Creates labels & fields. Robuustness note: Attributes in the attrs[]
+     * array may be null. They will not be shown:
+     * 
+     * @param editable
      * @param attrs
      */
     public void setAttributes(AttributeSet orgSet)
     {
-        setAttributes(orgSet,this.isEditable); 
+        setAttributes(orgSet, this.isEditable);
     }
 
     public void setAttributes(AttributeSet orgSet, boolean editable)
     {
-        this.isEditable=editable; 
+        this.isEditable = editable;
 
         removeAll();
-        
-        if (orgSet==null)
-        {
-        	validate(); 
-        	repaint(); 
-        	return; 
-        }
-        
-        int len=0;  
-        len=orgSet.size(); 
-        // else this method will remove old attributes 
-        
-        // new ORDENED Set: 
-        attributes=new AttributeSet(); 
-      
-        //GridBagConstraints c = new GridBagConstraints();
 
-        // first make left column of fields, 
+        if (orgSet == null)
+        {
+            validate();
+            repaint();
+            return;
+        }
+
+        int len = 0;
+        len = orgSet.size();
+        // else this method will remove old attributes
+
+        // new ORDENED Set:
+        attributes = new AttributeSet();
+
+        // GridBagConstraints c = new GridBagConstraints();
+
+        // first make left column of fields,
         // next make right column of values
 
-        // do the layout myself: 
+        // do the layout myself:
 
-        int xpos=default_border_width; 
-        int ypos=default_border_height;
+        int xpos = default_border_width;
+        int ypos = default_border_height;
 
-        int ypositions[]=new int[len]; 
-        int maxx=0; 
-        int maxy=0; 
+        int ypositions[] = new int[len];
+        int maxx = 0;
+        int maxy = 0;
 
-        jLabels=new JLabel[len]; 
+        jLabels = new JLabel[len];
 
-        for (int i=0;i<len;i++)
-        { 
-            // filter out null Attributes ! 
-            if (orgSet.elementAt(i)!=null)
+        for (int i = 0; i < len; i++)
+        {
+            // filter out null Attributes !
+            if (orgSet.elementAt(i) != null)
             {
-                /* if ( (editable==false) 
-                    ||(editable & orgAttrs[i].isEditable()) )*/
-            	Attribute attr = orgSet.elementAt(i);
-                attributes.put(attr);                
+                /*
+                 * if ( (editable==false) ||(editable &
+                 * orgAttrs[i].isEditable()) )
+                 */
+                Attribute attr = orgSet.elementAt(i);
+                attributes.put(attr);
             }
         }
 
-        // 
-        // new attribute size 
-        // 
+        //
+        // new attribute size
+        //
 
-        len=attributes.size();
+        len = attributes.size();
 
-        //changed.setSize(len); 
-        // update form layout columns nr: 
+        // changed.setSize(len);
+        // update form layout columns nr:
 
         setFormRows(attributes.size());
 
@@ -222,588 +236,581 @@ public class AttributePanel extends JPanel
         // Field Names
         //
 
-        for (int i=0;i<len;i++)
-        { 
-        	Attribute attr=attributes.elementAt(i); 
-        	//debug("Adding attribute:"+attr); 
-            
-            String name=attr.getName(); 
-            String type=attr.getType().toString();  
+        for (int i = 0; i < len; i++)
+        {
+            Attribute attr = attributes.elementAt(i);
+            // debug("Adding attribute:"+attr);
 
-            JLabel label=new JLabel(name);
-            label.setToolTipText("type:"+type+",name:"+name);
+            String name = attr.getName();
+            String type = attr.getType().toString();
 
-            ypositions[i]=ypos;
-            
+            JLabel label = new JLabel(name);
+            label.setToolTipText("type:" + type + ",name:" + name);
+
+            ypositions[i] = ypos;
+
             if (useFormLayout)
             {
-                if (Attribute.isSectionName(name)) 
+                if (Attribute.isSectionName(name))
                     add(label, new CellConstraints(
-                        "2,"+(i+rowOffset)+",1, 1, default, default"));
+                            "2," + (i + rowOffset) + ",1, 1, default, default"));
                 else
                     add(label, new CellConstraints(
-                            "2,"+(i+rowOffset)+",1, 1, default, default"));
+                            "2," + (i + rowOffset) + ",1, 1, default, default"));
             }
             else
             {
-                label.setLocation(xpos,ypos);
+                label.setLocation(xpos, ypos);
 
-                // since I am doing the layout I have to set my childrens size also ! 
-                label.setSize(label.getPreferredSize()); 
+                // since I am doing the layout I have to set my childrens size
+                // also !
+                label.setSize(label.getPreferredSize());
                 this.add(label);
             }
 
-            ypos+=label.getSize().getHeight()+default_row_gap;
+            ypos += label.getSize().getHeight() + default_row_gap;
 
-            if ((xpos+label.getSize().width)>maxx)
-                maxx=xpos+label.getSize().width;
+            if ((xpos + label.getSize().width) > maxx)
+                maxx = xpos + label.getSize().width;
 
-            if ((ypos+label.getSize().height)>maxy)
-                maxy=ypos+label.getSize().height; 
+            if ((ypos + label.getSize().height) > maxy)
+                maxy = ypos + label.getSize().height;
 
         }
 
-        xpos=maxx+default_column_gap;
+        xpos = maxx + default_column_gap;
 
-        ypos=10;
+        ypos = 10;
+        GuiSettings guiSettings = new GuiSettings(); // defaults !
+        Color editBGC = guiSettings.getUIProperties().getColor(UIProperties.TEXTFIELD_EDITABLE_BG_COLOR, Color.WHITE);
+        Color editFGC = guiSettings.getUIProperties().getColor(UIProperties.TEXTFIELD_EDITABLE_FG_COLOR, Color.BLACK);
+        Color nonEditBGC = guiSettings.getUIProperties().getColor(UIProperties.TEXTFIELD_NON_EDITABLE_BG_COLOR, Color.LIGHT_GRAY);
+        Color nonEditFGC = guiSettings.getUIProperties().getColor(UIProperties.TEXTFIELD_NON_EDITABLE_BG_COLOR, Color.BLACK);
 
-        // === Create Fields === 
-        jFields=new JComponent[len]; 
+        // === Create Fields ===
+        jFields = new JComponent[len];
 
-        for (int i=0;i<len;i++)
+        for (int i = 0; i < len; i++)
         {
-            Attribute attr=attributes.elementAt(i);
-            String value=attr.getStringValue();  
-            String name=attr.getName(); 
-            AttributeType type = attr.getType(); 
-            boolean isSection= Attribute.isSectionName(name); 
-            
-            if (isSection)
-                continue; 
-            
-            JComponent jField=null; 
+            Attribute attr = attributes.elementAt(i);
+            String value = attr.getStringValue();
+            String name = attr.getName();
+            AttributeType type = attr.getType();
+            boolean isSection = Attribute.isSectionName(name);
 
-            // create field listener for this attribute field 
+            if (isSection)
+                continue;
+
+            JComponent jField = null;
+
+            // create field listener for this attribute field
             AttributeFieldListener attributeListener = new AttributeFieldListener(name);
             // only create combo box for editable attributes:
 
-            if ( (attr.isEditable()) 
+            if ((attr.isEditable())
                     && (this.isEditable)
-                    && ( (type==AttributeType.ENUM)
-                            ||(type==AttributeType.BOOLEAN)
-                    )
-            )
+                    && ((type == AttributeType.ENUM)
+                    || (type == AttributeType.BOOLEAN)
+                    ))
             {
-                String vals[]=attr.getEnumValues(); 
+                String vals[] = attr.getEnumValues();
 
-                if (vals==null)
+                if (vals == null)
                 {
-                    getLogger().errorPrintf("Error no enumvalues for attribute:%s\n",attr.getName()); 
-                    vals=new String[1]; 
-                    vals[0]="<NULL>";
+                    getLogger().errorPrintf("Error no enumvalues for attribute:%s\n", attr.getName());
+                    vals = new String[1];
+                    vals[0] = "<NULL>";
                 }
-                
+
                 AttrEnumField enumField = new AttrEnumField();
                 enumField.setValues(vals);
-                
+
                 enumField.setSelectedIndex(attr.getEnumIndex());
 
-                jField=enumField; 
+                jField = enumField;
 
-                enumField.setFont(FontUtil.createFont("dialog")); 
+                enumField.setFont(FontUtil.createFont("dialog"));
                 enumField.setEditable(this.isEditable && attr.isEditable());
                 enumField.setActionCommand(name);
                 enumField.addActionListener(attributeListener);
                 enumField.addMouseListener(attributeListener);
             }
-            else if ( (attr.isEditable()) 
+            else if ((attr.isEditable())
                     && (this.isEditable)
-                    && (StringUtil.equals(name,"port") 
-                    )
-            )
+                    && (StringUtil.equals(name, "port")
+                    ))
             {
-            	 JTextField textField=new AttrPortField(name,value);
-                 textField.addActionListener(attributeListener);
-                 textField.addMouseListener(attributeListener);
-                 textField.setActionCommand(name);
-                 textField.setEditable(this.isEditable && attr.isEditable()); 
-
-                 if (textField.isEditable())
-                 {
-                     textField.setBackground(UIGlobal.getGuiSettings().textfield_editable_background_color);
-                     textField.setForeground(UIGlobal.getGuiSettings().textfield_editable_foreground_color);
-
-                 }
-                 else
-                 {
-                     textField.setBackground(UIGlobal.getGuiSettings().textfield_non_editable_background_color);
-                     textField.setForeground(UIGlobal.getGuiSettings().textfield_non_editable_foreground_color);
-                 }
-
-
-                 jField=textField;
-            }
-
-            else if ( (attr.isEditable()) 
-                    && (this.isEditable)
-                    && ( (type==AttributeType.INT)
-                            ||(type==AttributeType.LONG)
-                    )
-            )
-            {
-            	 JTextField textField=new AttrIntField(value, attr.getIntValue());
-                 textField.addActionListener(attributeListener);
-                 textField.addMouseListener(attributeListener);
-                 textField.setActionCommand(name);
-                 textField.setEditable(this.isEditable && attr.isEditable()); 
-
-                 if (textField.isEditable())
-                 {
-                     textField.setBackground(UIGlobal.getGuiSettings().textfield_editable_background_color);
-                     textField.setForeground(UIGlobal.getGuiSettings().textfield_editable_foreground_color);
-
-                 }
-                 else
-                 {
-                     textField.setBackground(UIGlobal.getGuiSettings().textfield_non_editable_background_color);
-                     textField.setForeground(UIGlobal.getGuiSettings().textfield_non_editable_foreground_color);
-                 }
-
-
-                 jField=textField;
-            }
-            else
-            {
-                JTextField textField=new AttrParameterField(value);
+                JTextField textField = new AttrPortField(name, value);
                 textField.addActionListener(attributeListener);
                 textField.addMouseListener(attributeListener);
                 textField.setActionCommand(name);
-                textField.setEditable(this.isEditable && attr.isEditable()); 
+                textField.setEditable(this.isEditable && attr.isEditable());
 
+                // todo: color profiles:
                 if (textField.isEditable())
                 {
-                    textField.setBackground(UIGlobal.getGuiSettings().textfield_editable_background_color);
-                    textField.setForeground(UIGlobal.getGuiSettings().textfield_editable_foreground_color);
+                    textField.setBackground(editBGC);
+                    textField.setForeground(editFGC);
 
                 }
                 else
                 {
-                    textField.setBackground(UIGlobal.getGuiSettings().textfield_non_editable_background_color);
-                    textField.setForeground(UIGlobal.getGuiSettings().textfield_non_editable_foreground_color);
+                    textField.setBackground(nonEditBGC);
+                    textField.setForeground(nonEditFGC);
                 }
 
+                jField = textField;
+            }
 
-                jField=textField;
+            else if ((attr.isEditable())
+                    && (this.isEditable)
+                    && ((type == AttributeType.INT)
+                    || (type == AttributeType.LONG)
+                    ))
+            {
+                JTextField textField = new AttrIntField(value, attr.getIntValue());
+                textField.addActionListener(attributeListener);
+                textField.addMouseListener(attributeListener);
+                textField.setActionCommand(name);
+                textField.setEditable(this.isEditable && attr.isEditable());
+
+                if (textField.isEditable())
+                {
+                    textField.setBackground(editBGC);
+                    textField.setForeground(editFGC);
+
+                }
+                else
+                {
+                    textField.setBackground(nonEditBGC);
+                    textField.setForeground(nonEditFGC);
+                }
+
+                jField = textField;
+            }
+            else
+            {
+                JTextField textField = new AttrParameterField(value);
+                textField.addActionListener(attributeListener);
+                textField.addMouseListener(attributeListener);
+                textField.setActionCommand(name);
+                textField.setEditable(this.isEditable && attr.isEditable());
+
+                if (textField.isEditable())
+                {
+                    textField.setBackground(editBGC);
+                    textField.setForeground(editFGC);
+
+                }
+                else
+                {
+                    textField.setBackground(nonEditBGC);
+                    textField.setForeground(nonEditFGC);
+                }
+
+                jField = textField;
             }
             //
-            // Set optional tooltiptest if attribute specifies 'mini' help text ! 
+            // Set optional tooltiptest if attribute specifies 'mini' help text
+            // !
             //
-            //String text=attr.getHelpText(); 
-            //if (text!=null)
-            //	jField.setToolTipText(text);
-          
-            
-            jField.addFocusListener(attributeListener);
-            ypos=ypositions[i]; 
-            //jField.setBackground(GuiSettings.current.textfield_non_editable_background_color);
-            // since I am doing the layout I have to set my childrens size also ! 
+            // String text=attr.getHelpText();
+            // if (text!=null)
+            // jField.setToolTipText(text);
 
+            jField.addFocusListener(attributeListener);
+            ypos = ypositions[i];
+            // jField.setBackground(GuiSettings.current.textfield_non_editable_background_color);
+            // since I am doing the layout I have to set my childrens size also
+            // !
 
             if (useFormLayout)
             {
                 add(jField, new CellConstraints(
-                        "4,"+(i+rowOffset)+",1, 1, default, default"));
+                        "4," + (i + rowOffset) + ",1, 1, default, default"));
             }
             else
             {
-                jField.setLocation(xpos,ypos);
+                jField.setLocation(xpos, ypos);
                 jField.setSize(jField.getPreferredSize());
-                // since I am doing the layout I have to set my childrens size also ! 
-                jField.setSize(jField.getPreferredSize()); 
+                // since I am doing the layout I have to set my childrens size
+                // also !
+                jField.setSize(jField.getPreferredSize());
                 this.add(jField);
             }
 
-            if (jField.getSize().width>maxFieldWidth)
-                maxFieldWidth=jField.getSize().width;
+            if (jField.getSize().width > maxFieldWidth)
+                maxFieldWidth = jField.getSize().width;
 
-            jFields[i]=jField; 
+            jFields[i] = jField;
 
-            if ((xpos+jField.getSize().width)>maxx)
-                maxx=xpos+jField.getSize().width;
+            if ((xpos + jField.getSize().width) > maxx)
+                maxx = xpos + jField.getSize().width;
 
-            if ((ypos+jField.getSize().height)>maxy)
-                maxy=ypos+jField.getSize().height; 
+            if ((ypos + jField.getSize().height) > maxy)
+                maxy = ypos + jField.getSize().height;
         }
 
-        //if (maxFieldWidth>this.default_max_field_width)
-        //    maxFieldWidth=default_max_field_width; 
+        // if (maxFieldWidth>this.default_max_field_width)
+        // maxFieldWidth=default_max_field_width;
 
         // update fields width to maximum field width
-        if (useFormLayout==false) 
-            for(int i=0;i<len;i++)
+        if (useFormLayout == false)
+            for (int i = 0; i < len; i++)
             {
-                // null fields due to null attributes 
-                Dimension size=jFields[i].getSize();
+                // null fields due to null attributes
+                Dimension size = jFields[i].getSize();
 
-                if (size.width<default_min_field_width)
+                if (size.width < default_min_field_width)
                 {
-                    size.width=default_min_field_width;
+                    size.width = default_min_field_width;
                 }
 
-                if ((jFields[i].getLocation().x+size.width)>maxx)
-                    maxx=jFields[i].getLocation().x+size.width;
+                if ((jFields[i].getLocation().x + size.width) > maxx)
+                    maxx = jFields[i].getLocation().x + size.width;
 
-
-                //if (size.width>default_max_field_width)
-                //    size.width=default_max_field_width; 
+                // if (size.width>default_max_field_width)
+                // size.width=default_max_field_width;
 
                 jFields[i].setSize(size);
 
             }
 
-        //UIGlobal.debugPrintln("AttributePanel","maxx,maxy="+maxx+","+maxy);
+        // UIGlobal.debugPrintln("AttributePanel","maxx,maxy="+maxx+","+maxy);
 
-        // add border size 
+        // add border size
 
-        maxx+=default_border_width; 
-        maxy+=default_border_height;  
+        maxx += default_border_width;
+        maxy += default_border_height;
 
-        if (maxx>=800)
-        	maxx=800; 
-        
+        if (maxx >= 800)
+            maxx = 800;
+
         if (useFormLayout)
         {
             this.doLayout();
             Dimension prefSize = this.getPreferredSize();
-            
-            //debug("Pre validate: preferred LayoutSize="+this.getLayout().preferredLayoutSize(this));
-            //debug("Pre validate: preferred size="+getPreferredSize());
-            
-            this.validate(); 
 
-            //debug("Post validate: preferred Panel LayoutSize="+this.getLayout().preferredLayoutSize(this));
-            //debug("Post validate: preferred Panel size="+getPreferredSize());
+            // debug("Pre validate: preferred LayoutSize="+this.getLayout().preferredLayoutSize(this));
+            // debug("Pre validate: preferred size="+getPreferredSize());
+
+            this.validate();
+
+            // debug("Post validate: preferred Panel LayoutSize="+this.getLayout().preferredLayoutSize(this));
+            // debug("Post validate: preferred Panel size="+getPreferredSize());
 
             this.setPreferredSize(this.getLayout().preferredLayoutSize(this));
-            //if (prefSize.width>800)
-           // 	prefSize.width=800;
-            
-            //this.setSize(prefSize);
-            //this.setMaximumSize(prefSize); 
+            // if (prefSize.width>800)
+            // prefSize.width=800;
+
+            // this.setSize(prefSize);
+            // this.setMaximumSize(prefSize);
         }
         else
         {
-            //this.setSize(maxx,maxy);
-            //this.setPreferredSize(getSize());
+            // this.setSize(maxx,maxy);
+            // this.setPreferredSize(getSize());
         }
-        // for some reason the FormLayout doesn't update the JPanel's preferredsize: 
+        // for some reason the FormLayout doesn't update the JPanel's
+        // preferredsize:
 
-        //debug("preferred size="+getPreferredSize());  
-        //debug("preferred LayoutSize="+this.getLayout().preferredLayoutSize(this));  
+        // debug("preferred size="+getPreferredSize());
+        // debug("preferred LayoutSize="+this.getLayout().preferredLayoutSize(this));
 
-      // Validate Now
+        // Validate Now
         this.validate();
-        //repaint later!: 
-        this.repaint(); 
+        // repaint later!:
+        this.repaint();
     }
 
     private ClassLogger getLogger()
     {
-       return ClassLogger.getLogger(this.getClass()); 
+        return ClassLogger.getLogger(this.getClass());
     }
 
     private void setFormRows(int rows)
     {
         // let upper/lower borders grow:
-        String defStr="8px,center:pref:grow,";
+        String defStr = "8px,center:pref:grow,";
 
-        rowOffset=3;// first 2 rows are fillers, so 3rd is the first!    
+        rowOffset = 3;// first 2 rows are fillers, so 3rd is the first!
 
         // nr of rows:
-        for (int i=0; i<rows+1;i++)
+        for (int i = 0; i < rows + 1; i++)
         {
-        	// rows have a minimal 8px in heights
-        	defStr+="max(p;8px),";
-            //defStr+="100px,";
+            // rows have a minimal 8px in heights
+            defStr += "max(p;8px),";
+            // defStr+="100px,";
         }
 
         // let upper/lower borders grow, but must have minimal 8 pixels
-        defStr+="center:pref:grow,8px";
+        defStr += "center:pref:grow,8px";
 
         // 4 columns: 2 border and 2 'middle'
 
         FormLayout formLayout = new FormLayout(
-                //"10px,right:pref:none, 5px, fill:pref:grow,10px",
+                // "10px,right:pref:none, 5px, fill:pref:grow,10px",
                 "10px,right:pref:none, 5px, fill:min(800px;p):grow,10px",
-                defStr); 
+                defStr);
 
         this.setLayout(formLayout);
     }
 
-    /** 
-     * Enables all editable attributes (VAttribute.isEditable() still 
-     * must return TRUE 
+    /**
+     * Enables all editable attributes (VAttribute.isEditable() still must
+     * return TRUE
+     * 
      * @param val
      */
-    /*public void setEditable(boolean val)
+    /*
+     * public void setEditable(boolean val) { this.isEditable=val;
+     * 
+     * if (jFields==null) return; // not initialized yet
+     * 
+     * for (int i=0;i<jFields.length;i++) { if ((jFields[i]!=null) &&
+     * (attributes.elementAt(i).isEditable())) { if (jFields[i] instanceof
+     * JTextField) { ((JTextField)jFields[i]).setEditable(val); }
+     * jFields[i].setBackground
+     * (GuiSettings.current.textfield_editable_background_color); } } }
+     */
+
+    public class AttributeFieldListener implements ActionListener, FocusListener, MouseListener
     {
-        this.isEditable=val;
-
-        if (jFields==null)
-            return; // not initialized yet
-
-        for (int i=0;i<jFields.length;i++)
-        {
-            if ((jFields[i]!=null) && (attributes.elementAt(i).isEditable()))
-            {
-                if (jFields[i] instanceof JTextField)
-                {
-                    ((JTextField)jFields[i]).setEditable(val);
-                }
-                jFields[i].setBackground(GuiSettings.current.textfield_editable_background_color);
-            }
-        }
-    }*/
-
-    public class AttributeFieldListener implements ActionListener,FocusListener, MouseListener
-    {
-        // the attribute name I am listener for: 
-        String attributeName=null; 
+        // the attribute name I am listener for:
+        String attributeName = null;
 
         public AttributeFieldListener(String attrname)
         {
-            attributeName=attrname;    
+            attributeName = attrname;
         }
 
         public void actionPerformed(ActionEvent e)
         {
-            updateComp(e.getSource());  
+            updateComp(e.getSource());
         }
 
         public void focusGained(FocusEvent e)
         {
-            //Global.debugPrintln("FieldListener","focusGained:"+e);
+            // Global.debugPrintln("FieldListener","focusGained:"+e);
         }
 
         public void focusLost(FocusEvent e)
         {
-        	updateComp(e.getSource());
+            updateComp(e.getSource());
         }
-     
-		private void updateComp(Object comp)
+
+        private void updateComp(Object comp)
         {
-            //Global.debugPrintln(this,"updateComp:"+comp);
-            
-            String value=null; 
+            // Global.debugPrintln(this,"updateComp:"+comp);
+
+            String value = null;
 
             if (comp instanceof JTextField)
             {
-                JTextField field=(JTextField)comp;
-                value=field.getText();
+                JTextField field = (JTextField) comp;
+                value = field.getText();
             }
             else if (comp instanceof JComboBox)
             {
-                Object val=((JComboBox)comp).getSelectedItem();
-                value=(String)val;
+                Object val = ((JComboBox) comp).getSelectedItem();
+                value = (String) val;
             }
             else
             {
-                //Global.errorPrintln(this,"focusLost:unknown component"+comp);
+                // Global.errorPrintln(this,"focusLost:unknown component"+comp);
                 return;
             }
-            
-            // ignore event on non editable attributes 
-            if (isEditable(attributeName)) 	
-            	setAttribute(attributeName,value);
+
+            // ignore event on non editable attributes
+            if (isEditable(attributeName))
+                setAttribute(attributeName, value);
         }
 
-		public void mouseClicked(MouseEvent e)
-		{
-			JComponent source=(JComponent)e.getSource(); 
-			
-			if (e.getClickCount()==2)
-			{
-				Attribute attr = getAttribute(this.attributeName); 
-				Attribute newattr=AttributeViewer.editAttribute(attr,attr.isEditable());
-			
-				//Global.debugPrintln(this,"New attribute="+newattr);
-				
-				if ((newattr!=null) && (source instanceof JTextField))
-				{
-					String valtxt=newattr.getStringValue(); 
-					((JTextField)source).setText(valtxt);
-					setAttribute(attributeName,valtxt);
-					
-				}
-				
-				/*
-				if (newattr!=null)
-					setAttribute(newattr.getName(),newattr.getValue());
-			 	*/
-			}
-			
-		}
+        public void mouseClicked(MouseEvent e)
+        {
+            JComponent source = (JComponent) e.getSource();
 
-		public void mouseEntered(MouseEvent e)
-		{
-			// highlight ? ((JComponent)e.getSource()).requestFocusInWindow();
-		}
+            if (e.getClickCount() == 2)
+            {
+                Attribute attr = getAttribute(this.attributeName);
+                Attribute newattr = AttributeViewer.editAttribute(attr, attr.isEditable());
 
-		public void mouseExited(MouseEvent e)
-		{
-		}
+                // Global.debugPrintln(this,"New attribute="+newattr);
 
-		public void mousePressed(MouseEvent e)
-		{
-		}
+                if ((newattr != null) && (source instanceof JTextField))
+                {
+                    String valtxt = newattr.getStringValue();
+                    ((JTextField) source).setText(valtxt);
+                    setAttribute(attributeName, valtxt);
 
-		public void mouseReleased(MouseEvent e)
-		{
-		}
+                }
+
+                /*
+                 * if (newattr!=null)
+                 * setAttribute(newattr.getName(),newattr.getValue());
+                 */
+            }
+
+        }
+
+        public void mouseEntered(MouseEvent e)
+        {
+            // highlight ? ((JComponent)e.getSource()).requestFocusInWindow();
+        }
+
+        public void mouseExited(MouseEvent e)
+        {
+        }
+
+        public void mousePressed(MouseEvent e)
+        {
+        }
+
+        public void mouseReleased(MouseEvent e)
+        {
+        }
     }
-     
-    public boolean isEditable(String name)  
+
+    public boolean isEditable(String name)
     {
-        if (name==null)
-            return false;   
+        if (name == null)
+            return false;
 
         if (attributes.containsKey(name))
-        	return attributes.get(name).isEditable();
-        
+            return attributes.get(name).isEditable();
+
         return false;
     }
-    
-    /** Update Attribute in AttributeSet */ 
-    public void setAttribute(String name, String value) 
-    {
-        //UIGlobal.debugPrintf(this,"setAttribute %s=%s\n",name,value);
 
-        if (name==null)
+    /** Update Attribute in AttributeSet */
+    public void setAttribute(String name, String value)
+    {
+        // UIGlobal.debugPrintf(this,"setAttribute %s=%s\n",name,value);
+
+        if (name == null)
         {
-            //Global.warnPrintf(this,"setAttribute: NULL name!\n"); 
-            return;  
+            // Global.warnPrintf(this,"setAttribute: NULL name!\n");
+            return;
         }
-        
+
         if (attributes.containsKey(name))
         {
-        	String oldValue=null; 
-        	
-        	// check for new value: 
-        	oldValue = attributes.getStringValue(name); 
-				
-        	if ((oldValue!=null) && (oldValue.compareTo(value)!=0)) 
-        	{
-        	 	attributes.set(name,value);
-        		// really a new value !
-        		// filter out focus and other event which do not 
-        		// change the value 
-        		this.hasChangedAttributes=true;
-        		notifyAttributeChangeEvent(name);
+            String oldValue = null;
+
+            // check for new value:
+            oldValue = attributes.getStringValue(name);
+
+            if ((oldValue != null) && (oldValue.compareTo(value) != 0))
+            {
+                attributes.set(name, value);
+                // really a new value !
+                // filter out focus and other event which do not
+                // change the value
+                this.hasChangedAttributes = true;
+                notifyAttributeChangeEvent(name);
             }
         }
         else
         {
-            getLogger().debugPrintf("Attribute not found:%s\n",name);
+            getLogger().debugPrintf("Attribute not found:%s\n", name);
         }
-       
+
     }
 
     private void notifyAttributeChangeEvent(String name)
-	{
-    	for (AttributePanelListener listener:listeners)
-    	{
-    		Attribute attr = attributes.get(name); 
-    		listener.notifyAttributeChanged(attr); 
-    	}
-	}
-
-	public boolean hasChangedAttributes()
     {
-        return this.hasChangedAttributes; 
+        for (AttributePanelListener listener : listeners)
+        {
+            Attribute attr = attributes.get(name);
+            listener.notifyAttributeChanged(attr);
+        }
+    }
+
+    public boolean hasChangedAttributes()
+    {
+        return this.hasChangedAttributes;
     }
 
     /**
-     *  return updated attributes.
-     *  null Attribute are filtered out ! 
+     * return updated attributes. null Attribute are filtered out !
      */
     public Attribute[] getAttributes()
     {
-        if (attributes==null)
-            return null; 
+        if (attributes == null)
+            return null;
 
-        return attributes.toArray(new Attribute[]{}); 
+        return attributes.toArray(new Attribute[]
+        {});
     }
 
     public Attribute getAttribute(String name)
     {
-        if (attributes==null)
-            return null; 
+        if (attributes == null)
+            return null;
 
-        return attributes.get(name);  
+        return attributes.get(name);
     }
 
-    /** Modal show editor Panel */  
+    /** Modal show editor Panel */
     public static Attribute[] showEditor(AttributeSet attrs)
     {
-        JDialog dialog=new JDialog(); 
-        Attribute newAttrs[]=null; 
+        JDialog dialog = new JDialog();
+        Attribute newAttrs[] = null;
 
-        AttributePanel panel=new AttributePanel(attrs);
+        AttributePanel panel = new AttributePanel(attrs);
         // JFrame frame=new JFrame();
         // frame.add(panel);
-        // panel.setAttributes(attrs); 
-        // frame.pack(); 
-        // GuiSettings.setToOptimalWindowSize(frame); 
+        // panel.setAttributes(attrs);
+        // frame.pack();
+        // GuiSettings.setToOptimalWindowSize(frame);
         // frame.setVisible(true);
 
         dialog.add(panel);
-        dialog.setModal(true); 
-        dialog.setVisible(true); 
-        newAttrs=panel.getAttributes();  
+        dialog.setModal(true);
+        dialog.setVisible(true);
+        newAttrs = panel.getAttributes();
 
-        return newAttrs; 
+        return newAttrs;
     }
 
     /**
-     * Method to call when attributes are updated outside
-     * the main GUI event thread.
-     * Uses SwingUtilities.invokeLater() to update the specified attributes.  
+     * Method to call when attributes are updated outside the main GUI event
+     * thread. Uses SwingUtilities.invokeLater() to update the specified
+     * attributes.
      * 
      * @param attrs
      */
     public void asyncSetAttributes(final AttributeSet set)
     {
-        final AttributePanel apanel=this;  
+        final AttributePanel apanel = this;
 
-        Runnable runT=new Runnable()
+        Runnable runT = new Runnable()
         {
             public void run()
             {
-                apanel.setAttributes(set); 
+                apanel.setAttributes(set);
             }
         };
 
-        SwingUtilities.invokeLater(runT); 
+        SwingUtilities.invokeLater(runT);
 
     }
 
     public Attribute[] getChangedAttributes()
     {
-        return this.attributes.getChangedAttributesArray(); 
+        return this.attributes.getChangedAttributesArray();
     }
 
-	public static void showEditor(Attribute attrs[])
-	{
-		showEditor(new AttributeSet(attrs)); 
-	}
-	
-	Vector<AttributePanelListener>listeners=new Vector<AttributePanelListener>();
-	
-	public void addAttributeListener(AttributePanelListener listener)
-	{
-		synchronized(listeners)
-		{
-			listeners.add(listener);
-		}
-	}
+    public static void showEditor(Attribute attrs[])
+    {
+        showEditor(new AttributeSet(attrs));
+    }
+
+    public void addAttributeListener(AttributePanelListener listener)
+    {
+        synchronized (listeners)
+        {
+            listeners.add(listener);
+        }
+    }
 }

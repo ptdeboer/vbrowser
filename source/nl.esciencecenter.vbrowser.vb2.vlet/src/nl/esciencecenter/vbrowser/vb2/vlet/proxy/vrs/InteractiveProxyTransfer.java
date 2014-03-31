@@ -85,7 +85,7 @@ public class InteractiveProxyTransfer
                     
                     if (targetPNode.isResourceLink())
                     {
-                        resolvedTarget=targetPNode.getTargetPNode();
+                        resolvedTarget=targetPNode.resolveResourceLink();
                         if (resolvedTarget==null)
                         {
                             resolvedTarget=targetPNode; 
@@ -164,7 +164,7 @@ public class InteractiveProxyTransfer
                     // drop on target not link itself
                     if (targetPNode.isResourceLink())
                     {
-                        resolvedTarget = targetPNode.getTargetPNode();
+                        resolvedTarget = targetPNode.resolveResourceLink();
                     }
 
                     // ====

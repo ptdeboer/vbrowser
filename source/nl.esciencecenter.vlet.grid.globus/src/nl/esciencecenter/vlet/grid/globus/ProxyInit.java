@@ -21,20 +21,19 @@ import org.globus.gsi.bc.BouncyCastleCertProcessingFactory;
 import org.globus.gsi.proxy.ext.ProxyCertInfo;
 import org.globus.util.Util;
 
-
-/** 
- * Alternative Create Proxy Util. Based on ProxyInit from JGlobus. 
- * Creates legacy Globus Proxies. 
- *  
+/**
+ * Alternative Create Proxy Util. Based on ProxyInit from JGlobus.<br>
+ * Use <code>GSIConstants.GSI_2_PROXY</code> to create legacy Globus Proxies.
+ * 
  * @author Piter T. de Boer
  */
 public class ProxyInit
 {
-    private static ClassLogger logger=ClassLogger.getLogger(ProxyInit.class); 
-    
+    private static ClassLogger logger = ClassLogger.getLogger(ProxyInit.class);
+
     private PrivateKey userKey = null;
-    
-    protected X509Certificate[] certificates;
+
+    protected X509Certificate[] userCertificates;
 
     protected int bits = 512;
 
@@ -42,42 +41,100 @@ public class ProxyInit
 
     protected ProxyCertInfo proxyCertInfo = null;
 
-    /** 
-     * Default type is "old" Globus Legacy proxy.  
+    /**
+     * Default type is "old" Globus Legacy proxy.
      */
-    protected int proxyType=GSIConstants.GSI_2_PROXY; 
+    protected int proxyType = GSIConstants.GSI_2_PROXY;
 
     protected boolean debug = false;
 
     protected GlobusCredential proxy = null;
-    
-    protected CertUtil certUtil; 
-    
+
+    /**
+     * Non static Globus certificate utility class.
+     */
+    protected CertUtil certUtil;
+
     public ProxyInit()
     {
-        certUtil=new CertUtil();
-    }
-    
-    public X509Certificate getCertificate()
-    {
-        return this.certificates[0];
+        // performs static initialization.
+        certUtil = new CertUtil();
     }
 
+    public X509Certificate getCertificate()
+    {
+        return this.userCertificates[0];
+    }
+
+    /**
+     * @param bits
+     *            - Size of proxy certificate in bits.
+     */
     public void setBits(int bits)
     {
         this.bits = bits;
     }
 
+    /**
+     * @return size of proxy certificate in bits.
+     */
+    public int getBits()
+    {
+        return bits;
+    }
+
+    /**
+     * @param lifetime
+     *            - lifetime of the to be created proxy in seconds.
+     */
     public void setLifetime(int lifetime)
     {
         this.lifetime = lifetime;
     }
-    
+
+    /**
+     * @return lifetime of the proxy in seconds.
+     */
+    public int getLifetime()
+    {
+        return lifetime;
+    }
+
+    /**
+     * Set proxy type to GSI 2 "legacy" proxies. Needed for old legacy grid
+     * proxies.
+     */
+    public void setProxyTypeToGSI2Legacy()
+    {
+        setProxyType(GSIConstants.GSI_2_PROXY);
+    }
+
+    /**
+     * Specify Globus proxy type, for example
+     * <code>GSIConstants.GSI_2_PROXY</code> for 'legacy' globus proxies.
+     * 
+     * @see GSIConstants
+     * @param proxyType
+     */
     public void setProxyType(int proxyType)
     {
         this.proxyType = proxyType;
     }
 
+    /**
+     * Globus proxy type, for example <code>GSIConstants.GSI_2_PROXY</code> for
+     * legacy globus proxies.
+     * 
+     * @see GSIConstants
+     */
+    public int getProxyType()
+    {
+        return proxyType;
+    }
+
+    /**
+     * Extra certificate exentsions.
+     */
     public void setProxyCertInfo(ProxyCertInfo proxyCertInfo)
     {
         this.proxyCertInfo = proxyCertInfo;
@@ -88,15 +145,35 @@ public class ProxyInit
         this.debug = debug;
     }
 
-    public GlobusCredential createProxy(String cert,
-            String key,
+    /**
+     * Factory method to create globus proxy credentials.
+     * 
+     * @param certFile
+     *            - user public certificate file, for example "usercert.pem"
+     * @param keyFile
+     *            - user private key file, for example "userkey.pem"
+     * @param passphrase
+     *            - passphrase to decode private key file
+     * @param verify
+     *            verify user key and certificate file.
+     * @param proxyFile
+     *            - optional file to save new created proxy to.
+     * @return Created GlobusCredential object.
+     * @throws Exception
+     */
+    public GlobusCredential createProxy(String certFile,
+            String keyFile,
             Secret passphrase,
             boolean verify,
-            boolean globusStyle,
             String proxyFile) throws Exception
     {
-        loadUserCertificates(cert);
-        loadUserKey(key, passphrase);
+        loadUserCertificates(certFile);
+        loadUserKey(keyFile, passphrase);
+
+        if (verify)
+        {
+            verify();
+        }
 
         if (debug)
         {
@@ -104,37 +181,36 @@ public class ProxyInit
         }
 
         logger.infoPrintf("Creating proxy, please wait...\n");
-        
+
         create();
 
-        logger.infoPrintf("Your proxy is valid until: %s\n", proxy.getCertificateChain()[0].getNotAfter()); 
+        logger.infoPrintf("Your proxy is valid until: %s\n", proxy.getCertificateChain()[0].getNotAfter());
 
-        
-        if (proxyFile==null)
+        if (proxyFile == null)
         {
             logger.debugPrintf("NOT Saving proxy file \n");
         }
         else
         {
-            saveTo(proxyFile); 
+            saveTo(proxyFile);
         }
-        
+
         return proxy;
     }
 
     private void saveTo(String proxyFile) throws IOException
     {
-        logger.debugPrintf("Saving proxy to: %s\n",proxyFile);
+        logger.debugPrintf("Saving proxy to: %s\n", proxyFile);
 
         OutputStream out = null;
-        
+
         try
         {
             File file = Util.createFile(proxyFile);
             // set read only permissions
             if (!Util.setOwnerAccessOnly(proxyFile))
             {
-                logger.errorPrintf("Warning: Please check file permissions for your proxy file:%s!\n",proxyFile);
+                logger.errorPrintf("Warning: Please check file permissions for your proxy file:%s!\n", proxyFile);
             }
             out = new FileOutputStream(file);
             // write the contents
@@ -142,8 +218,8 @@ public class ProxyInit
         }
         catch (IOException e)
         {
-            logger.errorPrintf("Failed to save proxy to a file: %s!\n",proxyFile);
-            throw e; 
+            logger.errorPrintf("Failed to save proxy to file: %s!\n", proxyFile);
+            throw e;
         }
         finally
         {
@@ -155,12 +231,18 @@ public class ProxyInit
                 }
                 catch (Exception e)
                 {
-                    ; //ignore 
+                    ; // ignore
                 }
             }
         }
     }
 
+    /**
+     * Verify public and private key pair.
+     * 
+     * @throws Exception
+     *             if public key and private key do no match.
+     */
     public void verify() throws Exception
     {
         RSAPublicKey pkey = (RSAPublicKey) getCertificate().getPublicKey();
@@ -174,7 +256,7 @@ public class ProxyInit
 
     public void loadUserCertificates(String arg) throws IOException, GeneralSecurityException
     {
-        certificates = CertUtil.loadCertificates(arg);
+        userCertificates = CertUtil.loadCertificates(arg);
     }
 
     public void loadUserKey(String file, Secret pwd) throws Exception
@@ -184,18 +266,18 @@ public class ProxyInit
 
     public void create() throws GeneralSecurityException
     {
-        BouncyCastleCertProcessingFactory factory =  BouncyCastleCertProcessingFactory.getDefault();
+        BouncyCastleCertProcessingFactory factory = BouncyCastleCertProcessingFactory.getDefault();
 
-        // No Extensions for legacy proxies: 
+        // No Extensions for legacy proxies:
+        // Extensions can be used for example to create VOMS enabled proxies.
         X509ExtensionSet extSet = null;
-        
-        proxy = factory.createCredential(certificates,
+
+        proxy = factory.createCredential(userCertificates,
                 userKey,
                 bits,
                 lifetime,
                 proxyType,
                 extSet);
     }
-        
 
 }

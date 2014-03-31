@@ -29,7 +29,7 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
-import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.actions.ActionContext;
@@ -234,7 +234,7 @@ public class ViewContext
 	public Attribute getAttribute(String name)
 	{
 		Object val=getProperty(name); 
-		return VAttributeUtil.createFrom(name,val);
+		return AttributeUtil.createFrom(name,val);
 	}
 	
 	/** Returns properties as (VRS) VAttributeSet */ 

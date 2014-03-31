@@ -51,7 +51,7 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
-import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.mimetypes.MimeTypes;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -1509,7 +1509,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
                 String value = attr.getStringValue();
                 // Create Schemes Enumerate
                 String schemes[] = this.getRegisteredSchemes();
-                attr = VAttributeUtil.createEnumerate(name, schemes, value);
+                attr = AttributeUtil.createEnumerate(name, schemes, value);
             }
 
             // scheme is now editable:

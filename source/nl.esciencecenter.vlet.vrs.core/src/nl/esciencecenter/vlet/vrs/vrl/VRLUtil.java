@@ -31,7 +31,7 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
-import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.VRSContext;
@@ -298,7 +298,7 @@ public class VRLUtil
     
        for (String stat:stats)
        {
-           Attribute attr=VAttributeUtil.createFromAssignment(stat);
+           Attribute attr=AttributeUtil.createFromAssignment(stat);
            //Debug("+ adding attribute="+attr); 
            if (attr!=null)
                aset.put(attr); 

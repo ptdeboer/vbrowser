@@ -192,20 +192,6 @@ public class VRSProxyNode extends ProxyNode
 		return (VRSProxyFactory)super.getProxyFactory();  
 	}
 	
-	protected boolean isResourceLink()
-    {
-    	if (vnode instanceof VResourceLink)
-    		return true; 
-        
-        if (vnode.getVRL()==null) 
-        	return false; 
-
-        // All .vlink AND .vrsx files are ResourceLinks ! 
-        if (vnode.getVRL().isVLink() == true)
-            return true;
-        
-        return false;
-    }
 	
 	protected void debug(String msg)
 	{
@@ -269,12 +255,6 @@ public class VRSProxyNode extends ProxyNode
         }
         
         return null; 
-    }
-
-    @Override 
-    public VRSViewNodeDnDHandler getViewNodeDnDHandlerFor(ViewNode viewNode)
-    {
-    	return factory().getVRSProxyDnDHandler(viewNode);
     }
     
 	// ========================================================================
@@ -343,7 +323,54 @@ public class VRSProxyNode extends ProxyNode
         return VRSPresentation.getPresentationFor(vnode.getVRL(),type, true);
     }
 
-    public ProxyNode getTargetPNode()
+    protected boolean doIsResourceLink()
+    {
+        if (vnode instanceof VResourceLink)
+            return true; 
+        
+        if (vnode.getVRL()==null) 
+            return false; 
+
+        // All .vlink AND .vrsx files are ResourceLinks ! 
+        if (vnode.getVRL().isVLink() == true)
+            return true;
+        
+        return false;
+    }
+    
+    @Override
+    protected VRL doGetResourceLinkVRL() throws ProxyException
+    {
+        if (vnode instanceof VResourceLink)
+        {
+            try
+            {
+                return ((VResourceLink)vnode).getTargetLocation();
+            }
+            catch (VrsException e)
+            {
+              throw new ProxyException(e.getMessage(),e); 
+            } 
+        }
+        
+        return null; 
+    }
+
+    @Override
+    protected ProxyNode doCreateNew(String type, String optNewName) throws ProxyException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected void doDelete(boolean recurse) throws ProxyException
+    {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    protected ProxyNode doRenameTo(String nameOrNewPath) throws ProxyException
     {
         // TODO Auto-generated method stub
         return null;

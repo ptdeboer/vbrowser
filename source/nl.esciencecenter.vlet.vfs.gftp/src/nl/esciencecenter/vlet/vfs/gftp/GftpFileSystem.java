@@ -46,7 +46,7 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeType;
-import nl.esciencecenter.vbrowser.vrs.data.VAttributeUtil;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.VletConfig;
@@ -2729,7 +2729,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         }
         else if (name.compareTo(ATTR_MODIFICATION_TIME) == 0)
         {
-            return VAttributeUtil.createDateFromMilliesSinceEpoch(name, GftpFileSystem
+            return AttributeUtil.createDateFromMilliesSinceEpoch(name, GftpFileSystem
                     ._getModificationTime(entry));
 
         }
