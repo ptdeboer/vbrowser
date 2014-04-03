@@ -2560,7 +2560,7 @@ public class SRMClientV2 extends SRMClient
         return backendType;
     }
 
-    public void srmSetPermitions(ArrayOfTUserPermission arrayOfUserPermissions,
+    public void srmSetPermissions(ArrayOfTUserPermission arrayOfUserPermissions,
             ArrayOfTGroupPermission arrayOfGroupPermissions, TPermissionMode otherPermission,
             TPermissionMode ownerPermission, TPermissionType permissionType, URI SURL) throws SRMException
     {
@@ -2635,7 +2635,7 @@ public class SRMClientV2 extends SRMClient
         //        
         // TPermissionMode ownerPermission = tMode;
         //                
-        this.srmSetPermitions(arrayOfUserPermissions, arrayOfGroupPermissions, TPermissionMode
+        this.srmSetPermissions(arrayOfUserPermissions, arrayOfGroupPermissions, TPermissionMode
                 .fromString(otherPermitionString), null, TPermissionType.CHANGE, SURL);
     }
 
