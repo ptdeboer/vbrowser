@@ -646,7 +646,20 @@ public final class VRSTransferManager
     		{
     			public void doTask() throws Exception
     			{
-    				masterCopyMoveTo(transfer,node,targetFS,targetVRL,isMove,copyInteractor);
+    			    try
+    			    {
+    			        masterCopyMoveTo(transfer,node,targetFS,targetVRL,isMove,copyInteractor);
+    			    }
+    			    catch (Exception e)
+    			    {
+    			        this.setException(e); 
+    			        ITaskMonitor monitor = this.getMonitor();
+    			        if (monitor!=null)
+    			        {    
+    			            monitor.logPrintf("*** Exception ***\n%s\n", e.getMessage()); 
+    			        }
+    			        throw e; 
+    			    }
     			}
     
     			@Override
