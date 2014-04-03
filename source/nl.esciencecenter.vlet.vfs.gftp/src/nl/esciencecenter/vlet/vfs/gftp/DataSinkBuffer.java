@@ -30,8 +30,8 @@ import org.globus.ftp.DataSink;
 
 /**
  * 
- * Simple DataSink buffer for GFTP transactions. Creates a DataSink buffer to
- * write to. This class also records transfer statistics.
+ * Simple DataSink buffer for GFTP transactions. Creates a DataSink buffer to write to. This class also records transfer
+ * statistics.
  * 
  * @author P.T. de Boer
  */
@@ -69,8 +69,7 @@ public class DataSinkBuffer implements DataSink
     private long currentThread = -1;
 
     /**
-     * Create simple buffer to act as datasink. After it is full no data can be
-     * written!
+     * Create simple buffer to act as datasink. After it is full no data can be written!
      */
     public DataSinkBuffer(int size)
     {
@@ -88,8 +87,7 @@ public class DataSinkBuffer implements DataSink
     }
 
     /**
-     * Creates DataSinkBuffer around byte array. Start to fill buffer at
-     * offsetInBuffer, expects expectedNB bytes.
+     * Creates DataSinkBuffer around byte array. Start to fill buffer at offsetInBuffer, expects expectedNB bytes.
      */
     public DataSinkBuffer(byte[] buffer, int offsetInBuffer, int expectedNB) throws IOException
     {
@@ -109,10 +107,8 @@ public class DataSinkBuffer implements DataSink
     }
 
     /**
-     * Write Buffer buf to my Buffer. Note that the buffer.getOffset() notes an
-     * extra offset as read from the source. For streaming read this is not
-     * used. Succesful write calls will append each buffer to this datasink's
-     * buffer.
+     * Write Buffer buf to my Buffer. Note that the buffer.getOffset() notes an extra offset as read from the source.
+     * For streaming read this is not used. Succesful write calls will append each buffer to this datasink's buffer.
      */
     public void write(Buffer buf) throws IOException
     {

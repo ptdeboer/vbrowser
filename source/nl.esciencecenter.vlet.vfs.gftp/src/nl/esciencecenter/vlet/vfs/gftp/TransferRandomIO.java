@@ -28,11 +28,10 @@ import org.globus.ftp.Buffer;
 import org.globus.ftp.FileRandomIO;
 
 /**
- * Creates a FileRandomIO file which masks the method used, so the progress can
- * be measured.
+ * Creates a FileRandomIO file which masks the method used, so the progress can be measured.
  * <p>
- * Also, I couln't find a way to abort an ongoing file transfer, so by calling
- * setMustStop(), this object will throw an exception to stop the file transfer!
+ * Also, I couln't find a way to abort an ongoing file transfer, so by calling setMustStop(), this object will throw an
+ * exception to stop the file transfer!
  * 
  * @author P.T. de Boer
  */

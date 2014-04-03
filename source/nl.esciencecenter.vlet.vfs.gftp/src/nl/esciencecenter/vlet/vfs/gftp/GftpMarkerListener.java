@@ -24,13 +24,13 @@ package nl.esciencecenter.vlet.vfs.gftp;
 import org.globus.ftp.Marker;
 import org.globus.ftp.MarkerListener;
 
-public class GftpMarkerListener implements MarkerListener 
+public class GftpMarkerListener implements MarkerListener
 {
-	// Not used yet: 
-	public void markerArrived(Marker arg) 
-	{
-	    //Global.infoPrintf(this,">>> Marker Received. Ignoring:%s\n",arg); 
-		//Global.infoPrintf(this,">>> Marker class   =%s\n",arg.getClass());		
-	}
+    // Not used yet:
+    public void markerArrived(Marker arg)
+    {
+        // Global.infoPrintf(this,">>> Marker Received. Ignoring:%s\n",arg);
+        // Global.infoPrintf(this,">>> Marker class   =%s\n",arg.getClass());
+    }
 
 }
