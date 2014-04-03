@@ -372,8 +372,13 @@ public class VRSProxyNode extends ProxyNode
     @Override
     protected ProxyNode doRenameTo(String nameOrNewPath) throws ProxyException
     {
-        // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    protected boolean doExists() throws ProxyException
+    {
+        return true; 
     }
 
 }

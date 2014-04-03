@@ -49,7 +49,7 @@ public class SRMException extends Exception
     // Exception cause)
     // {
     // return new SRMURIException(message,cause);
-    //    
+    //
     // }
 
     // ========================================================================
@@ -74,10 +74,10 @@ public class SRMException extends Exception
         super(message, cause);
         this.returnStatus = returnStatus;
     }
-    
+
     public SRMException(String message)
     {
-        super(message); 
+        super(message);
     }
 
     // public SRMException(String message,ErrorType type,Throwable cause)
@@ -104,24 +104,23 @@ public class SRMException extends Exception
     // return errorType;
     // }
 
-
     public TReturnStatus getReturnStatus()
     {
         return this.returnStatus;
     }
-    
-    /** Return explanation String from return status. */ 
+
+    /** Return explanation String from return status. */
     public String getReturnStatusExplanation()
     {
-        if (this.returnStatus==null)
-            return "No return status given."; 
-        
-        String explStr=this.returnStatus.getExplanation();
-        
-        if (explStr==null)
-            return "No explanation given."; 
-        
-        return explStr; 
+        if (this.returnStatus == null)
+            return "No return status given.";
+
+        String explStr = this.returnStatus.getExplanation();
+
+        if (explStr == null)
+            return "No explanation given.";
+
+        return explStr;
     }
 
     protected void setStatusCode(TReturnStatus status)
@@ -131,15 +130,15 @@ public class SRMException extends Exception
 
     public boolean hasReturnStatusCode(TStatusCode statusCode)
     {
-        if (returnStatus==null)
-            return false; 
-        
-        TStatusCode code = returnStatus.getStatusCode(); 
-        
-        if (code==null)
-            return false; 
-        
-        return (code==statusCode); 
+        if (returnStatus == null)
+            return false;
+
+        TStatusCode code = returnStatus.getStatusCode();
+
+        if (code == null)
+            return false;
+
+        return (code == statusCode);
     }
 
 }

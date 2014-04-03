@@ -29,17 +29,14 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.logging.Level;
 
 import org.apache.axis.SimpleTargetedChain;
 import org.apache.axis.client.AxisClient;
 import org.apache.axis.client.Stub;
 import org.apache.axis.configuration.SimpleProvider;
-import org.apache.axis.transport.http.HTTPSender;
-import org.apache.axis.types.UnsignedLong;
 import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.axis.types.UnsignedLong;
 import org.globus.axis.transport.GSIHTTPSender;
-import org.globus.axis.transport.HTTPSSender;
 import org.globus.axis.util.Util;
 
 import srm.dcachev1.stubs.FileMetaData;
@@ -54,11 +51,10 @@ import srm.dcachev1.stubs.SRMServerV1Locator;
  * Provide miminum functionality for V1.1 servers.
  * 
  * @author Spiros Koulouzis
- * 
+ * @author Piter T. de Boer 
  */
 public class SRMClientV1 extends SRMClient
 {
-
     private SRMServerV1Locator srmServiceLocator;
 
     private ISRM _srmService;
@@ -475,7 +471,6 @@ public class SRMClientV1 extends SRMClient
 
     private void debug(String msg)
     {
-        // todo Logging:debugger
         // System.err.println(this.getClass().getName() + ": " + msg);
     }
 

@@ -25,17 +25,13 @@ import gov.lbl.srm.v22.stubs.TMetaDataPathDetail;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-
-import org.apache.axis.client.Stub;
 import org.apache.axis.types.URI.MalformedURIException;
 
 /**
+ * Abstract SRMClient for V1 and V2. Contains Factory method to create a V1 or V2 SRMClient.
  * 
- * Abstract SRMClient for V1 and V2. Contains Factory method to create a V1 or
- * V2 SRMClient.
- * 
- * @author S.Koulouzis, Piter T. de Boer
- * 
+ * @author S.Koulouzis
+ * @author Piter T. de Boer
  */
 public abstract class SRMClient
 {
@@ -44,8 +40,7 @@ public abstract class SRMClient
     // ========================================================================
 
     /**
-     * Creates SRM Service URI. For
-     * example:httpg://srm.grid.sara.nl:8443/srm/managerv2
+     * Creates SRM Service URI. For example:httpg://srm.grid.sara.nl:8443/srm/managerv2
      * 
      * @param host
      *            hostname of remote SRM service.
@@ -60,8 +55,7 @@ public abstract class SRMClient
     }
 
     /**
-     * Creates SRM Service URI. For
-     * example:httpg://srm.grid.sara.nl:8443/srm/managerv1
+     * Creates SRM Service URI. For example:httpg://srm.grid.sara.nl:8443/srm/managerv1
      * 
      * @param host
      *            hostname of remote SRM service.
@@ -128,8 +122,8 @@ public abstract class SRMClient
 
     /** Axis socket connection setup timeout */
     protected int connectionTimeout = 60 * 1000;
-    
-    /** Time to wait for an SRM Request to reply */ 
+
+    /** Time to wait for an SRM Request to reply */
     protected int srmRequesTimeout = 60 * 1000;
 
     /** Available transport protocols */
@@ -139,8 +133,7 @@ public abstract class SRMClient
      * Base class constructor.
      * 
      * @param srmUri
-     *            The SRM service URI, usually obtained by the BDII service.
-     *            This method does not call connect().
+     *            The SRM service URI, usually obtained by the BDII service. This method does not call connect().
      * 
      * @throws SRMException
      */
@@ -150,33 +143,30 @@ public abstract class SRMClient
     }
 
     /**
-     * Set connection timeout int milliseconds. Use this method before calling
-     * connect()!
+     * Set connection timeout int milliseconds. Use this method before calling connect()!
      */
     public void setConnectionTimeout(int time)
     {
         this.connectionTimeout = time;
-        //((Stub) this._srmService).setTimeout(connectionTimeout);
+        // ((Stub) this._srmService).setTimeout(connectionTimeout);
     }
 
     /**
-     * Set SRM Request timeout in milliseconds. This is how long the client
-     * will wait for a reply from the SRM Server. 
+     * Set SRM Request timeout in milliseconds. This is how long the client will wait for a reply from the SRM Server.
      */
     public void setSRMRequestTimeout(int time)
     {
         this.srmRequesTimeout = time;
     }
-    
+
     /**
-     * Get SRM Request timeout in milliseconds. This is how long the client
-     * will wait for a reply from the SRM Server. 
+     * Get SRM Request timeout in milliseconds. This is how long the client will wait for a reply from the SRM Server.
      */
     public int getSRMRequestTimeout()
-    {   
-        return this.srmRequesTimeout; 
+    {
+        return this.srmRequesTimeout;
     }
-    
+
     /**
      * Sets SRM service URI. Must be called before connect().
      * 
@@ -244,8 +234,8 @@ public abstract class SRMClient
     abstract public void disconnect() throws SRMException;
 
     /**
-     * Get SRM version (1.1 or 2.2). For v2.2 it's the result of the ping, for
-     * v1.1 it returns 'V1' if the ping returns true.
+     * Get SRM version (1.1 or 2.2). For v2.2 it's the result of the ping, for v1.1 it returns 'V1' if the ping returns
+     * true.
      * 
      * @return version number.
      * @throws SRMException
@@ -261,8 +251,7 @@ public abstract class SRMClient
     abstract String[] getTransportProtocols() throws SRMException;
 
     /**
-     * Resolve Storage URLs (SURLS) and return transport URLs (TURLS). Usually
-     * the default protocol requested is gsiftp.
+     * Resolve Storage URLs (SURLS) and return transport URLs (TURLS). Usually the default protocol requested is gsiftp.
      * 
      * @param sourceSURLs
      *            SRM Storage URLs of exiting files.
@@ -273,9 +262,8 @@ public abstract class SRMClient
             throws SRMException;
 
     /**
-     * Blocking method for getting transport URIs. Resolve Storage URLs (SURLS)
-     * and return transport URLs (TURLS) according to the requested transport
-     * protocol. Supported transport protocols can be obtained either by
+     * Blocking method for getting transport URIs. Resolve Storage URLs (SURLS) and return transport URLs (TURLS)
+     * according to the requested transport protocol. Supported transport protocols can be obtained either by
      * <code>getTransportProtocols()</code> or from SRMConstants.
      * 
      * @param sourceSURLs
