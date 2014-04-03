@@ -1389,7 +1389,6 @@ public final class VRSTransferManager
 			if ((monitor!=null) && (monitor instanceof VFSTransfer))
 			{
 				// Do a microsoft and change the statistics during a (multi) file copy here.  
-				VNode nodeArr[]=heap.toArray(new VNode[0]); 
 				((VFSTransfer)monitor).updateSources(nodes); //
 			}
 			
