@@ -30,12 +30,10 @@ import org.globus.ftp.FileRandomIO;
 /**
  * Creates a FileRandomIO file which masks the method used, so the progress can be measured.
  * <p>
- * Also, I couln't find a way to abort an ongoing file transfer, so by calling setMustStop(), this object will throw an
- * exception to stop the file transfer!
+ * use setMustStop() to abort the transfer. This throws an IOException so the transfer will stop.
  * 
  * @author P.T. de Boer
  */
-
 public class TransferRandomIO extends FileRandomIO
 {
     private long readCount = 0;
@@ -74,7 +72,9 @@ public class TransferRandomIO extends FileRandomIO
     public synchronized void write(Buffer buf) throws IOException
     {
         if (mustStop == true)
-            throw new IOException("Trasfer interrupted!");
+        {
+            throw new IOException("Transfer interrupted!");
+        }
 
         super.write(buf);
         writeCount += buf.getLength();
