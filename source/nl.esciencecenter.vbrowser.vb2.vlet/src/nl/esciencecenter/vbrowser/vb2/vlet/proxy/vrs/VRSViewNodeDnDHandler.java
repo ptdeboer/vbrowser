@@ -8,35 +8,35 @@ import nl.esciencecenter.ptk.vbrowser.ui.model.ProxyNodeDnDHandler;
 import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
-public class VRSViewNodeDnDHandler extends ProxyNodeDnDHandler 
+public class VRSViewNodeDnDHandler extends ProxyNodeDnDHandler
 {
-    VRSProxyFactory proxyFactory; 
-    
-	public VRSViewNodeDnDHandler(VRSProxyFactory factory) 
-	{
-	    proxyFactory=factory;
+    VRSProxyFactory proxyFactory;
+
+    public VRSViewNodeDnDHandler(VRSProxyFactory factory)
+    {
+        proxyFactory = factory;
     }
 
-	public boolean doDrop(ViewNode targetDropNode, DropAction dropAction, List<VRL> sources)
+    public boolean doDrop(ViewNode targetDropNode, DropAction dropAction, List<VRL> sources)
     {
-        System.err.printf(">>> VRS DROP:%s:%s:",dropAction,new ExtendedList<VRL>(sources));
+        System.err.printf(">>> VRS DROP:%s:%s:", dropAction, new ExtendedList<VRL>(sources));
 
-	    try
+        try
         {
             VRSProxyNode targetPNode = proxyFactory.doOpenLocation(targetDropNode.getVRL());
             new InteractiveProxyTransfer().doCopyMoveDrop(targetPNode, sources, false);
         }
         catch (ProxyException e)
         {
-            handle(e); 
-        } 
-	    
-        return true; 
+            handle(e);
+        }
+
+        return true;
     }
 
     private void handle(ProxyException e)
     {
         e.printStackTrace();
     }
-    
+
 }

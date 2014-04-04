@@ -37,119 +37,138 @@ import javax.swing.border.BevelBorder;
 
 import nl.esciencecenter.ui.proto.panels.attribute.AttributePanel;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
-import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.esciencecenter.vlet.vrs.VRS;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
-
 /**
- * Copy Options Dialog. Asks user what to do when a copying a file to a destination
- * which already ex>ists.  
+ * Copy Options Dialog. Asks user what to do when a copying a file to a destination which already ex>ists.
  */
-public class CopyDialog extends javax.swing.JDialog implements ActionListener 
+public class CopyDialog extends javax.swing.JDialog implements ActionListener
 {
     private static final long serialVersionUID = 8405499762660230300L;
 
-    public static enum CopyOption{Overwrite,Skip,Rename,Cancel;} 
-    
+    public static enum CopyOption
+    {
+        Overwrite, Skip, Rename, Cancel;
+    }
+
     private JPanel topPanel;
+
     private JPanel buttonPanel;
+
     private JButton overwriteBut;
+
     private JTextArea messageTA;
+
     private JPanel optionsPanel;
+
     private JLabel sourceLbl;
+
     private JTextField sourceTF;
+
     private JButton renameBut;
+
     private JButton skipBut;
+
     private JLabel destLbl;
+
     private JTextField destVrl;
+
     private JPanel borderPanel;
+
     private JCheckBox alwaysSkipCB;
+
     private JLabel optionLbl;
-    private JCheckBox alwaysOverwriteCB;    
+
+    private JCheckBox alwaysOverwriteCB;
+
     private JButton cancelBut;
+
     private AttributePanel sourceAttrPnl;
+
     private AttributePanel destAttrPnl;
-    private CopyOption copyOption=null; //CopyOption.Cancel; 
-    
-  
-    
+
+    private CopyOption copyOption = null; // CopyOption.Cancel;
+
     /**
-     * Display Copy options dialog when copying from source to destination and the
-     * destination resource already exists. 
-     * @param parentFrame optional parent JFrame (can be null) 
-     * @param sourceVrl source VRL 
-     * @param sourceAttrs optional set of significant attributes from source (can be null).  
-     * @param destVrl destination VRL 
-     * @param destAttrs optional set of significant attributes from destination (can be null). 
-     * @param modal whether dialog should be model. If true this method will only return 
-     *              dialog has closed. 
+     * Display Copy options dialog when copying from source to destination and the destination resource already exists.
+     * 
+     * @param parentFrame
+     *            optional parent JFrame (can be null)
+     * @param sourceVrl
+     *            source VRL
+     * @param sourceAttrs
+     *            optional set of significant attributes from source (can be null).
+     * @param destVrl
+     *            destination VRL
+     * @param destAttrs
+     *            optional set of significant attributes from destination (can be null).
+     * @param modal
+     *            whether dialog should be model. If true this method will only return dialog has closed.
      * @return
      */
     public static CopyDialog showCopyDialog(final Frame parentFrame,
             final VRL sourceVrl,
             final AttributeSet sourceAttrs,
-            final VRL destVrl, 
+            final VRL destVrl,
             final AttributeSet destAttrs,
             boolean modal)
     {
-        //final JFrame frame = new JFrame();
+        // final JFrame frame = new JFrame();
         final CopyDialog inst = new CopyDialog(parentFrame);
 
-        inst.setSourceVRL(sourceVrl); 
+        inst.setSourceVRL(sourceVrl);
         inst.setDestVRL(destVrl);
         inst.setSourceAttrs(sourceAttrs);
         inst.setDestAttrs(destAttrs);
-        
-        inst.validate(); 
+
+        inst.validate();
         inst.setToPreferredSize();
         inst.setLocationRelativeTo(null); // Center!
-        
+
         if (modal)
         {
             inst.setModalityType(ModalityType.APPLICATION_MODAL);
         }
-        
+
         inst.setVisible(true);
 
-        return inst; 
+        return inst;
     }
 
-    
-    public CopyDialog(Frame frame) 
+    public CopyDialog(Frame frame)
     {
         super(frame);
         initGUI();
     }
-    
+
     public void setSourceVRL(VRL vrl)
     {
-        //this.sourceTF.setText("("+StringUtil.noNull(vrl.getHostname())+"):"+vrl.getBasename());
-        this.sourceTF.setText(vrl.toString()); 
+        // this.sourceTF.setText("("+StringUtil.noNull(vrl.getHostname())+"):"+vrl.getBasename());
+        this.sourceTF.setText(vrl.toString());
     }
-    
+
     public void setDestVRL(VRL vrl)
     {
-        //this.destVrl.setText("("+StringUtil.noNull(vrl.getHostname())+"):"+vrl.getBasename());
+        // this.destVrl.setText("("+StringUtil.noNull(vrl.getHostname())+"):"+vrl.getBasename());
         this.destVrl.setText(vrl.toString());
     }
-    
+
     public void setSourceAttrs(AttributeSet attrs)
     {
-        this.sourceAttrPnl.setAttributes(attrs,false);  
+        this.sourceAttrPnl.setAttributes(attrs, false);
     }
-    
+
     public void setDestAttrs(AttributeSet attrs)
     {
-        this.destAttrPnl.setAttributes(attrs,false);   
+        this.destAttrPnl.setAttributes(attrs, false);
     }
-    
-    private void initGUI() 
+
+    private void initGUI()
     {
-        try 
+        try
         {
 
             topPanel = new JPanel();
@@ -171,16 +190,16 @@ public class CopyDialog extends javax.swing.JDialog implements ActionListener
                     messageTA.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
                 }
             }
-            
+
             {
                 optionsPanel = new JPanel();
                 FormLayout optionsPanelLayout = new FormLayout(
-                        "max(p;5dlu), max(p;5dlu), 5dlu, 20dlu, 5dlu, max(p;50dlu):grow, 5dlu, max(p;5dlu)", 
+                        "max(p;5dlu), max(p;5dlu), 5dlu, 20dlu, 5dlu, max(p;50dlu):grow, 5dlu, max(p;5dlu)",
                         "max(p;5dlu), 5dlu, max(p;5dlu), max(p;15dlu):grow, 5dlu, 5dlu, max(p;5dlu), max(p;15dlu):grow, 5dlu, max(p;15dlu), max(p;15dlu), max(p;15dlu), 5dlu, max(p;5px)");
                 optionsPanel.setLayout(optionsPanelLayout);
 
                 topPanel.add(optionsPanel, BorderLayout.CENTER);
-                
+
                 optionsPanel.add(createSeperatorLbl(), new CellConstraints("2, 1, 6, 1, default, default"));
 
                 {
@@ -188,7 +207,7 @@ public class CopyDialog extends javax.swing.JDialog implements ActionListener
                     sourceLbl = new JLabel();
                     optionsPanel.add(sourceLbl, new CellConstraints("2, 3, 3, 1, default, default"));
                     sourceLbl.setText("Source:");
-                    sourceLbl.setFont(new java.awt.Font("Dialog",1,12));
+                    sourceLbl.setFont(new java.awt.Font("Dialog", 1, 12));
                 }
                 {
                     sourceTF = new JTextField();
@@ -199,7 +218,7 @@ public class CopyDialog extends javax.swing.JDialog implements ActionListener
                     destLbl = new JLabel();
                     optionsPanel.add(destLbl, new CellConstraints("2, 7, 3, 1, default, default"));
                     destLbl.setText("Destination:");
-                    destLbl.setFont(new java.awt.Font("Dialog",1,12));
+                    destLbl.setFont(new java.awt.Font("Dialog", 1, 12));
                 }
                 optionsPanel.add(createSeperatorLbl(), new CellConstraints("2, 5, 6, 1, default, default"));
 
@@ -220,7 +239,7 @@ public class CopyDialog extends javax.swing.JDialog implements ActionListener
                     optionsPanel.add(getOptionLbl(), new CellConstraints("2, 10, 3, 1, default, default"));
                 }
             }
-            
+
             {
                 buttonPanel = new JPanel();
                 this.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
@@ -230,7 +249,7 @@ public class CopyDialog extends javax.swing.JDialog implements ActionListener
                     overwriteBut = new JButton();
                     buttonPanel.add(overwriteBut);
                     overwriteBut.setText("Overwrite");
-                    overwriteBut.addActionListener(this); 
+                    overwriteBut.addActionListener(this);
                 }
             }
 
@@ -240,11 +259,11 @@ public class CopyDialog extends javax.swing.JDialog implements ActionListener
                 buttonPanel.add(getRenameBut());
                 buttonPanel.add(cancelBut);
                 cancelBut.setText("Cancel");
-                cancelBut.addActionListener(this); 
+                cancelBut.addActionListener(this);
             }
 
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -253,189 +272,188 @@ public class CopyDialog extends javax.swing.JDialog implements ActionListener
     public void setToPreferredSize()
     {
         this.pack();
-        this.setSize(this.getPreferredSize()); 
+        this.setSize(this.getPreferredSize());
     }
-    
-    protected AttributePanel getSourceAttrsPanel() 
+
+    protected AttributePanel getSourceAttrsPanel()
     {
-        if (this.sourceAttrPnl==null)
+        if (this.sourceAttrPnl == null)
         {
-            this.sourceAttrPnl=new AttributePanel(); 
-            //this.sourceAttrPnl.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
+            this.sourceAttrPnl = new AttributePanel();
+            // this.sourceAttrPnl.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
         }
-        
-        return sourceAttrPnl; 
+
+        return sourceAttrPnl;
     }
-    
-    protected AttributePanel getDestAttrsPanel() 
+
+    protected AttributePanel getDestAttrsPanel()
     {
-        if (this.destAttrPnl==null)
+        if (this.destAttrPnl == null)
         {
-            this.destAttrPnl=new AttributePanel(); 
-            //this.destAttrPnl.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
+            this.destAttrPnl = new AttributePanel();
+            // this.destAttrPnl.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
         }
-        
-        return destAttrPnl; 
+
+        return destAttrPnl;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) 
+    public void actionPerformed(ActionEvent e)
     {
-        Object source = e.getSource(); 
-        
-        if (source==this.cancelBut)
+        Object source = e.getSource();
+
+        if (source == this.cancelBut)
         {
-            exit(CopyOption.Cancel); 
+            exit(CopyOption.Cancel);
         }
-        
-        if (source==this.overwriteBut)
+
+        if (source == this.overwriteBut)
         {
-            exit(CopyOption.Overwrite); 
+            exit(CopyOption.Overwrite);
         }
-        
-        if (source==this.renameBut)
+
+        if (source == this.renameBut)
         {
-            exit(CopyOption.Rename); 
+            exit(CopyOption.Rename);
         }
-        
-        if (source==this.skipBut)
+
+        if (source == this.skipBut)
         {
-            exit(CopyOption.Skip); 
+            exit(CopyOption.Skip);
         }
-        
-        if ((source==this.alwaysOverwriteCB) || (source==this.alwaysSkipCB))
+
+        if ((source == this.alwaysOverwriteCB) || (source == this.alwaysSkipCB))
         {
-            boolean sourceIsOverwrite=(source==this.alwaysOverwriteCB); 
-            
-            boolean alwaysOverwrite=this.alwaysOverwriteCB.isSelected();
-            boolean alwaysSkip=this.alwaysSkipCB.isSelected();
-            
-            // mutual exclusive selection: 
+            boolean sourceIsOverwrite = (source == this.alwaysOverwriteCB);
+
+            boolean alwaysOverwrite = this.alwaysOverwriteCB.isSelected();
+            boolean alwaysSkip = this.alwaysSkipCB.isSelected();
+
+            // mutual exclusive selection:
             if (sourceIsOverwrite)
-            {   
-                if (alwaysOverwrite==true)
+            {
+                if (alwaysOverwrite == true)
                 {
-                    alwaysSkip=false; 
+                    alwaysSkip = false;
                     this.alwaysSkipCB.setSelected(false);
                 }
             }
             else
             {
-                if (alwaysSkip==true) 
-                {           
-                    alwaysOverwrite=false; 
+                if (alwaysSkip == true)
+                {
+                    alwaysOverwrite = false;
                     this.alwaysOverwriteCB.setSelected(false);
                 }
             }
-            this.overwriteBut.setText(alwaysOverwrite?"Overwrite all":"Overwrite"); 
-            this.skipBut.setText(alwaysSkip?"Skip all":"Skip"); 
+            this.overwriteBut.setText(alwaysOverwrite ? "Overwrite all" : "Overwrite");
+            this.skipBut.setText(alwaysSkip ? "Skip all" : "Skip");
         }
     }
 
     public synchronized void exit(CopyOption option)
     {
-        this.copyOption=option;
-        this.dispose(); 
-        this.notifyAll(); 
+        this.copyOption = option;
+        this.dispose();
+        this.notifyAll();
     }
-    
+
     public synchronized boolean waitForExit()
     {
-        try 
+        try
         {
             // return directlry !
-            if (this.copyOption!=null)
+            if (this.copyOption != null)
                 return true;
-            
+
             this.wait();
         }
-        catch (InterruptedException e) 
+        catch (InterruptedException e)
         {
             e.printStackTrace();
         }
-        
-        return (this.copyOption!=null); 
+
+        return (this.copyOption != null);
     }
-    
+
     public boolean getSkipAll()
     {
-        return this.alwaysSkipCB.isSelected(); 
+        return this.alwaysSkipCB.isSelected();
     }
-    
+
     public boolean getOverwriteAll()
     {
-        return this.alwaysOverwriteCB.isSelected(); 
+        return this.alwaysOverwriteCB.isSelected();
     }
 
     /**
-     * Returns selected copy option or NULL when dialog is still open and no
-     * selection has been made.  
+     * Returns selected copy option or NULL when dialog is still open and no selection has been made.
      */
     public CopyOption getCopyOption()
     {
-        return this.copyOption; 
+        return this.copyOption;
     }
-    
-    private JButton getSkipBut() 
+
+    private JButton getSkipBut()
     {
-        if(skipBut == null) 
+        if (skipBut == null)
         {
             skipBut = new JButton();
             skipBut.setText("Skip");
-            skipBut.addActionListener(this); 
+            skipBut.addActionListener(this);
         }
         return skipBut;
     }
-    
-    private JButton getRenameBut() 
+
+    private JButton getRenameBut()
     {
-        if(renameBut == null)
+        if (renameBut == null)
         {
             renameBut = new JButton();
             renameBut.setText("Rename");
-            renameBut.addActionListener(this); 
+            renameBut.addActionListener(this);
         }
         return renameBut;
     }
 
-    private JCheckBox getAlwaysOverwriteCB() 
+    private JCheckBox getAlwaysOverwriteCB()
     {
-        if(alwaysOverwriteCB == null) 
+        if (alwaysOverwriteCB == null)
         {
             alwaysOverwriteCB = new JCheckBox();
             alwaysOverwriteCB.setText("Always overwrite");
-            alwaysOverwriteCB.addActionListener(this); 
+            alwaysOverwriteCB.addActionListener(this);
         }
         return alwaysOverwriteCB;
     }
-    
+
     private JCheckBox getAlwaysSkipCB()
     {
-        if(alwaysSkipCB == null) 
+        if (alwaysSkipCB == null)
         {
             alwaysSkipCB = new JCheckBox();
             alwaysSkipCB.setText("Always skip");
-            alwaysSkipCB.addActionListener(this); 
+            alwaysSkipCB.addActionListener(this);
         }
         return alwaysSkipCB;
     }
-    
+
     private JLabel getOptionLbl()
     {
-        if(optionLbl == null) 
+        if (optionLbl == null)
         {
             optionLbl = new JLabel();
             optionLbl.setText("Options");
-            optionLbl.setFont(new java.awt.Font("Dialog",1,12));
+            optionLbl.setFont(new java.awt.Font("Dialog", 1, 12));
         }
         return optionLbl;
     }
-    
+
     private JLabel createSeperatorLbl()
     {
         JLabel label = new JLabel();
         label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        
+
         return label;
     }
 
