@@ -35,7 +35,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
-import nl.esciencecenter.ui.proto.panels.attribute.AttributePanel;
+import nl.esciencecenter.ptk.vbrowser.ui.attribute.AttributePanel;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 
