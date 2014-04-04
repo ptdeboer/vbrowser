@@ -31,6 +31,7 @@ import java.io.InputStream;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
+import nl.esciencecenter.vbrowser.vrs.data.AttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -149,7 +150,7 @@ public class SRMFile extends VFile implements VUnixFileMode, VChecksum, VTranspo
         else if (name.compareTo(VAttributeConstants.ATTR_TRANSPORT_URI) == 0)
         {
             // A VRL is an URI.
-            attr = new Attribute(name, this.getTransportVRL());
+            attr = AttributeUtil.createVRLAttribute(name, this.getTransportVRL(),true);
         }
         // else if (name.startsWith(VAttributeConstants.ATTR_CHECKSUM))
         // {
