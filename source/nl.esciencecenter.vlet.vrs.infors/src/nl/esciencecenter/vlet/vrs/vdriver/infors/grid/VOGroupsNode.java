@@ -304,7 +304,7 @@ public class VOGroupsNode extends CompositeServiceInfoNode<VONode>
                 VAttributeConstants.ATTR_PORT, 
                 VAttributeConstants.ATTR_PATH );
 
-        pres.setChildAttributeNames(names);
+        pres.setPreferredContentAttributeNames(names);
         return pres;
     }
 

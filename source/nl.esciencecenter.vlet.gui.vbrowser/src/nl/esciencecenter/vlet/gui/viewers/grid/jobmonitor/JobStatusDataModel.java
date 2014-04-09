@@ -160,14 +160,14 @@ public class JobStatusDataModel extends ResourceTableModel
         {
             this.presentation=new Presentation();
             
-            presentation.setAttributePreferredWidth(ATTR_JOBID,100,200,300); 
-            presentation.setAttributePreferredWidth(ATTR_JOBNAME,100,200,300); 
-            presentation.setAttributePreferredWidth(ATTR_LBHOSTNAME,100,150,250); 
-            presentation.setAttributePreferredWidth(ATTR_LBPORT,40,40,40); 
-            presentation.setAttributePreferredWidth(ATTR_JOBSTATUS,100,120,160);
-            presentation.setAttributePreferredWidth(ATTR_JOBSTATUSINFO,100,120,200); 
-            presentation.setAttributePreferredWidth(ATTR_INDEX,40,40,40); 
-            presentation.setAttributePreferredWidth(ATTR_ERROR_TEXT,40,120,-1); 
+            presentation.setAttributePreferredWidths(ATTR_JOBID,100,200,300); 
+            presentation.setAttributePreferredWidths(ATTR_JOBNAME,100,200,300); 
+            presentation.setAttributePreferredWidths(ATTR_LBHOSTNAME,100,150,250); 
+            presentation.setAttributePreferredWidths(ATTR_LBPORT,40,40,40); 
+            presentation.setAttributePreferredWidths(ATTR_JOBSTATUS,100,120,160);
+            presentation.setAttributePreferredWidths(ATTR_JOBSTATUSINFO,100,120,200); 
+            presentation.setAttributePreferredWidths(ATTR_INDEX,40,40,40); 
+            presentation.setAttributePreferredWidths(ATTR_ERROR_TEXT,40,120,-1); 
         }
         
         return this.presentation; 

@@ -21,11 +21,22 @@
 
 package nl.esciencecenter.vlet.vrs.presentation;
 
-import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.*; 
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_CREATION_TIME;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_FILE_SIZE;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_HOSTNAME;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_ICON;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_MIMETYPE;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_MODIFICATION_TIME;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_NAME;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_PATH;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_PERMISSIONSTRING;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_RESOURCE_STATUS;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_RESOURCE_TYPE;
+import static nl.esciencecenter.vbrowser.vrs.data.AttributeNames.ATTR_SCHEME;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_MAX_WALL_TIME;
+import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_NODE_TEMP_DIR;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.Presentation;
-import nl.esciencecenter.ptk.presentation.Presentation.SortOption;
-
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.vfs.VFS;
@@ -33,7 +44,7 @@ import nl.esciencecenter.vlet.vrs.vfs.VFS;
 /** 
  * Factory class for UIPresentation of VRS Nodes. 
  */
-public class VRSPresentation
+public class VRSPresentation extends Presentation
 {
     public static String defaultVFSAttributeNames[] = 
         {
@@ -142,26 +153,24 @@ public class VRSPresentation
         
         if (scheme.compareTo(VRS.MYVLE_SCHEME) == 0)
         {
-            pres.setChildAttributeNames(new StringList(myvleAttributeNames));
+            pres.setPreferredContentAttributeNames(new StringList(myvleAttributeNames));
             // do not sort MyVle !
             pres.setSortOption(SortOption.NEVER);
         }
         else if (scheme.compareTo(VRS.SRB_SCHEME) == 0)
         {
-            pres.setChildAttributeNames(new StringList(VRSPresentation.defaultSRBAttributeNames));
+            pres.setPreferredContentAttributeNames(new StringList(VRSPresentation.defaultSRBAttributeNames));
         }
         else if (type.compareTo(VFS.DIR_TYPE) == 0)
         {
-            pres.setChildAttributeNames(new StringList(VRSPresentation.defaultVFSAttributeNames));
+            pres.setPreferredContentAttributeNames(new StringList(VRSPresentation.defaultVFSAttributeNames));
         }
         else
         {
-            pres.setChildAttributeNames(new StringList(VRSPresentation.defaultNodeAttributeNames));
+            pres.setPreferredContentAttributeNames(new StringList(VRSPresentation.defaultNodeAttributeNames));
         }
         
         pres.setIconAttributeName(ATTR_ICON);
-        
-        Presentation.storePresentation(id,pres);
         
         return pres;
     }
@@ -190,22 +199,24 @@ public class VRSPresentation
     
     public static void initDefaults(Presentation pres)
     {
-        pres.setAttributePreferredWidth(ATTR_ICON, 32);
-        pres.setAttributePreferredWidth(ATTR_INDEX, 32);
-        pres.setAttributePreferredWidth(ATTR_NAME, 200);
-        pres.setAttributePreferredWidth(ATTR_RESOURCE_TYPE, 140);
-        pres.setAttributePreferredWidth(ATTR_SCHEME, 60);
-        pres.setAttributePreferredWidth(ATTR_HOSTNAME, 140);
-        pres.setAttributePreferredWidth(ATTR_FILE_SIZE, 70);
-        pres.setAttributePreferredWidth(ATTR_PATH, 200);
-        pres.setAttributePreferredWidth(ATTR_STATUS, 48);
-        pres.setAttributePreferredWidth(ATTR_MODIFICATION_TIME, 120);
-        pres.setAttributePreferredWidth(ATTR_CREATION_TIME, 120);
+        pres.setAttributePreferredWidths(ATTR_ICON, 32, 32,999);
+        // pres.setAttributePreferredWidth(ATTR_INDEX, 32);
+        pres.setAttributePreferredWidths(ATTR_NAME, 48,200,999);
+        pres.setAttributePreferredWidths(ATTR_RESOURCE_TYPE, 64,140,999);
+        pres.setAttributePreferredWidths(ATTR_SCHEME, 64,100,999);
+        pres.setAttributePreferredWidths(ATTR_HOSTNAME, 64,140,999);
+        // pres.setAttributePreferredWidth(ATTR_PORT, 32);
+        pres.setAttributePreferredWidths(ATTR_FILE_SIZE, 60,70,999);
+        pres.setAttributePreferredWidths(ATTR_PATH, 100,200,999);
+        pres.setAttributePreferredWidths(ATTR_RESOURCE_STATUS, 48,64,999);
+        pres.setAttributePreferredWidths(ATTR_MODIFICATION_TIME, 100,120,999);
+        pres.setAttributePreferredWidths(ATTR_CREATION_TIME, 100,120,999);
+        
         // VQueues and VJobs:
         pres.setAttributePreferredWidth(ATTR_MAX_WALL_TIME, 100);
         pres.setAttributePreferredWidth(ATTR_NODE_TEMP_DIR, 160);
         
-        pres.setChildAttributeNames(new StringList(defaultNodeAttributeNames));
+        pres.setPreferredContentAttributeNames(new StringList(defaultNodeAttributeNames));
     }
     
 }

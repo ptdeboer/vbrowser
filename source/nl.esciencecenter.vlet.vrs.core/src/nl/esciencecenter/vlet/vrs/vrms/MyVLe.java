@@ -866,7 +866,7 @@ final public class MyVLe extends VCompositeNode implements VEditable, VLogicalRe
 
             // cast Non editable "INFO" type to editable Resource Location Type
             // !
-            if (lnode.getType().equals(VRS.RESOURCE_INFO_TYPE))
+            if (lnode.getResourceType().equals(VRS.RESOURCE_INFO_TYPE))
             {
                 lnode.setType(VRS.RESOURCE_LOCATION_TYPE);
             }

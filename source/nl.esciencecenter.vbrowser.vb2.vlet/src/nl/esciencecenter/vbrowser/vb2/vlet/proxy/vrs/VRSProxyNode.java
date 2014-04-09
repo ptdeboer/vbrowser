@@ -294,11 +294,11 @@ public class VRSProxyNode extends ProxyNode
     }
 
     @Override
-    protected List<Attribute> doGetAttributes(List<String> names) throws ProxyException
+    protected List<Attribute> doGetAttributes(String names[]) throws ProxyException
     {
         try
         {
-            return Attribute.toList(vnode.getAttributes(names.toArray(new String[0])));
+            return Attribute.toList(vnode.getAttributes(names));
         }
         catch (VrsException e)
         {

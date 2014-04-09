@@ -971,8 +971,7 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
                 }
 
                 // DONE BY SYNC READ: inps.skip(fileOffset);
-                int numread = IOUtil.syncReadBytes(inps, fileOffset, buffer, bufferOffset, nrBytes);
-                inps.close();
+                int numread = IOUtil.syncReadBytes(inps, fileOffset, buffer, bufferOffset, nrBytes,true);
 
                 return numread;
             }
