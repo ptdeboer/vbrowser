@@ -22,109 +22,111 @@ import nl.esciencecenter.vlet.vrs.vfs.VRSTransferManager;
 public class InteractiveProxyTransfer
 {
 
-    public void doCopyMoveDrop(final VRSProxyNode target, 
+    public void doCopyMoveDrop(final VRSProxyNode target,
             final List<VRL> sources,
             final boolean isMove)
     {
         // ====
-        // Pre: Check CopyDrop type: 
-        // ==== 
-        boolean vfsDrop=true; 
-        
-        //VDir supports almost *any* type now . 
-        if (target.getResourceType().equals(VFS.DIR_TYPE)) 
-        {   
-            vfsDrop=true; 
+        // Pre: Check CopyDrop type:
+        // ====
+        boolean vfsDrop = true;
+
+        // VDir supports almost *any* type now .
+        if (target.getResourceType().equals(VFS.DIR_TYPE))
+        {
+            vfsDrop = true;
         }
         else
         {
-            vfsDrop=false; 
+            vfsDrop = false;
         }
-        
+
         //
         // Optimized VFS resource only drop, use VFSTransfer Dialogs!
         //
         if (vfsDrop)
         {
-            doVFSCopyDrop(target,sources,isMove); 
-            return; 
+            doVFSCopyDrop(target, sources, isMove);
+            return;
         }
         else
         {
-            doAnyCopyDrop(target,sources,isMove); 
+            doAnyCopyDrop(target, sources, isMove);
         }
     }
-    
-    private void doAnyCopyDrop(final VRSProxyNode targetPNode, 
+
+    private void doAnyCopyDrop(final VRSProxyNode targetPNode,
             final List<VRL> sources,
             final boolean isMove)
     {
-        
-        final ITaskSource browserController=null;
-        
+
+        final ITaskSource browserController = null;
+
         // =======================
-        // Any Drop: 
+        // Any Drop:
         // =======================
-        
-        ActionTask task = new ActionTask(browserController, "CopyMoveDrop #"+sources.size()+" sources to:"+targetPNode.getVRL() )
+
+        ActionTask task = new ActionTask(browserController, "CopyMoveDrop #" + sources.size() + " sources to:" + targetPNode.getVRL())
         {
-            public void doTask() 
+            public void doTask()
             {
-                // once started: disconnect from browserController : 
-                //this.setTaskSource(DummyTransferWatcher.getBackgroundWatcher());
-                ProxyNode resolvedTarget=targetPNode;
-                
-                ITaskMonitor monitor = this.getTaskMonitor(); 
+                // once started: disconnect from browserController :
+                // this.setTaskSource(DummyTransferWatcher.getBackgroundWatcher());
+                ProxyNode resolvedTarget = targetPNode;
+
+                ITaskMonitor monitor = this.getTaskMonitor();
                 // Default Copy Move Drop!
-                
+
                 try
                 {
                     // ===========
-                    // Resolve Target: Drop on target not link itself 
+                    // Resolve Target: Drop on target not link itself
                     // ===========
-                    
+
                     if (targetPNode.isResourceLink())
                     {
-                        resolvedTarget=targetPNode.resolveResourceLink();
-                        if (resolvedTarget==null)
+                        resolvedTarget = targetPNode.resolveResourceLink();
+                        if (resolvedTarget == null)
                         {
-                            resolvedTarget=targetPNode; 
+                            resolvedTarget = targetPNode;
                         }
                     }
 
                     // =======
                     // OPEN !
                     // =======
-                    
-                    // Parent = Composite Node  
-                    VNode destNode=getVRSContext().openLocation(resolvedTarget.getVRL()); 
-                    
+
+                    // Parent = Composite Node
+                    VNode destNode = getVRSContext().openLocation(resolvedTarget.getVRL());
+
                     if (destNode instanceof VComposite)
                     {
                         VComposite destCNode;
-                        destCNode=(VComposite)destNode;
-                        for (VRL ref:sources)
+                        destCNode = (VComposite) destNode;
+                        for (VRL ref : sources)
                         {
-                            VNode sourceNode=getVRSContext().openLocation(ref);  
-                            
-                            String actionStr=(isMove)?"Move":"Copy";
-                            monitor.logPrintf("Performing "+actionStr+" of '"+sourceNode.getName()+"' to: "+destNode.getHostname()+"\n");
-                            
+                            VNode sourceNode = getVRSContext().openLocation(ref);
+
+                            String actionStr = (isMove) ? "Move" : "Copy";
+                            monitor.logPrintf("Performing " + actionStr + " of '" + sourceNode.getName() + "' to: "
+                                    + destNode.getHostname() + "\n");
+
                             // Synchronous copy/move (but in background) !
-                            VNode resultNode=destCNode.addNode(sourceNode,null,isMove);
-                            // 
-                            
-                            getVRSContext().fireEvent(ResourceEvent.createChildAddedEvent(destNode.getVRL(),resultNode.getVRL()));
-                            
+                            VNode resultNode = destCNode.addNode(sourceNode, null, isMove);
+                            //
+
+                            getVRSContext().fireEvent(ResourceEvent.createChildAddedEvent(destNode.getVRL(), resultNode.getVRL()));
+
                             if (isMove)
                             {
-                                getVRSContext().fireEvent(ResourceEvent.createDeletedEvent(sourceNode.getVRL())); 
+                                getVRSContext().fireEvent(ResourceEvent.createDeletedEvent(sourceNode.getVRL()));
                             }
                         }
                     }
                     else
                     {
-                        throw new nl.esciencecenter.vlet.exception.ResourceTypeMismatchException("Cannot perform drop on: target destination:"+destNode);
+                        throw new nl.esciencecenter.vlet.exception.ResourceTypeMismatchException(
+                                "Cannot perform drop on: target destination:" + destNode);
                     }
                 }
                 catch (Throwable t)
@@ -132,24 +134,24 @@ public class InteractiveProxyTransfer
                     handle(t);
                 }
             }
-            
+
             @Override
             public void stopTask()
             {
-                
+
             }
         };
-       
-       // Show default task monitor: 
-       task.startTask();
-       TaskMonitorDialog.showTaskMonitorDialog(getFrame(), task,0);
-    
+
+        // Show default task monitor:
+        task.startTask();
+        TaskMonitorDialog.showTaskMonitorDialog(getFrame(), task, 0);
+
     }
 
     protected void doVFSCopyDrop(final VRSProxyNode targetPNode, final List<VRL> sources, final boolean isMove)
     {
-        final ITaskSource browserController=null;
-        
+        final ITaskSource browserController = null;
+
         ActionTask task = new ActionTask(browserController, "CopyMoveDrop #" + sources.size() + " sources to:"
                 + targetPNode.getVRL())
         {
@@ -172,12 +174,12 @@ public class InteractiveProxyTransfer
                     // allow this
                     // thread to wait in background and monitor the transfer.
                     // ====
-                    //this.setTaskSource(DummyTransferWatcher.getBackgroundWatcher());
+                    // this.setTaskSource(DummyTransferWatcher.getBackgroundWatcher());
                     ITaskMonitor monitor = this.getTaskMonitor();
 
                     // PARENT of dropped sources
                     VRL targetDirVrl = resolvedTarget.getVRL();
-                    VRL vrls[] = sources.toArray(new VRL[0]); 
+                    VRL vrls[] = sources.toArray(new VRL[0]);
 
                     VRSTransferManager transferMngr = getVRSContext().getTransferManager();
                     // Delegate to TransferManager:
@@ -222,14 +224,14 @@ public class InteractiveProxyTransfer
 
     protected void handle(Throwable t)
     {
-        t.printStackTrace(); 
+        t.printStackTrace();
     }
 
     protected VRSContext getVRSContext()
     {
-       return VRSProxyFactory.getProxyVRSContext();
+        return VRSProxyFactory.getProxyVRSContext();
     }
- 
+
     private JFrame getFrame()
     {
         return null;

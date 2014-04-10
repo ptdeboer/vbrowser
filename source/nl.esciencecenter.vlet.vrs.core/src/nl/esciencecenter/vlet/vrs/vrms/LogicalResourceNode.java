@@ -301,16 +301,6 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     // ===
     // Getters // Setters
     // ===
-    /** Currently SERVER type or LINK type */
-    public String getType()
-    {
-        Attribute attr = resourceAttributes.get(ATTR_RESOURCE_TYPE);
-
-        if (attr != null)
-            return attr.getStringValue();
-
-        return null;
-    }
 
     protected void setType(String type)
     {
@@ -543,7 +533,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
 
     public String toXMLString() throws XMLDataParseException
     {
-        String comments = "VL-e Resource description of type:" + this.getType();
+        String comments = "VL-e Resource description of type:" + this.getResourceType();
         XMLData xmlData = getXMLData();
         // Server Attributes moved to ServerReg !
         AttributeSet attrs = this.resourceAttributes; // this.getResourceAttributeSet(useServerRegistry);
@@ -1129,7 +1119,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         // Prev version 1.0 update
         // Default location is "ResourceLocation". "Server" type is reserved.
         // ====================================================================
-        if (StringUtil.compareIgnoreCase(getType(), "Server") == 0)
+        if (StringUtil.compareIgnoreCase(getResourceType(), "Server") == 0)
             this.setType(VRS.RESOURCE_LOCATION_TYPE);
 
         // ====================================================================
@@ -1137,7 +1127,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         // Auto-Repair ResourceInfo to ResourceLocation !
         // ResourceInfo is dynamically created, may be be stored.
         // ====================================================================
-        if (StringUtil.compareIgnoreCase(getType(), VRS.RESOURCE_INFO_TYPE) == 0)
+        if (StringUtil.compareIgnoreCase(getResourceType(), VRS.RESOURCE_INFO_TYPE) == 0)
             this.setType(VRS.RESOURCE_LOCATION_TYPE);
 
     }
@@ -1553,11 +1543,14 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
 
     public Presentation getPresentation()
     {
+        // custom presentation set
         if (presentation != null)
+        {
             return presentation;
-
+        }
+        
         // Return Defaults:
-        return VRSPresentation.getPresentationFor(getScheme(), getHostname(), getType(), true);
+        return VRSPresentation.getPresentationFor(getVRL(), getResourceType(), true);
     }
 
     protected void setPresentation(Presentation newPresentation)

@@ -21,12 +21,12 @@
 
 package nl.esciencecenter.vlet.vrs.io;
 
-import nl.esciencecenter.ptk.io.RandomReader;
+import nl.esciencecenter.ptk.io.RandomReadable;
 
 /**
  * Random Readable interface. 
  */
-public interface VRandomReadable extends RandomReader
+public interface VRandomReadable extends RandomReadable
 {
 
 }

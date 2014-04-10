@@ -23,7 +23,6 @@ package nl.esciencecenter.vlet.gui.proxymodel;
 
 import java.util.ArrayList;
 
-import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;

@@ -126,9 +126,9 @@ public class ResourceTable extends JTable
     public void initColumns()
     {
         List<String> headers = getModel().getHeadersList(); 
-        this.getPresentation().setChildAttributeNames(headers);
+        this.getPresentation().setPreferredContentAttributeNames(headers);
         // Use order from presentation 
-        initColumns(getPresentation().getPreferredChildAttributeNames());
+        initColumns(getPresentation().getPreferredContentAttributeNames());
     }
     
     public boolean isEditable()
@@ -319,7 +319,7 @@ public class ResourceTable extends JTable
         
         // triggers restructure, and KEEP the current view order of Columns. 
         this.getModel().setHeaders(viewHeaders.toArray());
-        this.presentation.setChildAttributeNames(viewHeaders);
+        this.presentation.setPreferredContentAttributeNames(viewHeaders);
         this.getModel().fireTableStructureChanged(); 
     }
     
