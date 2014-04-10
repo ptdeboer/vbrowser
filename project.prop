@@ -39,7 +39,7 @@ project.env.ok=ok;
 platinum.install=${project.root}/../Platinum/dist
  
 ## version
-project.version=1.6.1
+project.version=1.6.1-rc1
 vlet.version=${project.version}
 vbrowser.version=${project.version}
 ## Owner/Vendor: 
