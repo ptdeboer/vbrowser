@@ -318,10 +318,20 @@ public class VFSTransfer extends TransferMonitor
 
 	public void updateSources(VNode[] nodes) 
 	{
-	    java.net.URI uris[]=new java.net.URI[nodes.length];
-		
-		for (int i=0;i<nodes.length;i++)
-		    uris[i]=nodes[i].getVRL().toURINoException(); 
+	    java.net.URI uris[]=null; 
+	    if (nodes==null)
+	    {
+	        updateSources(uris);
+	        return;
+	    }
+	    
+	    uris=new java.net.URI[nodes.length];
+    		
+	    for (int i=0;i<nodes.length;i++)
+	    {
+	        uris[i]=nodes[i].getVRL().toURINoException();
+	    }
+	    
 		super.updateSources(uris);
 	}
 

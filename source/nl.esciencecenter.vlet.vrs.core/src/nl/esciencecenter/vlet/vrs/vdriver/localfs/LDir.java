@@ -380,7 +380,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
     {
         try
         {
-            return fsNode.getModificationTime();
+            return fsNode.getModificationTimeMillies();
         }
         catch (IOException e)
         {

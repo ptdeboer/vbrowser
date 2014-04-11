@@ -45,8 +45,8 @@ import org.globus.ftp.MlsxEntry;
  * 
  * @author P.T. de Boer
  */
-public class GftpFile extends VFile implements VStreamReadable, VStreamWritable, VRandomAccessable, 
-       VChecksum // VSizeAdjustable
+public class GftpFile extends VFile implements VStreamReadable, VStreamWritable, VRandomAccessable,
+        VChecksum // VSizeAdjustable
 {
     /** GridServer handler */
     protected GftpFileSystem gftpServer = null;
@@ -92,7 +92,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
     @Override
     public void uploadFrom(VFSTransfer transfer, VFile file) throws VrsException
     {
-        //debugPrintf("uploadFrom:'%s' to '%s'\n", file, this);
+        // debugPrintf("uploadFrom:'%s' to '%s'\n", file, this);
 
         // Paranoia:
         if (file.isLocal() == false)
@@ -160,7 +160,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         }
         catch (VrsException e)
         {
-            throw new IOException(e.getMessage(),e); 
+            throw new IOException(e.getMessage(), e);
         }
     }
 
@@ -198,7 +198,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
             outps = createOutputStream();
             outps.write(new byte[0]);
             outps.close();
-            outps=null;
+            outps = null;
         }
         catch (Exception e)
         {
@@ -211,7 +211,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
                 }
                 catch (IOException e1)
                 {
-                    ; // ignore 
+                    ; // ignore
                 }
             }
 
@@ -245,7 +245,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         }
         catch (VrsException e)
         {
-            throw new IOException(e.getMessage(),e); 
+            throw new IOException(e.getMessage(), e);
         }
     }
 
@@ -263,7 +263,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         }
         catch (VrsException e)
         {
-            throw new IOException(e.getMessage(),e);
+            throw new IOException(e.getMessage(), e);
         }
     }
 
@@ -304,8 +304,7 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
     }
 
     /**
-     * Optimized method. When fetching multiple attributes, do not refetch the
-     * mlsxentry for each attribute.
+     * Optimized method. When fetching multiple attributes, do not refetch the mlsxentry for each attribute.
      * 
      * @param name
      * @param update
@@ -343,13 +342,10 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         return _entry;
     }
 
-   
-
-
     public String getChecksum(String algorithm) throws VrsException
     {
         String[] types = getChecksumTypes();
-        
+
         for (int i = 0; i < types.length; i++)
         {
             if (algorithm.equalsIgnoreCase(types[i]))
@@ -362,11 +358,11 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
                 }
                 catch (IOException e)
                 {
-                    throw new VrsException(e.getMessage(),e); 
+                    throw new VrsException(e.getMessage(), e);
                 }
             }
         }
-        
+
         throw new nl.esciencecenter.vlet.exception.NotImplementedException(algorithm + " Checksum algorithm is not implemented ");
 
     }

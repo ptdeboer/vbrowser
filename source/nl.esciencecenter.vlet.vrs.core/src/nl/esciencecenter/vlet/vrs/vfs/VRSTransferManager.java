@@ -646,7 +646,20 @@ public final class VRSTransferManager
     		{
     			public void doTask() throws Exception
     			{
-    				masterCopyMoveTo(transfer,node,targetFS,targetVRL,isMove,copyInteractor);
+    			    try
+    			    {
+    			        masterCopyMoveTo(transfer,node,targetFS,targetVRL,isMove,copyInteractor);
+    			    }
+    			    catch (Exception e)
+    			    {
+    			        this.setException(e); 
+    			        ITaskMonitor monitor = this.getMonitor();
+    			        if (monitor!=null)
+    			        {    
+    			            monitor.logPrintf("*** Exception ***\n%s\n", e.getMessage()); 
+    			        }
+    			        throw e; 
+    			    }
     			}
     
     			@Override
@@ -1376,7 +1389,6 @@ public final class VRSTransferManager
 			if ((monitor!=null) && (monitor instanceof VFSTransfer))
 			{
 				// Do a microsoft and change the statistics during a (multi) file copy here.  
-				VNode nodeArr[]=heap.toArray(new VNode[0]); 
 				((VFSTransfer)monitor).updateSources(nodes); //
 			}
 			

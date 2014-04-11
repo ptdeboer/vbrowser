@@ -333,8 +333,7 @@ public class TestVFS extends VTestCase
     @Test
     public void testFirst() throws Exception
     {
-        testCreateAndList3SubFiles();
-        testCreateAndList3SubDirs(); 
+        testCopyEmptyDir(); 
         testCreateAndDeleteRecursiveDir(); 
     }
 

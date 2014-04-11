@@ -21,7 +21,6 @@
 
 package nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs;
 
-
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,6 @@ import nl.esciencecenter.ptk.data.LongHolder;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.presentation.IPresentable;
 import nl.esciencecenter.ptk.presentation.Presentation;
-import nl.esciencecenter.ptk.vbrowser.ui.model.ViewNode;
 import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyException;
 import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
@@ -42,274 +40,272 @@ import nl.esciencecenter.vlet.vrs.presentation.VRSPresentation;
 import nl.esciencecenter.vlet.vrs.vrms.LogicalResourceNode;
 import nl.esciencecenter.vlet.vrs.vrms.VResourceLink;
 
-/** 
- * VRS ProxyNode 
+/**
+ * VRS ProxyNode
  */
 public class VRSProxyNode extends ProxyNode
 {
     private VNode vnode;
 
-    public VRSProxyNode(VRSProxyFactory vrsProxyFactory, VNode vnode,VRL locator) throws ProxyException, URISyntaxException
+    public VRSProxyNode(VRSProxyFactory vrsProxyFactory, VNode vnode, VRL locator) throws ProxyException, URISyntaxException
     {
-        super(vrsProxyFactory,locator);
-        this.vnode=vnode; 
+        super(vrsProxyFactory, locator);
+        this.vnode = vnode;
     }
-    
+
     protected VRSProxyFactory factory()
     {
-        return (VRSProxyFactory)this.getProxyFactory(); 
+        return (VRSProxyFactory) this.getProxyFactory();
     }
 
     protected void doPrefetchAttributes() throws ProxyException
     {
-        super.doPrefetchAttributes();         
-       
+        super.doPrefetchAttributes();
+
         if (vnode instanceof VResourceLink)
         {
-        	// assume true for now: 
-        	 this.cache.setIsComposite(true);  
+            // assume true for now:
+            this.cache.setIsComposite(true);
         }
     }
-    
-    
+
     @Override
     protected VRSProxyNode doGetParent() throws ProxyException
     {
         VNode parent;
-        
+
         try
         {
             parent = vnode.getParent();
-            if (parent==null)
-                return null; 
-           
-            return new VRSProxyNode(this.getProxyFactory(),parent,new VRL(parent.getVRL().toURI()));
+            if (parent == null)
+                return null;
+
+            return new VRSProxyNode(this.getProxyFactory(), parent, new VRL(parent.getVRL().toURI()));
         }
         catch (Exception e)
         {
-            throw createProxyException("Couldn't get parent of:"+locator,e); 
-        } 
+            throw createProxyException("Couldn't get parent of:" + locator, e);
+        }
     }
 
     @Override
-    protected List<? extends ProxyNode> doGetChilds(int offset, int range,LongHolder numChildsLeft) throws ProxyException
+    protected List<? extends ProxyNode> doGetChilds(int offset, int range, LongHolder numChildsLeft) throws ProxyException
     {
-    	debug("doGetChilds:"+this); 
-    	 
+        debug("doGetChilds:" + this);
+
         try
         {
-        	// check links first: 
-        	if (isResourceLink())
-        	{
-        		return resolve().doGetChilds(offset,range,numChildsLeft);  
-        	}
-        	else
-        	{ 
-        		if ((vnode instanceof VComposite)==false)  
-        			return null; 
+            // check links first:
+            if (isResourceLink())
+            {
+                return resolve().doGetChilds(offset, range, numChildsLeft);
+            }
+            else
+            {
+                if ((vnode instanceof VComposite) == false)
+                    return null;
 
-        		VNode nodes[] = ((VComposite)vnode).getNodes();
-            	return subrange(createNodes(nodes),offset,range); 
-        	}
-        	
+                VNode nodes[] = ((VComposite) vnode).getNodes();
+                return subrange(createNodes(nodes), offset, range);
+            }
+
         }
         catch (VrsException e)
         {
-        	throw createProxyException("Couldn't get childs of:"+locator,e); 
+            throw createProxyException("Couldn't get childs of:" + locator, e);
         }
-         
+
     }
-    
+
     protected VRSProxyNode resolve() throws ProxyException
     {
-    	debug("Resolving:"+this.vnode); 
-    	
-    	if ((vnode instanceof VResourceLink)==false)
-    		return this; 
-    	
-    	nl.esciencecenter.vbrowser.vrs.vrl.VRL vrl;
-    	
-		try 
-		{
-			vrl = ((VResourceLink)vnode).getTargetLocation();
-	    	VRSProxyNode node = factory()._openLocation(vrl); 
-	    	debug("Resolved to:"+node);
-	    	return node; 
-		}
-		catch (VrsException e) 
-		{
-			throw createProxyException("Failed to resolve node:"+this.vnode,e); 
-		}
+        debug("Resolving:" + this.vnode);
+
+        if ((vnode instanceof VResourceLink) == false)
+            return this;
+
+        nl.esciencecenter.vbrowser.vrs.vrl.VRL vrl;
+
+        try
+        {
+            vrl = ((VResourceLink) vnode).getTargetLocation();
+            VRSProxyNode node = factory()._openLocation(vrl);
+            debug("Resolved to:" + node);
+            return node;
+        }
+        catch (VrsException e)
+        {
+            throw createProxyException("Failed to resolve node:" + this.vnode, e);
+        }
     }
-    
+
     protected List<VRSProxyNode> createNodes(VNode[] nodes) throws ProxyException
     {
-    	if (nodes==null)
-    		return null; 
-    	
-        int len=nodes.length;  
-        
-        ArrayList<VRSProxyNode> pnodes=new ArrayList<VRSProxyNode>(len);
-        for (int i=0;i<len;i++)
+        if (nodes == null)
+            return null;
+
+        int len = nodes.length;
+
+        ArrayList<VRSProxyNode> pnodes = new ArrayList<VRSProxyNode>(len);
+        for (int i = 0; i < len; i++)
         {
-            pnodes.add(createNode(nodes[i]));  
+            pnodes.add(createNode(nodes[i]));
         }
-        return pnodes; 
+        return pnodes;
     }
 
     protected VRSProxyNode createNode(VNode node) throws ProxyException
     {
         try
         {
-            return new VRSProxyNode(factory(),node,new VRL(node.getVRL().toURI()));
+            return new VRSProxyNode(factory(), node, new VRL(node.getVRL().toURI()));
         }
         catch (Exception e)
         {
-            throw createProxyException("Error creating proxy node from:"+node,e);  
+            throw createProxyException("Error creating proxy node from:" + node, e);
         }
     }
-    
+
     @Override
-    protected String doGetIconURL(String status,int size) throws ProxyException
+    protected String doGetIconURL(String status, int size) throws ProxyException
     {
-        String url; 
-        
-    	if (vnode instanceof LogicalResourceNode)
-    	{
-    	    url=((LogicalResourceNode)vnode).getTargetIconURL();   
-    	}
-    	else
-    	{
-    	    url = vnode.getIconURL(size);  
-    	}
-    	
-    	return url; 
-    }
+        String url;
 
-	@Override
-	public VRSProxyFactory getProxyFactory()
-	{
-		return (VRSProxyFactory)super.getProxyFactory();  
-	}
-	
-	
-	protected void debug(String msg)
-	{
-		//System.err.println("VRSProxyNode:"+msg); 
-	}
-	
-	public String toString()
-	{
-	    return "<VRSProxyNode:"+getResourceType()+":"+getVRL(); 
-	}
-
-	@Override
-	protected String doGetMimeType() throws ProxyException
-	{
-	    String mimeType=null; 
-	    try 
-        {
-	        mimeType=vnode.getMimeType(); 
-        }
-        catch (VrsException e) 
-        {
-            throw new ProxyException("Couldn't determine mime type of:"+vnode,e); 
-        } 
-        
         if (vnode instanceof LogicalResourceNode)
         {
-            LogicalResourceNode lnode=(LogicalResourceNode)vnode; 
-            mimeType=lnode.getTargetMimeType(); 
+            url = ((LogicalResourceNode) vnode).getTargetIconURL();
         }
-        
-        return mimeType; 
-	}
-
-	@Override
-	protected boolean doGetIsComposite() throws ProxyException 
-	{
-	    boolean isComposite=vnode.isComposite();
-	    
-	    if (vnode instanceof LogicalResourceNode)
+        else
         {
-            LogicalResourceNode lnode=(LogicalResourceNode)vnode; 
-            try 
+            url = vnode.getIconURL(size);
+        }
+
+        return url;
+    }
+
+    @Override
+    public VRSProxyFactory getProxyFactory()
+    {
+        return (VRSProxyFactory) super.getProxyFactory();
+    }
+
+    protected void debug(String msg)
+    {
+        // System.err.println("VRSProxyNode:"+msg);
+    }
+
+    public String toString()
+    {
+        return "<VRSProxyNode:" + getResourceType() + ":" + getVRL();
+    }
+
+    @Override
+    protected String doGetMimeType() throws ProxyException
+    {
+        String mimeType = null;
+        try
+        {
+            mimeType = vnode.getMimeType();
+        }
+        catch (VrsException e)
+        {
+            throw new ProxyException("Couldn't determine mime type of:" + vnode, e);
+        }
+
+        if (vnode instanceof LogicalResourceNode)
+        {
+            LogicalResourceNode lnode = (LogicalResourceNode) vnode;
+            mimeType = lnode.getTargetMimeType();
+        }
+
+        return mimeType;
+    }
+
+    @Override
+    protected boolean doGetIsComposite() throws ProxyException
+    {
+        boolean isComposite = vnode.isComposite();
+
+        if (vnode instanceof LogicalResourceNode)
+        {
+            LogicalResourceNode lnode = (LogicalResourceNode) vnode;
+            try
             {
-                isComposite=lnode.getTargetIsComposite(true);
+                isComposite = lnode.getTargetIsComposite(true);
             }
             catch (VrsException e)
             {
-                throw createProxyException("Error checking LogicalResourceNode:"+lnode,e); 
+                throw createProxyException("Error checking LogicalResourceNode:" + lnode, e);
             }
         }
-	    
-	    return isComposite; 
-	}
+
+        return isComposite;
+    }
 
     @Override
     protected List<String> doGetChildTypes() throws ProxyException
     {
         if (vnode instanceof VComposite)
         {
-            return new StringList(((VComposite)vnode).getResourceTypes()); 
+            return new StringList(((VComposite) vnode).getResourceTypes());
         }
-        
-        return null; 
+
+        return null;
     }
-    
-	// ========================================================================
-	// Misc 
-	// ========================================================================
-	
-	private ProxyException createProxyException(String msg, Exception e) 
-	{
-	    return new ProxyException(msg+"\n"+e.getMessage(),e); 
+
+    // ========================================================================
+    // Misc
+    // ========================================================================
+
+    private ProxyException createProxyException(String msg, Exception e)
+    {
+        return new ProxyException(msg + "\n" + e.getMessage(), e);
     }
 
     @Override
     protected String doGetName()
     {
-    	return vnode.getName(); 
+        return vnode.getName();
     }
-    
+
     @Override
     protected String doGetResourceType()
-    {   
-        return vnode.getResourceType(); 
+    {
+        return vnode.getResourceType();
     }
 
     @Override
     protected String doGetResourceStatus() throws ProxyException
     {
-        try 
+        try
         {
             return this.vnode.getResourceStatus();
         }
         catch (VrsException e)
         {
-            throw createProxyException("Couldn't get status of:"+vnode,e);  
+            throw createProxyException("Couldn't get status of:" + vnode, e);
         }
     }
 
     @Override
     protected List<String> doGetAttributeNames() throws ProxyException
     {
-        return new StringList(vnode.getAttributeNames()); 
+        return new StringList(vnode.getAttributeNames());
     }
-    
-	@Override
-    protected List<Attribute> doGetAttributes(List<String> names) throws ProxyException
+
+    @Override
+    protected List<Attribute> doGetAttributes(String names[]) throws ProxyException
     {
         try
         {
-            return Attribute.toList(vnode.getAttributes(names.toArray(new String[0]))); 
+            return Attribute.toList(vnode.getAttributes(names));
         }
         catch (VrsException e)
         {
-            throw new ProxyException("Couldn't get attributes\n",e); 
-        } 
-   }
-    
+            throw new ProxyException("Couldn't get attributes\n", e);
+        }
+    }
+
     @Override
     protected Presentation doGetPresentation()
     {
@@ -317,27 +313,27 @@ public class VRSProxyNode extends ProxyNode
         {
             return ((IPresentable) vnode).getPresentation();
         }
-        
-        String type=vnode.getResourceType();  
-        
-        return VRSPresentation.getPresentationFor(vnode.getVRL(),type, true);
+
+        String type = vnode.getResourceType();
+
+        return VRSPresentation.getPresentationFor(vnode.getVRL(), type, true);
     }
 
     protected boolean doIsResourceLink()
     {
         if (vnode instanceof VResourceLink)
-            return true; 
-        
-        if (vnode.getVRL()==null) 
-            return false; 
+            return true;
 
-        // All .vlink AND .vrsx files are ResourceLinks ! 
+        if (vnode.getVRL() == null)
+            return false;
+
+        // All .vlink AND .vrsx files are ResourceLinks !
         if (vnode.getVRL().isVLink() == true)
             return true;
-        
+
         return false;
     }
-    
+
     @Override
     protected VRL doGetResourceLinkVRL() throws ProxyException
     {
@@ -345,15 +341,15 @@ public class VRSProxyNode extends ProxyNode
         {
             try
             {
-                return ((VResourceLink)vnode).getTargetLocation();
+                return ((VResourceLink) vnode).getTargetLocation();
             }
             catch (VrsException e)
             {
-              throw new ProxyException(e.getMessage(),e); 
-            } 
+                throw new ProxyException(e.getMessage(), e);
+            }
         }
-        
-        return null; 
+
+        return null;
     }
 
     @Override
@@ -372,8 +368,13 @@ public class VRSProxyNode extends ProxyNode
     @Override
     protected ProxyNode doRenameTo(String nameOrNewPath) throws ProxyException
     {
-        // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    protected boolean doExists() throws ProxyException
+    {
+        return true;
     }
 
 }

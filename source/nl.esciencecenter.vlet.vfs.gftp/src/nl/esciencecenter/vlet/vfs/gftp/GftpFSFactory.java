@@ -21,7 +21,6 @@
 
 package nl.esciencecenter.vlet.vfs.gftp;
 
-
 import static nl.esciencecenter.vlet.VletConfig.ATTR_PASSIVE_MODE;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_ALLOW_3RD_PARTY;
 import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_GROUPNAME;
@@ -44,43 +43,44 @@ import nl.esciencecenter.vlet.vrs.vfs.VFSFactory;
 
 /**
  * Factory class for GftpFileSystems
- *    
+ * 
  */
 public class GftpFSFactory extends VFSFactory
 {
     // =================================================================
-    // Class Fields 
+    // Class Fields
     // =================================================================
     /** Default attributes names for all VFSNodes */
 
     public static final String[] gftpAttributeNames =
-    { 
-        ATTR_UNIX_OWNER, 
-        ATTR_UNIX_GROUPNAME,
-        ATTR_GFTPUNIQUE
+    {
+            ATTR_UNIX_OWNER,
+            ATTR_UNIX_GROUPNAME,
+            ATTR_GFTPUNIQUE
     };
-    
+
     // =================================================================
-    // Class Methods 
+    // Class Methods
     // =================================================================
- 
+
     /** current supported type "gftp://" */
     private static final String supportedTypes[] =
-         { VFS.GFTP_SCHEME,"gftp","gridftp" };
+    { VFS.GFTP_SCHEME, "gftp", "gridftp" };
 
     // =================================================================
     // Instance Methods
     // =================================================================
-   
+
     public GftpFSFactory()
     {
-        // Make sure Globus bindings are initialized 
-        GlobusUtil.init(); 
+        // Make sure Globus bindings are initialized
+        GlobusUtil.init();
     }
-    
+
     /**
      * Implementation of VFS.getTypes. <br>
-     * Returns list 
+     * Returns list
+     * 
      * @see nl.esciencecenter.vlet.vrs.vfs.VFS#getSchemeNames()
      */
     public String[] getSchemeNames()
@@ -94,72 +94,71 @@ public class GftpFSFactory extends VFSFactory
     }
 
     @Override
-    public ServerInfo updateServerInfo(VRSContext context,ServerInfo info, VRL location)
-        throws VrsException 
+    public ServerInfo updateServerInfo(VRSContext context, ServerInfo info, VRL location)
+            throws VrsException
     {
-        super.updateServerInfo(context,info,location); 
+        super.updateServerInfo(context, info, location);
 
-        info.matchTemplate(getDefaultServerAttributes(),true); 
-        
+        info.matchTemplate(getDefaultServerAttributes(), true);
+
         // always use GSI auth:
         info.setUseGSIAuth();
-        
-        return info; 
+
+        return info;
     }
-      
-    private AttributeSet getDefaultServerAttributes() 
+
+    private AttributeSet getDefaultServerAttributes()
     {
-    	AttributeSet attrs=new AttributeSet(); 
-    	// set default server attributes (if not set already) 
-        attrs.put(new Attribute(ATTR_PASSIVE_MODE,true),true);
-        // old resource description didn't have this one: 
-        attrs.put(new Attribute(ATTR_ALLOW_3RD_PARTY,true),true);
-        attrs.put(new Attribute(ATTR_HOSTNAME,"GFTPHOST"),true);
-        attrs.put(new Attribute(ATTR_PORT,2811),true);
-        
-        
-        // auto update when in debug mode ! 
+        AttributeSet attrs = new AttributeSet();
+        // set default server attributes (if not set already)
+        attrs.put(new Attribute(ATTR_PASSIVE_MODE, true), true);
+        // old resource description didn't have this one:
+        attrs.put(new Attribute(ATTR_ALLOW_3RD_PARTY, true), true);
+        attrs.put(new Attribute(ATTR_HOSTNAME, "GFTPHOST"), true);
+        attrs.put(new Attribute(ATTR_PORT, 2811), true);
+
+        // auto update when in debug mode !
         if (ClassLogger.getRootLogger().isLevelDebug())
         {
-            //debug attribute
-            attrs.put(new Attribute(GftpFileSystem.ATTR_GFTP_BLIND_MODE,false),true);   
+            // debug attribute
+            attrs.put(new Attribute(GftpFileSystem.ATTR_GFTP_BLIND_MODE, false), true);
         }
-        
-		return attrs; 
-	}
 
-	@Override
-    public void clear()
-    {
-      
+        return attrs;
     }
 
     @Override
-    public GftpFileSystem createNewFileSystem(VRSContext context, ServerInfo info,VRL location)
-            throws VrsException 
+    public void clear()
     {
-    	return new GftpFileSystem(context,info,location);
+
     }
-    
+
+    @Override
+    public GftpFileSystem createNewFileSystem(VRSContext context, ServerInfo info, VRL location)
+            throws VrsException
+    {
+        return new GftpFileSystem(context, info, location);
+    }
+
     // =================================================================
-    // Class Misc. Methods 
+    // Class Misc. Methods
     // =================================================================
-    
+
     public String getVersion()
     {
-         return "GridFTP VFS Plugin version: "+ VletConfig.getVletVersion();   
+        return "GridFTP VFS Plugin version: " + VletConfig.getVletVersion();
     }
-        
+
     public String getAbout()
     {
         return "<html><body><center>"
-        +"<table border=0 cellspacing=4 width=600>"
-         + "<tr bgcolor=#c0c0c0><td> <h3> Globus GFTP VRS Plugin. </h3></td></tr>"
-         + "<tr bgcolor=#f0f0f0><td>"
-                 +"Globus 1.0 & 2.0 compatible Grid FTP Virtual File System plug-in"
-                 +"</td></tr>" 
-         + "</table></center></body></html>";
-        
+                + "<table border=0 cellspacing=4 width=600>"
+                + "<tr bgcolor=#c0c0c0><td> <h3> Globus GFTP VRS Plugin. </h3></td></tr>"
+                + "<tr bgcolor=#f0f0f0><td>"
+                + "Globus 1.0 & 2.0 compatible Grid FTP Virtual File System plug-in"
+                + "</td></tr>"
+                + "</table></center></body></html>";
+
     }
 
 }

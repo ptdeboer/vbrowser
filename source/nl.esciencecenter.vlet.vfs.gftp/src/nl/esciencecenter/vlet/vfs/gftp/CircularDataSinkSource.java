@@ -20,6 +20,7 @@
 // source:
 
 package nl.esciencecenter.vlet.vfs.gftp;
+
 /*
  * Copyright 2006-2010 The Virtual Laboratory for e-Science (VL-e) 
  * 
@@ -40,7 +41,7 @@ package nl.esciencecenter.vlet.vfs.gftp;
  * ---
  * $Id: CircularDataSinkSource.java,v 1.2 2011-04-18 12:05:09 ptdeboer Exp $  
  * $Date: 2011-04-18 12:05:09 $
- */ 
+ */
 // source: 
 
 //package nl.uva.vlet.vfs.gridftpfs;
@@ -137,4 +138,4 @@ package nl.esciencecenter.vlet.vfs.gftp;
 //    }
 //
 //
-//}
+// }

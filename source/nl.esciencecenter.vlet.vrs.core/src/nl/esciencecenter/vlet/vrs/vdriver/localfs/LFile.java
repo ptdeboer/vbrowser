@@ -299,7 +299,7 @@ public class LFile extends VFile implements VStreamAccessable,
     {
         try
         {
-            return fsNode.getModificationTime();
+            return fsNode.getModificationTimeMillies();
         }
         catch (IOException e)
         {

@@ -48,7 +48,13 @@ public class SRMConstants
 
     public static String STORM_BACKEND_NAME = "STORM";
 
-    public static final String[] BACKEND_NAMES = { BESTMAN_BACKEND_NAME, CASTOR_BACKEND_NAME, DCACHE_BACKEND_NAME,
-            DPM_BACKEND_NAME, STORM_BACKEND_NAME };
+    public static final String[] BACKEND_NAMES = 
+        {
+            BESTMAN_BACKEND_NAME, 
+            CASTOR_BACKEND_NAME, 
+            DCACHE_BACKEND_NAME,
+            DPM_BACKEND_NAME, 
+            STORM_BACKEND_NAME 
+        };
 
 }

@@ -123,15 +123,15 @@ import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.ietf.jgss.GSSCredential;
 
-
 /**
- * 
- * @author S.Koulouzis, Piter T. de Boer
+ * SRM Client for V2.2 
+ * @author S.Koulouzis
+ * @author Piter T. de Boer
  */
 public class SRMClientV2 extends SRMClient
 {
     // ========================================================================
-    // Class 
+    // Class
     // ========================================================================
 
     private static java.util.logging.Logger logger;
@@ -142,13 +142,11 @@ public class SRMClientV2 extends SRMClient
      * Creates a path array from a given uri array.
      * 
      * @param suri
-     *            the srm uri (i.e.
-     *            srm://tbn18.nikhef.nl:8446/dpm/nikhef.nl/home/pvier/file.txt)
+     *            the srm uri (i.e. srm://tbn18.nikhef.nl:8446/dpm/nikhef.nl/home/pvier/file.txt)
      * @return the paths
      */
     public static String[] createPathsArray(org.apache.axis.types.URI[] suri)
     {
-
         String[] paths = new String[suri.length];
         for (int i = 0; i < paths.length; i++)
         {
@@ -156,50 +154,49 @@ public class SRMClientV2 extends SRMClient
         }
         return paths;
     }
-    
-    /** set Class Logger */ 
+
+    /** set Class Logger */
     public static void setLogger(java.util.logging.Logger srmLogger)
     {
-        logger=srmLogger;
-    }
-    
-    /** Get Class Logger */ 
-    public static java.util.logging.Logger getLogger()
-    {
-        return logger; 
+        logger = srmLogger;
     }
 
-    
+    /** Get Class Logger */
+    public static java.util.logging.Logger getLogger()
+    {
+        return logger;
+    }
+
     static
     {
-    	logger=java.util.logging.Logger.getLogger("nl.uva.vlet.lbl.srm.SRMClientV2"); 
-    	logger.log(Level.CONFIG,"--->>> Init SRM v22 Transport (12) <<< ---"); 
-        
+        logger = java.util.logging.Logger.getLogger("nl.uva.vlet.lbl.srm.SRMClientV2");
+        logger.log(Level.CONFIG, "--->>> Init SRM v22 Transport (12) <<< ---");
+
         // Register new protocol HTTPG
         SimpleProvider lprovider = new SimpleProvider();
         lprovider.deployTransport("httpg", new SimpleTargetedChain(new GSIHTTPSender()));
 
-        boolean useGlobusUtil=true;
-        
+        boolean useGlobusUtil = true;
+
         if (useGlobusUtil)
         {
-        	Util.registerTransport();
+            Util.registerTransport();
         }
         else
         {
-            // Explicit (minimal) initialization. Does the same as Util.registerTransport(); 
-	        Call.initialize();
-	        Call.addTransportPackage("org.globus.net.protocol");
-	        Call.setTransportForProtocol("httpg", org.globus.axis.transport.GSIHTTPTransport.class);
+            // Explicit (minimal) initialization. Does the same as Util.registerTransport();
+            Call.initialize();
+            Call.addTransportPackage("org.globus.net.protocol");
+            Call.setTransportForProtocol("httpg", org.globus.axis.transport.GSIHTTPTransport.class);
         }
-        
-        //SRMServiceLocator srmServiceLocator = new SRMServiceLocator(provider); 
 
-        AxisClient axis=new AxisClient(lprovider); 
+        // SRMServiceLocator srmServiceLocator = new SRMServiceLocator(provider);
+
+        AxisClient axis = new AxisClient(lprovider);
         srmServiceLocator = new SRMServiceLocator();
-        srmServiceLocator.setEngine(axis); 
+        srmServiceLocator.setEngine(axis);
     }
-    
+
     // ========================================================================
     // Instance
     // ========================================================================
@@ -207,48 +204,47 @@ public class SRMClientV2 extends SRMClient
     private ISRM _srmService = null;
 
     private int initialWaitTime = 100;
-    
+
     private int incrementalWaitTime = 100;
 
     private SRMFileOptions srmFileOptions = new SRMFileOptions();
 
     private GlobusCredential globusCredential;
 
-    private String versionInfo=null; 
+    private String versionInfo = null;
 
     /**
-     * Initialize stubs and transport.  
+     * Initialize stubs and transport.
      * 
      * @throws SRMException
      */
     private void initTransport() throws SRMException
-    {   
-        // static initialization moved to static{...} ! 
-    	
+    {
+        // static initialization moved to static{...} !
+
         try
         {
-            // 
+            //
             java.net.URL url;
-            
-            // following code doesn't matter: if this works, the URL will fail later anyway. 
-//            url=new java.net.URL("httpg",
-//                        srmUri.getHost(),
-//                        srmUri.getPort(),
-//                        srmUri.getPath(),
-//                        new org.globus.net.protocol.httpg.Handler());
-//            
 
-            // must work or else httpg protocol will fail later anyway!  
-            url=srmUri.toURL(); 
-            
+            // following code doesn't matter: if this works, the URL will fail later anyway.
+            // url=new java.net.URL("httpg",
+            // srmUri.getHost(),
+            // srmUri.getPort(),
+            // srmUri.getPath(),
+            // new org.globus.net.protocol.httpg.Handler());
+            //
+
+            // must work or else httpg protocol will fail later anyway!
+            url = srmUri.toURL();
+
             this._srmService = srmServiceLocator.getsrm(url);
 
             // Set Axis socket connection timeout
             ((Stub) this._srmService).setTimeout(connectionTimeout);
 
-            if ( (this._srmService instanceof Stub)==false)
-                throw new SRMException("Internal error: SRMService Interface is not an (Axis)Stub!:"+_srmService); 
-            
+            if ((this._srmService instanceof Stub) == false)
+                throw new SRMException("Internal error: SRMService Interface is not an (Axis)Stub!:" + _srmService);
 
             Stub axis_isrm_as_stub = (Stub) this._srmService;
 
@@ -256,67 +252,69 @@ public class SRMClientV2 extends SRMClient
             // Make sure the custom Globus Credential is used to allow
             // for multi credential (=multi user) authentication!
             // =========================================================
-            
-            if (this.globusCredential!=null)
+
+            if (this.globusCredential != null)
             {
                 GlobusGSSCredentialImpl gssCredential;
                 // convert globus credential to gss credential:
-                gssCredential=new GlobusGSSCredentialImpl(globusCredential, GSSCredential.DEFAULT_LIFETIME); 
+                gssCredential = new GlobusGSSCredentialImpl(globusCredential, GSSCredential.DEFAULT_LIFETIME);
                 axis_isrm_as_stub._setProperty(GSIHTTPTransport.GSI_CREDENTIALS, gssCredential);
-                
-                // Not needed:  
-                //GSSName name=null; // tbi
-                // set custom context on stub ! 
-                //GlobusGSSContextImpl context=new GlobusGSSContextImpl(name,gssCredential); 
-                //axis_isrm_as_stub._setProperty(GSIHTTPTransport.GSI_CONTEXT, context);
+
+                // Not needed:
+                // GSSName name=null; // tbi
+                // set custom context on stub !
+                // GlobusGSSContextImpl context=new GlobusGSSContextImpl(name,gssCredential);
+                // axis_isrm_as_stub._setProperty(GSIHTTPTransport.GSI_CONTEXT, context);
             }
 
             // axis_isrm_as_stub._setProperty("org.globus.gsi.credentials", user_cred);
             // axis_isrm_as_stub._setProperty("org.globus.gsi.authorization",
             // new HostAuthorization(gss_expected_name));
-            
-            boolean gsifull=true;  
-            boolean gsilimited=false; 
-            
+
+            boolean gsifull = true;
+            boolean gsilimited = false;
+
             if (gsifull)
                 axis_isrm_as_stub._setProperty("org.globus.gsi.mode", "gsifull");
-            else if (gsilimited) 
+            else if (gsilimited)
                 axis_isrm_as_stub._setProperty("org.globus.gsi.mode", "gsilimited");
-            else 
+            else
                 axis_isrm_as_stub._setProperty("org.globus.gsi.mode", "gsi");
         }
         catch (java.net.MalformedURLException e)
         {
-        	String errorTxt=e.getMessage();
-        	if (errorTxt==null)
-        		errorTxt=""; 
-        		
-        	if (errorTxt.toLowerCase().contains("unknown protocol"))  
-        	{
-        		throw SRMException.createConnectionException("Unknown protocol exception!\n"
-        				+"Tomcat hint:\n"
-        				+"When deployed inside tomcat, make sure 'cog-url.jar' is in TOMCAT_INSTALL/endorsed/ (preferred) "
-        				+"or TOMCAT_INSTALL/lib/.\n---\n" 
-        				+"Reason="+errorTxt,e);
-        	}
-        	else
-        	{
-        		throw SRMException.createConnectionException("MalformedURLException. Connection failed to:" + srmUri
-        		        +"\nReason="+e.getMessage(), e);
-        	}
+            String errorTxt = e.getMessage();
+            if (errorTxt == null)
+                errorTxt = "";
+
+            if (errorTxt.toLowerCase().contains("unknown protocol"))
+            {
+                throw SRMException.createConnectionException("Unknown protocol exception!\n"
+                        + "Tomcat hint:\n"
+                        + "When deployed inside tomcat, make sure 'cog-url.jar' is in TOMCAT_INSTALL/endorsed/ (preferred) "
+                        + "or TOMCAT_INSTALL/lib/.\n---\n"
+                        + "Reason=" + errorTxt, e);
+            }
+            else
+            {
+                throw SRMException.createConnectionException("MalformedURLException. Connection failed to:" + srmUri
+                        + "\nReason=" + e.getMessage(), e);
+            }
         }
         catch (Exception e)
         {
             throw SRMException.createConnectionException("SRM Connection Error. Connection failed to:" + srmUri
-                    +"\nReason="+e.getMessage(), e);
+                    + "\nReason=" + e.getMessage(), e);
         }
     }
 
     /**
      * Creates an SRMClientV2.
      * 
-     * @param srmUri the service URI, usually obtained by the BDII service.
-     * @param connect whether to connect to the server.
+     * @param srmUri
+     *            the service URI, usually obtained by the BDII service.
+     * @param connect
+     *            whether to connect to the server.
      * @throws SRMException
      * @throws Exception
      */
@@ -331,9 +329,12 @@ public class SRMClientV2 extends SRMClient
     /**
      * Creates an SRMClientV2.
      * 
-     * @param host the host name
-     * @param port the port number
-     * @param connect if true connects after instantiating the client.
+     * @param host
+     *            the host name
+     * @param port
+     *            the port number
+     * @param connect
+     *            if true connects after instantiating the client.
      * @throws SRMException
      * @throws URISyntaxException
      */
@@ -344,30 +345,29 @@ public class SRMClientV2 extends SRMClient
         if (connect)
             connect();
     }
-    
+
     /**
-     * Explicit set Credential Object to use. 
-     * Needs to be checked whether GSS or GLOBUS is needed here. 
-     */ 
+     * Explicit set Credential Object to use. Needs to be checked whether GSS or GLOBUS is needed here.
+     */
     public void setGlobusCredential(GlobusCredential globusCredential)
     {
-        this.globusCredential=globusCredential; 
+        this.globusCredential = globusCredential;
     }
-    
+
     @Override
     public void connect() throws SRMException
     {
         if (!isConnected())
         {
             initTransport();
-            String version=getVersion();
-            debugPrintf("Connected to SRM Version:%s\n",version); 
+            String version = getVersion();
+            debugPrintf("Connected to SRM Version:%s\n", version);
         }
     }
 
     /**
-     * Disconnects from service and cleans up resources. Use connect() first
-     * after disconnect() to continue communications.
+     * Disconnects from service and cleans up resources. Use connect() first after disconnect() to continue
+     * communications.
      * 
      * @throws SRMException
      */
@@ -384,15 +384,14 @@ public class SRMClientV2 extends SRMClient
 
         return false;
     }
-    
+
     public void setConnectionTimeout(int time)
     {
         this.connectionTimeout = time;
-        // Update Stub ! 
-        if (_srmService!=null)
+        // Update Stub !
+        if (_srmService != null)
             ((Stub) this._srmService).setTimeout(connectionTimeout);
     }
-    
 
     /**
      * Create SRM compatible (Axis) URI.
@@ -409,19 +408,17 @@ public class SRMClientV2 extends SRMClient
         {
             return new org.apache.axis.types.URI(uristr);
         }
-        catch (MalformedURIException e) 
+        catch (MalformedURIException e)
         {
-            throw new SRMException("Invalid SRM URI. Path contains unsupported characters:'"+path+"'",e);
+            throw new SRMException("Invalid SRM URI. Path contains unsupported characters:'" + path + "'", e);
         }
     }
 
     // ========================================================================
-    // ========================================================================
-    //
-    // *** SRM Service Methods ***
+    // *** 
+    // SRM Service Methods 
+    // ***
     // Actual Calls to the Service Stubs!
-    // 
-    // ========================================================================
     // ========================================================================
 
     /**
@@ -436,8 +433,7 @@ public class SRMClientV2 extends SRMClient
     }
 
     /**
-     * Master method for interacting with SRM service. Returns metadata,
-     * sub-directories for files and/or directories
+     * Master method for interacting with SRM service. Returns metadata, sub-directories for files and/or directories
      * 
      * @param numOfLevels
      *            1 for a single file, 2 for directory contents.
@@ -451,9 +447,9 @@ public class SRMClientV2 extends SRMClient
      * 
      * @throws SRMException
      */
-    public ArrayOfTMetaDataPathDetail srmGetMetaDataPathDetails(int numOfLevels, 
+    public ArrayOfTMetaDataPathDetail srmGetMetaDataPathDetails(int numOfLevels,
             org.apache.axis.types.URI[] uris,
-            boolean fullDetails, 
+            boolean fullDetails,
             boolean allLevelRecursive,
             int offset,
             int count) throws SRMException
@@ -468,20 +464,20 @@ public class SRMClientV2 extends SRMClient
             connect();
             ArrayOfAnyURI arrayOfURI = new ArrayOfAnyURI(uris);
 
-            debugPrintf(">>> Querying path(s):%s\n",concatinateURI(arrayOfURI));
+            debugPrintf(">>> Querying path(s):%s\n", concatinateURI(arrayOfURI));
 
             SrmLsRequest lsRequest = new SrmLsRequest();
             lsRequest.setFullDetailedList(fullDetails);
             lsRequest.setArrayOfSURLs(arrayOfURI);
-            
-            // specify count+offset; 
-            if (count>0)
+
+            // specify count+offset;
+            if (count > 0)
                 lsRequest.setCount(count);
-            
-            // offset can be 0! 
-            if (offset>=0)
+
+            // offset can be 0!
+            if (offset >= 0)
                 lsRequest.setOffset(offset);
-            
+
             // =========================================
             // Either full recursion or number of levels
             // =========================================
@@ -509,110 +505,109 @@ public class SRMClientV2 extends SRMClient
             debug("Request Token: " + token);
             details = lsResponse.getDetails();
 
-            
             if (lsResponse.getReturnStatus().getStatusCode() == TStatusCode.SRM_SUCCESS)
             {
-                // Log with INFO level current debugging purposes.  
-                debugPrintf("srmLs: synchronous mode returned SRM_SUCCESS.\n"); 
+                // Log with INFO level current debugging purposes.
+                debugPrintf("srmLs: synchronous mode returned SRM_SUCCESS.\n");
                 // >>> synchronous mode ok.
             }
             else if (lsResponse.getReturnStatus().getStatusCode() == TStatusCode.SRM_FAILURE)
             {
-                debugPrintf("srmLs: SRM_FAILURE! (path not found?)\n"); 
+                debugPrintf("srmLs: SRM_FAILURE! (path not found?)\n");
                 throw createSRMExceptionFromStatusCode("Error while getting " + lsResponse.getClass().getName(), lsResponse
                         .getReturnStatus());
             }
             else if (lsResponse.getReturnStatus().getStatusCode() != TStatusCode.SRM_REQUEST_QUEUED)
             {
-                infoPrintf("srmLs: UNKNOWN STATUS !\n"); 
-                throw createSRMExceptionFromStatusCode("UNKNOWN SRM STATUS: while getting " + lsResponse.getClass().getName(), 
+                infoPrintf("srmLs: UNKNOWN STATUS !\n");
+                throw createSRMExceptionFromStatusCode("UNKNOWN SRM STATUS: while getting " + lsResponse.getClass().getName(),
                         lsResponse.getReturnStatus());
             }
-            else // if (lsResponse.getReturnStatus().getStatusCode() != TStatusCode.SRM_REQUEST_QUEUED)
+            else
+            // if (lsResponse.getReturnStatus().getStatusCode() != TStatusCode.SRM_REQUEST_QUEUED)
             {
-                // boolean enableAsync=false; 
-                // Log with INFO level current debugging purposes.  
+                // boolean enableAsync=false;
+                // Log with INFO level current debugging purposes.
                 debugPrintf("srmLs: synchronous call returned: SRM_REQUEST_QUEUED -> Polling!\n");
-                
-                //if (enableAsync==false)
-                //    throw createSRMExceptionFromStatusCode("Error while getting " + lsResponse.getClass().getName(), lsResponse
-                //             .getReturnStatus());
-              
-                // ---------------------- 
-                // Asynchronous mode !!! 
+
+                // if (enableAsync==false)
+                // throw createSRMExceptionFromStatusCode("Error while getting " + lsResponse.getClass().getName(),
+                // lsResponse
+                // .getReturnStatus());
+
                 // ----------------------
-                
-                // could be integrated with "pollStatus()" method. 
-                
-                TReturnStatus stat; 
-                SrmStatusOfLsRequestResponse response; 
-                
-                long waitTimeIncrement=100; 
-                long waitTime=100;
-                long totalWaitTime=0; 
-                
-                
+                // Asynchronous mode !!!
+                // ----------------------
+
+                // could be integrated with "pollStatus()" method.
+
+                TReturnStatus stat;
+                SrmStatusOfLsRequestResponse response;
+
+                long waitTimeIncrement = 100;
+                long waitTime = 100;
+                long totalWaitTime = 0;
+
                 do
-                {   
-                    debugPrintf("srmLs: polling!:%d\n",waitTime);  
-                    
+                {
+                    debugPrintf("srmLs: polling!:%d\n", waitTime);
+
                     try
                     {
                         Thread.sleep(waitTime);
-                        totalWaitTime+=waitTime;
+                        totalWaitTime += waitTime;
                     }
                     catch (InterruptedException e)
                     {
                         e.printStackTrace();
-                    } 
- 
-                    
+                    }
+
                     SrmStatusOfLsRequestRequest srmStatusOfLsRequestRequest = new SrmStatusOfLsRequestRequest();
                     srmStatusOfLsRequestRequest.setRequestToken(token);
-                    
+
                     response = getISRM().srmStatusOfLsRequest(srmStatusOfLsRequestRequest);
                     stat = response.getReturnStatus();
-                    
-                    debugPrintf("srmLs: status=%s (waitTime=%d)\n",stat.getStatusCode().getValue(),waitTime);   
-                    waitTime+=waitTimeIncrement; 
-                    int maxTime=getSRMRequestTimeout();
+
+                    debugPrintf("srmLs: status=%s (waitTime=%d)\n", stat.getStatusCode().getValue(), waitTime);
+                    waitTime += waitTimeIncrement;
+                    int maxTime = getSRMRequestTimeout();
                     if (totalWaitTime > maxTime)
                     {
                         debug("TIMEOUT: SleepTime=" + totalWaitTime + " getSRMRequestTimeout: " + maxTime
                                 + "\n Must abort files. Status: " + stat.getStatusCode().getValue() + " " + stat.getExplanation());
-                        
-                        errorPrintf("Timeout: totalWaitTime > srmRequestTimeOut: %d>%d\n",totalWaitTime,maxTime);
-                        
-                        throw createSRMExceptionFromStatusCode("Timeout Error ("+totalWaitTime+"ms) while getting " + response.getClass().getName() + ". Request aborted",
+
+                        errorPrintf("Timeout: totalWaitTime > srmRequestTimeOut: %d>%d\n", totalWaitTime, maxTime);
+
+                        throw createSRMExceptionFromStatusCode("Timeout Error (" + totalWaitTime + "ms) while getting "
+                                + response.getClass().getName() + ". Request aborted",
                                 response.getReturnStatus());
                     }
-                    
+
                     if (stat.getStatusCode() == TStatusCode.SRM_FAILURE)
                     {
-                        throw createSRMExceptionFromStatusCode("Error while getting " + lsResponse.getClass().getName(), 
+                        throw createSRMExceptionFromStatusCode("Error while getting " + lsResponse.getClass().getName(),
                                 stat);
                     }
-                        
-                    
-                } while (stat.getStatusCode()==TStatusCode.SRM_REQUEST_QUEUED); // (stat.getStatusCode()!=TStatusCode.SRM_SUCCESS);  // or aborted! 
-                    
-                details=response.getDetails();
 
-                if (stat.getStatusCode()!=TStatusCode.SRM_SUCCESS)
+                } while (stat.getStatusCode() == TStatusCode.SRM_REQUEST_QUEUED); // (stat.getStatusCode()!=TStatusCode.SRM_SUCCESS);
+                                                                                  // // or aborted!
+
+                details = response.getDetails();
+
+                if (stat.getStatusCode() != TStatusCode.SRM_SUCCESS)
                 {
-                    infoPrintf(">>> *** srmLs: Asynchronous mode FAILED: status=%s ***\n",stat.getStatusCode().getValue()); 
+                    infoPrintf(">>> *** srmLs: Asynchronous mode FAILED: status=%s ***\n", stat.getStatusCode().getValue());
                     throw createSRMExceptionFromStatusCode("Error while getting " + lsResponse.getClass().getName(), lsResponse
                             .getReturnStatus());
                 }
-                
-                infoPrintf(">>> srmLs: Asynchronous mode returned: SRM_SUCCESS (waitTime=%d)\n",waitTime);
+
+                infoPrintf(">>> srmLs: Asynchronous mode returned: SRM_SUCCESS (waitTime=%d)\n", waitTime);
             }
-           
-            
+
         }
         catch (RemoteException e)
         {
-            throw convertException("Failed to query location(s):\n" + concatinateURI("-",uris), e);
+            throw convertException("Failed to query location(s):\n" + concatinateURI("-", uris), e);
         }
         finally
         {
@@ -621,13 +616,11 @@ public class SRMClientV2 extends SRMClient
         return details;
     }
 
-    
-   
-    
     /**
      * Creates directory. Parent directory must exists.
      * 
-     * @param surl - the uri to create.
+     * @param surl
+     *            - the directory url to create.
      * @return true if directory is created.
      * @throws SRMException
      */
@@ -680,7 +673,6 @@ public class SRMClientV2 extends SRMClient
     {
         try
         {
-
             SrmRmdirResponse response = _srmRmDir(suri, recursive, null);
             TReturnStatus returnStatus = response.getReturnStatus();
 
@@ -690,7 +682,8 @@ public class SRMClientV2 extends SRMClient
                 {
                     // If folder has files get their paths
                     ArrayOfTMetaDataPathDetail dirMetaDataDetail = srmGetMetaDataPathDetails(0,
-                            new org.apache.axis.types.URI[] { suri }, false, true,-1,-1);
+                            new org.apache.axis.types.URI[]
+                            { suri }, false, true, -1, -1);
                     // make a flat array to first get rid of the files.....
                     ArrayList<TMetaDataPathDetail> flatDetails = unwrapDetails(dirMetaDataDetail.getPathDetailArray());
                     ArrayList<String> filePaths = new ArrayList<String>();
@@ -718,8 +711,8 @@ public class SRMClientV2 extends SRMClient
                     // backend.
                     if (!didRequestSucceed(returnStatus.getStatusCode()) && recursive)
                     {
-                        dirMetaDataDetail = srmGetMetaDataPathDetails(0, new org.apache.axis.types.URI[] { suri },
-                                false, true,-1,-1);
+                        dirMetaDataDetail = srmGetMetaDataPathDetails(0, 
+                                new org.apache.axis.types.URI[] { suri }, false, true, -1, -1);
 
                         // make a flat array with what's left, and delete them.
                         flatDetails = unwrapDetails(dirMetaDataDetail.getPathDetailArray());
@@ -748,9 +741,7 @@ public class SRMClientV2 extends SRMClient
                         {
                             throw new SRMException(rmDirError.toString(), null);
                         }
-
                     }
-
                 }
                 else
                 {
@@ -769,24 +760,19 @@ public class SRMClientV2 extends SRMClient
 
     private void debugPrintf(String format, Object... args)
     {
-        //System.out.printf(">>>OUT:"+format,args); 
-        //System.err.printf(format,args); 
-        logger.log(Level.FINE,format,args);      
+        logger.log(Level.FINE, format, args);
     }
-     
+
     private void infoPrintf(String format, Object... args)
     {
-        //System.out.printf(">>>ERR:"+format,args); 
-        //System.err.printf(format,args); 
-        logger.log(Level.INFO,format,args);   
+        logger.log(Level.INFO, format, args);
     }
-    
+
     private void errorPrintf(String format, Object... args)
     {
-        //System.out.printf(">>>ERR:"+format,args); 
-        //System.err.printf(format,args); 
-        logger.log(Level.SEVERE,format,args);   
+        logger.log(Level.SEVERE, format, args);
     }
+
     /**
      * Removes a set of files or links.
      * 
@@ -797,7 +783,6 @@ public class SRMClientV2 extends SRMClient
      */
     public boolean srmRm(org.apache.axis.types.URI[] suris) throws SRMException
     {
-
         ArrayOfAnyURI arrayOfURI = new ArrayOfAnyURI(suris);
 
         SrmRmRequest request = new SrmRmRequest();
@@ -822,8 +807,8 @@ public class SRMClientV2 extends SRMClient
     }
 
     /**
-     * Copies a set of uris from suris to arrayOfTargetSURLs. Note! This method
-     * is not working with srm://tbn18.nikhef.nl:8446/dpm/nikhef.nl/home.
+     * Copies a set of uris from suris to arrayOfTargetSURLs. Note! This method is not working with
+     * srm://tbn18.nikhef.nl:8446/dpm/nikhef.nl/home.
      * 
      * @param suris
      *            Array of source uris
@@ -939,7 +924,7 @@ public class SRMClientV2 extends SRMClient
         }
         catch (RemoteException e)
         {
-            throw convertException("Couldn't copy some or all of:\n" + concatinateURI("-",suris), e);
+            throw convertException("Couldn't copy some or all of:\n" + concatinateURI("-", suris), e);
         }
 
         return true;
@@ -948,8 +933,7 @@ public class SRMClientV2 extends SRMClient
     /**
      * Pings the srm service.
      * 
-     * @return the ping responce. Includes srm version and backend type (i.e.
-     *         dCache, storm, etc).
+     * @return the ping responce. Includes srm version and backend type (i.e. dCache, storm, etc).
      * @throws SRMException
      */
     public SrmPingResponse srmPing() throws SRMException
@@ -973,8 +957,8 @@ public class SRMClientV2 extends SRMClient
      * @param accessPattern
      *            .The access pattern (i.e. TAccessPattern.TRANSFER_MODE)
      * @param transportProtocol
-     *            . Requested transport protocol. Avelable protocols can be
-     *            obtained from <code>getTransportProtocols()</code>
+     *            . Requested transport protocol. Avelable protocols can be obtained from
+     *            <code>getTransportProtocols()</code>
      * @return the transport uris
      * @throws SRMException
      */
@@ -1012,11 +996,10 @@ public class SRMClientV2 extends SRMClient
 
         for (int i = 0; i < statusArray.length; i++)
         {
-
-            debug("Estimated WaitTimel: " + statusArray[i].getEstimatedWaitTime());
-            debug("RemainingPinTime: " + statusArray[i].getRemainingPinTime());
-            debug("FileSize: " + statusArray[i].getFileSize());
-            debug("getStatusCode: " + statusArray[i].getStatus().getStatusCode());
+            debug("Estimated WaitTime : " + statusArray[i].getEstimatedWaitTime());
+            debug("RemainingPinTime   : " + statusArray[i].getRemainingPinTime());
+            debug("FileSize           : " + statusArray[i].getFileSize());
+            debug("getStatusCode      : " + statusArray[i].getStatus().getStatusCode());
 
             debug("TURI for: " + statusArray[i].getSURL() + " is: " + statusArray[i].getTransferURL());
             tUris[i] = statusArray[i].getTransferURL();
@@ -1051,33 +1034,33 @@ public class SRMClientV2 extends SRMClient
         {
             return false;
         }
-        if (statusCode == TStatusCode.SRM_REQUEST_INPROGRESS)
+        else if (statusCode == TStatusCode.SRM_REQUEST_INPROGRESS)
         {
             return false;
         }
-        if (statusCode == TStatusCode.SRM_DONE)
+        else if (statusCode == TStatusCode.SRM_DONE)
         {
             return false;
         }
-        if (statusCode == TStatusCode.SRM_FILE_IN_CACHE)
+        else if (statusCode == TStatusCode.SRM_FILE_IN_CACHE)
         {
             return false;
         }
-        if (statusCode == TStatusCode.SRM_FILE_PINNED)
+        else if (statusCode == TStatusCode.SRM_FILE_PINNED)
         {
             return false;
         }
-        if (statusCode == TStatusCode.SRM_SUCCESS)
+        else if (statusCode == TStatusCode.SRM_SUCCESS)
         {
             return false;
         }
-        if (statusCode == TStatusCode.SRM_FAILURE)
+        else if (statusCode == TStatusCode.SRM_FAILURE)
         {
             return true;
         }
-        
-        debugPrintf("***WARNING: status code NOT recognized:"+statusCode.getValue());
-        
+
+        debugPrintf("***WARNING: status code NOT recognized:" + statusCode.getValue());
+
         return true;
     }
 
@@ -1111,7 +1094,6 @@ public class SRMClientV2 extends SRMClient
             throw convertException("Error while aborting request", e);
         }
     }
-
 
     // private SrmStatusOfGetRequestResponse sendSRMStatusOfGetRequest(
     // SrmPrepareToGetResponse response,
@@ -1149,7 +1131,7 @@ public class SRMClientV2 extends SRMClient
     // throw handleStatusCode(returnStatus);
     // }
     // }
-    //        
+    //
     // return statusResponse;
     // }
 
@@ -1243,10 +1225,8 @@ public class SRMClientV2 extends SRMClient
      * @param overwriteOption
      *            Overwrite option (i.e. TOverwriteMode.NEVER)
      * @param transferParameters
-     *            . The transfer parameters (the most important in these options
-     *            is the transport protocol )
-     * @return the srm put request, from which the transport uris and request
-     *         token can be obatined
+     *            . The transfer parameters (the most important in these options is the transport protocol )
+     * @return the srm put request, from which the transport uris and request token can be obatined
      * @throws SRMException
      */
     public SRMPutRequest srmCreatePutRequest(org.apache.axis.types.URI[] suris, TOverwriteMode overwriteOption,
@@ -1258,23 +1238,20 @@ public class SRMClientV2 extends SRMClient
     }
 
     /**
-     * Creates a put request so a file can be placed in the srm service. The
-     * default transport protocol is gsiftp
+     * Creates a put request so a file can be placed in the srm service. The default transport protocol is gsiftp
      * 
      * @param suris
      *            the target uri.
      * @param overwriteOption
      *            Overwrite option (i.e. TOverwriteMode.NEVER)
-     * @return the srm put request, from which the transport uris and request
-     *         tocken can be obatined
+     * @return the srm put request, from which the transport uris and request tocken can be obatined
      * @throws SRMException
      */
     public SRMPutRequest srmCreatePutRequest(org.apache.axis.types.URI[] suris, TOverwriteMode overwriteOption)
             throws SRMException
     {
         TTransferParameters transferParameters = new TTransferParameters();
-        transferParameters
-                .setArrayOfTransferProtocols(new ArrayOfString(new String[] { SRMConstants.GSIFTP_PROTOCOL }));
+        transferParameters.setArrayOfTransferProtocols(new ArrayOfString(new String[] { SRMConstants.GSIFTP_PROTOCOL }));
 
         return srmCreatePutRequest(suris, null, null, null, null, null, overwriteOption, null, null, null,
                 transferParameters);
@@ -1290,11 +1267,9 @@ public class SRMClientV2 extends SRMClient
      * @param desiredFileLifeTime
      *            the desired file life time
      * @param desiredFileStorageType
-     *            the desired storage type (i.e.
-     *            TfileStorageType.PERMANEN,TFileStorageType.VOLATILE)
+     *            the desired storage type (i.e. TfileStorageType.PERMANEN,TFileStorageType.VOLATILE)
      * @param desiredPinLifeTime
-     *            pin life time (the time the file will remain in the dick
-     *            cache)
+     *            pin life time (the time the file will remain in the dick cache)
      * @param desiredTotalRequestTime
      *            desired total request time
      * @param overwriteOption
@@ -1302,16 +1277,12 @@ public class SRMClientV2 extends SRMClient
      * @param storageSystemInfo
      *            array of extra info
      * @param targetFileRetentionPolicyInfo
-     *            retention policy info (see
-     *            https://sdm.lbl.gov/srm-wg/doc/SRM.v2.2.html#_Toc241633046 )
+     *            retention policy info (see https://sdm.lbl.gov/srm-wg/doc/SRM.v2.2.html#_Toc241633046 )
      * @param targetSpaceToken
-     *            the target space token (see
-     *            https://sdm.lbl.gov/srm-wg/doc/SRM.v2.2.html#_Toc241633096)
+     *            the target space token (see https://sdm.lbl.gov/srm-wg/doc/SRM.v2.2.html#_Toc241633096)
      * @param transferParameters
-     *            The transfer parameters (the most important in these options
-     *            is the transport protocol )
-     * @return the srm put request, from which the transport uris and request
-     *         token can be obatined
+     *            The transfer parameters (the most important in these options is the transport protocol )
+     * @return the srm put request, from which the transport uris and request token can be obatined
      * @throws SRMException
      */
     public SRMPutRequest srmCreatePutRequest(org.apache.axis.types.URI[] suris, UnsignedLong[] expectedFileSizes,
@@ -1355,22 +1326,24 @@ public class SRMClientV2 extends SRMClient
 
             if (didRequestFail(prepareToPutResponse.getReturnStatus().getStatusCode()))
             {
-
-                throw createSRMExceptionFromStatusCode("Error while getting SrmPrepareToPutResponse", prepareToPutResponse
-                        .getReturnStatus());
+                throw createSRMExceptionFromStatusCode("Error while getting SrmPrepareToPutResponse", prepareToPutResponse.getReturnStatus());
             }
 
             // if there where no errors start polling
             ISRMResponse response = new SRMPutResponse(prepareToPutResponse, suris);
             ISRMStatusOfRequestResponse statusPutRequest = pollStatus(response);
 
-            if (statusPutRequest==null)
-                debugPrintf("After polling, status is NULL!\n"); 
+            if (statusPutRequest == null)
+            {
+                debugPrintf("After polling, status is NULL!\n");
+            }
             else
-                debugPrintf("After polling, status is: %s (expl=%s)\n", 
-                        statusPutRequest.getReturnStatus().getStatusCode().getValue(), 
+            {
+                debugPrintf("After polling, status is: %s (expl=%s)\n",
+                        statusPutRequest.getReturnStatus().getStatusCode().getValue(),
                         statusPutRequest.getReturnStatus().getExplanation());
-
+            }
+            
             IFileStatus[] statusArray = statusPutRequest.getStatusArray();
 
             org.apache.axis.types.URI[] surls = new org.apache.axis.types.URI[statusArray.length];
@@ -1391,20 +1364,20 @@ public class SRMClientV2 extends SRMClient
         }
         catch (RemoteException e)
         {
-            convertException("Couldn't create put request for on or more of:\n" + concatinateURI("-",suris), e);
+            convertException("Couldn't create put request for on or more of:\n" + concatinateURI("-", suris), e);
         }
 
         return putRequest;
     }
 
     /**
-     * Finalizes the put request. After the srm service has successfully
-     * returned the transport uri and the files have been transferred, use this
-     * method to register the file paths to the service.
+     * Finalizes the put request. After the srm service has successfully returned the transport uri and the files have
+     * been transferred, use this method to register the file paths to the service.
      * 
      * @param putRequest
      *            the put request (see <code>srmCreatePutRequest</code>)
-     * @param succeeded  Whether the put reques succeed or the new entry should be discarded!
+     * @param succeeded
+     *            Whether the put reques succeed or the new entry should be discarded!
      * @return true if the files have being successfully registered
      * @throws SRMException
      */
@@ -1593,33 +1566,32 @@ public class SRMClientV2 extends SRMClient
     {
         TReturnStatus status = response.getReturnStatus();
         ISRMStatusOfRequestResponse requestResponse = null;
-        
+
         if (didRequestFail(status.getStatusCode()))
-        {            
+        {
             throw createSRMExceptionFromStatusCode("Error while getting " + ISRMStatusOfRequestResponse.class.getName(), status);
         }
-        
+
         try
         {
             ISRMRequestStatusOfRequest statusOfRequest = createISRMRequestStatusOfRequest(response);
-            
+
             Integer sleepTime = null;
             int tryCount = 1;
-            long totalWaitTime=0; 
-             
-            
+            long totalWaitTime = 0;
+
             do
             {
-                // Pre check: can be optimized: 
+                // Pre check: can be optimized:
                 if (didRequestSucceed(status.getStatusCode()))
                 {
                     debugPrintf(">>>\n>>> REQUEST SUCCEEDED <<<\n>>>");
-                    // DOES SRM AGAIN CALL ! 
+                    // DOES SRM AGAIN CALL !
                     requestResponse = getSrmStatusOfRequest(statusOfRequest);
-                    return requestResponse; 
+                    return requestResponse;
 
                 }
-                
+
                 requestResponse = getSrmStatusOfRequest(statusOfRequest);
 
                 tryCount++;
@@ -1636,25 +1608,25 @@ public class SRMClientV2 extends SRMClient
                     sleepTime = initialWaitTime + this.incrementalWaitTime * tryCount;
                 }
 
-                totalWaitTime+=sleepTime;
-                
-                debug("Sleeping: " + sleepTime +" (total="+totalWaitTime+")");
-                    Thread.sleep(sleepTime);
-                    
-                    
-                int maxTime=getSRMRequestTimeout();
+                totalWaitTime += sleepTime;
+
+                debug("Sleeping: " + sleepTime + " (total=" + totalWaitTime + ")");
+                Thread.sleep(sleepTime);
+
+                int maxTime = getSRMRequestTimeout();
                 // timeout or error...
                 if (totalWaitTime > maxTime)
                 {
                     debug("TIMEOUT: SleepTime=" + sleepTime + " getSRMRequestTimeout: " + maxTime
                             + "\n Must abort files. Status: " + status.getStatusCode().getValue() + " " + status.getExplanation());
-                    
-                    errorPrintf("Timeout: totalWaitTime > srmRequestTimeOut: %d>%d\n",totalWaitTime,maxTime);
 
-                    throw createSRMExceptionFromStatusCode("Timeout Error ("+totalWaitTime+"ms) while getting " + requestResponse.getClass().getName() + ". Request aborted",
+                    errorPrintf("Timeout: totalWaitTime > srmRequestTimeOut: %d>%d\n", totalWaitTime, maxTime);
+
+                    throw createSRMExceptionFromStatusCode("Timeout Error (" + totalWaitTime + "ms) while getting "
+                            + requestResponse.getClass().getName() + ". Request aborted",
                             response.getReturnStatus());
                 }
-                        
+
                 if (didRequestFail(status.getStatusCode()))
                 {
                     debug("Request Failed. SleepTime=" + sleepTime + " getSRMRequestTimeout: " + getSRMRequestTimeout()
@@ -1666,10 +1638,10 @@ public class SRMClientV2 extends SRMClient
                     throw handleFailedRequest(requestResponse, response);
                 }
 
-            } while (tryCount<100);
+            } while (tryCount < 100);
 
             throw createSRMExceptionFromStatusCode("Error while getting " + ISRMStatusOfRequestResponse.class.getName(), status);
-            
+
         }
         catch (RemoteException e)
         {
@@ -1679,28 +1651,27 @@ public class SRMClientV2 extends SRMClient
         {
             throw convertException("Interrupted", e);
         }
-        
     }
 
     private SRMException handleFailedRequest(ISRMStatusOfRequestResponse requestResponse,
             ISRMResponse response)
     {
         TReturnStatus returnStatus = requestResponse.getReturnStatus();
-        
+
         if (requestResponse instanceof SRMStatusOfRequestPutResponse)
         {
             //
-            // PTdB: check failed if previous PutRequest but wasn't abort correctly! 
-            // The SRM database should be purged/updated somehow. 
-            String explStr=""+returnStatus.getExplanation();
+            // PTdB: check failed if previous PutRequest but wasn't abort correctly!
+            // The SRM database should be purged/updated somehow.
+            String explStr = "" + returnStatus.getExplanation();
             if (explStr.contains("Already have 1 record"))
             {
                 // previous PutRequest was already performed but not finished!
-                return  createSRMExceptionFromStatusCode("Previous PutRequest probably failed. Cannot continue!"
-                        + "\nRequestType="+requestResponse.getClass().getName() + ". Request aborted.",
+                return createSRMExceptionFromStatusCode("Previous PutRequest probably failed. Cannot continue!"
+                        + "\nRequestType=" + requestResponse.getClass().getName() + ". Request aborted.",
                         returnStatus);
             }
-            
+
             debug("getRequestToken: " + response.getRequestToken());
             debug("getValue: " + response.getReturnStatus().getStatusCode().getValue());
 
@@ -1712,9 +1683,9 @@ public class SRMClientV2 extends SRMClient
             // following code can fail also!
             try
             {
-                // check status or putrequests: 
-                ArrayOfTMetaDataPathDetail details = srmGetMetaDataPathDetails(0, response.getSURIs(), false, false,-1,-1);
-                
+                // check status or putrequests:
+                ArrayOfTMetaDataPathDetail details = srmGetMetaDataPathDetails(0, response.getSURIs(), false, false, -1, -1);
+
                 String[] requestedPaths = createPathsArray(response.getSURIs());
                 java.util.List<String> listRequestedPaths = Arrays.asList(requestedPaths);
 
@@ -1731,13 +1702,13 @@ public class SRMClientV2 extends SRMClient
             }
             catch (Exception e)
             {
-                // something else is wrong: 
-                logger.log(Level.FINE,"Caught (Another) exception when trying to handle failed PutRequest. Exception=e",e);
+                // something else is wrong:
+                logger.log(Level.FINE, "Caught (Another) exception when trying to handle failed PutRequest. Exception=e", e);
             }
-            
+
         }
 
-        return  createSRMExceptionFromStatusCode("Error while getting " + requestResponse.getClass().getName() + ". Request aborted",
+        return createSRMExceptionFromStatusCode("Error while getting " + requestResponse.getClass().getName() + ". Request aborted",
                 returnStatus);
     }
 
@@ -1804,7 +1775,7 @@ public class SRMClientV2 extends SRMClient
     // ========================================================================
     //
     // SRM Path methods
-    // 
+    //
     // ========================================================================
     // ========================================================================
 
@@ -1849,7 +1820,8 @@ public class SRMClientV2 extends SRMClient
      */
     public boolean rm(String path) throws SRMException, MalformedURIException
     {
-        return srmRm(this.createURIArray(new String[] { path }));
+        return srmRm(this.createURIArray(new String[]
+        { path }));
     }
 
     /**
@@ -1930,26 +1902,24 @@ public class SRMClientV2 extends SRMClient
     // Resource Query/Stat methods.
     //
     // Use srm...()methods.
-    // 
+    //
     // ========================================================================
     // ========================================================================
 
     public ArrayList<TMetaDataPathDetail> queryPaths(
-            int numOfLevels, 
+            int numOfLevels,
             org.apache.axis.types.URI[] suris,
-            boolean fullDetails, 
+            boolean fullDetails,
             boolean allLevelRecursive) throws SRMException
     {
-        return queryPaths(numOfLevels,suris,fullDetails,allLevelRecursive,-1,-1);    
+        return queryPaths(numOfLevels, suris, fullDetails, allLevelRecursive, -1, -1);
     }
-    
 
     /**
      * Full query method. Queries an array of paths.
      * 
      * @param numOfLevels
-     *            The number of levels to return. 1 for a single path, 2 for
-     *            directory contents.
+     *            The number of levels to return. 1 for a single path, 2 for directory contents.
      * @param uris
      *            array of paths to query.
      * @param fullDetails
@@ -1957,21 +1927,21 @@ public class SRMClientV2 extends SRMClient
      * @param allLevelRecursive
      *            use recursion when listing directories. (See numOfLevels)
      * @param offset
-     *            offset to start listing files from. 
+     *            offset to start listing files from.
      * @param count
-     *            limit number of result to this value. 
+     *            limit number of result to this value.
      * @return mulilevel MetaDataPathDetail array
      * @throws SRMException
      */
     public ArrayList<TMetaDataPathDetail> queryPaths(
             int numOfLevels, org.apache.axis.types.URI[] suris,
-            boolean fullDetails, 
+            boolean fullDetails,
             boolean allLevelRecursive,
             int offset,
             int count) throws SRMException
     {
         ArrayOfTMetaDataPathDetail metaDataPathDetails = srmGetMetaDataPathDetails(numOfLevels, suris, fullDetails,
-                allLevelRecursive,offset,count);
+                allLevelRecursive, offset, count);
 
         ArrayList<TMetaDataPathDetail> details = new ArrayList<TMetaDataPathDetail>();
 
@@ -1996,7 +1966,8 @@ public class SRMClientV2 extends SRMClient
     public TMetaDataPathDetail statPath(String path, Boolean fulldetails) throws SRMException, MalformedURIException
     {
         // One level deep path query:
-        ArrayList<TMetaDataPathDetail> details = queryPaths(0, this.createURIArray(new String[] { path }), fulldetails,
+        ArrayList<TMetaDataPathDetail> details = queryPaths(0, this.createURIArray(new String[]
+        { path }), fulldetails,
                 false);
 
         if ((details == null) || (details.size() <= 0))
@@ -2027,14 +1998,12 @@ public class SRMClientV2 extends SRMClient
     }
 
     /**
-     * Simple query method. Queries an array of paths with 1 level and recursive
-     * set to false.
+     * Simple query method. Queries an array of paths with 1 level and recursive set to false.
      * 
      * @param paths
      *            the SRM paths to get details from
      * @param fullDetails
-     *            include get back metadata (e.g. checksum, modification time
-     *            etc.)
+     *            include get back metadata (e.g. checksum, modification time etc.)
      * @return flattened MetaDataPathDetail array
      * @throws MalformedURIException
      * @throws Exception
@@ -2060,7 +2029,8 @@ public class SRMClientV2 extends SRMClient
     public ArrayList<TMetaDataPathDetail> listPath(String path, boolean fulldetails) throws SRMException,
             MalformedURIException
     {
-        return listPaths(new String[] { path }, fulldetails);
+        return listPaths(new String[]
+        { path }, fulldetails);
     }
 
     /**
@@ -2068,15 +2038,15 @@ public class SRMClientV2 extends SRMClient
      * 
      * @throws MalformedURIException
      */
-    public ArrayList<TMetaDataPathDetail> listPath(String path, boolean fulldetails,int offset,int count) throws SRMException,
+    public ArrayList<TMetaDataPathDetail> listPath(String path, boolean fulldetails, int offset, int count) throws SRMException,
             MalformedURIException
     {
-        return listPaths(new String[] { path }, fulldetails,offset,count);
+        return listPaths(new String[]
+        { path }, fulldetails, offset, count);
     }
-    
+
     /**
-     * List contents of a set of directory paths. Results are merged into a
-     * single Array.
+     * List contents of a set of directory paths. Results are merged into a single Array.
      * 
      * @throws SRMException
      * @throws MalformedURIException
@@ -2085,25 +2055,24 @@ public class SRMClientV2 extends SRMClient
             MalformedURIException
     {
         org.apache.axis.types.URI[] uris = this.createURIArray(paths);
-        return queryPaths(1, uris, fulldetails, false,-1,-1);
+        return queryPaths(1, uris, fulldetails, false, -1, -1);
     }
 
     /**
-     * List contents of a set of directory paths. Results are merged into a
-     * single Array.
+     * List contents of a set of directory paths. Results are merged into a single Array.
      * 
      * @throws SRMException
      * @throws MalformedURIException
      */
-    public ArrayList<TMetaDataPathDetail> listPaths(String paths[], 
+    public ArrayList<TMetaDataPathDetail> listPaths(String paths[],
             boolean fulldetails,
             int offset,
             int count) throws SRMException, MalformedURIException
     {
         org.apache.axis.types.URI[] uris = this.createURIArray(paths);
-        return queryPaths(1, uris, fulldetails, false,offset,count);
+        return queryPaths(1, uris, fulldetails, false, offset, count);
     }
-    
+
     /**
      * Convert array of paths into SRM compatible SURLS
      * 
@@ -2122,8 +2091,8 @@ public class SRMClientV2 extends SRMClient
         org.apache.axis.types.URI uris[] = new org.apache.axis.types.URI[len];
 
         for (int i = 0; i < len; i++)
-                uris[i] = createPathSurlURI(paths[i]);
-            
+            uris[i] = createPathSurlURI(paths[i]);
+
         return new ArrayOfAnyURI(uris);
     }
 
@@ -2150,11 +2119,11 @@ public class SRMClientV2 extends SRMClient
         return uris;
     }
 
-    private String concatinateURI(String prefix,org.apache.axis.types.URI[] surls)
+    private String concatinateURI(String prefix, org.apache.axis.types.URI[] surls)
     {
-        if (prefix==null)
-            prefix="";
-        
+        if (prefix == null)
+            prefix = "";
+
         // concatinate uris
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < surls.length; ++i)
@@ -2294,13 +2263,15 @@ public class SRMClientV2 extends SRMClient
         // Connection Error;
         if ((causeStr.contains("Connection refused")) || (causeStr.contains("No route to host")))
         {
-            return SRMException.createConnectionException(message + "\nConnection error, server might be down or unreachable:" + this.srmUri + "\nReason="
+            return SRMException.createConnectionException(message + "\nConnection error, server might be down or unreachable:"
+                    + this.srmUri + "\nReason="
                     + cause.getMessage(), cause);
         }
-        
-        if (causeStr.contains("Connect timed out") )
+
+        if (causeStr.contains("Connect timed out"))
         {
-            return SRMException.createConnectionException(message + "\nConnection setup timed out, server might be down or unreachable." + this.srmUri + "\nReason="
+            return SRMException.createConnectionException(message + "\nConnection setup timed out, server might be down or unreachable."
+                    + this.srmUri + "\nReason="
                     + cause.getMessage(), cause);
         }
 
@@ -2342,7 +2313,7 @@ public class SRMClientV2 extends SRMClient
     // {
     // ErrorType errorCode = SRMException.ErrorType.GENERAL_ERROR;
     // String explStr=returnStatus.getExplanation();
-    //        
+    //
     // // No Error!
     // if (returnStatus.getStatusCode()==(TStatusCode.SRM_DONE))
     // {
@@ -2512,20 +2483,20 @@ public class SRMClientV2 extends SRMClient
 
     private void debug(String msg)
     {
-        logger.log(Level.FINE,msg+"\n");
+        logger.log(Level.FINE, msg + "\n");
     }
 
     @Override
     public String getVersion() throws SRMException
     {
-        // cache version: doesn't change during lifetime. 
-        
-        if (this.versionInfo==null)
+        // cache version: doesn't change during lifetime.
+
+        if (this.versionInfo == null)
         {
-            this.versionInfo=srmPing().getVersionInfo();
+            this.versionInfo = srmPing().getVersionInfo();
         }
-        
-        return this.versionInfo; 
+
+        return this.versionInfo;
     }
 
     public String getBackendType() throws SRMException
@@ -2560,7 +2531,7 @@ public class SRMClientV2 extends SRMClient
         return backendType;
     }
 
-    public void srmSetPermitions(ArrayOfTUserPermission arrayOfUserPermissions,
+    public void srmSetPermissions(ArrayOfTUserPermission arrayOfUserPermissions,
             ArrayOfTGroupPermission arrayOfGroupPermissions, TPermissionMode otherPermission,
             TPermissionMode ownerPermission, TPermissionType permissionType, URI SURL) throws SRMException
     {
@@ -2587,56 +2558,56 @@ public class SRMClientV2 extends SRMClient
 
         try
         {
-            SrmSetPermissionResponse responce = this.getISRM().srmSetPermission(srmSetPermissionRequest);
+            SrmSetPermissionResponse response = this.getISRM().srmSetPermission(srmSetPermissionRequest);
 
-            if (!didRequestSucceed(responce.getReturnStatus().getStatusCode()))
+            if (!didRequestSucceed(response.getReturnStatus().getStatusCode()))
             {
-                throw createSRMExceptionFromStatusCode("srmSetPermitions", responce.getReturnStatus());
+                throw createSRMExceptionFromStatusCode("srmSetPermissions", response.getReturnStatus());
             }
 
-            System.err.println("responce:   " + responce.getReturnStatus());
+            logger.info("Response:   " + response.getReturnStatus());
         }
         catch (RemoteException e)
         {
-            throw convertException("Couldn't send permition change request ", e);
+            throw convertException("Couldn't send permission change request ", e);
         }
     }
 
-    public void setPermitions(URI SURL, TMetaDataPathDetail srmDetails, String srmPermitionString) throws SRMException
+    public void setPermissions(URI SURL, TMetaDataPathDetail srmDetails, String srmPermissionString) throws SRMException
     {
 
-        String userPermitionString = srmPermitionString.substring(0, 3).replaceAll("-", "");
-        String grupPermitionString = srmPermitionString.substring(4, 6).replaceAll("-", "");
-        String otherPermitionString = srmPermitionString.substring(7, srmPermitionString.length()).replaceAll("-", "");
-        debug("srmPermitionString:   " + srmPermitionString);
-        debug("userPermitionString:   " + userPermitionString);
-        debug("grupPermitionString:   " + grupPermitionString);
-        debug("otherPermitionString:   " + otherPermitionString);
+        String userPermissionString = srmPermissionString.substring(0, 3).replaceAll("-", "");
+        String groupPermissionString = srmPermissionString.substring(4, 6).replaceAll("-", "");
+        String otherPermissionString = srmPermissionString.substring(7, srmPermissionString.length()).replaceAll("-", "");
+        debug("srmPermissionString:   " + srmPermissionString);
+        debug("userPermissionString:   " + userPermissionString);
+        debug("groupPermissionString:   " + groupPermissionString);
+        debug("otherPermissionString:   " + otherPermissionString);
 
-        debug("userPermitionString String value " + TPermissionMode.fromString(userPermitionString));
-        debug("grupPermitionString String value " + TPermissionMode.fromString(grupPermitionString));
-        debug("otherPermitionString String value " + TPermissionMode.fromString(otherPermitionString));
+        debug("userPermissionString String value " + TPermissionMode.fromString(userPermissionString));
+        debug("groupPermissionString String value " + TPermissionMode.fromString(groupPermissionString));
+        debug("otherPermissionString String value " + TPermissionMode.fromString(otherPermissionString));
 
         ArrayOfTUserPermission arrayOfUserPermissions = new ArrayOfTUserPermission();
         TUserPermission[] userPermissionArray = new TUserPermission[1];
         userPermissionArray[0] = new TUserPermission();
-        userPermissionArray[0].setMode(TPermissionMode.fromString(userPermitionString));
+        userPermissionArray[0].setMode(TPermissionMode.fromString(userPermissionString));
         userPermissionArray[0].setUserID("USER-ID");
         arrayOfUserPermissions.setUserPermissionArray(userPermissionArray);
 
         ArrayOfTGroupPermission arrayOfGroupPermissions = new ArrayOfTGroupPermission();
         TGroupPermission[] groupPermissionArray = new TGroupPermission[1];
         groupPermissionArray[0] = new TGroupPermission();
-        groupPermissionArray[0].setMode(TPermissionMode.fromString(grupPermitionString));
-        groupPermissionArray[0].setGroupID("GRUP-ID");
+        groupPermissionArray[0].setMode(TPermissionMode.fromString(groupPermissionString));
+        groupPermissionArray[0].setGroupID("GROUP-ID");
         arrayOfGroupPermissions.setGroupPermissionArray(groupPermissionArray);
 
         // TPermissionMode otherPermission = tMode;
-        //        
+        //
         // TPermissionMode ownerPermission = tMode;
-        //                
-        this.srmSetPermitions(arrayOfUserPermissions, arrayOfGroupPermissions, TPermissionMode
-                .fromString(otherPermitionString), null, TPermissionType.CHANGE, SURL);
+        //
+        this.srmSetPermissions(arrayOfUserPermissions, arrayOfGroupPermissions, TPermissionMode
+                .fromString(otherPermissionString), null, TPermissionType.CHANGE, SURL);
     }
 
     public void setSrmFileOptions(SRMFileOptions srmFileOptions)
@@ -2648,6 +2619,5 @@ public class SRMClientV2 extends SRMClient
     {
         return srmFileOptions;
     }
-
 
 }

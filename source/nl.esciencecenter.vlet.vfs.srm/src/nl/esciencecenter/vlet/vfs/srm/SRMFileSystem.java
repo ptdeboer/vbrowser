@@ -1460,7 +1460,7 @@ public class SRMFileSystem extends FileSystemNode implements VFileActiveTransfer
             String srmPermitionString = VFS.modeToString(mode, false, false).toUpperCase();
             // srmPermitionString = srmPermitionString.replace('-', '_');
 
-            this.srmClient.setPermitions(srmClient.createPathSurlURI(location.getPath()), srmDetails,
+            this.srmClient.setPermissions(srmClient.createPathSurlURI(location.getPath()), srmDetails,
                     srmPermitionString);
         }
         catch (SRMException e)

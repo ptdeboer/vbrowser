@@ -72,7 +72,7 @@ public class TransferMarkerlistener implements MarkerListener
         }
         catch (Exception e)
         {
-            ClassLogger.getLogger(TransferMarkerlistener.class).logException(ClassLogger.ERROR,e,"markerArrived() Exception\n"); 
+            ClassLogger.getLogger(TransferMarkerlistener.class).logException(ClassLogger.ERROR, e, "markerArrived() Exception\n");
         }
 
     }

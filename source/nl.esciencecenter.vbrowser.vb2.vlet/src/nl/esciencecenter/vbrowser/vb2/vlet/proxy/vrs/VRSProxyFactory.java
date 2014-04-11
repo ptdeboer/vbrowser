@@ -34,118 +34,115 @@ import nl.esciencecenter.vlet.vrs.VRSClient;
 import nl.esciencecenter.vlet.vrs.VRSContext;
 import nl.esciencecenter.vlet.vrs.VRSFactory;
 
-
-
-/** 
- * VRS Proxy Factory for VRSProxyNodes.  
+/**
+ * VRS Proxy Factory for VRSProxyNodes.
  */
 public class VRSProxyFactory extends ProxyFactory
 {
-    private static ClassLogger logger; 
-    
+    private static ClassLogger logger;
+
     static
     {
-    	logger=ClassLogger.getLogger(VRSProxyFactory.class);
+        logger = ClassLogger.getLogger(VRSProxyFactory.class);
     }
-    
-	private static VRSProxyFactory instance; 
-	
-    private static VRSContext staticContext; 
-    
+
+    private static VRSProxyFactory instance;
+
+    private static VRSContext staticContext;
+
     public static synchronized VRSContext getProxyVRSContext()
     {
-        if (staticContext==null)
+        if (staticContext == null)
         {
-            staticContext=new VRSContext();
+            staticContext = new VRSContext();
         }
-        
+
         return staticContext;
     }
-    
+
     // ========================================================================
-    // 
+    //
     // ========================================================================
 
     private VRSContext vrsContext;
-    
+
     private VRSClient vrsClient;
 
-    protected VRSViewNodeDnDHandler viewNodeDnDHandler=null;
-    
+    protected VRSViewNodeDnDHandler viewNodeDnDHandler = null;
+
     public VRSProxyFactory(BrowserPlatform platform)
     {
-        super(platform); 
-        
-        this.vrsContext=getProxyVRSContext();
-        this.vrsClient=new VRSClient(vrsContext); 
+        super(platform);
+
+        this.vrsContext = getProxyVRSContext();
+        this.vrsClient = new VRSClient(vrsContext);
     }
-    
-	public VRSProxyNode _openLocation(VRL vrl) throws ProxyException
-	{
-		try 
-		{
-			return (VRSProxyNode)openLocation(vrl);
-		}
-		catch (Exception e) 
-		{
-			throw new ProxyException("Failed to open location:"+vrl+"\n"+e.getMessage(),e); 
-		} 
-	}
-	
-	// actual open location: 
-	
-    public VRSProxyNode doOpenLocation(VRL locator) throws ProxyException
+
+    public VRSProxyNode _openLocation(VRL vrl) throws ProxyException
     {
-    	logger.infoPrintf(">>> doOpenLocation():%s <<<\n",locator);
-    	
         try
         {
-            VNode vnode=vrsClient.openLocation(createVRL(locator));
-            return new VRSProxyNode(this,vnode,locator);
+            return (VRSProxyNode) openLocation(vrl);
         }
         catch (Exception e)
         {
-            throw new ProxyException("Failed to open location:"+locator+"\n"+e.getMessage(),e); 
+            throw new ProxyException("Failed to open location:" + vrl + "\n" + e.getMessage(), e);
         }
     }
-    
-	private nl.esciencecenter.vbrowser.vrs.vrl.VRL createVRL(VRL locator)
+
+    // actual open location:
+
+    public VRSProxyNode doOpenLocation(VRL locator) throws ProxyException
     {
-	    return new nl.esciencecenter.vbrowser.vrs.vrl.VRL(locator.getScheme(),
-	            locator.getUserinfo(),
-	            locator.getHostname(),
-	            locator.getPort(),
-	            locator.getPath(),
-	            locator.getQuery(),
-	            locator.getFragment()); 
+        logger.infoPrintf(">>> doOpenLocation():%s <<<\n", locator);
+
+        try
+        {
+            VNode vnode = vrsClient.openLocation(createVRL(locator));
+            return new VRSProxyNode(this, vnode, locator);
+        }
+        catch (Exception e)
+        {
+            throw new ProxyException("Failed to open location:" + locator + "\n" + e.getMessage(), e);
+        }
+    }
+
+    private nl.esciencecenter.vbrowser.vrs.vrl.VRL createVRL(VRL locator)
+    {
+        return new nl.esciencecenter.vbrowser.vrs.vrl.VRL(locator.getScheme(),
+                locator.getUserinfo(),
+                locator.getHostname(),
+                locator.getPort(),
+                locator.getPath(),
+                locator.getQuery(),
+                locator.getFragment());
     }
 
     @Override
-	public boolean canOpen(VRL locator,StringHolder reason) 
-	{
-		// internal scheme!
-		if (StringUtil.equals("myvle",locator.getScheme())) 
-		{
-		    reason.value="Internal 'MyVle' object"; 
-			return true; 
-		}	
-		VRSFactory vrs = this.vrsContext.getRegistry().getVRSFactoryForScheme(locator.getScheme()); 
+    public boolean canOpen(VRL locator, StringHolder reason)
+    {
+        // internal scheme!
+        if (StringUtil.equals("myvle", locator.getScheme()))
+        {
+            reason.value = "Internal 'MyVle' object";
+            return true;
+        }
+        VRSFactory vrs = this.vrsContext.getRegistry().getVRSFactoryForScheme(locator.getScheme());
 
-		if (vrs!=null)
-		    return true; 
-		
-		reason.value="Unknown scheme:"+locator.getScheme(); 
-		return false; 
-	}
+        if (vrs != null)
+            return true;
 
-    
-	public VRSViewNodeDnDHandler getVRSProxyDnDHandler(ViewNode viewNode)
-	{
-		if (viewNodeDnDHandler==null)
-	    {
-		    viewNodeDnDHandler=new VRSViewNodeDnDHandler(this); 
-	    }
-		return viewNodeDnDHandler;
-	}
+        reason.value = "Unknown scheme:" + locator.getScheme();
+        return false;
+    }
+
+    public VRSViewNodeDnDHandler getVRSProxyDnDHandler(ViewNode viewNode)
+    {
+        if (viewNodeDnDHandler == null)
+        {
+            viewNodeDnDHandler = new VRSViewNodeDnDHandler(this);
+        }
+        return viewNodeDnDHandler;
+    }
 
 }

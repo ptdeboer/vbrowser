@@ -29,7 +29,6 @@ import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
-import nl.esciencecenter.vlet.vrs.tasks.VRSTaskMonitor;
 import nl.esciencecenter.vlet.vrs.vfs.VDir;
 import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 
@@ -48,19 +47,19 @@ public class GftpDir extends VDir
     private MlsxEntry _entry = null;
 
     // Package protected !:
-    GftpFileSystem server = null;
+    private GftpFileSystem server = null;
 
     /**
      * @param client
      * @throws VrsException
      */
-    GftpDir(GftpFileSystem server, String path, MlsxEntry entry) throws VrsException
+    protected GftpDir(GftpFileSystem server, String path, MlsxEntry entry) throws VrsException
     {
         super(server, server.getServerVRL().replacePath(path));
         init(server, path, entry);
     }
 
-    GftpDir(GftpFileSystem server, String path) throws VrsException
+    protected GftpDir(GftpFileSystem server, String path) throws VrsException
     {
         this(server, path, null);
     }
@@ -175,8 +174,7 @@ public class GftpDir extends VDir
             else if (GftpFileSystem._isDir(entry))
                 nodes.add(new GftpDir(server, remotePath, entry));
             /*
-             * else if (fileInfo.isSoftLink()) nodes[i] = new
-             * GftpFile(server,remotePath,fileInfo);
+             * else if (fileInfo.isSoftLink()) nodes[i] = new GftpFile(server,remotePath,fileInfo);
              */
             else
             {
@@ -194,11 +192,12 @@ public class GftpDir extends VDir
 
     public boolean delete(boolean recurse) throws VrsException
     {
-        ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting (GFTP) directory:" + this.getPath(), 1);
+        ITaskMonitor monitor = getVRSContext().getTaskWatcher().getCurrentThreadTaskMonitor("Deleting (GFTP) directory:" + this.getPath(),
+                1);
 
         // Delete children first:
         if (recurse == true)
-            this.getVRSContext().getTransferManager().recursiveDeleteDirContents(monitor,this, true); 
+            this.getVRSContext().getTransferManager().recursiveDeleteDirContents(monitor, this, true);
 
         return server.delete(true, this.getPath());
     }
@@ -259,8 +258,7 @@ public class GftpDir extends VDir
     }
 
     /**
-     * Optimized method. When fetching multiple attributes, do not refetch the
-     * mlsxentry for each attribute.
+     * Optimized method. When fetching multiple attributes, do not refetch the mlsxentry for each attribute.
      * 
      * @param name
      * @param update

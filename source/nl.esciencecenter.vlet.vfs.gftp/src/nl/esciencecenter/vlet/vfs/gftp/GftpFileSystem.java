@@ -72,7 +72,6 @@ import nl.esciencecenter.vlet.vrs.vfs.VFSTransfer;
 import nl.esciencecenter.vlet.vrs.vfs.VFile;
 import nl.esciencecenter.vlet.vrs.vfs.VFileActiveTransferable;
 
-
 import org.globus.ftp.Buffer;
 import org.globus.ftp.ChecksumAlgorithm;
 import org.globus.ftp.DataChannelAuthentication;
@@ -97,46 +96,38 @@ import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
 
 /**
- * GridFTP FileSystem implementation. 
- * Beware: The used GridFTP client from Globus is NOT Thread Save. 
- * All methods which interact with the <i>same</i> GridFTPClient client MUST
- * be synchronized. <br>
- * Some multithreaded solutions used are: 
- * <br> 
- * - Creating separate GridFTPClient
- * for put/get calls. Notes:<br> 
- * - GridFTP requires to set the Active/Passive  mode for EACH call which used the 
- *   datachannel. These are: get, put, and msld/list commands
- * <p> 
- * @see mslx entries:
- *      http://bgp.potaroo.net/ietf/all-ids/draft-ietf-ftpext-mlst-16.txt
- * @see gridftp : <A
- *      href="http://www.globus.org/cog/jftp/guide.html">http://www.globus.org/cog/jftp/guide.html</a>
+ * GridFTP FileSystem implementation. Beware: The used GridFTP client from Globus is NOT Thread Save. All methods which
+ * interact with the <i>same</i> GridFTPClient client MUST be synchronized. <br>
+ * Some multithreaded solutions used are: <br>
+ * - Creating separate GridFTPClient for put/get calls. Notes:<br>
+ * - GridFTP requires to set the Active/Passive mode for EACH call which used the datachannel. These are: get, put, and
+ * msld/list commands
+ * <p>
+ * 
+ * @see mslx entries: http://bgp.potaroo.net/ietf/all-ids/draft-ietf-ftpext-mlst-16.txt
+ * @see gridftp : <A href="http://www.globus.org/cog/jftp/guide.html">http://www.globus.org/cog/jftp/guide.html</a>
  *      <p>
  *      Backwards compatibily notes:<br>
- *      <li> Mlsx entries are not support for old (1.0) gridftp server. The
- *      methods fakeMsl[dt] emulates these calls.
- *      <li> DataChannelAuthentication is not always support. The feature list
- *      from the remote GridFTP server is checked.
- *      <li> 'blindMode' is used for servers which do not allow listing of
- *      directories, Like SRM Storage Elements.
+ *      <li>Mlsx entries are not support for old (1.0) gridftp server. The methods fakeMsl[dt] emulates these calls.
+ *      <li>DataChannelAuthentication is not always support. The feature list from the remote GridFTP server is checked.
+ *      <li>'blindMode' is used for servers which do not allow listing of directories, Like SRM Storage Elements.
  * 
  * @author P.T. de Boer
  */
-public class GftpFileSystem extends FileSystemNode implements VFileActiveTransferable 
+public class GftpFileSystem extends FileSystemNode implements VFileActiveTransferable
 {
     // ============================================================================
     // Class stuff
     // ============================================================================
-    
-    private static ClassLogger logger; 
-    
+
+    private static ClassLogger logger;
+
     static
     {
-        logger=ClassLogger.getLogger(GftpFileSystem.class); 
-        // logger.setLevelToDebug(); 
+        logger = ClassLogger.getLogger(GftpFileSystem.class);
+        // logger.setLevelToDebug();
     }
-    
+
     /** EDG SE backwards compatibility options (HACK) attribute */
     public static final String ATTR_GFTP_BLIND_MODE = "blindMode";
 
@@ -144,33 +135,39 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
     public static final String ATTR_GFTP_DATA_CHANNEL_AUTHENTICATION = "dataChannelAuthentication";
 
     // maximum nr. of servers in the same pool
-    //private static final int maximumServerPoolCount = 10;
+    // private static final int maximumServerPoolCount = 10;
 
     private static final String UNIX_GROUP = "unix.group";
+
     private static final String UNIX_OWNER = "unix.owner";
-    //private static final String UNIX_MODE_STRING = "unix.mode.string";
+
+    // private static final String UNIX_MODE_STRING = "unix.mode.string";
     private static final String UNIX_MODE = "unix.mode";
-    //private static final String GFTP_UNIQUE = "unique";
+
+    // private static final String GFTP_UNIQUE = "unique";
 
     // default server settings:
-    //private static boolean default_local_data_channel_authentication = true;
+    // private static boolean default_local_data_channel_authentication = true;
     private static boolean default_usepassivemode = true;
+
     private static boolean default_allow3rdParty = true;
+
     private static boolean default_useblindmode = false;
 
     // private static Hashtable<String, GftpServer> servers = new
     // Hashtable<String, GftpServer>();
 
     public static String[] attributeNames =
-        { VletConfig.ATTR_PASSIVE_MODE };
+    { VletConfig.ATTR_PASSIVE_MODE };
 
     /** Simple Data Source which produces 0 bytes ! */
     public static class NilSource implements DataSource
     {
         public NilSource()
         {
-            
+
         }
+
         public void close() throws IOException
         {
         }
@@ -185,7 +182,6 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             return 0;
         }
     }
-    
 
     static private Object staticServerMutex = new Object();
 
@@ -201,17 +197,17 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             if ((server = (GftpFileSystem) context.getServerInstance(serverid,
                     GftpFileSystem.class)) != null)
             {
-                // check connected server ? 
+                // check connected server ?
             }
             else
             {
                 ServerInfo info = context.getServerInfoFor(loc, true);
 
-                server = new GftpFileSystem(context, info,loc);
+                server = new GftpFileSystem(context, info, loc);
                 // server.serverInfo=info;
-            
-                server.setID(serverid); 
-                
+
+                server.setID(serverid);
+
                 context.putServerInstance(server);
             }
         }
@@ -226,7 +222,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
         try
         {
-            synchronized(server.serverMutex)
+            synchronized (server.serverMutex)
             {
                 // check if I can have access:
                 if (server.client == null)
@@ -273,23 +269,22 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
     /** For old GFTP server, perform extra ls -d .* command: */
     private boolean explicitListHidden = true;
-    
+
     private GftpFeatureList features;
 
-   // private URI sshTunnelUri;
-    
+    // private URI sshTunnelUri;
+
     GftpFileSystem(VRSContext context, ServerInfo info, VRL location)
-        throws VrsException
+            throws VrsException
     {
         super(context, info);
         init(info.getHostname(), info.getPort());
-        connect(); 
+        connect();
     }
-    
+
     /**
-     * Create New Globus GFTPClient using Server's defaults (from
-     * this.serverInfo) serverInfo,hostname and port MUST be set before calling
-     * the method.
+     * Create New Globus GFTPClient using Server's defaults (from this.serverInfo) serverInfo,hostname and port MUST be
+     * set before calling the method.
      * 
      */
     public GridFTPClient createGFTPClient() throws VrsException
@@ -313,7 +308,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         //
         // update firewall portrange for Globus:
         //
-        VletConfig.setSystemProperty("org.globus.tcp.port.range", 
+        VletConfig.setSystemProperty("org.globus.tcp.port.range",
                 VletConfig.getFirewallPortRangeString());
 
         // currently proxy must be created...
@@ -328,24 +323,24 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             }
 
             // ***
-            // GSI authentication doesn like SSH tunnel (host mismatch!) 
+            // GSI authentication doesn like SSH tunnel (host mismatch!)
             // ***
             // if (this.sshTunnelUri!=null)
-            //      newClient = new GridFTPClient(sshTunnelUri.getHost(),
-            //                                    sshTunnelUri.getPort());
+            // newClient = new GridFTPClient(sshTunnelUri.getHost(),
+            // sshTunnelUri.getPort());
             // else
             newClient = new GridFTPClient(hostname, port);
-            
+
             newClient.authenticate(cred);
 
             // create Util Class around GridFeatureList :
             this.features = new GftpFeatureList(newClient
                     .getFeatureList());
 
-            logger.infoPrintf("Server Feature list '%s'=%s\n",this,features);
-            
-            this.putInstanceAttribute("gftpFeatureList",features.toCommaString()); 
-            
+            logger.infoPrintf("Server Feature list '%s'=%s\n", this, features);
+
+            this.putInstanceAttribute("gftpFeatureList", features.toCommaString());
+
             // set type only once
             // don't set mode, must be done before each call
             // _setCheckMode(client,true,false);
@@ -353,17 +348,17 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
             // default to Image:
             newClient.setType(Session.TYPE_IMAGE);
-        
-            // disabled for old gridftp servers:
-            boolean ldca=useDataChannelAuthentication();
-            
-            if (ldca==false)
-                newClient.setLocalNoDataChannelAuthentication();
-            
-            // update instance (debug) information.
-            this.putInstanceAttribute(new Attribute(ATTR_GFTP_DATA_CHANNEL_AUTHENTICATION,ldca)); 
 
-            logger.infoPrintf(">>> GftpServer: new gftp client:%s:%d\n",hostname,port); 
+            // disabled for old gridftp servers:
+            boolean ldca = useDataChannelAuthentication();
+
+            if (ldca == false)
+                newClient.setLocalNoDataChannelAuthentication();
+
+            // update instance (debug) information.
+            this.putInstanceAttribute(new Attribute(ATTR_GFTP_DATA_CHANNEL_AUTHENTICATION, ldca));
+
+            logger.infoPrintf(">>> GftpServer: new gftp client:%s:%d\n", hostname, port);
 
         }
         catch (UnknownHostException e)
@@ -384,22 +379,21 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         }
         catch (Exception e)
         {
-            /// Globus/Authentication: 
-            
-            VrsException globusEx=GlobusUtil.checkException("Couldn't connect to:"+this,e);
-            
-            if (globusEx!=null)
+            // / Globus/Authentication:
+
+            VrsException globusEx = GlobusUtil.checkException("Couldn't connect to:" + this, e);
+
+            if (globusEx != null)
             {
-                throw globusEx; 
+                throw globusEx;
             }
-            
-            throw new ServerCommunicationException("Coudn't connect to:"+this+"\nReason="+e.getMessage(), e);
+
+            throw new ServerCommunicationException("Coudn't connect to:" + this + "\nReason=" + e.getMessage(), e);
         }
 
         return newClient;
     }
 
-    
     // ========================================================================
     // Critical Methods
     // ========================================================================
@@ -420,38 +414,38 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         else
             this.port = port;
 
-        logger.debugPrintf("New GFTP Server:%s:%d\n",hostname,port);
-        
-       // initShhTunnel(); 
+        logger.debugPrintf("New GFTP Server:%s:%d\n", hostname, port);
+
+        // initShhTunnel();
     }
 
-//    private void initShhTunnel() throws VlException
-//    {
-//        if (this.getVRSContext().getConfigManager().getUseSSHTunnel(
-//            getScheme(),
-//            hostname,
-//            port))
-//        {
-//            int lport=SSHUtil.createSSHTunnel(getVRSContext(),
-//                    getScheme(),
-//                    hostname,
-//                    port);
-//        
-//            try
-//            {
-//                sshTunnelUri=new URI(getScheme()+"://localhost:"+lport); 
-//            }
-//            catch (URISyntaxException e)
-//            {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-    
+    // private void initShhTunnel() throws VlException
+    // {
+    // if (this.getVRSContext().getConfigManager().getUseSSHTunnel(
+    // getScheme(),
+    // hostname,
+    // port))
+    // {
+    // int lport=SSHUtil.createSSHTunnel(getVRSContext(),
+    // getScheme(),
+    // hostname,
+    // port);
+    //
+    // try
+    // {
+    // sshTunnelUri=new URI(getScheme()+"://localhost:"+lport);
+    // }
+    // catch (URISyntaxException e)
+    // {
+    // e.printStackTrace();
+    // }
+    // }
+    // }
+
     public void connect() throws VrsException
     {
-        logger.infoPrintf("Connecting to:%s\n",this); 
-        
+        logger.infoPrintf("Connecting to:%s\n", this);
+
         synchronized (serverMutex)
         {
             // initClient() and update settings this this.serverInfo !
@@ -464,7 +458,6 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             // Extra check to check if the users proxy subject hasn't changed.
             // this is possible is a Grid Service Context !!!
             // check current subject from Grid Proxy.
-            
 
             try
             {
@@ -490,21 +483,21 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             }
             catch (ServerException e)
             {
-                logger.warnPrintf("GFTP: 'mslt' not understood. Setting protocol to version 1.0 for:%s\n",this); 
+                logger.warnPrintf("GFTP: 'mslt' not understood. Setting protocol to version 1.0 for:%s\n", this);
                 this.protocol_v1 = true;
             }
             catch (IOException e)
             {
-                logger.warnPrintf("GFTP: 'mslt' not understood. Setting protocol to version 1.0 for:%s\n",this); 
+                logger.warnPrintf("GFTP: 'mslt' not understood. Setting protocol to version 1.0 for:%s\n", this);
                 this.protocol_v1 = true;
             }
-            
-            // inform ServerInfo: 
+
+            // inform ServerInfo:
             {
-                // debug option: 
-                Attribute attr=new Attribute("usingProtocolV1",protocol_v1); 
-                attr.setEditable(false); 
-                this.putInstanceAttribute(attr);  
+                // debug option:
+                Attribute attr = new Attribute("usingProtocolV1", protocol_v1);
+                attr.setEditable(false);
+                this.putInstanceAttribute(attr);
             }
         }
     }
@@ -512,8 +505,8 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
     boolean usePassive()
     {
         // use passive is different: if set as Global option
-        // this means block all active traffic ! 
-    
+        // this means block all active traffic !
+
         // Setting this properties means setting this for ALL servers !
         boolean val = this.vrsContext.getBoolProperty(
                 ATTR_PASSIVE_MODE, false);
@@ -521,19 +514,19 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         // the default is 'false', Global specified means override !
         if (val == true)
         {
-            logger.debugPrintf("Using passiveMode=true from Global Settings:\n"); 
+            logger.debugPrintf("Using passiveMode=true from Global Settings:\n");
             // keep: val=true;
         }
         else
         {
-            // check for serverInfo and "gtfp.usePassiveMode" options 
-            val=this.getBooleanServerOption(ATTR_PASSIVE_MODE,default_usepassivemode); 
+            // check for serverInfo and "gtfp.usePassiveMode" options
+            val = this.getBooleanServerOption(ATTR_PASSIVE_MODE, default_usepassivemode);
         }
 
-        // dynamic update ! 
-        this.putInstanceAttribute(new Attribute(ATTR_PASSIVE_MODE,val)); 
-        logger.debugPrintf("passiveMode=%s\n",(val?"true":"false"));
-        
+        // dynamic update !
+        this.putInstanceAttribute(new Attribute(ATTR_PASSIVE_MODE, val));
+        logger.debugPrintf("passiveMode=%s\n", (val ? "true" : "false"));
+
         return val;
     }
 
@@ -555,12 +548,12 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
     {
         long id = Thread.currentThread().getId();
 
-//        debug("setCheckMode: Thread[" + id + "]="
-//                + Thread.currentThread().getName());
+        // debug("setCheckMode: Thread[" + id + "]="
+        // + Thread.currentThread().getName());
 
         if (client == null)
         {
-            //debug("setCheckMode: client= null!!!");
+            // debug("setCheckMode: client= null!!!");
             throw new ServerCommunicationException("Server not connected:"
                     + this);
         }
@@ -575,12 +568,12 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                     // client.setType(Session.TYPE_IMAGE);
                     // _setCheckMode(client,false,false);
                     String str = client.getCurrentDir();
-                    //debug("setCheckMode: getCUrrentDir()=" + str);
+                    // debug("setCheckMode: getCUrrentDir()=" + str);
 
                 }
                 catch (Exception e)
                 {
-                    logger.errorPrintf("setCheckMode: Client check failed:resetting client:%s\n",this); 
+                    logger.errorPrintf("setCheckMode: Client check failed:resetting client:%s\n", this);
                     reset();
                     this.serverException = false;
                 }
@@ -590,15 +583,14 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             {
                 // if (client.isPassiveMode()==getUsePassiveMode)
                 // return;
-                //debug("setCheckMode: PRE setting mode...");
+                // debug("setCheckMode: PRE setting mode...");
 
                 if (usePassive() == false)
                 {
                     // not needed, just use default image type:
 
                     /*
-                     * if (binMode) client.setType(Session.TYPE_IMAGE); else
-                     * client.setType(Session.TYPE_ASCII);
+                     * if (binMode) client.setType(Session.TYPE_IMAGE); else client.setType(Session.TYPE_ASCII);
                      */
                     client.setPassiveMode(false);
                 }
@@ -607,8 +599,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                     // not needed, just use default image type:
 
                     /*
-                     * if (binMode) client.setType(Session.TYPE_IMAGE); else
-                     * client.setType(Session.TYPE_ASCII);
+                     * if (binMode) client.setType(Session.TYPE_IMAGE); else client.setType(Session.TYPE_ASCII);
                      */
 
                     // only set PassiveMode if needed
@@ -620,12 +611,12 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                     // _setCheckMode(client,binMode,updatePassiveMode);
                 }
 
-                //debug("setCheckMode: POST setting mode...");
+                // debug("setCheckMode: POST setting mode...");
 
             }
             catch (ServerException e)
             {
-                logger.logException(ClassLogger.ERROR,e,"*** ServerException in claimMode!!!***\n");
+                logger.logException(ClassLogger.ERROR, e, "*** ServerException in claimMode!!!***\n");
                 // convertException also set's serverException==true
                 throw convertException(e);
             }
@@ -639,11 +630,11 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
     public void disconnect() throws VrsException
     {
-        logger.infoPrintf("disconnecting:%s\n",this); 
-        
-        if (client==null)
-            return; 
-        
+        logger.infoPrintf("disconnecting:%s\n", this);
+
+        if (client == null)
+            return;
+
         try
         {
             features = null; // Clear features, reconnect should refrehs/update them !
@@ -669,7 +660,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             }
             catch (VrsException e)
             {
-                logger.logException(ClassLogger.WARN,e,"Exception when disconnecting:%s\n",this); 
+                logger.logException(ClassLogger.WARN, e, "Exception when disconnecting:%s\n", this);
             }
 
             client = null;
@@ -677,101 +668,99 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             try
             {
                 connect();
-                // reset exception after succesful connect. 
+                // reset exception after succesful connect.
                 this.serverException = false;
             }
             catch (VrsException e)
             {
-                logger.logException(ClassLogger.ERROR,e,"Could not reconnect GFTP Server:%s\n",this); 
+                logger.logException(ClassLogger.ERROR, e, "Could not reconnect GFTP Server:%s\n", this);
             }
         }
     }
+
     // =================
-    // GridServer Options 
+    // GridServer Options
     // =================
-    
+
     /**
-     * Blind mode is for 'crippled' Grid FTP server like the some SEs used in
-     * EDG. The idea is that nothing works (list(),exists(),'stat' command,etc)
-     * except downloading a file and maybe uploading. 
+     * Blind mode is for 'crippled' Grid FTP server like the some SEs used in EDG. The idea is that nothing works
+     * (list(),exists(),'stat' command,etc) except downloading a file and maybe uploading.
      */
     boolean useBlindMode()
     {
-        boolean val=getBooleanServerOption(GftpFileSystem.ATTR_GFTP_BLIND_MODE,default_useblindmode);
-        // dynamic update ! 
-        this.putInstanceAttribute(new Attribute(GftpFileSystem.ATTR_GFTP_BLIND_MODE,val));
-        
-        return val; 
+        boolean val = getBooleanServerOption(GftpFileSystem.ATTR_GFTP_BLIND_MODE, default_useblindmode);
+        // dynamic update !
+        this.putInstanceAttribute(new Attribute(GftpFileSystem.ATTR_GFTP_BLIND_MODE, val));
+
+        return val;
     }
-    
-    public Boolean getBooleanServerOption(String optName,boolean defaultValue)
+
+    public Boolean getBooleanServerOption(String optName, boolean defaultValue)
     {
-        if (optName==null)
-            return false; 
-        
-        Attribute attr=getServerInfo().getAttribute(optName); 
-        
-        if (attr!=null)
-            return attr.getBooleanValue(); 
-        
-        // Check Context, will check Global Option as well 
+        if (optName == null)
+            return false;
+
+        Attribute attr = getServerInfo().getAttribute(optName);
+
+        if (attr != null)
+            return attr.getBooleanValue();
+
+        // Check Context, will check Global Option as well
         // return default value if not found
-        return this.vrsContext.getBoolProperty("gftp."+optName,defaultValue); 
-        
+        return this.vrsContext.getBoolProperty("gftp." + optName, defaultValue);
+
     }
-    
-//    /** Return NULL if property isn't defined */ 
-//    public Boolean getServerOrContextBooleanProperty(String name)
-//    {
-//        if (name==null)
-//            return null; 
-//        
-//        VAttribute attr=getServerInfo().getAttribute(name); 
-//        
-//        if (attr!=null)
-//            return new Boolean(attr.getBooleanValue());  
-//        
-//        // Check Context, will check Global Option as well 
-//        // return default value if not found
-//        String propstr=this.vrsContext.getProperty(name).toString();   
-//        
-//        if (propstr!=null)
-//            return Boolean.parseBoolean(propstr);
-//        
-//        return null; 
-//        
-//    }
-    
+
+    // /** Return NULL if property isn't defined */
+    // public Boolean getServerOrContextBooleanProperty(String name)
+    // {
+    // if (name==null)
+    // return null;
+    //
+    // VAttribute attr=getServerInfo().getAttribute(name);
+    //
+    // if (attr!=null)
+    // return new Boolean(attr.getBooleanValue());
+    //
+    // // Check Context, will check Global Option as well
+    // // return default value if not found
+    // String propstr=this.vrsContext.getProperty(name).toString();
+    //
+    // if (propstr!=null)
+    // return Boolean.parseBoolean(propstr);
+    //
+    // return null;
+    //
+    // }
+
     /**
-     * LocalDataChannelAuthentication: Backwards (old grdftp option)
-     * compatibility option.
+     * LocalDataChannelAuthentication: Backwards (old grdftp option) compatibility option.
      */
     boolean useDataChannelAuthentication()
     {
         boolean val = this.features.hasDataChannelAuthentication();
 
         // not stored yet:
-        if (this.instanceAttributes.containsKey(GftpFileSystem.ATTR_GFTP_DATA_CHANNEL_AUTHENTICATION)==false)
+        if (this.instanceAttributes.containsKey(GftpFileSystem.ATTR_GFTP_DATA_CHANNEL_AUTHENTICATION) == false)
         {
-            if (val==false)
+            if (val == false)
             {
-                // Warn and store: 
-                logger.warnPrintf("DataChannelAuthentication NOT supported for:%s\n",this);
+                // Warn and store:
+                logger.warnPrintf("DataChannelAuthentication NOT supported for:%s\n", this);
             }
-            
+
         }
-        // store to block further warnings! 
-        this.putInstanceAttribute(new Attribute(GftpFileSystem.ATTR_GFTP_DATA_CHANNEL_AUTHENTICATION,val));
-        
-        return val;    
+        // store to block further warnings!
+        this.putInstanceAttribute(new Attribute(GftpFileSystem.ATTR_GFTP_DATA_CHANNEL_AUTHENTICATION, val));
+
+        return val;
     }
-    
+
     boolean getAllow3rdParty()
     {
-        return getBooleanServerOption(ATTR_ALLOW_3RD_PARTY,default_allow3rdParty); 
+        return getBooleanServerOption(ATTR_ALLOW_3RD_PARTY, default_allow3rdParty);
     }
-    
-    
+
     /**
      * Optimized GRidFTP upload. Performs asyncPut and monitors the datastream.
      */
@@ -779,7 +768,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             String localfilepath, String remotefilepath)
             throws VrsException
     {
-        logger.debugPrintf("updloadFile(): %s -> %s\n",localfilepath,remotefilepath);
+        logger.debugPrintf("updloadFile(): %s -> %s\n", localfilepath, remotefilepath);
 
         try
         {
@@ -787,13 +776,13 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             RandomAccessFile rfile = new RandomAccessFile(lfile, "r");
             TransferRandomIO riofile = new TransferRandomIO(rfile);
 
-            transfer.startSubTask("Uploading GridFTP file.",lfile.length());
-            transfer.logPrintf("Uploading file:"+localfilepath+"\n");
+            transfer.startSubTask("Uploading GridFTP file.", lfile.length());
+            transfer.logPrintf("Uploading file:" + localfilepath + "\n");
             TransferState transferState = null;
 
             GridFTPClient myclient = null;
             MarkerListener markerListener = new GftpMarkerListener(); // new
-                                                                        // GftpMarker();
+                                                                      // GftpMarker();
             //
             // update mode before PUT call !!
             //
@@ -810,7 +799,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             else
                 synchronized (serverMutex)
                 {
-                    setCheckMode( usePassive());
+                    setCheckMode(usePassive());
                     transferState = client.asynchPut(remotefilepath,
                             riofile, markerListener);
                 }
@@ -826,13 +815,13 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                 }
                 catch (InterruptedException e)
                 {
-                    logger.logException(ClassLogger.ERROR,e,"Interrrupted!\n") ; 
+                    logger.logException(ClassLogger.ERROR, e, "Interrrupted!\n");
                     throw new NestedInterruptedException("Interrupted!");
                 }
 
                 // Gftp does not provide transfer count:
                 long size = riofile.getNrRead();
-                //debug("- current transferred size=" + size);
+                // debug("- current transferred size=" + size);
                 transfer.updateSubTaskDone(size);
 
                 if (transferState.getError() != null)
@@ -843,13 +832,13 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                 }
             }
 
-            this.finalize(myclient); 
-            myclient=null; 
-            
+            this.finalize(myclient);
+            myclient = null;
+
             // POST: Gftp does not provide transfer count:
             transfer.updateSubTaskDone(riofile.getNrRead());
-            transfer.endSubTask("Upload GridFTP File"); 
-            //debug("after put");
+            transfer.endSubTask("Upload GridFTP File");
+            // debug("after put");
 
         }
         catch (ServerException e)
@@ -872,21 +861,20 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
     }
 
     /**
-     * Optimized GRidFTP download. Performs asyncGet and monitors the
-     * datastream.
+     * Optimized GRidFTP download. Performs asyncGet and monitors the datastream.
      */
     public void downloadFile(VFSTransfer transfer,
             String remotefilepath, String toLocalfilepath)
             throws VrsException
     {
-        logger.debugPrintf("downloadFile():%s: from '%s' to '%s'\n",this,remotefilepath,toLocalfilepath);
-        
-        //transfer.setCurrentSubTask("Downloading file."); 
-        
+        logger.debugPrintf("downloadFile():%s: from '%s' to '%s'\n", this, remotefilepath, toLocalfilepath);
+
+        // transfer.setCurrentSubTask("Downloading file.");
+
         try
         {
             // only check size if not blindMode !
-            transfer.startSubTask("Downloading GridFTP file.",getSize(remotefilepath));
+            transfer.startSubTask("Downloading GridFTP file.", getSize(remotefilepath));
 
             File lfile = new File(toLocalfilepath);
 
@@ -903,7 +891,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
             GridFTPClient myclient = null;
             TransferState transferState = null;
-            MarkerListener markerListener = new GftpMarkerListener(); 
+            MarkerListener markerListener = new GftpMarkerListener();
             // new GftpMarker();
 
             if (usePassive())
@@ -916,14 +904,15 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                 transferState = myclient.asynchGet(remotefilepath,
                         riofile, markerListener);
             }
-            else synchronized (serverMutex)
-            {
-                // Active asynchronous:
-                setCheckMode( usePassive());
-                transferState = client.asynchGet(remotefilepath,
+            else
+                synchronized (serverMutex)
+                {
+                    // Active asynchronous:
+                    setCheckMode(usePassive());
+                    transferState = client.asynchGet(remotefilepath,
                             riofile, markerListener);
-            }
-            
+                }
+
             // ===
             // LOOP
             // ===
@@ -939,7 +928,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                 }
                 catch (InterruptedException e)
                 {
-                    logger.logException(ClassLogger.ERROR,e,"Interrupted!\n"); 
+                    logger.logException(ClassLogger.ERROR, e, "Interrupted!\n");
                 }
 
                 // Gftp does not provide transfer count:
@@ -949,7 +938,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                 {
                     // stop ?
                     transferState.transferError(new NestedInterruptedException(
-                                    "InterruptedException"));
+                            "InterruptedException"));
                 }
             }
             // ===
@@ -970,24 +959,24 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             // Gftp does not provide transfer count: update using (Assumed) file
             // length
             transfer.updateSubTaskDone(lfile.length());
-            transfer.endSubTask("Downloading GridFTP File"); 
+            transfer.endSubTask("Downloading GridFTP File");
         }
         catch (ServerException e)
         {
-            logger.logException(ClassLogger.DEBUG,e,"ServerException:%s\n",e); 
+            logger.logException(ClassLogger.DEBUG, e, "ServerException:%s\n", e);
             this.serverException = true;
             throw new nl.esciencecenter.vlet.exception.ServerCommunicationException(
                     "GridFTP:ServerException:" + e.getMessage(), e);
         }
         catch (IOException e)
         {
-            logger.logException(ClassLogger.DEBUG,e,"IOException:%s\n",e); 
+            logger.logException(ClassLogger.DEBUG, e, "IOException:%s\n", e);
             throw new NestedIOException("GridFTP:IOException:"
                     + e.getMessage(), e);
         }
         catch (ClientException e)
         {
-            logger.logException(ClassLogger.DEBUG,e,"ClientException:%s\n",e); 
+            logger.logException(ClassLogger.DEBUG, e, "ClientException:%s\n", e);
             throw new NestedIOException("GridFTP:ClientException:"
                     + e.getMessage(), e);
         }
@@ -997,7 +986,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
     public String rename(String filepath, String newName,
             boolean nameIsPath) throws VrsException
     {
-        logger.debugPrintf("rename:%s->%s\n",filepath,newName);
+        logger.debugPrintf("rename:%s->%s\n", filepath, newName);
 
         String newpath = null;
 
@@ -1014,7 +1003,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             synchronized (serverMutex)
             {
                 // rename does no use datachannel (passive=false);
-                this.setCheckMode( false);
+                this.setCheckMode(false);
                 client.rename(filepath, newpath);
             }
 
@@ -1037,7 +1026,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
     public boolean delete(boolean isDir, String path)
             throws VrsException
     {
-        logger.debugPrintf("delete:%s\n",path);
+        logger.debugPrintf("delete:%s\n", path);
 
         try
         {
@@ -1050,7 +1039,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             synchronized (serverMutex)
             {
                 // changedir/delete doesn't need data channel:
-                setCheckMode( false);
+                setCheckMode(false);
                 // cd to directory. This also acts as an extra permissions check.
                 client.changeDir(parentDir);
 
@@ -1082,7 +1071,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
     public long getModificationTime(String path) throws VrsException
     {
-        //debug("getModificationTime:" + path);
+        // debug("getModificationTime:" + path);
 
         // Date date = null;
 
@@ -1108,7 +1097,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                     getAuthorization(),
                     this.hostname, this.port, filepath,
                     usePassive(), // always passive ?
-                    Session.TYPE_IMAGE, 
+                    Session.TYPE_IMAGE,
                     useDataChannelAuthentication());
         }
         catch (Exception e)
@@ -1128,24 +1117,24 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             VRSContext context) throws GlobusCredentialException,
             GSSException, AuthenticationException
     {
-        //debug("getGlobusCredentials");
+        // debug("getGlobusCredentials");
 
         GridProxy proxy = context.getGridProxy();
 
-        if (proxy==null)
+        if (proxy == null)
         {
             throw new nl.esciencecenter.vlet.exception.AuthenticationException(
                     "NULL grid credential (Not set for this context)");
         }
-        
+
         if (proxy.isValid() == false)
         {
             throw new nl.esciencecenter.vlet.exception.AuthenticationException(
                     "No valid grid credential found");
         }
 
-        GlobusCredential globusCred = GlobusUtil.getGlobusCredential(proxy); 
-        
+        GlobusCredential globusCred = GlobusUtil.getGlobusCredential(proxy);
+
         if (globusCred != null)
         {
             GlobusGSSCredentialImpl cred = new GlobusGSSCredentialImpl(
@@ -1167,10 +1156,8 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         try
         {
             /*
-             * ( org.ietf.jgss.GSSCredential cred,
-             * org.globus.gsi.gssapi.auth.Authorization auth, java.lang.String
-             * host, int port, java.lang.String file, boolean passive, int type,
-             * boolean reqDCAU );
+             * ( org.ietf.jgss.GSSCredential cred, org.globus.gsi.gssapi.auth.Authorization auth, java.lang.String host,
+             * int port, java.lang.String file, boolean passive, int type, boolean reqDCAU );
              */
 
             outps = new GridFTPOutputStream(
@@ -1179,12 +1166,12 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                     filepath, false,// do not append !
                     usePassive(), // always passive
                     Session.TYPE_IMAGE, false);
-            
-//            outps = new GridFTPOutputStream(
-//                    getValidGSSCredential(this.vrsContext),
-//                    this.hostname, this.port,
-//                    filepath, false);
-            
+
+            // outps = new GridFTPOutputStream(
+            // getValidGSSCredential(this.vrsContext),
+            // this.hostname, this.port,
+            // filepath, false);
+
         }
         catch (Exception e)
         {
@@ -1194,29 +1181,28 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         return outps;
     }
 
-    
     public VDir createDir(String dirpath, boolean force)
             throws VrsException
     {
-        logger.debugPrintf("createDir:%s\n",dirpath);
+        logger.debugPrintf("createDir:%s\n", dirpath);
 
-        String parentDir=URIFactory.dirname(dirpath); 
-        
-        // Check/Create parent first: 
+        String parentDir = URIFactory.dirname(dirpath);
+
+        // Check/Create parent first:
         MlsxEntry parentEntry = mlst(parentDir);
-        
-        if (parentEntry==null)
+
+        if (parentEntry == null)
         {
-            if (force==true)
+            if (force == true)
             {
-                createDir(parentDir,true);
+                createDir(parentDir, true);
             }
             else
             {
-                throw new ResourceCreationFailedException("Parent directory doesn't exist (use force==true) for directory:"+dirpath); 
+                throw new ResourceCreationFailedException("Parent directory doesn't exist (use force==true) for directory:" + dirpath);
             }
         }
-        
+
         // create child
         MlsxEntry entry = mlst(dirpath);
 
@@ -1240,7 +1226,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             {
                 // else keep existing
 
-                return  getDir(dirpath); 
+                return getDir(dirpath);
             }
         }
 
@@ -1252,13 +1238,13 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             synchronized (serverMutex)
             {
                 // mkdir doesn't need data channel
-                setCheckMode( false);
+                setCheckMode(false);
                 client.makeDir(dirpath);
             }
 
-            logger.debugPrintf("created directory:%s\n",dirpath);
+            logger.debugPrintf("created directory:%s\n", dirpath);
 
-            return  getDir(dirpath); 
+            return getDir(dirpath);
         }
         catch (ServerException e)
         {
@@ -1276,8 +1262,8 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
     public VFSNode openLocation(VRL loc) throws VrsException
     {
-        logger.debugPrintf("openLocation:%s\n",loc); 
-        
+        logger.debugPrintf("openLocation:%s\n", loc);
+
         try
         {
             String path = loc.getPath();
@@ -1287,7 +1273,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                 synchronized (serverMutex)
                 {
                     // cd doesn't need data channel
-                    setCheckMode( false);
+                    setCheckMode(false);
 
                     // empty path = default path which gftp server sets
                     path = client.getCurrentDir();
@@ -1302,8 +1288,8 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             {
                 path = this.homeDir + path.substring(2);
             }
-            
-            logger.debugPrintf("Open actual path=%s\n",path); 
+
+            logger.debugPrintf("Open actual path=%s\n", path);
 
             MlsxEntry entry = mlst(path); // ask for single fileinfo
             VFSNode node = null;
@@ -1318,8 +1304,8 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             else if (_isFile(entry))
                 node = new GftpFile(this, path, entry);
             /*
-             * else if (entry.isSoftLink()) { //remote GFTP does not resolve
-             * link, show as file ! return new GftpFile(this, path, entry); }
+             * else if (entry.isSoftLink()) { //remote GFTP does not resolve link, show as file ! return new
+             * GftpFile(this, path, entry); }
              */
             else
                 node = new GftpDir(this, path, entry);
@@ -1353,7 +1339,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         if (this.protocol_v1 == true)
             return fakeMlsd(dirpath);
 
-        logger.debugPrintf("mlsd:%s\n",dirpath);
+        logger.debugPrintf("mlsd:%s\n", dirpath);
 
         // System.err.println("mlsd:"+dirpath);
 
@@ -1377,12 +1363,12 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
                 // _setCheckMode(myclient,true,true);
                 retval = myclient.mlsd(dirpath);
-                this.finalize(myclient); 
+                this.finalize(myclient);
             }
             else
                 synchronized (serverMutex)
                 {
-                    setCheckMode( usePassive());
+                    setCheckMode(usePassive());
                     retval = client.mlsd(dirpath);
                 }
 
@@ -1390,8 +1376,8 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         }
         catch (Exception e)
         {
-            logger.logException(ClassLogger.DEBUG,e,"mlsd failed for:%s\n",dirpath); 
-            
+            logger.logException(ClassLogger.DEBUG, e, "mlsd failed for:%s\n", dirpath);
+
             throw convertException(e);
         }
 
@@ -1401,9 +1387,9 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
     private Vector<MlsxEntry> fakeMlsd(String path)
             throws VrsException
     {
-        logger.debugPrintf("fakeMlsd:%s\n",path);
-        GridFTPClient myclient=null; 
-        
+        logger.debugPrintf("fakeMlsd:%s\n", path);
+        GridFTPClient myclient = null;
+
         try
         {
             Vector<?> list1 = null;
@@ -1463,7 +1449,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
             if (listHidden)
             {
-                logger.debugPrintf("Listing hidden files:%s\n",path);
+                logger.debugPrintf("Listing hidden files:%s\n", path);
 
                 myclient.setPassiveMode(usePassive());
                 list2 = myclient.list("-d .*");
@@ -1475,7 +1461,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                         || ((listHidden == true) && ((list2 == null) || (list2
                                 .size() == 0))))
                 {
-                    logger.debugPrintf("fakeMlsd(): NULL or empty list() for:%s\n",path); 
+                    logger.debugPrintf("fakeMlsd(): NULL or empty list() for:%s\n", path);
                     return null;
                 }
             }
@@ -1517,7 +1503,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         finally
         {
             // ALWAYS CLEANUP
-            this.finalize(myclient); 
+            this.finalize(myclient);
         }
     }
 
@@ -1534,25 +1520,24 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             entrys.put(name, mslx);
         else
         {
-            logger.errorPrintf("fakeMlsd(): NULL Mslx for:%s\n",filepath);
+            logger.errorPrintf("fakeMlsd(): NULL Mslx for:%s\n", filepath);
         }
 
     }
 
     /**
-     * Synchronized (but multihreaded compatible) read from remote gftp file.
-     * This read can be done in parallel (multithreaded) since 'extendedGet' is
-     * used. GridFTP protocol specifies that multile extendedGets can de done on
-     * the same file speeding up transfer. This protocol is used in parallel
-     * (striped) transfer mode. This has not been tested.
+     * Synchronized (but multihreaded compatible) read from remote gftp file. This read can be done in parallel
+     * (multithreaded) since 'extendedGet' is used. GridFTP protocol specifies that multile extendedGets can de done on
+     * the same file speeding up transfer. This protocol is used in parallel (striped) transfer mode. This has not been
+     * tested.
      * 
      * @throws IOException
      */
     public int syncRead(String filepath, long fileOffset,
             byte buffer[], int off, int len) throws IOException
     {
-//        debug("syncRead: " + len + " from:" + filepath + "#"
-//                + fileOffset + "into: buffer[" + buffer.length + "]");
+        // debug("syncRead: " + len + " from:" + filepath + "#"
+        // + fileOffset + "into: buffer[" + buffer.length + "]");
 
         // create prive client for extended read (parallel mode).
 
@@ -1586,7 +1571,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             // client.setPassiveMode(true);
 
             logger.debugPrintf("syncRead: Starting streamreader: size,off,len=%d,%d,%d\n",
-                                size,off,len);
+                    size, off, len);
 
             //
             // mode for ExtendedGet :
@@ -1597,18 +1582,17 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
             // current written = read;
             int nrRead = dataSink.getNrOfBytesWritten();
-            this.finalize(myclient); 
+            this.finalize(myclient);
 
-            if (nrRead!=len)
-                throw new IOException("Invalid number of bytes read!!!"); 
-            
-            // Following is the same as (nrRead!=len) 
+            if (nrRead != len)
+                throw new IOException("Invalid number of bytes read!!!");
+
+            // Following is the same as (nrRead!=len)
             // if (dataSink.isDone()==false)
-            //    throw new IOException("Sychronisation Error. DataSink not done yet! \n"); 
-                	
-            
+            // throw new IOException("Sychronisation Error. DataSink not done yet! \n");
+
             logger.debugPrintf("syncRead: nrRead=%d\n", nrRead);
-            
+
             return nrRead;
         }
         catch (Exception e)
@@ -1621,11 +1605,10 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
     }
 
     /**
-     * Synchronized (but multihreaded compatible) write to remote gftp file.
-     * This write can be done in parallel (multithreaded) since 'extendedPut' is
-     * used. GridFTP protocol specifies that multile extendedPuts can de done on
-     * the same file speeding up transfer. This protocol is used in parallel
-     * (striped) transfer mode. This has not been tested.
+     * Synchronized (but multihreaded compatible) write to remote gftp file. This write can be done in parallel
+     * (multithreaded) since 'extendedPut' is used. GridFTP protocol specifies that multile extendedPuts can de done on
+     * the same file speeding up transfer. This protocol is used in parallel (striped) transfer mode. This has not been
+     * tested.
      * 
      * @throws VrsException
      * @throws IOException
@@ -1637,7 +1620,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             byte buffer[], int off, int len) throws VrsException
     {
         MarkerListener markerListener = new GftpMarkerListener(); // new
-                                                                    // GftpMarker();
+                                                                  // GftpMarker();
 
         // Create StreamReader:
         try
@@ -1660,7 +1643,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             myclient.extendedPut(filepath, fileOffset, dataSource,
                     markerListener);
 
-            this.finalize(myclient); 
+            this.finalize(myclient);
 
         }
         catch (ServerException e)
@@ -1687,7 +1670,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         if (this.protocol_v1 == true)
             return fakeMlst(filepath);
 
-        logger.debugPrintf("mlst:%s\n",filepath);
+        logger.debugPrintf("mlst:%s\n", filepath);
 
         // String dirpath = VRL.dirname(filepath);
         // String name = VRL.basename(filepath);
@@ -1699,7 +1682,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             synchronized (serverMutex)
             {
                 // extra precausion to avoid upsetting the GridFTPClient
-                setCheckMode( false);
+                setCheckMode(false);
                 if (this.client.exists(filepath) == false)
                 {
                     return null;// mslt is also used in 'exists' // throw new
@@ -1708,7 +1691,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                 }
 
                 // update passive for DATA channel mslt
-                setCheckMode( usePassive());
+                setCheckMode(usePassive());
                 entry = client.mlst(filepath);
 
                 return entry;
@@ -1718,19 +1701,18 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         catch (Exception e)
         {
             this.serverException = true;
-            logger.logException(ClassLogger.ERROR,e,"mslt() failed for:%s\n",filepath); 
+            logger.logException(ClassLogger.ERROR, e, "mslt() failed for:%s\n", filepath);
             throw convertException(e);
         }
 
     }
 
     /**
-     * V1.0 compatible 'mlst' method Tries to get the FileInfo and converts it
-     * to a MlsxEntry object.
+     * V1.0 compatible 'mlst' method Tries to get the FileInfo and converts it to a MlsxEntry object.
      */
     private MlsxEntry fakeMlst(String filepath) throws VrsException
     {
-        logger.debugPrintf("fakeMlst:%s\n",filepath);
+        logger.debugPrintf("fakeMlst:%s\n", filepath);
         // System.err.println("fakeMlst:"+filepath);
         boolean isRoot = false;
 
@@ -1748,12 +1730,12 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
         try
         {
-            setCheckMode( false);
+            setCheckMode(false);
 
             // use current client for existance to speed up 'exists'
             if (client.exists(filepath) == false)
             {
-                logger.debugPrintf("fakeMlst: exists=false for:%s\n",filepath);
+                logger.debugPrintf("fakeMlst: exists=false for:%s\n", filepath);
                 // mslt is also used in 'exists' dont'// throw new
                 // ResourceNotFoundException("Couldn't stat:"+filepath);
 
@@ -1770,7 +1752,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                     //
                     // blind GFTP Server: return dummy file object.
                     // don't know if this is a directory or not
-                    // 
+                    //
                     return this.createDummyMslx(filepath, false);
                     // continue ?
                 }
@@ -1789,7 +1771,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
             myclient.changeDir(dirname);
 
-            //debug("fakeMlst:before list:" + dirname);
+            // debug("fakeMlst:before list:" + dirname);
 
             Vector<?> files = null;
 
@@ -1799,7 +1781,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             }
             catch (Exception e)
             {
-                logger.logException(ClassLogger.WARN,e,"GFTP list() (I) failed.Retrying!\n"); 
+                logger.logException(ClassLogger.WARN, e, "GFTP list() (I) failed.Retrying!\n");
             }
 
             if ((files == null) || (files.size() <= 0))
@@ -1819,7 +1801,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
             if ((files == null) || (files.size() <= 0))
             {
-                logger.errorPrintf("GFTP list() (II) failed again for %s\n",dirname);  
+                logger.errorPrintf("GFTP list() (II) failed again for %s\n", dirname);
                 return null;
             }
 
@@ -1833,7 +1815,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
             // since 'exists' returned true, this is an error
             // might be a bug in old v1.0 servers:
-            logger.errorPrintf("fakeMlst: server says file exists, but didn't return it:%s",filepath);
+            logger.errorPrintf("fakeMlst: server says file exists, but didn't return it:%s", filepath);
 
             int i = 0;
             for (Object o : files)
@@ -1849,7 +1831,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         }
         catch (Exception e)
         {
-            logger.logException(ClassLogger.WARN,e,"fakeMlst failed\n");
+            logger.logException(ClassLogger.WARN, e, "fakeMlst failed\n");
             throw convertException(e);
         }
     }
@@ -1881,7 +1863,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         }
         catch (FTPException e)
         {
-            logger.warnPrintf(">>>***Error: Exception:%s",e);
+            logger.warnPrintf(">>>***Error: Exception:%s", e);
         }
 
         return null;
@@ -1892,10 +1874,8 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             FileInfo finfo)
     {
         /*
-         * example Mslx. Note space before filepath:
-         * mslx=unix.owner=ptdeboer;
-         * unix.mode=0755;size=4096; perm=cfmpel;type=dir; unix.group=uva;
-         * unique=fd06-1ee8001; modify=20070402124136; /var/scratch/ptdeboer
+         * example Mslx. Note space before filepath: mslx=unix.owner=ptdeboer; unix.mode=0755;size=4096;
+         * perm=cfmpel;type=dir; unix.group=uva; unique=fd06-1ee8001; modify=20070402124136; /var/scratch/ptdeboer
          */
 
         String typestr = MlsxEntry.TYPE_FILE;
@@ -1935,7 +1915,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         }
         catch (FTPException e)
         {
-            logger.warnPrintf(">>>***Error: Exception:%s",e);
+            logger.warnPrintf(">>>***Error: Exception:%s", e);
         }
 
         return entry;
@@ -1949,7 +1929,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         {
             synchronized (serverMutex)
             {
-                setCheckMode( false);
+                setCheckMode(false);
                 size = this.client.getSize(path);
                 return size;
             }
@@ -1957,8 +1937,8 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         catch (Exception e)
         {
             this.serverException = true;
-            throw new ServerCommunicationException("Couldn't get size of file ("+this.getHostname()+"):"+path
-                    +"\nError:" + e.getMessage(), 
+            throw new ServerCommunicationException("Couldn't get size of file (" + this.getHostname() + "):" + path
+                    + "\nError:" + e.getMessage(),
                     e);
         }
     }
@@ -1978,7 +1958,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         }
         catch (VrsException e)
         {
-            logger.logException(ClassLogger.WARN,e,"existsFile exception\n");
+            logger.logException(ClassLogger.WARN, e, "existsFile exception\n");
         }
 
         return false;
@@ -2000,14 +1980,14 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             }
             else
             {
-                logger.debugPrintf("existsDir: got NULL fileinfo for:%s\n",path);
+                logger.debugPrintf("existsDir: got NULL fileinfo for:%s\n", path);
             }
 
             // debug("existsDir Returning:" + retval);
         }
         catch (VrsException e)
         {
-            logger.logException(ClassLogger.WARN,e,"existsDir Exception\n");
+            logger.logException(ClassLogger.WARN, e, "existsDir Exception\n");
         }
 
         return retval;
@@ -2028,10 +2008,10 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
     public VFile createFile(String path, boolean force)
             throws VrsException
     {
-        String fullPath=resolvePathString(path); 
-        
+        String fullPath = resolvePathString(path);
+
         MlsxEntry entry = mlst(fullPath);
-        
+
         if (entry != null)
         {
             // exists
@@ -2071,18 +2051,17 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             else
                 synchronized (this.serverMutex)
                 {
-                    setCheckMode( usePassive());
+                    setCheckMode(usePassive());
                     this.client.put(fullPath, nilsource, null);
                 }
         }
         catch (Exception e)
         {
-            throw new ResourceCreationFailedException("Couldn't create new file:"+fullPath,e); 
+            throw new ResourceCreationFailedException("Couldn't create new file:" + fullPath, e);
         }
-        
+
         return getFile(fullPath);
     }
-
 
     public boolean isGftpCompatibleName(String name)
     {
@@ -2098,13 +2077,12 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         return true;
     }
 
-    
     @Override
     public GftpFile getFile(VRL vrl) throws VrsException
     {
         return getFile(vrl.getPath());
     }
-    
+
     public GftpFile getFile(String filepath) throws VrsException
     {
 
@@ -2154,20 +2132,20 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
         return true;
     }
-    
+
     @Override
     public GftpDir getDir(VRL vrl) throws VrsException
     {
         return getDir(vrl.getPath());
     }
-    
+
     public GftpDir getDir(String dirpath) throws VrsException
     {
         MlsxEntry entry = mlst(dirpath);
 
         if ((entry == null) || (_isDir(entry) == false))
         {
-            logger.debugPrintf("getDir() failed for:%s, Entry=%s\n",dirpath,entry);
+            logger.debugPrintf("getDir() failed for:%s, Entry=%s\n", dirpath, entry);
             return null;
         }
 
@@ -2205,8 +2183,8 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         }
         catch (VrsException e)
         {
-            logger.logException(ClassLogger.WARN,e,"Exception during disconnect()\n"); 
-        } 
+            logger.logException(ClassLogger.WARN, e, "Exception during disconnect()\n");
+        }
     }
 
     // ========================================================================
@@ -2215,14 +2193,14 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
     private IOException convertToIOException(Throwable e)
     {
-        VrsException vlex=this.convertException(e); 
-        return new IOException(vlex.getMessage(),vlex); 
+        VrsException vlex = this.convertException(e);
+        return new IOException(vlex.getMessage(), vlex);
     }
-    
+
     private VrsException convertException(Throwable e)
     {
-        logger.logException(ClassLogger.DEBUG,e,"Converting Exception:%s",e); 
-        
+        logger.logException(ClassLogger.DEBUG, e, "Converting Exception:%s", e);
+
         String ename = e.getClass().getName();
 
         if (e instanceof VrsException)
@@ -2262,7 +2240,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         }
         else if (e instanceof FTPException)
         {
-            logger.errorPrintf("FTPException:%s\n",e); 
+            logger.errorPrintf("FTPException:%s\n", e);
             return new GftpException("IOException:" + ename, errtxt, e);
         }
         // pass my own:
@@ -2278,8 +2256,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
     }
 
     /**
-     * From:
-     * http://www.nextgen6.net/docs/proftpd/rfc/draft-ietf-ftpext-mlst-12.txt
+     * From: http://www.nextgen6.net/docs/proftpd/rfc/draft-ietf-ftpext-mlst-12.txt
      * 
      * <pre>
      * 7.5.5. The perm Fact
@@ -2343,7 +2320,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
      *     The &quot;w&quot; permission applies to type=file objects, and for some
      *     systems, perhaps to other types of objects, and indicates that the
      *     STOR command may be applied to the object named.
-     *     
+     * 
      * </pre>
      */
 
@@ -2430,7 +2407,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
         public static PermissionInfo fromString(String str)
         {
-            // Null in Null out 
+            // Null in Null out
             if (str == null)
                 return null;
 
@@ -2555,11 +2532,11 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             return -1;
 
         String val = entry.get(MlsxEntry.SIZE);
-        //debug("_getLength val=" + val);
+        // debug("_getLength val=" + val);
 
         if (val == null)
         {
-            //debug("SIZE=null in entry:" + entry);
+            // debug("SIZE=null in entry:" + entry);
             return 0;
         }
 
@@ -2575,11 +2552,11 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             return "";
 
         String val = entry.get(MlsxEntry.UNIQUE);
-        //debug("_getUnique val=" + val);
+        // debug("_getUnique val=" + val);
 
         if (val == null)
         {
-            //debug("UNIQUE=null in entry:" + entry);
+            // debug("UNIQUE=null in entry:" + entry);
             return null;
         }
 
@@ -2596,11 +2573,11 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             return -1;
 
         String val = entry.get(MlsxEntry.MODIFY);
-        ///debug("_getModificationTime val=" + val);
+        // /debug("_getModificationTime val=" + val);
 
         if (val == null)
         {
-            //debug("SIZE=null in entry:" + entry);
+            // debug("SIZE=null in entry:" + entry);
             return 0;
         }
 
@@ -2614,11 +2591,11 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             return -1;
 
         String val = entry.get(MlsxEntry.CREATE);
-        //debug("_getCreationTime val=" + val);
+        // debug("_getCreationTime val=" + val);
 
         if (val == null)
         {
-            //debug("CREATE=null in entry:" + entry);
+            // debug("CREATE=null in entry:" + entry);
             return 0;
         }
 
@@ -2655,11 +2632,11 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             return null;
 
         String val = entry.get(UNIX_GROUP);
-        //debug("_getModificationTime val=" + val);
+        // debug("_getModificationTime val=" + val);
 
         if (val == null)
         {
-            //debug("UNIX_GROUP=null in entry:" + entry);
+            // debug("UNIX_GROUP=null in entry:" + entry);
             return null;
         }
 
@@ -2673,11 +2650,11 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             return null;
 
         String val = entry.get(UNIX_OWNER);
-        //debug("_getModificationTime val=" + val);
+        // debug("_getModificationTime val=" + val);
 
         if (val == null)
         {
-            //debug("UNIX_GROUP=null in entry:" + entry);
+            // debug("UNIX_GROUP=null in entry:" + entry);
             return null;
         }
 
@@ -2685,12 +2662,10 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
     }
 
     /**
-     * Optimized getAttribute. Will use MslxEntry or update MlsxEntry of the
-     * specified GridFTP Node. The update parameter is used when fetching
-     * muliple attributes.
+     * Optimized getAttribute. Will use MslxEntry or update MlsxEntry of the specified GridFTP Node. The update
+     * parameter is used when fetching muliple attributes.
      * 
-     * Method will return null if attribute isn't an (optimized) GridFTP
-     * attribute
+     * Method will return null if attribute isn't an (optimized) GridFTP attribute
      * 
      */
     public static Attribute getAttribute(MlsxEntry entry, String name)
@@ -2706,7 +2681,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             String val = entry.get(UNIX_MODE);
             if (isEmpty(val) == false)
             {
-                //debug("> unix_mode=" + val);
+                // debug("> unix_mode=" + val);
                 // Parse Octal String:
                 int mode = Integer.parseInt(val, 8);
 
@@ -2715,7 +2690,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             else
             {
                 String permstr = entry.get(MlsxEntry.PERM);
-                //debug("> permstr=" + permstr);
+                // debug("> permstr=" + permstr);
                 val = (isDir == true ? "d" : "-")
                         + new PermissionInfo(permstr).toString();
             }
@@ -2740,9 +2715,8 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
         }
         /***********************************************************************
-         * else if (name.compareTo(ATTR_MODIFICATION_TIME_STRING)==0) { return
-         * new VAttribute(name,millisToDateTimeString(
-         * GftpServer._getModificationTime(entry))); }
+         * else if (name.compareTo(ATTR_MODIFICATION_TIME_STRING)==0) { return new
+         * VAttribute(name,millisToDateTimeString( GftpServer._getModificationTime(entry))); }
          **********************************************************************/
         else if (name.compareTo(ATTR_FILE_SIZE) == 0)
         {
@@ -2805,18 +2779,17 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         // whether the client really is alive shouldn't be checked here
         return client != null;
     }
-    
 
     @Override
-    public VDir newDir(VRL dirVrl) throws VrsException 
+    public VDir newDir(VRL dirVrl) throws VrsException
     {
-        return new GftpDir(this,dirVrl.getPath()); 
+        return new GftpDir(this, dirVrl.getPath());
     }
 
     @Override
-    public VFile newFile(VRL filePath) throws VrsException 
+    public VFile newFile(VRL filePath) throws VrsException
     {
-        return new GftpFile(this,filePath.getPath());
+        return new GftpFile(this, filePath.getPath());
     }
 
     public ActiveTransferType canTransferTo(VFile sourceFile, VRL remoteLocation, StringHolder explanation) throws VrsException
@@ -2842,7 +2815,7 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
         }
     }
 
-    public ActiveTransferType canTransferFrom(VFile targetFile,VRL remoteLocation, StringHolder explanation) throws VrsException
+    public ActiveTransferType canTransferFrom(VFile targetFile, VRL remoteLocation, StringHolder explanation) throws VrsException
     {
         String remoteScheme = remoteLocation.getScheme();
 
@@ -2863,110 +2836,115 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             explanation.value = "Can only perform Third Party transfers between GridFTP locations.";
             return ActiveTransferType.NONE;
         }
-    }   
+    }
 
-    public VFile activeTransferTo(ITaskMonitor monitor,VFile sourceFile,VRL remoteDestination) throws VrsException
+    public VFile activeTransferTo(ITaskMonitor monitor, VFile sourceFile, VRL remoteDestination) throws VrsException
     {
         if (!(sourceFile instanceof GftpFile))
-            throw new ResourceTypeMismatchException("VFile must be a GridFTP File!:"+sourceFile); 
-        //logger.infoPrintf(this, ">>> Performing VThirdPartyTransfer(): %s ==> %s\n", this, remoteDestination);
+            throw new ResourceTypeMismatchException("VFile must be a GridFTP File!:" + sourceFile);
+        // logger.infoPrintf(this, ">>> Performing VThirdPartyTransfer(): %s ==> %s\n", this, remoteDestination);
 
-        return do3rdPartyTransferTo(monitor, (GftpFile)sourceFile, remoteDestination);
+        return do3rdPartyTransferTo(monitor, (GftpFile) sourceFile, remoteDestination);
     }
 
-    public VFile activeTransferFrom(ITaskMonitor monitor,VFile targetFile, VRL remoteSourceLocation) throws VrsException
+    public VFile activeTransferFrom(ITaskMonitor monitor, VFile targetFile, VRL remoteSourceLocation) throws VrsException
     {
         if (!(targetFile instanceof GftpFile))
-            throw new ResourceTypeMismatchException("VFile must be a GridFTP File!:"+targetFile); 
-        
-        //logger.infoPrintf(this, ">>> Performing VThirdPartyTransfer(): %s <<= %s\n", this, remoteSource);
-        return do3rdPartyTransferFromOther(monitor, remoteSourceLocation, (GftpFile)targetFile);
-    }
-    
-    public VFile do3rdPartyTransferTo(ITaskMonitor monitor,GftpFile fromGftpFile, VRL toTargetLocation) 
-           throws VrsException 
-    {
-        GftpFileSystem targetServer = GftpFileSystem.getOrCreateServerFor(this.vrsContext,toTargetLocation); 
-    
-        // Do Server to Server 3rd Party Transfer
-        return doActive3rdPartyTransfer(monitor,
-                                        fromGftpFile.gftpServer,
-                                        fromGftpFile.getVRL(),
-                                        targetServer,
-                                        toTargetLocation);
+            throw new ResourceTypeMismatchException("VFile must be a GridFTP File!:" + targetFile);
+
+        // logger.infoPrintf(this, ">>> Performing VThirdPartyTransfer(): %s <<= %s\n", this, remoteSource);
+        return do3rdPartyTransferFromOther(monitor, remoteSourceLocation, (GftpFile) targetFile);
     }
 
-    protected VFile do3rdPartyTransferFromOther(ITaskMonitor monitor,VRL fromRemoteSource, GftpFile toGftpFile) 
-           throws VrsException
-    {
-        GftpFileSystem sourceServer = GftpFileSystem.getOrCreateServerFor(this.vrsContext,fromRemoteSource); 
-        
-        // Do Server to Server 3rd Party Transfer: Source is Active party: 
-        return doActive3rdPartyTransfer(monitor,
-                                        sourceServer,
-                                        fromRemoteSource,
-                                        toGftpFile.gftpServer,
-                                        toGftpFile.getVRL()); 
-    }
-    
-    /**
-     * Initiate 3rd party transfer from sourceServer to targetServer . 
-     * 
-     * @param sourceServer   source GFTP FileSystem 
-     * @param sourceVrl      source VRL of file
-     * @param targetServer   target GFTP FileSystem 
-     * @param targetVrl      target VRL of file
-     * @return new Target VFile object 
-     * @throws VrsException 
-     */
-    protected VFile doActive3rdPartyTransfer(ITaskMonitor monitor,GftpFileSystem sourceServer,VRL sourceVrl, 
-            GftpFileSystem targetServer,VRL targetVrl) 
+    public VFile do3rdPartyTransferTo(ITaskMonitor monitor, GftpFile fromGftpFile, VRL toTargetLocation)
             throws VrsException
     {
-         String formatstr="GFTP: Performing 3rd party transfer:%s:%d => %s:%d\n";
-                           
-        monitor.logPrintf(formatstr,sourceServer.getHostname(),sourceServer.getPort(),
-                targetServer.getHostname(),targetServer.getPort() );
-        logger.debugPrintf(formatstr,sourceServer.getHostname(),sourceServer.getPort(),
-                targetServer.getHostname(),targetServer.getPort() );
-        
+        GftpFileSystem targetServer = GftpFileSystem.getOrCreateServerFor(this.vrsContext, toTargetLocation);
+
+        // Do Server to Server 3rd Party Transfer
+        return doActive3rdPartyTransfer(monitor,
+                fromGftpFile.gftpServer,
+                fromGftpFile.getVRL(),
+                targetServer,
+                toTargetLocation);
+    }
+
+    protected VFile do3rdPartyTransferFromOther(ITaskMonitor monitor, VRL fromRemoteSource, GftpFile toGftpFile)
+            throws VrsException
+    {
+        GftpFileSystem sourceServer = GftpFileSystem.getOrCreateServerFor(this.vrsContext, fromRemoteSource);
+
+        // Do Server to Server 3rd Party Transfer: Source is Active party:
+        return doActive3rdPartyTransfer(monitor,
+                sourceServer,
+                fromRemoteSource,
+                toGftpFile.gftpServer,
+                toGftpFile.getVRL());
+    }
+
+    /**
+     * Initiate 3rd party transfer from sourceServer to targetServer .
+     * 
+     * @param sourceServer
+     *            source GFTP FileSystem
+     * @param sourceVrl
+     *            source VRL of file
+     * @param targetServer
+     *            target GFTP FileSystem
+     * @param targetVrl
+     *            target VRL of file
+     * @return new Target VFile object
+     * @throws VrsException
+     */
+    protected VFile doActive3rdPartyTransfer(ITaskMonitor monitor, GftpFileSystem sourceServer, VRL sourceVrl,
+            GftpFileSystem targetServer, VRL targetVrl)
+            throws VrsException
+    {
+        String formatstr = "GFTP: Performing 3rd party transfer:%s:%d => %s:%d\n";
+
+        monitor.logPrintf(formatstr, sourceServer.getHostname(), sourceServer.getPort(),
+                targetServer.getHostname(), targetServer.getPort());
+        logger.debugPrintf(formatstr, sourceServer.getHostname(), sourceServer.getPort(),
+                targetServer.getHostname(), targetServer.getPort());
+
         String sourcefilepath = sourceVrl.getPath();
         String destfilepath = targetVrl.getPath();
-        
-        // Create private GridFTP clients ! 
-        GridFTPClient privateSourceClient = sourceServer.createGFTPClient(); 
+
+        // Create private GridFTP clients !
+        GridFTPClient privateSourceClient = sourceServer.createGFTPClient();
         GridFTPClient privateTargetClient = targetServer.createGFTPClient();
-        
+
         // gsiftp/gftp 1.0 compatibility
-        // Both must support DCAU. If one of them doesn't: disable at the other ! 
-        //  
-        boolean sourceDCAU=sourceServer.useDataChannelAuthentication(); 
-        boolean destDCAU=targetServer.useDataChannelAuthentication(); 
-        
-        //debug("sourceDCAU="+sourceDCAU);
-        //debug("destDCAU="+destDCAU);
-        
-        long sourceSize=-1;
-        // not all storage elements like this: 
+        // Both must support DCAU. If one of them doesn't: disable at the other !
+        //
+        boolean sourceDCAU = sourceServer.useDataChannelAuthentication();
+        boolean destDCAU = targetServer.useDataChannelAuthentication();
+
+        // debug("sourceDCAU="+sourceDCAU);
+        // debug("destDCAU="+destDCAU);
+
+        long sourceSize = -1;
+        // not all storage elements like this:
         try
         {
-            sourceSize=sourceServer.getSize(sourcefilepath); 
+            sourceSize = sourceServer.getSize(sourcefilepath);
         }
         catch (Exception e)
         {
-            logger.warnPrintf("Warning could not get size of file:%s\n",sourcefilepath); 
+            logger.warnPrintf("Warning could not get size of file:%s\n", sourcefilepath);
         }
-        
-        // both must be true or false. 
-        if (sourceDCAU!=destDCAU) 
+
+        // both must be true or false.
+        if (sourceDCAU != destDCAU)
         {
-            monitor.logPrintf("---\nGFTP: Warning: Data Channel Authentication mismatch between source: "+sourceServer.getHostname()+" and destination:"+targetServer.getHostname()+"\n---\n");
+            monitor.logPrintf("---\nGFTP: Warning: Data Channel Authentication mismatch between source: " + sourceServer.getHostname()
+                    + " and destination:" + targetServer.getHostname() + "\n---\n");
             logger.warnPrintf("DCAU Mismatch between source and target: Disabling DCAU");
-            
+
             privateSourceClient.setLocalNoDataChannelAuthentication();
             privateTargetClient.setLocalNoDataChannelAuthentication();
-            
-            if ((sourceDCAU==false) && (destDCAU==true))
+
+            if ((sourceDCAU == false) && (destDCAU == true))
             {
                 try
                 {
@@ -2981,8 +2959,8 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                     e.printStackTrace();
                 }
             }
-                
-            if ((destDCAU==false) && (sourceDCAU==true))
+
+            if ((destDCAU == false) && (sourceDCAU == true))
             {
                 try
                 {
@@ -2998,22 +2976,22 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                 }
             }
         }
-        
-        ActionTask monitorTask=null; 
-        //privateSourceClient.setLocalNoDataChannelAuthentication();
-        //privateTargetClient.setLocalNoDataChannelAuthentication();
-        VrsException transferEx=null; 
+
+        ActionTask monitorTask = null;
+        // privateSourceClient.setLocalNoDataChannelAuthentication();
+        // privateTargetClient.setLocalNoDataChannelAuthentication();
+        VrsException transferEx = null;
         try
         {
-            // Todo: remote file stats ! (just use 1 for now) 
-            monitor.startSubTask("GFTP: Performing 3rd party transfer",sourceSize); 
-            
-            //MarkerListener markerListener = new GftpMarkerListener(); // new        // GftpMarker();
+            // Todo: remote file stats ! (just use 1 for now)
+            monitor.startSubTask("GFTP: Performing 3rd party transfer", sourceSize);
+
+            // MarkerListener markerListener = new GftpMarkerListener(); // new // GftpMarker();
 
             // can we used striped mode here ?
             // see: http://www.globus.org/cog/jftp/guide.html
-            // do NOT set Passive/Active mode the servers will do that themselves 
-            
+            // do NOT set Passive/Active mode the servers will do that themselves
+
             // sourceClient.setPassive();
             // sourceClient.setLocalActive();
 
@@ -3027,79 +3005,77 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
             // destination MUST support active mode or else the 3rd party
             // transfer doesn't work and the direction must be reversed.
             // In that case the other server must allow active mode because if
-            // neither of the two servers allow active mode no transfer can 
+            // neither of the two servers allow active mode no transfer can
             // be made at all!
             //
             // (If both client and server are passive, none of them is active,
             // duh!)
             // ============
-            
-            monitorTask=start3rdPartyMonitor(targetServer,monitor,targetVrl);
-            
-            TransferMarkerlistener listener=new TransferMarkerlistener(this); 
+
+            monitorTask = start3rdPartyMonitor(targetServer, monitor, targetVrl);
+
+            TransferMarkerlistener listener = new TransferMarkerlistener(this);
             privateSourceClient.transfer(sourcefilepath, privateTargetClient, destfilepath, false, listener);
         }
         catch (Throwable e)
         {
-            logger.logException(ClassLogger.ERROR,e,"Exception during 3rd party transfer\n"); 
-            monitor.logPrintf("*** Error: Exception during 3rd party transfer:"+e+"\n");
+            logger.logException(ClassLogger.ERROR, e, "Exception during 3rd party transfer\n");
+            monitor.logPrintf("*** Error: Exception during 3rd party transfer:" + e + "\n");
             VrsException vle = convertException(e);
             monitor.setException(vle);
-            // keep exception. 
-            transferEx=vle; 
+            // keep exception.
+            transferEx = vle;
         }
-        
-        if (monitorTask!=null)
+
+        if (monitorTask != null)
         {
             monitorTask.signalTerminate();
         }
-        
+
         // CLEANUP !
         finalize(privateTargetClient);
         finalize(privateSourceClient);
-        
+
         monitor.endSubTask(null);
-        
-        if (transferEx!=null)
+
+        if (transferEx != null)
         {
-            throw transferEx; 
+            throw transferEx;
         }
-        
+
         monitor.logPrintf("GFTP: Finished 3rd party transfer.\n");
-       
-        // Should be there, but do not check if "blind mode" (In case of SRM).   
+
+        // Should be there, but do not check if "blind mode" (In case of SRM).
         return targetServer.newFile(targetVrl);
     }
-    
-    /** 
+
+    /**
      * Start 3rd party transfer monitor which checks the size of the targetfile
-     */  
+     */
     private ActionTask start3rdPartyMonitor(GftpFileSystem targetServer,
-            final ITaskMonitor monitor,final VRL targetVrl)
+            final ITaskMonitor monitor, final VRL targetVrl)
     {
-        
+
         final GridFTPClient privateClient;
-        
+
         try
         {
             privateClient = targetServer.createGFTPClient();
         }
         catch (VrsException e1)
         {
-            logger.logException(ClassLogger.ERROR,e1,"Failed to start background monitor for third party transfer to:%s\n",targetVrl); 
-            return null;  
+            logger.logException(ClassLogger.ERROR, e1, "Failed to start background monitor for third party transfer to:%s\n", targetVrl);
+            return null;
         }
-        
-        ActionTask monitorTask=new ActionTask(null,"GftpFileSystem: Monitoring 3d party transfer to:"+targetVrl)
+
+        ActionTask monitorTask = new ActionTask(null, "GftpFileSystem: Monitoring 3d party transfer to:" + targetVrl)
         {
-            boolean mustStop=false; 
-           
             @Override
             protected void doTask() throws VrsException
             {
-                int numTries=10; 
-                
-                while(mustStop==false)
+                int numTries = 10;
+
+                while (isCancelled() == false)
                 {
                     try
                     {
@@ -3107,92 +3083,91 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
                     }
                     catch (InterruptedException e)
                     {
-                        if (this.isCancelled()==true)
+                        if (this.isCancelled() == true)
                         {
-                            // transfer completed. 
-                            this.mustStop=true;
+                            break;
                         }
                         else
                         {
-                            // spurious interrupt ? 
-                            e.printStackTrace();
-                            if (this.isInterrupted()) 
+                            if (this.isInterrupted())
                             {
-                                this.mustStop=true; 
+                                // spurious interrupt, since isCancelled() is not set ?
+                                e.printStackTrace();
                             }
                         }
                     }
-                    
+
                     try
                     {
-                        long size=privateClient.getSize(targetVrl.getPath());
-                        monitor.updateSubTaskDone(null,size); 
+                        long size = privateClient.getSize(targetVrl.getPath());
+                        monitor.updateSubTaskDone(null, size);
                     }
                     catch (Exception e)
                     {
-                        numTries--; 
-                        
+                        numTries--;
+
                         // total try time = 10 x 5s = 50 seconds:
-                        
-                        if (numTries<=0)
+
+                        if (numTries <= 0)
                         {
-                            this.setException(e); 
-                            logger.logException(ClassLogger.ERROR,e,"Failed to start background monitor for third party transfer to:%s",targetVrl);
-                            mustStop=true;
+                            this.setException(e);
+                            logger.logException(ClassLogger.ERROR, e, "Failed to start background monitor for third party transfer to:%s",
+                                    targetVrl);
+                            this.setIsCancelled();
                         }
                     }
                 }
             }
 
-          
             @Override
             public void stopTask()
             {
-                mustStop=true; 
             }
-            
+
         };
-        
-        monitorTask.startTask(); 
-        
-        return monitorTask; 
+
+        monitorTask.startTask();
+
+        return monitorTask;
     }
 
     public void finalize(GridFTPClient gftpClient)
     {
-        if (gftpClient==null)
-            return; 
-        
+        if (gftpClient == null)
+            return;
+
         try
         {
             gftpClient.close();
         }
         catch (Exception e)
         {
-            logger.logException(ClassLogger.WARN,e,"Exception when closing target server %s:%d\n",gftpClient.getHost(),gftpClient.getPort()); 
+            logger.logException(ClassLogger.WARN, e, "Exception when closing target server %s:%d\n", gftpClient.getHost(),
+                    gftpClient.getPort());
         }
     }
-    
+
     /**
      * Returns the checksum of a file.
      * 
-     * @param algorithm, the checksume algorithm 
+     * @param algorithm
+     *            , the checksume algorithm
      * @param offset
      * @param length
      * @param file
      * @return
      * @throws VrsException
      */
-    public String getChecksum(String algorithm,long offset,long length, String file) throws VrsException
+    public String getChecksum(String algorithm, long offset, long length, String file) throws VrsException
     {
-        
-        if (algorithm==null || algorithm.equalsIgnoreCase(""))
+
+        if (algorithm == null || algorithm.equalsIgnoreCase(""))
         {
             return null;
         }
-        
+
         ChecksumAlgorithm checksumAlgorithm = new ChecksumAlgorithm(algorithm);
-        
+
         try
         {
             return client.checksum(checksumAlgorithm, offset, length, file);

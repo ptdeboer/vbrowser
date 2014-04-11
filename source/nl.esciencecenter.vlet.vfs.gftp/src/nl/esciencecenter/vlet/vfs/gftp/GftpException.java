@@ -32,9 +32,9 @@ public class GftpException extends NestedIOException
         super("GftpException", message, cause);
     }
 
-    protected GftpException(String name,String message, Throwable cause)
+    protected GftpException(String name, String message, Throwable cause)
     {
-        super("GftpException:"+name, message, cause);
+        super("GftpException:" + name, message, cause);
     }
-    
+
 }
