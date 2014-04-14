@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.RandomReadable;
+import nl.esciencecenter.ptk.io.RandomWritable;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -247,6 +249,16 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
         {
             throw new IOException(e.getMessage(), e);
         }
+    }
+    
+    public RandomReadable createRandomReader()
+    {
+        return new GftpRandomAccessable(gftpServer,getPath());
+    }
+
+    public RandomWritable createRandomWriter()
+    {
+        return new GftpRandomAccessable(gftpServer,getPath());
     }
 
     public int readBytes(long fileOffset, byte[] buffer, int bufferOffset, int nrBytes) throws IOException
