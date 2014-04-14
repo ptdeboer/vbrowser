@@ -50,6 +50,8 @@ import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.io.VRandomAccessable;
+import nl.esciencecenter.vbrowser.vrs.io.VRandomReadable;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.ResourceAlreadyExistsException;
 import nl.esciencecenter.vlet.exception.ResourceCreationFailedException;
@@ -61,8 +63,6 @@ import nl.esciencecenter.vlet.util.bdii.StorageArea;
 import nl.esciencecenter.vlet.vrs.ServerInfo;
 import nl.esciencecenter.vlet.vrs.VRSContext;
 import nl.esciencecenter.vlet.vrs.VRSFactory;
-import nl.esciencecenter.vlet.vrs.io.VRandomAccessable;
-import nl.esciencecenter.vlet.vrs.io.VRandomReadable;
 import nl.esciencecenter.vlet.vrs.io.VResizable;
 import nl.esciencecenter.vlet.vrs.util.VRSIOUtil;
 import nl.esciencecenter.vlet.vrs.vdriver.localfs.ChecksumUtil;
@@ -1893,7 +1893,7 @@ public class TestVFS extends VTestCase
     {
         byte readBuffer[] = new byte[orgBuffer.length];
         
-        RandomReadable reader = rfile.createRandomReader(); 
+        RandomReadable reader = rfile.createRandomReadable(); 
         int numread = reader.readBytes(offset, readBuffer, offset, end - offset);
         reader.close(); 
         
@@ -2039,7 +2039,9 @@ public class TestVFS extends VTestCase
         VRandomAccessable randomWriter = null;
 
         if (newFile instanceof VRandomAccessable)
+        {
             randomWriter = (VRandomAccessable) newFile;
+        }
         else
         {
             message("File implementation doesn't support random write methods:" + this);
@@ -2051,11 +2053,11 @@ public class TestVFS extends VTestCase
         byte buffer1[] = new byte[] { 127, 42, 13, 1, 2, 3, 4, 5, 6, 7, 8, 0, 9, -1, -10, -126, -127, -128 };
         int nrBytes = buffer1.length;
 
-        testRandomWriter(randomWriter,4, buffer1, 4, 4);
-        testRandomWriter(randomWriter,8, buffer1, 8, 4);
-        testRandomWriter(randomWriter,0, buffer1, 0, 4);
+        testRandomWrite(randomWriter,4, buffer1, 4, 4);
+        testRandomWrite(randomWriter,8, buffer1, 8, 4);
+        testRandomWrite(randomWriter,0, buffer1, 0, 4);
         // write remainder:
-        testRandomWriter(randomWriter,12, buffer1, 12, nrBytes - 12);
+        testRandomWrite(randomWriter,12, buffer1, 12, nrBytes - 12);
 
         byte buffer2[] = new byte[nrBytes];
 
@@ -2115,7 +2117,7 @@ public class TestVFS extends VTestCase
             generator.nextBytes(part);
 
             // write bytes:
-            testRandomWriter(randomWriter,offset, part, 0, partlen);
+            testRandomWrite(randomWriter,offset, part, 0, partlen);
 
             // keep byte in buffer:
             for (int j = 0; j < partlen; j++)
@@ -2140,11 +2142,19 @@ public class TestVFS extends VTestCase
         newFile.delete();
     }
 
-    private void testRandomWriter(VRandomAccessable randomFile, long offset, byte[] buffer, int bufferOffset, int nrBytes) throws Exception
+    private void testRandomWrite(VRandomAccessable randomFile, long offset, byte[] buffer, int bufferOffset, int nrBytes) throws Exception
     {
-        RandomWritable writer = randomFile.createRandomWriter(); 
+        RandomWritable writer = randomFile.createRandomWritable(); 
         writer.writeBytes(offset, buffer, bufferOffset, nrBytes);
         writer.close(); 
+    }
+    
+    private int testRandomRead(VRandomAccessable randomFile, long offset, byte[] buffer, int bufferOffset, int nrBytes) throws Exception
+    {
+        RandomReadable reader = randomFile.createRandomReadable(); 
+        int numRead=reader.readBytes(offset, buffer, bufferOffset, nrBytes);
+        reader.close();
+        return numRead; 
     }
 
     private void testReadWriteBytes(VFile newFile, long offset, byte[] buffer1) throws Exception
@@ -2163,9 +2173,9 @@ public class TestVFS extends VTestCase
 
         int numBytes = buffer1.length;
 
-        testRandomWriter(randomWriter,offset, buffer1, 0, numBytes);
+        testRandomWrite(randomWriter,offset, buffer1, 0, numBytes);
         // newFile.sync(); => writeBytes is specified as synchronous !
-        int numRead=randomWriter.readBytes(offset, buffer2, 0, numBytes);
+        int numRead=testRandomRead(randomWriter,offset, buffer2, 0, numBytes);
 
         Assert.assertEquals("Actual number of read bytes doesn't match request number of bytes!",numBytes,numRead); 
         
@@ -2186,6 +2196,8 @@ public class TestVFS extends VTestCase
      * 
      * }
      */
+
+
 
     @Test public void testCopyDirToRemote() throws Exception
     {

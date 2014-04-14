@@ -26,18 +26,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.io.RandomReadable;
-import nl.esciencecenter.ptk.io.RandomWritable;
-import nl.esciencecenter.ptk.io.local.LocalFSReader;
-import nl.esciencecenter.ptk.io.local.LocalFSWriter;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.NestedIOException;
 import nl.esciencecenter.vlet.vrs.VRS;
 import nl.esciencecenter.vlet.vrs.data.VAttributeConstants;
-import nl.esciencecenter.vlet.vrs.io.VRandomReadable;
-import nl.esciencecenter.vlet.vrs.io.VStreamAppendable;
 import nl.esciencecenter.vlet.vrs.vfs.VFSTransfer;
 import nl.esciencecenter.vlet.vrs.vfs.VFile;
 import nl.esciencecenter.vlet.vrs.vfs.VUnixFileAttributes;

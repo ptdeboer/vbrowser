@@ -31,6 +31,7 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeUtil;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.io.VRandomAccessable;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.NestedIOException;
 import nl.esciencecenter.vlet.exception.NotImplementedException;
@@ -40,7 +41,6 @@ import nl.esciencecenter.vlet.vrs.VEditable;
 import nl.esciencecenter.vlet.vrs.VNode;
 import nl.esciencecenter.vlet.vrs.VRenamable;
 import nl.esciencecenter.vlet.vrs.data.VAttributeConstants;
-import nl.esciencecenter.vlet.vrs.io.VRandomAccessable;
 
 /**
  * Super class of VDir and VFile. 

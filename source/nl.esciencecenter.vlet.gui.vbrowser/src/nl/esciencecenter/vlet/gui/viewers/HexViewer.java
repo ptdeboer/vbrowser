@@ -42,12 +42,10 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import nl.esciencecenter.ptk.GlobalProperties;
-import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.ui.fonts.FontInfo;
 import nl.esciencecenter.ptk.ui.fonts.FontToolBar;
 import nl.esciencecenter.ptk.ui.fonts.FontToolbarListener;
-
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -59,8 +57,6 @@ import nl.esciencecenter.vlet.gui.GuiSettings;
 import nl.esciencecenter.vlet.gui.UILogger;
 import nl.esciencecenter.vlet.gui.dialog.ExceptionForm;
 import nl.esciencecenter.vlet.vrs.VNode;
-import nl.esciencecenter.vlet.vrs.io.VRandomReadable;
-import nl.esciencecenter.vlet.vrs.util.VRSIOUtil;
 import nl.esciencecenter.vlet.vrs.util.VRSResourceLoader;
 import nl.esciencecenter.vlet.vrs.vfs.VFile;
 

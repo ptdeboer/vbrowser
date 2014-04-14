@@ -30,9 +30,10 @@ import nl.esciencecenter.ptk.io.RandomReadable;
 import nl.esciencecenter.ptk.io.RandomWritable;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.io.VRandomAccessable;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.NestedIOException;
-import nl.esciencecenter.vlet.vrs.io.VRandomAccessable;
+
 import nl.esciencecenter.vlet.vrs.io.VStreamReadable;
 import nl.esciencecenter.vlet.vrs.io.VStreamWritable;
 import nl.esciencecenter.vlet.vrs.vfs.VChecksum;
@@ -250,15 +251,15 @@ public class GftpFile extends VFile implements VStreamReadable, VStreamWritable,
             throw new IOException(e.getMessage(), e);
         }
     }
-    
-    public RandomReadable createRandomReader()
+
+    public RandomReadable createRandomReadable()
     {
-        return new GftpRandomAccessable(gftpServer,getPath());
+        return new GftpRandomAccessable(gftpServer, getPath());
     }
 
-    public RandomWritable createRandomWriter()
+    public RandomWritable createRandomWritable()
     {
-        return new GftpRandomAccessable(gftpServer,getPath());
+        return new GftpRandomAccessable(gftpServer, getPath());
     }
 
     public int readBytes(long fileOffset, byte[] buffer, int bufferOffset, int nrBytes) throws IOException

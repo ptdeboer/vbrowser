@@ -35,13 +35,13 @@ import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.io.VRandomReadable;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.NestedIOException;
 import nl.esciencecenter.vlet.exception.NotImplementedException;
 import nl.esciencecenter.vlet.vrs.VNode;
 import nl.esciencecenter.vlet.vrs.VRSClient;
 import nl.esciencecenter.vlet.vrs.VRSContext;
-import nl.esciencecenter.vlet.vrs.io.VRandomReadable;
 import nl.esciencecenter.vlet.vrs.io.VResizable;
 import nl.esciencecenter.vlet.vrs.io.VStreamWritable;
 import nl.esciencecenter.vlet.vrs.vfs.VFile;
@@ -175,7 +175,7 @@ public class VRSResourceLoader extends ResourceLoader
         
         try
         {
-            RandomReadable readable=((VRandomReadable)file).createRandomReader(); 
+            RandomReadable readable=((VRandomReadable)file).createRandomReadable(); 
             IOUtil.syncReadBytes(readable, fileOffset, buffer, bufferOffset, numBytes); 
             readable.close(); 
         }

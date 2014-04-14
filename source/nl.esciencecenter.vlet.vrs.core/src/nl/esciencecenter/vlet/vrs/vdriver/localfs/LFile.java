@@ -44,6 +44,7 @@ import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.io.VRandomAccessable;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.NestedFileNotFoundException;
 import nl.esciencecenter.vlet.exception.NestedIOException;
@@ -55,7 +56,6 @@ import nl.esciencecenter.vlet.exception.ResourceNotWritableException;
 import nl.esciencecenter.vlet.exception.ResourceReadAccessDeniedException;
 import nl.esciencecenter.vlet.exception.ResourceWriteAccessDeniedException;
 import nl.esciencecenter.vlet.vrs.VRS;
-import nl.esciencecenter.vlet.vrs.io.VRandomAccessable;
 import nl.esciencecenter.vlet.vrs.io.VResizable;
 import nl.esciencecenter.vlet.vrs.io.VStreamAccessable;
 import nl.esciencecenter.vlet.vrs.io.VStreamAppendable;
@@ -363,7 +363,7 @@ public class LFile extends VFile implements VStreamAccessable,
         return;
     }
 
-    public RandomReadable createRandomReader() throws VrsException
+    public RandomReadable createRandomReadable() throws VrsException
     {
         try
         {
@@ -375,7 +375,7 @@ public class LFile extends VFile implements VStreamAccessable,
         }
     }
     
-    public RandomWritable createRandomWriter() throws VrsException
+    public RandomWritable createRandomWritable() throws VrsException
     {
         return new LocalFSWriter(fsNode);
     }
