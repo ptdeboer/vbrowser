@@ -30,6 +30,7 @@ import java.net.URI;
 import java.net.URL;
 
 import nl.esciencecenter.ptk.io.IOUtil;
+import nl.esciencecenter.ptk.io.RandomReadable;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
@@ -165,15 +166,24 @@ public class VRSResourceLoader extends ResourceLoader
         return text;
     }
 
-    public void syncReadBytes(VFile file, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws IOException, VrsException 
+    public void syncReadBytes(VFile file, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws VrsException 
     {
         if ((file instanceof VRandomReadable)==false)
         {
-            throw new IOException("Can't read from resource. Must be RandomReadable:"+file); 
+            throw new VrsException("Can't read from resource. Must be RandomReadable:"+file); 
         }
         
-        VRandomReadable readable=(VRandomReadable)file;
-        IOUtil.syncReadBytes(readable, fileOffset, buffer, bufferOffset, numBytes); 
+        try
+        {
+            RandomReadable readable=((VRandomReadable)file).createRandomReader(); 
+            IOUtil.syncReadBytes(readable, fileOffset, buffer, bufferOffset, numBytes); 
+            readable.close(); 
+        }
+        catch (Exception e)
+        {
+            throw new VrsException(e.getMessage(),e); 
+        }
+        
     }
     
     public void writeTextTo(VRL vrl, String txt)  throws IOException, VrsException

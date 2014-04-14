@@ -22,11 +22,14 @@
 package nl.esciencecenter.vlet.vrs.io;
 
 import nl.esciencecenter.ptk.io.RandomReadable;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /**
  * Random Readable interface. 
  */
-public interface VRandomReadable extends RandomReadable
+public interface VRandomReadable
 {
-
+    
+    RandomReadable createRandomReader() throws VrsException;
+    
 }

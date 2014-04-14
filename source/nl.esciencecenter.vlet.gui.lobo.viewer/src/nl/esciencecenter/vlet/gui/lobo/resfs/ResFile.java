@@ -30,12 +30,11 @@ import java.net.URL;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vrs.VNode;
-import nl.esciencecenter.vlet.vrs.io.VRandomReadable;
 import nl.esciencecenter.vlet.vrs.io.VStreamReadable;
 
 import org.lobobrowser.main.ExtensionManager;
 
-public class ResFile extends VNode implements VRandomReadable,VStreamReadable
+public class ResFile extends VNode implements VStreamReadable
 {
 	public ResFile(ResResourceSystem resResourceSystem, VRL vrl)
 	{

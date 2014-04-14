@@ -21,7 +21,8 @@
 
 package nl.esciencecenter.vlet.vrs.io;
 
-import java.io.IOException;
+import nl.esciencecenter.ptk.io.RandomWritable;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 /** 
  * Random Writable interface for atomic writes().   
@@ -31,15 +32,8 @@ import java.io.IOException;
  */
 public interface VRandomWritable
 {
-    // Explicit inheritance from VSize 
-    public long getLength() throws IOException; 
-   
-    /**
-     * Writes <code>nrBytes</code> to the file starting  
-     * at position fileOffset in the file. 
-     * 
-     * @see java.io.RandomAccessFile#writeBytes
-     */
-    public void writeBytes(long fileOffset, byte buffer[], int bufferOffset,
-            int nrBytes) throws IOException;
+    
+    RandomWritable createRandomWriter() throws VrsException;
+
 }
+

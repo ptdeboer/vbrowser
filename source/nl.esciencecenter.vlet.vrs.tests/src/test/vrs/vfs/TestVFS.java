@@ -43,6 +43,8 @@ import java.util.Random;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.IntegerHolder;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.RandomReadable;
+import nl.esciencecenter.ptk.io.RandomWritable;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
@@ -1890,9 +1892,11 @@ public class TestVFS extends VTestCase
     private void _testRandomReadable(VRandomReadable rfile, int offset, int end, byte orgBuffer[]) throws Exception
     {
         byte readBuffer[] = new byte[orgBuffer.length];
-
-        int numread = rfile.readBytes(offset, readBuffer, offset, end - offset);
-
+        
+        RandomReadable reader = rfile.createRandomReader(); 
+        int numread = reader.readBytes(offset, readBuffer, offset, end - offset);
+        reader.close(); 
+        
         Assert.assertEquals("Couldn't read requested nr of bytes. numread=" + numread, end - offset, numread);
 
         for (int i = offset; i < end; i++)
@@ -2047,11 +2051,11 @@ public class TestVFS extends VTestCase
         byte buffer1[] = new byte[] { 127, 42, 13, 1, 2, 3, 4, 5, 6, 7, 8, 0, 9, -1, -10, -126, -127, -128 };
         int nrBytes = buffer1.length;
 
-        randomWriter.writeBytes(4, buffer1, 4, 4);
-        randomWriter.writeBytes(8, buffer1, 8, 4);
-        randomWriter.writeBytes(0, buffer1, 0, 4);
+        testRandomWriter(randomWriter,4, buffer1, 4, 4);
+        testRandomWriter(randomWriter,8, buffer1, 8, 4);
+        testRandomWriter(randomWriter,0, buffer1, 0, 4);
         // write remainder:
-        randomWriter.writeBytes(12, buffer1, 12, nrBytes - 12);
+        testRandomWriter(randomWriter,12, buffer1, 12, nrBytes - 12);
 
         byte buffer2[] = new byte[nrBytes];
 
@@ -2111,7 +2115,7 @@ public class TestVFS extends VTestCase
             generator.nextBytes(part);
 
             // write bytes:
-            randomWriter.writeBytes(offset, part, 0, partlen);
+            testRandomWriter(randomWriter,offset, part, 0, partlen);
 
             // keep byte in buffer:
             for (int j = 0; j < partlen; j++)
@@ -2136,6 +2140,13 @@ public class TestVFS extends VTestCase
         newFile.delete();
     }
 
+    private void testRandomWriter(VRandomAccessable randomFile, long offset, byte[] buffer, int bufferOffset, int nrBytes) throws Exception
+    {
+        RandomWritable writer = randomFile.createRandomWriter(); 
+        writer.writeBytes(offset, buffer, bufferOffset, nrBytes);
+        writer.close(); 
+    }
+
     private void testReadWriteBytes(VFile newFile, long offset, byte[] buffer1) throws Exception
     {
         VRandomAccessable randomWriter = null;
@@ -2152,7 +2163,7 @@ public class TestVFS extends VTestCase
 
         int numBytes = buffer1.length;
 
-        randomWriter.writeBytes(offset, buffer1, 0, numBytes);
+        testRandomWriter(randomWriter,offset, buffer1, 0, numBytes);
         // newFile.sync(); => writeBytes is specified as synchronous !
         int numRead=randomWriter.readBytes(offset, buffer2, 0, numBytes);
 

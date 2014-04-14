@@ -35,6 +35,8 @@ import java.nio.file.attribute.GroupPrincipal;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.RandomReadable;
+import nl.esciencecenter.ptk.io.RandomWritable;
 import nl.esciencecenter.ptk.io.local.LocalFSNode;
 import nl.esciencecenter.ptk.io.local.LocalFSReader;
 import nl.esciencecenter.ptk.io.local.LocalFSWriter;
@@ -361,18 +363,38 @@ public class LFile extends VFile implements VStreamAccessable,
         return;
     }
 
-    // Method from VRandomAccessable:
+    public RandomReadable createRandomReader() throws VrsException
+    {
+        try
+        {
+            return new LocalFSReader(fsNode);
+        }
+        catch (IOException e)
+        {
+           throw new VrsException(e.getMessage(),e);
+        }
+    }
+    
+    public RandomWritable createRandomWriter() throws VrsException
+    {
+        return new LocalFSWriter(fsNode);
+    }
+    
     public int readBytes(long fileOffset, byte[] buffer, int bufferOffset,
             int nrBytes) throws IOException
     {
-        return new LocalFSReader(fsNode).readBytes(fileOffset,buffer,bufferOffset,nrBytes); 
+        LocalFSReader reader = new LocalFSReader(fsNode);
+        int numRead=reader.readBytes(fileOffset,buffer,bufferOffset,nrBytes); 
+        reader.close();
+        return numRead; 
     }
 
-    // Method from VRandomAccessable:
     public void writeBytes(long fileOffset, byte[] buffer, int bufferOffset,
             int nrBytes) throws IOException
     {
-        new LocalFSWriter(fsNode).writeBytes(fileOffset,buffer,bufferOffset,nrBytes); 
+        LocalFSWriter writer=new LocalFSWriter(fsNode);
+        writer.writeBytes(fileOffset,buffer,bufferOffset,nrBytes);
+        writer.close();
     }
 
     public void setLengthToZero() throws IOException
@@ -494,6 +516,7 @@ public class LFile extends VFile implements VStreamAccessable,
            throw new VrsException(e.getMessage(),e); 
         } 
     }
+
 
   
 }
