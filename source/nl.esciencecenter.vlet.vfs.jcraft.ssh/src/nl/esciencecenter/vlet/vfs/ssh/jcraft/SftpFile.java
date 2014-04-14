@@ -26,6 +26,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.RandomReadable;
+import nl.esciencecenter.ptk.io.RandomWritable;
+import nl.esciencecenter.ptk.io.local.LocalFSReader;
+import nl.esciencecenter.ptk.io.local.LocalFSWriter;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -40,117 +44,117 @@ import nl.esciencecenter.vlet.vrs.vfs.VUnixFileAttributes;
 
 import com.jcraft.jsch.SftpATTRS;
 
-public class SftpFile extends VFile implements VUnixFileAttributes,
-	VRandomReadable // VStreamAppendable
+public class SftpFile extends VFile implements VUnixFileAttributes
 {
-    /** Currently SFTP can NOT handle stream read/write > 3200 per read/write  */ 
-    
+    /** Currently SFTP can NOT handle stream read/write > 3200 per read/write */
+
     private static final int sftpChunksize = 32000;
-    
-    SftpFileSystem server=null; 
-    // holder class so value can be changed (need better solution) 
-    SftpATTRS _attrs;  
 
-    private void init(SftpFileSystem server,String path)
+    SftpFileSystem server = null;
+
+    // holder class so value can be changed (need better solution)
+    SftpATTRS _attrs;
+
+    private void init(SftpFileSystem server, String path)
     {
-      this.server=server;
-      _attrs=null; 
+        this.server = server;
+        _attrs = null;
     }
 
-    SftpFile(SftpFileSystem server,VRL vrl)
+    SftpFile(SftpFileSystem server, VRL vrl)
     {
-        super(server,vrl); 
-        init(server,vrl.getPath()); 
+        super(server, vrl);
+        init(server, vrl.getPath());
     }
-    
-    SftpFile(SftpFileSystem server,String path)
+
+    SftpFile(SftpFileSystem server, String path)
     {
-        super(server,new VRL(VRS.SFTP_SCHEME,null,server.getHostname(), server.getPort(),path));  
-        init(server,path); 
+        super(server, new VRL(VRS.SFTP_SCHEME, null, server.getHostname(), server.getPort(), path));
+        init(server, path);
     }
-    
+
     public boolean create(boolean force) throws VrsException
     {
-    	VFile file = this.server.createFile(getPath(),force);   	
-    	return (file!=null); 
-    } 
-    
+        VFile file = this.server.createFile(getPath(), force);
+        return (file != null);
+    }
+
     @Override
-    public void uploadFrom(VFSTransfer transfer,VFile source) throws VrsException
+    public void uploadFrom(VFSTransfer transfer, VFile source) throws VrsException
     {
         // Paranoia:
         if (source.isLocal() == false)
+        {
             throw new VrsException(
                     "Internal error cmoveFromLocal didn't receive a local file:"
                             + source);
-     
-        String sftpFilepath = this.getPath(); 
+        }
+        
+        String sftpFilepath = this.getPath();
         String localfilepath = source.getPath();
 
-        // perform upload 
-        
-        server.uploadFile(transfer,localfilepath,sftpFilepath);
+        // perform upload
+
+        server.uploadFile(transfer, localfilepath, sftpFilepath);
     }
 
     @Override
-    public void downloadTo(VFSTransfer transfer,VFile localFile) throws VrsException
+    public void downloadTo(VFSTransfer transfer, VFile localFile) throws VrsException
     {
-        if (localFile.isLocal()==false)
-        {  
-            throw new nl.esciencecenter.vlet.exception.ResourceTypeMismatchException(" Destination is not local:"+localFile);
+        if (localFile.isLocal() == false)
+        {
+            throw new nl.esciencecenter.vlet.exception.ResourceTypeMismatchException(" Destination is not local:" + localFile);
         }
-        	
-        String targetPath=localFile.getPath(); 
-       
-        this.server.downloadFile(transfer,this.getPath(),targetPath);
-    }        
+
+        String targetPath = localFile.getPath();
+
+        this.server.downloadFile(transfer, this.getPath(), targetPath);
+    }
 
     @Override
     public boolean exists() throws VrsException
     {
-    	return server.existsPath(this.getPath(),false); 
+        return server.existsPath(this.getPath(), false);
     }
 
     @Override
     public boolean isReadable() throws VrsException
     {
-        return server.isReadable(getPath()); 
+        return server.isReadable(getPath());
     }
 
     @Override
     public boolean isWritable() throws VrsException
     {
-        return server.isWritable(getPath()); 
+        return server.isWritable(getPath());
     }
-    
+
     @Override
     public boolean isSymbolicLink() throws VrsException
     {
-        return server.isLink(getPath()); 
+        return server.isLink(getPath());
     }
 
     @Override
     public String getSymbolicLinkTargetPath() throws VrsException
     {
-    	return server.getLinkTarget(getPath()); 
+        return server.getLinkTarget(getPath());
     }
-    
+
     public VRL rename(String newName, boolean nameIsPath) throws VrsException
     {
-        String newpath=server.rename(getPath(),newName,nameIsPath); 
-        return this.resolvePath(newpath); 
+        String newpath = server.rename(getPath(), newName, nameIsPath);
+        return this.resolvePath(newpath);
     }
 
     public boolean delete() throws VrsException
     {
-        return server.delete(this.getPath(),false); 
+        return server.delete(this.getPath(), false);
     }
 
-    
     // ========================================================================
-    // VStream[Readable|Writable] 
+    // VStream[Readable|Writable]
     // ========================================================================
-    
 
     public InputStream createInputStream() throws IOException
     {
@@ -161,142 +165,122 @@ public class SftpFile extends VFile implements VUnixFileAttributes,
         }
         catch (VrsException e)
         {
-           throw new IOException(e);
-        } 
+            throw new IOException(e);
+        }
     }
-
 
     public OutputStream createOutputStream() throws IOException
     {
         try
         {
             // redirect to server to synchronise file access:
-            return server.createOutputStream(getPath(),false); 
+            return server.createOutputStream(getPath(), false);
         }
         catch (VrsException e)
         {
             throw new IOException(e);
-        } 
+        }
     }
-    
+
     public OutputStream createOutputStream(boolean append) throws IOException
     {
         try
         {
             // redirect to server to synchronise file access:
-            return server.createOutputStream(getPath(),append);
+            return server.createOutputStream(getPath(), append);
         }
         catch (VrsException e)
         {
             throw new IOException(e);
-        } 
-        
+        }
+
     }
 
-    // @Override 
+    // @Override
     public void setLengthToZero() throws IOException
     {
         try
         {
-            server.delete(this.getPath(),false);
-            server.createFile(this.getPath(),true); 
+            server.delete(this.getPath(), false);
+            server.createFile(this.getPath(), true);
         }
         catch (VrsException e)
         {
             throw new IOException(e);
-        } 
-        
-        //throw new NotImplementedException("Not implemented yet");
+        }
+
+        // throw new NotImplementedException("Not implemented yet");
     }
 
-
-    public int readBytes(long fileOffset, byte[] buffer, int bufferOffset, int nrBytes) throws IOException
-    {
-        // redirect to server to synchronise file access: 
-        return server.readBytes(getPath(),fileOffset,buffer,bufferOffset,nrBytes);
-    }
-
-    /** 
-     * Wrning: For some reason the outputstream of Jsch can only handle 32000 bytes
-     * per write. 
-     */ 
-    //@Override 
-    public void streamWrite2(byte[] buffer, int bufferOffset, int nrBytes) throws VrsException
+    //
+    // Bug: For some reason the outputstream of Jsch can only handle 32000 bytes
+    //
+    public void streamWriteOld(byte[] buffer, int bufferOffset, int nrBytes) throws VrsException
     {
         try
         {
             OutputStream outps = createOutputStream();
-            
-            // must currently write in 32000 byte sized chunks
-            int chunksize=sftpChunksize;  
 
-           // write in chunks:
-           for (int i=0;i<nrBytes;i+=chunksize)
-           {
-               if (i+chunksize>nrBytes)
-                  chunksize=nrBytes-i;
-               
-                  outps.write(buffer,i,chunksize);
-             
-           }
-           
-           outps.close(); 
+            // must currently write in 32000 byte sized chunks
+            int chunksize = sftpChunksize;
+
+            // write in chunks:
+            for (int i = 0; i < nrBytes; i += chunksize)
+            {
+                if (i + chunksize > nrBytes)
+                {
+                    chunksize = nrBytes - i;
+                }
+
+                outps.write(buffer, i, chunksize);
+
+            }
+
+            outps.close();
         }
         catch (IOException e)
         {
-            throw new NestedIOException("Couldn't write to stream:"+this,e); 
+            throw new NestedIOException("Couldn't write to stream:" + this, e);
         }
     }
-    
-    public void writeBytes(long fileOffset, byte[] buffer, int bufferOffset, int nrBytes) throws VrsException
-    {
-        // stream write is faster= (also writeBytes is still buggy!) 
-        
-        //if (fileOffset==0) 
-        //    streamWrite(buffer,bufferOffset,nrBytes); 
-        
-        // redirect to server to synchronise file access: 
-        server.writeBytes(getPath(),fileOffset,buffer,bufferOffset,nrBytes);
-    }
-    
+
     @Override
     public Attribute[][] getACL() throws VrsException
     {
-        return server.getACL(getPath(),false);
+        return server.getACL(getPath(), false);
     }
 
     @Override
     public void setACL(Attribute acl[][]) throws VrsException
     {
-        server.setACL(getPath(),acl,true); 
+        server.setACL(getPath(), acl, true);
     }
-    
+
     @Override
     public long getModificationTime() throws VrsException
     {
-        return this.server.getModificationTime(getSftpAttributes()); 
+        return this.server.getModificationTime(getSftpAttributes());
     }
-    
+
     private SftpATTRS getSftpAttributes() throws VrsException
     {
-        if (_attrs==null)
+        if (_attrs == null)
         {
             _attrs = server.getSftpAttrs(getPath());
         }
-        return _attrs; 
+        return _attrs;
     }
-    
+
     public String getPermissionsString() throws VrsException
     {
-        return server.getPermissionsString(getSftpAttributes(),false); 
+        return server.getPermissionsString(getSftpAttributes(), false);
     }
 
-	public int getMode() throws VrsException
-	{
-		 return server.getPermissions(getSftpAttributes()); 
-	}
+    public int getMode() throws VrsException
+    {
+        return server.getPermissions(getSftpAttributes());
+    }
 
-    
     @Override
     public long getLength() throws IOException
     {
@@ -306,82 +290,87 @@ public class SftpFile extends VFile implements VUnixFileAttributes,
         }
         catch (VrsException e)
         {
-            throw new IOException(e); 
-        } 
+            throw new IOException(e);
+        }
     }
 
-    /** Returns all default attributes names */ 
+    /** 
+     * Returns all default attributes names 
+     */
     public String[] getAttributeNames()
     {
-        String superNames[]=super.getAttributeNames();
-       
-        return StringList.merge(superNames,SftpFSFactory.sftpFileAttributeNames); 
-    }
-   
-    
-    public Attribute getAttribute(String name) throws VrsException
-    {
-        if (name==null) 
-            return null;
-        
-        // update attributes: 
-        Attribute  attr=this.getStaticAttribute(name); 
-        if (attr!=null)
-            return attr;
-        
-        // if EXISTS attribute is asked, do not get attributes 
-        
-        if (VAttributeConstants.ATTR_EXISTS.equals(name))
-        {   
-            return new Attribute(name,exists()); 
-        }
-        
-        attr=server.getAttribute(this,this.getSftpAttributes(),name,false,true);
-        
-        if (attr!=null)
-            return attr; 
-        
-        return super.getAttribute(name); 
-    }
-    
-    public Attribute[] getAttributes(String names[]) throws VrsException
-    {
-        if (names==null) 
-            return null; 
-        
-        // optimized Gftp Attributes: 
-        
-        Attribute[] vattrs=server.getAttributes(this,this.getSftpAttributes(),names,false);
-        
-        for (int i=0;i<names.length;i++)
-        {
-            // get attribute which SftpAttrs don't have: 
-            if (vattrs[i]==null)
-                vattrs[i]=super.getAttribute(names[i]);
-        }
-        
-        return vattrs; 
+        String superNames[] = super.getAttributeNames();
+
+        return StringList.merge(superNames, SftpFSFactory.sftpFileAttributeNames);
     }
 
-	public void setMode(int mode) throws VrsException
-	{
-	    
-	}
+    public Attribute getAttribute(String name) throws VrsException
+    {
+        if (name == null)
+            return null;
+
+        // update attributes:
+        Attribute attr = this.getStaticAttribute(name);
+        if (attr != null)
+            return attr;
+
+        // if EXISTS attribute is asked, do not get attributes
+
+        if (VAttributeConstants.ATTR_EXISTS.equals(name))
+        {
+            return new Attribute(name, exists());
+        }
+
+        attr = server.getAttribute(this, this.getSftpAttributes(), name, false, true);
+
+        if (attr != null)
+        {
+            return attr;
+        }
+        
+        return super.getAttribute(name);
+    }
+
+    public Attribute[] getAttributes(String names[]) throws VrsException
+    {
+        if (names == null)
+            return null;
+
+        // optimized Gftp Attributes:
+
+        Attribute[] vattrs = server.getAttributes(this, this.getSftpAttributes(), names, false);
+
+        for (int i = 0; i < names.length; i++)
+        {
+            // get attribute which SftpAttrs don't have:
+            if (vattrs[i] == null)
+            {
+                vattrs[i] = super.getAttribute(names[i]);
+            }
+        }
+
+        return vattrs;
+    }
+
+    public void setMode(int mode) throws VrsException
+    {
+    }
 
     public String getGid() throws VrsException
     {
-        return ""+getSftpAttributes().getGId();  
+        return "" + getSftpAttributes().getGId();
     }
 
     public String getUid() throws VrsException
     {
-        return ""+getSftpAttributes().getUId();  
+        return "" + getSftpAttributes().getUId();
     }
 
-    public boolean sync() throws VrsException 
+    public boolean sync() throws VrsException
     {
-        // just nullify attributes. Will be fetched again/ 
-        this._attrs=null;
-        return true; 
+        // just nullify attributes. Will be fetched again/
+        this._attrs = null;
+        return true;
     }
+
 }
