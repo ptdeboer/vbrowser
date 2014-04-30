@@ -232,7 +232,7 @@ public class LFile extends VFile implements VStreamAccessable,
                         "Parent directory doesn't exist for file:" +fsNode);
             }
 
-            return fsNode.create();
+            return (fsNode.create()!=null);
         }
         catch (IOException e)
         {
