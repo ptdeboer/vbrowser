@@ -47,8 +47,6 @@ public class testVletBrowser
 		    platform.registerProxyFactory(fac);  
             
 		    VRSContext context=VRS.getDefaultVRSContext(); 
-		    platform.setResourceLoader(new VRSResourceLoader(context));
-            
 		    platform.getViewerRegistry().registerViewer(VLTermStarter.class);
 		    
 		    ProxyBrowserController frame=(ProxyBrowserController)platform.createBrowser(); 
