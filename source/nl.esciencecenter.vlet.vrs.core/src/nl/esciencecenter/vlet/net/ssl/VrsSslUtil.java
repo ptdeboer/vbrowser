@@ -32,8 +32,9 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
+import nl.esciencecenter.ptk.ssl.CertUI;
 import nl.esciencecenter.ptk.ssl.CertificateStore;
-import nl.esciencecenter.ptk.ssl.ImportCertificates;
+import nl.esciencecenter.ptk.ssl.CertificateStore.CaCertOptions;
 import nl.esciencecenter.ptk.ssl.SslUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -140,7 +141,7 @@ public class VrsSslUtil extends SslUtil
     {
         CertificateStore certStore=context.getConfigManager().getCertificateStore();
         // check+install certificate: 
-        ImportCertificates.interactiveImportCertificate(certStore,host,port); 
+        CertUI.interactiveImportCertificate(certStore,host,port, new CaCertOptions()); 
         
     }
     

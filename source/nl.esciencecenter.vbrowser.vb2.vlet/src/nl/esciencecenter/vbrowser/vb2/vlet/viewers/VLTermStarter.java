@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -41,14 +42,14 @@ import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.vterm.StartVTerm;
 import nl.esciencecenter.ptk.util.vterm.VTerm;
 import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider;
-import nl.esciencecenter.ptk.vbrowser.viewers.viewerplugin.MimeViewer;
-import nl.esciencecenter.ptk.vbrowser.viewers.viewerplugin.ViewerPanel;
-import nl.esciencecenter.ptk.vbrowser.viewers.viewerplugin.ViewerPlugin;
+import nl.esciencecenter.ptk.vbrowser.viewers.EmbeddedViewer;
+
 import nl.esciencecenter.vbrowser.vb2.vlet.proxy.vrs.VRSProxyFactory;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.vfs.ssh.jcraft.SSHShellChannelFactory;
 
-public class VLTermStarter extends ViewerPanel implements MimeViewer, ViewerPlugin, ActionListener
+public class VLTermStarter extends EmbeddedViewer implements ActionListener
 {
     private static final long serialVersionUID = 6104695556400295643L;
     
@@ -117,13 +118,13 @@ public class VLTermStarter extends ViewerPanel implements MimeViewer, ViewerPlug
 
 	public void doStartViewer(String optMethodName) 
     {
-	    startVTerm(getURI(),null);
+	    startVTerm(getVRL(),null);
     }
 	
 	@Override
-	public void doUpdateURI(java.net.URI uri)  
+	public void doUpdate(VRL vrl)  
 	{
-		startVTerm(uri,null); 
+		startVTerm(vrl,null); 
 	}
 
 	@Override
@@ -136,15 +137,23 @@ public class VLTermStarter extends ViewerPanel implements MimeViewer, ViewerPlug
 	{
 	}
 	
-	public void startVTerm(java.net.URI uri,final ShellChannel shellChan) 
+	public void startVTerm(VRL vrl,final ShellChannel shellChan) 
 	{
-	    VTermChannelProvider provider = new VTermChannelProvider();
-
-	    // Share Context ! 
-	    provider.registerChannelFactory("SSH",new SSHShellChannelFactory(VRSProxyFactory.getProxyVRSContext())); 
-	        
-	    VTerm term = StartVTerm.startVTerm(provider, uri, shellChan);
-	}
+	    try
+	    {
+    	    VTermChannelProvider provider = new VTermChannelProvider();
+    
+    	    // Share Context ! 
+    	    provider.registerChannelFactory("SSH",new SSHShellChannelFactory(VRSProxyFactory.getProxyVRSContext())); 
+    	        
+    	    VTerm term = StartVTerm.startVTerm(provider, vrl.toURI(), shellChan);
+	    }
+	    catch (Exception e)
+	    {
+	        e.printStackTrace();
+	    }
+	
+    }
 
     @Override
     public void actionPerformed(ActionEvent e)
@@ -159,8 +168,15 @@ public class VLTermStarter extends ViewerPanel implements MimeViewer, ViewerPlug
     }
 
     @Override
-    public ViewerPanel getViewerPanel()
+    public EmbeddedViewer getViewerPanel()
     {
         return this; 
+    }
+
+    @Override
+    protected void doStartViewer(VRL vrl, String optionalMethod) throws VrsException
+    {
+        // TODO Auto-generated method stub
+        
     }
  }
