@@ -37,7 +37,7 @@ import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.RandomReadable;
 import nl.esciencecenter.ptk.io.RandomWritable;
-import nl.esciencecenter.ptk.io.local.LocalFSNode;
+import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.io.local.LocalFSReader;
 import nl.esciencecenter.ptk.io.local.LocalFSWriter;
 import nl.esciencecenter.ptk.net.URIFactory;
@@ -79,7 +79,7 @@ public class LFile extends VFile implements VStreamAccessable,
     }
     
     private LocalFilesystem localfs;
-    private LocalFSNode fsNode; 
+    private FSNode fsNode; 
     
     // =================================================================
     // Constructors
@@ -91,7 +91,7 @@ public class LFile extends VFile implements VStreamAccessable,
      * @param path
      * @throws VrsException
      */
-    public LFile(LocalFilesystem localFS, LocalFSNode node) throws VrsException
+    public LFile(LocalFilesystem localFS, FSNode node) throws VrsException
     {
         super(localFS, new VRL(node.getURI()));  
         this.localfs = localFS;
@@ -107,7 +107,7 @@ public class LFile extends VFile implements VStreamAccessable,
         init(node);
     }
 
-    private void init(LocalFSNode node) throws VrsException
+    private void init(FSNode node) throws VrsException
     {
         logger.debugPrintf("init():new file:%s\n",node);
         this.setLocation(new VRL(node.getURI()));
@@ -414,7 +414,7 @@ public class LFile extends VFile implements VStreamAccessable,
 
         try
         {
-            LocalFSNode targetNode = fsNode.getSymbolicLinkTarget();
+            FSNode targetNode = fsNode.getSymbolicLinkTarget();
             if (targetNode==null)
                 return null; 
             

@@ -27,7 +27,7 @@ import java.io.File;
 import java.io.IOException;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.io.local.LocalFSNode;
+import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -47,7 +47,7 @@ import nl.esciencecenter.vlet.vrs.vfs.VUnixFileAttributes;
 public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFileAttributes
 {
     private LocalFilesystem localfs;
-    private LocalFSNode fsNode; 
+    private FSNode fsNode; 
     
     // =================================================================
     // Constructors
@@ -79,14 +79,14 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 //        _file = file;
 //    }
 
-    public LDir(LocalFilesystem local, LocalFSNode node) throws VrsException
+    public LDir(LocalFilesystem local, FSNode node) throws VrsException
     {
         super(local, new VRL(node.getURI())); 
         init(node);
         this.localfs=local;
     }
 
-    private void init(LocalFSNode node)
+    private void init(FSNode node)
     {
         fsNode=node; 
     }
@@ -158,7 +158,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 
     public VFSNode[] list() throws VrsException
     {
-        LocalFSNode[] list;
+        FSNode[] list;
         try
         {
             list = fsNode.listNodes();
@@ -181,7 +181,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 
         for (int i = 0; i < list.length; i++)
         {
-            LocalFSNode subNode=list[i];
+            FSNode subNode=list[i];
             if (subNode.isDirectory() == true)
             {
                 nodes[i] = new LDir(localfs, subNode);
@@ -331,7 +331,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
         
         try
         {
-            LocalFSNode targetNode = fsNode.getSymbolicLinkTarget();
+            FSNode targetNode = fsNode.getSymbolicLinkTarget();
             return targetNode.getPathname();
         }
         catch (IOException e)

@@ -27,10 +27,11 @@ import java.io.IOException;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.io.exceptions.FileURISyntaxException;
-import nl.esciencecenter.ptk.io.local.LocalFSNode;
+import nl.esciencecenter.ptk.io.FSNode;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.exceptions.VrsIOException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.exception.InternalError;
 import nl.esciencecenter.vlet.exception.ResourceAlreadyExistsException;
@@ -146,13 +147,13 @@ public class LocalFilesystem extends FileSystemNode
             path = GlobalProperties.getProperty("user.home") + URIFactory.URI_SEP_CHAR_STR + path.substring(2);
         }
 
-        LocalFSNode node;
+        FSNode node;
         
         try
         {
-            node = fsUtil.newLocalFSNode(path);
+            node = fsUtil.newFSNode(path);
         }
-        catch (FileURISyntaxException e)
+        catch (IOException e)
         {
             throw new ResourceNotFoundException("Invalid path:"+path,e);
         } 
@@ -275,14 +276,14 @@ public class LocalFilesystem extends FileSystemNode
         // URI: use forward slash:
         String loc = resolvePathString(name);
 
-        LocalFSNode node;
+        FSNode node;
         try
         {
-            node = fsUtil.newLocalFSNode(loc);
+            node = fsUtil.newFSNode(loc);
         }
-        catch (FileURISyntaxException e)
+        catch (IOException e)
         {
-            throw new VrsException(e.getMessage(),e);
+            throw new VrsIOException(e.getMessage(),e);
         } 
 
         if (node.exists() == true)
@@ -329,13 +330,29 @@ public class LocalFilesystem extends FileSystemNode
     @Override
     public VDir newDir(VRL dirPath) throws VrsException
     {
-        return new LDir(this, fsUtil.newLocalFSNode(dirPath.toURINoException()));
+        try
+        {
+            return new LDir(this, fsUtil.newFSNode(dirPath.toURINoException()));
+        }
+        catch (IOException e)
+        {
+            throw new VrsIOException(e.getMessage(),e);
+        }
     }
 
     @Override
     public VFile newFile(VRL fileVrl) throws VrsException
     {
-        return new LFile(this, fsUtil.newLocalFSNode(fileVrl.toURINoException()));
+        try
+        {
+            return new LFile(this, fsUtil.newFSNode(fileVrl.toURINoException()));
+        }
+        catch (IOException e)
+        {
+            throw new VrsIOException(e.getMessage(),e);
+        }
+
+        
     }
 
     public boolean hasPosixFS()
