@@ -246,11 +246,5 @@ public class VRSIOUtil extends IOUtil
         return numRead;
     }
 
-    public static void syncWriteBytes(VRandomWritable randomFile, long fileOffset, byte[] buffer, int bufferOffset, int nrBytes) throws Exception
-    {
-        RandomWritable reader = randomFile.createRandomWritable();
-        reader.writeBytes(fileOffset, buffer, bufferOffset, nrBytes);
-        reader.close();
-    }
 
 }

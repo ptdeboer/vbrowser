@@ -35,11 +35,11 @@ import java.nio.file.attribute.GroupPrincipal;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.LocalFSReader;
+import nl.esciencecenter.ptk.io.LocalFSWriter;
 import nl.esciencecenter.ptk.io.RandomReadable;
 import nl.esciencecenter.ptk.io.RandomWritable;
 import nl.esciencecenter.ptk.io.FSNode;
-import nl.esciencecenter.ptk.io.local.LocalFSReader;
-import nl.esciencecenter.ptk.io.local.LocalFSWriter;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
