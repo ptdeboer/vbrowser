@@ -27,7 +27,7 @@ import java.io.File;
 import java.io.IOException;
 
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.io.FSNode;
+import nl.esciencecenter.ptk.io.FSPath;
 import nl.esciencecenter.ptk.task.ITaskMonitor;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -47,7 +47,7 @@ import nl.esciencecenter.vlet.vrs.vfs.VUnixFileAttributes;
 public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFileAttributes
 {
     private LocalFilesystem localfs;
-    private FSNode fsNode; 
+    private FSPath fsNode; 
     
     // =================================================================
     // Constructors
@@ -79,14 +79,14 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 //        _file = file;
 //    }
 
-    public LDir(LocalFilesystem local, FSNode node) throws VrsException
+    public LDir(LocalFilesystem local, FSPath node) throws VrsException
     {
         super(local, new VRL(node.getURI())); 
         init(node);
         this.localfs=local;
     }
 
-    private void init(FSNode node)
+    private void init(FSPath node)
     {
         fsNode=node; 
     }
@@ -158,7 +158,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 
     public VFSNode[] list() throws VrsException
     {
-        FSNode[] list;
+        FSPath[] list;
         try
         {
             list = fsNode.listNodes();
@@ -181,7 +181,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 
         for (int i = 0; i < list.length; i++)
         {
-            FSNode subNode=list[i];
+            FSPath subNode=list[i];
             if (subNode.isDirectory() == true)
             {
                 nodes[i] = new LDir(localfs, subNode);
@@ -331,7 +331,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
         
         try
         {
-            FSNode targetNode = fsNode.getSymbolicLinkTarget();
+            FSPath targetNode = fsNode.getSymbolicLinkTarget();
             return targetNode.getPathname();
         }
         catch (IOException e)

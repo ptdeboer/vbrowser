@@ -27,7 +27,7 @@ import java.io.IOException;
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.io.exceptions.FileURISyntaxException;
-import nl.esciencecenter.ptk.io.FSNode;
+import nl.esciencecenter.ptk.io.FSPath;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -147,11 +147,11 @@ public class LocalFilesystem extends FileSystemNode
             path = GlobalProperties.getProperty("user.home") + URIFactory.URI_SEP_CHAR_STR + path.substring(2);
         }
 
-        FSNode node;
+        FSPath node;
         
         try
         {
-            node = fsUtil.newFSNode(path);
+            node = fsUtil.newFSPath(path);
         }
         catch (IOException e)
         {
@@ -276,10 +276,10 @@ public class LocalFilesystem extends FileSystemNode
         // URI: use forward slash:
         String loc = resolvePathString(name);
 
-        FSNode node;
+        FSPath node;
         try
         {
-            node = fsUtil.newFSNode(loc);
+            node = fsUtil.newFSPath(loc);
         }
         catch (IOException e)
         {
@@ -332,7 +332,7 @@ public class LocalFilesystem extends FileSystemNode
     {
         try
         {
-            return new LDir(this, fsUtil.newFSNode(dirPath.toURINoException()));
+            return new LDir(this, fsUtil.newFSPath(dirPath.toURINoException()));
         }
         catch (IOException e)
         {
@@ -345,7 +345,7 @@ public class LocalFilesystem extends FileSystemNode
     {
         try
         {
-            return new LFile(this, fsUtil.newFSNode(fileVrl.toURINoException()));
+            return new LFile(this, fsUtil.newFSPath(fileVrl.toURINoException()));
         }
         catch (IOException e)
         {
