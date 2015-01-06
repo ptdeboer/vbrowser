@@ -100,11 +100,12 @@ public class VRLStreamHandlerFactory implements URLStreamHandlerFactory
             // return sun's default HTTP handler !
             return new sun.net.www.protocol.ftp.Handler();
         }
-        else if (protocol.compareToIgnoreCase("gopher") == 0)
-        {
-            // return sun's default HTTP handler !
-            return new sun.net.www.protocol.gopher.Handler();
-        }
+        // Not in Java 1.8:
+//        else if (protocol.compareToIgnoreCase("gopher") == 0)
+//        {
+//            // return sun's default HTTP handler !
+//            return new sun.net.www.protocol.gopher.Handler();
+//        }
         
         // not in java 1.7 :
         /*
