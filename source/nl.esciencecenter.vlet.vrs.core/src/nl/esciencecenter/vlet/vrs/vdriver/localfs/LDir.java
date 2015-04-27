@@ -332,7 +332,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
         try
         {
             FSPath targetNode = fsNode.getSymbolicLinkTarget();
-            return targetNode.getPathname();
+            return targetNode.getPathString();
         }
         catch (IOException e)
         {

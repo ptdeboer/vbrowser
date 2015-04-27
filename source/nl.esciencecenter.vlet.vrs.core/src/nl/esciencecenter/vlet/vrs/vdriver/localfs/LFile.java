@@ -418,7 +418,7 @@ public class LFile extends VFile implements VStreamAccessable,
             if (targetNode==null)
                 return null; 
             
-            return targetNode.getPathname(); 
+            return targetNode.getPathString(); 
         }
         catch (IOException e)
         {
