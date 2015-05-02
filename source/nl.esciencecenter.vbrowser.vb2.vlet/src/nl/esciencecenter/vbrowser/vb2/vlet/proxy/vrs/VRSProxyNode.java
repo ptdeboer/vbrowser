@@ -33,7 +33,9 @@ import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyException;
 import nl.esciencecenter.ptk.vbrowser.ui.proxy.ProxyNode;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
+import nl.esciencecenter.vbrowser.vrs.registry.ResourceSystemInfo;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+import nl.esciencecenter.vlet.vrs.ServerInfo;
 import nl.esciencecenter.vlet.vrs.VComposite;
 import nl.esciencecenter.vlet.vrs.VNode;
 import nl.esciencecenter.vlet.vrs.presentation.VRSPresentation;
@@ -355,14 +357,12 @@ public class VRSProxyNode extends ProxyNode
     @Override
     protected ProxyNode doCreateNew(String type, String optNewName) throws ProxyException
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     protected void doDelete(boolean recurse) throws ProxyException
     {
-        // TODO Auto-generated method stub
     }
 
     @Override
@@ -375,6 +375,20 @@ public class VRSProxyNode extends ProxyNode
     protected boolean doExists() throws ProxyException
     {
         return true;
+    }
+
+    @Override
+    protected ResourceSystemInfo doGetResourceSystemInfo() throws ProxyException
+    {
+//        try
+//        {
+//            ServerInfo info = getProxyFactory().getProxyVRSContext().getServerInfoFor(vnode.getVRL(), true);
+//        }
+//        catch (VrsException e)
+//        {
+//            throw new ProxyException(e.getMessage(), e);
+//        }
+        return null;
     }
 
 }

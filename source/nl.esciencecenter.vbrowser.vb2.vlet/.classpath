@@ -14,5 +14,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ptk-vbrowser-ui"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ptk-vbrowser-viewers"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ptk-vbrowser-vrs"/>
+	<classpathentry kind="lib" path="/home/workspace/workspace.nlesc/vbrowser/source/nl.esciencecenter.vlet.gui.vbrowser/lib/com.jgoodies/forms-1.3.0.jar"/>
+	<classpathentry kind="lib" path="/home/workspace/workspace.nlesc/git.nlesc/vbrowser/source/nl.esciencecenter.vlet.gui.vbrowser/lib/com.jgoodies/looks-2.2.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
