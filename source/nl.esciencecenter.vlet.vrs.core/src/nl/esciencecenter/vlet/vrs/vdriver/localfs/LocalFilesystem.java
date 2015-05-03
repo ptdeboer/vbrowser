@@ -25,9 +25,8 @@ import java.io.File;
 import java.io.IOException;
 
 import nl.esciencecenter.ptk.GlobalProperties;
-import nl.esciencecenter.ptk.io.FSUtil;
-import nl.esciencecenter.ptk.io.exceptions.FileURISyntaxException;
 import nl.esciencecenter.ptk.io.FSPath;
+import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -73,6 +72,11 @@ public class LocalFilesystem extends FileSystemNode
         fsUtil=FSUtil.getDefault(); 
     }
 
+    protected FSUtil getFSUtil()
+    {
+        return fsUtil; 
+    }
+    
     @Override
     public VFSNode openLocation(VRL location) throws VrsException
     {

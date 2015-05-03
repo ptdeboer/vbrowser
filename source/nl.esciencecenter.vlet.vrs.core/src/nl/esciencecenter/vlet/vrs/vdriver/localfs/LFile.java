@@ -35,8 +35,9 @@ import java.nio.file.attribute.GroupPrincipal;
 
 import nl.esciencecenter.ptk.GlobalProperties;
 import nl.esciencecenter.ptk.data.StringList;
-import nl.esciencecenter.ptk.io.LocalFSReader;
-import nl.esciencecenter.ptk.io.LocalFSWriter;
+import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.io.FSReader;
+import nl.esciencecenter.ptk.io.FSWriter;
 import nl.esciencecenter.ptk.io.RandomReadable;
 import nl.esciencecenter.ptk.io.RandomWritable;
 import nl.esciencecenter.ptk.io.FSPath;
@@ -130,6 +131,11 @@ public class LFile extends VFile implements VStreamAccessable,
         return superNames;
     }
 
+    protected FSUtil getFSUtil() 
+    {
+        return this.localfs.getFSUtil(); 
+    }
+    
     /**
      * Returns single atttribute triplet
      * 
@@ -367,7 +373,7 @@ public class LFile extends VFile implements VStreamAccessable,
     {
         try
         {
-            return new LocalFSReader(fsNode);
+            return getFSUtil().createRandomReader(fsNode);
         }
         catch (IOException e)
         {
@@ -377,24 +383,14 @@ public class LFile extends VFile implements VStreamAccessable,
     
     public RandomWritable createRandomWritable() throws VrsException
     {
-        return new LocalFSWriter(fsNode);
-    }
-    
-    public int readBytes(long fileOffset, byte[] buffer, int bufferOffset,
-            int nrBytes) throws IOException
-    {
-        LocalFSReader reader = new LocalFSReader(fsNode);
-        int numRead=reader.readBytes(fileOffset,buffer,bufferOffset,nrBytes); 
-        reader.close();
-        return numRead; 
-    }
-
-    public void writeBytes(long fileOffset, byte[] buffer, int bufferOffset,
-            int nrBytes) throws IOException
-    {
-        LocalFSWriter writer=new LocalFSWriter(fsNode);
-        writer.writeBytes(fileOffset,buffer,bufferOffset,nrBytes);
-        writer.close();
+        try
+        {
+            return getFSUtil().createRandomWriter(fsNode);
+        }
+        catch (IOException e)
+        {
+           throw new VrsException(e.getMessage(),e);
+        }
     }
 
     public void setLengthToZero() throws IOException
