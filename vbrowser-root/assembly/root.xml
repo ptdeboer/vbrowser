@@ -1,0 +1,21 @@
+<assembly>
+	<id>root</id>
+	<formats>
+		<format>dir</format>
+		<format>zip</format>
+	</formats>
+	 <includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<filtered>true</filtered>
+			<directory>../</directory>
+			<outputDirectory></outputDirectory>
+			<includes>
+				<include>LICENSE.txt</include>
+				<include>NOTICE.txt</include>
+				<include>ReleaseNotes.txt</include>
+			</includes>
+			<fileMode>0644</fileMode>
+		</fileSet>
+	</fileSets>
+</assembly>

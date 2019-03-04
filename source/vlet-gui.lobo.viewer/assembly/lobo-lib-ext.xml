@@ -1,0 +1,19 @@
+<assembly>
+	<id>lib-ext</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	 <includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>lib/lobo/ext</directory>
+			<!-- Important: lobobrowser relies on that the external dependencies
+			     are installed in an 'ext' directory on the same level as the lobo.jar
+			  -->
+			<outputDirectory>ext/</outputDirectory>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

@@ -1,0 +1,146 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <id>dist</id>
+    <formats>
+        <format>dir</format>
+        <format>zip</format>
+    </formats>
+
+    <baseDirectory>vbrowser-${project.version}</baseDirectory>
+
+    <moduleSets>
+        <moduleSet>
+
+            <!-- Enable access to all projects in the current multimodule build! -->
+            <useAllReactorProjects>true</useAllReactorProjects>
+
+            <!-- Now, select which modules to include in this module-set. -->
+            <includes>
+
+                <include>*:vlet-vrs.core</include>
+                <include>*:vlet-grid.globus</include>
+                <!-- vrs/vfs -->
+                <include>*:vlet-vfs.jcraft.ssh</include>
+                <include>*:vlet-vfs.gftp</include>
+                <include>*:glite-lbl.srm</include>
+                <include>*:vlet-vfs.srm</include>
+                <include>*:glite-lfc</include>
+                <include>*:vlet-vfs.lfc</include>
+                <!-- Gui -->
+                <include>*:vlet-gui.vbrowser</include>
+                <!-- VBrowser Plugins -->
+                <include>*:vlet-gui.pedal</include>
+                <include>*:vlet-gui.lobo.viewer</include>
+            </includes>
+
+            <binaries>
+                <outputDirectory>lib</outputDirectory>
+                <unpack>false</unpack>
+            </binaries>
+
+        </moduleSet>
+
+        <!-- Plugins: '-plugin' -->
+        <moduleSet>
+            <!-- Enable access to all projects in the current multimodule build! -->
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>*:vlet-gui.pedal</include>
+                <include>*:vlet-gui.lobo.viewer</include>
+            </includes>
+            <binaries>
+                <attachmentClassifier>plugin</attachmentClassifier>
+                <outputDirectory>lib/plugins/</outputDirectory>
+                <includeDependencies>false</includeDependencies>
+                <unpack>true</unpack>
+            </binaries>
+        </moduleSet>
+
+        <!-- External libraries: '-lib-ext' -->
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>*:vlet-gui.lobo.viewer</include>
+            </includes>
+            <binaries>
+                <attachmentClassifier>lib-ext</attachmentClassifier>
+                <outputDirectory>lib/</outputDirectory>
+                <includeDependencies>false</includeDependencies>
+                <unpack>true</unpack>
+            </binaries>
+        </moduleSet>
+
+        <!-- Bootstrapper executable jars -->
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>*:vlet-vbrowser.boot</include> <!-- default use 'jar' -->
+            </includes>
+            <binaries>
+                <outputDirectory>bin/</outputDirectory>
+                <outputFileNameMapping>vbrowser-boot.jar</outputFileNameMapping>
+                <includeDependencies>false</includeDependencies>
+                <unpack>false</unpack>
+            </binaries>
+        </moduleSet>
+
+        <!-- Scripts: binary attachment = '*-scripts' -->
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>*:vlet-vrs.core</include>
+            </includes>
+            <binaries>
+                <attachmentClassifier>scripts</attachmentClassifier>
+                <outputDirectory>bin/</outputDirectory>
+                <includeDependencies>false</includeDependencies>
+                <unpack>true</unpack>
+            </binaries>
+        </moduleSet>
+
+        <!-- Configurations: '-conf' -->
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>*:vlet-vrs.core</include>
+            </includes>
+            <binaries>
+                <attachmentClassifier>conf</attachmentClassifier>
+                <outputDirectory>etc/</outputDirectory>
+                <includeDependencies>false</includeDependencies>
+                <unpack>true</unpack>
+            </binaries>
+        </moduleSet>
+
+        <!-- Documents: binary attachment = '*-doc' -->
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>*:vlet-vrs.core</include>
+            </includes>
+            <binaries>
+                <attachmentClassifier>doc</attachmentClassifier>
+                <outputDirectory>doc/</outputDirectory>
+                <includeDependencies>false</includeDependencies>
+                <unpack>true</unpack>
+            </binaries>
+        </moduleSet>
+
+        <!-- Toplevel files: '-root' -->
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>*:vbrowser-root</include>
+            </includes>
+            <binaries>
+                <attachmentClassifier>root</attachmentClassifier>
+                <outputDirectory>/</outputDirectory>
+                <includeDependencies>false</includeDependencies>
+                <unpack>true</unpack>
+            </binaries>
+        </moduleSet>
+
+    </moduleSets>
+
+</assembly>

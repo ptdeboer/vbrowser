@@ -1,0 +1,7 @@
+##
+#JPedal Plugin description. Install this file into lib/plugins/jpedal/
+
+# Note:name can be overriden by plugin.
+viewer.name=Pedal PDFViewer
+viewer.package=nl.esciencecenter.vlet.gui.pedal
+viewer.mainclass=nl.esciencecenter.vlet.gui.pedal.JPedalPDFViewer

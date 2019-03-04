@@ -11,6 +11,11 @@
  VBrowser Version : @VBROWSER_VERSION@
  VBrowser Date    : @VBROWSER_DATE@ 
  
+=== Dev notes for 1.9.x ===
+
+- Maven rebuild.
+  Fixed java 1.8 and maven build problems.
+  Ant build is now broken.
 
 === Release notes for 1.6.1 === 
 
@@ -19,8 +24,8 @@ Bug fixes
 =========
 
 - Added patch to import vlet 1.5.0 profiles. 
-Not all property names from vlet 1.5.0 were correctly parsed. 
-Added patch to upgrade vlet 1.5.0 properties.  
+  Not all property names from vlet 1.5.0 were correctly parsed.
+  Added patch to upgrade vlet 1.5.0 properties.
 
 ===============================
 === Release notes for 1.6.0 === 

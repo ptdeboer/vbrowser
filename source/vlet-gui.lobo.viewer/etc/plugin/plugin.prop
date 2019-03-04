@@ -1,0 +1,8 @@
+##
+# Lobo Viewer plugin properties
+# install into lib/plugins/lobo/plugin.prop
+
+#
+viewer.name=LoboViewer
+viewer.package=nl.esciencecenter.vlet.gui.lobo
+viewer.mainclass=nl.esciencecenter.vlet.gui.lobo.LoboBrowser

@@ -1,0 +1,18 @@
+<assembly>
+	<id>doc</id>
+	<formats>
+		<format>dir</format>
+		<format>zip</format>
+	</formats>
+	 <includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>doc/</directory>
+			<outputDirectory></outputDirectory>
+			<includes>
+				<include>**/*</include>
+			</includes>
+			<fileMode>0644</fileMode>
+		</fileSet>
+	</fileSets>
+</assembly>
