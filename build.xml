@@ -20,6 +20,11 @@
     <!-- Target: init -->
     <target name="init">
 
+        <echo message="======================================"/>
+        <echo message="*** Ant Build is broker, use maven ***"/>
+        <echo message="======================================"/>
+	<fail> Ant build is broken </fail> 
+
         <!-- Create the build directory structure used by compile -->
         <mkdir dir="${project.dist}" />
         <mkdir dir="${project.dist.lib}" />

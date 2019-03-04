@@ -1,0 +1,83 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Pedal PDF Viewer (${project.version})</name>
+    <groupId>nl.esciencecenter.vlet</groupId>
+    <artifactId>vlet-gui.pedal</artifactId>
+
+    <parent>
+        <groupId>nl.esciencecenter.vbrowser</groupId>
+        <artifactId>vbrowser</artifactId>
+        <version>1.9.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <repositories>
+        <repository>
+            <id>geotoolkit.org</id>
+            <url>http://maven.geotoolkit.org</url>
+        </repository>
+        <repository>
+            <id>osgeo.org</id>
+            <url>http://download.osgeo.org/webdav/geotools</url>
+        </repository>
+        <repository>
+            <id>clojars.org</id>
+            <url>https://repo.clojars.org</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>testsrc</testSourceDirectory>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>plugin</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly/plugin.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>nl.esciencecenter.vlet</groupId>
+            <artifactId>vlet-vrs.core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.esciencecenter.vlet</groupId>
+            <artifactId>vlet-gui.vbrowser</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>javax.media</groupId>-->
+            <!--<artifactId>jai_codec</artifactId>-->
+            <!--<version>1.1.3</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.jpedal</groupId>
+            <artifactId>jpedal-lgpl</artifactId>
+            <version>4.74b27</version>
+        </dependency>
+        <!-- test only! -->
+    </dependencies>
+
+</project>

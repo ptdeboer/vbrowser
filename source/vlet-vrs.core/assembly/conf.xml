@@ -1,0 +1,36 @@
+<assembly>
+	<id>conf</id>
+	<formats>
+		<format>dir</format>
+		<format>zip</format>
+	</formats>
+	 <includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<filtered>true</filtered>
+			<directory>etc/</directory>
+			<outputDirectory></outputDirectory>
+			<includes>
+				<include>licences.txt</include>
+				<include>logback.xml</include>
+				<include>VLET_VERSION</include>
+				<include>vletenv.sh</include>
+				<include>vletrc.prop</include>
+				<include>mime.types</include>
+			</includes>
+			<fileMode>0644</fileMode>
+		</fileSet>
+		<fileSet>
+			<filtered>false</filtered>
+			<directory>etc/</directory>
+			<outputDirectory></outputDirectory>
+			<includes>
+				<include>cacerts</include>
+				<include>vomsdir/voms.inf</include>
+				<include>vomsdir/voms.xml</include>
+				<include>vomsdir/voms.*.pem</include>
+			</includes>
+			<fileMode>0644</fileMode>
+		</fileSet>
+	</fileSets>
+</assembly>

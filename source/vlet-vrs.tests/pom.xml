@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>nl.esciencecenter.vlet</groupId>
+    <artifactId>vlet-vrs.tests</artifactId>
+
+    <parent>
+        <groupId>nl.esciencecenter.vbrowser</groupId>
+        <artifactId>vbrowser</artifactId>
+        <version>1.9.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <build>
+        <!-- todo: move src and resource to maven structure -->
+        <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>testsrc</testSourceDirectory>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>nl.esciencecenter.vlet</groupId>
+            <artifactId>vlet-vrs.core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Needed for Replica Viewer Plugin! -->
+        <dependency>
+            <groupId>nl.esciencecenter.vlet</groupId>
+            <artifactId>vlet-vrs.infors</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.esciencecenter.vlet</groupId>
+            <artifactId>vlet-vfs.jcraft.ssh</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.esciencecenter.vlet</groupId>
+            <artifactId>vlet-vfs.gftp</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.esciencecenter.vlet</groupId>
+            <artifactId>vlet-vfs.srm</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.esciencecenter.vlet</groupId>
+            <artifactId>vlet-vfs.lfc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.esciencecenter.platinum</groupId>
+            <artifactId>ptk-ui</artifactId>
+            <version>${ptk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.esciencecenter.platinum</groupId>
+            <artifactId>ptk-util-vterm</artifactId>
+            <version>${ptk.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
