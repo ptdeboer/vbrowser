@@ -8,7 +8,7 @@
     <groupId>nl.esciencecenter.vbrowser</groupId>
     <artifactId>vbrowser</artifactId>
     <packaging>pom</packaging>
-    <version>1.9.0-SNAPSHOT</version>
+    <version>1.9.0</version>
     <name>VBrowser (${project.version})</name>
 
     <properties>
@@ -44,30 +44,30 @@
 
     <modules>
         <!--  core -->
-        <module>${vbrowser.modules.dir}/vlet-vrs.core</module>
+        <module>source/vlet-vrs.core</module>
         <!-- vfs/vrs -->
-        <module>${vbrowser.modules.dir}/vlet-vrs.infors</module>
-        <module>${vbrowser.modules.dir}/vlet-vfs.jcraft.ssh</module>
-        <module>${vbrowser.modules.dir}/vlet-grid.globus</module>
-        <module>${vbrowser.modules.dir}/vlet-vfs.gftp</module>
-        <module>${vbrowser.modules.dir}/glite-lbl.srm</module>
-        <module>${vbrowser.modules.dir}/vlet-vfs.srm</module>
-        <module>${vbrowser.modules.dir}/glite-lfc</module>
-        <module>${vbrowser.modules.dir}/vlet-vfs.lfc</module>
-        <module>${vbrowser.modules.dir}/vlet-vfs.skelfs</module>
+        <module>source/vlet-vrs.infors</module>
+        <module>source/vlet-vfs.jcraft.ssh</module>
+        <module>source/vlet-grid.globus</module>
+        <module>source/vlet-vfs.gftp</module>
+        <module>source/glite-lbl.srm</module>
+        <module>source/vlet-vfs.srm</module>
+        <module>source/glite-lfc</module>
+        <module>source/vlet-vfs.lfc</module>
+        <module>source/vlet-vfs.skelfs</module>
         <!--  gui  -->
-        <module>${vbrowser.modules.dir}/vlet-gui.vbrowser</module>
-        <module>${vbrowser.modules.dir}/nlesc-vbrowser.vb2.vlet</module>
+        <module>source/vlet-gui.vbrowser</module>
+        <module>source/nlesc-vbrowser.vb2.vlet</module>
         <!-- Viewers: need to be tested -->
-        <module>${vbrowser.modules.dir}/vlet-gui.lobo.viewer</module>
-        <module>${vbrowser.modules.dir}/vlet-gui.pedal</module>
+        <module>source/vlet-gui.lobo.viewer</module>
+        <module>source/vlet-gui.pedal</module>
         <!-- Bootstrappers -->
-        <module>${vbrowser.modules.dir}/vlet-vbrowser.boot</module>
+        <module>source/vlet-vbrowser.boot</module>
         <!-- Integration Tests  -->
-        <!--<module>${vbrowser.modules.dir}/vlet-vrs.tests</module>-->
+        <!--<module>source/vlet-vrs.tests</module>-->
         <!-- Distribution  -->
-        <module>${vbrowser.rootdir}/vbrowser-root</module>
-        <module>${vbrowser.rootdir}/vbrowser-dist</module>
+        <module>vbrowser-root</module>
+        <module>vbrowser-dist</module>
     </modules>
 
     <build>
