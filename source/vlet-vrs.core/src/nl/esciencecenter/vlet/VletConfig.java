@@ -1412,7 +1412,7 @@ public class VletConfig
 
         try
         {
-            OutputStream outps = FSUtil.getDefault().createOutputStream(vrl.getPath());
+            OutputStream outps = FSUtil.fsutil().createOutputStream(vrl.getPath());
             props.store(outps, optComments);
             try
             {

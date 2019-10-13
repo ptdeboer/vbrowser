@@ -25,27 +25,19 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 
 public class NestedIOException extends VrsException
 {
-    private static final long serialVersionUID = 857296791130965746L;
-
-
-    public NestedIOException(String message)
-    {
-        super(message,null,ExceptionStrings.VRSIOEXCEPTION);
-    }
 
     public NestedIOException(String message, Throwable err)
     {
-        super(message,err,ExceptionStrings.VRSIOEXCEPTION);
+        super(message,err);
     }
 
-    public NestedIOException(Throwable e)
+    public NestedIOException(Throwable err)
     {
-        super(e.getMessage(),e,ExceptionStrings.VRSIOEXCEPTION);
+        super(err);
     }
 
-    protected NestedIOException(String name, String message, Throwable cause)
-    {
-        super(message, cause, name);
+    public NestedIOException(String message) {
+        super(message,null);
     }
 
 }

@@ -25,7 +25,6 @@ import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.*;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.ptk.util.logging.FormattingLogger;
 import nl.esciencecenter.vbrowser.vrs.data.Attribute;
 import nl.esciencecenter.vbrowser.vrs.data.AttributeSet;
 import nl.esciencecenter.vlet.VletConfig;
@@ -256,7 +255,7 @@ public class URIStat
         exit(0); // ok (?)
     }
 
-    private static FormattingLogger getLogger()
+    private static ClassLogger getLogger()
     {
         return ClassLogger.getLogger(URIStat.class);
     }

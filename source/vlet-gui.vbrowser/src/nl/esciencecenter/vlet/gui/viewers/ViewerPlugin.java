@@ -173,7 +173,7 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
         }
         catch (MalformedURLException e)
         {
-            throw new VRLSyntaxException(e);
+            throw new VRLSyntaxException(e.getMessage(),e);
         }
     }
 
@@ -671,9 +671,9 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
         return capturer.captureContents(size);
     }
 
-    public static void saveProperties(VRL loc, Properties props) throws Exception
+    public void saveProperties(VRL loc, Properties props) throws Exception
     {
-        UIGlobal.getResourceLoader().saveProperties(loc.toURI(), props);
+        UIGlobal.getResourceLoader().saveProperties(loc.toURL(), props, "Properties:"+this.getName()+":"+this.getVersion());
     }
 
     /**

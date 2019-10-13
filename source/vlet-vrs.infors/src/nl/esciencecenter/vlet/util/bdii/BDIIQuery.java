@@ -110,7 +110,7 @@ public class BDIIQuery
         }
         catch (URISyntaxException e)
         {
-            throw new VRLSyntaxException(e);
+            throw new VRLSyntaxException(e.getMessage(),e);
         }
     }
 

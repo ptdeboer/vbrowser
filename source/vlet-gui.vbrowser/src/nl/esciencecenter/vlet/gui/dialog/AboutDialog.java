@@ -158,7 +158,7 @@ public class AboutDialog extends javax.swing.JDialog implements ActionListener, 
                     {
                         vleImageLabel = new JLabel();
                         topPanel.add(vleImageLabel);
-                        vleImageLabel.setIcon(loadIcon("images/nlesc_logo_medium.png"));
+                        vleImageLabel.setIcon(loadIcon("icons/images/nlesc_logo_medium.png"));
                     }
                 }
                 {

@@ -21,14 +21,12 @@
 
 package nl.esciencecenter.vlet.util.vlterm;
 
-import nl.esciencecenter.ptk.exec.ShellChannel;
 import nl.esciencecenter.ptk.util.vterm.StartVTerm;
-import nl.esciencecenter.ptk.util.vterm.VTerm;
-import nl.esciencecenter.ptk.util.vterm.VTermChannelProvider;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.gui.UIGlobal;
-import nl.esciencecenter.vlet.vfs.ssh.jcraft.SSHChannel;
 import nl.esciencecenter.vlet.vfs.ssh.jcraft.SSHShellChannelFactory;
+import nl.piter.vterm.api.ShellChannel;
+import nl.piter.vterm.emulator.VTermChannelProvider;
 
 public class VLTerm
 {
@@ -46,17 +44,17 @@ public class VLTerm
         newVLTerm(null, null);
     }
 
-    public static VTerm newVLTerm(ShellChannel shellChan)
+    public static void newVLTerm(ShellChannel shellChan)
     {
-        return newVLTerm(null, shellChan);
+        newVLTerm(null, shellChan);
     }
 
-    public static VTerm newVLTerm(VRL loc)
+    public static void newVLTerm(VRL loc)
     {
-        return newVLTerm(loc, null);
+        newVLTerm(loc, null);
     }
 
-    public static VTerm newVLTerm(final VRL optionalLocation, final ShellChannel shellChan)
+    public static void newVLTerm(final VRL optionalLocation, final ShellChannel shellChan)
     {
         VTermChannelProvider provider = new VTermChannelProvider();
 
@@ -68,10 +66,8 @@ public class VLTerm
         {
             uri = optionalLocation.toURINoException();
         }
-        
-        VTerm term = StartVTerm.startVTerm(provider, uri, shellChan);
 
-        return term;
+        StartVTerm.startVTerm(provider, shellChan, uri);
     }
 
 

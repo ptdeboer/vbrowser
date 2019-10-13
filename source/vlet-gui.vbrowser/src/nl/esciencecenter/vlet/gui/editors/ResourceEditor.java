@@ -379,7 +379,7 @@ public class ResourceEditor extends javax.swing.JDialog
 
     private Icon getDummyIcon()
     {
-        ImageIcon icon = new ImageIcon(this.getClass().getClassLoader().getResource("web/icon.png"));
+        ImageIcon icon = new ImageIcon(this.getClass().getClassLoader().getResource("icons/web/icon.png"));
         return icon;
     }
 

@@ -380,15 +380,15 @@ public abstract class VDir extends VFSNode implements VComposite,VRenamable,
     
     /**
      * Copy to specified parent directory. 
-     * @param destinationDir new parent directory. New Directory 
+     * @param parentDir new parent directory. New Directory
      *        will be created as subdirectory of this parent. 
-     * @param optNewName optional newname. If null basenames 
+     * @param optNewName optional newname. If null basenames
      *        of source directory will be used.   
      * @throws VrsException 
      */
-    public final VDir copyTo(VDir parentDir,String newName) throws VrsException
+    public final VDir copyTo(VDir parentDir,String optNewName) throws VrsException
     {
-        return (VDir)getTransferManager().doCopyMove(this,parentDir,newName,false); 
+        return (VDir)getTransferManager().doCopyMove(this,parentDir,optNewName,false);
     }
     
     /**

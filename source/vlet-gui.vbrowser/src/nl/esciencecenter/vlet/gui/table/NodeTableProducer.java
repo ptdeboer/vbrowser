@@ -381,12 +381,12 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
         // resolve Icon URLs
 
         Object obj = null;
-        String headerName = attr.getName();
+        String headerAttrName = attr.getName();
 
         // for now default icons are used.
         if (attr.getName().compareTo(VAttributeConstants.ATTR_ICON) == 0)
         {
-            headerName = VAttributeConstants.ATTR_ICON;
+            headerAttrName = VAttributeConstants.ATTR_ICON;
             String url = attr.getStringValue();
             // use default icon for now
             obj = pnode.getDefaultIcon(16, false);
@@ -394,7 +394,7 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
         else if (attr.getName().compareTo(VAttributeConstants.ATTR_ICONURL) == 0)
         {
             // Icon and IconUrl have the same column!
-            headerName = VAttributeConstants.ATTR_ICON;
+            headerAttrName = VAttributeConstants.ATTR_ICON;
             String url = attr.getStringValue();
             obj = UIGlobal.getIconProvider().createIcon(url, 16);
         }
@@ -403,7 +403,7 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
             obj = attr;
         }
 
-        int col = model.getHeaderIndex(headerName);
+        int col = model.getHeaderIndex(headerAttrName);
         int row = getNodeRowNumber(pnode.getVRL());
 
         // guard
@@ -416,7 +416,7 @@ public class NodeTableProducer extends ProxyDataProducer implements TableDataPro
 
         // this.setValueAt(obj,rowNr,columnNr);
         if (obj != null)
-            model.setValueAt(obj, row, col);
+            model.setValueAt(obj, row, headerAttrName);
 
     }
 

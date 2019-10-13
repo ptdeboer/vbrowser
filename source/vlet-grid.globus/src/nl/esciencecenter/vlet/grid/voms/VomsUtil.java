@@ -36,12 +36,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.io.FSPath;
+import nl.esciencecenter.ptk.io.FSUtil;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vlet.VletConfig;
 import nl.esciencecenter.vlet.exception.AuthenticationException;
 import nl.esciencecenter.vlet.exception.NestedIOException;
+import nl.esciencecenter.vlet.exception.NestedVrsException;
 import nl.esciencecenter.vlet.exception.ResourceNotFoundException;
 import nl.esciencecenter.vlet.grid.globus.GlobusCredentialWrapper;
 import nl.esciencecenter.vlet.grid.globus.GlobusUtil;
@@ -155,7 +158,7 @@ public class VomsUtil
         }
 
         // default:
-        return VrsException.create(e.getMessage(), e,e.getClass().getSimpleName());
+        return NestedVrsException.create(e.getMessage(), e,e.getClass().getSimpleName());
 
     }
 
@@ -546,7 +549,8 @@ public class VomsUtil
         try
         {
             logger.infoPrintf("Trying VOMS file:%s\n", vomsFilename);
-            InputStream xmlStream = loader.createInputStream(vomsFilename);
+            FSPath path = FSUtil.fsutil().newFSPath(vomsFilename);
+            InputStream xmlStream = loader.createInputStream(path.toURL());
 
             // if (vomsXMLFile.exists()==false)
             // {

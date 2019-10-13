@@ -28,7 +28,7 @@ import java.io.OutputStream;
 import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.io.RandomReadable;
 import nl.esciencecenter.ptk.io.RandomWritable;
-import nl.esciencecenter.ptk.io.RingBufferStreamTransferer;
+import nl.esciencecenter.ptk.io.BufferStreamTransferer;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.io.VRandomReadable;
@@ -67,7 +67,7 @@ public class VRSIOUtil extends IOUtil
      * @param bufferSize
      *            buffer size to use to perform stream copy
      * 
-     * @see CircularStreamBufferTransferer
+     * @see BufferStreamTransferer
      */
     public static long streamCopy(VFSTransfer transfer,
             VNode sourceNode,
@@ -134,7 +134,7 @@ public class VRSIOUtil extends IOUtil
                 bufferSize = (int) nrToTransfer;
 
             // Use CirculareStreamBuffer to copy from InputStream => OutputStream
-            RingBufferStreamTransferer cbuffer = new RingBufferStreamTransferer(bufferSize);
+            BufferStreamTransferer cbuffer = new BufferStreamTransferer(bufferSize);
 
             // update into this object please:
             cbuffer.setTaskMonitor(transfer);

@@ -27,8 +27,8 @@ import java.io.OutputStream;
 import java.net.Proxy;
 import java.net.URISyntaxException;
 
+import nl.esciencecenter.ptk.exceptions.CertificateStoreException;
 import nl.esciencecenter.ptk.ssl.CertificateStore;
-import nl.esciencecenter.ptk.ssl.CertificateStoreException;
 import nl.esciencecenter.ptk.web.WebClient;
 import nl.esciencecenter.ptk.web.WebException;
 import nl.esciencecenter.ptk.web.WebException.Reason;

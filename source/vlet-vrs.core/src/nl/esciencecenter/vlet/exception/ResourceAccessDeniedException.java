@@ -23,26 +23,12 @@ package nl.esciencecenter.vlet.exception;
 
 public class ResourceAccessDeniedException extends VrsResourceException
 {
-    private static final long serialVersionUID = -1997351222964662386L;
 
-    public ResourceAccessDeniedException(String message)
-    {
-        super(ExceptionStrings.RESOURCE_ACCES_DENIED, message);
+    public ResourceAccessDeniedException(String msg) {
+        super(msg);
     }
 
-    /** Constructor which keeps original System Exception */
-    public ResourceAccessDeniedException(String message, Exception e)
-    {
-        super(ExceptionStrings.RESOURCE_ACCES_DENIED, message, e);
-    }
-
-    protected ResourceAccessDeniedException(String name, String message)
-    {
-        super(name, message);
-    }
-
-    protected ResourceAccessDeniedException(String name, String message, Throwable e)
-    {
-        super(name, message, e);
+    public ResourceAccessDeniedException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

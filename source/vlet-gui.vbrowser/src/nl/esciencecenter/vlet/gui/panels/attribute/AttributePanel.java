@@ -29,6 +29,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
@@ -178,29 +179,24 @@ public class AttributePanel extends JPanel
      * @param editable 
      * @param attrs
      */
-    public void setAttributes(AttributeSet orgSet)
+    public void setAttributes(AttributeSet sourceSet)
     {
-        setAttributes(orgSet,this.isEditable); 
+        setAttributes(sourceSet,this.isEditable);
     }
 
-    public void setAttributes(AttributeSet orgSet, boolean editable)
+    public void setAttributes(AttributeSet sourceSet, boolean editable)
     {
         this.isEditable=editable; 
-
         removeAll();
         
-        if (orgSet==null)
+        if (sourceSet==null)
         {
         	validate(); 
         	repaint(); 
         	return; 
         }
-        
-        int len=0;  
-        len=orgSet.size(); 
-        // else this method will remove old attributes 
-        
-        // new ORDENED Set: 
+        int sourceSize=sourceSet.size();
+        // new ORDENED Set:
         attributes=new AttributeSet(); 
       
         //GridBagConstraints c = new GridBagConstraints();
@@ -213,43 +209,35 @@ public class AttributePanel extends JPanel
         int xpos=default_border_width; 
         int ypos=default_border_height;
 
-        int ypositions[]=new int[len]; 
+        int ypositions[]=new int[sourceSize];
         int maxx=0; 
         int maxy=0; 
 
-        jLabels=new JLabel[len]; 
+        jLabels=new JLabel[sourceSize];
 
-        for (int i=0;i<len;i++)
-        { 
-            // filter out null Attributes ! 
-            if (orgSet.elementAt(i)!=null)
-            {
-                /* if ( (editable==false) 
-                    ||(editable & orgAttrs[i].isEditable()) )*/
-            	Attribute attr = orgSet.elementAt(i);
+        // use order of implementation keySet:
+        Set<String> keys = sourceSet.keySet();
+
+        for (String key:keys) {
+            // Filter out null Attributes !
+            if (sourceSet.get(key)!=null) {
+            	Attribute attr = sourceSet.get(key);
                 attributes.put(attr);                
             }
         }
 
-        // 
-        // new attribute size 
-        // 
-
-        len=attributes.size();
+        // New attribute size and key index:
+        int newSize = attributes.size();
+        String[] newKeys =attributes.keySet().toArray(new String[0]);
 
         //changed.setSize(len); 
         // update form layout columns nr: 
+        setFormRows(newSize);
 
-        setFormRows(attributes.size());
-
-        //
         // Field Names
-        //
-
-        for (int i=0;i<len;i++)
-        { 
-        	Attribute attr=attributes.elementAt(i); 
-        	//debug("Adding attribute:"+attr); 
+        for (int i=0;i<newKeys.length;i++) {
+        	Attribute attr=attributes.get(newKeys[i]);
+        	//debug("Adding attribute:"+attr);
             
             String name=attr.getName(); 
             String type=attr.getType().toString();  
@@ -292,11 +280,11 @@ public class AttributePanel extends JPanel
         ypos=10;
 
         // === Create Fields === 
-        jFields=new JComponent[len]; 
+        jFields=new JComponent[newSize];
 
-        for (int i=0;i<len;i++)
+        for (int i=0;i<newSize;i++)
         {
-            Attribute attr=attributes.elementAt(i);
+            Attribute attr=attributes.get(newKeys[i]);
             String value=attr.getStringValue();  
             String name=attr.getName(); 
             AttributeType type = attr.getType(); 
@@ -305,7 +293,7 @@ public class AttributePanel extends JPanel
             if (isSection)
                 continue; 
             
-            JComponent jField=null; 
+            JComponent jField;
 
             // create field listener for this attribute field 
             AttributeFieldListener attributeListener = new AttributeFieldListener(name);
@@ -464,7 +452,7 @@ public class AttributePanel extends JPanel
 
         // update fields width to maximum field width
         if (useFormLayout==false) 
-            for(int i=0;i<len;i++)
+            for(int i=0;i<newSize;i++)
             {
                 // null fields due to null attributes 
                 Dimension size=jFields[i].getSize();
@@ -574,31 +562,6 @@ public class AttributePanel extends JPanel
         }
     }
 
-    /** 
-     * Enables all editable attributes (VAttribute.isEditable() still 
-     * must return TRUE 
-     * @param val
-     */
-    /*public void setEditable(boolean val)
-    {
-        this.isEditable=val;
-
-        if (jFields==null)
-            return; // not initialized yet
-
-        for (int i=0;i<jFields.length;i++)
-        {
-            if ((jFields[i]!=null) && (attributes.elementAt(i).isEditable()))
-            {
-                if (jFields[i] instanceof JTextField)
-                {
-                    ((JTextField)jFields[i]).setEditable(val);
-                }
-                jFields[i].setBackground(GuiSettings.current.textfield_editable_background_color);
-            }
-        }
-    }*/
-
     public class AttributeFieldListener implements ActionListener,FocusListener, MouseListener
     {
         // the attribute name I am listener for: 
@@ -628,7 +591,7 @@ public class AttributePanel extends JPanel
         {
             //Global.debugPrintln(this,"updateComp:"+comp);
             
-            String value=null; 
+            String value;
 
             if (comp instanceof JTextField)
             {

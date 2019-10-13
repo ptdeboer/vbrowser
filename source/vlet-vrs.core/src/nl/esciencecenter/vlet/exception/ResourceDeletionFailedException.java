@@ -23,17 +23,12 @@ package nl.esciencecenter.vlet.exception;
 
 public class ResourceDeletionFailedException extends VrsResourceException
 {
-    private static final long serialVersionUID = -5697916428807131886L;
 
-    public ResourceDeletionFailedException(String message)
-    {
-        super(ExceptionStrings.RESOURCE_DELETION_FAILED, message);
+    public ResourceDeletionFailedException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    /** Constructor which keeps original System Exception */
-    public ResourceDeletionFailedException(String message, Throwable e)
-    {
-        super(ExceptionStrings.RESOURCE_DELETION_FAILED, message, e);
+    public ResourceDeletionFailedException(String msg) {
+        super(msg);
     }
-
 }

@@ -9,7 +9,10 @@
 
     <baseDirectory>vbrowser-${project.version}</baseDirectory>
 
+    <!-- strip the 'target/MODULES-VERSION-dist/MODULE-VERSION/' basedir -->
+    <includeBaseDirectory>false</includeBaseDirectory>
     <moduleSets>
+
         <moduleSet>
 
             <!-- Enable access to all projects in the current multimodule build! -->
@@ -37,6 +40,9 @@
             <binaries>
                 <outputDirectory>lib</outputDirectory>
                 <unpack>false</unpack>
+                <dependencySets>
+                    <dependencySet> <!-- filter here --> </dependencySet>
+                </dependencySets>
             </binaries>
 
         </moduleSet>
@@ -52,6 +58,20 @@
             <binaries>
                 <attachmentClassifier>plugin</attachmentClassifier>
                 <outputDirectory>lib/plugins/</outputDirectory>
+                <includeDependencies>false</includeDependencies>
+                <unpack>true</unpack>
+            </binaries>
+        </moduleSet>
+
+        <!-- icons which must be unzipped, could keep in jar here -->
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>*:vlet-gui.vbrowser</include>
+            </includes>
+            <binaries>
+                <attachmentClassifier>icons</attachmentClassifier>
+                <outputDirectory>lib/</outputDirectory>
                 <includeDependencies>false</includeDependencies>
                 <unpack>true</unpack>
             </binaries>
@@ -142,5 +162,6 @@
         </moduleSet>
 
     </moduleSets>
+
 
 </assembly>

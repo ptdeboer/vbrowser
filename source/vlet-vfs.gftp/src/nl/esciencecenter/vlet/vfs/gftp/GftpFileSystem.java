@@ -2203,9 +2203,6 @@ public class GftpFileSystem extends FileSystemNode implements VFileActiveTransfe
 
         String ename = e.getClass().getName();
 
-        if (e instanceof VrsException)
-            ename = ((VrsException) e).getName();
-
         String errtxt = e.getMessage();
 
         if (errtxt == null)

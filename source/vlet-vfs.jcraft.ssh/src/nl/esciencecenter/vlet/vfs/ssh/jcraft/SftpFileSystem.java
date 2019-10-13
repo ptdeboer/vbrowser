@@ -81,8 +81,6 @@ public class SftpFileSystem extends FileSystemNode implements VOutgoingTunnelCre
     static
     {
         logger = ClassLogger.getLogger(SftpFileSystem.class);
-        JCraftClient.getLogger().setParent(logger); 
-        //logger.setLevelToDebug();
     }
     
     ClassLogger getLogger()

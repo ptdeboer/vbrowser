@@ -85,9 +85,9 @@ public class VRSTableModel extends AbstractTableModel // implements IProxyModel
     	
     	Object get(int colNr)
     	{
-    		if ((colNr<0) || (colNr>=rowData.size()))
-    		{
-    			logger.warnPrintf("Column number out of bounds:%d\n",colNr); 
+    		if ((colNr<0) || (colNr>=rowData.size())) {
+    			logger.warnPrintf("Column number out of bounds:%d\n",colNr);
+    			return null;
     		}
     		return rowData.get(colNr); 
     	}
@@ -219,13 +219,15 @@ public class VRSTableModel extends AbstractTableModel // implements IProxyModel
     private Attribute getAttribute(int row, int col)
     {
     	RowObject rowObj = getRow(row); 
-    	if (rowObj==null)
-    		return null; 
-    	
+    	if (rowObj==null) {
+            logger.error("Row nr not found:{}",row);
+    		return null;
+        }
+
         Object obj=rowObj.get(col); 
-        
-        if (obj instanceof Attribute) 
-            return (Attribute)obj; 
+        if (obj instanceof Attribute) {
+            return (Attribute) obj;
+        }
             
         return null;
     }
@@ -337,8 +339,14 @@ public class VRSTableModel extends AbstractTableModel // implements IProxyModel
     	return row.get(columnIndex); 
     }
     
-    /** Sets  value */ 
-    
+    /** Sets  value */
+
+	public void setValueAt(Object value,int rowNr, String colAttrName)
+	{
+		this.setValueAt(value,rowNr,this.getHeaderIndex(colAttrName));
+		this.getHeaderIndex(colAttrName);
+	}
+
     public void setValueAt(Object value,int rowNr, int colNr)
     {
     	RowObject row = getRow(rowNr);
@@ -571,7 +579,7 @@ public class VRSTableModel extends AbstractTableModel // implements IProxyModel
     /**
      * Add new row with specfied data. 
      * If node alread exist new row isn't added 
-     * @param rowNode
+     * @param node
      * @param attrs
      */
    public boolean addNodeRow(ProxyNode node,Object attrs[])

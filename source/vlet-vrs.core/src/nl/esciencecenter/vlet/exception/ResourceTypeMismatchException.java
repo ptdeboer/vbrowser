@@ -23,17 +23,12 @@ package nl.esciencecenter.vlet.exception;
 
 public class ResourceTypeMismatchException extends VrsResourceException
 {
-    private static final long serialVersionUID = -3699997598346607422L;
 
-    public ResourceTypeMismatchException(String message)
-    {
-        super(ExceptionStrings.RESOURCE_TYPE_MISMATCH, message);
+    public ResourceTypeMismatchException(String message) {
+        super(message);
     }
 
-    /** Constructor which keeps original Exception */
-    public ResourceTypeMismatchException(String message, Exception e)
-    {
-        super(ExceptionStrings.RESOURCE_NOT_FOUND_EXCEPTION, message, e);
+    public ResourceTypeMismatchException(String message, Throwable cause) {
+        super(message, cause);
     }
-
 }

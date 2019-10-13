@@ -23,17 +23,12 @@ package nl.esciencecenter.vlet.exception;
 
 public class ResourceReadException extends VrsResourceException
 {
-    private static final long serialVersionUID = -5601874731914678614L;
 
-    public ResourceReadException(String message)
-    {
-        super("Read Error", message);
+    public ResourceReadException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    /** Constructor which keeps original System Exception */
-    public ResourceReadException(String message, Throwable e)
-    {
-        super("Read Error", message, e);
+    public ResourceReadException(String msg) {
+        super(msg);
     }
-
 }

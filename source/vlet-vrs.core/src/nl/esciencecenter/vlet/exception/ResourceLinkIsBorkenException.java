@@ -26,19 +26,12 @@ package nl.esciencecenter.vlet.exception;
  */
 public class ResourceLinkIsBorkenException extends ResourceNotFoundException
 {
-    private static final long serialVersionUID = 5416111351964077739L;
 
-    public ResourceLinkIsBorkenException(String message)
-    {
+    public ResourceLinkIsBorkenException(String message) {
         super(message);
-        setName("Broken Link Exception");
     }
 
-    /** Constructor which keeps original Exception */
-    public ResourceLinkIsBorkenException(String message, Throwable e)
-    {
+    public ResourceLinkIsBorkenException(String message, Throwable e) {
         super(message, e);
-        setName("Broken Link Exception");
     }
-
 }

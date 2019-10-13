@@ -99,7 +99,7 @@ public class SRMFileSystem extends FileSystemNode implements VFileActiveTransfer
     static
     {
         ClassLogger srmLogger = ClassLogger.getLogger(SRMClientV2.class);
-        SRMClientV2.setLogger(srmLogger);
+//        SRMClientV2.setLogger(srmLogger);
         // srmLogger.setLevelToDebug();
         logger = ClassLogger.getLogger(SRMFileSystem.class);
         // logger.setLevelToDebug();

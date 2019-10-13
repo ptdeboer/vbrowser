@@ -72,7 +72,7 @@ public abstract class FileSystemNode extends ResourceSystemNode implements VFile
 	/**
      * Resolve relative or absolute path against this resource. Uses
      * VRL.resolvePaths(this.getPath(),subPath) as default implementation.
-	 * @throws VrsException,VRISyntaxException 
+	 * @throws VrsException
      * 
      * @throws VrsException
      */

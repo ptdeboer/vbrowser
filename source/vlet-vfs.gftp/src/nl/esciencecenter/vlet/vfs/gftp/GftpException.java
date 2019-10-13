@@ -25,16 +25,15 @@ import nl.esciencecenter.vlet.exception.NestedIOException;
 
 public class GftpException extends NestedIOException
 {
-    private static final long serialVersionUID = -57064076580488986L;
 
     protected GftpException(String message, Throwable cause)
     {
-        super("GftpException", message, cause);
+        super(message, cause);
     }
 
     protected GftpException(String name, String message, Throwable cause)
     {
-        super("GftpException:" + name, message, cause);
+        super(message, cause);
     }
 
 }

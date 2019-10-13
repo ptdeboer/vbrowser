@@ -23,16 +23,12 @@ package nl.esciencecenter.vlet.exception;
 
 public class ResourceNotEditableException extends VrsResourceException
 {
-    private static final long serialVersionUID = -6546720746289422778L;
 
-    public ResourceNotEditableException(String message)
-    {
-        super(ExceptionStrings.RESOURCE_NOT_EDITABLE_EXCEPTION, message);
+    public ResourceNotEditableException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    /** Constructor which keeps original System Exception */
-    public ResourceNotEditableException(String message, Throwable e)
-    {
-        super(ExceptionStrings.RESOURCE_NOT_EDITABLE_EXCEPTION, message, e);
+    public ResourceNotEditableException(String msg) {
+        super(msg);
     }
 }

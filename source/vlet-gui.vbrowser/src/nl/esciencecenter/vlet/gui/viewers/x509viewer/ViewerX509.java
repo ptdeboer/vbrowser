@@ -197,7 +197,7 @@ public class ViewerX509 extends ViewerPlugin implements CertPanelListener
 
             if (askToAdd)
             {
-                caPanel.setQuestion("You have been asked to trust a new Certificate Authority(CA).\n"
+                caPanel.setQuestion("You have been asked to trust a new Certificate.\n"
                         + "Accept certificate from '" + keyIssuers + "'?");
             }
             else
@@ -212,7 +212,7 @@ public class ViewerX509 extends ViewerPlugin implements CertPanelListener
         catch (Exception e)
         {
             caPanel.setMessageText(e.getMessage());
-            caPanel.setQuestion("Exception occured"); 
+            caPanel.setQuestion("Exception occurred");
             handle(e); 
         }
     }
@@ -224,7 +224,7 @@ public class ViewerX509 extends ViewerPlugin implements CertPanelListener
 
     private X509Certificate instCert(VRL loc) throws Exception
     {
-        String txt = UIGlobal.getResourceLoader().readText(loc.toURI(), textEncoding);
+        String txt = UIGlobal.getResourceLoader().readText(loc, textEncoding);
 
         // Use hardcoded String to find start of certificate. 
         // Current Pem reader is just as simplistic.  

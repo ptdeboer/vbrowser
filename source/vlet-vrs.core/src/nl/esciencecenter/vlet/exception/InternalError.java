@@ -28,11 +28,10 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
  */
 public class InternalError extends VrsException
 {
-    private static final long serialVersionUID = -8673540323173565403L;
 
     public InternalError(String message)
     {
-        super(message,null,ExceptionStrings.VRSINTERNALERROR);
+        super(message);
     }
 
     /**
@@ -42,17 +41,13 @@ public class InternalError extends VrsException
 
     public InternalError(String message, Throwable e)
     {
-        super(message,e,ExceptionStrings.VRSINTERNALERROR);
+        super(message,e);
     }
 
-    public InternalError(Throwable e)
-    {
-        super(e.getMessage(),e,ExceptionStrings.VRSINTERNALERROR);
-    }
 
     protected InternalError(String message, Throwable e,String name)
     {
-        super(message,e,name);
+        super(name+":"+message,e);
     }
 
 }

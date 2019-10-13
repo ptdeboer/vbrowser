@@ -30,9 +30,9 @@ import java.util.Vector;
 
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.StringList;
+import nl.esciencecenter.ptk.exceptions.CertificateStoreException;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.ssl.CertificateStore;
-import nl.esciencecenter.ptk.ssl.CertificateStoreException;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -409,8 +409,7 @@ public class GlobusCredentialProvider implements VGridCredentialProvider
         // 
     }
     
-    private CertificateStore getCertStore() throws CertificateStoreException
-    {
+    private CertificateStore getCertStore() throws CertificateStoreException {
         String cacertsLoc=VletConfig.getDefaultUserCACertsLocation(); 
         return CertificateStore.loadCertificateStore(cacertsLoc, new Secret(CertificateStore.DEFAULT_PASSPHRASE.toCharArray()), true,false); 
     }

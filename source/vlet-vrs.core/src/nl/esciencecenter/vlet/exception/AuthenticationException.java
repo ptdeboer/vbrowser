@@ -28,7 +28,7 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
  * 
  *         Grid Credential Exception(s)
  */
-public class AuthenticationException extends VrsException
+public class AuthenticationException extends NestedVrsException
 {
     private static final long serialVersionUID = -7234344441074734646L;
 

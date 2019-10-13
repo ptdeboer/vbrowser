@@ -21,31 +21,9 @@
 
 package nl.esciencecenter.vlet.vrs;
 
-import nl.esciencecenter.vbrowser.vrs.data.Attribute;
-import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
-
 /**
  * This interface provides some methods for nodes or resources which attributes
  * are 'editable'.   
- * 
- * @author P.T. de Boer
  */
-public interface VEditable
-{
-    /** 
-     * returns true if the caller has the permissions to edit this resource. 
-     * This means the setAttribute(s) method(s) are allowed. 
-     * The default implementation for a VFSNode is to check whether
-     * it is writable
-     */
-    public boolean isEditable() throws VrsException;
-    
-    /**
-     * Sets a list of attributes. Returns true if all attributes could be set.
-     */ 
-    public boolean setAttributes(Attribute[] attrs) throws VrsException;
-
-    /** Set single attribute. Return true if attribute was set. */  
-    public boolean setAttribute(Attribute attr) throws VrsException;
-    
+public interface VEditable extends nl.esciencecenter.vbrowser.vrs.VEditable {
 }

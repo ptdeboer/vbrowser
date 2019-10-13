@@ -311,7 +311,7 @@ public class ServerInfo
      */
     public String[] getAttributeNames()
     {
-        StringList nameList=this._serverAttributes.getKeyStringList();
+        StringList nameList=this._serverAttributes.createKeyStringList();
         // remove hidden/meta attributes: 
         nameList.remove(ServerInfo.metaAttributeNames);
         return nameList.toArray(); 
@@ -323,7 +323,7 @@ public class ServerInfo
      */
     public String[] getAllAttributeNames()
     {
-        return this._serverAttributes.getKeyArray(new String[0]);
+        return this._serverAttributes.createKeyArray();
     }
 
     /** Remove Attribute from attribute hash */
@@ -1093,8 +1093,7 @@ public class ServerInfo
 
    /** 
     * Update ServerInfo: Remove Attributes if the name is not in the specified name list 
-    * @see nl.esciencecenter.vbrowser.vrs.data.AttributeSet#remoteIfNotIn(StringList)
-    */ 
+    */
    public void removeAttributesIfNotIn(StringList attrNames)
    {
        StringList list=attrNames.duplicate();
@@ -1129,7 +1128,7 @@ public class ServerInfo
       set.put(new Attribute(ATTR_SERVER_NAME,getName()),true);
       
       // re insert all values using the specified key list:
-      set.putAll(templateSet,templateSet.getKeyArray(new String[0])); 
+      set.putAll(templateSet,templateSet.createKeyArray());
       
       this._serverAttributes.matchTemplate(set,removeOthers); 
    } 

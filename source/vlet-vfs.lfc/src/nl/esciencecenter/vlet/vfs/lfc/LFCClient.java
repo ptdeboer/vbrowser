@@ -102,8 +102,7 @@ public class LFCClient
     {
         // Override LFC Logger with my Logger!
         lfcLogger = ClassLogger.getLogger("nl.uva.vlet.vfs.lfc");
-        LFCServer.setLogger(lfcLogger);
-
+//        LFCServer.setLogger(lfcLogger);
         logger = ClassLogger.getLogger(LFCClient.class);
     }
 
@@ -381,7 +380,7 @@ public class LFCClient
             {
                 logger.errorPrintf("Error:%s\n", t);
                 t.printStackTrace();
-                throw new InternalError(t); // wrap
+                throw new InternalError(t.getMessage(),t); // wrap
             }
         }
 
@@ -1058,9 +1057,7 @@ public class LFCClient
     {
         String indentStr = "  ";
 
-        String exName = "";
-        if (e instanceof VrsException)
-            exName = ((VrsException) e).getName();
+        String exName = e.getClass().getSimpleName();
         String text = "*** Exception:" + e.getClass().getSimpleName() + ":" + exName + "\n" + " - replica="
                 + replicaVRL + "\n" + e.getMessage();
         // New beautification of message: add spaces before each line:

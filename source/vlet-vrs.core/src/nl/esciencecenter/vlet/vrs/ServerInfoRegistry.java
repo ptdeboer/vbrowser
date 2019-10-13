@@ -33,6 +33,7 @@ import java.util.Vector;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.util.ContentWriter;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -206,12 +207,12 @@ public class ServerInfoRegistry
      * 
      * @param scheme
      *            if NULL then don't care (match any)
-     * @param hostname
+     * @param host
      *            if NULL then don't care (match any)
      * @param port
      *            if port==-1 => don't care, if port==0 => default and if port>0
      *            match explicit port number
-     * @param userInfo
+     * @param optUserInfo
      *            if NULL then don't care (match any)
      */
     public ServerInfo[] getServerInfos(String scheme, String host, int port, String optUserInfo)
@@ -377,11 +378,11 @@ public class ServerInfoRegistry
             ServerInfo prev = this.serverInfos.get(info.getID());
 
             if (prev == info)
-                logger.infoPrintf(">>> updating ServerInfo:%s\n", info);
+                logger.debugPrintf(">>> updating ServerInfo:%s\n", info);
             else if (prev != null)
-                logger.infoPrintf(">>> WARNING: Overwriting previous object with:%s\n", info);
+                logger.debugPrintf(">>> WARNING: Overwriting previous object with:%s\n", info);
             else
-                logger.infoPrintf(">>> storing new ServerInfo:%s\n", info);
+                logger.debugPrintf(">>> storing new ServerInfo:%s\n", info);
 
             this.serverInfos.put(info.getID(), info);
             // mark dirty:
@@ -476,7 +477,7 @@ public class ServerInfoRegistry
         if (info == null)
             return null;
 
-        logger.infoPrintf("--- Removing ServerInfo:%s\n", info);
+        logger.debugPrintf("--- Removing ServerInfo:%s\n", info);
 
         ServerInfo prev = null;
 
@@ -542,9 +543,9 @@ public class ServerInfoRegistry
         try
         {
             // bootstrap warning: use default ResourceLoader here: VRS might not be initialized! 
-            ResourceLoader writer=new ResourceLoader(); 
+            ResourceLoader writer= ResourceLoader.getDefault();
             String xmlString=xmlifier.createXMLString(XML_SERVER_CONFIG_HEADER_TAG, sets, XML_SERVER_CONFIG_HEADER);
-            writer.writeTextTo(loc.toURI(), xmlString); 
+            new ContentWriter(writer.createOutputStream(loc.toURI()),true).write(xmlString);
             this.isSaved = true;
         }
         catch (Exception e)
@@ -578,7 +579,7 @@ public class ServerInfoRegistry
 
             ArrayList<AttributeSet> sets = this.getInfoAttrSets();
             // No Context!
-            ResourceLoader loader = new ResourceLoader();
+            ResourceLoader loader = ResourceLoader.getDefault();
 
             XMLData xmlifier = new XMLData();
             xmlifier.setVAttributeElementName("vlet:ServerInfoProperty");
@@ -595,7 +596,7 @@ public class ServerInfoRegistry
             } 
             catch (Exception e)
             {
-                throw new VRLSyntaxException(e); 
+                throw new VRLSyntaxException(e.getMessage(),e);
             }
           
 

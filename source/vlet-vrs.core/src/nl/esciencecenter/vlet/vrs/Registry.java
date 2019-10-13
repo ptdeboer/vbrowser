@@ -458,6 +458,7 @@ public final class Registry // todo: change to vrs protected class.
             if (o instanceof VRSFactory)
             {
                 VRSFactory rs = (VRSFactory) o;
+                logger.infoPrintf("Registering VRSFactory: %s (%s)\n",factoryClass.getName(),rs.getName());
 
                 registeredServices.put(rs.getClass().getCanonicalName(), rs);
                 registerSchemeNames(rs);
@@ -475,7 +476,6 @@ public final class Registry // todo: change to vrs protected class.
         // update scheme cache:
         this.updateDefaultSchemes();
 
-        logger.infoPrintf("Registry: Register VRSFactory class:%s\n", factoryClass.getName());
         return true;
     }
 

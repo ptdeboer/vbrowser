@@ -23,16 +23,12 @@ package nl.esciencecenter.vlet.exception;
 
 public class ResourceWriteAccessDeniedException extends ResourceAccessDeniedException
 {
-    private static final long serialVersionUID = -1331279123455086302L;
 
-    public ResourceWriteAccessDeniedException(String message)
-    {
-        super(ExceptionStrings.RESOURCE_WRITE_ACCESS_DENIED,message);
+    public ResourceWriteAccessDeniedException(String msg) {
+        super(msg);
     }
 
-    /** Constructor which keeps original Exception */
-    public ResourceWriteAccessDeniedException(String message, Throwable e)
-    {
-        super(ExceptionStrings.RESOURCE_WRITE_ACCESS_DENIED,message,e); 
+    public ResourceWriteAccessDeniedException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

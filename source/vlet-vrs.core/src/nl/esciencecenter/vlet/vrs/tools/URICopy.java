@@ -23,7 +23,6 @@ package nl.esciencecenter.vlet.vrs.tools;
 
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.ptk.util.logging.FormattingLogger;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.VletConfig;
 import nl.esciencecenter.vlet.grid.proxy.GridProxy;
@@ -378,7 +377,7 @@ public class URICopy
         exit(0); // ok (?)
     }
 
-    private static FormattingLogger getLogger()
+    private static ClassLogger getLogger()
     {
         return ClassLogger.getLogger(URICopy.class);
     }

@@ -8,20 +8,55 @@
     <parent>
         <groupId>nl.esciencecenter.vbrowser</groupId>
         <artifactId>vbrowser</artifactId>
-        <version>1.9.0</version>
+        <version>1.9.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <build>
-        <!-- todo: move src and resource to maven structure -->
+        <!-- compact layout -->
         <sourceDirectory>src</sourceDirectory>
         <testSourceDirectory>testsrc</testSourceDirectory>
         <resources>
-            <!-- could become '-icons' assembly attachment -->
             <resource>
-                <directory>icons</directory>
+               <directory>resources</directory>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <!-- Exclude icons from default jar.
+                     They have their own assembly description "-icons" -->
+                <configuration>
+                    <excludes>
+                        <exclude>icons/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <!-- icons assembly -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>icons</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly/icons.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
     </build>
 
     <dependencies>
@@ -41,6 +76,7 @@
             <artifactId>vlet-vfs.jcraft.ssh</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- PTK -->
         <dependency>
             <groupId>nl.esciencecenter.platinum</groupId>
             <artifactId>ptk-ui</artifactId>
@@ -51,7 +87,21 @@
             <artifactId>ptk-util-vterm</artifactId>
             <version>${ptk.version}</version>
         </dependency>
-
+        <!-- icons, both as jar and zip -->
+<!--        <dependency>-->
+<!--            <groupId>nl.esciencecenter.platinum</groupId>-->
+<!--            <artifactId>ptk-ui</artifactId>-->
+<!--            <version>${ptk.version}</version>-->
+<!--            <classifier>icons</classifier>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>nl.esciencecenter.platinum</groupId>-->
+<!--            <artifactId>ptk-vbrowser-ui</artifactId>-->
+<!--            <version>${ptk.version}</version>-->
+<!--            <classifier>icons</classifier>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
     </dependencies>
 
 </project>

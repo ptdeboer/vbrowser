@@ -45,8 +45,6 @@ verbose()
 }
 
 ##
-
-##
 # VLET_SYSCONFDIR 
 # Set the following variable when the configuration files or NOT under $VLET_INSTALL/etc ! 
 # This is automaticaly done when performing a binary installation (gnu/linux style).
@@ -56,7 +54,6 @@ verbose()
 
 ### 
 # Runtime enviroment
-# Local: cygwin 
 
 case `uname` in 
  CYGWIN*) 
@@ -68,7 +65,7 @@ case `uname` in
       arch=linux
       ;; 
  *) 
- 	# Windows has its own startup vbrowser.exe 
+ 	    # Windows has its own startup vbrowser.exe
       ;; 
 esac
 
@@ -130,15 +127,18 @@ VBROWSER_JAR="$BINDIR/vbrowser-boot.jar"
 #
 
 if [ $cygwin == "true" ] ; then 
-   # convert unix style paths to windows compatible paths 
-   println "--- Cygwin detected ---" 
-   # cehck optional empty CLASSPATH
-   if [ -n "$CLASSPATH" ] ; then 
-       CLASSPATH=`cygpath -m -p $CLASSPATH` 
-   fi
+   # convert unix style paths to windows compatible paths
+   info "--- Cygwin detected ---"
    VLET_INSTALL=`cygpath -m $VLET_INSTALL`
-   VLET_SYSCONFDIR=`cygpath -m $VLET_SYSCONFDIR`
-   # PATCH: to avoid the use of windows' find.exe make 
+   if [ -n "${VLET_SYSCONFDIR}" ] ; then
+      VLET_SYSCONFDIR=`cygpath -m $VLET_SYSCONFDIR`
+   fi
+   # Check optional empty CLASSPATH.
+   if [ -n "$CLASSPATH" ] ; then
+       CLASSPATH=`cygpath -m -p $CLASSPATH`
+   fi
+
+   # PATCH: to avoid the use of windows' find.exe make
    # sure the Cygwin path is searched first.
    PATH="/usr/bin:$PATH"
    # windows does not have a LD_LIBRARY_PATH, it uses PATH instead:
@@ -159,10 +159,10 @@ else
    if which java > /dev/null ; then 
        debug "java:using default java command from path." 
    else 
-       println "*** Error: No Java Found ***"
-       println " Java was not found on your path."
-       println " Please set JAVA_HOME or put JAVA_HOME/bin on your PATH"
-       println ""
+       error "*** Error: No Java Found ***"
+       error " Java was not found on your path."
+       error " Please set JAVA_HOME or put JAVA_HOME/bin on your PATH"
+       error ""
        exit
    fi 
     JAVA=java
@@ -176,11 +176,11 @@ export JAVA
 VERSION=`"$JAVA" -version 2>&1 | grep "version" |  sed "s/.*\([0-9].[0-9_]*\.[0-9_]*\).*/\1/"` 
 MINOR=`echo $VERSION | cut -d '.' -f 2`
 
-if [ "$MINOR" -lt 6 ] ; then 
-   println "*** Wrong java version ***"
-   println " You need java 1.6. Current version="$VERSION
-   println " Current used java location="$JAVA 
-   println " You can specify the java location by seting JAVA_HOME" 
+if [ "$MINOR" -lt 8 ] ; then
+   error "*** Wrong java version ***"
+   error " You need java 1.8. Current version="$VERSION
+   error " Current used java location="$JAVA
+   error " You can specify the java location by seting JAVA_HOME"
    exit 1
 fi  
 

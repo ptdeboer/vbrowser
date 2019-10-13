@@ -12,7 +12,7 @@
 			<outputDirectory></outputDirectory>
 			<includes>
 				<include>licences.txt</include>
-				<include>logback.xml</include>
+				<include>log4j.xml</include>
 				<include>VLET_VERSION</include>
 				<include>vletenv.sh</include>
 				<include>vletrc.prop</include>

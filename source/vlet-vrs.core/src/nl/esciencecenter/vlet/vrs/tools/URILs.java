@@ -28,7 +28,6 @@ import java.util.Locale;
 
 import nl.esciencecenter.ptk.presentation.Presentation;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
-import nl.esciencecenter.ptk.util.logging.FormattingLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VRLSyntaxException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.grid.proxy.GridProxy;
@@ -182,7 +181,7 @@ public class URILs
         }
     }
 
-    private FormattingLogger getLogger()
+    private ClassLogger getLogger()
     {
         return ClassLogger.getRootLogger();
     }

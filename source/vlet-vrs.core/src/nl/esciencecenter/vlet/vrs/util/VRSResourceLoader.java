@@ -51,14 +51,14 @@ import nl.esciencecenter.vlet.vrs.vfs.VFile;
  */
 public class VRSResourceLoader extends ResourceLoader
 {
-    private static ClassLogger logger=ClassLogger.getLogger(VRSResourceLoader.class); 
-    
+
     private VRSContext vrsContext;
 
     private VRSClient vrsClient;
 
     public VRSResourceLoader(VRSContext context)
     {
+        super(null);
         this.vrsContext=context; 
         this.vrsClient=new VRSClient(context);
     }
@@ -82,9 +82,7 @@ public class VRSResourceLoader extends ResourceLoader
     /**
      * Returns an inputstream from the specified URI.
      * 
-     * @param uri
-     * @return
-     * @throws VlException
+     * @param url
      */
     public InputStream createInputStream(URL url) throws IOException
     {
@@ -152,18 +150,14 @@ public class VRSResourceLoader extends ResourceLoader
      */ 
     public  String getText(VRL vrl) throws IOException, VrsException 
     {
-         InputStream inps=createInputStream(vrl);
-         String text=readText(inps,null);  
-         try { inps.close(); } catch (Exception e) { ; } 
-         return text; 
+        return this.getText(vrl,this.getCharEncoding());
     }
    
     public String getText(VRL vrl, String textEncoding) throws IOException, VrsException 
     {
-        InputStream inps=createInputStream(vrl);
-        String text=readText(inps,textEncoding);  
-        try { inps.close(); } catch (Exception e) { ; } 
-        return text;
+        try (InputStream inps=createInputStream(vrl)) {
+            return readText(inps,textEncoding);
+        }
     }
 
     public void syncReadBytes(VFile file, long fileOffset, byte[] buffer, int bufferOffset, int numBytes) throws VrsException 
@@ -176,7 +170,7 @@ public class VRSResourceLoader extends ResourceLoader
         try
         {
             RandomReadable readable=((VRandomReadable)file).createRandomReadable(); 
-            IOUtil.syncReadBytes(readable, fileOffset, buffer, bufferOffset, numBytes); 
+            IOUtil.readAll(readable, fileOffset, buffer, bufferOffset, numBytes);
             readable.close(); 
         }
         catch (Exception e)
@@ -188,8 +182,13 @@ public class VRSResourceLoader extends ResourceLoader
     
     public void writeTextTo(VRL vrl, String txt)  throws IOException, VrsException
     {
-        writeTextTo(vrl,txt,this.charEncoding); 
+        writeTextTo(vrl,txt,this.getCharEncoding());
     }
+
+    private String getCharEncoding() {
+        return "UTF-8";
+    }
+
     /**
      * Writes String contents to remote location using optional encoding
      * Tries to truncate resource or delete original resource
@@ -270,7 +269,7 @@ public class VRSResourceLoader extends ResourceLoader
                 setSizeToZero(file);
             
             OutputStream outps=file.createOutputStream(); 
-            outps.write(text.getBytes(this.charEncoding));
+            outps.write(text.getBytes(this.getCharEncoding()));
             outps.flush();
  
             
@@ -319,35 +318,19 @@ public class VRSResourceLoader extends ResourceLoader
         
     }
 
-    public String readText(VFile file) throws IOException
-    {
-        InputStream inps = file.createInputStream(); 
-        String text=this.readText(inps, this.charEncoding); 
-        try
-        {
-            inps.close(); 
-        }
-        catch (IOException e)
-        {
-            ; 
-        }
-        return text; 
+    public String readText(InputStream inps) throws IOException {
+        return readText(inps,this.getCharEncoding());
     }
 
-    public byte[] readContents(VFile file) throws IOException
-    {
-        InputStream inps = file.createInputStream(); 
-        byte[] bytes=this.readBytes(inps);  
-        try
-        {
-            inps.close(); 
-        }
-        catch (IOException e)
-        {
-            ; 
-        }
-        return bytes; 
-        
+    public String readText(InputStream inps, String charEncoding) throws IOException {
+        byte[] bytes = IOUtil.readAll(inps, false);
+        return new String(bytes, charEncoding);
     }
-   
+
+    public String readText(VRL vrl, String charEncoding) throws IOException {
+        try (InputStream inps=this.createInputStream(vrl)) {
+            return this.readText(this.createInputStream(vrl),charEncoding);
+        }
+    }
+
 }

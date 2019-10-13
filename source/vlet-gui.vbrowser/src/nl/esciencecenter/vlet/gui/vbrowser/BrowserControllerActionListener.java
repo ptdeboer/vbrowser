@@ -79,11 +79,11 @@ public class BrowserControllerActionListener implements ActionListener
                     break; 
                 case REFRESH:
                     cmd=new ActionCommand(ActionCommandType.REFRESHALL); // master refresh (not node refresh) 
-                    break; 
-                case LOCATION_EDITED:
-                    cmd=null;// filter edit events 
-                    break; 
+                    break;
+                case LOCATION_COMBOBOX_EDITED:
+                    getLogger().debugPrintf("COMBO BOX EDIT:%s",e);
                 case LOCATION_CHANGED:
+                case LOCATION_AUTOCOMPLETED:
                     cmd=new ActionCommand(ActionCommandType.LOCATIONBAR_CHANGED); 
                     break; 
                 default:
@@ -92,7 +92,13 @@ public class BrowserControllerActionListener implements ActionListener
         }
         else
         {
-            cmd=ActionCommand.createFrom(cmdstr);
+            // todo:
+            if ("comboBoxEdited".equals(cmdstr)) {
+                getLogger().errorPrintf("** FIXME: got Action: 'comboBoxEdited'");
+                cmd=new ActionCommand(ActionCommandType.LOCATIONBAR_CHANGED);
+            } else {
+                cmd = ActionCommand.createFrom(cmdstr);
+            }
         }
         
         // forward ALL Actions to browserController: 

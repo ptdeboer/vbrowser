@@ -111,6 +111,7 @@ public class ReplicaController implements ActionListener, ListSelectionListener,
             switch (navAction)
             {
                 case LOCATION_CHANGED:
+                case LOCATION_AUTOCOMPLETED:
                 {
                     String txt = editor.getLocationText();
                     try

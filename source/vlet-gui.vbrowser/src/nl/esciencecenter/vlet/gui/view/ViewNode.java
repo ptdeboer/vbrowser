@@ -84,12 +84,10 @@ public class ViewNode
     public void updateIconURL(String iconUrl)
     {
         // Update icon. bypass ProxyNode: 
-        Icon defIcon = UIGlobal.getIconProvider().createIcon(null,
-                iconUrl,false,getIconDimension(),false,false);  
-        
-        Icon selIcon = UIGlobal.getIconProvider().createIcon(null,
-                iconUrl,false,getIconDimension(),true,false); 
-   
+        Icon defIcon = UIGlobal.getIconProvider().createIcon(iconUrl,getIconSize());
+
+        Icon selIcon = UIGlobal.getIconProvider().createIcon(iconUrl,getIconSize());
+
         if ((defIcon!=null) && (selIcon!=null))
         {
             setIcon(ViewNode.DEFAULT_ICON,defIcon); 

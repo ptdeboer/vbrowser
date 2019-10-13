@@ -37,7 +37,7 @@ fi
 
 doGit checkout develop
 doMvn versions:set -DnewVersion=${VERSION}
-doGit add pom.xml **/pom.xml
+doGit add pom.xml **/pom.xml */*/pom.xml
 doGit commit -m "New release version=${VERSION}"
 
 doGit checkout release
@@ -48,6 +48,6 @@ doGit push origin "v${VERSION}"
 
 doGit checkout develop
 doMvn versions:set -DnewVersion=${SNAPSHOT}
-doGit add pom.xml **/pom.xml
+doGit add pom.xml **/pom.xml */*/pom.xml
 doGit commit -m "New develop version=${SNAPSHOT}"
 doGit push origin

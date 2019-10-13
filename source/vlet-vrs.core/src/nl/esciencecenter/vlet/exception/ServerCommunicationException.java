@@ -27,16 +27,12 @@ package nl.esciencecenter.vlet.exception;
  */
 public class ServerCommunicationException extends NestedIOException // VlException
 {
-    private static final long serialVersionUID = -7642588247123924146L;
 
-    public ServerCommunicationException(String message)
-    {
-        super(ExceptionStrings.SERVER_EXCEPTION,message,null);
-    }
-    
-    public ServerCommunicationException(String message,Throwable e)
-    {
-        super(ExceptionStrings.SERVER_EXCEPTION,message,e);  
+    public ServerCommunicationException(String message, Throwable err) {
+        super(message, err);
     }
 
+    public ServerCommunicationException(String message) {
+        super(message);
+    }
 }

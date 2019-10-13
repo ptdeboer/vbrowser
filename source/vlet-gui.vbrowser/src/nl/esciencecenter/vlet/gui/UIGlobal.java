@@ -35,6 +35,7 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.ui.UI;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
+import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.mimetypes.MimeTypes;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
@@ -166,12 +167,12 @@ public class UIGlobal
 
 	public static void saveProperties(VRL loc, Properties props) throws Exception
 	{
-		getResourceLoader().saveProperties(loc.toURI(), props,"VLET UIGlobal properties");
+		getResourceLoader().saveProperties(loc.toURL(), props,"VLET UIGlobal properties");
 	}
 
 	public static Properties loadProperties(VRL guiSettingsLocation) throws Exception
 	{
-	    return getResourceLoader().loadProperties(guiSettingsLocation.toURI());
+	    return getResourceLoader().loadProperties(guiSettingsLocation.toURL());
 	}
 
 	public static VRSResourceLoader getResourceLoader()
@@ -185,14 +186,14 @@ public class UIGlobal
 	/** Return icon or 'Broken Image' icon */ 
 	public static Icon getIconOrBroken(String url)
 	{
-		return getIconProvider().createIconOrBroken(null,url);
+		return getIconProvider().createIconOrBroken(url);
 	}
 
 	/** Cached icon factory */ 
 	public static IconProvider getIconProvider()
 	{
 		if (iconProvider==null)
-			iconProvider=new IconProvider(globalFrame,(URL[])null);
+			iconProvider=new IconProvider(globalFrame, ResourceLoader.getDefault());
 		
 		return iconProvider; 
 	}

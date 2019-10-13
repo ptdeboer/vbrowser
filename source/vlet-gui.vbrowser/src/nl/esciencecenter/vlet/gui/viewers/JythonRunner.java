@@ -196,7 +196,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 					{
 						refreshButton = new JButton();
 						toolbar.add(refreshButton);
-						refreshButton.setIcon(UIGlobal.getIconOrBroken("menu/refresh.gif"));
+						refreshButton.setIcon(UIGlobal.getIconOrBroken("icons/menu/refresh.gif"));
 
 						refreshButton.setActionCommand("refresh");
 						refreshButton.addActionListener(this);
@@ -210,7 +210,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 					{
 						saveConfigButton = new JButton();
 						optionsToolbar.add(saveConfigButton);
-						saveConfigButton.setIcon(UIGlobal.getIconOrBroken("menu/saveconfig.png"));
+						saveConfigButton.setIcon(UIGlobal.getIconOrBroken("icons/menu/saveconfig.png"));
 						saveConfigButton.setActionCommand("saveConfig");
 						saveConfigButton.addActionListener(this);
 						saveConfigButton.setToolTipText("Save setings");
@@ -218,7 +218,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 					{
 						enableEditButton = new JToggleButton();
 						optionsToolbar.add(enableEditButton);
-						enableEditButton.setIcon(UIGlobal.getIconOrBroken("menu/enableedit.png"));
+						enableEditButton.setIcon(UIGlobal.getIconOrBroken("icons/menu/enableedit.png"));
 
 						enableEditButton.setActionCommand("enableEdit");
 						enableEditButton.addActionListener(this);
@@ -228,7 +228,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 					{
 						saveButton = new JButton();
 						optionsToolbar.add(saveButton);
-						saveButton.setIcon(UIGlobal.getIconOrBroken("menu/save.png"));
+						saveButton.setIcon(UIGlobal.getIconOrBroken("icons/menu/save.png"));
 
 						saveButton.setActionCommand("save");
 						saveButton.addActionListener(this);

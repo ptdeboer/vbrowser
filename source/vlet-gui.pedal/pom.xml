@@ -9,24 +9,24 @@
     <parent>
         <groupId>nl.esciencecenter.vbrowser</groupId>
         <artifactId>vbrowser</artifactId>
-        <version>1.9.0</version>
+        <version>1.9.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <repositories>
-        <repository>
-            <id>geotoolkit.org</id>
-            <url>http://maven.geotoolkit.org</url>
-        </repository>
-        <repository>
-            <id>osgeo.org</id>
-            <url>http://download.osgeo.org/webdav/geotools</url>
-        </repository>
-        <repository>
-            <id>clojars.org</id>
-            <url>https://repo.clojars.org</url>
-        </repository>
-    </repositories>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>geotoolkit.org</id>-->
+<!--            <url>http://maven.geotoolkit.org</url>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>osgeo.org</id>-->
+<!--            <url>http://download.osgeo.org/webdav/geotools</url>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>clojars.org</id>-->
+<!--            <url>https://repo.clojars.org</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
 
     <build>
         <sourceDirectory>src</sourceDirectory>

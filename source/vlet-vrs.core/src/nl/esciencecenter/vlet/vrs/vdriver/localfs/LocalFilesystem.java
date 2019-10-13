@@ -69,7 +69,7 @@ public class LocalFilesystem extends FileSystemNode
     {
         // Use one ServerInfo for all !
         super(context, context.getServerInfoRegistry().getServerInfoFor(new VRL("file", null, "/"), true));
-        fsUtil=FSUtil.getDefault(); 
+        fsUtil=FSUtil.fsutil();
     }
 
     protected FSUtil getFSUtil()
@@ -89,7 +89,7 @@ public class LocalFilesystem extends FileSystemNode
     @Override
     public void connect() throws VrsException
     {
-        fsUtil=FSUtil.getDefault(); 
+        fsUtil=FSUtil.fsutil();
     }
 
     @Override
@@ -262,8 +262,8 @@ public class LocalFilesystem extends FileSystemNode
 
             if (status != 0)
             {
-                throw VrsException.create("Exit status=" + status + "\n. stdout=" + result[1]
-                        + "\n. stderr=" + result[2], null,"Execution Error");
+                throw new VrsException("Exit status=" + status + "\n. stdout=" + result[1]
+                        + "\n. stderr=" + result[2], null);
             }
         }
 

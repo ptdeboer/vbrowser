@@ -24,26 +24,14 @@ package nl.esciencecenter.vlet.exception;
 
 public class VrsResourceException extends NestedIOException
 {
-    private static final long serialVersionUID = 8599481352396538655L;
 
-    public VrsResourceException(String msg)
-    {
-        super("ResourceException", msg,null);
+    public VrsResourceException(String message) {
+        super(message);
     }
 
     public VrsResourceException(String message, Throwable cause)
     {
-        super("ResourceException", message, cause);
-    }
-
-    protected VrsResourceException(String name, String message)
-    {
-        super(name, message,null);
-    }
-
-    protected VrsResourceException(String name, String message, Throwable cause)
-    {
-        super(name, message, cause);
+        super(message,cause);
     }
 
 }

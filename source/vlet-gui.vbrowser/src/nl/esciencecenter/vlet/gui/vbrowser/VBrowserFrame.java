@@ -325,8 +325,8 @@ public class VBrowserFrame extends javax.swing.JFrame
                                     // busyIcon.setIcon(IconRenderer.getIcon("menu/vle_animate48.gif"));
 
                                     // busyIcon.setIcon(IconProvider.getDefault().getAnimatedIcon("menu/vle_animated_blue32.gif"));
-                                    busyIcon.setIcon(loadIcon("menu/vle_animated_blue32.gif"));
-                                    busyIcon.setDisabledIcon(loadIcon("menu/vle_animated_blue_disabled32.gif"));
+                                    busyIcon.setIcon(loadIcon("icons/menu/vle_animated_blue32.gif"));
+                                    busyIcon.setDisabledIcon(loadIcon("icons/menu/vle_animated_blue_disabled32.gif"));
                                     // busyIcon.setBorder(new
                                     // EtchedBorder(EtchedBorder.LOWERED));
                                     busyIcon.setEnabled(false);
@@ -350,7 +350,7 @@ public class VBrowserFrame extends javax.swing.JFrame
                                     credentialButton.setActionCommand(ActionCommandType.SHOW_PROXYDIALOG.toString());
                                     credentialButton.addActionListener(bcActionListener);
 
-                                    credentialButton.setIcon(loadIcon("menu/keys_notok.png"));
+                                    credentialButton.setIcon(loadIcon("icons/menu/keys_notok.png"));
                                     credentialButton.setToolTipText("set/check Grid Credentials");
 
                                 }
@@ -362,7 +362,7 @@ public class VBrowserFrame extends javax.swing.JFrame
                                     viewAsIconsBut = new JButton();
                                     viewToolBar.add(viewAsIconsBut);
                                     // viewAsIconsBut.setText("IC");
-                                    viewAsIconsBut.setIcon(loadIcon("menu/viewasicons.png"));
+                                    viewAsIconsBut.setIcon(loadIcon("icons/menu/viewasicons.png"));
                                     viewAsIconsBut.setActionCommand(ActionCommandType.VIEWASICONS.toString());
                                     viewAsIconsBut.addActionListener(bcActionListener);
                                     viewAsIconsBut.setToolTipText(Messages.TT_VIEW_AS_ICONS);
@@ -371,7 +371,7 @@ public class VBrowserFrame extends javax.swing.JFrame
                                     viewAsIconRows = new JButton();
                                     viewToolBar.add(viewAsIconRows);
                                     // viewAsIconRows.setText("ICR");
-                                    viewAsIconRows.setIcon(loadIcon("menu/viewasiconlist.png"));
+                                    viewAsIconRows.setIcon(loadIcon("icons/menu/viewasiconlist.png"));
                                     viewAsIconRows.setActionCommand(ActionCommandType.VIEWASICONLIST.toString());
                                     viewAsIconRows.addActionListener(bcActionListener);
                                     viewAsIconRows.setEnabled(true);
@@ -383,7 +383,7 @@ public class VBrowserFrame extends javax.swing.JFrame
                                     viewAsListBut.setActionCommand(ActionCommandType.VIEWASTABLE.toString());
                                     viewAsListBut.addActionListener(bcActionListener);
 
-                                    viewAsListBut.setIcon(loadIcon("menu/viewastablelist.png")); 
+                                    viewAsListBut.setIcon(loadIcon("icons/menu/viewastablelist.png"));
                                     viewAsListBut.setToolTipText(Messages.TT_VIEW_AS_TABLE);
                                 }
                                 /*
@@ -395,7 +395,7 @@ public class VBrowserFrame extends javax.swing.JFrame
                             {
                                 stopButton = new JButton();
                                 buttonPanel.add(stopButton);
-                                stopButton.setIcon(loadIcon("menu/stop.gif"));
+                                stopButton.setIcon(loadIcon("icons/menu/stop.gif"));
                                 stopButton.setEnabled(false);
                                 stopButton.setActionCommand(ActionCommandType.MASTERSTOP.toString());
                                 stopButton.addActionListener(bcActionListener);

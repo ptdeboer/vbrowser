@@ -8,17 +8,19 @@
     <parent>
         <groupId>nl.esciencecenter.vbrowser</groupId>
         <artifactId>vbrowser</artifactId>
-        <version>1.9.0</version>
+        <version>1.9.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <build>
+        <sourceDirectory>src</sourceDirectory>
+<!--        <testSourceDirectory>testsrc</testSourceDirectory>-->
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
-
             <!-- The configuration of maven-jar-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -34,9 +36,7 @@
                     </archive>
                 </configuration>
             </plugin>
-
         </plugins>
-
     </build>
 
     <dependencies>

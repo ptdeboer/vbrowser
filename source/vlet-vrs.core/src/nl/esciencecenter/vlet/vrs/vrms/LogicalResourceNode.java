@@ -188,8 +188,6 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
     /**
      * Link target attributes. Can not be set. Are taken from target resource in
      * method updateTargetAttributes()
-     * 
-     * @see updateTargetAttributes
      */
     protected static String[] targetAttributeNames =
         { 
@@ -479,7 +477,8 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         catch (Exception e)
         {
             // Default save not implemented or possible for all types:
-            logger.logException(ClassLogger.WARN, this, e, "Could not save:%s\n", this);
+            logger.warn("Failed to save;{}",this);
+            logger.warn(e.getMessage(),e);
             return false;
         }
     }
@@ -498,12 +497,13 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
             }
             else if (parent == null)
             {
-                throw new NestedIOException("Storage Error.\nBoth description Location as Parent are set to NULL");
+                logger.debug("No storage location or parent isn't a ResourceFolder for:{}",this);
+                return false;
             }
             else
             {
                 logger.debugPrintf("_save() called, but can't invoke save on unknown parent:" + parent);
-                throw new NotImplementedException("Resource doesn't have a storage location:" + this);
+                return false;
             }
         }
 
@@ -524,10 +524,6 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         catch (IOException e)
         {
             throw new NestedIOException(e);
-        }
-        finally
-        {
-            // try { outp.close(); } catch (IOException e) {}
         }
     }
 
@@ -858,9 +854,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
      * auto update the isComposite attribute of the (remote) target is this
      * isn't set yet!
      * 
-     * @param resolve
-     * @return
-     * @throws VrsException
+     * @param defaultVal
      */
     public boolean getTargetIsComposite(boolean defaultVal) throws VrsException
     {
@@ -892,8 +886,6 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
      */
     protected boolean updateTargetAttributes(boolean connectIfNotConnected)
     {
-        logger.infoPrintf("updateTargetAttributes(%s):\n", connectIfNotConnected);
-
         try
         {
             VRL target = this.getTargetVRL();
@@ -937,7 +929,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
                         target);
             }
 
-            logger.infoPrintf("updateTargetAttributes(): >>> Reconnecting: Updating Attributes: isComposite of:%s\n",
+            logger.debugPrintf("updateTargetAttributes(): >>> Reconnecting: Updating Attributes: isComposite of:%s\n",
                     target);
 
             VNode vnode = vrsContext.openLocation(this.getTargetVRL());
@@ -1209,7 +1201,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
                 StringList attrNames = new StringList(getServerInfo().getAttributeNames());
                 // do some sorting before returning them so the same
                 // attribute always appear in the same order.
-                attrNames.orden(defaultServerInfoAttrNames);
+                attrNames.rearrange(defaultServerInfoAttrNames);
                 list.merge(attrNames);
                 // Todo: better ServerInfo integration.
                 if (attrNames.contains(ATTR_USERNAME) == false)
@@ -1249,7 +1241,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
         // return linkAttributeNames;
         // As the GUI displays the names in the order it
         // receives them, sort them in the way as they should be displayed
-        StringList list = new StringList(this.resourceAttributes.getKeyArray(new String[0]));
+        StringList list = new StringList(this.resourceAttributes.createKeyArray());
 
         // remove gui attributes
         list.remove(guiAttributeNames);
@@ -1486,7 +1478,7 @@ public class LogicalResourceNode extends VNode implements VEditable, VDeletable,
             // Schemes of Stored Servers are NOT editable
             if (this.isServerConfigType() == true)
             {
-                editable = GlobalProperties.getRootLogger().isLevelDebug();// // when in
+                editable = false ;// GlobalProperties.getRootLogger().isLevelDebug();// // when in
                                                                  // debug mode,
                                                                  // make this
                                                                  // editable !

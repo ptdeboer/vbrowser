@@ -45,7 +45,6 @@ public class VAttributeConstants extends AttributeNames
      * as returned by getChecksumTypes if the resource implements the VChecksum
      * interface.
      * 
-     * @see nl.uva.vlet.vrs.VChecksum
      */
     public static final String ATTR_CHECKSUM_TYPE = "checksumType";
 

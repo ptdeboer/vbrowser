@@ -114,7 +114,8 @@ public class JobMonitorController implements ActionListener
         {
             actionReload(); 
         }
-        else if (StringUtil.equals(cmdStr,NavigationBar.NavigationAction.LOCATION_CHANGED))
+        else if ( (StringUtil.equals(cmdStr,NavigationBar.NavigationAction.LOCATION_CHANGED))
+                ||(StringUtil.equals(cmdStr,NavigationBar.NavigationAction.LOCATION_AUTOCOMPLETED)))
         {
         	String txt = monitor.getNavigationBar().getLocationText();
         	

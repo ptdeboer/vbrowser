@@ -23,12 +23,12 @@ package nl.esciencecenter.vlet.vrs.io;
 
 import java.io.IOException;
 
-import nl.esciencecenter.ptk.exec.ShellChannel;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
+import nl.piter.vterm.api.ShellChannel;
 
 public interface VShellChannelCreator
 {
     /** Create Shell Channel */ 
-    public ShellChannel createShellChannel(VRL optionalLocation) throws IOException;
+    ShellChannel createShellChannel(VRL optionalLocation) throws IOException;
     
 }

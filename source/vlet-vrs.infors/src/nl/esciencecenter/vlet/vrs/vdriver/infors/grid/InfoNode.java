@@ -121,7 +121,7 @@ public class InfoNode extends LogicalResourceNode
     {
         StringList names = new StringList(super.getAttributeNames());
         if (infoAttrs != null)
-            names.add(infoAttrs.getAttributeNames());
+            names.addAll(infoAttrs.keySet());
         return names.toArray();
     }
 

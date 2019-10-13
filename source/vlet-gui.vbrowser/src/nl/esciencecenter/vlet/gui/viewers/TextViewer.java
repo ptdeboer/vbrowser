@@ -32,20 +32,7 @@ import java.util.Properties;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTextArea;
-import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
 
@@ -272,7 +259,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
 					{
 						refreshButton = new JButton();
 						toolbar.add(refreshButton);
-						refreshButton.setIcon(UIGlobal.getIconOrBroken("menu/refresh.gif"));
+						refreshButton.setIcon(loadIcon("texteditor/refresh.gif"));
 
 						refreshButton.setActionCommand("refresh");
 						refreshButton.addActionListener(this);
@@ -286,7 +273,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
 					{
 						saveConfigButton = new JButton();
 						optionsToolbar.add(saveConfigButton);
-						saveConfigButton.setIcon(UIGlobal.getIconOrBroken("menu/saveconfig.png"));
+						saveConfigButton.setIcon(loadIcon("texteditor/saveconfig.png"));
 						saveConfigButton.setActionCommand("saveConfig");
 						saveConfigButton.addActionListener(this);
 						saveConfigButton.setToolTipText("Save setings");
@@ -294,7 +281,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
 					{
 						enableEditButton = new JToggleButton();
 						optionsToolbar.add(enableEditButton);
-						enableEditButton.setIcon(UIGlobal.getIconOrBroken("menu/enableedit.png"));
+						enableEditButton.setIcon(loadIcon("texteditor/enableedit.png"));
 
 						enableEditButton.setActionCommand("enableEdit");
 						enableEditButton.addActionListener(this);
@@ -304,7 +291,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
 					{
 						saveButton = new JButton();
 						optionsToolbar.add(saveButton);
-						saveButton.setIcon(UIGlobal.getIconOrBroken("menu/save.png"));
+						saveButton.setIcon(loadIcon("texteditor/save.png"));
 
 						saveButton.setActionCommand("save");
 						saveButton.addActionListener(this);
@@ -340,6 +327,10 @@ public class TextViewer extends InternalViewer implements ActionListener,
 			FontInfo info = getFontInfo();
 			info.updateComponentFont(this.textArea); 
 		}
+	}
+
+	private Icon loadIcon(String iconName) {
+		return UIGlobal.getIconOrBroken("icons/"+iconName);
 	}
 
 	protected FontInfo getFontInfo()
@@ -850,27 +841,6 @@ public class TextViewer extends InternalViewer implements ActionListener,
 	protected void handle(VrsException ex)
 	{
 		ExceptionForm.show(ex);
-	}
-
-	// =======================================================================
-	// Main 
-	// =======================================================================
-
-	/**
-	 * @param args
-	 */
-	public static void main(String args[])
-	{
-		try
-		{
-			viewStandAlone(new VRL("file:/home/ptdeboer/vlterm/utf81.txt")); // file:///etc/passwd"));
-			// viewStandAlone(null);
-		}
-		catch (VrsException e)
-		{
-			System.out.println("***Error: Exception:" + e);
-			e.printStackTrace();
-		}
 	}
 
 	public static void viewStandAlone(VRL loc)

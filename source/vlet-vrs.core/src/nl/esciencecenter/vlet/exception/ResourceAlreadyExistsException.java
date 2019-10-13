@@ -23,17 +23,12 @@ package nl.esciencecenter.vlet.exception;
 
 public class ResourceAlreadyExistsException extends VrsResourceException
 {
-    private static final long serialVersionUID = -4749406987489027971L;
 
-    public ResourceAlreadyExistsException(String message)
-    {
-        super(ExceptionStrings.RESOURCE_ALREADY_EXISTS, message);
+    public ResourceAlreadyExistsException(String msg) {
+        super(msg);
     }
 
-    /** Constructor which keeps original System Exception */
-    public ResourceAlreadyExistsException(String message, Throwable e)
-    {
-        super(ExceptionStrings.RESOURCE_ALREADY_EXISTS, message, e);
+    public ResourceAlreadyExistsException(String message, Throwable cause) {
+        super(message, cause);
     }
-
 }

@@ -765,7 +765,7 @@ public class BrowserController implements WindowListener, GridProxyListener,
 						performViewNode(performNode, true);
 						break;
 					default:
-					    logger.warnPrintf("*** Warning: Unrecognized ActionCommand:%s\n"+actionCommand);
+					    logger.warnPrintf("*** Warning: Unrecognized ActionCommand:%s\n",actionCommand);
 						actionDone=false; 
 					break;
 				} // switch 
@@ -2112,12 +2112,12 @@ public class BrowserController implements WindowListener, GridProxyListener,
 		if (stat == true)
 		{
 			this.vbrowser.credentialButton.setIcon(new ImageIcon(getClass()
-					.getClassLoader().getResource("menu/keys_ok.png")));
+					.getClassLoader().getResource("icons/menu/keys_ok.png")));
 		}
 		else
 		{
 			this.vbrowser.credentialButton.setIcon(new ImageIcon(getClass()
-					.getClassLoader().getResource("menu/keys_notok.png")));
+					.getClassLoader().getResource("icons/menu/keys_notok.png")));
 		}
 
 		this.vbrowser.credentialButton.repaint();

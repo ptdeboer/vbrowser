@@ -9,17 +9,16 @@
     <parent>
         <groupId>nl.esciencecenter.vbrowser</groupId>
         <artifactId>vbrowser</artifactId>
-        <version>1.9.0</version>
+        <version>1.9.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <build>
-        <!-- todo: move src and resource to maven structure -->
+        <!-- compact layout -->
         <sourceDirectory>src</sourceDirectory>
         <testSourceDirectory>testsrc</testSourceDirectory>
-
         <resources>
-            <!-- move to -icons assembly -->
+            <!-- note: these icons are now inside the jar -->
             <resource>
                 <directory>icons</directory>
             </resource>
@@ -67,6 +66,18 @@
             <artifactId>ptk-vbrowser-vrs</artifactId>
         </dependency>
         <!-- tools -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
         <dependency>
             <groupId>nl.ikarus.nxt.priv.imageio.icoreader</groupId>
             <artifactId>ICOReader</artifactId>

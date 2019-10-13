@@ -23,17 +23,15 @@ package nl.esciencecenter.vlet.exception;
 
 public class ResourceNotFoundException extends VrsResourceException
 {
-    private static final long serialVersionUID = -4451313345246528097L;
 
     public ResourceNotFoundException(String message)
     {
-        super(ExceptionStrings.RESOURCE_NOT_FOUND_EXCEPTION, message);
+        super(message,null);
     }
 
-    /** Constructor which keeps original Exception */
     public ResourceNotFoundException(String message, Throwable e)
     {
-        super(ExceptionStrings.RESOURCE_NOT_FOUND_EXCEPTION, message, e);
+        super(message,e);
     }
 
 }

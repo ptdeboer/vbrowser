@@ -23,17 +23,12 @@ package nl.esciencecenter.vlet.exception;
 
 public class ResourceCreationFailedException extends VrsResourceException
 {
-    private static final long serialVersionUID = -2011249376460824842L;
 
-    public ResourceCreationFailedException(String message)
-    {
-        super(ExceptionStrings.RESOURCE_CREATION_FAILED, message);
+    public ResourceCreationFailedException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    /** Constructor which keeps original System Exception */
-    public ResourceCreationFailedException(String message, Throwable e)
-    {
-        super(ExceptionStrings.RESOURCE_CREATION_FAILED, message, e);
+    public ResourceCreationFailedException(String msg) {
+        super(msg);
     }
-
 }

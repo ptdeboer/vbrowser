@@ -24,21 +24,12 @@ package nl.esciencecenter.vlet.exception;
 
 public class NetworkCommunicationException extends NestedIOException 
 {
-    private static final long serialVersionUID = 4058564395522741076L;
-    
-    public NetworkCommunicationException(String message)
-    {
-        super("Network Exception", message,null);
+
+    public NetworkCommunicationException(String message) {
+        super(message);
     }
 
-    public NetworkCommunicationException(Throwable e)
-    {
-        super("Network Exception", e.getMessage(), e);
+    public NetworkCommunicationException(String message, Throwable err) {
+        super(message, err);
     }
-
-    protected NetworkCommunicationException(String name, String message, Throwable e)
-    {
-        super(name,message,e);
-    }
-
 }

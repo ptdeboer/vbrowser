@@ -23,25 +23,15 @@ package nl.esciencecenter.vlet.exception;
 
 public class ConnectionException extends NetworkCommunicationException
 {
-    private static final long serialVersionUID = 8489684930456309265L;
 
     public ConnectionException(String message)
     {
-        super(ExceptionStrings.VRSCONNECTIONEXCEPTION, message,null);
+        super(message,null);
     }
 
-    /**
-     * Create VlException: CrendentialException which keeps original System
-     * Exception
-     */
     public ConnectionException(String message, Throwable lastex)
     {
-        super(ExceptionStrings.VRSCONNECTIONEXCEPTION, message, lastex);
-    }
-
-    public ConnectionException(Throwable e)
-    {
-        super(ExceptionStrings.VRSCONNECTIONEXCEPTION, e.getMessage(), e);
+        super(message, lastex);
     }
 
 }

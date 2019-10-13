@@ -55,7 +55,7 @@ fi
 CLASS=nl.esciencecenter.vlet.vrs.tools.URIStat
 
 # Start bootstrapper which does the rest 
-$JAVA -Dvlet.install.sysconfdir=$VLET_SYSCONFDIR -jar $BASE_DIR/bin/bootstrapper.jar  $CLASS $@
+$JAVA -Dvlet.install.sysconfdir=$VLET_SYSCONFDIR -jar $BASE_DIR/bin/vbrowser-boot.jar -startClass $CLASS $@
 # keep return value: 
 RETVAL=$? 
 

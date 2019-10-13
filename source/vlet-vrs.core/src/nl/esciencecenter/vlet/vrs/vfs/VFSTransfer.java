@@ -22,6 +22,7 @@
 package nl.esciencecenter.vlet.vrs.vfs;
 
 import nl.esciencecenter.ptk.task.ITaskMonitor;
+import nl.esciencecenter.ptk.task.TaskStats;
 import nl.esciencecenter.ptk.task.TransferMonitor;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;

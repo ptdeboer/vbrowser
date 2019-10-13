@@ -23,17 +23,8 @@ package nl.esciencecenter.vlet.exception;
 
 public class ResourceToBigException extends VrsResourceException
 {
-    private static final long serialVersionUID = 4212619986099429089L;
 
-    public ResourceToBigException(String message)
-    {
-        super(ExceptionStrings.RESOURCE_TO_BIG, message);
+    public ResourceToBigException(String message, Throwable cause) {
+        super(message, cause);
     }
-
-    /** Constructor which keeps original System Exception */
-    public ResourceToBigException(String message, Throwable e)
-    {
-        super(ExceptionStrings.RESOURCE_TO_BIG, message, e);
-    }
-
 }

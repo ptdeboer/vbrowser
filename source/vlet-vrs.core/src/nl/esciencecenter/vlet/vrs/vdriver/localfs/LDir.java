@@ -25,6 +25,7 @@ import static nl.esciencecenter.vlet.vrs.data.VAttributeConstants.ATTR_UNIX_FILE
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSPath;
@@ -81,7 +82,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 
     public LDir(LocalFilesystem local, FSPath node) throws VrsException
     {
-        super(local, new VRL(node.getURI())); 
+        super(local, new VRL(node.toURI()));
         init(node);
         this.localfs=local;
     }
@@ -141,12 +142,12 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
         if (fsNode == null)
             return 0;
 
-        String list[];
+        List<FSPath> list;
         try
         {
             list = fsNode.list();
             if (list != null)
-                return list.length;
+                return list.size();
         }
         catch (IOException e)
         {
@@ -204,12 +205,12 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
 
     public boolean isReadable()
     {
-        return fsNode.toJavaFile().canRead();
+        return fsNode.getPath().toFile().canRead();
     }
 
     public boolean isWritable()
     {
-        return fsNode.toJavaFile().canWrite();
+        return fsNode.getPath().toFile().canWrite();
     }
 
     public boolean create(boolean ignoreExisting) throws VrsException
@@ -233,7 +234,7 @@ public class LDir extends nl.esciencecenter.vlet.vrs.vfs.VDir implements VUnixFi
         
         try
         {
-            fsNode.mkdir();
+            this.localfs.getFSUtil().mkdir(fsNode);
             return true;
         }
         catch (IOException e)

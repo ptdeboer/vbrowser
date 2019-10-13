@@ -21,7 +21,7 @@
     <target name="init">
 
         <echo message="======================================"/>
-        <echo message="*** Ant Build is broker, use maven ***"/>
+        <echo message="*** Ant Build is borken, use maven ***"/>
         <echo message="======================================"/>
 	<fail> Ant build is broken </fail> 
 

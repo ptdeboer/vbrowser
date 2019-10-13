@@ -65,7 +65,7 @@ public abstract class LogicalFolderNode<T extends VNode> extends VCompositeNode 
 	public String[] getAttributeNames()
 	{
 	    StringList list=new StringList(super.getAttributeNames()); 
-	    list.merge(attributes.getAttributeNames());
+	    list.merge(attributes.createKeyStringList());
 	    // No MimeTypes for folders!
 	    list.remove(VAttributeConstants.ATTR_MIMETYPE); 
 	    return list.toArray(); 

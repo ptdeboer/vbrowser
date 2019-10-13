@@ -53,8 +53,9 @@ fi
 CLASS=nl.esciencecenter.vlet.vrs.tools.URILs
 
 # Start bootstrapper which does the rest 
-$JAVA -Dvlet.install.sysconfdir=$VLET_SYSCONFDIR -jar $BASE_DIR/bin/bootstrapper.jar  $CLASS $@
-# keep return value: 
+$JAVA -Dvlet.install.sysconfdir=$VLET_SYSCONFDIR -jar $BASE_DIR/bin/vbrowser-boot.jar -startClass $CLASS $@
+
+# keep return value:
 RETVAL=$? 
 
 #return exit code from URIStat

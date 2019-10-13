@@ -713,7 +713,7 @@ public class ResourceEditorController implements ActionListener, WindowListener,
     	}
     	
 		// strip sections 
-		String[] keys = propsAttrs.getKeyArray(new String[0]); 
+		String[] keys = propsAttrs.createKeyArray();
 		if (keys!=null)
 			for (String key:keys) 
 				if (key.startsWith("["))

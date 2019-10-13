@@ -26,15 +26,12 @@ package nl.esciencecenter.vlet.exception;
  */
 public class ResourceTypeNotSupportedException extends VrsResourceException // VlException
 {
-    private static final long serialVersionUID = 5258586546115247787L;
 
-    public ResourceTypeNotSupportedException()
-    {
-        super(ExceptionStrings.RESOURCE_TYPE_NOT_SUPPORTED, "Type not supported");
+    public ResourceTypeNotSupportedException(String message) {
+        super(message);
     }
 
-    public ResourceTypeNotSupportedException(String message)
-    {
-        super(ExceptionStrings.RESOURCE_TYPE_NOT_SUPPORTED, message);
+    public ResourceTypeNotSupportedException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

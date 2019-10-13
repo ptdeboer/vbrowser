@@ -29,7 +29,6 @@ import java.net.UnknownHostException;
 
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.SecretHolder;
-import nl.esciencecenter.ptk.exec.ShellChannel;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
@@ -39,6 +38,7 @@ import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
+import nl.piter.vterm.api.ShellChannel;
 
 /**
  * SSH Shell Channel. 
@@ -362,27 +362,27 @@ public class SSHChannel implements ShellChannel
     }
 
     @Override
-    public String getTermType()
+    public String getPtyTermType()
     {
-        return this.termType;  
+        return this.termType;
     }
 
     @Override
-    public boolean setTermType(String type)
+    public boolean setPtyTermType(String type)
     {
         this.setPtyType(type); 
         return true; 
     }
 
     @Override
-    public boolean setTermSize(int col, int row, int wp, int hp)
+    public boolean setPtyTermSize(int col, int row, int wp, int hp)
     {
         this.setPtySize(col, row, wp, hp);
         return true;
     }
 
     @Override
-    public int[] getTermSize()
+    public int[] getPtyTermSize()
     {
         return null;
         // must use ctrl sequence

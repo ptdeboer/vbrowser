@@ -93,7 +93,6 @@ public abstract class ResourceSystemNode extends VCompositeNode implements VReso
      * Resolve path against this VRL and return resolved VRL. 
      * Actual resolve might be ResourceSystem depended. 
      * @throws VRLSyntaxException 
-     * @throws VRISyntaxException 
      */
     public VRL resolve(String path) throws VRLSyntaxException
     {

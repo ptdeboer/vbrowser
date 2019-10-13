@@ -57,6 +57,7 @@ import nl.esciencecenter.vlet.exception.ResourceNotWritableException;
 import nl.esciencecenter.vlet.exception.ResourceReadAccessDeniedException;
 import nl.esciencecenter.vlet.exception.ResourceWriteAccessDeniedException;
 import nl.esciencecenter.vlet.vrs.VRS;
+import nl.esciencecenter.vlet.vrs.VRSContext;
 import nl.esciencecenter.vlet.vrs.io.VResizable;
 import nl.esciencecenter.vlet.vrs.io.VStreamAccessable;
 import nl.esciencecenter.vlet.vrs.io.VStreamAppendable;
@@ -89,12 +90,12 @@ public class LFile extends VFile implements VStreamAccessable,
     /**
      * Public constructor to create new LFile.
      * 
-     * @param path
+     * @param node
      * @throws VrsException
      */
     public LFile(LocalFilesystem localFS, FSPath node) throws VrsException
     {
-        super(localFS, new VRL(node.getURI()));  
+        super(localFS, new VRL(node.toURI()));
         this.localfs = localFS;
 //
 //        // windows hack: 'c:' is a relative path
@@ -111,7 +112,7 @@ public class LFile extends VFile implements VStreamAccessable,
     private void init(FSPath node) throws VrsException
     {
         logger.debugPrintf("init():new file:%s\n",node);
-        this.setLocation(new VRL(node.getURI()));
+        this.setLocation(new VRL(node.toURI()));
         this.fsNode=node; 
     }
 
@@ -173,7 +174,7 @@ public class LFile extends VFile implements VStreamAccessable,
     {
         try
         {
-            return fsNode.getBasicAttributes().size();
+            return fsNode.getFileSize();
         }
         catch (IOException e)
         {
@@ -193,12 +194,12 @@ public class LFile extends VFile implements VStreamAccessable,
 
     public boolean isReadable()
     {
-        return fsNode.toJavaFile().canRead();
+        return fsNode.getPath().toFile().canRead();
     }
 
     public boolean isWritable()
     {
-        return fsNode.toJavaFile().canWrite();
+        return fsNode.getPath().toFile().canWrite();
     }
 
     public boolean create() throws VrsException
@@ -328,17 +329,17 @@ public class LFile extends VFile implements VStreamAccessable,
 
     public InputStream createInputStream() throws IOException
     {
-        return fsNode.createInputStream(); 
+        return getFSUtil().createInputStream(fsNode);
     }
     
     public OutputStream createOutputStream() throws IOException 
     {
-        return fsNode.createOutputStream(false);
+        return getFSUtil().createOutputStream(fsNode,false);
     }
     
     public OutputStream createOutputStream(boolean append) throws IOException 
     {
-        return fsNode.createOutputStream(append); 
+        return getFSUtil().createOutputStream(fsNode,append);
     }
 
     // Method from VRandomAccessable:
@@ -348,7 +349,7 @@ public class LFile extends VFile implements VStreamAccessable,
         
         try
         {
-            afile = new RandomAccessFile(fsNode.toJavaFile(), "rw");
+            afile = new RandomAccessFile(fsNode.getPath().toFile(), "rw");
             afile.setLength(newLength);
         }
         finally

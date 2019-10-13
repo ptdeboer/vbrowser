@@ -30,6 +30,7 @@ import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.VletConfig;
 import nl.esciencecenter.vlet.actions.ActionMenuMapping;
+import nl.esciencecenter.vlet.exception.NestedVrsException;
 import nl.esciencecenter.vlet.gui.UIGlobal;
 import nl.esciencecenter.vlet.gui.UILogger;
 import nl.esciencecenter.vlet.gui.viewers.ViewerInfo;
@@ -403,8 +404,8 @@ public class ViewerRegistry
 
     public ViewerInfo registerViewer(ClassLoader classLoader, String className)
     {
-        Class viewclass = null;
-        logger.infoPrintf("Registering new ViewerPlugin:%s\n",className);
+        Class viewclass = null;//      mimetype
+        logger.infoPrintf("Registering Viewer  : %s\n",className);
 
         try
         {
@@ -471,7 +472,7 @@ public class ViewerRegistry
                 // verbose 2= configuration/settings:
                 if (vInfo != null)
                 {
-                    logger.infoPrintf("Registered viewer:%s:%s\n", viewerName,className);
+                    logger.debugPrintf("Registered viewer:%s:%s\n", viewerName,className);
                 }
 
                 // let viewer keep reference
@@ -509,7 +510,7 @@ public class ViewerRegistry
 
     private void showError(String className, Throwable e)
     {
-        VrsException vle = VrsException.create(
+        VrsException vle = NestedVrsException.create(
                 "Couldn't load viewer:" + className + "\n"
                 + "Exception=" + e.getClass().getCanonicalName() + "\n" 
                 + "Reason=" + e.getMessage(), e,

@@ -38,6 +38,7 @@ import javax.swing.SwingUtilities;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vlet.VletConfig;
+import nl.esciencecenter.vlet.exception.NestedVrsException;
 import nl.esciencecenter.vlet.gui.GuiSettings;
 import nl.esciencecenter.vlet.gui.UIGlobal;
 import nl.esciencecenter.vlet.gui.UILogger;
@@ -99,8 +100,8 @@ public class ExceptionForm extends javax.swing.JDialog implements ActionListener
 
 	public static void main(String args[])
 	{
-	    VrsException e1=VrsException.create("This is the original Exception",null,"Original Exception");
-	    VrsException e2=VrsException.create("This is the longer Nested Exception were the message text, if to big to fit into one line"+
+	    VrsException e1= NestedVrsException.create("This is the original Exception",null,"Original Exception");
+	    VrsException e2=NestedVrsException.create("This is the longer Nested Exception were the message text, if to big to fit into one line"+
 	            "will be wrapped around. The dailog should also be big enough to show all text. Newline:\n This is a new line.",e1,"Nested Exception");
 	    show(e2);
 	}
@@ -149,14 +150,7 @@ public class ExceptionForm extends javax.swing.JDialog implements ActionListener
 	    UIPlatform.getPlatform().getWindowRegistry().register(this);
 		initGUI();
 		String name=e.getClass().getSimpleName();
-		
-		// Depricated: VlException have names, should use class names
-		if (e instanceof VrsException)
-		{
-			name=((VrsException)e).getName(); 
-			// other VlExceptions ? 
-		}
-		
+
 		this.mainHeaderTextField.setText(name);
 		String txt=e.getMessage(); 
 		if (txt==null)

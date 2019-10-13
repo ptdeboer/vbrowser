@@ -37,9 +37,11 @@ import javax.net.ssl.SSLContext;
 import nl.esciencecenter.ptk.crypt.Secret;
 import nl.esciencecenter.ptk.data.StringList;
 import nl.esciencecenter.ptk.io.FSUtil;
+import nl.esciencecenter.ptk.io.IOUtil;
 import nl.esciencecenter.ptk.net.URIFactory;
 import nl.esciencecenter.ptk.ssl.CertUtil;
 import nl.esciencecenter.ptk.ssl.CertificateStore;
+import nl.esciencecenter.ptk.util.ContentReader;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.ptk.util.StringUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
@@ -443,7 +445,7 @@ public class GridProxy
         // auto (re)load:
         if ((credential == null) && (autoload))  
         {
-            reload(); 
+            reload();
         }
         
         return checkAndNotifyAttributes();     
@@ -600,7 +602,7 @@ public class GridProxy
     /**
      * Create proxy by using password, 
      * 
-     * @param passwdstr
+     * @param passwd
      * @return
      * @throws VrsException
      */
@@ -725,7 +727,6 @@ public class GridProxy
      * (re)load the proxy and it's configuration
      * Uses the VRSContext which whas supplied to 
      * the constructor to fetch user settings. 
-     * @param reload: optimization parameter: check for new certificates, etc. 
      * @throws VrsException
      */
     protected synchronized void loadProxy() throws VrsException
@@ -999,7 +1000,7 @@ public class GridProxy
         if (this.credential==null)
             return true; 
         
-        FSUtil.getDefault().deleteFile(credential.getCredentialFilename()); 
+        FSUtil.fsutil().deleteFile(credential.getCredentialFilename());
 
         this.credential=null;
         
@@ -1147,13 +1148,12 @@ public class GridProxy
         try
         {
             VRL vrl=new VRL("file:///").resolvePath(getProxyFilename());
-              
-            String str = ResourceLoader.getDefault().readText(vrl.toURI()); 
+            String str = new ContentReader(ResourceLoader.getDefault().createInputStream(vrl.toURI()),true).readString();
             return str;
         }
         catch (Exception e)
         {
-            throw VrsException.newChainedException(e);
+            throw new VrsException(e.getMessage(),e);
         }
     }
     
@@ -1181,7 +1181,8 @@ public class GridProxy
         {
             this.credential=null; // reload failed ! 
             // happens when proxy hasn't been created. 
-            logger.logException(ClassLogger.INFO,e,"Could not (re)load proxy\n"); 
+            logger.info("No default proxy or loading failed: {}",e.getMessage());
+            logger.debug(e.getMessage(),e);
         }
         
         return this.checkAndNotifyAttributes(); 

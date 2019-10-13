@@ -21,6 +21,7 @@
 DIRNAME=`dirname "$0"`
 BASE_DIR=`cd "$DIRNAME"/.. ; pwd`
  
+
 # VLET_SYSCONFDIR overrules VLET_INSTALL overrules BASE_DIR ! 
 if [ -f "$VLET_SYSCONFDIR/etc/vletenv.sh" ] ; then
 	source "$VLET_SYSCONFDIR/etc/vletenv.sh"
@@ -29,9 +30,14 @@ elif [ -f "$VLET_INSTALL/etc/vletenv.sh" ] ; then
 elif [ -f "$BASE_DIR/etc/vletenv.sh" ] ; then
 	source "$BASE_DIR/etc/vletenv.sh"
 else
-   echo "*** Error: couldn't find VLET configuration files."
+   echo "*** Warning: couldn't find VLET configuration file 'vletenv.sh' ..."
    # continue with defaults ? 
 fi 
+
+### Defaults: 
+
+VBROWSER_JAR=${VBROWSER_JAR:-$BASE_DIR/bin/vbrowser-boot.jar}
+JAVA=${JAVA:-java}
 
 ###
 # Startup 
