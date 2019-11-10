@@ -23,20 +23,6 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>maven2-local</id>
-            <name>Local maven2 repository</name>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-            <url>file:${vbrowser.rootdir}/maven2</url>
-        </repository>
-
-    </repositories>
-
     <modules>
         <!--  core -->
         <module>source/vlet-vrs.core</module>
@@ -59,6 +45,8 @@
         <module>source/vlet-gui.pedal</module>
         <!-- Bootstrappers -->
         <module>source/vlet-vbrowser.boot</module>
+        <!-- Documentation -->
+        <module>source/doc.userguide</module>
         <!-- Integration Tests  -->
         <!--<module>source/vlet-vrs.tests</module>-->
         <!-- Distribution  -->
@@ -146,6 +134,19 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>vlet-local-maven2-repo</id>
+            <name>Vlet local maven2 repository</name>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <url>file:${vbrowser.rootdir}/maven2</url>
+        </repository>
+    </repositories>
 
     <distributionManagement>
         <repository>

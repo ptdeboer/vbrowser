@@ -138,6 +138,7 @@
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
                 <include>*:vlet-vrs.core</include>
+                <include>*:doc-userguide</include>
             </includes>
             <binaries>
                 <attachmentClassifier>doc</attachmentClassifier>
