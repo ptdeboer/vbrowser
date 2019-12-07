@@ -10,27 +10,26 @@
 
  VBrowser Version : @VBROWSER_VERSION@
  VBrowser Date    : @VBROWSER_DATE@ 
- 
-=== Dev notes for 1.9.x ===
 
-- Maven rebuild.
-  Fixed java 1.8 and maven build problems.
-  Ant build is now broken.
+=== Release notes for 1.9.1 ===
 
-=== Release notes for 1.6.1 === 
+- Update to platinum 1.3.1 'Final Version II'
+- Maven rebuild, project is now a pure 'maven' project.
+- Fixed java 1.8 and other build problems.
+- Ant build is now broken.
 
+=== Release notes for 1.6.1 ===
 
-Bug fixes
-=========
+- Baseline using new platinum API.
+
+Bug fixes:
 
 - Added patch to import vlet 1.5.0 profiles. 
   Not all property names from vlet 1.5.0 were correctly parsed.
   Added patch to upgrade vlet 1.5.0 properties.
 
-===============================
-=== Release notes for 1.6.0 === 
-===============================
+=== Release notes for 1.6.0 ===
 
-This release of the VBrowser is based on VLET-1.5.0. 
-It contains an updated version of the VBrowser compatible with VLET 1.5.0
+- This release of the VBrowser is based on VLET-1.5.0.
+  It contains an updated version of the VBrowser compatible with VLET 1.5.0
 
