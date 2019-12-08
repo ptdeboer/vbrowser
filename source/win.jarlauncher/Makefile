@@ -12,8 +12,8 @@
 
 DIST		= dist
 BUILD 		= build
-BUILD64     = build64
-SRC		    = src
+BUILD64     	= build64
+SRC		= src
 ICONDIR		= icons
 
 ### ming32-gcc compiler: 
@@ -30,17 +30,17 @@ ICONDIR		= icons
 
 ## i686 pc/w64 
 #MINGW32    = i686-pc-mingw32
+#MINGW32     = x86_64-w64-mingw32
 MINGW32     = i686-w64-mingw32
 WCC         = ${MINGW32}-g++
 WSTRIP      = ${MINGW32}-strip
 WINDRES     = ${MINGW32}-windres 
 
-## x86_64 (host) compiler for (target) windows 32 ?
-## Should be able to create win64 binaries. 
-MINGW64   	= x86_64-w64-mingw32
+## x86_64 (host) compiler for (target) windows 64
+MINGW64     = x86_64-w64-mingw32
 WCC64       = ${MINGW64}-g++
 WSTRIP64    = ${MINGW64}-strip
-WINDRES64   = ${MINGW64}-windres 
+WINDRES64   = ${MINGW64}-windres
 
 #FLAGS        = -g
 COMPILE_FLAGS = -I${SRC}
@@ -49,8 +49,8 @@ FLAGS	      = ${COMPILE_FLAGS} ${LINK_FLAGS}
 
 # -I${SRC}
 
-#JARTARGETS	= bootstrapper vbrowser vlterm
-JARTARGETS	= bootstrapper vbrowser vbrowser_64
+#JARTARGETS	= bootstrapper vbrowser vlterm vbrowser_32
+JARTARGETS	= bootstrapper vbrowser
 
 EXES		=$(JARTARGETS:=.exe)
 JARS		=$(JARTARGETS:=.jar)
@@ -136,13 +136,13 @@ OBJS=${BUILD}/ptcutil.o
 
 OBJS64=${BUILD64}/ptcutil.o 
 
-# Specify MAINJAR
-%_64.exe: $(SRC)/jarlauncher.cpp ${OBJS64} $(ICONDIR)/%_64.ico $(BUILD64)/%_64_icon.o 
+# Specify MAINJAR (64bits) as exe name:
+%.exe: $(SRC)/jarlauncher.cpp ${OBJS64} $(ICONDIR)/%.ico $(BUILD64)/%_icon.o
 	$(WCC64) ${FLAGS} -DMAIN=\"$(@:.exe=)\" ${OBJS64} $(BUILD64)/$(@:.exe=_icon.o) $< -o ${DIST}/$@
 	$(WSTRIP64) ${DIST}/$@
 
-# Specify MAINJAR
-%.exe: $(SRC)/jarlauncher.cpp ${OBJS} $(ICONDIR)/%.ico $(BUILD)/%_icon.o 
+# Specify MAINJAR as exe name:
+%_32.exe: $(SRC)/jarlauncher.cpp ${OBJS} $(ICONDIR)/%_32.ico $(BUILD)/%_32_icon.o
 	$(WCC) ${FLAGS} -DMAIN=\"$(@:.exe=)\" ${OBJS} $(BUILD)/$(@:.exe=_icon.o) $< -o ${DIST}/$@
 	$(WSTRIP) ${DIST}/$@
 
