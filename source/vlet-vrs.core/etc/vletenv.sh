@@ -44,6 +44,13 @@ verbose()
   echo "$@" >&2
 }
 
+error()
+{
+  # copy to stderr ! 
+  echo "$@" >&2
+}
+
+
 ##
 # VLET_SYSCONFDIR 
 # Set the following variable when the configuration files or NOT under $VLET_INSTALL/etc ! 
@@ -173,7 +180,7 @@ fi
 
 export JAVA 
 
-VERSION=`"$JAVA" -version 2>&1 | grep "version" |  sed "s/.*\([0-9].[0-9_]*\.[0-9_]*\).*/\1/"` 
+VERSION=`"$JAVA" -version 2>&1 | grep "version" |  sed "s/.*\([0-9]*.[0-9_]*\.[0-9_]*\).*/\1/"` 
 MINOR=`echo $VERSION | cut -d '.' -f 2`
 
 if [ "$MINOR" -lt 8 ] ; then
