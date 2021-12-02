@@ -180,16 +180,18 @@ fi
 
 export JAVA 
 
-VERSION=`"$JAVA" -version 2>&1 | grep "version" |  sed "s/.*\([0-9]*.[0-9_]*\.[0-9_]*\).*/\1/"` 
-MINOR=`echo $VERSION | cut -d '.' -f 2`
+VERSION=$("$JAVA" -version 2>&1 | grep "version" |  sed "s/[^0-9]*\([0-9]*.[0-9_]*\.[0-9_]*\).*/\1/")
+MAJOR=$(echo $VERSION | cut -d '.' -f 1)
+MINOR=$(echo $VERSION | cut -d '.' -f 2)
 
-if [ "$MINOR" -lt 8 ] ; then
-   error "*** Wrong java version ***"
-   error " You need java 1.8. Current version="$VERSION
-   error " Current used java location="$JAVA
-   error " You can specify the java location by seting JAVA_HOME"
-   exit 1
-fi  
+if [[ $MAJOR != 1 ]] || [[ "$MINOR" -lt 8 ]] ; then
+     error "*** Wrong Java version ***"
+     error " You need Java 1.8. Current version="$VERSION
+     error " Current used Java location="$JAVA
+     error " You can specify the Java location by setting JAVA_HOME"
+     exit 1
+fi;
+
 
 ###
 # JYTHON settings: 
