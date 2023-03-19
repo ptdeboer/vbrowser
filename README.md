@@ -3,7 +3,7 @@ VBrowser
 
 Development version of the VBrowser. 
 Based on VLET 1.6.
-__IMPORTANT__: as of 2014 this project _is not maintaintd anymore_...
+__IMPORTANT__: as of 2014 this project _is not maintainted anymore_...
 
 Dependencies
 ---

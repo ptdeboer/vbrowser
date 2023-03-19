@@ -31,7 +31,7 @@
         <module>source/vlet-vfs.jcraft.ssh</module>
         <module>source/vlet-grid.globus</module>
         <module>source/vlet-vfs.gftp</module>
-        <module>source/glite-lbl.srm</module>
+        <module>source/glite-lbl-srm</module>
         <module>source/vlet-vfs.srm</module>
         <module>source/glite-lfc</module>
         <module>source/vlet-vfs.lfc</module>
@@ -46,7 +46,7 @@
         <!-- Bootstrappers -->
         <module>source/vlet-vbrowser.boot</module>
         <!-- Documentation -->
-        <module>source/doc.userguide</module>
+        <module>source/doc-userguide</module>
         <!-- Integration Tests  -->
         <!--<module>source/vlet-vrs.tests</module>-->
         <!-- Distribution  -->
