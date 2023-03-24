@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>nl.esciencecenter.vbrowser</groupId>
-    <artifactId>doc-userguide</artifactId>
+    <artifactId>userguide</artifactId>
     <name>VBrowser Userguide</name>
     <!-- should be zip:<packaging>zip</packaging> -->
 
