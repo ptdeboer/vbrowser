@@ -8,7 +8,7 @@
     <groupId>nl.esciencecenter.vbrowser</groupId>
     <artifactId>vbrowser</artifactId>
     <packaging>pom</packaging>
-    <version>1.9.3-SNAPSHOT</version>
+    <version>1.9.5</version>
     <name>VBrowser (${project.version})</name>
 
     <properties>
@@ -16,8 +16,7 @@
         <vbrowser.rootdir>.</vbrowser.rootdir>
         <vbrowser.source.subdir>source</vbrowser.source.subdir>
         <vbrowser.modules.dir>${vbrowser.source.subdir}</vbrowser.modules.dir>
-        <!-- vbrowser 1.9.1 compatible ptk version -->
-        <ptk.version>1.3.1</ptk.version>
+        <ptk.version>1.6.3</ptk.version>
         <java.version>1.8</java.version>
         <vbrowser.timestamp>${maven.build.timestamp}</vbrowser.timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
@@ -31,14 +30,13 @@
         <module>source/vlet-vfs.jcraft.ssh</module>
         <module>source/vlet-grid.globus</module>
         <module>source/vlet-vfs.gftp</module>
-        <module>source/glite-lbl-srm</module>
+        <module>source/glite-lbl.srm</module>
         <module>source/vlet-vfs.srm</module>
         <module>source/glite-lfc</module>
         <module>source/vlet-vfs.lfc</module>
         <module>source/vlet-vfs.skelfs</module>
         <!--  gui  -->
         <module>source/vlet-gui.vbrowser</module>
-        <module>source/nlesc-vbrowser.vb2.vlet</module>
         <module>source/vlet-gui.vbrowser-test</module>
         <!-- Viewers: need to be tested -->
         <module>source/vlet-gui.lobo.viewer</module>
@@ -46,7 +44,7 @@
         <!-- Bootstrappers -->
         <module>source/vlet-vbrowser.boot</module>
         <!-- Documentation -->
-        <module>source/doc-userguide</module>
+        <module>source/doc.userguide</module>
         <!-- Integration Tests  -->
         <!--<module>source/vlet-vrs.tests</module>-->
         <!-- Distribution  -->
@@ -94,7 +92,7 @@
         <dependencies>
             <dependency>
                 <groupId>nl.esciencecenter.platinum</groupId>
-                <artifactId>ptk-core</artifactId>
+                <artifactId>ptk-common</artifactId>
                 <version>${ptk.version}</version>
             </dependency>
             <dependency>

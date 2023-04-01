@@ -6,9 +6,10 @@ import java.net.URI;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vlet.vfs.ssh.jcraft.SSHChannel.SSHChannelOptions;
 import nl.esciencecenter.vlet.vrs.VRSContext;
-import nl.piter.vterm.api.ChannelOptions;
 import nl.piter.vterm.api.ShellChannel;
 import nl.piter.vterm.api.ShellChannelFactory;
+import nl.piter.vterm.api.TermChannelOptions;
+import nl.piter.vterm.api.TermUI;
 
 public class SSHShellChannelFactory implements ShellChannelFactory
 {
@@ -20,7 +21,7 @@ public class SSHShellChannelFactory implements ShellChannelFactory
     }
 
     @Override
-    public ShellChannel createChannel(URI uri, String user, char[] password, ChannelOptions channelOptions) throws IOException {
+    public ShellChannel createChannel(URI uri, String user, char[] password, TermChannelOptions channelOptions, TermUI ui) throws IOException {
         SSHChannelOptions sshOptions=null;
         String host=uri.getHost();
         int port=uri.getPort();

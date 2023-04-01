@@ -3,12 +3,13 @@ VBrowser
 
 Development version of the VBrowser. 
 Based on VLET 1.6.
-__IMPORTANT__: as of 2014 this project _is not maintainted anymore_...
+
+__IMPORTANT__: as of 2015 this project _is not maintainted anymore_...
 
 Dependencies
 ---
 
-This project requires platinum-1.3.1:
+This project requires platinum-1.6.3:
 
     https://github.com/ptdeboer/Platinum
 
@@ -33,6 +34,6 @@ Some plugins have been upgraded to maven2, but have not been tested 100%.
 
 Ant
 ---
-The Ant build is now broken. 
-The build files are kept for reference purposes only.
+The Ant build is now broken.
+Most of them have been deleted.
 

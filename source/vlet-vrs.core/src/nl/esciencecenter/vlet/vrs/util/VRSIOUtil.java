@@ -177,7 +177,7 @@ public class VRSIOUtil extends IOUtil
 
             // start background writer:
             cbuffer.setInputStream(istr);
-            cbuffer.setOutputstream(ostr);
+            cbuffer.setOutputStream(ostr);
 
             // ====================================
             // Transfer !

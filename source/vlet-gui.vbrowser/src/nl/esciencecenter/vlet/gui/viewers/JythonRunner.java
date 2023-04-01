@@ -67,9 +67,6 @@ import nl.esciencecenter.ptk.ui.fonts.FontToolbarListener;
 public class JythonRunner extends ViewerPlugin implements ActionListener,
      FontToolbarListener
 {
-	private static final long serialVersionUID = -5089094250601371894L;
-
-	public static final String jythonSettingsFile = "jythonrunner.props";
 
 	/** The mimetypes i can view */
 	private static String mimeTypes[] =
@@ -187,7 +184,7 @@ public class JythonRunner extends ViewerPlugin implements ActionListener,
 				toolPanel.setLayout(new FlowLayout());
 				//            // Font Toolbar 
 				{
-					this.fontToolbar = new FontToolBar(this);
+					this.fontToolbar = new FontToolBar(this,16,32);
 					toolPanel.add(fontToolbar);
 				}
 				{

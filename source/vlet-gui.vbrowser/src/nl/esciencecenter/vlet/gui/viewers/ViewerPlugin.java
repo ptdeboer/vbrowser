@@ -88,7 +88,6 @@ import nl.esciencecenter.vlet.vrs.util.VRSResourceLoader;
  */
 public abstract class ViewerPlugin extends JPanel implements IMimeViewer
 {
-    private static final long serialVersionUID = 6820035983193568339L;
 
     // ========================================================================
     // Private Fields
@@ -673,7 +672,7 @@ public abstract class ViewerPlugin extends JPanel implements IMimeViewer
 
     public void saveProperties(VRL loc, Properties props) throws Exception
     {
-        UIGlobal.getResourceLoader().saveProperties(loc.toURL(), props, "Properties:"+this.getName()+":"+this.getVersion());
+        UIGlobal.saveProperties(loc, props, "Properties:"+this.getName()+":"+this.getVersion());
     }
 
     /**

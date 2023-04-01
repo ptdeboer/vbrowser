@@ -8,7 +8,7 @@
     <parent>
         <groupId>nl.esciencecenter.vbrowser</groupId>
         <artifactId>vbrowser</artifactId>
-        <version>1.9.3-SNAPSHOT</version>
+        <version>1.9.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -37,7 +37,7 @@
         <!-- ptk -->
         <dependency>
             <groupId>nl.esciencecenter.platinum</groupId>
-            <artifactId>ptk-core</artifactId>
+            <artifactId>ptk-common</artifactId>
         </dependency>
         <dependency>
             <groupId>nl.esciencecenter.platinum</groupId>

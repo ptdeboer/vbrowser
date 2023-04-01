@@ -22,6 +22,8 @@
 package nl.esciencecenter.vlet.gui;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.Properties;
 
@@ -35,6 +37,8 @@ import nl.esciencecenter.ptk.task.ActionTask;
 import nl.esciencecenter.ptk.task.ITaskSource;
 import nl.esciencecenter.ptk.ui.UI;
 import nl.esciencecenter.ptk.ui.icons.IconProvider;
+import nl.esciencecenter.ptk.util.ContentReader;
+import nl.esciencecenter.ptk.util.ContentWriter;
 import nl.esciencecenter.ptk.util.ResourceLoader;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vbrowser.vrs.mimetypes.MimeTypes;
@@ -165,14 +169,18 @@ public class UIGlobal
 		return getVRSContext().getGridProxy();
 	}
 
-	public static void saveProperties(VRL loc, Properties props) throws Exception
+	public static void saveProperties(VRL loc, Properties props, String comments) throws Exception
 	{
-		getResourceLoader().saveProperties(loc.toURL(), props,"VLET UIGlobal properties");
+		try (OutputStream outps = getResourceLoader().createOutputStream(loc)) {
+			new ContentWriter(outps).saveProperties(props, comments);
+		}
 	}
 
 	public static Properties loadProperties(VRL guiSettingsLocation) throws Exception
 	{
-	    return getResourceLoader().loadProperties(guiSettingsLocation.toURL());
+		try (InputStream inps =  getResourceLoader().createInputStream(guiSettingsLocation)) {
+			return new ContentReader(inps).loadProperties();
+		}
 	}
 
 	public static VRSResourceLoader getResourceLoader()

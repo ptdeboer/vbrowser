@@ -184,12 +184,11 @@ VERSION=$("$JAVA" -version 2>&1 | grep "version" |  sed "s/[^0-9]*\([0-9]*.[0-9_
 MAJOR=$(echo $VERSION | cut -d '.' -f 1)
 MINOR=$(echo $VERSION | cut -d '.' -f 2)
 
-if [[ $MAJOR != 1 ]] || [[ "$MINOR" -lt 8 ]] ; then
-     error "*** Wrong Java version ***"
-     error " You need Java 1.8. Current version="$VERSION
+if [ $MAJOR -lt 11 ] ; then
+     error "*** Warning: you might need Java 11 to run this. ***"
+     error " Current version="$VERSION
      error " Current used Java location="$JAVA
      error " You can specify the Java location by setting JAVA_HOME"
-     exit 1
 fi;
 
 

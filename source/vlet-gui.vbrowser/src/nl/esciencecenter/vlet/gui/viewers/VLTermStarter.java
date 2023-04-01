@@ -48,7 +48,7 @@ import nl.esciencecenter.vlet.vrs.vfs.VFS;
 import nl.esciencecenter.vlet.vrs.vfs.VFSNode;
 import nl.esciencecenter.vlet.vrs.vfs.VFileSystem;
 import nl.piter.vterm.api.ShellChannel;
-import nl.piter.vterm.ui.panel.VTerm;
+
 
 public class VLTermStarter extends ViewerPlugin implements ActionListener
 {

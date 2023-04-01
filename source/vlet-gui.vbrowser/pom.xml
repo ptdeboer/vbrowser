@@ -8,7 +8,7 @@
     <parent>
         <groupId>nl.esciencecenter.vbrowser</groupId>
         <artifactId>vbrowser</artifactId>
-        <version>1.9.3-SNAPSHOT</version>
+        <version>1.9.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -79,14 +79,16 @@
         <!-- PTK -->
         <dependency>
             <groupId>nl.esciencecenter.platinum</groupId>
-            <artifactId>ptk-ui</artifactId>
+            <artifactId>ptk-ui-common</artifactId>
             <version>${ptk.version}</version>
         </dependency>
         <dependency>
             <groupId>nl.esciencecenter.platinum</groupId>
-            <artifactId>ptk-util-vterm</artifactId>
+            <artifactId>ptk-ui-common</artifactId>
             <version>${ptk.version}</version>
+            <scope>compile</scope>
         </dependency>
+
         <!-- icons, both as jar and zip -->
 <!--        <dependency>-->
 <!--            <groupId>nl.esciencecenter.platinum</groupId>-->

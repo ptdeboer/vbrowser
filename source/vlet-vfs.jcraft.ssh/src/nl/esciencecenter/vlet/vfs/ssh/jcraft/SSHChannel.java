@@ -190,7 +190,10 @@ public class SSHChannel implements ShellChannel
             logger.logException(ClassLogger.WARN,e,"Couldn't determine local host name: %s\n",e); 
         }
     }
-    
+    public String getType() {
+        return "SSH";
+    }
+
     public void connect() throws IOException
     {
         try
@@ -362,20 +365,13 @@ public class SSHChannel implements ShellChannel
     }
 
     @Override
-    public String getPtyTermType()
-    {
-        return this.termType;
-    }
-
-    @Override
     public boolean setPtyTermType(String type)
     {
         this.setPtyType(type); 
         return true; 
     }
 
-    @Override
-    public boolean setPtyTermSize(int col, int row, int wp, int hp)
+    public boolean sendPtyTermSize(int col, int row, int wp, int hp)
     {
         this.setPtySize(col, row, wp, hp);
         return true;

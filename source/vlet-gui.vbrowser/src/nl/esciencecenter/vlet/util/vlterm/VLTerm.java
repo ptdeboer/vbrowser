@@ -21,7 +21,6 @@
 
 package nl.esciencecenter.vlet.util.vlterm;
 
-import nl.esciencecenter.ptk.util.vterm.StartVTerm;
 import nl.esciencecenter.vbrowser.vrs.vrl.VRL;
 import nl.esciencecenter.vlet.gui.UIGlobal;
 import nl.esciencecenter.vlet.vfs.ssh.jcraft.SSHShellChannelFactory;
@@ -67,7 +66,7 @@ public class VLTerm
             uri = optionalLocation.toURINoException();
         }
 
-        StartVTerm.startVTerm(provider, shellChan, uri);
+        new nl.piter.vterm.VTermStarter().withChannelProvider(provider).start(shellChan, uri);
     }
 
 

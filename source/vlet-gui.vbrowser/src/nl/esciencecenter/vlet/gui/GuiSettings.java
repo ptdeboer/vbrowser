@@ -228,7 +228,7 @@ public class GuiSettings
     {
         VRL loc = getGuiSettingsLocation();
 
-        UIGlobal.saveProperties(loc, guiProperties);
+        UIGlobal.saveProperties(loc, guiProperties,"GUISettings");
     }
 
     // === Propery Interface ===
@@ -450,13 +450,7 @@ public class GuiSettings
      * Calculates optimal window size for the component and optionally uses
      * frame information from the parent frame to position the new component in
      * front of the parent frame
-     * 
-     * @param parent
-     *            optional Parent frame to position component.
-     * @param comp
-     *            the component to calculate the size.
      */
-
     public static Rectangle getOptimalWindow(JFrame parentFrame, Component comp)
     {
         Dimension prefSize = comp.getPreferredSize();
@@ -494,7 +488,6 @@ public class GuiSettings
 
     }
 
-    /** @see getOptimalWindowSize */
     public static void setToOptimalWindowSize(JFrame parent, Component comp)
     {
         Rectangle windowRec = GuiSettings.getOptimalWindow(parent, comp);

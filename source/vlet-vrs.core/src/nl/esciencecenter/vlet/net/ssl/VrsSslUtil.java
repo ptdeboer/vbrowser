@@ -39,6 +39,7 @@ import nl.esciencecenter.ptk.ssl.SslUtil;
 import nl.esciencecenter.ptk.util.logging.ClassLogger;
 import nl.esciencecenter.vbrowser.vrs.exceptions.VrsException;
 import nl.esciencecenter.vlet.vrs.VRSContext;
+import sun.net.www.protocol.https.HttpsURLConnectionImpl;
 
 /**
  * SslUtil class for all global SSL configuration methods.
@@ -77,7 +78,7 @@ public class VrsSslUtil extends SslUtil
         // Check web service compatibility here: 
         try
         {
-            sun.net.www.protocol.https.HttpsURLConnectionImpl.setDefaultSSLSocketFactory(new ExtSSLSocketFactory(
+            HttpsURLConnectionImpl.setDefaultSSLSocketFactory(new ExtSSLSocketFactory(
                     context, context.getSocketFactory()));
             // sun.net.www.protocol.https.HttpsURLConnectionImpl.setDefaultSSLSocketFactory(context.getSocketFactory());
             // sun.net.www.protocol.https.HttpsURLConnectionImpl.setDefaultAllowUserInteraction(true);

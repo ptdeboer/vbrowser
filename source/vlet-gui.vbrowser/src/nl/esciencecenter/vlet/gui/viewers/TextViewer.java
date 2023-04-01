@@ -65,7 +65,6 @@ import nl.esciencecenter.ptk.ui.fonts.FontToolbarListener;
 public class TextViewer extends InternalViewer implements ActionListener,
    FontToolbarListener
 {
-	private static final long serialVersionUID = -2866218889160789305L;
 	// --
     private static final String viewerSettingsFile = "textviewer.props";
     private static final String viewerSettingsConfdir = ".textviewerrc";
@@ -250,7 +249,7 @@ public class TextViewer extends InternalViewer implements ActionListener,
 				toolPanel.setLayout(new FlowLayout());
 				//            // Font Toolbar 
 				{
-					this.fontToolbar = new FontToolBar(this);
+					this.fontToolbar = new FontToolBar(this,16,32);
 					toolPanel.add(fontToolbar);
 				}
 				{

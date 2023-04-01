@@ -228,7 +228,7 @@ public class HexViewer extends InternalViewer implements FontToolbarListener
 			}
 			// FontToolBar
 			{
-				fontToolBar=new FontToolBar(this);
+				fontToolBar=new FontToolBar(this,16,32);
 				toolPanel.add(fontToolBar); 
 				fontToolBar.setFocusable(false); 
 				fontToolBar.setVisible(default_show_font_toolbar);
