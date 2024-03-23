@@ -28,7 +28,7 @@ This project requires platinum-1.6.3.
 
 Java
 ---
-This project compiles under Java 11 with backward compatibility to Java 1.8
+This project compiles under Java 11 with backward compatibility to Java 1.8.\
 Newer versions (>11) are not supported.
 
 Maven
